@@ -26,6 +26,10 @@ This register is the searchable source of truth for which tools OddsWell uses, w
 | Project knowledge | Obsidian | Primary | Local project brain for decisions, plans, art direction, research, and visual maps. |
 | Development collaboration | Codex | Active | Research, design support, implementation, documentation, testing, and maintaining the project brain during active work. |
 | Development method | Ponytail | Active | Adopted full-mode development workflow. |
+| Sports decision AI | LLM decision policy | Approved direction; provider pending | Choose athlete and coach action intents through a strict structured-action contract. |
+| Simulation authority | Deterministic sport rules engines | Primary architecture | Validate legal actions, resolve consequences, and produce replayable event logs. |
+| Shared athlete simulation | Athlete Life Brain | Planned after stable basketball loop | Model persistent personalities, memory, relationships, habits, training, rest, social choices, and career consequences across sports. |
+| AI learning | Memory + versioned evaluation loop | Planned | Learn from structured history immediately and promote tested policy, prompt, fine-tune, or model versions deliberately. |
 | Source control | [GitHub](https://github.com/nackster/oddswell-world-of-play) | Active; private | Version control, branches, reviews, CI, and release history for the project. |
 | Repository administration | GitHub CLI 2.96.0 | Active | Create and administer the project repository from the local workstation. |
 | Large asset versioning | Git LFS 3.7.1 | Active | Version large binary assets through Git using the project tracking policy in `.gitattributes`. |

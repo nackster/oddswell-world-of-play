@@ -12,15 +12,17 @@ status: working
 ## Design pillars
 
 1. A living shared league with persistent athletes, teams, seasons, and history.
-2. Fair prediction based on equal access to competitively relevant information.
-3. One unified credit economy for earning, wagering, purchasing, saving, and spending.
-4. A visually distinctive 3D world worth visiting outside match times.
-5. Lifestyle progression and self-expression without hidden competitive information.
-6. One complete, beautiful loop before expansion.
+2. Athletes are persistent people whose personalities, relationships, habits, training, and off-court choices shape their careers.
+3. Sport-specific AI brains make athlete and coach decisions while authoritative rules engines resolve and record the consequences.
+4. Fair prediction based on equal access to competitively relevant information.
+5. One unified credit economy for earning, wagering, purchasing, saving, and spending.
+6. A visually distinctive 3D world worth visiting outside match times.
+7. Lifestyle progression and self-expression without hidden competitive information.
+8. One complete, beautiful loop before expansion.
 
 ## Concise pitch
 
-Every city has a team and every season writes history. Study a living fictional basketball league, predict shared simulated matches, explore spectacular cities, attend games, customize your character and home, and build a life inside a sports world that never stops evolving.
+Every city has a team and every season writes history. Follow fictional athletes whose decisions on and off the court shape their careers, study a living league, predict shared simulated matches, explore spectacular cities, attend games, customize your character and home, and build a life inside a sports world that never stops evolving.
 
 ## Original concept
 

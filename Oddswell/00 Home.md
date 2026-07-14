@@ -13,6 +13,7 @@ tags:
 - [[Design/Game Vision|Game vision]]
 - [[Design/Decisions/DEC-001 Unified Credits|Unified credit economy]]
 - [[Design/Decisions/DEC-002 First Playable Scope|First playable scope]]
+- [[Design/Decisions/DEC-003 Multi-Brain AI Architecture|Multi-brain AI architecture]]
 - [[Art/Visual Consistency|Visual consistency]]
 - [[Development/Current Plan|Current plan]]
 - [[Development/Technical Principles|Technical principles]]
@@ -22,11 +23,12 @@ tags:
 - [[Development/3D Asset Pipeline|3D asset pipeline]]
 - [[Visual Maps/Project Tool Map|Master project tool map]]
 - [[Visual Maps/3D Asset Toolchain|3D asset toolchain canvas]]
+- [[Visual Maps/Multi-Brain Architecture|Multi-brain architecture canvas]]
 - [[01 Inbox|Idea inbox]]
 
 ## Current focus
 
-Build a small, deterministic basketball simulation with two teams, believable statistics, auditable event logs, and enough public information for meaningful player predictions.
+Build a small basketball simulation with two teams, an AI decision layer, a deterministic authoritative resolver, believable statistics, auditable decision and event logs, and enough public information for meaningful player predictions.
 
 ## Current state
 

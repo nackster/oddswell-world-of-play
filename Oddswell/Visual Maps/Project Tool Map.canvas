@@ -113,7 +113,7 @@
     {
       "id": "b7010c08860c44b2",
       "type": "text",
-      "text": "# 🏀 Phase 0 simulation\n\n▶ **NEXT BUILD FOCUS**\n\nDeterministic basketball simulation, auditable events, athlete and team statistics, seasons, injuries, fatigue, and prediction validation.",
+      "text": "# 🏀 Phase 0 Basketball Brain\n\n▶ **NEXT BUILD FOCUS**\n\nLLM decisions through a strict action contract, deterministic authoritative resolution, decision tapes, auditable events, statistics, seasons, injuries, fatigue, and prediction validation.",
       "x": -100,
       "y": -170,
       "width": 500,
@@ -121,13 +121,23 @@
       "color": "4"
     },
     {
+      "id": "bd61a313bda94d90",
+      "type": "file",
+      "file": "Visual Maps/Multi-Brain Architecture.canvas",
+      "x": -100,
+      "y": 85,
+      "width": 500,
+      "height": 70,
+      "color": "4"
+    },
+    {
       "id": "620ac650b3cb440e",
       "type": "text",
       "text": "# 🎮 Game engine\n\n◇ **PENDING DECISION**\n\nRequired for the Phase 1 one-city 3D vertical slice. Evaluate world building, character workflow, networking, performance, and maintainability.",
       "x": -100,
-      "y": 130,
+      "y": 175,
       "width": 500,
-      "height": 230,
+      "height": 185,
       "color": "4"
     },
     {
@@ -597,6 +607,14 @@
       "toNode": "355f224ae68b4de1",
       "toSide": "top",
       "label": "foundation active"
+    },
+    {
+      "id": "8f23ed37f85542c8",
+      "fromNode": "b7010c08860c44b2",
+      "fromSide": "bottom",
+      "toNode": "bd61a313bda94d90",
+      "toSide": "top",
+      "label": "multi-brain design"
     },
     {
       "id": "fa5e2e1ca09443ea",

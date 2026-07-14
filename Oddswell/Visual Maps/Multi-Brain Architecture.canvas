@@ -1,0 +1,273 @@
+{
+  "nodes": [
+    {
+      "id": "a100000000000001",
+      "type": "text",
+      "text": "# 🧠 OddsWell multi-brain architecture\n\nAI chooses intentions. Authoritative engines validate and resolve consequences. Every important decision becomes memory and evidence for controlled learning.",
+      "x": -300,
+      "y": -950,
+      "width": 760,
+      "height": 220,
+      "color": "4"
+    },
+    {
+      "id": "a100000000000002",
+      "type": "group",
+      "x": -1750,
+      "y": -600,
+      "width": 520,
+      "height": 780,
+      "color": "5",
+      "label": "Project Memory"
+    },
+    {
+      "id": "a100000000000003",
+      "type": "file",
+      "file": "90 Assets/Tool Logos/obsidian-logo.svg",
+      "x": -1690,
+      "y": -480,
+      "width": 130,
+      "height": 210
+    },
+    {
+      "id": "a100000000000004",
+      "type": "text",
+      "text": "# 🧠 Project Brain\n\n⭐ **OBSIDIAN**\n\nPlans, decisions, standards, research, prompts, evaluations, and architecture history.",
+      "x": -1530,
+      "y": -480,
+      "width": 250,
+      "height": 250,
+      "color": "5"
+    },
+    {
+      "id": "a100000000000005",
+      "type": "file",
+      "file": "Design/Decisions/DEC-003 Multi-Brain AI Architecture.md",
+      "x": -1690,
+      "y": -150,
+      "width": 410,
+      "height": 250,
+      "color": "5"
+    },
+    {
+      "id": "a100000000000006",
+      "type": "group",
+      "x": -1050,
+      "y": -600,
+      "width": 600,
+      "height": 780,
+      "color": "2",
+      "label": "Shared Across Every Sport"
+    },
+    {
+      "id": "a100000000000007",
+      "type": "text",
+      "text": "# 🧍 Athlete Life Brain\n\nPersonalities · goals · relationships · discipline · stress · morale · money · sleep · training · recovery · social life\n\nChooses off-court actions and carries their consequences into careers.",
+      "x": -1000,
+      "y": -480,
+      "width": 500,
+      "height": 300,
+      "color": "2"
+    },
+    {
+      "id": "a100000000000008",
+      "type": "text",
+      "text": "# 🌍 World + League Brain\n\nSchedules, teams, contracts, careers, news, social context, shared history, and persistent world state.",
+      "x": -1000,
+      "y": -110,
+      "width": 500,
+      "height": 210,
+      "color": "2"
+    },
+    {
+      "id": "a100000000000009",
+      "type": "group",
+      "x": -250,
+      "y": -600,
+      "width": 700,
+      "height": 780,
+      "color": "4",
+      "label": "Sport-Specific Intelligence"
+    },
+    {
+      "id": "a10000000000000a",
+      "type": "text",
+      "text": "# 🏀 Basketball AI Brain\n\n🤖 **LLM DECISION POLICY**\n\nChooses strategy, play calls, passing, shooting, driving, positioning intent, substitutions, and coaching adjustments through structured legal actions.",
+      "x": -200,
+      "y": -480,
+      "width": 600,
+      "height": 300,
+      "color": "4"
+    },
+    {
+      "id": "a10000000000000b",
+      "type": "text",
+      "text": "# ⚽ 🏈 ⚾ Future sport brains\n\nEach sport receives its own AI decision brain and rules engine while reusing the shared life, world, memory, and learning layers.",
+      "x": -200,
+      "y": -110,
+      "width": 600,
+      "height": 210,
+      "color": "4"
+    },
+    {
+      "id": "a10000000000000c",
+      "type": "group",
+      "x": 650,
+      "y": -600,
+      "width": 600,
+      "height": 780,
+      "color": "3",
+      "label": "Authority and Audit"
+    },
+    {
+      "id": "a10000000000000d",
+      "type": "text",
+      "text": "# ⚙️ Rules + Outcome Engine\n\n⭐ **SERVER AUTHORITY**\n\nValidates legal actions, applies ratings and state, uses seeded randomness, resolves consequences, and emits versioned events.",
+      "x": 700,
+      "y": -480,
+      "width": 500,
+      "height": 280,
+      "color": "3"
+    },
+    {
+      "id": "a10000000000000e",
+      "type": "text",
+      "text": "# 🛡️ Competitive firewall\n\nCredits, purchases, and wagers cannot influence AI choices, rules, seeds, or outcomes. Invalid AI output is rejected rather than trusted.",
+      "x": 700,
+      "y": -130,
+      "width": 500,
+      "height": 230,
+      "color": "1"
+    },
+    {
+      "id": "a10000000000000f",
+      "type": "group",
+      "x": 1450,
+      "y": -600,
+      "width": 600,
+      "height": 780,
+      "color": "6",
+      "label": "Memory and Controlled Learning"
+    },
+    {
+      "id": "a100000000000010",
+      "type": "text",
+      "text": "# 📚 Structured league data\n\nContext, choices, consequences, statistics, failures, costs, latency, and evaluation results become long-term evidence.",
+      "x": 1500,
+      "y": -480,
+      "width": 500,
+      "height": 230,
+      "color": "6"
+    },
+    {
+      "id": "a100000000000011",
+      "type": "text",
+      "text": "# 🔄 Learning loop\n\n1. Retrieve memory immediately\n2. Evaluate behavior and realism\n3. Test candidate prompt, policy, fine-tune, or model\n4. Promote a named version only after it passes\n\nNo silent live self-rewriting.",
+      "x": 1500,
+      "y": -180,
+      "width": 500,
+      "height": 280,
+      "color": "6"
+    },
+    {
+      "id": "a100000000000012",
+      "type": "text",
+      "text": "# 🎞️ Permanent replay record\n\nModel/version + policy + structured AI decision tape + simulation seed + authoritative event log\n\nReplays never ask the LLM to reinvent the match.",
+      "x": -450,
+      "y": 380,
+      "width": 1100,
+      "height": 220,
+      "color": "5"
+    }
+  ],
+  "edges": [
+    {
+      "id": "b100000000000001",
+      "fromNode": "a100000000000004",
+      "fromSide": "right",
+      "toNode": "a10000000000000a",
+      "toSide": "left",
+      "label": "approved design constraints"
+    },
+    {
+      "id": "b100000000000002",
+      "fromNode": "a100000000000007",
+      "fromSide": "right",
+      "toNode": "a10000000000000a",
+      "toSide": "left",
+      "label": "athlete state and memory"
+    },
+    {
+      "id": "b100000000000003",
+      "fromNode": "a100000000000008",
+      "fromSide": "right",
+      "toNode": "a10000000000000a",
+      "toSide": "left",
+      "label": "league context"
+    },
+    {
+      "id": "b100000000000004",
+      "fromNode": "a10000000000000a",
+      "fromSide": "right",
+      "toNode": "a10000000000000d",
+      "toSide": "left",
+      "label": "structured legal intent"
+    },
+    {
+      "id": "b100000000000005",
+      "fromNode": "a10000000000000e",
+      "fromSide": "top",
+      "toNode": "a10000000000000d",
+      "toSide": "bottom",
+      "label": "protects authority"
+    },
+    {
+      "id": "b100000000000006",
+      "fromNode": "a10000000000000d",
+      "fromSide": "right",
+      "toNode": "a100000000000010",
+      "toSide": "left",
+      "label": "events and outcomes"
+    },
+    {
+      "id": "b100000000000007",
+      "fromNode": "a100000000000010",
+      "fromSide": "bottom",
+      "toNode": "a100000000000011",
+      "toSide": "top",
+      "label": "evidence"
+    },
+    {
+      "id": "b100000000000008",
+      "fromNode": "a100000000000011",
+      "fromSide": "left",
+      "toNode": "a10000000000000a",
+      "toSide": "right",
+      "label": "approved version update"
+    },
+    {
+      "id": "b100000000000009",
+      "fromNode": "a10000000000000d",
+      "fromSide": "bottom",
+      "toNode": "a100000000000012",
+      "toSide": "top",
+      "label": "authoritative record"
+    },
+    {
+      "id": "b10000000000000a",
+      "fromNode": "a10000000000000a",
+      "fromSide": "bottom",
+      "toNode": "a100000000000012",
+      "toSide": "top",
+      "label": "decision tape"
+    },
+    {
+      "id": "b10000000000000b",
+      "fromNode": "a10000000000000d",
+      "fromSide": "left",
+      "toNode": "a100000000000007",
+      "toSide": "right",
+      "label": "career consequences"
+    }
+  ]
+}
