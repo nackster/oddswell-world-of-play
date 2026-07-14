@@ -31,7 +31,7 @@ tags:
 
 ## Current focus
 
-Use the completed no-cost Phase 0C integration gate to select a live LLM provider and run a deliberately small, approved comparison without weakening deterministic authority, replay, auditability, or the competitive-economy firewall.
+Use the completed no-cost Phase 0C integration gate and six recorded LLM scenarios to select a live provider and run a deliberately small, approved comparison without weakening deterministic authority, replay, auditability, or the competitive-economy firewall.
 
 ## Current state
 

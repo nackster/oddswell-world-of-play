@@ -8,6 +8,7 @@ from pathlib import Path
 from phase0a.simulator import default_teams, simulate_game
 from phase0b.analyze import analyze_games
 from phase0c.policy import LLMPolicy, offline_fixture_completion
+from phase0c.scenarios import run_recorded_scenarios
 
 
 @dataclass(frozen=True)
@@ -17,6 +18,10 @@ class PilotResult:
     calibration_checks_passed: int
     calibration_check_count: int
     calibration: dict[str, float]
+    recorded_scenarios: int
+    scenario_legal: int
+    scenario_hash_verified: int
+    scenario_fallbacks: int
     decisions: int
     action_mix: dict[str, int]
     fallbacks: int
@@ -44,12 +49,17 @@ def run_offline_pilot(games: int = 10, calibration_games: int = 1_000) -> PilotR
         action_mix.update(trace["parsed_action"]["kind"] for trace in policy.traces)
 
     calibration = analyze_games(calibration_games)
+    scenarios = run_recorded_scenarios()
     return PilotResult(
         games=games,
         calibration_games=calibration_games,
         calibration_checks_passed=sum(bool(check["passed"]) for check in calibration.checks),
         calibration_check_count=len(calibration.checks),
         calibration=calibration.overall,
+        recorded_scenarios=scenarios.scenario_count,
+        scenario_legal=scenarios.legal_count,
+        scenario_hash_verified=scenarios.hash_verified_count,
+        scenario_fallbacks=scenarios.fallback_count,
         decisions=len(traces),
         action_mix=dict(sorted(action_mix.items())),
         fallbacks=sum(bool(trace["fallback"]) for trace in traces),
@@ -85,6 +95,18 @@ The provider-neutral LLM boundary is implemented and exercised across **{result.
 | Estimated paid API cost | ${result.estimated_cost_usd:.2f} |
 
 **Action mix:** {mix}
+
+## Recorded LLM scenario sample
+
+This Codex LLM authored one structured choice for each of **{result.recorded_scenarios} fixed basketball situations** without a separate API call. Only the JSON actions and their provenance are stored; no hidden reasoning is recorded.
+
+| Check | Result |
+| --- | ---: |
+| Legal recorded actions | {result.scenario_legal}/{result.recorded_scenarios} |
+| Exact request hashes verified | {result.scenario_hash_verified}/{result.recorded_scenarios} |
+| Recorded-response fallbacks | {result.scenario_fallbacks} |
+
+The situations cover opening star aggression, an elite passer creating a shot, trailing late, leading late, a fatigued scorer moving the ball, and a late defensive stop. This is genuine but small LLM decision evidence; it is not a live full-game provider test.
 
 ## Baseline-v2 realism calibration
 

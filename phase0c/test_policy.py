@@ -5,6 +5,7 @@ import unittest
 from phase0a.simulator import GameState, default_teams, simulate_game
 from phase0c.pilot import run_offline_pilot
 from phase0c.policy import CONTEXT_KEYS, Completion, LLMPolicy, build_context, offline_fixture_completion
+from phase0c.scenarios import SCENARIOS, canonical_request, run_recorded_scenarios
 
 
 class PolicyTests(unittest.TestCase):
@@ -77,6 +78,13 @@ class PolicyTests(unittest.TestCase):
         self.assertEqual(result.estimated_cost_usd, 0.0)
         self.assertTrue(result.replayed_exactly)
         self.assertEqual(result.calibration_checks_passed, result.calibration_check_count)
+
+    def test_recorded_llm_scenarios_are_legal_and_bound_to_exact_requests(self) -> None:
+        result = run_recorded_scenarios()
+        self.assertEqual(result.legal_count, result.scenario_count)
+        self.assertEqual(result.hash_verified_count, result.scenario_count)
+        self.assertEqual(result.fallback_count, 0)
+        self.assertEqual(len({canonical_request(scenario) for scenario in SCENARIOS}), len(SCENARIOS))
 
 
 if __name__ == "__main__":

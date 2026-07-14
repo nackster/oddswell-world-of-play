@@ -33,7 +33,7 @@
     {
       "id": "c200000000000004",
       "type": "text",
-      "text": "# 🤖 Phase 0C\n\n🧪 **OFFLINE GATE COMPLETE**\n\nLegal-action list · sports-only context · strict JSON validation · deterministic fallback · provider telemetry · exact replay\n\n🔒 Live LLM awaits provider + budget approval.",
+      "text": "# 🤖 Phase 0C\n\n🧪 **OFFLINE GATE COMPLETE**\n\nLegal-action list · sports-only context · strict JSON validation · deterministic fallback · provider telemetry · exact replay\n\n🧠 6 recorded LLM scenarios verified\n🔒 Live provider awaits budget approval.",
       "x": -300,
       "y": -400,
       "width": 500,
@@ -113,7 +113,7 @@
     {
       "id": "c20000000000000c",
       "type": "text",
-      "text": "# 🛡️ AI safety gate\n\n✅ 8,140 structured decisions\n✅ 0 invalid outputs\n✅ 0 fallbacks\n✅ Exact replay\n💳 $0 paid API cost\n\n🚫 No seed, probabilities, credits, wagers, wallet, purchase, or payment data in AI context.",
+      "text": "# 🛡️ AI safety gate\n\n✅ 8,140 structured decisions\n✅ 6/6 recorded LLM actions legal\n✅ 6/6 request hashes verified\n✅ Exact full-game replay\n💳 $0 paid API cost\n\n🚫 No seed, probabilities, credits, wagers, wallet, purchase, or payment data in AI context.",
       "x": 420,
       "y": 600,
       "width": 520,

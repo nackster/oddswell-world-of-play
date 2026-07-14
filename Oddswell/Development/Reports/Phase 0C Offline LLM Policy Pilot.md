@@ -23,6 +23,18 @@ The provider-neutral LLM boundary is implemented and exercised across **10 games
 
 **Action mix:** defend: 4070; drive: 554; pass: 2443; shoot_2: 688; shoot_3: 385
 
+## Recorded LLM scenario sample
+
+This Codex LLM authored one structured choice for each of **6 fixed basketball situations** without a separate API call. Only the JSON actions and their provenance are stored; no hidden reasoning is recorded.
+
+| Check | Result |
+| --- | ---: |
+| Legal recorded actions | 6/6 |
+| Exact request hashes verified | 6/6 |
+| Recorded-response fallbacks | 0 |
+
+The situations cover opening star aggression, an elite passer creating a shot, trailing late, leading late, a fatigued scorer moving the ball, and a late defensive stop. This is genuine but small LLM decision evidence; it is not a live full-game provider test.
+
 ## Baseline-v2 realism calibration
 
 The opportunity changes were rerun across **1,000 seeded games**. **9/9 engineering guardrails passed.**

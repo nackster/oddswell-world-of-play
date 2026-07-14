@@ -92,7 +92,7 @@
     {
       "id": "a10000000000000a",
       "type": "text",
-      "text": "# 🏀 Basketball AI Brain\n\n🤖 **GUARDED LLM POLICY**\n\nReceives a sports-only snapshot and must choose one enumerated legal action. Invalid or unavailable output falls back deterministically. The offline gate is complete; live model approval is pending.",
+      "text": "# 🏀 Basketball AI Brain\n\n🤖 **GUARDED LLM POLICY**\n\nReceives a sports-only snapshot and must choose one enumerated legal action. Invalid or unavailable output falls back deterministically. Six request-bound LLM scenarios now pass; live provider approval is pending.",
       "x": -200,
       "y": -480,
       "width": 600,
