@@ -27,7 +27,8 @@ This register is the searchable source of truth for which tools OddsWell uses, w
 | Development collaboration | Codex | Active | Research, design support, implementation, documentation, testing, and maintaining the project brain during active work. |
 | Development method | Ponytail | Active | Adopted full-mode development workflow. |
 | Sports decision AI | Baseline policy → LLM decision policy | Phase 0A active; provider pending | Choose athlete and coach action intents through a strict structured-action contract. |
-| Simulation authority | Deterministic sport rules engines | Active Phase 0A prototype | Validate legal actions, resolve consequences, and produce replayable event logs. |
+| Simulation authority | Deterministic sport rules engines | Phase 0B calibrated baseline | Validate legal actions, resolve consequences, and produce replayable event logs. |
+| Simulation analytics | Phase 0B batch analyzer | Active | Aggregate team/player box scores, evaluate calibration guardrails, and generate reproducible reports from versioned event logs. |
 | Shared athlete simulation | Athlete Life Brain | Planned after stable basketball loop | Model persistent personalities, memory, relationships, habits, training, rest, social choices, and career consequences across sports. |
 | AI learning | Memory + versioned evaluation loop | Planned | Learn from structured history immediately and promote tested policy, prompt, fine-tune, or model versions deliberately. |
 | Source control | [GitHub](https://github.com/nackster/oddswell-world-of-play) | Active; private | Version control, branches, reviews, CI, and release history for the project. |

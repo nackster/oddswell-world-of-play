@@ -1,6 +1,6 @@
 import unittest
 
-from simulator import Action, default_teams, simulate_game, validate_action
+from phase0a.simulator import Action, default_teams, simulate_game, validate_action
 
 
 class SimulatorTests(unittest.TestCase):

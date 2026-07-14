@@ -113,7 +113,7 @@
     {
       "id": "b7010c08860c44b2",
       "type": "text",
-      "text": "# 🏀 Phase 0A Basketball Brain\n\n🛠️ **ACTIVE BUILD**\n\nBaseline brain, strict action contract, deterministic authoritative resolver, decision-tape replay, JSONL audit log, and 100-game smoke test are working. LLM pilot is next.",
+      "text": "# 📊 Phase 0B calibration\n\n🧪 **ACTIVE / BASELINE ESTABLISHED**\n\n1,000 deterministic games, team and player box scores, 9/9 calibration checks, weighted rebound correction, and a reproducible Obsidian report. LLM comparison is next.",
       "x": -100,
       "y": -170,
       "width": 500,

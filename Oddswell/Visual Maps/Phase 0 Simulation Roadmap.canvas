@@ -1,0 +1,170 @@
+{
+  "nodes": [
+    {
+      "id": "c200000000000001",
+      "type": "text",
+      "text": "# 🧠 Phase 0 simulation roadmap\n\nBuild one auditable basketball brain in measured steps. Each phase must leave evidence before the next brain capability is trusted.",
+      "x": -300,
+      "y": -850,
+      "width": 760,
+      "height": 220,
+      "color": "4"
+    },
+    {
+      "id": "c200000000000002",
+      "type": "text",
+      "text": "# ⚙️ Phase 0A\n\n✅ **ENGINE COMPLETE**\n\nTwo teams · ten athletes · strict action contract · deterministic resolver · decision tape · JSONL events · replay · legality checks",
+      "x": -1700,
+      "y": -400,
+      "width": 470,
+      "height": 300,
+      "color": "3"
+    },
+    {
+      "id": "c200000000000003",
+      "type": "text",
+      "text": "# 📊 Phase 0B\n\n🧪 **BASELINE ESTABLISHED**\n\n1,000 games · team/player aggregation · calibration guardrails · reproducible report · rebound concentration corrected",
+      "x": -1000,
+      "y": -400,
+      "width": 470,
+      "height": 300,
+      "color": "2"
+    },
+    {
+      "id": "c200000000000004",
+      "type": "text",
+      "text": "# 🤖 Phase 0C\n\n▶ **NEXT: LLM PILOT**\n\nOne LLM policy uses the existing structured-action contract. Compare decisions, realism, variety, latency, cost, failures, and statistics with the baseline.",
+      "x": -300,
+      "y": -400,
+      "width": 500,
+      "height": 300,
+      "color": "4"
+    },
+    {
+      "id": "c200000000000005",
+      "type": "text",
+      "text": "# 🗓️ Phase 0D\n\n◇ **SEASONS + PREDICTION VALIDATION**\n\nSchedules, standings, history, injuries, fatigue progression, public information, strength differences, and meaningful prediction testing.",
+      "x": 450,
+      "y": -400,
+      "width": 500,
+      "height": 300,
+      "color": "6"
+    },
+    {
+      "id": "c200000000000006",
+      "type": "text",
+      "text": "# 🎮 Phase 0.5\n\n◇ **FUNCTIONAL SPORTS LOOP**\n\nBrowse teams and schedules · lock predictions · simulate server-side · replay events · settle credits through the auditable ledger",
+      "x": 1200,
+      "y": -400,
+      "width": 500,
+      "height": 300,
+      "color": "5"
+    },
+    {
+      "id": "c200000000000007",
+      "type": "file",
+      "file": "Development/Reports/Phase 0B Baseline.md",
+      "x": -1150,
+      "y": 180,
+      "width": 500,
+      "height": 280,
+      "color": "2"
+    },
+    {
+      "id": "c200000000000008",
+      "type": "text",
+      "text": "# ✅ Current calibration\n\n**9 / 9 checks passed**\n\n🏀 92.12 team PPG\n⏱️ 206.62 total possessions\n🎯 38.3% FG\n3️⃣ 26.9% 3PA share\n🔁 9.19 turnovers/team\n🏠 50.0% home wins\n⌛ 2.8% overtime",
+      "x": -500,
+      "y": 180,
+      "width": 470,
+      "height": 340,
+      "color": "3"
+    },
+    {
+      "id": "c200000000000009",
+      "type": "text",
+      "text": "# 🔧 Demonstrated fix\n\nThe original maximum-rating shortcut awarded nearly every rebound to one athlete. Weighted assignment reduced the maximum from roughly **68** to **16.79 rebounds per game**.",
+      "x": 180,
+      "y": 180,
+      "width": 520,
+      "height": 260,
+      "color": "1"
+    },
+    {
+      "id": "c20000000000000a",
+      "type": "text",
+      "text": "# 🧍 Shared Athlete Life Brain\n\n⏸ **AFTER THE CORE SPORTS LOOP IS STABLE**\n\nTrain · rest · recover · socialize first. Relationships, nightlife, media, discipline, and career decisions expand later across every sport.",
+      "x": 950,
+      "y": 180,
+      "width": 600,
+      "height": 280,
+      "color": "6"
+    }
+  ],
+  "edges": [
+    {
+      "id": "d200000000000001",
+      "fromNode": "c200000000000002",
+      "fromSide": "right",
+      "toNode": "c200000000000003",
+      "toSide": "left",
+      "label": "measure the engine"
+    },
+    {
+      "id": "d200000000000002",
+      "fromNode": "c200000000000003",
+      "fromSide": "right",
+      "toNode": "c200000000000004",
+      "toSide": "left",
+      "label": "baseline for comparison"
+    },
+    {
+      "id": "d200000000000003",
+      "fromNode": "c200000000000004",
+      "fromSide": "right",
+      "toNode": "c200000000000005",
+      "toSide": "left",
+      "label": "approved AI decisions"
+    },
+    {
+      "id": "d200000000000004",
+      "fromNode": "c200000000000005",
+      "fromSide": "right",
+      "toNode": "c200000000000006",
+      "toSide": "left",
+      "label": "validated league loop"
+    },
+    {
+      "id": "d200000000000005",
+      "fromNode": "c200000000000003",
+      "fromSide": "bottom",
+      "toNode": "c200000000000007",
+      "toSide": "top",
+      "label": "evidence"
+    },
+    {
+      "id": "d200000000000006",
+      "fromNode": "c200000000000007",
+      "fromSide": "right",
+      "toNode": "c200000000000008",
+      "toSide": "left",
+      "label": "actual metrics"
+    },
+    {
+      "id": "d200000000000007",
+      "fromNode": "c200000000000008",
+      "fromSide": "right",
+      "toNode": "c200000000000009",
+      "toSide": "left",
+      "label": "revealed concentration bug"
+    },
+    {
+      "id": "d200000000000008",
+      "fromNode": "c200000000000006",
+      "fromSide": "bottom",
+      "toNode": "c20000000000000a",
+      "toSide": "top",
+      "label": "expand the living world"
+    }
+  ]
+}

@@ -8,7 +8,7 @@ from pathlib import Path
 from typing import Iterable, Mapping
 
 
-ENGINE_VERSION = "phase0a-v1"
+ENGINE_VERSION = "phase0b-v1"
 BRAIN_VERSION = "baseline-v1"
 POSSESSION_SECONDS = 14
 ACTION_KEYS = {"role", "kind", "actor", "target"}
@@ -175,8 +175,9 @@ def simulate_game(
     seed: int,
     action_tape: Iterable[Mapping[str, object]] | None = None,
     brain_version: str = BRAIN_VERSION,
+    matchup: tuple[Team, Team] | None = None,
 ) -> GameResult:
-    home, away = default_teams()
+    home, away = matchup or default_teams()
     state = GameState(home=home, away=away, possession=home.name)
     state.score = {home.name: 0, away.name: 0}
     state.fatigue = {player.name: 0.0 for team in (home, away) for player in team.players}
@@ -287,11 +288,19 @@ def simulate_game(
             defense_rebounding = sum(player.rebounding for player in defense.players) / 5
             rebound_chance = clamp(0.24 + (offense_rebounding - defense_rebounding) / 400, 0.12, 0.42)
             if decision_number < 4 and outcome_rng.random() < rebound_chance:
-                rebounder = max(offense.players, key=lambda player: player.rebounding)
+                rebounder = outcome_rng.choices(
+                    offense.players,
+                    weights=[player.rebounding for player in offense.players],
+                    k=1,
+                )[0]
                 ballhandler = rebounder.name
                 record("offensive_rebound", possession=state.possession_number, player=rebounder.name)
                 continue
-            rebounder = max(defense.players, key=lambda player: player.rebounding)
+            rebounder = outcome_rng.choices(
+                defense.players,
+                weights=[player.rebounding for player in defense.players],
+                k=1,
+            )[0]
             record("defensive_rebound", possession=state.possession_number, player=rebounder.name)
             break
         else:

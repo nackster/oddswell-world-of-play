@@ -21,14 +21,16 @@ tags:
 - [[Development/Project Tool Register|Project tool register]]
 - [[Development/Tool Efficiency Review|Tool efficiency review]]
 - [[Development/3D Asset Pipeline|3D asset pipeline]]
+- [[Development/Reports/Phase 0B Baseline|Phase 0B baseline report]]
 - [[Visual Maps/Project Tool Map|Master project tool map]]
 - [[Visual Maps/3D Asset Toolchain|3D asset toolchain canvas]]
 - [[Visual Maps/Multi-Brain Architecture|Multi-brain architecture canvas]]
+- [[Visual Maps/Phase 0 Simulation Roadmap|Phase 0 simulation roadmap]]
 - [[01 Inbox|Idea inbox]]
 
 ## Current focus
 
-Build a small basketball simulation with two teams, an AI decision layer, a deterministic authoritative resolver, believable statistics, auditable decision and event logs, and enough public information for meaningful player predictions.
+Use the calibrated 1,000-game Phase 0B baseline to connect and evaluate the first LLM Basketball Brain without weakening deterministic authority, replay, or auditability.
 
 ## Current state
 

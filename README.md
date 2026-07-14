@@ -32,3 +32,10 @@ The first headless basketball simulator lives in [`phase0a/`](phase0a/). It uses
 python phase0a/simulator.py --seed 42 --log phase0a/game-42.jsonl
 python -m unittest discover -s phase0a -p "test_*.py" -v
 ```
+
+Phase 0B analyzes reproducible batches and writes the tracked Obsidian baseline report:
+
+```powershell
+python -m phase0b.analyze --games 1000 --output "Oddswell/Development/Reports/Phase 0B Baseline.md"
+python -m unittest phase0b.test_analyze -v
+```

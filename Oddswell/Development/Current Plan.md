@@ -20,10 +20,18 @@ status: active
 
 ### Phase 0A implementation status
 
-- **Active branch:** `agent/phase-0a`
+- **Status:** Complete and merged into `main` at commit `df65467`.
 - **Implemented:** two fictional teams, ten athletes, strict offense/defense action validation, baseline decision policy, seeded authoritative resolution, fatigue, passing, turnovers, shooting, rebounding, overtime, JSONL audit logs, and decision-tape replay.
 - **Validated:** identical seed replay, recorded-tape replay, illegal-action rejection, and a 100-game plausibility smoke test.
-- **Next:** inspect larger statistical samples and connect one LLM pilot through the existing action contract.
+
+### Phase 0B implementation status
+
+- **Active branch:** `agent/phase-0b`
+- **Implemented:** deterministic batch analysis, team and player box-score aggregation, nine calibration guardrails, and reproducible Markdown reporting.
+- **Baseline:** 1,000 games using seeds `0`–`999` with alternating home assignment; 92.12 average team points, 206.62 total possessions, 38.3% field-goal percentage, 26.9% three-point attempt share, 9.19 turnovers per team, 50.0% home wins, and 2.8% overtime.
+- **Calibration fix:** weighted rebound assignment replaced the maximum-rating shortcut, reducing the worst player rebound concentration from roughly 68 to 16.79 per game.
+- **Result:** 9/9 baseline checks pass. See [[Development/Reports/Phase 0B Baseline]].
+- **Next:** connect one LLM policy through the existing action contract and compare it with this exact baseline.
 
 ## Phase 0.5: Functional sports loop
 
