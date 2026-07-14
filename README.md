@@ -43,7 +43,7 @@ python -m unittest phase0b.test_analyze -v
 Phase 0C adds the guarded, provider-neutral LLM action boundary and runs a no-cost offline integration pilot:
 
 ```powershell
-python -m phase0c.pilot --games 10 --calibration-games 1000 --output "Oddswell/Development/Reports/Phase 0C Offline LLM Policy Pilot.md"
+python -m phase0c.pilot --games 10 --calibration-games 1000 --fairness-seed-pairs 100 --output "Oddswell/Development/Reports/Phase 0C Offline LLM Policy Pilot.md"
 python -m unittest phase0c.test_policy -v
 ```
 

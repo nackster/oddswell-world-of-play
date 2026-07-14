@@ -35,6 +35,17 @@ This Codex LLM authored one structured choice for each of **6 fixed basketball s
 
 The situations cover opening star aggression, an elite passer creating a shot, trailing late, leading late, a fatigued scorer moving the ball, and a late defensive stop. This is genuine but small LLM decision evidence; it is not a live full-game provider test.
 
+## Paired fairness gate
+
+Each of **100 seeds** was run twice with home assignments swapped, producing **200 games** under the same guarded policy. **5/5 fairness checks passed.**
+
+| Measure | Result |
+| --- | ---: |
+| Aggregate home win rate | 53.0% |
+| Maximum team home-away win-rate gap | 6.0% |
+
+The gate also requires zero invalid provider outputs, zero fallbacks, and exact replay for every paired game. This tests side bias and integration symmetry; it does not replace a future live-model comparison.
+
 ## Baseline-v2 realism calibration
 
 The opportunity changes were rerun across **1,000 seeded games**. **9/9 engineering guardrails passed.**

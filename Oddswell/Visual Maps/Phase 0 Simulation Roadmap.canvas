@@ -119,6 +119,16 @@
       "width": 520,
       "height": 340,
       "color": "3"
+    },
+    {
+      "id": "c20000000000000d",
+      "type": "text",
+      "text": "# ⚖️ Paired fairness gate\n\n✅ 100 seeds · 200 swapped-home games\n✅ 5/5 checks passed\n🏠 53.0% aggregate home wins\n↔️ 6.0% maximum team side gap\n🔁 200/200 exact replays\n\nNext no-cost gate: tamper-evident replay manifest.",
+      "x": 1080,
+      "y": 600,
+      "width": 540,
+      "height": 340,
+      "color": "2"
     }
   ],
   "edges": [
@@ -201,6 +211,14 @@
       "toNode": "c20000000000000c",
       "toSide": "left",
       "label": "verified guardrails"
+    },
+    {
+      "id": "d20000000000000b",
+      "fromNode": "c20000000000000c",
+      "fromSide": "right",
+      "toNode": "c20000000000000d",
+      "toSide": "left",
+      "label": "paired side-bias test"
     }
   ]
 }

@@ -3,6 +3,7 @@ import random
 import unittest
 
 from phase0a.simulator import GameState, default_teams, simulate_game
+from phase0c.fairness import run_paired_fairness
 from phase0c.pilot import run_offline_pilot
 from phase0c.policy import CONTEXT_KEYS, Completion, LLMPolicy, build_context, offline_fixture_completion
 from phase0c.scenarios import SCENARIOS, canonical_request, run_recorded_scenarios
@@ -71,13 +72,21 @@ class PolicyTests(unittest.TestCase):
         self.assertGreater(len(defenders), 2)
 
     def test_offline_pilot_reports_zero_cost_and_exact_replay(self) -> None:
-        result = run_offline_pilot(2, 10)
+        result = run_offline_pilot(2, 10, 4)
         self.assertGreater(result.decisions, 0)
         self.assertEqual(result.invalid_outputs, 0)
         self.assertEqual(result.fallbacks, 0)
         self.assertEqual(result.estimated_cost_usd, 0.0)
         self.assertTrue(result.replayed_exactly)
         self.assertEqual(result.calibration_checks_passed, result.calibration_check_count)
+
+    def test_paired_fairness_swaps_every_seed_and_passes_guardrails(self) -> None:
+        result = run_paired_fairness(10)
+        self.assertEqual(result.games, 20)
+        self.assertEqual(result.invalid_outputs, 0)
+        self.assertEqual(result.fallbacks, 0)
+        self.assertEqual(result.exact_replays, result.games)
+        self.assertTrue(all(passed for _, passed in result.checks))
 
     def test_recorded_llm_scenarios_are_legal_and_bound_to_exact_requests(self) -> None:
         result = run_recorded_scenarios()

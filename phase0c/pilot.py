@@ -7,6 +7,7 @@ from pathlib import Path
 
 from phase0a.simulator import default_teams, simulate_game
 from phase0b.analyze import analyze_games
+from phase0c.fairness import run_paired_fairness
 from phase0c.policy import LLMPolicy, offline_fixture_completion
 from phase0c.scenarios import run_recorded_scenarios
 
@@ -22,6 +23,12 @@ class PilotResult:
     scenario_legal: int
     scenario_hash_verified: int
     scenario_fallbacks: int
+    fairness_seed_pairs: int
+    fairness_games: int
+    fairness_home_win_rate: float
+    fairness_max_side_gap: float
+    fairness_checks_passed: int
+    fairness_check_count: int
     decisions: int
     action_mix: dict[str, int]
     fallbacks: int
@@ -30,8 +37,12 @@ class PilotResult:
     estimated_cost_usd: float
 
 
-def run_offline_pilot(games: int = 10, calibration_games: int = 1_000) -> PilotResult:
-    if games < 1 or calibration_games < 1:
+def run_offline_pilot(
+    games: int = 10,
+    calibration_games: int = 1_000,
+    fairness_seed_pairs: int = 100,
+) -> PilotResult:
+    if games < 1 or calibration_games < 1 or fairness_seed_pairs < 1:
         raise ValueError("game counts must be positive")
 
     first, second = default_teams()
@@ -50,6 +61,7 @@ def run_offline_pilot(games: int = 10, calibration_games: int = 1_000) -> PilotR
 
     calibration = analyze_games(calibration_games)
     scenarios = run_recorded_scenarios()
+    fairness = run_paired_fairness(fairness_seed_pairs)
     return PilotResult(
         games=games,
         calibration_games=calibration_games,
@@ -60,6 +72,12 @@ def run_offline_pilot(games: int = 10, calibration_games: int = 1_000) -> PilotR
         scenario_legal=scenarios.legal_count,
         scenario_hash_verified=scenarios.hash_verified_count,
         scenario_fallbacks=scenarios.fallback_count,
+        fairness_seed_pairs=fairness.seed_pairs,
+        fairness_games=fairness.games,
+        fairness_home_win_rate=fairness.home_win_rate,
+        fairness_max_side_gap=fairness.max_team_home_away_gap,
+        fairness_checks_passed=sum(passed for _, passed in fairness.checks),
+        fairness_check_count=len(fairness.checks),
         decisions=len(traces),
         action_mix=dict(sorted(action_mix.items())),
         fallbacks=sum(bool(trace["fallback"]) for trace in traces),
@@ -108,6 +126,17 @@ This Codex LLM authored one structured choice for each of **{result.recorded_sce
 
 The situations cover opening star aggression, an elite passer creating a shot, trailing late, leading late, a fatigued scorer moving the ball, and a late defensive stop. This is genuine but small LLM decision evidence; it is not a live full-game provider test.
 
+## Paired fairness gate
+
+Each of **{result.fairness_seed_pairs} seeds** was run twice with home assignments swapped, producing **{result.fairness_games} games** under the same guarded policy. **{result.fairness_checks_passed}/{result.fairness_check_count} fairness checks passed.**
+
+| Measure | Result |
+| --- | ---: |
+| Aggregate home win rate | {result.fairness_home_win_rate:.1%} |
+| Maximum team home-away win-rate gap | {result.fairness_max_side_gap:.1%} |
+
+The gate also requires zero invalid provider outputs, zero fallbacks, and exact replay for every paired game. This tests side bias and integration symmetry; it does not replace a future live-model comparison.
+
 ## Baseline-v2 realism calibration
 
 The opportunity changes were rerun across **{result.calibration_games:,} seeded games**. **{result.calibration_checks_passed}/{result.calibration_check_count} engineering guardrails passed.**
@@ -149,9 +178,10 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Run the no-cost Phase 0C LLM policy plumbing pilot.")
     parser.add_argument("--games", type=int, default=10)
     parser.add_argument("--calibration-games", type=int, default=1_000)
+    parser.add_argument("--fairness-seed-pairs", type=int, default=100)
     parser.add_argument("--output", type=Path)
     args = parser.parse_args()
-    result = run_offline_pilot(args.games, args.calibration_games)
+    result = run_offline_pilot(args.games, args.calibration_games, args.fairness_seed_pairs)
     report = render_markdown(result)
     if args.output:
         args.output.parent.mkdir(parents=True, exist_ok=True)
@@ -160,6 +190,7 @@ def main() -> None:
     print(
         f"games={result.games} decisions={result.decisions} calibration="
         f"{result.calibration_checks_passed}/{result.calibration_check_count} invalid={result.invalid_outputs} "
+        f"fairness={result.fairness_checks_passed}/{result.fairness_check_count} "
         f"fallbacks={result.fallbacks} replay={result.replayed_exactly} cost=${result.estimated_cost_usd:.2f}"
     )
 
