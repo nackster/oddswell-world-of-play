@@ -39,3 +39,12 @@ Phase 0B analyzes reproducible batches and writes the tracked Obsidian baseline 
 python -m phase0b.analyze --games 1000 --output "Oddswell/Development/Reports/Phase 0B Baseline.md"
 python -m unittest phase0b.test_analyze -v
 ```
+
+Phase 0C adds the guarded, provider-neutral LLM action boundary and runs a no-cost offline integration pilot:
+
+```powershell
+python -m phase0c.pilot --games 10 --calibration-games 1000 --output "Oddswell/Development/Reports/Phase 0C Offline LLM Policy Pilot.md"
+python -m unittest phase0c.test_policy -v
+```
+
+The offline fixture proves validation, deterministic fallback, telemetry, and replay. It is not a live LLM; a live pilot requires an approved provider and cost/latency budget.

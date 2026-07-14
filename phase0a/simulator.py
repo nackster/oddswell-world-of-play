@@ -5,11 +5,11 @@ import json
 import random
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Iterable, Mapping
+from typing import Callable, Iterable, Mapping
 
 
-ENGINE_VERSION = "phase0b-v1"
-BRAIN_VERSION = "baseline-v1"
+ENGINE_VERSION = "phase0c-v1"
+BRAIN_VERSION = "baseline-v2"
 POSSESSION_SECONDS = 14
 ACTION_KEYS = {"role", "kind", "actor", "target"}
 OFFENSE_ACTIONS = {"pass", "drive", "shoot_2", "shoot_3"}
@@ -69,6 +69,7 @@ class GameState:
     away: Team
     clock_seconds: int = 48 * 60
     possession_number: int = 0
+    decision_number: int = 0
     possession: str = ""
     score: dict[str, int] = field(default_factory=dict)
     fatigue: dict[str, float] = field(default_factory=dict)
@@ -143,6 +144,17 @@ def validate_action(action: Action, team: Team, opponent: Team, ballhandler: str
         raise ValueError("a defender must target the current ballhandler")
 
 
+def legal_actions(role: str, team: Team, ballhandler: str) -> tuple[Action, ...]:
+    if role == "defense":
+        return tuple(Action("defense", "defend", player.name, ballhandler) for player in team.players)
+    return (
+        *(Action("offense", "pass", ballhandler, player.name) for player in team.players if player.name != ballhandler),
+        Action("offense", "drive", ballhandler, None),
+        Action("offense", "shoot_2", ballhandler, None),
+        Action("offense", "shoot_3", ballhandler, None),
+    )
+
+
 def baseline_action(
     role: str,
     state: GameState,
@@ -151,7 +163,7 @@ def baseline_action(
     rng: random.Random,
 ) -> Action:
     if role == "defense":
-        defender = max(team.players, key=lambda player: player.defense)
+        defender = rng.choices(team.players, weights=[player.defense for player in team.players], k=1)[0]
         return Action("defense", "defend", defender.name, ballhandler)
 
     player = team.player(ballhandler)
@@ -176,6 +188,7 @@ def simulate_game(
     action_tape: Iterable[Mapping[str, object]] | None = None,
     brain_version: str = BRAIN_VERSION,
     matchup: tuple[Team, Team] | None = None,
+    decision_policy: Callable[[str, GameState, Team, Team, str, random.Random], Action] | None = None,
 ) -> GameResult:
     home, away = matchup or default_teams()
     state = GameState(home=home, away=away, possession=home.name)
@@ -193,7 +206,11 @@ def simulate_game(
 
     def decide(role: str, team: Team, opponent: Team, ballhandler: str) -> Action:
         if replay is None:
-            action = baseline_action(role, state, team, ballhandler, decision_rng)
+            action = (
+                decision_policy(role, state, team, opponent, ballhandler, decision_rng)
+                if decision_policy is not None
+                else baseline_action(role, state, team, ballhandler, decision_rng)
+            )
         else:
             try:
                 action = Action.from_mapping(next(replay))
@@ -223,7 +240,11 @@ def simulate_game(
         offense = home if state.possession == home.name else away
         defense = other_team(state, offense)
         state.possession_number += 1
-        ballhandler = outcome_rng.choice(offense.players).name
+        ballhandler = outcome_rng.choices(
+            offense.players,
+            weights=[player.passing + player.shooting for player in offense.players],
+            k=1,
+        )[0].name
         record(
             "possession_started",
             possession=state.possession_number,
@@ -234,6 +255,7 @@ def simulate_game(
 
         # ponytail: four decisions stand in for a shot clock until timing needs finer simulation.
         for decision_number in range(1, 5):
+            state.decision_number = decision_number
             defense_action = decide("defense", defense, offense, ballhandler)
             offense_action = decide("offense", offense, defense, ballhandler)
             defender = defense.player(defense_action.actor)

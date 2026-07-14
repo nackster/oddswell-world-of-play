@@ -92,7 +92,7 @@
     {
       "id": "a10000000000000a",
       "type": "text",
-      "text": "# 🏀 Basketball AI Brain\n\n🤖 **LLM DECISION POLICY**\n\nChooses strategy, play calls, passing, shooting, driving, positioning intent, substitutions, and coaching adjustments through structured legal actions.",
+      "text": "# 🏀 Basketball AI Brain\n\n🤖 **GUARDED LLM POLICY**\n\nReceives a sports-only snapshot and must choose one enumerated legal action. Invalid or unavailable output falls back deterministically. The offline gate is complete; live model approval is pending.",
       "x": -200,
       "y": -480,
       "width": 600,

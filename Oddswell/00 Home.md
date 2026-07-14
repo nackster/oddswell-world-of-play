@@ -22,6 +22,7 @@ tags:
 - [[Development/Tool Efficiency Review|Tool efficiency review]]
 - [[Development/3D Asset Pipeline|3D asset pipeline]]
 - [[Development/Reports/Phase 0B Baseline|Phase 0B baseline report]]
+- [[Development/Reports/Phase 0C Offline LLM Policy Pilot|Phase 0C offline LLM policy pilot]]
 - [[Visual Maps/Project Tool Map|Master project tool map]]
 - [[Visual Maps/3D Asset Toolchain|3D asset toolchain canvas]]
 - [[Visual Maps/Multi-Brain Architecture|Multi-brain architecture canvas]]
@@ -30,7 +31,7 @@ tags:
 
 ## Current focus
 
-Use the calibrated 1,000-game Phase 0B baseline to connect and evaluate the first LLM Basketball Brain without weakening deterministic authority, replay, or auditability.
+Use the completed no-cost Phase 0C integration gate to select a live LLM provider and run a deliberately small, approved comparison without weakening deterministic authority, replay, auditability, or the competitive-economy firewall.
 
 ## Current state
 
