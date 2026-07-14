@@ -19,6 +19,7 @@ The provider-neutral LLM boundary is implemented and exercised across **10 games
 | Invalid provider outputs | 0 |
 | Deterministic fallbacks | 0 |
 | Exact action-tape replay | Yes |
+| Replay manifests verified | 10/10 |
 | Estimated paid API cost | $0.00 |
 
 **Action mix:** defend: 4070; drive: 554; pass: 2443; shoot_2: 688; shoot_3: 385
@@ -69,6 +70,7 @@ The opportunity changes were rerun across **1,000 seeded games**. **9/9 engineer
 - Output must be one exact `Action` object already present in `legal_actions`.
 - Timeout, provider, JSON, schema, actor, target, and legality failures use the seeded baseline fallback and are recorded by category.
 - The rules engine remains authoritative; replay uses the recorded action tape and never asks the provider again.
+- Each pilot game binds the engine, seed, matchup, full roster, policy, action tape, and event log into canonical JSON protected by a SHA-256 integrity hash.
 - Policy traces capture provider/model, policy version, sanitized request, request hash, raw response, parsed action, fallback, latency, tokens, and cost. Chain-of-thought is never requested or stored.
 
 ## Realism correction included
@@ -79,4 +81,4 @@ Initial ballhandlers are now weighted by existing passing and shooting ratings, 
 
 Choose a provider/model and approve a small cost/latency budget before any live call. Start with fixed scenarios or one team's offense for 5-10 games, compare paired seeds and swapped home assignments, and promote a named policy version only if legality, replay, realism, cost, and latency pass.
 
-Before persisted public matches or any wagering feature, bind the engine, seed, matchup, roster, policy, action tape, and event log into a canonical SHA-256 replay manifest so later mutation is detected.
+The next no-cost phase is Phase 0D: deterministic schedules and standings, before prediction validation or any wagering feature.

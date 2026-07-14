@@ -129,6 +129,16 @@
       "width": 540,
       "height": 340,
       "color": "2"
+    },
+    {
+      "id": "c20000000000000e",
+      "type": "text",
+      "text": "# 🔐 Replay integrity gate\n\n✅ 10/10 pilot manifests verified\n🔗 Engine · seed · matchup · roster · policy\n🎞️ Action tape · event log\n🧪 Recorded-score mutation detected\n💳 $0 paid API cost\n\nNext: Phase 0D schedules + standings.",
+      "x": 1740,
+      "y": 600,
+      "width": 540,
+      "height": 340,
+      "color": "3"
     }
   ],
   "edges": [
@@ -219,6 +229,14 @@
       "toNode": "c20000000000000d",
       "toSide": "left",
       "label": "paired side-bias test"
+    },
+    {
+      "id": "d20000000000000c",
+      "fromNode": "c20000000000000d",
+      "fromSide": "right",
+      "toNode": "c20000000000000e",
+      "toSide": "left",
+      "label": "tamper-evident replay"
     }
   ]
 }

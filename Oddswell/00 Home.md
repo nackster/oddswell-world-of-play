@@ -31,7 +31,7 @@ tags:
 
 ## Current focus
 
-Use the completed no-cost Phase 0C integration gate and six recorded LLM scenarios to select a live provider and run a deliberately small, approved comparison without weakening deterministic authority, replay, auditability, or the competitive-economy firewall.
+Phase 0C's offline integration, fairness, and tamper-evident replay gates are complete. The next no-cost phase is Phase 0D: deterministic schedules and standings before prediction validation; a live provider still requires explicit budget approval.
 
 ## Current state
 

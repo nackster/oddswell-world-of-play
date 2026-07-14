@@ -1,3 +1,4 @@
+import copy
 import json
 import random
 import unittest
@@ -6,6 +7,7 @@ from phase0a.simulator import GameState, default_teams, simulate_game
 from phase0c.fairness import run_paired_fairness
 from phase0c.pilot import run_offline_pilot
 from phase0c.policy import CONTEXT_KEYS, Completion, LLMPolicy, build_context, offline_fixture_completion
+from phase0c.replay import replay_manifest, verify_replay_manifest
 from phase0c.scenarios import SCENARIOS, canonical_request, run_recorded_scenarios
 
 
@@ -71,6 +73,16 @@ class PolicyTests(unittest.TestCase):
         }
         self.assertGreater(len(defenders), 2)
 
+    def test_replay_manifest_detects_event_log_mutation(self) -> None:
+        matchup = default_teams()
+        game = simulate_game(42, matchup=matchup)
+        manifest = replay_manifest(game, matchup, "baseline-v2")
+        self.assertTrue(verify_replay_manifest(manifest))
+
+        tampered = copy.deepcopy(manifest)
+        tampered["payload"]["event_log"][-1]["score"][game.home_team] += 1
+        self.assertFalse(verify_replay_manifest(tampered))
+
     def test_offline_pilot_reports_zero_cost_and_exact_replay(self) -> None:
         result = run_offline_pilot(2, 10, 4)
         self.assertGreater(result.decisions, 0)
@@ -78,6 +90,7 @@ class PolicyTests(unittest.TestCase):
         self.assertEqual(result.fallbacks, 0)
         self.assertEqual(result.estimated_cost_usd, 0.0)
         self.assertTrue(result.replayed_exactly)
+        self.assertEqual(result.replay_manifests_verified, result.games)
         self.assertEqual(result.calibration_checks_passed, result.calibration_check_count)
 
     def test_paired_fairness_swaps_every_seed_and_passes_guardrails(self) -> None:

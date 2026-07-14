@@ -9,6 +9,7 @@ from phase0a.simulator import default_teams, simulate_game
 from phase0b.analyze import analyze_games
 from phase0c.fairness import run_paired_fairness
 from phase0c.policy import LLMPolicy, offline_fixture_completion
+from phase0c.replay import replay_manifest, verify_replay_manifest
 from phase0c.scenarios import run_recorded_scenarios
 
 
@@ -34,6 +35,7 @@ class PilotResult:
     fallbacks: int
     invalid_outputs: int
     replayed_exactly: bool
+    replay_manifests_verified: int
     estimated_cost_usd: float
 
 
@@ -49,6 +51,7 @@ def run_offline_pilot(
     action_mix: Counter[str] = Counter()
     traces: list[dict[str, object]] = []
     replayed_exactly = True
+    replay_manifests_verified = 0
 
     for seed in range(games):
         matchup = (first, second) if seed % 2 == 0 else (second, first)
@@ -56,6 +59,9 @@ def run_offline_pilot(
         game = simulate_game(seed, matchup=matchup, brain_version="llm-contract-fixture-v1", decision_policy=policy)
         replay = simulate_game(seed, matchup=matchup, brain_version="llm-contract-fixture-v1", action_tape=game.action_tape)
         replayed_exactly &= game.records == replay.records
+        replay_manifests_verified += verify_replay_manifest(
+            replay_manifest(game, matchup, "llm-contract-fixture-v1")
+        )
         traces.extend(policy.traces)
         action_mix.update(trace["parsed_action"]["kind"] for trace in policy.traces)
 
@@ -83,6 +89,7 @@ def run_offline_pilot(
         fallbacks=sum(bool(trace["fallback"]) for trace in traces),
         invalid_outputs=sum(trace["error_category"] is not None for trace in traces),
         replayed_exactly=replayed_exactly,
+        replay_manifests_verified=replay_manifests_verified,
         estimated_cost_usd=sum(float(trace["estimated_cost_usd"]) for trace in traces),
     )
 
@@ -110,6 +117,7 @@ The provider-neutral LLM boundary is implemented and exercised across **{result.
 | Invalid provider outputs | {result.invalid_outputs} |
 | Deterministic fallbacks | {result.fallbacks} |
 | Exact action-tape replay | {"Yes" if result.replayed_exactly else "No"} |
+| Replay manifests verified | {result.replay_manifests_verified}/{result.games} |
 | Estimated paid API cost | ${result.estimated_cost_usd:.2f} |
 
 **Action mix:** {mix}
@@ -160,6 +168,7 @@ The opportunity changes were rerun across **{result.calibration_games:,} seeded 
 - Output must be one exact `Action` object already present in `legal_actions`.
 - Timeout, provider, JSON, schema, actor, target, and legality failures use the seeded baseline fallback and are recorded by category.
 - The rules engine remains authoritative; replay uses the recorded action tape and never asks the provider again.
+- Each pilot game binds the engine, seed, matchup, full roster, policy, action tape, and event log into canonical JSON protected by a SHA-256 integrity hash.
 - Policy traces capture provider/model, policy version, sanitized request, request hash, raw response, parsed action, fallback, latency, tokens, and cost. Chain-of-thought is never requested or stored.
 
 ## Realism correction included
@@ -170,7 +179,7 @@ Initial ballhandlers are now weighted by existing passing and shooting ratings, 
 
 Choose a provider/model and approve a small cost/latency budget before any live call. Start with fixed scenarios or one team's offense for 5-10 games, compare paired seeds and swapped home assignments, and promote a named policy version only if legality, replay, realism, cost, and latency pass.
 
-Before persisted public matches or any wagering feature, bind the engine, seed, matchup, roster, policy, action tape, and event log into a canonical SHA-256 replay manifest so later mutation is detected.
+The next no-cost phase is Phase 0D: deterministic schedules and standings, before prediction validation or any wagering feature.
 """
 
 
