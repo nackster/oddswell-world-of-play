@@ -1,0 +1,33 @@
+import unittest
+
+from simulator import Action, default_teams, simulate_game, validate_action
+
+
+class SimulatorTests(unittest.TestCase):
+    def test_same_seed_and_tape_replay_identically(self) -> None:
+        original = simulate_game(42)
+        repeated = simulate_game(42)
+        replayed = simulate_game(42, original.action_tape)
+        self.assertEqual(original.records, repeated.records)
+        self.assertEqual(original.records, replayed.records)
+
+    def test_illegal_action_is_rejected(self) -> None:
+        home, away = default_teams()
+        bad_action = Action("offense", "teleport", home.players[0].name, None)
+        with self.assertRaisesRegex(ValueError, "illegal offense action"):
+            validate_action(bad_action, home, away, home.players[0].name)
+        with self.assertRaisesRegex(ValueError, "exactly"):
+            Action.from_mapping(
+                {"role": "offense", "kind": "shoot_2", "actor": home.players[0].name, "target": None, "extra": True}
+            )
+
+    def test_one_hundred_games_finish_with_plausible_scores(self) -> None:
+        scores = [simulate_game(seed) for seed in range(100)]
+        points = [score for game in scores for score in (game.home_score, game.away_score)]
+        self.assertTrue(all(game.home_score != game.away_score for game in scores))
+        self.assertGreater(sum(points) / len(points), 65)
+        self.assertLess(sum(points) / len(points), 145)
+
+
+if __name__ == "__main__":
+    unittest.main()

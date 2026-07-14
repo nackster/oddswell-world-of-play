@@ -18,6 +18,13 @@ status: active
 7. Validate team strength, athlete statistics, upsets, fatigue, injuries, AI decision quality, cost, and latency.
 8. Test whether public information supports meaningful predictions.
 
+### Phase 0A implementation status
+
+- **Active branch:** `agent/phase-0a`
+- **Implemented:** two fictional teams, ten athletes, strict offense/defense action validation, baseline decision policy, seeded authoritative resolution, fatigue, passing, turnovers, shooting, rebounding, overtime, JSONL audit logs, and decision-tape replay.
+- **Validated:** identical seed replay, recorded-tape replay, illegal-action rejection, and a 100-game plausibility smoke test.
+- **Next:** inspect larger statistical samples and connect one LLM pilot through the existing action contract.
+
 ## Phase 0.5: Functional sports loop
 
 1. Display teams, athletes, schedules, standings, and public information.

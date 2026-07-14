@@ -23,3 +23,12 @@ The canonical local Obsidian vault is [`Oddswell/`](Oddswell/). Start with [`Odd
 - Development approach: Ponytail full mode
 
 Confirmed decisions and detailed plans belong in the Obsidian vault. Executable work belongs in source control, issues, tests, and builds.
+
+## Phase 0A simulator
+
+The first headless basketball simulator lives in [`phase0a/`](phase0a/). It uses only Python's standard library.
+
+```powershell
+python phase0a/simulator.py --seed 42 --log phase0a/game-42.jsonl
+python -m unittest discover -s phase0a -p "test_*.py" -v
+```

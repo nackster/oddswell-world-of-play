@@ -61,5 +61,8 @@ __pycache__/
 .tools/
 downloads/
 
+# Generated simulation logs
+phase0a/*.jsonl
+
 # Legacy duplicate of the canonical Obsidian vault
 docs/brain/
