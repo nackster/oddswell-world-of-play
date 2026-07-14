@@ -46,6 +46,15 @@ status: active
 - **Next gate:** choose a provider/model and approve a small cost/latency budget, then test one team's offense for 5-10 games with paired seeds and swapped home assignments.
 - **Next documented phase:** Phase 0D, beginning with deterministic schedules and standings. Prediction validation remains later in that phase; no wagering or credit work is authorized here.
 
+### Phase 0D implementation status
+
+- **Active branch:** `agent/phase-0d`
+- **Implemented:** balanced alternating home/away schedules, deterministic game seeds, season history, standings, stable ranking tie-breakers, and a verified replay-integrity hash for every result.
+- **First league run:** 20 games using seeds `10000`-`10019`; Harbor City Waves finished 12-8 and Mesa Vista Sol finished 8-12. All 20 replay manifests verified. See [[Development/Reports/Phase 0D Schedule and Standings]].
+- **Season-length limit:** 20 games is an engineering sample, not the final product season length.
+- **Retraining budget:** the first retraining experiment has a hard $5 total ceiling under [[Design/Decisions/DEC-004 AI Retraining Budget]]. No paid job starts until a provider/model is selected and the cap can be enforced.
+- **Next Phase 0D gate:** persist multiple seasons and add measured between-game fatigue progression before injuries or prediction scoring.
+
 ## Phase 0.5: Functional sports loop
 
 1. Display teams, athletes, schedules, standings, and public information.
@@ -70,7 +79,8 @@ The shared life, world, memory, and learning layers will support every sport. Ea
 - First city identity.
 - First two team identities.
 - Minimal athlete attributes.
-- Initial live LLM provider/model and cost/latency budget.
+- Initial live LLM provider/model and separate inference budget.
+- First retraining dataset and method that fit the $5 ceiling.
 - Minimal Athlete Life Brain traits and daily choices.
 - AI evaluation criteria and model-update cadence.
 - Ranked competition scoring.

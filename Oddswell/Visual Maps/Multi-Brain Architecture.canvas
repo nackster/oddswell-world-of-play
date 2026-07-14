@@ -162,7 +162,7 @@
     {
       "id": "a100000000000011",
       "type": "text",
-      "text": "# 🔄 Learning loop\n\n1. Retrieve memory immediately\n2. Evaluate behavior and realism\n3. Test candidate prompt, policy, fine-tune, or model\n4. Promote a named version only after it passes\n\nNo silent live self-rewriting.",
+      "text": "# 🔄 Learning loop\n\n1. Retrieve memory immediately\n2. Evaluate behavior and realism\n3. Test candidate prompt, policy, fine-tune, or model\n4. Promote a named version only after it passes\n\n💵 First retraining ceiling: $5 total\n🔒 Provider/model pending\n\nNo silent live self-rewriting.",
       "x": 1500,
       "y": -180,
       "width": 500,

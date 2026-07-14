@@ -33,7 +33,7 @@
     {
       "id": "c200000000000004",
       "type": "text",
-      "text": "# 🤖 Phase 0C\n\n🧪 **OFFLINE GATE COMPLETE**\n\nLegal-action list · sports-only context · strict JSON validation · deterministic fallback · provider telemetry · exact replay\n\n🧠 6 recorded LLM scenarios verified\n🔒 Live provider awaits budget approval.",
+      "text": "# 🤖 Phase 0C\n\n🧪 **OFFLINE GATE COMPLETE**\n\nLegal-action list · sports-only context · strict JSON validation · deterministic fallback · provider telemetry · exact replay\n\n🧠 6 recorded LLM scenarios verified\n💵 $5 retraining ceiling approved · provider pending.",
       "x": -300,
       "y": -400,
       "width": 500,
@@ -43,7 +43,7 @@
     {
       "id": "c200000000000005",
       "type": "text",
-      "text": "# 🗓️ Phase 0D\n\n◇ **SEASONS + PREDICTION VALIDATION**\n\nSchedules, standings, history, injuries, fatigue progression, public information, strength differences, and meaningful prediction testing.",
+      "text": "# 🗓️ Phase 0D\n\n▶ **LEAGUE FOUNDATION ACTIVE**\n\n20-game balanced schedule · deterministic seeds · standings · stable tie-breakers · 20/20 replay hashes\n\nNext: multi-season history + between-game fatigue.",
       "x": 450,
       "y": -400,
       "width": 500,
@@ -139,6 +139,16 @@
       "width": 540,
       "height": 340,
       "color": "3"
+    },
+    {
+      "id": "c20000000000000f",
+      "type": "file",
+      "file": "Development/Reports/Phase 0D Schedule and Standings.md",
+      "x": 2400,
+      "y": 600,
+      "width": 560,
+      "height": 360,
+      "color": "6"
     }
   ],
   "edges": [
@@ -237,6 +247,14 @@
       "toNode": "c20000000000000e",
       "toSide": "left",
       "label": "tamper-evident replay"
+    },
+    {
+      "id": "d20000000000000d",
+      "fromNode": "c20000000000000e",
+      "fromSide": "right",
+      "toNode": "c20000000000000f",
+      "toSide": "left",
+      "label": "first deterministic season"
     }
   ]
 }

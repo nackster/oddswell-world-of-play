@@ -14,6 +14,7 @@ tags:
 - [[Design/Decisions/DEC-001 Unified Credits|Unified credit economy]]
 - [[Design/Decisions/DEC-002 First Playable Scope|First playable scope]]
 - [[Design/Decisions/DEC-003 Multi-Brain AI Architecture|Multi-brain AI architecture]]
+- [[Design/Decisions/DEC-004 AI Retraining Budget|AI retraining budget]]
 - [[Art/Visual Consistency|Visual consistency]]
 - [[Development/Current Plan|Current plan]]
 - [[Development/Technical Principles|Technical principles]]
@@ -23,6 +24,7 @@ tags:
 - [[Development/3D Asset Pipeline|3D asset pipeline]]
 - [[Development/Reports/Phase 0B Baseline|Phase 0B baseline report]]
 - [[Development/Reports/Phase 0C Offline LLM Policy Pilot|Phase 0C offline LLM policy pilot]]
+- [[Development/Reports/Phase 0D Schedule and Standings|Phase 0D schedule and standings]]
 - [[Visual Maps/Project Tool Map|Master project tool map]]
 - [[Visual Maps/3D Asset Toolchain|3D asset toolchain canvas]]
 - [[Visual Maps/Multi-Brain Architecture|Multi-brain architecture canvas]]
@@ -31,7 +33,7 @@ tags:
 
 ## Current focus
 
-Phase 0C's offline integration, fairness, and tamper-evident replay gates are complete. The next no-cost phase is Phase 0D: deterministic schedules and standings before prediction validation; a live provider still requires explicit budget approval.
+Phase 0D is active with a deterministic 20-game schedule, standings, stable tie-breakers, and replay hashes. The first retraining experiment has a hard $5 ceiling; provider/model selection and a separate live-inference budget remain unresolved.
 
 ## Current state
 
