@@ -1,260 +1,141 @@
 {
   "nodes": [
     {
-      "id": "c200000000000001",
+      "id": "p0-title",
       "type": "text",
-      "text": "# 🧠 Phase 0 simulation roadmap\n\nBuild one auditable basketball brain in measured steps. Each phase must leave evidence before the next brain capability is trusted.",
-      "x": -300,
-      "y": -850,
-      "width": 760,
+      "text": "# Phase 0 simulation roadmap\nBuild one auditable basketball simulator in measured steps. Follow the arrows; each completed phase leaves evidence.",
+      "x": -650,
+      "y": -750,
+      "width": 1400,
+      "height": 150,
+      "color": "6"
+    },
+    {
+      "id": "p0-a",
+      "type": "text",
+      "text": "## 0A ✅ ENGINE\nDeterministic resolver\n• legal action contract\n• decision tape + events\n• exact replay",
+      "x": -650,
+      "y": -540,
+      "width": 420,
+      "height": 220,
+      "color": "3"
+    },
+    {
+      "id": "p0-b",
+      "type": "text",
+      "text": "## 0B ✅ CALIBRATION\n1,000 reproducible games\n• team + player metrics\n• realism guardrails\n• rebound bug corrected",
+      "x": -180,
+      "y": -540,
+      "width": 420,
+      "height": 220,
+      "color": "3"
+    },
+    {
+      "id": "p0-c",
+      "type": "text",
+      "text": "## 0C ✅ AI GUARDRAIL\nLegal actions only\n• strict JSON validation\n• deterministic fallback\n• exact recorded replay",
+      "x": 290,
+      "y": -540,
+      "width": 420,
+      "height": 220,
+      "color": "3"
+    },
+    {
+      "id": "p0-d",
+      "type": "text",
+      "text": "## 0D ▶ LEAGUE\n**CURRENT PHASE**\n• balanced 20-game schedule\n• standings + tie-breakers\n• deterministic season",
+      "x": 290,
+      "y": -250,
+      "width": 420,
       "height": 220,
       "color": "4"
     },
     {
-      "id": "c200000000000002",
+      "id": "p0-half",
       "type": "text",
-      "text": "# ⚙️ Phase 0A\n\n✅ **ENGINE COMPLETE**\n\nTwo teams · ten athletes · strict action contract · deterministic resolver · decision tape · JSONL events · replay · legality checks",
-      "x": -1700,
-      "y": -400,
-      "width": 470,
-      "height": 300,
-      "color": "3"
-    },
-    {
-      "id": "c200000000000003",
-      "type": "text",
-      "text": "# 📊 Phase 0B\n\n🧪 **BASELINE ESTABLISHED**\n\n1,000 games · team/player aggregation · calibration guardrails · reproducible report · rebound concentration corrected",
-      "x": -1000,
-      "y": -400,
-      "width": 470,
-      "height": 300,
-      "color": "2"
-    },
-    {
-      "id": "c200000000000004",
-      "type": "text",
-      "text": "# 🤖 Phase 0C\n\n🧪 **OFFLINE GATE COMPLETE**\n\nLegal-action list · sports-only context · strict JSON validation · deterministic fallback · provider telemetry · exact replay\n\n🧠 6 recorded LLM scenarios verified\n💵 $5 retraining ceiling approved · provider pending.",
-      "x": -300,
-      "y": -400,
-      "width": 500,
-      "height": 300,
-      "color": "4"
-    },
-    {
-      "id": "c200000000000005",
-      "type": "text",
-      "text": "# 🗓️ Phase 0D\n\n▶ **LEAGUE FOUNDATION ACTIVE**\n\n20-game balanced schedule · deterministic seeds · standings · stable tie-breakers · 20/20 replay hashes\n\nNext: multi-season history + between-game fatigue.",
-      "x": 450,
-      "y": -400,
-      "width": 500,
-      "height": 300,
+      "text": "## 0.5 ◇ PLAYABLE LOOP\n**NEXT MAJOR MILESTONE**\n• browse teams + schedule\n• lock predictions\n• server simulation + credits",
+      "x": -180,
+      "y": -250,
+      "width": 420,
+      "height": 220,
       "color": "6"
     },
     {
-      "id": "c200000000000006",
+      "id": "p0-later",
       "type": "text",
-      "text": "# 🎮 Phase 0.5\n\n◇ **FUNCTIONAL SPORTS LOOP**\n\nBrowse teams and schedules · lock predictions · simulate server-side · replay events · settle credits through the auditable ledger",
-      "x": 1200,
-      "y": -400,
-      "width": 500,
-      "height": 300,
+      "text": "## 🧍 LATER: ATHLETE LIFE\nAfter the sports loop is stable:\n• training + recovery\n• social life + discipline\n• relationships + long-term consequences",
+      "x": -650,
+      "y": -250,
+      "width": 420,
+      "height": 220,
       "color": "5"
     },
     {
-      "id": "c200000000000007",
-      "type": "file",
-      "file": "Development/Reports/Phase 0B Baseline.md",
-      "x": -1150,
-      "y": 180,
-      "width": 500,
-      "height": 280,
+      "id": "p0-evidence-b",
+      "type": "text",
+      "text": "## 📊 Calibration evidence\n[[Development/Reports/Phase 0B Baseline|Open Phase 0B report]]\n1,000 games · 9/9 checks passed · rebound concentration corrected",
+      "x": -650,
+      "y": 50,
+      "width": 420,
+      "height": 180,
+      "color": "5"
+    },
+    {
+      "id": "p0-evidence-c",
+      "type": "text",
+      "text": "## 🛡️ AI + fairness evidence\n[[Development/Reports/Phase 0C Offline LLM Policy Pilot|Open Phase 0C report]]\n8,140 decisions · paired fairness · exact replay\n[[Design/Decisions/DEC-004 AI Retraining Budget|Retraining limit: $5]]",
+      "x": -180,
+      "y": 50,
+      "width": 420,
+      "height": 180,
       "color": "2"
     },
     {
-      "id": "c200000000000008",
+      "id": "p0-evidence-d",
       "type": "text",
-      "text": "# ✅ Current calibration\n\n**9 / 9 checks passed**\n\n🏀 92.12 team PPG\n⏱️ 206.62 total possessions\n🎯 38.3% FG\n3️⃣ 26.9% 3PA share\n🔁 9.19 turnovers/team\n🏠 50.0% home wins\n⌛ 2.8% overtime",
-      "x": -500,
-      "y": 180,
-      "width": 470,
-      "height": 340,
-      "color": "3"
-    },
-    {
-      "id": "c200000000000009",
-      "type": "text",
-      "text": "# 🔧 Demonstrated fix\n\nThe original maximum-rating shortcut awarded nearly every rebound to one athlete. Weighted assignment reduced the maximum from roughly **68** to **16.79 rebounds per game**.",
-      "x": 180,
-      "y": 180,
-      "width": 520,
-      "height": 260,
-      "color": "1"
-    },
-    {
-      "id": "c20000000000000a",
-      "type": "text",
-      "text": "# 🧍 Shared Athlete Life Brain\n\n⏸ **AFTER THE CORE SPORTS LOOP IS STABLE**\n\nTrain · rest · recover · socialize first. Relationships, nightlife, media, discipline, and career decisions expand later across every sport.",
-      "x": 950,
-      "y": 180,
-      "width": 600,
-      "height": 280,
-      "color": "6"
-    },
-    {
-      "id": "c20000000000000b",
-      "type": "file",
-      "file": "Development/Reports/Phase 0C Offline LLM Policy Pilot.md",
-      "x": -260,
-      "y": 600,
-      "width": 540,
-      "height": 300,
+      "text": "## 🔐 Season + replay evidence\n[[Development/Reports/Phase 0D Schedule and Standings|Open Phase 0D report]]\n20-game schedule · stable standings · 20/20 replay hashes",
+      "x": 290,
+      "y": 50,
+      "width": 420,
+      "height": 180,
       "color": "4"
-    },
-    {
-      "id": "c20000000000000c",
-      "type": "text",
-      "text": "# 🛡️ AI safety gate\n\n✅ 8,140 structured decisions\n✅ 6/6 recorded LLM actions legal\n✅ 6/6 request hashes verified\n✅ Exact full-game replay\n💳 $0 paid API cost\n\n🚫 No seed, probabilities, credits, wagers, wallet, purchase, or payment data in AI context.",
-      "x": 420,
-      "y": 600,
-      "width": 520,
-      "height": 340,
-      "color": "3"
-    },
-    {
-      "id": "c20000000000000d",
-      "type": "text",
-      "text": "# ⚖️ Paired fairness gate\n\n✅ 100 seeds · 200 swapped-home games\n✅ 5/5 checks passed\n🏠 53.0% aggregate home wins\n↔️ 6.0% maximum team side gap\n🔁 200/200 exact replays\n\nNext no-cost gate: tamper-evident replay manifest.",
-      "x": 1080,
-      "y": 600,
-      "width": 540,
-      "height": 340,
-      "color": "2"
-    },
-    {
-      "id": "c20000000000000e",
-      "type": "text",
-      "text": "# 🔐 Replay integrity gate\n\n✅ 10/10 pilot manifests verified\n🔗 Engine · seed · matchup · roster · policy\n🎞️ Action tape · event log\n🧪 Recorded-score mutation detected\n💳 $0 paid API cost\n\nNext: Phase 0D schedules + standings.",
-      "x": 1740,
-      "y": 600,
-      "width": 540,
-      "height": 340,
-      "color": "3"
-    },
-    {
-      "id": "c20000000000000f",
-      "type": "file",
-      "file": "Development/Reports/Phase 0D Schedule and Standings.md",
-      "x": 2400,
-      "y": 600,
-      "width": 560,
-      "height": 360,
-      "color": "6"
     }
   ],
   "edges": [
     {
-      "id": "d200000000000001",
-      "fromNode": "c200000000000002",
+      "id": "p0-edge-1",
+      "fromNode": "p0-a",
       "fromSide": "right",
-      "toNode": "c200000000000003",
-      "toSide": "left",
-      "label": "measure the engine"
+      "toNode": "p0-b",
+      "toSide": "left"
     },
     {
-      "id": "d200000000000002",
-      "fromNode": "c200000000000003",
+      "id": "p0-edge-2",
+      "fromNode": "p0-b",
       "fromSide": "right",
-      "toNode": "c200000000000004",
-      "toSide": "left",
-      "label": "baseline for comparison"
+      "toNode": "p0-c",
+      "toSide": "left"
     },
     {
-      "id": "d200000000000003",
-      "fromNode": "c200000000000004",
-      "fromSide": "right",
-      "toNode": "c200000000000005",
-      "toSide": "left",
-      "label": "approved AI decisions"
-    },
-    {
-      "id": "d200000000000004",
-      "fromNode": "c200000000000005",
-      "fromSide": "right",
-      "toNode": "c200000000000006",
-      "toSide": "left",
-      "label": "validated league loop"
-    },
-    {
-      "id": "d200000000000005",
-      "fromNode": "c200000000000003",
+      "id": "p0-edge-3",
+      "fromNode": "p0-c",
       "fromSide": "bottom",
-      "toNode": "c200000000000007",
-      "toSide": "top",
-      "label": "evidence"
+      "toNode": "p0-d",
+      "toSide": "top"
     },
     {
-      "id": "d200000000000006",
-      "fromNode": "c200000000000007",
-      "fromSide": "right",
-      "toNode": "c200000000000008",
-      "toSide": "left",
-      "label": "actual metrics"
+      "id": "p0-edge-4",
+      "fromNode": "p0-d",
+      "fromSide": "left",
+      "toNode": "p0-half",
+      "toSide": "right"
     },
     {
-      "id": "d200000000000007",
-      "fromNode": "c200000000000008",
-      "fromSide": "right",
-      "toNode": "c200000000000009",
-      "toSide": "left",
-      "label": "revealed concentration bug"
-    },
-    {
-      "id": "d200000000000008",
-      "fromNode": "c200000000000006",
-      "fromSide": "bottom",
-      "toNode": "c20000000000000a",
-      "toSide": "top",
-      "label": "expand the living world"
-    },
-    {
-      "id": "d200000000000009",
-      "fromNode": "c200000000000004",
-      "fromSide": "bottom",
-      "toNode": "c20000000000000b",
-      "toSide": "top",
-      "label": "integration evidence"
-    },
-    {
-      "id": "d20000000000000a",
-      "fromNode": "c20000000000000b",
-      "fromSide": "right",
-      "toNode": "c20000000000000c",
-      "toSide": "left",
-      "label": "verified guardrails"
-    },
-    {
-      "id": "d20000000000000b",
-      "fromNode": "c20000000000000c",
-      "fromSide": "right",
-      "toNode": "c20000000000000d",
-      "toSide": "left",
-      "label": "paired side-bias test"
-    },
-    {
-      "id": "d20000000000000c",
-      "fromNode": "c20000000000000d",
-      "fromSide": "right",
-      "toNode": "c20000000000000e",
-      "toSide": "left",
-      "label": "tamper-evident replay"
-    },
-    {
-      "id": "d20000000000000d",
-      "fromNode": "c20000000000000e",
-      "fromSide": "right",
-      "toNode": "c20000000000000f",
-      "toSide": "left",
-      "label": "first deterministic season"
+      "id": "p0-edge-5",
+      "fromNode": "p0-half",
+      "fromSide": "left",
+      "toNode": "p0-later",
+      "toSide": "right"
     }
   ]
 }
