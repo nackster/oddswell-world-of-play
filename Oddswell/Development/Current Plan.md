@@ -53,7 +53,18 @@ status: active
 - **First league run:** 20 games using seeds `10000`-`10019`; Harbor City Waves finished 12-8 and Mesa Vista Sol finished 8-12. All 20 replay manifests verified. See [[Development/Reports/Phase 0D Schedule and Standings]].
 - **Season-length limit:** 20 games is an engineering sample, not the final product season length.
 - **Retraining budget:** the first retraining experiment has a hard $5 total ceiling under [[Design/Decisions/DEC-004 AI Retraining Budget]]. No paid job starts until a provider/model is selected and the cap can be enforced.
-- **Next Phase 0D gate:** persist multiple seasons and add measured between-game fatigue progression before injuries or prediction scoring.
+- **Next Phase 0D gate:** Phase 0D.1 multi-season persistence and between-game fatigue.
+
+### Phase 0D.1 implementation status
+
+- **Status:** Complete on `agent/phase-0d`.
+- **Implemented:** versioned JSON league state, full season history, seeds, standings, replay hashes, player fatigue snapshots, deterministic save/load/resume, one-day recovery between games, and seven-day recovery between seasons.
+- **Authoritative integration:** pregame fatigue now enters the existing game simulator, affects outcomes through the existing fatigue calculations, and is bound into replay evidence.
+- **Measured run:** three 20-game seasons using seeds `11000`-`11059`; 60/60 replay manifests verified. Season-one average pregame fatigue progressed from `0.000` in game 1 to `0.238` in game 10 and `0.310` in game 20. Offseason recovery reduced the next season start to `0.070`.
+- **Persistence gate:** uninterrupted simulation and save/load/resume produce identical state and results.
+- **Known limit:** the ten-player prototype has no bench or substitutions, so every player currently receives full-game workload.
+- **Result:** 18/18 Phase 0A-0D tests pass. See [[Development/Reports/Phase 0D1 Multi-Season Fatigue]].
+- **Next Phase 0D gate:** add minutes and a minimal rotation model before injuries or prediction scoring.
 
 ## Phase 0.5: Functional sports loop
 

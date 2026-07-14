@@ -1,6 +1,19 @@
+from pathlib import Path
+from tempfile import TemporaryDirectory
 import unittest
 
-from phase0d.league import build_schedule, render_markdown, simulate_season
+from phase0d.league import (
+    MAX_CARRYOVER_FATIGUE,
+    average_fatigue,
+    build_schedule,
+    load_league,
+    new_league,
+    render_league_markdown,
+    render_markdown,
+    save_league,
+    simulate_next_season,
+    simulate_season,
+)
 
 
 class LeagueTests(unittest.TestCase):
@@ -28,6 +41,28 @@ class LeagueTests(unittest.TestCase):
         )
         self.assertTrue(all(len(game.replay_sha256) == 64 for game in first.games))
         self.assertIn("Phase 0D Schedule and Standings", render_markdown(first))
+
+    def test_fatigue_is_bounded_and_recovers_between_games(self) -> None:
+        season = simulate_season(6, 800)
+        first, second = season.games[:2]
+        self.assertEqual(average_fatigue(first.pregame_fatigue), 0.0)
+        self.assertGreater(average_fatigue(first.postgame_fatigue), 0.0)
+        self.assertLess(average_fatigue(second.pregame_fatigue), average_fatigue(first.postgame_fatigue))
+        self.assertGreater(average_fatigue(second.pregame_fatigue), 0.0)
+        self.assertTrue(
+            all(0 <= value <= MAX_CARRYOVER_FATIGUE for game in season.games for _, value in game.postgame_fatigue)
+        )
+
+    def test_saved_league_resumes_identically(self) -> None:
+        first = simulate_next_season(new_league(900), 6)
+        uninterrupted = simulate_next_season(first, 6)
+        with TemporaryDirectory() as directory:
+            path = Path(directory) / "league.json"
+            save_league(first, path)
+            loaded = load_league(path)
+        self.assertEqual(first, loaded)
+        self.assertEqual(uninterrupted, simulate_next_season(loaded, 6))
+        self.assertIn("Multi-Season Persistence and Fatigue", render_league_markdown(uninterrupted))
 
 
 if __name__ == "__main__":

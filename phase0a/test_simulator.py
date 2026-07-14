@@ -21,6 +21,15 @@ class SimulatorTests(unittest.TestCase):
                 {"role": "offense", "kind": "shoot_2", "actor": home.players[0].name, "target": None, "extra": True}
             )
 
+    def test_pregame_fatigue_is_validated_and_replayable(self) -> None:
+        teams = default_teams()
+        fatigue = {player.name: 0.2 for team in teams for player in team.players}
+        original = simulate_game(43, matchup=teams, initial_fatigue=fatigue)
+        replayed = simulate_game(43, original.action_tape, matchup=teams, initial_fatigue=fatigue)
+        self.assertEqual(original.records, replayed.records)
+        with self.assertRaisesRegex(ValueError, "every matchup player"):
+            simulate_game(43, initial_fatigue={})
+
     def test_one_hundred_games_finish_with_plausible_scores(self) -> None:
         scores = [simulate_game(seed) for seed in range(100)]
         points = [score for game in scores for score in (game.home_score, game.away_score)]

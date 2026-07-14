@@ -8,9 +8,10 @@ from pathlib import Path
 from typing import Callable, Iterable, Mapping
 
 
-ENGINE_VERSION = "phase0c-v1"
+ENGINE_VERSION = "phase0d1-v1"
 BRAIN_VERSION = "baseline-v2"
 POSSESSION_SECONDS = 14
+MAX_GAME_FATIGUE = 0.45
 ACTION_KEYS = {"role", "kind", "actor", "target"}
 OFFENSE_ACTIONS = {"pass", "drive", "shoot_2", "shoot_3"}
 
@@ -84,6 +85,7 @@ class GameResult:
     away_score: int
     action_tape: tuple[dict[str, object], ...]
     records: tuple[dict[str, object], ...]
+    final_fatigue: tuple[tuple[str, float], ...]
 
     def jsonl(self) -> str:
         return "\n".join(json.dumps(record, sort_keys=True) for record in self.records) + "\n"
@@ -189,11 +191,25 @@ def simulate_game(
     brain_version: str = BRAIN_VERSION,
     matchup: tuple[Team, Team] | None = None,
     decision_policy: Callable[[str, GameState, Team, Team, str, random.Random], Action] | None = None,
+    initial_fatigue: Mapping[str, float] | None = None,
 ) -> GameResult:
     home, away = matchup or default_teams()
     state = GameState(home=home, away=away, possession=home.name)
     state.score = {home.name: 0, away.name: 0}
-    state.fatigue = {player.name: 0.0 for team in (home, away) for player in team.players}
+    player_names = tuple(player.name for team in (home, away) for player in team.players)
+    if initial_fatigue is None:
+        state.fatigue = {name: 0.0 for name in player_names}
+    else:
+        if set(initial_fatigue) != set(player_names):
+            raise ValueError("initial_fatigue must contain every matchup player exactly once")
+        if any(
+            not isinstance(initial_fatigue[name], (int, float))
+            or isinstance(initial_fatigue[name], bool)
+            or not 0 <= initial_fatigue[name] <= MAX_GAME_FATIGUE
+            for name in player_names
+        ):
+            raise ValueError(f"initial fatigue must be between 0 and {MAX_GAME_FATIGUE}")
+        state.fatigue = {name: float(initial_fatigue[name]) for name in player_names}
 
     decision_rng = random.Random(seed ^ 0xA11CE)
     outcome_rng = random.Random(seed ^ 0xDDF00D)
@@ -228,7 +244,14 @@ def simulate_game(
         )
         return action
 
-    record("game_started", engine_version=ENGINE_VERSION, brain_version=brain_version, seed=seed)
+    start_details: dict[str, object] = {
+        "engine_version": ENGINE_VERSION,
+        "brain_version": brain_version,
+        "seed": seed,
+    }
+    if initial_fatigue is not None:
+        start_details["pregame_fatigue"] = {name: round(state.fatigue[name], 4) for name in player_names}
+    record("game_started", **start_details)
     overtime = 0
 
     while state.clock_seconds > 0 or state.score[home.name] == state.score[away.name]:
@@ -331,7 +354,7 @@ def simulate_game(
         for team in (home, away):
             for player in team.players:
                 state.fatigue[player.name] = min(
-                    0.45,
+                    MAX_GAME_FATIGUE,
                     state.fatigue[player.name] + 0.0015 + (100 - player.stamina) / 50_000,
                 )
         state.clock_seconds = max(0, state.clock_seconds - POSSESSION_SECONDS)
@@ -356,6 +379,7 @@ def simulate_game(
         away_score=state.score[away.name],
         action_tape=tuple(emitted_actions),
         records=tuple(records),
+        final_fatigue=tuple((name, round(state.fatigue[name], 4)) for name in player_names),
     )
 
 

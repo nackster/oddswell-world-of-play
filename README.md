@@ -55,3 +55,10 @@ Phase 0D begins the deterministic league layer with a balanced schedule and stan
 python -m phase0d.league --games 20 --start-seed 10000 --output "Oddswell/Development/Reports/Phase 0D Schedule and Standings.md"
 python -m unittest phase0d.test_league -v
 ```
+
+Phase 0D.1 persists multiple seasons and carries bounded fatigue between games:
+
+```powershell
+python -m phase0d.league --games 20 --seasons 3 --state phase0d/league-state.json --output "Oddswell/Development/Reports/Phase 0D1 Multi-Season Fatigue.md"
+python -m unittest phase0a.test_simulator phase0b.test_analyze phase0c.test_policy phase0d.test_league -v
+```
