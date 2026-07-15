@@ -53,6 +53,22 @@ Consequences should form understandable chains. For example:
 
 The system should model tradeoffs rather than label every social choice as bad. It must avoid real-person claims and demographic stereotypes.
 
+## Athlete ability and career persistence
+
+Athletes are not normalized into equal performers. Each fictional athlete keeps a durable career identity built from distinct abilities such as shooting, passing, defense, rebounding, stamina, and future sport-specific skills. Some athletes can be stars, some specialists, some average, and some below league average. A great shooter may remain a weak defender; an elite defender may contribute little scoring.
+
+Game performance combines separate layers:
+
+`durable ability + development/age + current form + health/fatigue + life consequences + decisions + bounded randomness`
+
+- The **Basketball Brain** chooses actions that fit an athlete's ratings, role, situation, and memory. It does not silently equalize talent or rewrite permanent ability after one game.
+- The **Athlete Life Brain** later controls habits and personal choices such as practice, rest, partying, relationships, discipline, and responses to fictional legal trouble.
+- Life choices can affect sleep, practice quality, coach trust, reputation, stress, availability, consistency, development rate, contracts, suspensions, and career length. Consequences must follow visible causal chains rather than unexplained rating punishment.
+- Durable talent normally changes gradually through development, aging, injury, or sustained behavior. Temporary form and fatigue can change quickly.
+- A completed career becomes immutable history for statistics, records, replays, and future world memory.
+
+Legal-story events must remain fictional, use neutral rules and due process, and never be generated from demographic stereotypes.
+
 ## Phasing
 
 - **Phase 0:** build the smallest basketball rules engine, a strict AI action contract, a simple baseline decision policy, complete decision logging, and one limited LLM pilot.

@@ -126,6 +126,16 @@ status: active
 - **Cost:** `$0.00`; no new dependency, database, or model job was added.
 - **Next gate:** Phase 0.5C should connect archived league games to their exact recorded Game Theater playback while keeping hidden league state server-side.
 
+### Phase 0.5C Archived Game Playback implementation status
+
+- **Status:** Complete on `agent/phase-0d`.
+- **Implemented:** every completed schedule entry opens its exact deterministic Game Theater playback. The server reconstructs the original matchup from authoritative pregame league state, verifies the score and minutes, and sends every recorded play frame plus the linked replay hash to the browser.
+- **Leakage boundary:** reconstruction seeds, fatigue, recovery timers, injury-risk internals, and RNG state remain server-side. The browser receives public teams, verified results, recorded play frames, and archive evidence only.
+- **Shared path:** live simulations and archived games use one replay-payload builder. No new dependency or persistence schema was required.
+- **Validation:** Admin Console self-check and all 29 regression tests pass. Browser QA played all 433 Game 20 play frames, finished Mesa Vista Sol 77-86 Harbor City Waves with `ARCHIVE VERIFIED`, and reported no console errors. See [[Development/Reports/Phase 05C Archived Game Playback]].
+- **Cost:** `$0.00`.
+- **Next gate:** Phase 0.5D Athlete Career Profiles for durable ratings, specialties, career state, availability, recent performance, and history.
+
 ## Phase 1: 3D vertical slice
 
 Build the one-city scope defined in [[Design/Decisions/DEC-002 First Playable Scope]].
@@ -133,6 +143,8 @@ Build the one-city scope defined in [[Design/Decisions/DEC-002 First Playable Sc
 ## Future shared simulation layer
 
 After the basketball loop is stable, pilot the shared Athlete Life Brain with a few daily choices: train, rest, recover, and socialize. Expand into relationships, nightlife, media, discipline, career decisions, and other sports only after the smaller loop produces believable, auditable consequences.
+
+Athletes keep distinct career identities: stars, specialists, average players, and below-average players are allowed and should not be automatically equalized. Durable ability changes gradually, while temporary form, fatigue, availability, practice, discipline, partying, fictional legal trouble, and other life consequences can alter performance and career outcomes through visible causal chains. See [[Design/Decisions/DEC-003 Multi-Brain AI Architecture]].
 
 The shared life, world, memory, and learning layers will support every sport. Each new sport receives its own AI decision brain and authoritative rules engine. See [[Design/Decisions/DEC-003 Multi-Brain AI Architecture]].
 

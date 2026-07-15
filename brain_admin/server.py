@@ -19,7 +19,14 @@ AUDIT_PATH = Path(__file__).with_name("admin-audit.log")
 AUDIT_LOCK = threading.Lock()
 sys.path.insert(0, str(ROOT))
 
-from phase0a.simulator import BRAIN_VERSION, ENGINE_VERSION, default_teams, simulate_game  # noqa: E402
+from phase0a.simulator import (  # noqa: E402
+    BRAIN_VERSION,
+    ENGINE_VERSION,
+    GameResult,
+    Team,
+    default_teams,
+    simulate_game,
+)
 from phase0c.policy import POLICY_VERSION  # noqa: E402
 from phase0d.league import LEAGUE_VERSION, simulate_season  # noqa: E402
 from phase0d.prediction import PREDICTION_VERSION, run_prediction_study  # noqa: E402
@@ -65,7 +72,7 @@ def status_payload() -> dict[str, object]:
                 "name": "Athlete Life Brain",
                 "status": "PLANNED",
                 "version": "Not implemented",
-                "detail": "Future training, rest, recovery, relationships, social choices, and long-term consequences.",
+                "detail": "Future career development, training, rest, recovery, habits, relationships, social choices, legal consequences, and long-term memory.",
             },
             {
                 "id": "world",
@@ -79,7 +86,7 @@ def status_payload() -> dict[str, object]:
                 "name": "Basketball Brain",
                 "status": "ACTIVE BASELINE",
                 "version": BRAIN_VERSION,
-                "detail": "Chooses legal athlete intents. The active version is deterministic; a trained model is not active yet.",
+                "detail": "Chooses legal intents from each athlete's distinct ratings and game context. The active version is deterministic; a trained model is not active yet.",
             },
             {
                 "id": "rules",
@@ -135,11 +142,21 @@ def audit_payload(limit: int = 100, path: Path | None = None) -> dict[str, objec
 
 
 @lru_cache(maxsize=1)
+def league_season():
+    return simulate_season(LEAGUE_VIEW_GAMES, LEAGUE_VIEW_START_SEED)
+
+
+@lru_cache(maxsize=1)
+def league_prediction_study():
+    return run_prediction_study(0, 1, LEAGUE_VIEW_GAMES, LEAGUE_VIEW_START_SEED)
+
+
+@lru_cache(maxsize=1)
 def league_payload() -> dict[str, object]:
     """Build one public-only archived season for the local League Viewer."""
     teams = default_teams()
-    season = simulate_season(LEAGUE_VIEW_GAMES, LEAGUE_VIEW_START_SEED)
-    study = run_prediction_study(0, 1, LEAGUE_VIEW_GAMES, LEAGUE_VIEW_START_SEED)
+    season = league_season()
+    study = league_prediction_study()
     predictions = {record.game_number: record for record in study.records}
     final_availability = dict(season.final_availability)
 
@@ -235,16 +252,18 @@ def evenly_sample(events: list[dict[str, object]], count: int) -> list[dict[str,
     return [events[round(index * (len(events) - 1) / (count - 1))] for index in range(count)]
 
 
-def simulation_payload(seed: int) -> dict[str, object]:
-    if not 0 <= seed <= 2_147_483_647:
-        raise ValueError("seed must be between 0 and 2147483647")
-    game = simulate_game(seed)
+def recorded_game_payload(
+    game: GameResult,
+    matchup: tuple[Team, Team],
+    seed: int | None = None,
+    frame_limit: int | None = 96,
+) -> dict[str, object]:
     candidates: list[dict[str, object]] = [
         {
             "source": "world",
             "target": "basketball",
             "kind": "context",
-            "label": f"Match context loaded · seed {seed}",
+            "label": "Match context loaded" + (f" · seed {seed}" if seed is not None else ""),
             "score": [0, 0],
         }
     ]
@@ -353,7 +372,9 @@ def simulation_payload(seed: int) -> dict[str, object]:
             "score": [game.home_score, game.away_score],
         }
     )
-    theater_timeline = evenly_sample(theater_events, 96)
+    theater_timeline = (
+        theater_events if frame_limit is None else evenly_sample(theater_events, frame_limit)
+    )
     theater_timeline.append(
         {
             "kind": "final",
@@ -366,24 +387,62 @@ def simulation_payload(seed: int) -> dict[str, object]:
             "lineups": {team: list(players) for team, players in lineups.items()},
         }
     )
-    teams = default_teams()
+    summary: dict[str, object] = {
+        "home": game.home_team,
+        "away": game.away_team,
+        "home_score": game.home_score,
+        "away_score": game.away_score,
+        "decisions": len(game.action_tape),
+        "records": len(game.records),
+        "brain_version": BRAIN_VERSION,
+        "engine_version": ENGINE_VERSION,
+        "home_players": [player.name for player in matchup[0].players],
+        "away_players": [player.name for player in matchup[1].players],
+        "replay_frames": len(theater_timeline),
+    }
+    if seed is not None:
+        summary["seed"] = seed
     return {
-        "summary": {
-            "seed": seed,
-            "home": game.home_team,
-            "away": game.away_team,
-            "home_score": game.home_score,
-            "away_score": game.away_score,
-            "decisions": len(game.action_tape),
-            "records": len(game.records),
-            "brain_version": BRAIN_VERSION,
-            "engine_version": ENGINE_VERSION,
-            "home_players": [player.name for player in teams[0].players],
-            "away_players": [player.name for player in teams[1].players],
-        },
+        "summary": summary,
         "timeline": selected,
         "theater_timeline": theater_timeline,
     }
+
+
+def simulation_payload(seed: int) -> dict[str, object]:
+    if not 0 <= seed <= 2_147_483_647:
+        raise ValueError("seed must be between 0 and 2147483647")
+    matchup = default_teams()
+    return recorded_game_payload(simulate_game(seed, matchup=matchup), matchup, seed)
+
+
+@lru_cache(maxsize=LEAGUE_VIEW_GAMES)
+def league_replay_payload(game_number: int) -> dict[str, object]:
+    if not 1 <= game_number <= LEAGUE_VIEW_GAMES:
+        raise ValueError(f"game number must be between 1 and {LEAGUE_VIEW_GAMES}")
+    archived = league_season().games[game_number - 1]
+    teams = {team.name: team for team in default_teams()}
+    matchup = (teams[archived.home_team], teams[archived.away_team])
+    game = simulate_game(
+        archived.seed,
+        matchup=matchup,
+        initial_fatigue=dict(archived.pregame_fatigue),
+        initial_availability=dict(archived.pregame_availability),
+    )
+    if (
+        game.home_score != archived.home_score
+        or game.away_score != archived.away_score
+        or dict(game.minutes_played) != dict(archived.minutes_played)
+    ):
+        raise RuntimeError(f"archived replay mismatch for game {game_number}")
+    payload = recorded_game_payload(game, matchup, frame_limit=None)
+    payload["archive"] = {
+        "season": league_season().season_number,
+        "game": game_number,
+        "replay_sha256": archived.replay_sha256,
+        "verified": True,
+    }
+    return payload
 
 
 class Handler(BaseHTTPRequestHandler):
@@ -430,6 +489,15 @@ class Handler(BaseHTTPRequestHandler):
             self.send_json(audit_payload())
         elif path == "/api/league":
             self.send_json(league_payload())
+        elif path.startswith("/api/league/replay/"):
+            try:
+                game_value = path.removeprefix("/api/league/replay/")
+                if not game_value.isdecimal():
+                    raise ValueError("game number must be a whole number")
+                game_number = int(game_value)
+                self.send_json(league_replay_payload(game_number))
+            except ValueError as error:
+                self.send_json({"error": str(error)}, 400)
         elif path == "/favicon.ico":
             self.send_bytes(b"", "image/x-icon", 204)
         else:
@@ -472,6 +540,7 @@ def self_check() -> None:
     status = status_payload()
     game = simulation_payload(42)
     league = league_payload()
+    archived = league_replay_payload(20)
     assert len(status["brains"]) == 6
     assert status["prediction_version"] == PREDICTION_VERSION
     assert [module["id"] for module in status["admin_modules"]] == [
@@ -490,6 +559,17 @@ def self_check() -> None:
     public_json = json.dumps(league, sort_keys=True)
     assert not any(
         forbidden in public_json
+        for forbidden in ('"seed"', '"fatigue"', '"recovery_days"', '"injury_risk"')
+    )
+    assert archived["archive"]["replay_sha256"] == league["games"][19]["replay_sha256"]
+    assert archived["summary"]["home_score"] == league["games"][19]["home_score"]
+    assert archived["summary"]["away_score"] == league["games"][19]["away_score"]
+    assert "seed" not in archived["summary"]
+    assert len(archived["theater_timeline"]) > 97
+    assert archived["theater_timeline"][-1]["kind"] == "final"
+    archived_json = json.dumps(archived, sort_keys=True)
+    assert not any(
+        forbidden in archived_json
         for forbidden in ('"seed"', '"fatigue"', '"recovery_days"', '"injury_risk"')
     )
     with tempfile.TemporaryDirectory() as temporary_directory:

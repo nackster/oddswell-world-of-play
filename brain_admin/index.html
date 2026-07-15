@@ -412,6 +412,8 @@
     .league-final-team { color: var(--muted); font-size: .74rem; }
     .league-final-team strong { display: block; margin-top: 5px; color: var(--ink); font: 600 1.75rem ui-monospace, SFMono-Regular, Consolas, monospace; }
     .league-final-mark { color: var(--green); font-size: .59rem; letter-spacing: .15em; text-transform: uppercase; }
+    .league-replay-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin: 0 0 18px; padding: 11px; border: 1px solid rgba(125,255,179,.18); border-radius: 12px; background: rgba(125,255,179,.035); }
+    .league-replay-row span { flex: 1 1 240px; color: var(--muted); font-size: .62rem; line-height: 1.45; }
     .prediction-grid { display: grid; gap: 9px; margin: 8px 0 17px; }
     .prediction-row { display: grid; grid-template-columns: 185px minmax(90px, 1fr) 46px; gap: 10px; align-items: center; font-size: .65rem; }
     .prediction-track { height: 6px; overflow: hidden; border-radius: 99px; background: rgba(255,255,255,.07); }
@@ -613,7 +615,7 @@
                     <option value="80">Fast</option>
                   </select>
                 </label>
-                <span class="theater-truth">Real scores and events · illustrative court positions · 96-frame cinematic sample</span>
+                <span class="theater-truth" id="theater-truth">Real scores and events · illustrative court positions · 96-frame cinematic sample</span>
               </div>
             </section>
           </section>
@@ -652,6 +654,10 @@
                     <div class="league-final-team"><span id="league-home">Home</span><strong id="league-home-score">-</strong></div>
                     <div class="league-final-mark" id="league-winner">Select a game</div>
                     <div class="league-final-team"><span id="league-away">Away</span><strong id="league-away-score">-</strong></div>
+                  </div>
+                  <div class="league-replay-row">
+                    <button class="control primary" id="watch-league-game" type="button" disabled>Watch exact replay</button>
+                    <span>Reconstruct every recorded play from authoritative pregame state, then verify its score and minutes against the archive.</span>
                   </div>
                   <div class="league-panel-head"><h3>Pregame home-win probability</h3><span>Committed before simulation</span></div>
                   <div class="prediction-grid" id="league-predictions"></div>
@@ -1016,6 +1022,9 @@
       $('league-home-score').textContent = game.home_score;
       $('league-away-score').textContent = game.away_score;
       $('league-winner').textContent = `${game.winner} won`;
+      $('watch-league-game').dataset.game = game.number;
+      $('watch-league-game').textContent = `Watch Game ${game.number} exact replay`;
+      $('watch-league-game').disabled = false;
 
       const modelLabels = {
         coin: 'Fixed 50% baseline',
@@ -1229,6 +1238,7 @@
       $('theater-progress').style.width = '0%';
       $('court-ball').style.left = '50%';
       $('court-ball').style.top = '50%';
+      $('theater-truth').textContent = `${Math.max(0, data.theater_timeline.length - 1)} recorded play frames · illustrative positions · ${data.archive ? 'complete archived game' : 'cinematic sample'}`;
     }
 
     function placeTeam(team, roster, lineup, side, offense) {
@@ -1276,14 +1286,42 @@
       playing = true;
       resetCourt(data);
       $('replay-game').disabled = true;
-      $('theater-status').textContent = 'RECORDED REPLAY';
+      $('theater-status').textContent = data.archive
+        ? `SEASON ${data.archive.season} / GAME ${data.archive.game}`
+        : 'RECORDED REPLAY';
       for (const [index, event] of data.theater_timeline.entries()) {
         showCourtEvent(event, data, index);
         await sleep(Number($('theater-speed').value));
       }
-      $('theater-status').textContent = 'REPLAY SEALED';
+      $('theater-status').textContent = data.archive ? 'ARCHIVE VERIFIED' : 'REPLAY SEALED';
       $('replay-game').disabled = false;
       playing = false;
+    }
+
+    async function watchLeagueGame() {
+      if (playing) return;
+      const button = $('watch-league-game');
+      const gameNumber = Number(button.dataset.game);
+      if (!Number.isInteger(gameNumber)) return;
+      button.disabled = true;
+      button.textContent = 'Loading verified replay…';
+      try {
+        const response = await fetch(`/api/league/replay/${gameNumber}`);
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error || 'archived replay unavailable');
+        lastSimulation = data;
+        $('home-team').textContent = data.summary.home;
+        $('away-team').textContent = data.summary.away;
+        $('score').textContent = '0 : 0';
+        navigate('simulation');
+        appendLog(`Archive replay · season ${data.archive.season} · game ${data.archive.game} · verified`);
+        await playGameTimeline(data);
+      } catch (error) {
+        $('league-detail-title').textContent = `Replay error: ${error.message}`;
+      } finally {
+        button.textContent = `Watch Game ${gameNumber} exact replay`;
+        button.disabled = false;
+      }
     }
 
     async function playTimeline(timeline, demo = false) {
@@ -1383,6 +1421,7 @@
     $('simulate').addEventListener('click', () => runSimulation($('seed'), $('simulate'), 'brains'));
     $('simulate-page').addEventListener('click', () => runSimulation($('simulation-seed'), $('simulate-page'), 'simulation'));
     $('replay-game').addEventListener('click', () => { if (lastSimulation && !playing) playGameTimeline(lastSimulation); });
+    $('watch-league-game').addEventListener('click', watchLeagueGame);
     $('refresh-status').addEventListener('click', refreshStatus);
     $('refresh-audit').addEventListener('click', loadAudit);
     $('preview').addEventListener('click', previewTraining);
