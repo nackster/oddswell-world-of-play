@@ -98,7 +98,7 @@ status: active
 - **Absence subset:** 34 holdout games had at least one published absence. Public Elo Brier was `0.2363`; adding the provisional availability adjustment changed it to `0.2367`, so no extra benefit is claimed on that subset.
 - **Result:** 29 focused and regression tests pass; Admin Console self-check passes. Cost was `$0.00`. See [[Development/Reports/Phase 0D4 Public Prediction Evaluation]].
 - **Known limit:** this measures fictional simulator data, not real-world predictive power. No model was trained, tuned on the holdout, or connected to wagering.
-- **Next gate:** begin the Phase 0.5 read-only sports interface for public teams, athletes, schedule, standings, availability, and committed prediction history before adding credits or settlement.
+- **Next gate:** completed as Phase 0.5B; the read-only League Viewer now exposes teams, athletes, schedule, standings, availability, and committed prediction history before any credits or settlement work.
 
 ## Phase 0.5: Functional sports loop
 
@@ -116,6 +116,15 @@ status: active
 - **Truth boundary:** scores, clock, lineups, and play labels come from the authoritative event log. Court coordinates are explicitly illustrative because Phase 0 does not simulate physical player positions or 3D movement.
 - **Validation:** Admin Console self-check, simulator/league/prediction regression tests, localhost API check, and a browser-driven seed `42` replay passed. The browser displayed a sealed Harbor City Waves `111`–`114` Mesa Vista Sol result with no console errors.
 - **Next gate:** Phase 0.5B read-only League Viewer for teams, athlete ratings, schedules, standings, availability, prediction commitments, and per-game inspection.
+
+### Phase 0.5B League Viewer implementation status
+
+- **Status:** Complete on `agent/phase-0d`.
+- **Implemented:** a cached public-only 20-game season payload and an Admin Console League Viewer with standings, both teams, all twelve athlete ratings, final availability, the complete schedule, scores, winners, per-game availability and minutes, three pregame prediction probabilities, prediction commitments, and authoritative replay hashes.
+- **Leakage boundary:** seeds, hidden fatigue, recovery timers, injury-risk internals, RNG state, future information, economy data, and user data are excluded. Schedule, team, result, prediction, credit, and settlement mutations remain unavailable.
+- **Validation:** Admin Console self-check and all 29 regression tests pass. Browser QA selected Game 20, displayed the correct 86-77 Harbor City result, and reported no console errors. See [[Development/Reports/Phase 05B League Viewer]].
+- **Cost:** `$0.00`; no new dependency, database, or model job was added.
+- **Next gate:** Phase 0.5C should connect archived league games to their exact recorded Game Theater playback while keeping hidden league state server-side.
 
 ## Phase 1: 3D vertical slice
 

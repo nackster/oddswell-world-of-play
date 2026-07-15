@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 from datetime import datetime, timezone
+from functools import lru_cache
 import json
 import sys
 import tempfile
@@ -20,8 +21,12 @@ sys.path.insert(0, str(ROOT))
 
 from phase0a.simulator import BRAIN_VERSION, ENGINE_VERSION, default_teams, simulate_game  # noqa: E402
 from phase0c.policy import POLICY_VERSION  # noqa: E402
-from phase0d.league import LEAGUE_VERSION  # noqa: E402
-from phase0d.prediction import PREDICTION_VERSION  # noqa: E402
+from phase0d.league import LEAGUE_VERSION, simulate_season  # noqa: E402
+from phase0d.prediction import PREDICTION_VERSION, run_prediction_study  # noqa: E402
+
+
+LEAGUE_VIEW_GAMES = 20
+LEAGUE_VIEW_START_SEED = 15_000
 
 
 def status_payload() -> dict[str, object]:
@@ -127,6 +132,101 @@ def audit_payload(limit: int = 100, path: Path | None = None) -> dict[str, objec
             if isinstance(value, dict):
                 entries.append(value)
     return {"entries": entries[-limit:][::-1]}
+
+
+@lru_cache(maxsize=1)
+def league_payload() -> dict[str, object]:
+    """Build one public-only archived season for the local League Viewer."""
+    teams = default_teams()
+    season = simulate_season(LEAGUE_VIEW_GAMES, LEAGUE_VIEW_START_SEED)
+    study = run_prediction_study(0, 1, LEAGUE_VIEW_GAMES, LEAGUE_VIEW_START_SEED)
+    predictions = {record.game_number: record for record in study.records}
+    final_availability = dict(season.final_availability)
+
+    games: list[dict[str, object]] = []
+    for game in season.games:
+        prediction = predictions[game.number]
+        if game.winner != prediction.winner or game.replay_sha256 != prediction.replay_sha256:
+            raise RuntimeError(f"league evidence mismatch for game {game.number}")
+        games.append(
+            {
+                "number": game.number,
+                "home": game.home_team,
+                "away": game.away_team,
+                "home_score": game.home_score,
+                "away_score": game.away_score,
+                "winner": game.winner,
+                "replay_sha256": game.replay_sha256,
+                "prediction_commitment_sha256": prediction.commitment_sha256,
+                "predictions": dict(prediction.predictions),
+                "availability": {
+                    name: recovery_days == 0
+                    for name, recovery_days in game.pregame_availability
+                },
+                "minutes": dict(game.minutes_played),
+            }
+        )
+
+    return {
+        "season": {
+            "number": season.season_number,
+            "status": "COMPLETE",
+            "games": len(season.games),
+            "label": "Phase 0.5B archived development season",
+        },
+        "versions": {
+            "league": LEAGUE_VERSION,
+            "prediction": PREDICTION_VERSION,
+            "brain": BRAIN_VERSION,
+            "engine": ENGINE_VERSION,
+        },
+        "boundary": (
+            "Public-only read model. Hidden fatigue, recovery timers, injury-risk internals, "
+            "random seeds, economy data, and admin mutations are excluded."
+        ),
+        "standings": [
+            {
+                "team": standing.team,
+                "games": standing.games,
+                "wins": standing.wins,
+                "losses": standing.losses,
+                "points_for": standing.points_for,
+                "points_against": standing.points_against,
+                "point_difference": standing.point_difference,
+                "win_rate": round(standing.win_rate, 4),
+            }
+            for standing in season.standings
+        ],
+        "teams": [
+            {
+                "name": team.name,
+                "players": [
+                    {
+                        "name": player.name,
+                        "shooting": player.shooting,
+                        "passing": player.passing,
+                        "defense": player.defense,
+                        "rebounding": player.rebounding,
+                        "stamina": player.stamina,
+                        "overall": round(
+                            (
+                                player.shooting
+                                + player.passing
+                                + player.defense
+                                + player.rebounding
+                                + player.stamina
+                            )
+                            / 5
+                        ),
+                        "available": final_availability[player.name] == 0,
+                    }
+                    for player in team.players
+                ],
+            }
+            for team in teams
+        ],
+        "games": games,
+    }
 
 
 def evenly_sample(events: list[dict[str, object]], count: int) -> list[dict[str, object]]:
@@ -328,6 +428,8 @@ class Handler(BaseHTTPRequestHandler):
             self.send_json(status_payload())
         elif path == "/api/audit":
             self.send_json(audit_payload())
+        elif path == "/api/league":
+            self.send_json(league_payload())
         elif path == "/favicon.ico":
             self.send_bytes(b"", "image/x-icon", 204)
         else:
@@ -369,6 +471,7 @@ class Handler(BaseHTTPRequestHandler):
 def self_check() -> None:
     status = status_payload()
     game = simulation_payload(42)
+    league = league_payload()
     assert len(status["brains"]) == 6
     assert status["prediction_version"] == PREDICTION_VERSION
     assert [module["id"] for module in status["admin_modules"]] == [
@@ -379,6 +482,16 @@ def self_check() -> None:
     assert game["theater_timeline"][-1]["kind"] == "final"
     assert len(game["theater_timeline"]) <= 97
     assert all(len(event["score"]) == 2 for event in game["theater_timeline"])
+    assert league["season"]["games"] == LEAGUE_VIEW_GAMES
+    assert sum(standing["wins"] for standing in league["standings"]) == LEAGUE_VIEW_GAMES
+    assert len(league["games"]) == LEAGUE_VIEW_GAMES
+    assert all(len(game["replay_sha256"]) == 64 for game in league["games"])
+    assert all(len(game["prediction_commitment_sha256"]) == 64 for game in league["games"])
+    public_json = json.dumps(league, sort_keys=True)
+    assert not any(
+        forbidden in public_json
+        for forbidden in ('"seed"', '"fatigue"', '"recovery_days"', '"injury_risk"')
+    )
     with tempfile.TemporaryDirectory() as temporary_directory:
         path = Path(temporary_directory) / "audit.log"
         record_audit("self-check", "admin-console", {"seed": 42}, path)

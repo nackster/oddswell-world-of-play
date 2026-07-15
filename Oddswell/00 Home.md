@@ -31,6 +31,7 @@ tags:
 - [[Development/Reports/Phase 0D2 Rotation Minutes and Workload|Phase 0D.2 rotation minutes and workload]]
 - [[Development/Reports/Phase 0D3 Availability and Recovery|Phase 0D.3 availability and recovery]]
 - [[Development/Reports/Phase 0D4 Public Prediction Evaluation|Phase 0D.4 public prediction evaluation]]
+- [[Development/Reports/Phase 05B League Viewer|Phase 0.5B League Viewer]]
 - [[Visual Maps/Project Tool Map|Master project tool map]]
 - [[Visual Maps/3D Asset Toolchain|3D asset toolchain canvas]]
 - [[Visual Maps/Multi-Brain Architecture|Multi-brain architecture canvas]]
@@ -39,7 +40,7 @@ tags:
 
 ## Current focus
 
-Phase 0.5A is complete: the Admin Console can run a real seeded game and animate its recorded lineups, passes, shots, rebounds, turnovers, clock, score, and final replay seal in the Game Theater. Phase 0.5B is the read-only League Viewer; no live model, credits, wagering, or retraining job is authorized.
+Phase 0.5B is complete: the Admin Console now combines the recorded Game Theater with a read-only League Viewer for standings, teams, athletes, availability, the complete schedule, results, minutes, prediction commitments, and replay evidence. Phase 0.5C will link archived league results to their exact recorded playback; no live model, credits, wagering, or retraining job is authorized.
 
 ## Current state
 
