@@ -7,19 +7,20 @@ from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Mapping
 
-from phase0a.simulator import BRAIN_VERSION, ENGINE_VERSION, GameResult, Team, default_teams, simulate_game
+from phase0a.simulator import BRAIN_VERSION, ENGINE_VERSION, Team, default_teams, simulate_game
 from phase0c.replay import replay_manifest, verify_replay_manifest
 
 
-LEAGUE_VERSION = "phase0d1-v1"
-STATE_SCHEMA = "oddswell-league-state-v1"
-FATIGUE_MODEL_VERSION = "between-games-v1"
+LEAGUE_VERSION = "phase0d2-v1"
+STATE_SCHEMA = "oddswell-league-state-v2"
+FATIGUE_MODEL_VERSION = "minutes-workload-v1"
 MAX_CARRYOVER_FATIGUE = 0.35
 RECOVERY_PER_DAY = 0.04
 BETWEEN_GAME_REST_DAYS = 1
 OFFSEASON_REST_DAYS = 7
 
 FatigueSnapshot = tuple[tuple[str, float], ...]
+MinutesSnapshot = tuple[tuple[str, float], ...]
 
 
 @dataclass(frozen=True)
@@ -42,6 +43,7 @@ class SeasonGame:
     replay_sha256: str
     pregame_fatigue: FatigueSnapshot
     postgame_fatigue: FatigueSnapshot
+    minutes_played: MinutesSnapshot
 
 
 @dataclass(frozen=True)
@@ -112,6 +114,14 @@ def empty_fatigue(teams: tuple[Team, Team] | None = None) -> FatigueSnapshot:
     return tuple((player.name, 0.0) for team in (teams or default_teams()) for player in team.players)
 
 
+def minutes_snapshot(values: Mapping[str, float], teams: tuple[Team, Team] | None = None) -> MinutesSnapshot:
+    return tuple(
+        (player.name, round(float(values[player.name]), 4))
+        for team in (teams or default_teams())
+        for player in team.players
+    )
+
+
 def recover_fatigue(
     fatigue: FatigueSnapshot,
     rest_days: int,
@@ -129,28 +139,22 @@ def recover_fatigue(
 def add_game_load(
     fatigue: FatigueSnapshot,
     teams: tuple[Team, Team],
-    game_minutes: int,
+    minutes_played: MinutesSnapshot,
 ) -> FatigueSnapshot:
     values = dict(fatigue)
-    # ponytail: all five players carry the same game duration until substitutions and minute tracking exist.
+    minutes = dict(minutes_played)
     return fatigue_snapshot(
         {
             player.name: min(
                 MAX_CARRYOVER_FATIGUE,
-                values[player.name] + 0.05 * (game_minutes / 48) + (100 - player.stamina) / 1_000,
+                values[player.name]
+                + (0.05 + (100 - player.stamina) / 1_000) * (minutes[player.name] / 48),
             )
             for team in teams
             for player in team.players
         },
         teams,
     )
-
-
-def game_minutes(result: GameResult) -> int:
-    ended = result.records[-1]
-    if ended.get("type") != "game_ended":
-        raise ValueError("game result is missing its final event")
-    return 48 + 5 * int(ended["overtime"])
 
 
 def simulate_season(
@@ -177,7 +181,8 @@ def simulate_season(
             raise RuntimeError(f"replay manifest failed for game {fixture.number}")
         winner = result.home_team if result.home_score > result.away_score else result.away_team
         loser = result.away_team if winner == result.home_team else result.home_team
-        postgame_fatigue = add_game_load(fatigue, teams, game_minutes(result))
+        played = minutes_snapshot(dict(result.minutes_played), teams)
+        postgame_fatigue = add_game_load(fatigue, teams, played)
 
         totals[winner]["wins"] += 1
         totals[loser]["losses"] += 1
@@ -197,6 +202,7 @@ def simulate_season(
                 manifest["sha256"],
                 fatigue,
                 postgame_fatigue,
+                played,
             )
         )
         fatigue = postgame_fatigue
@@ -263,6 +269,25 @@ def _snapshot_from_json(value: object) -> FatigueSnapshot:
     return snapshot
 
 
+def _minutes_from_json(value: object) -> MinutesSnapshot:
+    if not isinstance(value, list) or any(
+        not isinstance(item, list)
+        or len(item) != 2
+        or not isinstance(item[0], str)
+        or not isinstance(item[1], (int, float))
+        or isinstance(item[1], bool)
+        for item in value
+    ):
+        raise ValueError("invalid minutes snapshot")
+    snapshot = tuple((item[0], float(item[1])) for item in value)
+    expected = {player.name for team in default_teams() for player in team.players}
+    if len(snapshot) != len(expected) or {name for name, _ in snapshot} != expected or any(
+        not 0 <= minutes <= 100 for _, minutes in snapshot
+    ):
+        raise ValueError("invalid minutes roster or value")
+    return snapshot
+
+
 def load_league(path: Path) -> LeagueState:
     try:
         value = json.loads(path.read_text(encoding="utf-8"))
@@ -284,6 +309,7 @@ def load_league(path: Path) -> LeagueState:
                 game_data = dict(game_value)
                 game_data["pregame_fatigue"] = _snapshot_from_json(game_data["pregame_fatigue"])
                 game_data["postgame_fatigue"] = _snapshot_from_json(game_data["postgame_fatigue"])
+                game_data["minutes_played"] = _minutes_from_json(game_data["minutes_played"])
                 games.append(SeasonGame(**game_data))
             standings = tuple(Standing(**row) for row in season_data.pop("standings"))
             season_data["initial_fatigue"] = _snapshot_from_json(season_data["initial_fatigue"])
@@ -379,7 +405,7 @@ def render_league_markdown(state: LeagueState) -> str:
         "status: complete",
         "---",
         "",
-        "# Phase 0D.1 Multi-Season Persistence and Fatigue",
+        "# Phase 0D.2 Rotation Minutes and Workload",
         "",
         (
             f"Deterministic **{len(state.seasons)}-season** run using state schema `{STATE_SCHEMA}`, "
@@ -429,8 +455,8 @@ def render_league_markdown(state: LeagueState) -> str:
             "",
             f"- Carryover fatigue is bounded at **{MAX_CARRYOVER_FATIGUE:.2f}**.",
             f"- Players recover **{RECOVERY_PER_DAY:.2f} per rest day**, with one day between games and seven between seasons.",
-            "- Game load uses duration and stamina. Pregame fatigue is passed into the authoritative simulator and replay record.",
-            "- The current ten-player prototype has no bench, so every player receives full-game workload.",
+            "- Each six-player roster uses a deterministic five-player lineup with one reserve sharing five regulation shifts.",
+            "- Game load uses authoritative minutes and stamina. Pregame fatigue, lineup changes, and minutes are bound into replay evidence.",
             "",
             "## Scope",
             "",
@@ -459,7 +485,7 @@ def main() -> None:
         save_league(state, args.state)
         print(f"wrote {args.state}")
 
-    report = render_markdown(state.seasons[-1]) if len(state.seasons) == 1 else render_league_markdown(state)
+    report = render_league_markdown(state)
     if args.output:
         args.output.parent.mkdir(parents=True, exist_ok=True)
         args.output.write_text(report, encoding="utf-8", newline="\n")

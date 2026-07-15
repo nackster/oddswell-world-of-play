@@ -9,7 +9,7 @@ class AnalysisTests(unittest.TestCase):
         second = analyze_games(25, 100)
         self.assertEqual(first, second)
         self.assertEqual(len(first.teams), 2)
-        self.assertEqual(len(first.players), 10)
+        self.assertEqual(len(first.players), 12)
         self.assertTrue(150 < first.overall["possessions_per_game"] < 260)
         self.assertEqual(sum(team["wins"] for team in first.teams.values()), 25)
         for team_name, team in first.teams.items():

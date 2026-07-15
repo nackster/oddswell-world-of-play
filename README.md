@@ -56,10 +56,12 @@ python -m phase0d.league --games 20 --start-seed 10000 --output "Oddswell/Develo
 python -m unittest phase0d.test_league -v
 ```
 
-Phase 0D.1 persists multiple seasons and carries bounded fatigue between games:
+Phase 0D.1 established versioned multi-season persistence and bounded fatigue. Its historical evidence remains in [`Phase 0D1 Multi-Season Fatigue.md`](Oddswell/Development/Reports/Phase%200D1%20Multi-Season%20Fatigue.md).
+
+Phase 0D.2 adds one reserve per team, deterministic lineups, authoritative minutes, and minutes-driven workload:
 
 ```powershell
-python -m phase0d.league --games 20 --seasons 3 --state phase0d/league-state.json --output "Oddswell/Development/Reports/Phase 0D1 Multi-Season Fatigue.md"
+python -m phase0d.league --games 20 --seasons 1 --start-seed 12000 --output "Oddswell/Development/Reports/Phase 0D2 Rotation Minutes and Workload.md"
 python -m unittest phase0a.test_simulator phase0b.test_analyze phase0c.test_policy phase0d.test_league -v
 ```
 

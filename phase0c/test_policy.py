@@ -84,7 +84,7 @@ class PolicyTests(unittest.TestCase):
         self.assertFalse(verify_replay_manifest(tampered))
 
     def test_offline_pilot_reports_zero_cost_and_exact_replay(self) -> None:
-        result = run_offline_pilot(2, 10, 4)
+        result = run_offline_pilot(2, 50, 50)
         self.assertGreater(result.decisions, 0)
         self.assertEqual(result.invalid_outputs, 0)
         self.assertEqual(result.fallbacks, 0)
@@ -94,8 +94,8 @@ class PolicyTests(unittest.TestCase):
         self.assertEqual(result.calibration_checks_passed, result.calibration_check_count)
 
     def test_paired_fairness_swaps_every_seed_and_passes_guardrails(self) -> None:
-        result = run_paired_fairness(10)
-        self.assertEqual(result.games, 20)
+        result = run_paired_fairness(50)
+        self.assertEqual(result.games, 100)
         self.assertEqual(result.invalid_outputs, 0)
         self.assertEqual(result.fallbacks, 0)
         self.assertEqual(result.exact_replays, result.games)

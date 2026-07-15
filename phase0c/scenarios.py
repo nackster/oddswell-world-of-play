@@ -102,7 +102,10 @@ class ScenarioResult:
 
 
 def scenario_inputs(scenario: Scenario) -> tuple[GameState, Team, Team]:
-    home, away = default_teams()
+    full_home, full_away = default_teams()
+    # Preserve the exact five-player requests that the recorded responses were authored against.
+    home = Team(full_home.name, full_home.players[:5])
+    away = Team(full_away.name, full_away.players[:5])
     state = GameState(
         home,
         away,

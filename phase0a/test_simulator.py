@@ -30,6 +30,23 @@ class SimulatorTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "every matchup player"):
             simulate_game(43, initial_fatigue={})
 
+    def test_rotation_minutes_drive_workload_and_replay_exactly(self) -> None:
+        teams = default_teams()
+        original = simulate_game(44, matchup=teams)
+        replayed = simulate_game(44, original.action_tape, matchup=teams)
+        self.assertEqual(original, replayed)
+
+        minutes = dict(original.minutes_played)
+        fatigue = dict(original.final_fatigue)
+        overtime = int(original.records[-1]["overtime"])
+        for team in teams:
+            team_minutes = sum(minutes[player.name] for player in team.players)
+            self.assertAlmostEqual(team_minutes, 5 * (48 + 5 * overtime), places=2)
+            reserve = team.players[5].name
+            self.assertTrue(20 <= minutes[reserve] <= 28)
+            self.assertTrue(all(minutes[player.name] > minutes[reserve] for player in team.players[:5]))
+            self.assertLess(fatigue[reserve], max(fatigue[player.name] for player in team.players[:5]))
+
     def test_one_hundred_games_finish_with_plausible_scores(self) -> None:
         scores = [simulate_game(seed) for seed in range(100)]
         points = [score for game in scores for score in (game.home_score, game.away_score)]

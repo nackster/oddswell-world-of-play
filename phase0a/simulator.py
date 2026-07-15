@@ -8,8 +8,10 @@ from pathlib import Path
 from typing import Callable, Iterable, Mapping
 
 
-ENGINE_VERSION = "phase0d1-v1"
+ENGINE_VERSION = "phase0d2-v1"
 BRAIN_VERSION = "baseline-v2"
+REGULATION_SECONDS = 48 * 60
+ROTATION_SEGMENT_SECONDS = REGULATION_SECONDS // 10
 POSSESSION_SECONDS = 14
 MAX_GAME_FATIGUE = 0.45
 ACTION_KEYS = {"role", "kind", "actor", "target"}
@@ -68,7 +70,7 @@ class Action:
 class GameState:
     home: Team
     away: Team
-    clock_seconds: int = 48 * 60
+    clock_seconds: int = REGULATION_SECONDS
     possession_number: int = 0
     decision_number: int = 0
     possession: str = ""
@@ -85,6 +87,7 @@ class GameResult:
     away_score: int
     action_tape: tuple[dict[str, object], ...]
     records: tuple[dict[str, object], ...]
+    minutes_played: tuple[tuple[str, float], ...]
     final_fatigue: tuple[tuple[str, float], ...]
 
     def jsonl(self) -> str:
@@ -101,6 +104,7 @@ def default_teams() -> tuple[Team, Team]:
                 Player("Dorian Pike", 79, 71, 82, 70, 84),
                 Player("Kellan Shore", 72, 69, 78, 84, 80),
                 Player("Andre North", 68, 65, 80, 88, 78),
+                Player("Malik Frost", 74, 72, 74, 63, 82),
             ),
         ),
         Team(
@@ -111,6 +115,7 @@ def default_teams() -> tuple[Team, Team]:
                 Player("Eli Mercer", 75, 84, 74, 60, 89),
                 Player("Roman Voss", 73, 67, 79, 86, 81),
                 Player("Cal Brooks", 70, 64, 81, 89, 77),
+                Player("Mateo Cruz", 74, 73, 73, 65, 83),
             ),
         ),
     )
@@ -121,7 +126,25 @@ def clamp(value: float, minimum: float, maximum: float) -> float:
 
 
 def other_team(state: GameState, team: Team) -> Team:
-    return state.away if team == state.home else state.home
+    return state.away if team.name == state.home.name else state.home
+
+
+def rotation_lineup(team: Team, clock_seconds: int, overtime: int = 0) -> Team:
+    if len(team.players) < 5:
+        raise ValueError(f"{team.name} needs at least five players")
+    starters = team.players[:5]
+    if len(team.players) == 5 or overtime:
+        return Team(team.name, starters)
+    # ponytail: one reserve is the D.2 ceiling; add coach-selected depth only when rotations expand.
+    segment = min(9, (REGULATION_SECONDS - clock_seconds) // ROTATION_SEGMENT_SECONDS)
+    if segment % 2 == 0:
+        return Team(team.name, starters)
+    resting_starter = segment // 2
+    return Team(
+        team.name,
+        tuple(player for index, player in enumerate(starters) if index != resting_starter)
+        + (team.players[5],),
+    )
 
 
 def validate_action(action: Action, team: Team, opponent: Team, ballhandler: str) -> None:
@@ -216,6 +239,8 @@ def simulate_game(
     replay = iter(action_tape) if action_tape is not None else None
     emitted_actions: list[dict[str, object]] = []
     records: list[dict[str, object]] = []
+    seconds_played = {name: 0 for name in player_names}
+    previous_lineups: dict[str, tuple[str, ...]] = {}
 
     def record(event_type: str, **details: object) -> None:
         records.append({"sequence": len(records) + 1, "type": event_type, **details})
@@ -260,8 +285,16 @@ def simulate_game(
             state.clock_seconds = 5 * 60
             record("overtime_started", overtime=overtime)
 
-        offense = home if state.possession == home.name else away
-        defense = other_team(state, offense)
+        home_lineup = rotation_lineup(home, state.clock_seconds, overtime)
+        away_lineup = rotation_lineup(away, state.clock_seconds, overtime)
+        for lineup in (home_lineup, away_lineup):
+            names = tuple(player.name for player in lineup.players)
+            if previous_lineups.get(lineup.name) != names:
+                record("lineup_changed", team=lineup.name, players=names, clock_seconds=state.clock_seconds)
+                previous_lineups[lineup.name] = names
+
+        offense = home_lineup if state.possession == home.name else away_lineup
+        defense = away_lineup if offense.name == home.name else home_lineup
         state.possession_number += 1
         ballhandler = outcome_rng.choices(
             offense.players,
@@ -329,8 +362,8 @@ def simulate_game(
                 state.score[offense.name] += points
                 break
 
-            offense_rebounding = sum(player.rebounding for player in offense.players) / 5
-            defense_rebounding = sum(player.rebounding for player in defense.players) / 5
+            offense_rebounding = sum(player.rebounding for player in offense.players) / len(offense.players)
+            defense_rebounding = sum(player.rebounding for player in defense.players) / len(defense.players)
             rebound_chance = clamp(0.24 + (offense_rebounding - defense_rebounding) / 400, 0.12, 0.42)
             if decision_number < 4 and outcome_rng.random() < rebound_chance:
                 rebounder = outcome_rng.choices(
@@ -351,13 +384,17 @@ def simulate_game(
         else:
             record("shot_clock_violation", possession=state.possession_number, team=offense.name)
 
-        for team in (home, away):
+        elapsed_seconds = min(POSSESSION_SECONDS, state.clock_seconds)
+        for team in (home_lineup, away_lineup):
             for player in team.players:
+                seconds_played[player.name] += elapsed_seconds
                 state.fatigue[player.name] = min(
                     MAX_GAME_FATIGUE,
-                    state.fatigue[player.name] + 0.0015 + (100 - player.stamina) / 50_000,
+                    state.fatigue[player.name]
+                    + (0.0015 + (100 - player.stamina) / 50_000)
+                    * (elapsed_seconds / POSSESSION_SECONDS),
                 )
-        state.clock_seconds = max(0, state.clock_seconds - POSSESSION_SECONDS)
+        state.clock_seconds -= elapsed_seconds
         state.possession = defense.name
 
     if replay is not None:
@@ -365,11 +402,13 @@ def simulate_game(
         if next(replay, sentinel) is not sentinel:
             raise ValueError("action tape contains decisions after the game ended")
 
+    minutes_played = tuple((name, round(seconds_played[name] / 60, 4)) for name in player_names)
     record(
         "game_ended",
         score=dict(state.score),
         possessions=state.possession_number,
         overtime=overtime,
+        minutes_played=dict(minutes_played),
     )
     return GameResult(
         seed=seed,
@@ -379,6 +418,7 @@ def simulate_game(
         away_score=state.score[away.name],
         action_tape=tuple(emitted_actions),
         records=tuple(records),
+        minutes_played=minutes_played,
         final_fatigue=tuple((name, round(state.fatigue[name], 4)) for name in player_names),
     )
 

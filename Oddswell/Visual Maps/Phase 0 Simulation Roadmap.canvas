@@ -1,22 +1,24 @@
 {
-	"nodes":[
-		{"id":"p0-title","type":"text","text":"# Phase 0 simulation roadmap\nBuild one auditable basketball simulator in measured steps. Follow the arrows; each completed phase leaves evidence.","x":-650,"y":-750,"width":1400,"height":150,"color":"6"},
-		{"id":"p0-a","type":"text","text":"## 0A ✅ ENGINE\nDeterministic resolver\n• legal action contract\n• decision tape + events\n• exact replay","x":-650,"y":-540,"width":420,"height":220,"color":"3"},
-		{"id":"p0-b","type":"text","text":"## 0B ✅ CALIBRATION\n1,000 reproducible games\n• team + player metrics\n• realism guardrails\n• rebound bug corrected","x":-180,"y":-540,"width":420,"height":220,"color":"3"},
-		{"id":"p0-c","type":"text","text":"## 0C ✅ AI GUARDRAIL\nLegal actions only\n• strict JSON validation\n• deterministic fallback\n• exact recorded replay","x":290,"y":-540,"width":420,"height":220,"color":"3"},
-		{"id":"p0-d","type":"text","text":"## 0D + 0D.1 ✅ LEAGUE\nSchedule + standings\n• three saved seasons\n• between-game fatigue\n• 60/60 replay hashes","x":290,"y":-250,"width":420,"height":220,"color":"3"},
-		{"id":"p0-half","type":"text","text":"## 0D.2 ▶ ROTATIONS\n**NEXT GATE**\n• player minutes\n• minimal substitutions\n• fatigue from actual workload","x":-180,"y":-250,"width":420,"height":220,"color":"4"},
-		{"id":"p0-later","type":"text","text":"## 0.5 ◇ PLAYABLE LOOP\nAfter rotations pass:\n• browse teams + schedule\n• lock predictions\n• server simulation + credits","x":-650,"y":-250,"width":420,"height":220,"color":"6"},
-		{"id":"p0-evidence-b","type":"text","text":"## 📊 Calibration evidence\n[[Development/Reports/Phase 0B Baseline|Open Phase 0B report]]\n1,000 games · 9/9 checks passed · rebound concentration corrected","x":-650,"y":50,"width":420,"height":180,"color":"5"},
-		{"id":"p0-evidence-c","type":"text","text":"## 🛡️ AI + fairness evidence\n[[Development/Reports/Phase 0C Offline LLM Policy Pilot|Open Phase 0C report]]\n8,140 decisions · paired fairness · exact replay\n[[Design/Decisions/DEC-004 AI Retraining Budget|Retraining limit: $5]]","x":-180,"y":50,"width":420,"height":180,"color":"2"},
-		{"id":"p0-evidence-d","type":"text","text":"## 🔐 League + fatigue evidence\n[[Development/Reports/Phase 0D Schedule and Standings|Schedule report]] · [[Development/Reports/Phase 0D1 Multi-Season Fatigue|Fatigue report]]\nThree seasons · 60/60 replay hashes · exact save/resume","x":290,"y":50,"width":420,"height":180,"color":"3"},
-		{"id":"p0-life","type":"text","text":"## 🧍 Later: Athlete Life Brain\nTraining · rest · recovery · social life first. Relationships, nightlife, media, discipline, and long-term consequences come after the playable sports loop is stable.","x":-650,"y":290,"width":1360,"height":150,"color":"5"}
-	],
-	"edges":[
-		{"id":"p0-edge-1","fromNode":"p0-a","fromSide":"right","toNode":"p0-b","toSide":"left"},
-		{"id":"p0-edge-2","fromNode":"p0-b","fromSide":"right","toNode":"p0-c","toSide":"left"},
-		{"id":"p0-edge-3","fromNode":"p0-c","fromSide":"bottom","toNode":"p0-d","toSide":"top"},
-		{"id":"p0-edge-4","fromNode":"p0-d","fromSide":"left","toNode":"p0-half","toSide":"right"},
-		{"id":"p0-edge-5","fromNode":"p0-half","fromSide":"left","toNode":"p0-later","toSide":"right"}
-	]
+  "nodes": [
+    {"id":"p0-title","type":"text","text":"# Phase 0 simulation roadmap\nOne auditable basketball simulator, advanced only by measured evidence.","x":-650,"y":-750,"width":1400,"height":140,"color":"6"},
+    {"id":"p0-a","type":"text","text":"## 0A ✅ ENGINE\nDeterministic resolver\n• legal actions\n• decision tape\n• exact replay","x":-650,"y":-540,"width":420,"height":210,"color":"3"},
+    {"id":"p0-b","type":"text","text":"## 0B ✅ CALIBRATION\n1,000 seeded games\n• team + player metrics\n• realism guardrails\n• rebound correction","x":-180,"y":-540,"width":420,"height":210,"color":"3"},
+    {"id":"p0-c","type":"text","text":"## 0C ✅ AI GUARDRAIL\nLegal actions only\n• strict validation\n• deterministic fallback\n• recorded replay","x":290,"y":-540,"width":420,"height":210,"color":"3"},
+    {"id":"p0-d","type":"text","text":"## 0D + 0D.1 ✅ LEAGUE\nSchedule + standings\n• three saved seasons\n• carryover fatigue\n• exact save/resume","x":290,"y":-250,"width":420,"height":210,"color":"3"},
+    {"id":"p0-d2","type":"text","text":"## 0D.2 ✅ ROTATIONS\nSix-player rosters\n• deterministic lineups\n• authoritative minutes\n• workload from minutes","x":-180,"y":-250,"width":420,"height":210,"color":"3"},
+    {"id":"p0-d3","type":"text","text":"## 0D.3 ▶ AVAILABILITY\n**NEXT GATE**\n• minor injuries\n• recovery days\n• inactive players log 0 minutes","x":-650,"y":-250,"width":420,"height":210,"color":"4"},
+    {"id":"p0-evidence-b","type":"text","text":"## 📊 Calibration evidence\n[[Development/Reports/Phase 0B Baseline|Phase 0B report]]\n1,000 games • 9/9 checks","x":-650,"y":40,"width":420,"height":160,"color":"5"},
+    {"id":"p0-evidence-c","type":"text","text":"## 🛡️ AI evidence\n[[Development/Reports/Phase 0C Offline LLM Policy Pilot|Phase 0C report]]\n8,140 decisions • fairness • $0","x":-180,"y":40,"width":420,"height":160,"color":"2"},
+    {"id":"p0-evidence-d","type":"text","text":"## ⏱️ League evidence\n[[Development/Reports/Phase 0D2 Rotation Minutes and Workload|Phase 0D.2 report]]\n240 team-minutes • 20/20 tests • exact persistence","x":290,"y":40,"width":420,"height":160,"color":"3"},
+    {"id":"p0-playable","type":"text","text":"## 0.5 ◇ PLAYABLE SPORTS LOOP\nBrowse teams + schedules • lock predictions • server simulation\nBegins only after availability and recovery pass.","x":-650,"y":280,"width":650,"height":150,"color":"6"},
+    {"id":"p0-life","type":"text","text":"## 🧍 LATER: ATHLETE LIFE BRAIN\nTraining • rest • recovery • social life\nRelationships, nightlife, media, and long-term consequences follow a stable sports loop.","x":60,"y":280,"width":650,"height":150,"color":"5"}
+  ],
+  "edges": [
+    {"id":"p0-edge-1","fromNode":"p0-a","fromSide":"right","toNode":"p0-b","toSide":"left"},
+    {"id":"p0-edge-2","fromNode":"p0-b","fromSide":"right","toNode":"p0-c","toSide":"left"},
+    {"id":"p0-edge-3","fromNode":"p0-c","fromSide":"bottom","toNode":"p0-d","toSide":"top"},
+    {"id":"p0-edge-4","fromNode":"p0-d","fromSide":"left","toNode":"p0-d2","toSide":"right"},
+    {"id":"p0-edge-5","fromNode":"p0-d2","fromSide":"left","toNode":"p0-d3","toSide":"right"},
+    {"id":"p0-edge-6","fromNode":"p0-d3","fromSide":"bottom","toNode":"p0-playable","toSide":"top"}
+  ]
 }

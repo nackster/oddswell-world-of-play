@@ -53,6 +53,18 @@ class LeagueTests(unittest.TestCase):
             all(0 <= value <= MAX_CARRYOVER_FATIGUE for game in season.games for _, value in game.postgame_fatigue)
         )
 
+    def test_actual_minutes_create_different_carryover_loads(self) -> None:
+        season = simulate_season(2, 850)
+        game = season.games[0]
+        minutes = dict(game.minutes_played)
+        fatigue = dict(game.postgame_fatigue)
+        fixture = build_schedule(2, 850)[0]
+        for team in (fixture.home, fixture.away):
+            reserve = team.players[5].name
+            self.assertAlmostEqual(sum(minutes[player.name] for player in team.players), 240, places=2)
+            self.assertLess(minutes[reserve], min(minutes[player.name] for player in team.players[:5]))
+            self.assertLess(fatigue[reserve], max(fatigue[player.name] for player in team.players[:5]))
+
     def test_saved_league_resumes_identically(self) -> None:
         first = simulate_next_season(new_league(900), 6)
         uninterrupted = simulate_next_season(first, 6)
@@ -62,7 +74,7 @@ class LeagueTests(unittest.TestCase):
             loaded = load_league(path)
         self.assertEqual(first, loaded)
         self.assertEqual(uninterrupted, simulate_next_season(loaded, 6))
-        self.assertIn("Multi-Season Persistence and Fatigue", render_league_markdown(uninterrupted))
+        self.assertIn("Rotation Minutes and Workload", render_league_markdown(uninterrupted))
 
 
 if __name__ == "__main__":

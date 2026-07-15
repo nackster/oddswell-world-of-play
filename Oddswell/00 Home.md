@@ -27,6 +27,8 @@ tags:
 - [[Development/Reports/Phase 0B Baseline|Phase 0B baseline report]]
 - [[Development/Reports/Phase 0C Offline LLM Policy Pilot|Phase 0C offline LLM policy pilot]]
 - [[Development/Reports/Phase 0D Schedule and Standings|Phase 0D schedule and standings]]
+- [[Development/Reports/Phase 0D1 Multi-Season Fatigue|Phase 0D.1 multi-season fatigue]]
+- [[Development/Reports/Phase 0D2 Rotation Minutes and Workload|Phase 0D.2 rotation minutes and workload]]
 - [[Visual Maps/Project Tool Map|Master project tool map]]
 - [[Visual Maps/3D Asset Toolchain|3D asset toolchain canvas]]
 - [[Visual Maps/Multi-Brain Architecture|Multi-brain architecture canvas]]
@@ -35,7 +37,7 @@ tags:
 
 ## Current focus
 
-Phase 0D is active with a deterministic 20-game schedule, standings, stable tie-breakers, and replay hashes. The first retraining experiment has a hard $5 ceiling; provider/model selection and a separate live-inference budget remain unresolved.
+Phase 0D.2 is complete with deterministic rotations, authoritative player minutes, minutes-driven fatigue, exact replay, and exact save/resume. The next no-cost gate is deterministic injury availability and recovery; no live model or retraining job is authorized.
 
 ## Current state
 
