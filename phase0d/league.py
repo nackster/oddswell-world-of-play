@@ -2,18 +2,31 @@ from __future__ import annotations
 
 import argparse
 import json
+import random
 from collections import Counter
 from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Mapping
 
-from phase0a.simulator import BRAIN_VERSION, ENGINE_VERSION, Team, default_teams, simulate_game
+from phase0a.simulator import (
+    BRAIN_VERSION,
+    ENGINE_VERSION,
+    MAX_RECOVERY_DAYS,
+    Team,
+    default_teams,
+    simulate_game,
+)
 from phase0c.replay import replay_manifest, verify_replay_manifest
 
 
-LEAGUE_VERSION = "phase0d2-v1"
-STATE_SCHEMA = "oddswell-league-state-v2"
+LEAGUE_VERSION = "phase0d3-v1"
+STATE_SCHEMA = "oddswell-league-state-v3"
 FATIGUE_MODEL_VERSION = "minutes-workload-v1"
+INJURY_MODEL_VERSION = "minor-availability-v1"
+INJURY_SEED_SALT = 0x1A11AB1E
+MAX_INJURY_RISK = 0.04
+INJURY_RECOVERY_DAYS = (2, 3, 5, 7)
+INJURY_RECOVERY_WEIGHTS = (50, 30, 15, 5)
 MAX_CARRYOVER_FATIGUE = 0.35
 RECOVERY_PER_DAY = 0.04
 BETWEEN_GAME_REST_DAYS = 1
@@ -21,6 +34,7 @@ OFFSEASON_REST_DAYS = 7
 
 FatigueSnapshot = tuple[tuple[str, float], ...]
 MinutesSnapshot = tuple[tuple[str, float], ...]
+AvailabilitySnapshot = tuple[tuple[str, int], ...]
 
 
 @dataclass(frozen=True)
@@ -44,6 +58,8 @@ class SeasonGame:
     pregame_fatigue: FatigueSnapshot
     postgame_fatigue: FatigueSnapshot
     minutes_played: MinutesSnapshot
+    pregame_availability: AvailabilitySnapshot
+    postgame_availability: AvailabilitySnapshot
 
 
 @dataclass(frozen=True)
@@ -72,6 +88,8 @@ class SeasonResult:
     standings: tuple[Standing, ...]
     initial_fatigue: FatigueSnapshot
     final_fatigue: FatigueSnapshot
+    initial_availability: AvailabilitySnapshot
+    final_availability: AvailabilitySnapshot
 
 
 @dataclass(frozen=True)
@@ -80,6 +98,7 @@ class LeagueState:
     next_season: int
     next_seed: int
     fatigue: FatigueSnapshot
+    availability: AvailabilitySnapshot
     seasons: tuple[SeasonResult, ...]
 
 
@@ -122,6 +141,32 @@ def minutes_snapshot(values: Mapping[str, float], teams: tuple[Team, Team] | Non
     )
 
 
+def availability_snapshot(
+    values: Mapping[str, int],
+    teams: tuple[Team, Team] | None = None,
+) -> AvailabilitySnapshot:
+    roster = teams or default_teams()
+    expected = {player.name for team in roster for player in team.players}
+    if set(values) != expected or any(
+        not isinstance(values[name], int)
+        or isinstance(values[name], bool)
+        or not 0 <= values[name] <= MAX_RECOVERY_DAYS
+        for name in expected
+    ):
+        raise ValueError("invalid availability roster or recovery days")
+    if any(sum(values[player.name] == 0 for player in team.players) < 5 for team in roster):
+        raise ValueError("each team needs at least five available players")
+    return tuple(
+        (player.name, values[player.name])
+        for team in roster
+        for player in team.players
+    )
+
+
+def empty_availability(teams: tuple[Team, Team] | None = None) -> AvailabilitySnapshot:
+    return tuple((player.name, 0) for team in (teams or default_teams()) for player in team.players)
+
+
 def recover_fatigue(
     fatigue: FatigueSnapshot,
     rest_days: int,
@@ -134,6 +179,62 @@ def recover_fatigue(
         {name: max(0.0, amount - RECOVERY_PER_DAY * rest_days) for name, amount in values.items()},
         teams,
     )
+
+
+def recover_availability(
+    availability: AvailabilitySnapshot,
+    rest_days: int,
+    teams: tuple[Team, Team] | None = None,
+) -> AvailabilitySnapshot:
+    if rest_days < 0:
+        raise ValueError("rest_days cannot be negative")
+    return availability_snapshot(
+        {name: max(0, recovery_days - rest_days) for name, recovery_days in availability},
+        teams,
+    )
+
+
+def injury_risk(minutes: float, pregame_fatigue: float) -> float:
+    if minutes <= 0:
+        return 0.0
+    return min(
+        MAX_INJURY_RISK,
+        max(
+            0.0,
+            0.002
+            + 0.006 * minutes / 48
+            + 0.04 * pregame_fatigue
+            + 0.012 * max(0.0, minutes - 36) / 12,
+        ),
+    )
+
+
+def add_minor_injuries(
+    availability: AvailabilitySnapshot,
+    fatigue: FatigueSnapshot,
+    minutes_played: MinutesSnapshot,
+    teams: tuple[Team, Team],
+    seed: int,
+) -> AvailabilitySnapshot:
+    values = dict(availability)
+    fatigue_values = dict(fatigue)
+    minutes = dict(minutes_played)
+    rng = random.Random(seed ^ INJURY_SEED_SALT)
+    for team in teams:
+        available_count = sum(values[player.name] == 0 for player in team.players)
+        for player in team.players:
+            if available_count <= 5:
+                break
+            if values[player.name] or minutes[player.name] <= 0:
+                continue
+            if rng.random() < injury_risk(minutes[player.name], fatigue_values[player.name]):
+                values[player.name] = rng.choices(
+                    INJURY_RECOVERY_DAYS,
+                    weights=INJURY_RECOVERY_WEIGHTS,
+                    k=1,
+                )[0]
+                available_count -= 1
+    return availability_snapshot(values, teams)
 
 
 def add_game_load(
@@ -161,28 +262,49 @@ def simulate_season(
     game_count: int = 20,
     start_seed: int = 10_000,
     initial_fatigue: FatigueSnapshot | None = None,
+    initial_availability: AvailabilitySnapshot | None = None,
     season_number: int = 1,
 ) -> SeasonResult:
     teams = default_teams()
     schedule = build_schedule(game_count, start_seed, teams)
     fatigue = initial_fatigue or empty_fatigue(teams)
     fatigue = fatigue_snapshot(dict(fatigue), teams)
+    availability = initial_availability or empty_availability(teams)
+    availability = availability_snapshot(dict(availability), teams)
     season_start = fatigue
+    season_start_availability = availability
     totals: dict[str, Counter[str]] = {team.name: Counter() for team in teams}
     games = []
 
     for index, fixture in enumerate(schedule):
         if index:
             fatigue = recover_fatigue(fatigue, BETWEEN_GAME_REST_DAYS, teams)
+            availability = recover_availability(availability, BETWEEN_GAME_REST_DAYS, teams)
         matchup = (fixture.home, fixture.away)
-        result = simulate_game(fixture.seed, matchup=matchup, initial_fatigue=dict(fatigue))
-        manifest = replay_manifest(result, matchup, BRAIN_VERSION)
-        if not verify_replay_manifest(manifest):
-            raise RuntimeError(f"replay manifest failed for game {fixture.number}")
+        result = simulate_game(
+            fixture.seed,
+            matchup=matchup,
+            initial_fatigue=dict(fatigue),
+            initial_availability=dict(availability),
+        )
         winner = result.home_team if result.home_score > result.away_score else result.away_team
         loser = result.away_team if winner == result.home_team else result.home_team
         played = minutes_snapshot(dict(result.minutes_played), teams)
         postgame_fatigue = add_game_load(fatigue, teams, played)
+        postgame_availability = add_minor_injuries(availability, fatigue, played, teams, fixture.seed)
+        manifest = replay_manifest(
+            result,
+            matchup,
+            BRAIN_VERSION,
+            {
+                "injury_model_version": INJURY_MODEL_VERSION,
+                "minutes_played": dict(played),
+                "pregame_availability": dict(availability),
+                "postgame_availability": dict(postgame_availability),
+            },
+        )
+        if not verify_replay_manifest(manifest):
+            raise RuntimeError(f"replay manifest failed for game {fixture.number}")
 
         totals[winner]["wins"] += 1
         totals[loser]["losses"] += 1
@@ -203,9 +325,12 @@ def simulate_season(
                 fatigue,
                 postgame_fatigue,
                 played,
+                availability,
+                postgame_availability,
             )
         )
         fatigue = postgame_fatigue
+        availability = postgame_availability
 
     standings = tuple(
         sorted(
@@ -223,11 +348,20 @@ def simulate_season(
             key=lambda row: (-row.wins, -row.point_difference, -row.points_for, row.team),
         )
     )
-    return SeasonResult(season_number, start_seed, tuple(games), standings, season_start, fatigue)
+    return SeasonResult(
+        season_number,
+        start_seed,
+        tuple(games),
+        standings,
+        season_start,
+        fatigue,
+        season_start_availability,
+        availability,
+    )
 
 
 def new_league(start_seed: int = 10_000) -> LeagueState:
-    return LeagueState(STATE_SCHEMA, 1, start_seed, empty_fatigue(), ())
+    return LeagueState(STATE_SCHEMA, 1, start_seed, empty_fatigue(), empty_availability(), ())
 
 
 def simulate_next_season(state: LeagueState, game_count: int = 20) -> LeagueState:
@@ -236,12 +370,24 @@ def simulate_next_season(state: LeagueState, game_count: int = 20) -> LeagueStat
     initial_fatigue = (
         recover_fatigue(state.fatigue, OFFSEASON_REST_DAYS) if state.seasons else state.fatigue
     )
-    season = simulate_season(game_count, state.next_seed, initial_fatigue, state.next_season)
+    initial_availability = (
+        recover_availability(state.availability, OFFSEASON_REST_DAYS)
+        if state.seasons
+        else state.availability
+    )
+    season = simulate_season(
+        game_count,
+        state.next_seed,
+        initial_fatigue,
+        initial_availability,
+        state.next_season,
+    )
     return LeagueState(
         STATE_SCHEMA,
         state.next_season + 1,
         state.next_seed + game_count,
         season.final_fatigue,
+        season.final_availability,
         state.seasons + (season,),
     )
 
@@ -288,6 +434,20 @@ def _minutes_from_json(value: object) -> MinutesSnapshot:
     return snapshot
 
 
+def _availability_from_json(value: object) -> AvailabilitySnapshot:
+    expected_count = sum(len(team.players) for team in default_teams())
+    if not isinstance(value, list) or len(value) != expected_count or any(
+        not isinstance(item, list)
+        or len(item) != 2
+        or not isinstance(item[0], str)
+        or not isinstance(item[1], int)
+        or isinstance(item[1], bool)
+        for item in value
+    ):
+        raise ValueError("invalid availability snapshot")
+    return availability_snapshot({name: recovery_days for name, recovery_days in value})
+
+
 def load_league(path: Path) -> LeagueState:
     try:
         value = json.loads(path.read_text(encoding="utf-8"))
@@ -296,11 +456,14 @@ def load_league(path: Path) -> LeagueState:
             "next_season",
             "next_seed",
             "fatigue",
+            "availability",
             "seasons",
         }:
             raise ValueError("invalid league state fields")
-        if value["schema"] != STATE_SCHEMA or not isinstance(value["seasons"], list):
-            raise ValueError("unsupported league state")
+        if value["schema"] != STATE_SCHEMA:
+            raise ValueError(f"unsupported league state schema {value['schema']!r}; expected {STATE_SCHEMA!r}")
+        if not isinstance(value["seasons"], list):
+            raise ValueError("invalid seasons")
         seasons = []
         for season_value in value["seasons"]:
             season_data = dict(season_value)
@@ -310,24 +473,93 @@ def load_league(path: Path) -> LeagueState:
                 game_data["pregame_fatigue"] = _snapshot_from_json(game_data["pregame_fatigue"])
                 game_data["postgame_fatigue"] = _snapshot_from_json(game_data["postgame_fatigue"])
                 game_data["minutes_played"] = _minutes_from_json(game_data["minutes_played"])
+                game_data["pregame_availability"] = _availability_from_json(
+                    game_data["pregame_availability"]
+                )
+                game_data["postgame_availability"] = _availability_from_json(
+                    game_data["postgame_availability"]
+                )
                 games.append(SeasonGame(**game_data))
             standings = tuple(Standing(**row) for row in season_data.pop("standings"))
             season_data["initial_fatigue"] = _snapshot_from_json(season_data["initial_fatigue"])
             season_data["final_fatigue"] = _snapshot_from_json(season_data["final_fatigue"])
+            season_data["initial_availability"] = _availability_from_json(
+                season_data["initial_availability"]
+            )
+            season_data["final_availability"] = _availability_from_json(
+                season_data["final_availability"]
+            )
             seasons.append(SeasonResult(games=tuple(games), standings=standings, **season_data))
         return LeagueState(
             value["schema"],
             int(value["next_season"]),
             int(value["next_seed"]),
             _snapshot_from_json(value["fatigue"]),
+            _availability_from_json(value["availability"]),
             tuple(seasons),
         )
     except (KeyError, TypeError, ValueError, json.JSONDecodeError) as error:
-        raise ValueError(f"invalid league state: {path}") from error
+        raise ValueError(f"invalid league state {path}: {error}") from error
 
 
 def average_fatigue(fatigue: FatigueSnapshot) -> float:
     return sum(value for _, value in fatigue) / len(fatigue)
+
+
+def availability_metrics(state: LeagueState) -> dict[str, float | int]:
+    active_player_games = 0
+    missed_player_games = 0
+    new_injuries = 0
+    high_workload_games = 0
+    high_workload_injuries = 0
+    lower_workload_games = 0
+    lower_workload_injuries = 0
+    zero_minute_absences = 0
+    minimum_available = len(default_teams()[0].players)
+    max_recovery_days = 0
+    teams = default_teams()
+
+    for season in state.seasons:
+        for game in season.games:
+            before = dict(game.pregame_availability)
+            after = dict(game.postgame_availability)
+            minutes = dict(game.minutes_played)
+            max_recovery_days = max(max_recovery_days, *after.values())
+            for team in teams:
+                minimum_available = min(
+                    minimum_available,
+                    sum(before[player.name] == 0 for player in team.players),
+                )
+            for player, recovery_days in before.items():
+                if recovery_days:
+                    missed_player_games += 1
+                    zero_minute_absences += minutes[player] == 0
+                    continue
+                active_player_games += 1
+                injured = after[player] > 0
+                new_injuries += injured
+                if minutes[player] > 36:
+                    high_workload_games += 1
+                    high_workload_injuries += injured
+                else:
+                    lower_workload_games += 1
+                    lower_workload_injuries += injured
+
+    return {
+        "active_player_games": active_player_games,
+        "missed_player_games": missed_player_games,
+        "new_injuries": new_injuries,
+        "injury_rate": new_injuries / active_player_games if active_player_games else 0.0,
+        "high_workload_games": high_workload_games,
+        "high_workload_injuries": high_workload_injuries,
+        "high_workload_rate": high_workload_injuries / high_workload_games if high_workload_games else 0.0,
+        "lower_workload_games": lower_workload_games,
+        "lower_workload_injuries": lower_workload_injuries,
+        "lower_workload_rate": lower_workload_injuries / lower_workload_games if lower_workload_games else 0.0,
+        "zero_minute_absences": zero_minute_absences,
+        "minimum_available": minimum_available,
+        "max_recovery_days": max_recovery_days,
+    }
 
 
 def render_markdown(season: SeasonResult) -> str:
@@ -385,7 +617,7 @@ def render_markdown(season: SeasonResult) -> str:
             ),
             "",
             (
-                "Injuries, substitutions, public information, prediction scoring, and live LLM control "
+                "Tactical substitutions, public information, prediction scoring, and live LLM control "
                 "remain separate measured steps."
             ),
             "",
@@ -395,6 +627,7 @@ def render_markdown(season: SeasonResult) -> str:
 
 
 def render_league_markdown(state: LeagueState) -> str:
+    metrics = availability_metrics(state)
     lines = [
         "---",
         "tags:",
@@ -402,65 +635,74 @@ def render_league_markdown(state: LeagueState) -> str:
         "  - simulation",
         "  - season",
         "  - fatigue",
+        "  - availability",
+        "  - injuries",
         "status: complete",
         "---",
         "",
-        "# Phase 0D.2 Rotation Minutes and Workload",
+        "# Phase 0D.3 Availability and Recovery",
         "",
         (
             f"Deterministic **{len(state.seasons)}-season** run using state schema `{STATE_SCHEMA}`, "
             f"league `{LEAGUE_VERSION}`, engine `{ENGINE_VERSION}`, fatigue model `{FATIGUE_MODEL_VERSION}`, "
-            f"and brain `{BRAIN_VERSION}`."
+            f"injury model `{INJURY_MODEL_VERSION}`, and brain `{BRAIN_VERSION}`."
         ),
         "",
         "## Season summary",
         "",
-        "| Season | Seeds | Leader | Record | Start fatigue | Final fatigue | Replay hashes |",
+        "| Season | Seeds | Leader | Record | New injuries | Missed player-games | Replay hashes |",
         "| ---: | --- | --- | --- | ---: | ---: | ---: |",
     ]
     for season in state.seasons:
         leader = season.standings[0]
+        season_state = LeagueState(
+            STATE_SCHEMA,
+            0,
+            0,
+            season.final_fatigue,
+            season.final_availability,
+            (season,),
+        )
+        season_metrics = availability_metrics(season_state)
         lines.append(
             f"| {season.season_number} | {season.start_seed}-{season.start_seed + len(season.games) - 1} | "
-            f"{leader.team} | {leader.wins}-{leader.losses} | {average_fatigue(season.initial_fatigue):.3f} | "
-            f"{average_fatigue(season.final_fatigue):.3f} | {len(season.games)}/{len(season.games)} |"
+            f"{leader.team} | {leader.wins}-{leader.losses} | {season_metrics['new_injuries']} | "
+            f"{season_metrics['missed_player_games']} | {len(season.games)}/{len(season.games)} |"
         )
-    first_season = state.seasons[0]
-    middle_game = first_season.games[len(first_season.games) // 2 - 1]
-    last_game = first_season.games[-1]
     lines.extend(
         [
             "",
-            "## Measured progression",
+            "## Fixed-seed realism guardrails",
             "",
-            (
-                f"- Season 1 average pregame fatigue: **{average_fatigue(first_season.games[0].pregame_fatigue):.3f}** "
-                f"in game 1, **{average_fatigue(middle_game.pregame_fatigue):.3f}** in game {middle_game.number}, "
-                f"and **{average_fatigue(last_game.pregame_fatigue):.3f}** in game {last_game.number}."
-            ),
-            (
-                f"- Seven offseason rest days reduced the next season's starting average to "
-                f"**{average_fatigue(state.seasons[1].initial_fatigue):.3f}**."
-                if len(state.seasons) > 1
-                else "- Offseason recovery will be measured when a second season is run."
-            ),
+            f"- **{metrics['new_injuries']}** new minor injuries across **{metrics['active_player_games']}** active player-games "
+            f"(**{metrics['injury_rate']:.2%}**). The per-player ceiling is **{MAX_INJURY_RISK:.0%}**.",
+            f"- High-workload player-games above 36 minutes: **{metrics['high_workload_injuries']}/{metrics['high_workload_games']}** "
+            f"(**{metrics['high_workload_rate']:.2%}**); lower workload: "
+            f"**{metrics['lower_workload_injuries']}/{metrics['lower_workload_games']}** "
+            f"(**{metrics['lower_workload_rate']:.2%}**).",
+            f"- Unavailable players missed **{metrics['missed_player_games']}** player-games; "
+            f"**{metrics['zero_minute_absences']}/{metrics['missed_player_games']}** recorded zero minutes.",
+            f"- Every team retained at least **{metrics['minimum_available']}** available players. "
+            f"The longest assigned recovery was **{metrics['max_recovery_days']} days**.",
             "",
             "## Persistence gate",
             "",
-            "- JSON stores every season result, standing, replay hash, seed, and player fatigue snapshot.",
+            "- JSON stores pregame and postgame availability, recovery days, minutes, fatigue, seeds, and replay hashes.",
             "- Save, load, and resume use the same deterministic simulation path.",
-            "- Automated equality tests compare uninterrupted play with save-and-resume play.",
+            "- Replay evidence binds the injury-model version, minutes, and pregame/postgame availability.",
             "",
-            "## Fatigue model",
+            "## Availability model",
             "",
-            f"- Carryover fatigue is bounded at **{MAX_CARRYOVER_FATIGUE:.2f}**.",
-            f"- Players recover **{RECOVERY_PER_DAY:.2f} per rest day**, with one day between games and seven between seasons.",
-            "- Each six-player roster uses a deterministic five-player lineup with one reserve sharing five regulation shifts.",
-            "- Game load uses authoritative minutes and stamina. Pregame fatigue, lineup changes, and minutes are bound into replay evidence.",
+            "- Only players who logged minutes can receive a new postgame injury.",
+            "- Injury risk rises with authoritative minutes and pregame fatigue, then clamps at 4%.",
+            "- Recovery durations are 2, 3, 5, or 7 days and decrease by scheduled rest days.",
+            "- Unavailable players are excluded from lineups. The six-player prototype suppresses another injury at five available players.",
             "",
             "## Scope",
             "",
-            "No injuries, credits, wagers, purchases, paid model calls, or retraining jobs are part of this gate.",
+            "In-game injuries, diagnoses, limited/questionable status, permanent injuries, treatment choices, "
+            "off-court injuries, credits, wagers, paid model calls, and retraining are outside this gate.",
+            "The probabilities are provisional engineering calibration values, not medical claims.",
             "",
         ]
     )

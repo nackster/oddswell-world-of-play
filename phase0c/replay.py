@@ -11,9 +11,14 @@ def canonical_json(value: object) -> str:
     return json.dumps(value, ensure_ascii=False, separators=(",", ":"), sort_keys=True)
 
 
-def replay_manifest(game: GameResult, matchup: tuple[Team, Team], policy_version: str) -> dict[str, object]:
+def replay_manifest(
+    game: GameResult,
+    matchup: tuple[Team, Team],
+    policy_version: str,
+    audit: Mapping[str, object] | None = None,
+) -> dict[str, object]:
     payload = {
-        "schema": "oddswell-replay-v1",
+        "schema": "oddswell-replay-v2",
         "engine_version": ENGINE_VERSION,
         "policy_version": policy_version,
         "seed": game.seed,
@@ -28,6 +33,8 @@ def replay_manifest(game: GameResult, matchup: tuple[Team, Team], policy_version
         "action_tape": list(game.action_tape),
         "event_log": list(game.records),
     }
+    if audit is not None:
+        payload["audit"] = dict(audit)
     return {"payload": payload, "sha256": hashlib.sha256(canonical_json(payload).encode()).hexdigest()}
 
 

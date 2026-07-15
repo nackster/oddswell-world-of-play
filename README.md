@@ -65,6 +65,13 @@ python -m phase0d.league --games 20 --seasons 1 --start-seed 12000 --output "Odd
 python -m unittest phase0a.test_simulator phase0b.test_analyze phase0c.test_policy phase0d.test_league -v
 ```
 
+Phase 0D.3 adds deterministic minor injuries, binary availability, scheduled recovery, and replay-bound audit evidence:
+
+```powershell
+python -m phase0d.league --games 20 --seasons 3 --start-seed 13100 --output "Oddswell/Development/Reports/Phase 0D3 Availability and Recovery.md"
+python -m unittest phase0a.test_simulator phase0b.test_analyze phase0c.test_policy phase0d.test_league -v
+```
+
 ## Local Admin Console
 
 Double-click [`Start Brain Observatory.cmd`](Start%20Brain%20Observatory.cmd) to open the local-only Admin Console. Its primary Brain Observatory module visualizes the six brain/authority components, runs a real seeded game through the current simulator, and animates its recorded decision and outcome flow. General navigation now covers Overview, Brains, Simulation, Content, World / League, Operations, and Audit.

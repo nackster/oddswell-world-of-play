@@ -65,7 +65,7 @@ def status_payload() -> dict[str, object]:
                 "name": "World + League Brain",
                 "status": "PARTLY ACTIVE",
                 "version": LEAGUE_VERSION,
-                "detail": "Schedules, seasons, standings, fatigue, persistence, and league history.",
+                "detail": "Schedules, standings, minutes, fatigue, availability, recovery, persistence, and league history.",
             },
             {
                 "id": "basketball",

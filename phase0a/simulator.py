@@ -8,12 +8,13 @@ from pathlib import Path
 from typing import Callable, Iterable, Mapping
 
 
-ENGINE_VERSION = "phase0d2-v1"
+ENGINE_VERSION = "phase0d3-v1"
 BRAIN_VERSION = "baseline-v2"
 REGULATION_SECONDS = 48 * 60
 ROTATION_SEGMENT_SECONDS = REGULATION_SECONDS // 10
 POSSESSION_SECONDS = 14
 MAX_GAME_FATIGUE = 0.45
+MAX_RECOVERY_DAYS = 7
 ACTION_KEYS = {"role", "kind", "actor", "target"}
 OFFENSE_ACTIONS = {"pass", "drive", "shoot_2", "shoot_3"}
 
@@ -129,11 +130,17 @@ def other_team(state: GameState, team: Team) -> Team:
     return state.away if team.name == state.home.name else state.home
 
 
-def rotation_lineup(team: Team, clock_seconds: int, overtime: int = 0) -> Team:
-    if len(team.players) < 5:
+def rotation_lineup(
+    team: Team,
+    clock_seconds: int,
+    overtime: int = 0,
+    unavailable: frozenset[str] = frozenset(),
+) -> Team:
+    available = tuple(player for player in team.players if player.name not in unavailable)
+    if len(available) < 5:
         raise ValueError(f"{team.name} needs at least five players")
-    starters = team.players[:5]
-    if len(team.players) == 5 or overtime:
+    starters = available[:5]
+    if len(available) == 5 or overtime:
         return Team(team.name, starters)
     # ponytail: one reserve is the D.2 ceiling; add coach-selected depth only when rotations expand.
     segment = min(9, (REGULATION_SECONDS - clock_seconds) // ROTATION_SEGMENT_SECONDS)
@@ -143,7 +150,7 @@ def rotation_lineup(team: Team, clock_seconds: int, overtime: int = 0) -> Team:
     return Team(
         team.name,
         tuple(player for index, player in enumerate(starters) if index != resting_starter)
-        + (team.players[5],),
+        + (available[5],),
     )
 
 
@@ -215,6 +222,7 @@ def simulate_game(
     matchup: tuple[Team, Team] | None = None,
     decision_policy: Callable[[str, GameState, Team, Team, str, random.Random], Action] | None = None,
     initial_fatigue: Mapping[str, float] | None = None,
+    initial_availability: Mapping[str, int] | None = None,
 ) -> GameResult:
     home, away = matchup or default_teams()
     state = GameState(home=home, away=away, possession=home.name)
@@ -233,6 +241,24 @@ def simulate_game(
         ):
             raise ValueError(f"initial fatigue must be between 0 and {MAX_GAME_FATIGUE}")
         state.fatigue = {name: float(initial_fatigue[name]) for name in player_names}
+
+    if initial_availability is None:
+        availability = {name: 0 for name in player_names}
+    else:
+        if set(initial_availability) != set(player_names):
+            raise ValueError("initial_availability must contain every matchup player exactly once")
+        if any(
+            not isinstance(initial_availability[name], int)
+            or isinstance(initial_availability[name], bool)
+            or not 0 <= initial_availability[name] <= MAX_RECOVERY_DAYS
+            for name in player_names
+        ):
+            raise ValueError(f"recovery days must be integers between 0 and {MAX_RECOVERY_DAYS}")
+        availability = dict(initial_availability)
+    unavailable = frozenset(name for name, recovery_days in availability.items() if recovery_days)
+    for team in (home, away):
+        if sum(player.name not in unavailable for player in team.players) < 5:
+            raise ValueError(f"{team.name} needs at least five available players")
 
     decision_rng = random.Random(seed ^ 0xA11CE)
     outcome_rng = random.Random(seed ^ 0xDDF00D)
@@ -276,6 +302,8 @@ def simulate_game(
     }
     if initial_fatigue is not None:
         start_details["pregame_fatigue"] = {name: round(state.fatigue[name], 4) for name in player_names}
+    if initial_availability is not None:
+        start_details["pregame_availability"] = dict(availability)
     record("game_started", **start_details)
     overtime = 0
 
@@ -285,8 +313,8 @@ def simulate_game(
             state.clock_seconds = 5 * 60
             record("overtime_started", overtime=overtime)
 
-        home_lineup = rotation_lineup(home, state.clock_seconds, overtime)
-        away_lineup = rotation_lineup(away, state.clock_seconds, overtime)
+        home_lineup = rotation_lineup(home, state.clock_seconds, overtime, unavailable)
+        away_lineup = rotation_lineup(away, state.clock_seconds, overtime, unavailable)
         for lineup in (home_lineup, away_lineup):
             names = tuple(player.name for player in lineup.players)
             if previous_lineups.get(lineup.name) != names:

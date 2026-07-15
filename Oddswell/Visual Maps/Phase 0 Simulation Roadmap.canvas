@@ -6,11 +6,11 @@
     {"id":"p0-c","type":"text","text":"## 0C ✅ AI GUARDRAIL\nLegal actions only\n• strict validation\n• deterministic fallback\n• recorded replay","x":290,"y":-540,"width":420,"height":210,"color":"3"},
     {"id":"p0-d","type":"text","text":"## 0D + 0D.1 ✅ LEAGUE\nSchedule + standings\n• three saved seasons\n• carryover fatigue\n• exact save/resume","x":290,"y":-250,"width":420,"height":210,"color":"3"},
     {"id":"p0-d2","type":"text","text":"## 0D.2 ✅ ROTATIONS\nSix-player rosters\n• deterministic lineups\n• authoritative minutes\n• workload from minutes","x":-180,"y":-250,"width":420,"height":210,"color":"3"},
-    {"id":"p0-d3","type":"text","text":"## 0D.3 ▶ AVAILABILITY\n**NEXT GATE**\n• minor injuries\n• recovery days\n• inactive players log 0 minutes","x":-650,"y":-250,"width":420,"height":210,"color":"4"},
+    {"id":"p0-d3","type":"text","text":"## 0D.3 ✅ AVAILABILITY\nMinor injuries + recovery\n• minutes-linked risk\n• five-player floor\n• exact save/replay","x":-650,"y":-250,"width":420,"height":210,"color":"3"},
     {"id":"p0-evidence-b","type":"text","text":"## 📊 Calibration evidence\n[[Development/Reports/Phase 0B Baseline|Phase 0B report]]\n1,000 games • 9/9 checks","x":-650,"y":40,"width":420,"height":160,"color":"5"},
     {"id":"p0-evidence-c","type":"text","text":"## 🛡️ AI evidence\n[[Development/Reports/Phase 0C Offline LLM Policy Pilot|Phase 0C report]]\n8,140 decisions • fairness • $0","x":-180,"y":40,"width":420,"height":160,"color":"2"},
-    {"id":"p0-evidence-d","type":"text","text":"## ⏱️ League evidence\n[[Development/Reports/Phase 0D2 Rotation Minutes and Workload|Phase 0D.2 report]]\n240 team-minutes • 20/20 tests • exact persistence","x":290,"y":40,"width":420,"height":160,"color":"3"},
-    {"id":"p0-playable","type":"text","text":"## 0.5 ◇ PLAYABLE SPORTS LOOP\nBrowse teams + schedules • lock predictions • server simulation\nBegins only after availability and recovery pass.","x":-650,"y":280,"width":650,"height":150,"color":"6"},
+    {"id":"p0-evidence-d","type":"text","text":"## 🩹 Availability evidence\n[[Development/Reports/Phase 0D3 Availability and Recovery|Phase 0D.3 report]]\n1.43% injuries • 20/20 absences at 0 minutes • $0","x":290,"y":40,"width":420,"height":160,"color":"3"},
+    {"id":"p0-playable","type":"text","text":"## 0.5 ◇ PLAYABLE SPORTS LOOP\n✅ Availability gate passed\n▶ Next: public data + prediction-quality validation\nCredits and wagering remain outside scope.","x":-650,"y":280,"width":650,"height":170,"color":"4"},
     {"id":"p0-life","type":"text","text":"## 🧍 LATER: ATHLETE LIFE BRAIN\nTraining • rest • recovery • social life\nRelationships, nightlife, media, and long-term consequences follow a stable sports loop.","x":60,"y":280,"width":650,"height":150,"color":"5"}
   ],
   "edges": [

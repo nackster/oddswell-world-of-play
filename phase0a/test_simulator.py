@@ -47,6 +47,36 @@ class SimulatorTests(unittest.TestCase):
             self.assertTrue(all(minutes[player.name] > minutes[reserve] for player in team.players[:5]))
             self.assertLess(fatigue[reserve], max(fatigue[player.name] for player in team.players[:5]))
 
+    def test_unavailable_player_is_excluded_and_replays_exactly(self) -> None:
+        teams = default_teams()
+        unavailable_player = teams[0].players[0].name
+        availability = {player.name: 0 for team in teams for player in team.players}
+        availability[unavailable_player] = 3
+        original = simulate_game(45, matchup=teams, initial_availability=availability)
+        replayed = simulate_game(
+            45,
+            original.action_tape,
+            matchup=teams,
+            initial_availability=availability,
+        )
+        self.assertEqual(original, replayed)
+        self.assertEqual(dict(original.minutes_played)[unavailable_player], 0)
+        self.assertFalse(
+            any(
+                unavailable_player in event.get("players", ())
+                for event in original.records
+                if event["type"] == "lineup_changed"
+            )
+        )
+        with self.assertRaisesRegex(ValueError, "five available"):
+            simulate_game(
+                45,
+                initial_availability={
+                    name: (3 if index < 2 else 0)
+                    for index, name in enumerate(availability)
+                },
+            )
+
     def test_one_hundred_games_finish_with_plausible_scores(self) -> None:
         scores = [simulate_game(seed) for seed in range(100)]
         points = [score for game in scores for score in (game.home_score, game.away_score)]
