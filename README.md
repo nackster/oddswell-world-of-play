@@ -62,3 +62,9 @@ Phase 0D.1 persists multiple seasons and carries bounded fatigue between games:
 python -m phase0d.league --games 20 --seasons 3 --state phase0d/league-state.json --output "Oddswell/Development/Reports/Phase 0D1 Multi-Season Fatigue.md"
 python -m unittest phase0a.test_simulator phase0b.test_analyze phase0c.test_policy phase0d.test_league -v
 ```
+
+## Brain Observatory
+
+Double-click [`Start Brain Observatory.cmd`](Start%20Brain%20Observatory.cmd) to open the local admin dashboard. It visualizes the six brain/authority components, runs a real seeded game through the current simulator, and animates its recorded decision and outcome flow.
+
+The training preview is explicitly a visual demonstration. Until an approved training provider is connected, it does not claim that model weights are changing.

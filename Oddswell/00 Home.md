@@ -22,6 +22,7 @@ tags:
 - [[Development/Project Tool Register|Project tool register]]
 - [[Development/Tool Efficiency Review|Tool efficiency review]]
 - [[Development/3D Asset Pipeline|3D asset pipeline]]
+- [[Development/Brain Observatory|Brain Observatory admin program]]
 - [[Development/Reports/Phase 0B Baseline|Phase 0B baseline report]]
 - [[Development/Reports/Phase 0C Offline LLM Policy Pilot|Phase 0C offline LLM policy pilot]]
 - [[Development/Reports/Phase 0D Schedule and Standings|Phase 0D schedule and standings]]
