@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+from collections import Counter, defaultdict
 from datetime import datetime, timezone
 from functools import lru_cache
 import json
@@ -23,6 +24,7 @@ from phase0a.simulator import (  # noqa: E402
     BRAIN_VERSION,
     ENGINE_VERSION,
     GameResult,
+    Player,
     Team,
     default_teams,
     simulate_game,
@@ -36,6 +38,41 @@ LEAGUE_VIEW_GAMES = 20
 LEAGUE_VIEW_START_SEED = 15_000
 
 
+def overall_rating(player: Player) -> int:
+    return round(
+        (player.shooting + player.passing + player.defense + player.rebounding + player.stamina)
+        / 5
+    )
+
+
+def player_specialty(player: Player) -> str:
+    if player.shooting >= 80 and player.passing >= 78:
+        return "Scoring creator"
+    if player.passing >= 83:
+        return "Floor general"
+    if player.defense >= 80 and player.rebounding >= 84:
+        return "Interior stopper"
+    if player.rebounding >= 84:
+        return "Rebounding anchor"
+    if player.defense >= 80:
+        return "Defensive specialist"
+    if player.shooting >= 82:
+        return "Scoring specialist"
+    return "Rotation utility"
+
+
+def player_tier(overall: int) -> str:
+    if overall >= 80:
+        return "Star"
+    if overall >= 78:
+        return "Featured starter"
+    if overall >= 76:
+        return "Core starter"
+    if overall >= 73:
+        return "Rotation contributor"
+    return "Developmental"
+
+
 def status_payload() -> dict[str, object]:
     return {
         "project": "OddsWell: World of Play",
@@ -47,6 +84,7 @@ def status_payload() -> dict[str, object]:
         "admin_modules": [
             {"id": "overview", "name": "Overview", "state": "AVAILABLE", "detail": "Verified local system summary."},
             {"id": "brains", "name": "Brains", "state": "ACTIVE", "detail": "Cinematic Observatory and truthful training preview."},
+            {"id": "athletes", "name": "Athletes", "state": "READ ONLY", "detail": "Durable ratings, specialties, season performance, availability, and verified game history."},
             {"id": "simulation", "name": "Simulation", "state": "ACTIVE", "detail": "Runs the seeded authoritative simulator and opens its recorded Game Theater replay."},
             {"id": "content", "name": "Content", "state": "LOCKED", "detail": "Clothing and item systems are not implemented."},
             {"id": "world", "name": "World / League", "state": "READ ONLY", "detail": "League and public prediction evidence are visible; admin mutations are not implemented."},
@@ -225,16 +263,7 @@ def league_payload() -> dict[str, object]:
                         "defense": player.defense,
                         "rebounding": player.rebounding,
                         "stamina": player.stamina,
-                        "overall": round(
-                            (
-                                player.shooting
-                                + player.passing
-                                + player.defense
-                                + player.rebounding
-                                + player.stamina
-                            )
-                            / 5
-                        ),
+                        "overall": overall_rating(player),
                         "available": final_availability[player.name] == 0,
                     }
                     for player in team.players
@@ -417,7 +446,7 @@ def simulation_payload(seed: int) -> dict[str, object]:
 
 
 @lru_cache(maxsize=LEAGUE_VIEW_GAMES)
-def league_replay_payload(game_number: int) -> dict[str, object]:
+def archived_game_result(game_number: int) -> GameResult:
     if not 1 <= game_number <= LEAGUE_VIEW_GAMES:
         raise ValueError(f"game number must be between 1 and {LEAGUE_VIEW_GAMES}")
     archived = league_season().games[game_number - 1]
@@ -435,6 +464,15 @@ def league_replay_payload(game_number: int) -> dict[str, object]:
         or dict(game.minutes_played) != dict(archived.minutes_played)
     ):
         raise RuntimeError(f"archived replay mismatch for game {game_number}")
+    return game
+
+
+@lru_cache(maxsize=LEAGUE_VIEW_GAMES)
+def league_replay_payload(game_number: int) -> dict[str, object]:
+    game = archived_game_result(game_number)
+    archived = league_season().games[game_number - 1]
+    teams = {team.name: team for team in default_teams()}
+    matchup = (teams[archived.home_team], teams[archived.away_team])
     payload = recorded_game_payload(game, matchup, frame_limit=None)
     payload["archive"] = {
         "season": league_season().season_number,
@@ -443,6 +481,155 @@ def league_replay_payload(game_number: int) -> dict[str, object]:
         "verified": True,
     }
     return payload
+
+
+@lru_cache(maxsize=1)
+def athlete_profiles_payload() -> dict[str, object]:
+    teams = default_teams()
+    season = league_season()
+    players = tuple(player for team in teams for player in team.players)
+    player_team = {player.name: team.name for team in teams for player in team.players}
+    final_availability = dict(season.final_availability)
+    standings = {standing.team: standing for standing in season.standings}
+    league_average = sum(overall_rating(player) for player in players) / len(players)
+    totals: dict[str, Counter[str]] = defaultdict(Counter)
+    histories: dict[str, list[dict[str, object]]] = defaultdict(list)
+
+    for archived in season.games:
+        game = archived_game_result(archived.number)
+        game_stats: dict[str, Counter[str]] = defaultdict(Counter)
+        for event in game.records:
+            event_type = event["type"]
+            if event_type in {"shot_made", "shot_missed"}:
+                player_stats = game_stats[str(event["player"])]
+                player_stats["field_goal_attempts"] += 1
+                if event["action"] == "shoot_3":
+                    player_stats["three_attempts"] += 1
+                if event_type == "shot_made":
+                    player_stats["field_goals_made"] += 1
+                    player_stats["points"] += int(event["points"])
+                    if event["action"] == "shoot_3":
+                        player_stats["threes_made"] += 1
+            elif event_type == "turnover":
+                game_stats[str(event["player"])]["turnovers"] += 1
+            elif event_type == "pass_completed":
+                game_stats[str(event["passer"])]["passes"] += 1
+            elif event_type in {"offensive_rebound", "defensive_rebound"}:
+                game_stats[str(event["player"])]["rebounds"] += 1
+
+        minutes = dict(game.minutes_played)
+        availability = dict(archived.pregame_availability)
+        for player in players:
+            name = player.name
+            team = player_team[name]
+            home = team == archived.home_team
+            opponent = archived.away_team if home else archived.home_team
+            team_score = archived.home_score if home else archived.away_score
+            opponent_score = archived.away_score if home else archived.home_score
+            played = minutes[name] > 0
+            totals[name].update(game_stats[name])
+            totals[name]["scheduled"] += 1
+            totals[name]["games_played"] += int(played)
+            totals[name]["minutes"] += minutes[name]
+            histories[name].append(
+                {
+                    "game": archived.number,
+                    "opponent": opponent,
+                    "home": home,
+                    "result": "W" if team_score > opponent_score else "L",
+                    "score": f"{team_score}-{opponent_score}",
+                    "available": availability[name] == 0,
+                    "minutes": minutes[name],
+                    "points": int(game_stats[name]["points"]),
+                    "rebounds": int(game_stats[name]["rebounds"]),
+                    "turnovers": int(game_stats[name]["turnovers"]),
+                }
+            )
+
+    profiles: list[dict[str, object]] = []
+    for team in teams:
+        standing = standings[team.name]
+        for roster_index, player in enumerate(team.players):
+            name = player.name
+            total = totals[name]
+            games_played = int(total["games_played"])
+            recent = histories[name][-5:]
+            recent_games = sum(bool(game["available"]) for game in recent)
+            season_ppg = total["points"] / games_played if games_played else 0.0
+            recent_ppg = (
+                sum(int(game["points"]) for game in recent) / recent_games
+                if recent_games
+                else 0.0
+            )
+            form = "RISING" if recent_ppg > season_ppg + 2 else "COOLING" if recent_ppg < season_ppg - 2 else "STEADY"
+            overall = overall_rating(player)
+            rating_band = (
+                "Above roster average"
+                if overall > league_average + 1
+                else "Below roster average"
+                if overall < league_average - 1
+                else "Near roster average"
+            )
+            profiles.append(
+                {
+                    "id": name.lower().replace(" ", "-"),
+                    "name": name,
+                    "team": team.name,
+                    "overall": overall,
+                    "ratings": {
+                        "shooting": player.shooting,
+                        "passing": player.passing,
+                        "defense": player.defense,
+                        "rebounding": player.rebounding,
+                        "stamina": player.stamina,
+                    },
+                    "career": {
+                        "status": "ACTIVE PROTOTYPE",
+                        "season": season.season_number,
+                        "seasons": 1,
+                        "role": "Starter" if roster_index < 5 else "Sixth player",
+                        "tier": player_tier(overall),
+                        "rating_band": rating_band,
+                        "specialty": player_specialty(player),
+                        "durable_ratings": True,
+                        "life_brain": "PLANNED / NOT ACTIVE",
+                    },
+                    "availability": {
+                        "available": final_availability[name] == 0,
+                        "label": "AVAILABLE" if final_availability[name] == 0 else "OUT",
+                    },
+                    "season": {
+                        "scheduled_games": int(total["scheduled"]),
+                        "games_played": games_played,
+                        "missed_games": int(total["scheduled"] - games_played),
+                        "team_record": f"{standing.wins}-{standing.losses}",
+                        "total_points": int(total["points"]),
+                        "points_per_game": round(season_ppg, 2),
+                        "rebounds_per_game": round(total["rebounds"] / games_played, 2) if games_played else 0.0,
+                        "passes_per_game": round(total["passes"] / games_played, 2) if games_played else 0.0,
+                        "turnovers_per_game": round(total["turnovers"] / games_played, 2) if games_played else 0.0,
+                        "minutes_per_game": round(total["minutes"] / games_played, 2) if games_played else 0.0,
+                        "field_goal_percentage": round(total["field_goals_made"] / total["field_goal_attempts"], 4) if total["field_goal_attempts"] else 0.0,
+                        "three_percentage": round(total["threes_made"] / total["three_attempts"], 4) if total["three_attempts"] else 0.0,
+                    },
+                    "form": {
+                        "label": form,
+                        "points_per_game": round(recent_ppg, 2),
+                        "games": recent,
+                    },
+                    "history": list(reversed(histories[name])),
+                }
+            )
+
+    return {
+        "season": season.season_number,
+        "league_average_overall": round(league_average, 1),
+        "boundary": (
+            "Durable ratings and verified season evidence only. Aging, contracts, development, "
+            "personal-life choices, legal stories, and Athlete Life Brain consequences are not active."
+        ),
+        "profiles": profiles,
+    }
 
 
 class Handler(BaseHTTPRequestHandler):
@@ -489,6 +676,8 @@ class Handler(BaseHTTPRequestHandler):
             self.send_json(audit_payload())
         elif path == "/api/league":
             self.send_json(league_payload())
+        elif path == "/api/athletes":
+            self.send_json(athlete_profiles_payload())
         elif path.startswith("/api/league/replay/"):
             try:
                 game_value = path.removeprefix("/api/league/replay/")
@@ -541,10 +730,11 @@ def self_check() -> None:
     game = simulation_payload(42)
     league = league_payload()
     archived = league_replay_payload(20)
+    athletes = athlete_profiles_payload()
     assert len(status["brains"]) == 6
     assert status["prediction_version"] == PREDICTION_VERSION
     assert [module["id"] for module in status["admin_modules"]] == [
-        "overview", "brains", "simulation", "content", "world", "operations", "audit"
+        "overview", "brains", "athletes", "simulation", "content", "world", "operations", "audit"
     ]
     assert game["summary"]["home_score"] != game["summary"]["away_score"]
     assert game["timeline"][-1]["kind"] == "final"
@@ -570,6 +760,17 @@ def self_check() -> None:
     archived_json = json.dumps(archived, sort_keys=True)
     assert not any(
         forbidden in archived_json
+        for forbidden in ('"seed"', '"fatigue"', '"recovery_days"', '"injury_risk"')
+    )
+    assert len(athletes["profiles"]) == 12
+    assert all(len(profile["history"]) == LEAGUE_VIEW_GAMES for profile in athletes["profiles"])
+    assert sum(profile["season"]["total_points"] for profile in athletes["profiles"]) == sum(
+        standing["points_for"] for standing in league["standings"]
+    )
+    assert len({profile["career"]["specialty"] for profile in athletes["profiles"]}) >= 4
+    athlete_json = json.dumps(athletes, sort_keys=True)
+    assert not any(
+        forbidden in athlete_json
         for forbidden in ('"seed"', '"fatigue"', '"recovery_days"', '"injury_risk"')
     )
     with tempfile.TemporaryDirectory() as temporary_directory:

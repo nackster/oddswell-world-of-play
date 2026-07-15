@@ -136,6 +136,17 @@ status: active
 - **Cost:** `$0.00`.
 - **Next gate:** Phase 0.5D Athlete Career Profiles for durable ratings, specialties, career state, availability, recent performance, and history.
 
+### Phase 0.5D Athlete Career Profiles implementation status
+
+- **Status:** Complete on `agent/phase-0d`.
+- **Implemented:** a new read-only Athletes module with twelve stable profiles, durable ratings, baseline roles, transparent specialties, prototype tiers/rating bands, current availability, verified season statistics, five-game form graphics, complete 20-game histories, and direct archived-replay actions.
+- **Evidence source:** every statistic is aggregated from the authoritative 20-game season and its reconstructed verified event records. The payload is cached and adds no dependency or database.
+- **Identity rule:** temporary rising/steady/cooling form never changes the displayed durable ratings. Athlete Life Brain, aging, contracts, development, and personal-life consequences remain explicitly inactive.
+- **Measured examples:** Nico Reyes led scoring at `21.63` PPG; Roman Voss led rebounding at `14.55` RPG; Cal Brooks finished `OUT` after playing 15 games and missing 5.
+- **Validation:** Admin Console self-check and all 29 regression tests pass. Browser QA verified profile switching, an unavailable athlete, form/history rendering, and athlete-to-Game-Theater navigation with no console errors. See [[Development/Reports/Phase 05D Athlete Career Profiles]].
+- **Cost:** `$0.00`.
+- **Next gate:** Phase 0.5E Athlete Career Persistence for multi-season cumulative totals, experience/career stage, and active/retired history.
+
 ## Phase 1: 3D vertical slice
 
 Build the one-city scope defined in [[Design/Decisions/DEC-002 First Playable Scope]].

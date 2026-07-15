@@ -438,12 +438,59 @@
     .roster-player-name small { display: block; margin-top: 3px; color: var(--muted); font-size: .54rem; }
     .roster-overall { color: var(--amber); font: 600 .78rem ui-monospace, SFMono-Regular, Consolas, monospace; }
     .roster-stats { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px; color: var(--muted); font: .54rem ui-monospace, SFMono-Regular, Consolas, monospace; }
+    .career-boundary { margin-bottom: 14px; padding: 13px 16px; border: 1px solid rgba(255,199,101,.22); border-radius: 14px; background: rgba(255,199,101,.045); color: #f8dca9; font-size: .7rem; line-height: 1.5; }
+    .athlete-shell { display: grid; grid-template-columns: 300px minmax(0, 1fr); gap: 14px; align-items: start; }
+    .athlete-directory { position: sticky; top: 12px; }
+    .athlete-list { max-height: 780px; overflow: auto; display: grid; gap: 7px; padding-right: 3px; scrollbar-color: rgba(92,236,255,.25) transparent; }
+    .athlete-button { width: 100%; display: grid; grid-template-columns: 38px minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 10px; border: 1px solid transparent; border-radius: 11px; background: rgba(255,255,255,.025); text-align: left; cursor: pointer; }
+    .athlete-button:hover, .athlete-button.selected { border-color: rgba(92,236,255,.35); background: rgba(92,236,255,.065); }
+    .athlete-button.selected { box-shadow: inset 2px 0 var(--cyan); }
+    .athlete-mini-avatar { width: 38px; height: 38px; display: grid; place-items: center; border: 1px solid var(--cyan); border-radius: 50%; background: rgba(92,236,255,.07); color: var(--cyan); font: 650 .66rem ui-monospace, SFMono-Regular, Consolas, monospace; }
+    .athlete-button:nth-child(n+7) .athlete-mini-avatar { border-color: var(--violet); color: #d3b9ff; background: rgba(173,124,255,.07); }
+    .athlete-list-name { overflow: hidden; font-size: .72rem; text-overflow: ellipsis; white-space: nowrap; }
+    .athlete-list-name small { display: block; margin-top: 3px; overflow: hidden; color: var(--muted); font-size: .54rem; text-overflow: ellipsis; }
+    .athlete-list-overall { color: var(--amber); font: 650 .72rem ui-monospace, SFMono-Regular, Consolas, monospace; }
+    .athlete-profile { min-width: 0; display: grid; gap: 14px; }
+    .career-hero { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 18px; align-items: center; padding: 20px; border: 1px solid var(--line); border-radius: 18px; background: linear-gradient(110deg, rgba(92,236,255,.1), var(--panel) 50%, rgba(173,124,255,.1)); }
+    .career-avatar { width: 74px; height: 74px; display: grid; place-items: center; border: 2px solid var(--cyan); border-radius: 50%; background: rgba(3,12,24,.8); color: var(--cyan); font: 650 1.15rem ui-monospace, SFMono-Regular, Consolas, monospace; box-shadow: 0 0 30px rgba(92,236,255,.15); }
+    .career-identity h3 { margin: 0; font-size: 1.45rem; font-weight: 530; }
+    .career-identity p { margin: 5px 0 9px; color: var(--muted); font-size: .72rem; }
+    .career-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+    .career-tag { padding: 4px 8px; border: 1px solid var(--line); border-radius: 99px; color: #b8eefa; font-size: .55rem; letter-spacing: .07em; text-transform: uppercase; }
+    .career-rating { min-width: 96px; text-align: center; }
+    .career-rating strong { display: block; color: var(--amber); font: 650 2.25rem ui-monospace, SFMono-Regular, Consolas, monospace; }
+    .career-rating span { color: var(--muted); font-size: .57rem; letter-spacing: .15em; text-transform: uppercase; }
+    .career-availability { margin-top: 8px; color: var(--green); font-size: .58rem; letter-spacing: .12em; }
+    .career-availability.out { color: var(--red); }
+    .career-metrics { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 8px; }
+    .career-metric { min-width: 0; padding: 12px; border: 1px solid var(--line); border-radius: 12px; background: rgba(255,255,255,.025); }
+    .career-metric span { display: block; color: var(--muted); font-size: .53rem; letter-spacing: .1em; text-transform: uppercase; }
+    .career-metric strong { display: block; margin-top: 6px; overflow: hidden; color: var(--ink); font: 600 .92rem ui-monospace, SFMono-Regular, Consolas, monospace; text-overflow: ellipsis; white-space: nowrap; }
+    .career-profile-grid { display: grid; grid-template-columns: minmax(280px, .9fr) minmax(360px, 1.1fr); gap: 14px; }
+    .career-ratings { display: grid; gap: 10px; }
+    .career-rating-row { display: grid; grid-template-columns: 88px minmax(80px, 1fr) 30px; gap: 9px; align-items: center; color: var(--muted); font-size: .62rem; }
+    .career-rating-track { height: 7px; overflow: hidden; border-radius: 99px; background: rgba(255,255,255,.07); }
+    .career-rating-fill { height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--cyan), var(--violet)); box-shadow: 0 0 10px rgba(92,236,255,.35); }
+    .career-rating-value { text-align: right; color: var(--ink); font-family: ui-monospace, SFMono-Regular, Consolas, monospace; }
+    .career-form { height: 190px; display: flex; gap: 9px; align-items: end; padding: 12px 5px 0; border-bottom: 1px solid var(--line); }
+    .career-form-game { flex: 1; min-width: 34px; display: grid; grid-template-rows: 1fr auto auto; gap: 5px; align-items: end; text-align: center; }
+    .career-form-bar { width: min(34px, 72%); min-height: 4px; justify-self: center; border-radius: 7px 7px 2px 2px; background: linear-gradient(to top, rgba(92,236,255,.35), var(--cyan)); box-shadow: 0 0 14px rgba(92,236,255,.18); }
+    .career-form-game.out .career-form-bar { background: var(--red); opacity: .45; box-shadow: none; }
+    .career-form-game strong { font: 600 .62rem ui-monospace, SFMono-Regular, Consolas, monospace; }
+    .career-form-game span { color: var(--muted); font-size: .52rem; }
+    .career-history-scroll { overflow: auto; }
+    .career-history-table { min-width: 720px; }
+    .career-history-row { display: grid; grid-template-columns: 42px minmax(160px, 1fr) 64px 55px 55px 65px 74px; gap: 10px; align-items: center; padding: 9px 5px; border-top: 1px solid rgba(111,207,255,.1); font-size: .63rem; }
+    .career-history-row.header { color: var(--muted); font-size: .53rem; letter-spacing: .1em; text-transform: uppercase; }
+    .career-history-result { color: var(--green); font-family: ui-monospace, SFMono-Regular, Consolas, monospace; }
+    .career-history-result.loss { color: var(--red); }
+    .history-replay { padding: 5px 8px; font-size: .56rem; }
     .footer { display: flex; justify-content: space-between; gap: 10px; margin-top: 11px; color: #607a8d; font-size: 0.63rem; letter-spacing: 0.08em; text-transform: uppercase; }
     @media (max-width: 980px) {
       .app-shell { grid-template-columns: 1fr; }
       .rail { min-height: auto; padding: 12px; border-right: 0; border-bottom: 1px solid var(--line); }
       .rail-brand, .rail-note { display: none; }
-      .nav { grid-template-columns: repeat(7, minmax(max-content, 1fr)); overflow-x: auto; }
+      .nav { grid-template-columns: repeat(8, minmax(max-content, 1fr)); overflow-x: auto; }
       .nav-button { text-align: center; white-space: nowrap; }
       .nav-state { display: none; }
       .layout { grid-template-columns: 1fr; }
@@ -453,6 +500,10 @@
       .module-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .league-grid { grid-template-columns: 1fr; }
       .league-games { max-height: 360px; }
+      .athlete-shell { grid-template-columns: 1fr; }
+      .athlete-directory { position: static; }
+      .athlete-list { max-height: 320px; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .career-metrics { grid-template-columns: repeat(3, minmax(0, 1fr)); }
     }
     @media (max-width: 640px) {
       .shell { padding: 12px; }
@@ -480,6 +531,12 @@
       .league-boundary { margin-top: 11px; }
       .league-standings, .league-rosters, .game-rosters, .league-evidence { grid-template-columns: 1fr; }
       .prediction-row { grid-template-columns: 125px minmax(70px, 1fr) 42px; }
+      .career-hero { grid-template-columns: auto 1fr; }
+      .career-rating { grid-column: 1 / -1; display: flex; align-items: center; gap: 10px; text-align: left; }
+      .career-rating strong { font-size: 1.5rem; }
+      .career-availability { margin: 0 0 0 auto; }
+      .career-profile-grid { grid-template-columns: 1fr; }
+      .career-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     }
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after { scroll-behavior: auto !important; transition-duration: 0.001ms !important; animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; }
@@ -493,6 +550,7 @@
       <nav class="nav">
         <button class="nav-button" type="button" data-page="overview">Overview <span class="nav-state">LIVE</span></button>
         <button class="nav-button" type="button" data-page="brains" aria-current="page">Brains <span class="nav-state">CORE</span></button>
+        <button class="nav-button" type="button" data-page="athletes">Athletes <span class="nav-state">READ</span></button>
         <button class="nav-button" type="button" data-page="simulation">Simulation <span class="nav-state">LIVE</span></button>
         <button class="nav-button" type="button" data-page="content">Content <span class="nav-state">LOCKED</span></button>
         <button class="nav-button" type="button" data-page="world">World / League <span class="nav-state">READ</span></button>
@@ -574,6 +632,55 @@
                 </div>
                 <div><h2>Activity tape</h2><div class="log" id="log" role="log" aria-live="polite"></div></div>
               </section>
+            </div>
+          </section>
+
+          <section class="page" data-page-view="athletes" hidden>
+            <div class="page-head"><div><h2>Athlete Career Profiles</h2><p>Inspect durable basketball identity and verified season performance without inventing an active life simulation.</p></div></div>
+            <div class="career-boundary" id="career-boundary">Loading the athlete truth boundary.</div>
+            <div class="athlete-shell">
+              <section class="league-panel athlete-directory">
+                <div class="league-panel-head"><h3>League athletes</h3><span id="athlete-count">Loading</span></div>
+                <div class="athlete-list" id="athlete-list"></div>
+              </section>
+              <div class="athlete-profile" aria-live="polite">
+                <section class="career-hero">
+                  <div class="career-avatar" id="profile-initials">--</div>
+                  <div class="career-identity">
+                    <h3 id="profile-name">Select an athlete</h3>
+                    <p id="profile-team">Career evidence is loading.</p>
+                    <div class="career-tags"><span class="career-tag" id="profile-role">Role</span><span class="career-tag" id="profile-tier">Tier</span><span class="career-tag" id="profile-band">Rating band</span></div>
+                  </div>
+                  <div class="career-rating"><strong id="profile-overall">--</strong><span>Overall</span><div class="career-availability" id="profile-availability">--</div></div>
+                </section>
+                <div class="career-metrics">
+                  <div class="career-metric"><span>Points / game</span><strong id="profile-ppg">--</strong></div>
+                  <div class="career-metric"><span>Rebounds / game</span><strong id="profile-rpg">--</strong></div>
+                  <div class="career-metric"><span>Minutes / game</span><strong id="profile-mpg">--</strong></div>
+                  <div class="career-metric"><span>Field goal</span><strong id="profile-fg">--</strong></div>
+                  <div class="career-metric"><span>Passes / game</span><strong id="profile-passes">--</strong></div>
+                  <div class="career-metric"><span>Games / missed</span><strong id="profile-games">--</strong></div>
+                </div>
+                <div class="career-profile-grid">
+                  <section class="league-panel">
+                    <div class="league-panel-head"><h3>Durable basketball ratings</h3><span id="profile-specialty">Specialty</span></div>
+                    <div class="career-ratings" id="profile-ratings"></div>
+                  </section>
+                  <section class="league-panel">
+                    <div class="league-panel-head"><h3>Five-game scoring form</h3><span id="profile-form-label">--</span></div>
+                    <div class="career-form" id="profile-form"></div>
+                  </section>
+                </div>
+                <section class="league-panel">
+                  <div class="league-panel-head"><h3>Verified game history</h3><span id="profile-record">Season record</span></div>
+                  <div class="career-history-scroll">
+                    <div class="career-history-table">
+                      <div class="career-history-row header"><span>Game</span><span>Opponent</span><span>Result</span><span>PTS</span><span>REB</span><span>MIN</span><span>Replay</span></div>
+                      <div id="profile-history"></div>
+                    </div>
+                  </div>
+                </section>
+              </div>
             </div>
           </section>
 
@@ -722,6 +829,9 @@
     let lastSimulation = null;
     let leagueData = null;
     let leagueLoading = false;
+    let athleteData = null;
+    let athleteLoading = false;
+    let selectedAthleteId = null;
     const courtPlayers = new Map();
     const courtPositions = new Map();
 
@@ -738,6 +848,7 @@
       history.replaceState(null, '', `#${page}`);
       if (page === 'audit') loadAudit();
       if (page === 'world') loadLeague();
+      if (page === 'athletes') loadAthletes();
       if (page === 'brains') requestAnimationFrame(() => resizeCanvas());
     }
 
@@ -1198,6 +1309,148 @@
       }
     }
 
+    function athleteInitials(name) {
+      return name.split(' ').map((part) => part[0]).join('').slice(0, 2);
+    }
+
+    function showAthleteProfile(profile) {
+      selectedAthleteId = profile.id;
+      document.querySelectorAll('.athlete-button').forEach((button) => {
+        const selected = button.dataset.id === profile.id;
+        button.classList.toggle('selected', selected);
+        button.setAttribute('aria-pressed', String(selected));
+      });
+      $('profile-initials').textContent = athleteInitials(profile.name);
+      $('profile-name').textContent = profile.name;
+      $('profile-team').textContent = `${profile.team} · ${profile.career.specialty} · Season ${profile.career.season} · Athlete Life Brain not active`;
+      $('profile-role').textContent = profile.career.role;
+      $('profile-tier').textContent = profile.career.tier;
+      $('profile-band').textContent = profile.career.rating_band;
+      $('profile-overall').textContent = profile.overall;
+      $('profile-availability').textContent = profile.availability.label;
+      $('profile-availability').classList.toggle('out', !profile.availability.available);
+      $('profile-ppg').textContent = profile.season.points_per_game.toFixed(2);
+      $('profile-rpg').textContent = profile.season.rebounds_per_game.toFixed(2);
+      $('profile-mpg').textContent = profile.season.minutes_per_game.toFixed(2);
+      $('profile-fg').textContent = `${(profile.season.field_goal_percentage * 100).toFixed(1)}%`;
+      $('profile-passes').textContent = profile.season.passes_per_game.toFixed(2);
+      $('profile-games').textContent = `${profile.season.games_played} / ${profile.season.missed_games}`;
+      $('profile-specialty').textContent = `${profile.career.specialty} · ratings remain durable`;
+      $('profile-form-label').textContent = `${profile.form.label} · ${profile.form.points_per_game.toFixed(2)} PPG`;
+      $('profile-record').textContent = `${profile.team} ${profile.season.team_record} · Season ${profile.career.season}`;
+
+      const ratings = $('profile-ratings');
+      ratings.replaceChildren();
+      for (const [name, value] of Object.entries(profile.ratings)) {
+        const row = document.createElement('div');
+        row.className = 'career-rating-row';
+        const label = document.createElement('span');
+        label.textContent = name;
+        const track = document.createElement('div');
+        track.className = 'career-rating-track';
+        const fill = document.createElement('div');
+        fill.className = 'career-rating-fill';
+        fill.style.width = `${value}%`;
+        track.append(fill);
+        const score = document.createElement('span');
+        score.className = 'career-rating-value';
+        score.textContent = value;
+        row.append(label, track, score);
+        ratings.append(row);
+      }
+
+      const form = $('profile-form');
+      form.replaceChildren();
+      const maxPoints = Math.max(1, ...profile.form.games.map((game) => game.points));
+      for (const game of profile.form.games) {
+        const column = document.createElement('div');
+        column.className = 'career-form-game' + (game.available ? '' : ' out');
+        const bar = document.createElement('div');
+        bar.className = 'career-form-bar';
+        bar.style.height = `${game.available ? Math.max(5, game.points / maxPoints * 130) : 5}px`;
+        const points = document.createElement('strong');
+        points.textContent = game.available ? `${game.points} PTS` : 'OUT';
+        const label = document.createElement('span');
+        label.textContent = `G${game.game} · ${game.result}`;
+        column.append(bar, points, label);
+        form.append(column);
+      }
+
+      const history = $('profile-history');
+      history.replaceChildren();
+      for (const game of profile.history) {
+        const row = document.createElement('div');
+        row.className = 'career-history-row';
+        const number = document.createElement('span');
+        number.textContent = `G${game.game}`;
+        const opponent = document.createElement('span');
+        opponent.textContent = `${game.home ? 'vs' : '@'} ${game.opponent}`;
+        const result = document.createElement('span');
+        result.className = 'career-history-result' + (game.result === 'W' ? '' : ' loss');
+        result.textContent = `${game.result} ${game.score}`;
+        const points = document.createElement('span');
+        points.textContent = game.available ? game.points : 'OUT';
+        const rebounds = document.createElement('span');
+        rebounds.textContent = game.available ? game.rebounds : '—';
+        const minutes = document.createElement('span');
+        minutes.textContent = game.available ? game.minutes.toFixed(1) : '0.0';
+        const replay = document.createElement('button');
+        replay.type = 'button';
+        replay.className = 'control history-replay';
+        replay.textContent = 'Watch';
+        replay.setAttribute('aria-label', `Watch ${profile.name} in Game ${game.game}`);
+        replay.addEventListener('click', () => openArchivedReplay(game.game, replay));
+        row.append(number, opponent, result, points, rebounds, minutes, replay);
+        history.append(row);
+      }
+    }
+
+    function populateAthletes(data) {
+      athleteData = data;
+      $('career-boundary').textContent = data.boundary;
+      $('athlete-count').textContent = `${data.profiles.length} active profiles`;
+      const list = $('athlete-list');
+      list.replaceChildren();
+      for (const profile of data.profiles) {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'athlete-button';
+        button.dataset.id = profile.id;
+        const avatar = document.createElement('span');
+        avatar.className = 'athlete-mini-avatar';
+        avatar.textContent = athleteInitials(profile.name);
+        const name = document.createElement('span');
+        name.className = 'athlete-list-name';
+        name.textContent = profile.name;
+        const detail = document.createElement('small');
+        detail.textContent = `${profile.career.specialty} · ${profile.availability.label}`;
+        name.append(detail);
+        const overall = document.createElement('span');
+        overall.className = 'athlete-list-overall';
+        overall.textContent = profile.overall;
+        button.append(avatar, name, overall);
+        button.addEventListener('click', () => showAthleteProfile(profile));
+        list.append(button);
+      }
+      const selected = data.profiles.find((profile) => profile.id === selectedAthleteId) || data.profiles[0];
+      showAthleteProfile(selected);
+    }
+
+    async function loadAthletes() {
+      if (athleteData || athleteLoading) return;
+      athleteLoading = true;
+      try {
+        const response = await fetch('/api/athletes');
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error || 'athlete profiles unavailable');
+        populateAthletes(data);
+      } catch (error) {
+        $('career-boundary').textContent = `Athlete profile error: ${error.message}`;
+      } finally {
+        athleteLoading = false;
+      }
+    }
+
     const sleep = (milliseconds) => new Promise((resolve) => setTimeout(resolve, reducedMotion ? 20 : milliseconds));
 
     function clockText(seconds) {
@@ -1298,11 +1551,10 @@
       playing = false;
     }
 
-    async function watchLeagueGame() {
+    async function openArchivedReplay(gameNumber, button) {
       if (playing) return;
-      const button = $('watch-league-game');
-      const gameNumber = Number(button.dataset.game);
       if (!Number.isInteger(gameNumber)) return;
+      const originalText = button.textContent;
       button.disabled = true;
       button.textContent = 'Loading verified replay…';
       try {
@@ -1317,11 +1569,16 @@
         appendLog(`Archive replay · season ${data.archive.season} · game ${data.archive.game} · verified`);
         await playGameTimeline(data);
       } catch (error) {
-        $('league-detail-title').textContent = `Replay error: ${error.message}`;
+        appendLog(`Replay error · ${error.message}`);
       } finally {
-        button.textContent = `Watch Game ${gameNumber} exact replay`;
+        button.textContent = originalText;
         button.disabled = false;
       }
+    }
+
+    function watchLeagueGame() {
+      const button = $('watch-league-game');
+      return openArchivedReplay(Number(button.dataset.game), button);
     }
 
     async function playTimeline(timeline, demo = false) {

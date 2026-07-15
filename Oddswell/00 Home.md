@@ -33,6 +33,7 @@ tags:
 - [[Development/Reports/Phase 0D4 Public Prediction Evaluation|Phase 0D.4 public prediction evaluation]]
 - [[Development/Reports/Phase 05B League Viewer|Phase 0.5B League Viewer]]
 - [[Development/Reports/Phase 05C Archived Game Playback|Phase 0.5C archived game playback]]
+- [[Development/Reports/Phase 05D Athlete Career Profiles|Phase 0.5D Athlete Career Profiles]]
 - [[Visual Maps/Project Tool Map|Master project tool map]]
 - [[Visual Maps/3D Asset Toolchain|3D asset toolchain canvas]]
 - [[Visual Maps/Multi-Brain Architecture|Multi-brain architecture canvas]]
@@ -41,7 +42,7 @@ tags:
 
 ## Current focus
 
-Phase 0.5C is complete: every archived League Viewer result now opens its full verified Game Theater playback. The next gate is Phase 0.5D Athlete Career Profiles for durable ratings, specialties, career state, availability, recent performance, and history. Athlete Life Brain choices and consequences remain planned; no live model, credits, wagering, or retraining job is authorized.
+Phase 0.5D is complete: the Admin Console now exposes twelve Athlete Career Profiles with durable ratings, specialties, current availability, verified season performance, five-game form, full history, and game replay links. Phase 0.5E Athlete Career Persistence is next; Athlete Life Brain choices and consequences remain planned, and no live model, credits, wagering, or retraining job is authorized.
 
 ## Current state
 

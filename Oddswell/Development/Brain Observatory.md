@@ -24,9 +24,10 @@ Double-click `Start Brain Observatory.cmd` in the project root. The launcher sta
 - Provides a dedicated Game Theater with a symbolic court, all twelve roster athletes, real recorded plays, lineup changes, clock and score progression, replay speed, and replay-last-game control.
 - Provides a read-only League Viewer with standings, the complete archived schedule, public rosters and ratings, availability, per-game minutes, prediction probabilities, pregame commitments, and replay hashes.
 - Opens every League Viewer result in the Game Theater as a full archived playback and verifies the reconstructed score and player minutes before display.
+- Provides twelve Athlete Career Profiles with durable ratings, transparent specialties, availability, verified season metrics, five-game form graphics, complete game history, and direct replay links.
 - Shows the final score, decision count, activity tape, training state, and approved $5 experiment ceiling.
 - Includes a clearly marked training-visual preview so the intended presentation can be reviewed before actual model training exists.
-- Provides navigation for Overview, Brains, Simulation, Content, World / League, Operations, and Audit.
+- Provides navigation for Overview, Brains, Athletes, Simulation, Content, World / League, Operations, and Audit.
 - Exposes real seeded-simulation and status-refresh controls with strict server-side input validation.
 - Persists successful admin actions as JSON lines in the ignored local file `brain_admin/admin-audit.log`.
 - Shows clothing, items, economy, moderation, release controls, and other absent systems as locked or read-only boundaries rather than fake controls.
@@ -44,6 +45,8 @@ The Game Theater follows the same truth rule: event labels, lineups, clock, and 
 The League Viewer follows the Phase 0D.4 public-information boundary. Hidden fatigue, recovery timers, injury-risk internals, seeds, RNG state, economy data, and admin mutations stay outside its payload.
 
 Archived games reuse hidden authoritative league state only on the server. The browser receives the complete recorded play-frame stream and verified archive metadata, never the hidden reconstruction inputs.
+
+Athlete profiles keep durable ability separate from temporary form. The current page does not imply that aging, contracts, development, personal-life decisions, or Athlete Life Brain consequences are active.
 
 When genuine training is approved, connect provider progress, dataset version, candidate version, validation metrics, estimated and actual cost, and promotion-gate results to the existing interface. Hosted LLM internals remain opaque, so the Observatory will display observable telemetry rather than fabricated neuron activations.
 

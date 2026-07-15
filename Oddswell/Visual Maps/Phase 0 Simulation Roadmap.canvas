@@ -15,7 +15,8 @@
     {"id":"p0-next","type":"text","text":"## 0.5A ✅ GAME THEATER\nReal seeded game → recorded visual replay\n• lineups • plays • clock • score • ball motion\nSymbolic positions are clearly labeled.","x":-650,"y":530,"width":650,"height":170,"color":"3"},
     {"id":"p0-5b","type":"text","text":"## 0.5B ✅ LEAGUE VIEWER\nTeams • athletes • schedule • standings\nAvailability • commitments • per-game inspection\n20 verified results • $0 • read only","x":60,"y":530,"width":650,"height":170,"color":"3"},
     {"id":"p0-5c","type":"text","text":"## 0.5C ✅ ARCHIVED GAME PLAYBACK\nSelect result → full recorded Game Theater replay\nScore + minutes verified • hidden state server-side • $0","x":-650,"y":760,"width":1360,"height":150,"color":"3"},
-    {"id":"p0-5d","type":"text","text":"## NEXT: 0.5D ATHLETE CAREER PROFILES\nDurable ratings • specialties • career state • availability\nRecent performance + history visible before Athlete Life Brain choices are added.","x":-650,"y":970,"width":1360,"height":150,"color":"4"}
+    {"id":"p0-5d","type":"text","text":"## 0.5D ✅ ATHLETE CAREER PROFILES\n12 durable profiles • specialties • availability\nSeason metrics • five-game form • 20-game history • replay links • $0","x":-650,"y":970,"width":1360,"height":150,"color":"3"},
+    {"id":"p0-5e","type":"text","text":"## NEXT: 0.5E CAREER PERSISTENCE\nStable multi-season athlete records • cumulative totals\nExperience/career stage • explicit active/retired history boundary","x":-650,"y":1180,"width":1360,"height":150,"color":"4"}
   ],
   "edges": [
     {"id":"p0-edge-1","fromNode":"p0-a","fromSide":"right","toNode":"p0-b","toSide":"left"},
@@ -27,6 +28,7 @@
     {"id":"p0-edge-7","fromNode":"p0-playable","fromSide":"bottom","toNode":"p0-next","toSide":"top"},
     {"id":"p0-edge-8","fromNode":"p0-next","fromSide":"right","toNode":"p0-5b","toSide":"left"},
     {"id":"p0-edge-9","fromNode":"p0-5b","fromSide":"bottom","toNode":"p0-5c","toSide":"top"},
-    {"id":"p0-edge-10","fromNode":"p0-5c","fromSide":"bottom","toNode":"p0-5d","toSide":"top"}
+    {"id":"p0-edge-10","fromNode":"p0-5c","fromSide":"bottom","toNode":"p0-5d","toSide":"top"},
+    {"id":"p0-edge-11","fromNode":"p0-5d","fromSide":"bottom","toNode":"p0-5e","toSide":"top"}
   ]
 }
