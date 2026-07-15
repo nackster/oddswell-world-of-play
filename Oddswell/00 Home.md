@@ -15,6 +15,7 @@ tags:
 - [[Design/Decisions/DEC-002 First Playable Scope|First playable scope]]
 - [[Design/Decisions/DEC-003 Multi-Brain AI Architecture|Multi-brain AI architecture]]
 - [[Design/Decisions/DEC-004 AI Retraining Budget|AI retraining budget]]
+- [[Design/Decisions/DEC-005 Game Admin Console|Game Admin Console direction]]
 - [[Art/Visual Consistency|Visual consistency]]
 - [[Development/Current Plan|Current plan]]
 - [[Development/Technical Principles|Technical principles]]

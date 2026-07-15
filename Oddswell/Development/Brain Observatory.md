@@ -29,6 +29,10 @@ Animation must never imply that model weights are changing when no training job 
 
 When genuine training is approved, connect provider progress, dataset version, candidate version, validation metrics, estimated and actual cost, and promotion-gate results to the existing interface. Hosted LLM internals remain opaque, so the Observatory will display observable telemetry rather than fabricated neuron activations.
 
+## Expansion direction
+
+This program will become one module inside the general [[Design/Decisions/DEC-005 Game Admin Console|OddsWell Game Admin Console]]. New controls will be added only when their underlying game systems exist. Clothing and item activation, world operations, releases, support, economy administration, and protected AI-version controls are planned categories rather than implemented permissions.
+
 ## Source
 
 - Server: `brain_admin/server.py`
