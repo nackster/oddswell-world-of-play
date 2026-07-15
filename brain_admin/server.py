@@ -1,8 +1,10 @@
 from __future__ import annotations
 
 import argparse
+from datetime import datetime, timezone
 import json
 import sys
+import tempfile
 import threading
 import webbrowser
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
@@ -12,6 +14,8 @@ from urllib.parse import urlparse
 
 ROOT = Path(__file__).resolve().parents[1]
 INDEX = Path(__file__).with_name("index.html")
+AUDIT_PATH = Path(__file__).with_name("admin-audit.log")
+AUDIT_LOCK = threading.Lock()
 sys.path.insert(0, str(ROOT))
 
 from phase0a.simulator import BRAIN_VERSION, ENGINE_VERSION, simulate_game  # noqa: E402
@@ -22,9 +26,19 @@ from phase0d.league import LEAGUE_VERSION  # noqa: E402
 def status_payload() -> dict[str, object]:
     return {
         "project": "OddsWell: World of Play",
+        "console_mode": "LOCAL DEVELOPMENT / NO AUTHENTICATION",
         "engine_version": ENGINE_VERSION,
         "brain_version": BRAIN_VERSION,
         "league_version": LEAGUE_VERSION,
+        "admin_modules": [
+            {"id": "overview", "name": "Overview", "state": "AVAILABLE", "detail": "Verified local system summary."},
+            {"id": "brains", "name": "Brains", "state": "ACTIVE", "detail": "Cinematic Observatory and truthful training preview."},
+            {"id": "simulation", "name": "Simulation", "state": "ACTIVE", "detail": "Runs the current seeded authoritative simulator."},
+            {"id": "content", "name": "Content", "state": "LOCKED", "detail": "Clothing and item systems are not implemented."},
+            {"id": "world", "name": "World / League", "state": "READ ONLY", "detail": "Current league version is visible; admin mutations are not implemented."},
+            {"id": "operations", "name": "Operations", "state": "LOCKED", "detail": "Economy, moderation, releases, and support are not implemented."},
+            {"id": "audit", "name": "Audit", "state": "ACTIVE", "detail": "Persistent local record of console actions."},
+        ],
         "training": {
             "state": "IDLE",
             "label": "No model training is running",
@@ -76,6 +90,41 @@ def status_payload() -> dict[str, object]:
             },
         ],
     }
+
+
+def record_audit(
+    action: str, target: str, details: dict[str, object], path: Path | None = None
+) -> dict[str, object]:
+    path = path or AUDIT_PATH
+    entry: dict[str, object] = {
+        "timestamp": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+        "actor": "local-admin",
+        "action": action,
+        "target": target,
+        "outcome": "SUCCESS",
+        "details": details,
+    }
+    line = json.dumps(entry, separators=(",", ":"), sort_keys=True) + "\n"
+    with AUDIT_LOCK, path.open("a", encoding="utf-8") as audit_file:
+        audit_file.write(line)
+        audit_file.flush()
+    return entry
+
+
+def audit_payload(limit: int = 100, path: Path | None = None) -> dict[str, object]:
+    path = path or AUDIT_PATH
+    if not path.exists():
+        return {"entries": []}
+    entries: list[dict[str, object]] = []
+    with AUDIT_LOCK, path.open(encoding="utf-8") as audit_file:
+        for line in audit_file:
+            try:
+                value = json.loads(line)
+            except json.JSONDecodeError:
+                continue
+            if isinstance(value, dict):
+                entries.append(value)
+    return {"entries": entries[-limit:][::-1]}
 
 
 def simulation_payload(seed: int) -> dict[str, object]:
@@ -170,9 +219,10 @@ class Handler(BaseHTTPRequestHandler):
         self.send_header("Content-Type", content_type)
         self.send_header("Content-Length", str(len(body)))
         self.send_header("Cache-Control", "no-store")
+        self.send_header("X-Content-Type-Options", "nosniff")
         self.send_header(
             "Content-Security-Policy",
-            "default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; connect-src 'self'; img-src 'self' data:",
+            "default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; frame-ancestors 'none'; form-action 'self'",
         )
         self.end_headers()
         self.wfile.write(body)
@@ -180,31 +230,63 @@ class Handler(BaseHTTPRequestHandler):
     def send_json(self, value: object, status: int = 200) -> None:
         self.send_bytes(json.dumps(value).encode("utf-8"), "application/json; charset=utf-8", status)
 
+    def read_json(self, allowed_keys: set[str]) -> dict[str, object]:
+        if self.headers.get("Content-Type", "").split(";", 1)[0].strip().lower() != "application/json":
+            raise ValueError("Content-Type must be application/json")
+        try:
+            length = int(self.headers.get("Content-Length", ""))
+        except ValueError as error:
+            raise ValueError("Content-Length must be a whole number") from error
+        if not 0 <= length <= 4096:
+            raise ValueError("request is too large")
+        data = json.loads(self.rfile.read(length) or b"{}")
+        if not isinstance(data, dict):
+            raise ValueError("request body must be a JSON object")
+        unknown = set(data) - allowed_keys
+        if unknown:
+            raise ValueError(f"unknown field: {sorted(unknown)[0]}")
+        return data
+
     def do_GET(self) -> None:  # noqa: N802
         path = urlparse(self.path).path
         if path == "/":
             self.send_bytes(INDEX.read_bytes(), "text/html; charset=utf-8")
         elif path == "/api/status":
             self.send_json(status_payload())
+        elif path == "/api/audit":
+            self.send_json(audit_payload())
         elif path == "/favicon.ico":
             self.send_bytes(b"", "image/x-icon", 204)
         else:
             self.send_json({"error": "not found"}, 404)
 
     def do_POST(self) -> None:  # noqa: N802
-        if urlparse(self.path).path != "/api/simulate":
+        path = urlparse(self.path).path
+        if path not in {"/api/simulate", "/api/refresh"}:
             self.send_json({"error": "not found"}, 404)
             return
         try:
-            length = int(self.headers.get("Content-Length", "0"))
-            if not 0 <= length <= 4096:
-                raise ValueError("request is too large")
-            data = json.loads(self.rfile.read(length) or b"{}")
-            seed = data.get("seed", 42)
+            if path == "/api/refresh":
+                self.read_json(set())
+                record_audit("system.refresh", "admin-console", {})
+                self.send_json(status_payload())
+                return
+            data = self.read_json({"seed"})
+            if set(data) != {"seed"}:
+                raise ValueError("seed is required")
+            seed = data["seed"]
             if not isinstance(seed, int) or isinstance(seed, bool):
                 raise ValueError("seed must be a whole number")
-            self.send_json(simulation_payload(seed))
-        except (ValueError, TypeError, json.JSONDecodeError) as error:
+            result = simulation_payload(seed)
+            summary = result["summary"]
+            assert isinstance(summary, dict)
+            record_audit(
+                "simulation.run",
+                f"seed:{seed}",
+                {"home_score": summary["home_score"], "away_score": summary["away_score"]},
+            )
+            self.send_json(result)
+        except (ValueError, TypeError, UnicodeDecodeError, json.JSONDecodeError) as error:
             self.send_json({"error": str(error)}, 400)
 
     def log_message(self, format: str, *args: object) -> None:
@@ -215,13 +297,21 @@ def self_check() -> None:
     status = status_payload()
     game = simulation_payload(42)
     assert len(status["brains"]) == 6
+    assert [module["id"] for module in status["admin_modules"]] == [
+        "overview", "brains", "simulation", "content", "world", "operations", "audit"
+    ]
     assert game["summary"]["home_score"] != game["summary"]["away_score"]
     assert game["timeline"][-1]["kind"] == "final"
-    print("Brain Observatory self-check passed.")
+    with tempfile.TemporaryDirectory() as temporary_directory:
+        path = Path(temporary_directory) / "audit.log"
+        record_audit("self-check", "admin-console", {"seed": 42}, path)
+        entries = audit_payload(path=path)["entries"]
+        assert len(entries) == 1 and entries[0]["details"] == {"seed": 42}
+    print("OddsWell Admin Console self-check passed.")
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Run the local OddsWell Brain Observatory.")
+    parser = argparse.ArgumentParser(description="Run the local OddsWell Admin Console.")
     parser.add_argument("--port", type=int, default=8765)
     parser.add_argument("--no-browser", action="store_true")
     parser.add_argument("--check", action="store_true")
@@ -236,12 +326,12 @@ def main() -> None:
     server = ThreadingHTTPServer(("127.0.0.1", args.port), Handler)
     if not args.no_browser:
         threading.Timer(0.5, webbrowser.open, args=(url,)).start()
-    print(f"OddsWell Brain Observatory is running at {url}")
+    print(f"OddsWell Admin Console is running at {url}")
     print("Press Ctrl+C to stop it.")
     try:
         server.serve_forever()
     except KeyboardInterrupt:
-        print("\nStopping Brain Observatory.")
+        print("\nStopping Admin Console.")
     finally:
         server.server_close()
 

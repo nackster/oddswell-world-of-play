@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>OddsWell Brain Observatory</title>
+  <title>OddsWell Admin Console</title>
   <style>
     :root {
       color-scheme: dark;
@@ -45,7 +45,22 @@
     button, input { font: inherit; }
     button:focus-visible, input:focus-visible { outline: 2px solid var(--cyan); outline-offset: 3px; }
     button { color: inherit; }
-    .shell { width: min(1540px, 100%); margin: 0 auto; padding: 20px; }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+    .app-shell { width: min(1740px, 100%); margin: 0 auto; display: grid; grid-template-columns: 218px minmax(0, 1fr); }
+    .rail { min-height: 100vh; padding: 22px 14px; border-right: 1px solid var(--line); background: rgba(2, 8, 18, 0.76); }
+    .rail-brand { padding: 4px 10px 24px; color: var(--cyan); font-size: 0.78rem; letter-spacing: 0.2em; }
+    .rail-brand strong { display: block; margin-bottom: 5px; color: var(--ink); font-size: 0.92rem; }
+    .nav { display: grid; gap: 5px; }
+    .nav-button {
+      width: 100%; padding: 10px 11px; border: 1px solid transparent; border-radius: 10px;
+      background: transparent; color: var(--muted); text-align: left; cursor: pointer;
+    }
+    .nav-button:hover, .nav-button[aria-current="page"] { color: var(--ink); border-color: var(--line); background: rgba(92, 236, 255, 0.07); }
+    .nav-button[aria-current="page"] { box-shadow: inset 2px 0 var(--cyan); }
+    .nav-state { float: right; color: var(--muted); font-size: 0.56rem; letter-spacing: 0.1em; }
+    .rail-note { margin: 24px 10px 0; color: var(--muted); font-size: 0.68rem; line-height: 1.5; }
+    .workspace { min-width: 0; }
+    .shell { width: 100%; padding: 20px; }
     header {
       display: flex;
       align-items: center;
@@ -78,6 +93,26 @@
     .online { display: inline-flex; gap: 7px; align-items: center; color: var(--green); }
     .online::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: currentColor; box-shadow: 0 0 12px currentColor; }
     .layout { display: grid; grid-template-columns: minmax(0, 1fr) 330px; gap: 16px; }
+    .page[hidden] { display: none; }
+    .page-head { display: flex; justify-content: space-between; align-items: end; gap: 18px; margin: 4px 0 18px; }
+    .page-head h2 { margin: 0; font-size: clamp(1.2rem, 3vw, 1.8rem); font-weight: 500; }
+    .page-head p { margin: 6px 0 0; color: var(--muted); font-size: 0.82rem; }
+    .module-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 13px; }
+    .module-card { min-height: 150px; padding: 17px; border: 1px solid var(--line); border-radius: 16px; background: var(--panel); }
+    .module-card h3 { margin: 12px 0 7px; font-size: 1rem; font-weight: 500; }
+    .module-card p { margin: 0; color: var(--muted); font-size: 0.79rem; line-height: 1.55; }
+    .module-card.wide { grid-column: span 2; }
+    .state { display: inline-block; color: var(--green); font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; }
+    .state.locked { color: var(--amber); }
+    .state.read-only { color: var(--cyan); }
+    .module-action { margin-top: 15px; }
+    .security-banner { margin-top: 14px; border-color: rgba(255, 199, 101, 0.26); background: rgba(255, 199, 101, 0.045); }
+    .form-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: end; margin-top: 18px; }
+    .field-label { display: grid; gap: 6px; color: var(--muted); font-size: 0.72rem; }
+    .audit-list { display: grid; gap: 7px; margin-top: 14px; }
+    .audit-entry { display: grid; grid-template-columns: 170px 135px 1fr auto; gap: 12px; align-items: center; padding: 11px 0; border-bottom: 1px solid var(--line); font-size: 0.76rem; }
+    .audit-time, .audit-target { color: var(--muted); font-family: ui-monospace, SFMono-Regular, Consolas, monospace; }
+    .empty { color: var(--muted); padding: 22px 0; }
     .stage, .panel, .telemetry {
       border: 1px solid var(--line);
       background: var(--panel);
@@ -185,10 +220,17 @@
     .log-line.demo { color: var(--amber); }
     .footer { display: flex; justify-content: space-between; gap: 10px; margin-top: 11px; color: #607a8d; font-size: 0.63rem; letter-spacing: 0.08em; text-transform: uppercase; }
     @media (max-width: 980px) {
+      .app-shell { grid-template-columns: 1fr; }
+      .rail { min-height: auto; padding: 12px; border-right: 0; border-bottom: 1px solid var(--line); }
+      .rail-brand, .rail-note { display: none; }
+      .nav { grid-template-columns: repeat(7, minmax(max-content, 1fr)); overflow-x: auto; }
+      .nav-button { text-align: center; white-space: nowrap; }
+      .nav-state { display: none; }
       .layout { grid-template-columns: 1fr; }
       .panel { order: 2; }
       .telemetry { grid-column: 1; grid-template-columns: 1fr; order: 3; }
       .brain-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .module-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     }
     @media (max-width: 640px) {
       .shell { padding: 12px; }
@@ -201,6 +243,10 @@
       .control { flex: 1 1 45%; }
       .seed { flex: 1 1 100%; width: auto; }
       .footer { flex-direction: column; }
+      .module-grid { grid-template-columns: 1fr; }
+      .module-card.wide { grid-column: auto; }
+      .audit-entry { grid-template-columns: 1fr auto; }
+      .audit-time, .audit-target { grid-column: 1 / -1; }
     }
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after { scroll-behavior: auto !important; transition-duration: 0.001ms !important; animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; }
@@ -208,74 +254,150 @@
   </style>
 </head>
 <body>
-  <div class="shell">
-    <header>
-      <div class="brand">
-        <div class="mark" aria-hidden="true"></div>
-        <div>
-          <h1>ODDSWELL // BRAIN OBSERVATORY</h1>
-          <p class="eyebrow">Local simulation intelligence control</p>
-        </div>
-      </div>
-      <div class="system-meta">
-        <span class="online" id="connection">LOCAL LINK</span>
-        <time id="clock">--:--:--</time>
-      </div>
-    </header>
+  <div class="app-shell">
+    <aside class="rail" aria-label="Admin navigation">
+      <div class="rail-brand"><strong>ODDSWELL</strong>ADMIN CONSOLE</div>
+      <nav class="nav">
+        <button class="nav-button" type="button" data-page="overview">Overview <span class="nav-state">LIVE</span></button>
+        <button class="nav-button" type="button" data-page="brains" aria-current="page">Brains <span class="nav-state">CORE</span></button>
+        <button class="nav-button" type="button" data-page="simulation">Simulation <span class="nav-state">LIVE</span></button>
+        <button class="nav-button" type="button" data-page="content">Content <span class="nav-state">LOCKED</span></button>
+        <button class="nav-button" type="button" data-page="world">World / League <span class="nav-state">READ</span></button>
+        <button class="nav-button" type="button" data-page="operations">Operations <span class="nav-state">LOCKED</span></button>
+        <button class="nav-button" type="button" data-page="audit">Audit <span class="nav-state">LIVE</span></button>
+      </nav>
+      <p class="rail-note">Local development surface. Authentication and role-based access are not implemented.</p>
+    </aside>
 
-    <main class="layout">
-      <section class="stage" aria-label="Animated brain activity map">
-        <canvas id="network" aria-label="Six OddsWell components connected by animated decision and evidence flows"></canvas>
-        <div class="stage-status">
-          <div class="mode" id="mode">SYSTEM OBSERVATION</div>
-          <div class="event-title" id="event-title">Waiting for live simulator activity</div>
-        </div>
-        <div class="scoreboard" aria-live="polite">
-          <span class="team" id="home-team">Harbor City</span>
-          <strong class="score" id="score">— : —</strong>
-          <span class="team" id="away-team">Mesa Vista</span>
-        </div>
-        <div class="controls">
-          <label>
-            <span class="sr-only">Simulation seed</span>
-            <input class="seed" id="seed" type="number" min="0" max="2147483647" value="42" aria-label="Simulation seed">
-          </label>
-          <button class="control primary" id="simulate" type="button">Run real simulation</button>
-          <button class="control" id="preview" type="button">Preview training visuals</button>
-          <button class="control" id="fullscreen" type="button">Cinematic view</button>
-        </div>
-      </section>
-
-      <aside class="panel">
-        <h2>Brain network</h2>
-        <div class="brain-list" id="brain-list"></div>
-        <section class="selected-brain" aria-live="polite">
-          <h3 id="selected-name">Loading…</h3>
-          <div class="version" id="selected-version"></div>
-          <p class="detail" id="selected-detail"></p>
-        </section>
-        <div class="truth" id="training-truth">Training telemetry is loading.</div>
-      </aside>
-
-      <section class="telemetry">
-        <div>
-          <h2>Verified system state</h2>
-          <div class="metrics">
-            <div class="metric"><div class="metric-label">Basketball</div><div class="metric-value" id="brain-version">—</div></div>
-            <div class="metric"><div class="metric-label">Engine</div><div class="metric-value" id="engine-version">—</div></div>
-            <div class="metric"><div class="metric-label">Training cost</div><div class="metric-value" id="training-cost">—</div></div>
+    <div class="workspace">
+      <div class="shell">
+        <header>
+          <div class="brand">
+            <div class="mark" aria-hidden="true"></div>
+            <div>
+              <h1>ODDSWELL // ADMIN CONSOLE</h1>
+              <p class="eyebrow">Brain Observatory + local game control</p>
+            </div>
           </div>
-        </div>
-        <div>
-          <h2>Activity tape</h2>
-          <div class="log" id="log" role="log" aria-live="polite"></div>
-        </div>
-      </section>
-    </main>
+          <div class="system-meta">
+            <button class="control" id="refresh-status" type="button">Refresh status</button>
+            <span class="online" id="connection">LOCAL LINK</span>
+            <time id="clock">--:--:--</time>
+          </div>
+        </header>
 
-    <div class="footer">
-      <span>Local only · bound to 127.0.0.1</span>
-      <span>Visual motion represents recorded activity, not hidden chain-of-thought</span>
+        <main>
+          <section class="page" data-page-view="overview" hidden>
+            <div class="page-head"><div><h2>System overview</h2><p>Only controls backed by working OddsWell systems are enabled.</p></div></div>
+            <div class="module-grid" id="module-grid"></div>
+            <div class="module-card security-banner">
+              <span class="state locked">Security boundary</span>
+              <h3>Local development only</h3>
+              <p>There is intentionally no login screen. Authentication, role-based access, secure sessions, and deployment hardening are mandatory before this console can be exposed on any network.</p>
+            </div>
+          </section>
+
+          <section class="page" data-page-view="brains">
+            <div class="page-head"><div><h2>Brain Observatory</h2><p>Watch recorded simulator decisions and explicitly labeled training previews.</p></div></div>
+            <div class="layout">
+              <section class="stage" aria-label="Animated brain activity map">
+                <canvas id="network" aria-label="Six OddsWell components connected by animated decision and evidence flows"></canvas>
+                <div class="stage-status">
+                  <div class="mode" id="mode">SYSTEM OBSERVATION</div>
+                  <div class="event-title" id="event-title">Waiting for live simulator activity</div>
+                </div>
+                <div class="scoreboard" aria-live="polite">
+                  <span class="team" id="home-team">Harbor City</span>
+                  <strong class="score" id="score">— : —</strong>
+                  <span class="team" id="away-team">Mesa Vista</span>
+                </div>
+                <div class="controls">
+                  <label><span class="sr-only">Simulation seed</span><input class="seed" id="seed" type="number" min="0" max="2147483647" value="42" aria-label="Simulation seed"></label>
+                  <button class="control primary" id="simulate" type="button">Run real simulation</button>
+                  <button class="control" id="preview" type="button">Preview training visuals</button>
+                  <button class="control" id="fullscreen" type="button">Cinematic view</button>
+                </div>
+              </section>
+
+              <aside class="panel">
+                <h2>Brain network</h2>
+                <div class="brain-list" id="brain-list"></div>
+                <section class="selected-brain" aria-live="polite">
+                  <h3 id="selected-name">Loading…</h3>
+                  <div class="version" id="selected-version"></div>
+                  <p class="detail" id="selected-detail"></p>
+                </section>
+                <div class="truth" id="training-truth">Training telemetry is loading.</div>
+              </aside>
+
+              <section class="telemetry">
+                <div>
+                  <h2>Verified system state</h2>
+                  <div class="metrics">
+                    <div class="metric"><div class="metric-label">Basketball</div><div class="metric-value" id="brain-version">—</div></div>
+                    <div class="metric"><div class="metric-label">Engine</div><div class="metric-value" id="engine-version">—</div></div>
+                    <div class="metric"><div class="metric-label">Training cost</div><div class="metric-value" id="training-cost">—</div></div>
+                  </div>
+                </div>
+                <div><h2>Activity tape</h2><div class="log" id="log" role="log" aria-live="polite"></div></div>
+              </section>
+            </div>
+          </section>
+
+          <section class="page" data-page-view="simulation" hidden>
+            <div class="page-head"><div><h2>Simulation control</h2><p>Runs the current deterministic game simulator and opens its visual replay in the Observatory.</p></div></div>
+            <div class="module-grid">
+              <div class="module-card wide">
+                <span class="state">Implemented control</span>
+                <h3>Seeded game</h3>
+                <p>The server validates the seed, runs the authoritative simulation, and writes the action to the local audit trail.</p>
+                <div class="form-row">
+                  <label class="field-label" for="simulation-seed">Seed<input class="seed" id="simulation-seed" type="number" min="0" max="2147483647" value="42"></label>
+                  <button class="control primary" id="simulate-page" type="button">Run and watch</button>
+                </div>
+              </div>
+              <div class="module-card"><span class="state read-only">Read only</span><h3>Current versions</h3><p id="simulation-versions">Loading verified versions…</p></div>
+            </div>
+          </section>
+
+          <section class="page" data-page-view="content" hidden>
+            <div class="page-head"><div><h2>Content</h2><p>Future availability controls are visible as boundaries, not pretend switches.</p></div></div>
+            <div class="module-grid">
+              <div class="module-card"><span class="state locked">Not implemented</span><h3>Clothing</h3><p>No clothing catalog or activation service exists yet, so this console cannot activate items.</p></div>
+              <div class="module-card"><span class="state locked">Not implemented</span><h3>Items</h3><p>No item inventory or entitlement service exists yet. Controls will appear after an authoritative system does.</p></div>
+              <div class="module-card"><span class="state locked">Not implemented</span><h3>Release windows</h3><p>No content publishing pipeline is connected.</p></div>
+            </div>
+          </section>
+
+          <section class="page" data-page-view="world" hidden>
+            <div class="page-head"><div><h2>World / League</h2><p>The deterministic league exists; admin mutation controls do not.</p></div></div>
+            <div class="module-grid">
+              <div class="module-card"><span class="state read-only">Read only</span><h3>League engine</h3><p id="league-version">Loading verified league version…</p></div>
+              <div class="module-card"><span class="state locked">Not implemented</span><h3>World state</h3><p>No live world-state administration service exists.</p></div>
+              <div class="module-card"><span class="state locked">Not implemented</span><h3>Season operations</h3><p>Schedule edits, team management, and season intervention remain locked until validated commands exist.</p></div>
+            </div>
+          </section>
+
+          <section class="page" data-page-view="operations" hidden>
+            <div class="page-head"><div><h2>Operations</h2><p>High-impact areas remain unavailable until their authoritative services and approvals exist.</p></div></div>
+            <div class="module-grid">
+              <div class="module-card"><span class="state locked">Not implemented</span><h3>Economy</h3><p>No economy administration or payment controls are connected.</p></div>
+              <div class="module-card"><span class="state locked">Not implemented</span><h3>Moderation</h3><p>No player moderation or support system is connected.</p></div>
+              <div class="module-card"><span class="state locked">Not implemented</span><h3>Releases</h3><p>No deployment, maintenance, or announcement service is connected.</p></div>
+            </div>
+          </section>
+
+          <section class="page" data-page-view="audit" hidden>
+            <div class="page-head"><div><h2>Audit trail</h2><p>Persistent local record of successful admin actions. Times are UTC.</p></div><button class="control" id="refresh-audit" type="button">Reload audit</button></div>
+            <div class="module-card"><span class="state">Local evidence</span><div class="audit-list" id="audit-list"><div class="empty">No admin actions recorded yet.</div></div></div>
+          </section>
+        </main>
+
+        <div class="footer">
+          <span>Local only · bound to 127.0.0.1 · no authentication</span>
+          <span>Authentication + RBAC required before network exposure</span>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -305,7 +427,19 @@
     let playing = false;
 
     const $ = (id) => document.getElementById(id);
-    const escapeText = (value) => String(value ?? '');
+
+    function navigate(page) {
+      const view = document.querySelector(`[data-page-view="${page}"]`);
+      if (!view) return;
+      document.querySelectorAll('[data-page-view]').forEach((item) => { item.hidden = item !== view; });
+      document.querySelectorAll('[data-page]').forEach((button) => {
+        if (button.dataset.page === page) button.setAttribute('aria-current', 'page');
+        else button.removeAttribute('aria-current');
+      });
+      history.replaceState(null, '', `#${page}`);
+      if (page === 'audit') loadAudit();
+      if (page === 'brains') requestAnimationFrame(() => resizeCanvas());
+    }
 
     function resizeCanvas() {
       const rect = canvas.getBoundingClientRect();
@@ -480,8 +614,30 @@
       }
       $('brain-version').textContent = data.brain_version;
       $('engine-version').textContent = data.engine_version;
+      $('league-version').textContent = `${data.league_version}. Status is exposed here without mutation controls.`;
+      $('simulation-versions').textContent = `Brain ${data.brain_version} · engine ${data.engine_version}.`;
       $('training-cost').textContent = `$${data.training.spent_usd.toFixed(2)} / $${data.training.budget_usd.toFixed(2)}`;
       $('training-truth').textContent = `${data.training.label}. Current motion shows real simulator decisions or an explicitly labeled visual preview.`;
+      const modules = $('module-grid');
+      modules.replaceChildren();
+      for (const module of data.admin_modules) {
+        const card = document.createElement('section');
+        card.className = 'module-card';
+        const state = document.createElement('span');
+        state.className = 'state' + (module.state === 'LOCKED' ? ' locked' : module.state === 'READ ONLY' ? ' read-only' : '');
+        state.textContent = module.state;
+        const heading = document.createElement('h3');
+        heading.textContent = module.name;
+        const detail = document.createElement('p');
+        detail.textContent = module.detail;
+        const action = document.createElement('button');
+        action.type = 'button';
+        action.className = 'control module-action';
+        action.textContent = module.state === 'LOCKED' ? 'View boundary' : 'Open module';
+        action.addEventListener('click', () => navigate(module.id));
+        card.append(state, heading, detail, action);
+        modules.append(card);
+      }
       selectBrain(selectedId);
       appendLog(`Connected · ${data.brain_version} · ${data.engine_version}`);
     }
@@ -495,6 +651,61 @@
         $('connection').textContent = 'LINK ERROR';
         $('connection').style.color = 'var(--red)';
         appendLog(`Error · ${error.message}`);
+      }
+    }
+
+    async function refreshStatus() {
+      const button = $('refresh-status');
+      button.disabled = true;
+      try {
+        const response = await fetch('/api/refresh', {
+          method: 'POST', headers: {'Content-Type': 'application/json'}, body: '{}'
+        });
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error || 'refresh failed');
+        populateStatus(data);
+        appendLog('System status refreshed and audited');
+        loadAudit();
+      } catch (error) {
+        appendLog(`Error · ${error.message}`);
+      } finally {
+        button.disabled = false;
+      }
+    }
+
+    async function loadAudit() {
+      const list = $('audit-list');
+      try {
+        const response = await fetch('/api/audit');
+        if (!response.ok) throw new Error('audit unavailable');
+        const data = await response.json();
+        list.replaceChildren();
+        if (!data.entries.length) {
+          const empty = document.createElement('div');
+          empty.className = 'empty';
+          empty.textContent = 'No admin actions recorded yet.';
+          list.append(empty);
+          return;
+        }
+        for (const entry of data.entries) {
+          const row = document.createElement('div');
+          row.className = 'audit-entry';
+          const time = document.createElement('span');
+          time.className = 'audit-time';
+          time.textContent = entry.timestamp;
+          const action = document.createElement('strong');
+          action.textContent = entry.action;
+          const target = document.createElement('span');
+          target.className = 'audit-target';
+          target.textContent = entry.target;
+          const outcome = document.createElement('span');
+          outcome.className = 'state';
+          outcome.textContent = entry.outcome;
+          row.append(time, action, target, outcome);
+          list.append(row);
+        }
+      } catch (error) {
+        list.textContent = `Audit error: ${error.message}`;
       }
     }
 
@@ -513,9 +724,18 @@
       playing = false;
     }
 
-    async function runSimulation() {
+    async function runSimulation(seedInput, button) {
       if (playing) return;
-      const button = $('simulate');
+      const seed = seedInput.valueAsNumber;
+      if (!Number.isInteger(seed) || seed < 0 || seed > 2147483647) {
+        navigate('brains');
+        $('mode').textContent = 'INPUT ERROR';
+        $('event-title').textContent = 'Seed must be a whole number from 0 through 2147483647';
+        return;
+      }
+      $('seed').value = String(seed);
+      $('simulation-seed').value = String(seed);
+      navigate('brains');
       button.disabled = true;
       $('mode').textContent = 'REAL SIMULATION ACTIVITY';
       $('event-title').textContent = 'Authoritative simulator is running…';
@@ -523,7 +743,7 @@
         const response = await fetch('/api/simulate', {
           method: 'POST',
           headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify({seed: Number($('seed').value)})
+          body: JSON.stringify({seed})
         });
         const data = await response.json();
         if (!response.ok) throw new Error(data.error || 'simulation failed');
@@ -531,6 +751,7 @@
         $('away-team').textContent = data.summary.away;
         $('score').textContent = '0 : 0';
         appendLog(`Simulation seed ${data.summary.seed} · ${data.summary.decisions} decisions`);
+        loadAudit();
         await playTimeline(data.timeline);
         $('event-title').textContent = `${data.summary.home} ${data.summary.home_score} — ${data.summary.away_score} ${data.summary.away}`;
         $('mode').textContent = 'REPLAY EVIDENCE SEALED';
@@ -561,7 +782,11 @@
       $('preview').disabled = false;
     }
 
-    $('simulate').addEventListener('click', runSimulation);
+    document.querySelectorAll('[data-page]').forEach((button) => button.addEventListener('click', () => navigate(button.dataset.page)));
+    $('simulate').addEventListener('click', () => runSimulation($('seed'), $('simulate')));
+    $('simulate-page').addEventListener('click', () => runSimulation($('simulation-seed'), $('simulate-page')));
+    $('refresh-status').addEventListener('click', refreshStatus);
+    $('refresh-audit').addEventListener('click', loadAudit);
     $('preview').addEventListener('click', previewTraining);
     $('fullscreen').addEventListener('click', () => {
       if (document.fullscreenElement) document.exitFullscreen();
@@ -582,8 +807,11 @@
     addEventListener('resize', () => { resizeCanvas(); if (reducedMotion) draw(performance.now()); });
     setInterval(() => { $('clock').textContent = new Date().toLocaleTimeString([], {hour12: false}); }, 1000);
 
+    const initialPage = location.hash.slice(1);
+    navigate(document.querySelector(`[data-page-view="${initialPage}"]`) ? initialPage : 'brains');
     resizeCanvas();
     loadStatus();
+    loadAudit();
     requestAnimationFrame(draw);
   </script>
 </body>

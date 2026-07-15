@@ -1,5 +1,5 @@
 @echo off
-title OddsWell Brain Observatory
+title OddsWell Admin Console
 cd /d "%~dp0"
 
 where py >nul 2>nul

@@ -7,9 +7,9 @@ tags:
 status: active
 ---
 
-# Brain Observatory
+# Admin Console and Brain Observatory
 
-The Brain Observatory is a local admin program for inspecting OddsWell's cooperating brains and authoritative systems.
+The local Admin Console is the first operational shell for OddsWell. The cinematic Brain Observatory remains its primary module for inspecting cooperating brains and authoritative systems.
 
 ## Open it
 
@@ -22,6 +22,14 @@ Double-click `Start Brain Observatory.cmd` in the project root. The launcher sta
 - Runs a real seeded basketball simulation and animates a cinematic sample of its recorded decisions and outcomes.
 - Shows the final score, decision count, activity tape, training state, and approved $5 experiment ceiling.
 - Includes a clearly marked training-visual preview so the intended presentation can be reviewed before actual model training exists.
+- Provides navigation for Overview, Brains, Simulation, Content, World / League, Operations, and Audit.
+- Exposes real seeded-simulation and status-refresh controls with strict server-side input validation.
+- Persists successful admin actions as JSON lines in the ignored local file `brain_admin/admin-audit.log`.
+- Shows clothing, items, economy, moderation, release controls, and other absent systems as locked or read-only boundaries rather than fake controls.
+
+## Security boundary
+
+The server is hard-bound to `127.0.0.1`. There is intentionally no login screen because no real authentication exists yet. Authentication, secure sessions, least-privilege role-based access control, and deployment hardening are mandatory before any network exposure. The local audit actor is labeled `local-admin`; that label is not an authenticated identity.
 
 ## Truth rule
 
@@ -31,7 +39,7 @@ When genuine training is approved, connect provider progress, dataset version, c
 
 ## Expansion direction
 
-This program will become one module inside the general [[Design/Decisions/DEC-005 Game Admin Console|OddsWell Game Admin Console]]. New controls will be added only when their underlying game systems exist. Clothing and item activation, world operations, releases, support, economy administration, and protected AI-version controls are planned categories rather than implemented permissions.
+The Observatory is now the primary module inside the first general [[Design/Decisions/DEC-005 Game Admin Console|OddsWell Game Admin Console]] shell. New controls will be added only when their underlying game systems exist. Clothing and item activation, world operations, releases, support, economy administration, and protected AI-version controls are planned categories rather than implemented permissions.
 
 ## Source
 

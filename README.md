@@ -65,8 +65,10 @@ python -m phase0d.league --games 20 --seasons 1 --start-seed 12000 --output "Odd
 python -m unittest phase0a.test_simulator phase0b.test_analyze phase0c.test_policy phase0d.test_league -v
 ```
 
-## Brain Observatory
+## Local Admin Console
 
-Double-click [`Start Brain Observatory.cmd`](Start%20Brain%20Observatory.cmd) to open the local admin dashboard. It visualizes the six brain/authority components, runs a real seeded game through the current simulator, and animates its recorded decision and outcome flow.
+Double-click [`Start Brain Observatory.cmd`](Start%20Brain%20Observatory.cmd) to open the local-only Admin Console. Its primary Brain Observatory module visualizes the six brain/authority components, runs a real seeded game through the current simulator, and animates its recorded decision and outcome flow. General navigation now covers Overview, Brains, Simulation, Content, World / League, Operations, and Audit.
 
-The training preview is explicitly a visual demonstration. Until an approved training provider is connected, it does not claim that model weights are changing.
+Only seeded simulation and status refresh are operational controls today, and successful actions are written to `brain_admin/admin-audit.log`. Clothing, items, economy, moderation, releases, and other unbuilt systems are clearly locked rather than represented by fake switches. The training preview is explicitly a visual demonstration; it does not claim model weights are changing.
+
+The server binds only to `127.0.0.1`. It intentionally has no pretend login: authentication, role-based access control, and secure deployment are required before any network exposure.
