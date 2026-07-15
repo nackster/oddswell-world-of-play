@@ -35,6 +35,7 @@ tags:
 - [[Development/Reports/Phase 05C Archived Game Playback|Phase 0.5C archived game playback]]
 - [[Development/Reports/Phase 05D Athlete Career Profiles|Phase 0.5D Athlete Career Profiles]]
 - [[Development/Reports/Phase 05E Athlete Career Persistence|Phase 0.5E Athlete Career Persistence]]
+- [[Development/Reports/Phase 05F Career Lifecycle Rules|Phase 0.5F Career Lifecycle Rules]]
 - [[Visual Maps/Project Tool Map|Master project tool map]]
 - [[Visual Maps/3D Asset Toolchain|3D asset toolchain canvas]]
 - [[Visual Maps/Multi-Brain Architecture|Multi-brain architecture canvas]]
@@ -43,7 +44,7 @@ tags:
 
 ## Current focus
 
-Phase 0.5E is complete: twelve stable Athlete Career Profiles now span three verified seasons with cumulative totals, selectable season evidence, exact replay links, and an explicit 12-active/0-retired record boundary. Phase 0.5F Career Lifecycle Rules is next; rating development, retirement mechanics, Athlete Life Brain consequences, live models, credits, wagering, and retraining remain inactive.
+Phase 0.5F is complete: the three-season career archive now uses explicit fictional ages, bounded development and decline, preserved specialties, and an age-35 retirement rule inside authoritative games and replays. The archive has 11 active careers and Roman Voss as its first retired career. Phase 0.5G Roster Continuity is next; Athlete Life Brain consequences, live models, credits, wagering, and retraining remain inactive.
 
 ## Current state
 

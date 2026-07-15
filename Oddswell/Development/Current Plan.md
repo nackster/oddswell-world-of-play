@@ -157,6 +157,17 @@ status: active
 - **Cost:** `$0.00`; the existing league state and standard-library cache were reused without a database or new dependency.
 - **Next gate:** Phase 0.5F Career Lifecycle Rules for bounded development and decline, specialty preservation, and real retirement criteria before Athlete Life Brain consequences.
 
+### Phase 0.5F Career Lifecycle Rules implementation status
+
+- **Status:** Complete on `agent/phase-0d`.
+- **Implemented:** explicit fictional debut ages, age bands, at-most-one-point adjacent-season changes, growth in young signature ratings, veteran decline, rating floors/ceilings, specialty-preservation checks, an age-35 final season, and rejection of post-retirement roster generation.
+- **Authoritative integration:** lifecycle-adjusted ratings drive Seasons 2-3 and are bound into replay evidence. The standard league and locked prediction-study behavior remain unchanged; Season 1 stays compatible with the League Viewer.
+- **Measured examples:** Micah Vale grows from 76 to 77 overall while passing/stamina rise from 86/88 to 88/90. Roman Voss retires after Season 3 at age 35, remains a Rebounding Anchor with 86 rebounding, and closes with 51 games, 819 points, and 734 rebounds.
+- **Archive boundary:** 11 active careers and 1 retired career. Roman cannot enter Season 4 until the league has a replacement-player path.
+- **Validation:** all 30 regression tests and the Admin Console self-check pass. Browser QA confirmed rating progression, retirement, and a lifecycle-adjusted 111-108 archived replay with no console errors. See [[Development/Reports/Phase 05F Career Lifecycle Rules]].
+- **Cost:** `$0.00`; no model, database, or dependency was added.
+- **Next gate:** Phase 0.5G Roster Continuity, followed by the first small Athlete Life Brain choice loop.
+
 ## Phase 1: 3D vertical slice
 
 Build the one-city scope defined in [[Design/Decisions/DEC-002 First Playable Scope]].

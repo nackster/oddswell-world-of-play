@@ -30,6 +30,17 @@ from phase0a.simulator import (  # noqa: E402
     simulate_game,
 )
 from phase0c.policy import POLICY_VERSION  # noqa: E402
+from phase0d.career import (  # noqa: E402
+    CAREER_VERSION,
+    DEBUT_AGES,
+    RETIREMENT_AGE,
+    RATING_NAMES,
+    age_for_season,
+    career_stage,
+    career_status,
+    retirement_season,
+    teams_for_season,
+)
 from phase0d.league import LEAGUE_VERSION, new_league, simulate_next_season  # noqa: E402
 from phase0d.prediction import PREDICTION_VERSION, run_prediction_study  # noqa: E402
 
@@ -81,11 +92,12 @@ def status_payload() -> dict[str, object]:
         "engine_version": ENGINE_VERSION,
         "brain_version": BRAIN_VERSION,
         "league_version": LEAGUE_VERSION,
+        "career_version": CAREER_VERSION,
         "prediction_version": PREDICTION_VERSION,
         "admin_modules": [
             {"id": "overview", "name": "Overview", "state": "AVAILABLE", "detail": "Verified local system summary."},
             {"id": "brains", "name": "Brains", "state": "ACTIVE", "detail": "Cinematic Observatory and truthful training preview."},
-            {"id": "athletes", "name": "Athletes", "state": "READ ONLY", "detail": "Stable multi-season careers, cumulative totals, specialties, availability, and verified replay history."},
+            {"id": "athletes", "name": "Athletes", "state": "READ ONLY", "detail": "Stable multi-season careers, age-driven development and decline, retirement, cumulative totals, and verified replay history."},
             {"id": "simulation", "name": "Simulation", "state": "ACTIVE", "detail": "Runs the seeded authoritative simulator and opens its recorded Game Theater replay."},
             {"id": "content", "name": "Content", "state": "LOCKED", "detail": "Clothing and item systems are not implemented."},
             {"id": "world", "name": "World / League", "state": "READ ONLY", "detail": "League and public prediction evidence are visible; admin mutations are not implemented."},
@@ -182,9 +194,12 @@ def audit_payload(limit: int = 100, path: Path | None = None) -> dict[str, objec
 
 @lru_cache(maxsize=1)
 def career_league():
+    # ponytail: derived rosters fit this read-only archive; persist roster snapshots before mutable seasons.
     state = new_league(LEAGUE_VIEW_START_SEED)
     for _ in range(CAREER_SEASONS):
-        state = simulate_next_season(state, LEAGUE_VIEW_GAMES)
+        state = simulate_next_season(
+            state, LEAGUE_VIEW_GAMES, teams_for_season(state.next_season)
+        )
     return state
 
 
@@ -461,7 +476,7 @@ def archived_game_result(game_number: int, season_number: int = 1) -> GameResult
     if not 1 <= game_number <= LEAGUE_VIEW_GAMES:
         raise ValueError(f"game number must be between 1 and {LEAGUE_VIEW_GAMES}")
     archived = career_league().seasons[season_number - 1].games[game_number - 1]
-    teams = {team.name: team for team in default_teams()}
+    teams = {team.name: team for team in teams_for_season(season_number)}
     matchup = (teams[archived.home_team], teams[archived.away_team])
     game = simulate_game(
         archived.seed,
@@ -483,7 +498,7 @@ def archived_replay_payload(season_number: int, game_number: int) -> dict[str, o
     game = archived_game_result(game_number, season_number)
     season = career_league().seasons[season_number - 1]
     archived = season.games[game_number - 1]
-    teams = {team.name: team for team in default_teams()}
+    teams = {team.name: team for team in teams_for_season(season_number)}
     matchup = (teams[archived.home_team], teams[archived.away_team])
     payload = recorded_game_payload(game, matchup, frame_limit=None)
     payload["archive"] = {
@@ -561,8 +576,19 @@ def athlete_profiles_payload() -> dict[str, object]:
     state = career_league()
     players = tuple(player for team in teams for player in team.players)
     player_team = {player.name: team.name for team in teams for player in team.players}
+    season_players = {
+        number: {
+            player.name: player
+            for team in teams_for_season(number)
+            for player in team.players
+        }
+        for number in range(1, CAREER_SEASONS + 1)
+    }
+    current_players = season_players[CAREER_SEASONS]
     final_availability = dict(state.availability)
-    league_average = sum(overall_rating(player) for player in players) / len(players)
+    league_average = sum(overall_rating(player) for player in current_players.values()) / len(
+        players
+    )
     career_totals: dict[str, Counter[str]] = defaultdict(Counter)
     season_splits: dict[str, list[dict[str, object]]] = defaultdict(list)
 
@@ -606,9 +632,18 @@ def athlete_profiles_payload() -> dict[str, object]:
             name = player.name
             standing = standings[player_team[name]]
             line = athlete_stat_line(totals[name], f"{standing.wins}-{standing.losses}")
+            season_player = season_players[season.season_number][name]
+            season_overall = overall_rating(season_player)
             season_splits[name].append(
                 {
                     "number": season.season_number,
+                    "age": age_for_season(name, season.season_number),
+                    "stage": career_stage(age_for_season(name, season.season_number)),
+                    "overall": season_overall,
+                    "overall_change": season_overall - overall_rating(player),
+                    "ratings": {
+                        rating: getattr(season_player, rating) for rating in RATING_NAMES
+                    },
                     **line,
                     "form": athlete_form(histories[name], float(line["points_per_game"])),
                     "history": list(reversed(histories[name])),
@@ -622,7 +657,8 @@ def athlete_profiles_payload() -> dict[str, object]:
     for team in teams:
         for roster_index, player in enumerate(team.players):
             name = player.name
-            overall = overall_rating(player)
+            current_player = current_players[name]
+            overall = overall_rating(current_player)
             rating_band = (
                 "Above roster average"
                 if overall > league_average + 1
@@ -633,6 +669,8 @@ def athlete_profiles_payload() -> dict[str, object]:
             splits = season_splits[name]
             current = splits[-1]
             total = career_totals[name]
+            status = career_status(name, len(splits))
+            final_season = retirement_season(name)
             career_line = athlete_stat_line(
                 total, f"{int(total['team_wins'])}-{int(total['team_losses'])}"
             )
@@ -643,30 +681,35 @@ def athlete_profiles_payload() -> dict[str, object]:
                     "team": team.name,
                     "overall": overall,
                     "ratings": {
-                        "shooting": player.shooting,
-                        "passing": player.passing,
-                        "defense": player.defense,
-                        "rebounding": player.rebounding,
-                        "stamina": player.stamina,
+                        rating: getattr(current_player, rating) for rating in RATING_NAMES
                     },
                     "career": {
-                        "status": "ACTIVE",
-                        "retired_after_season": None,
+                        "status": status,
+                        "retired_after_season": final_season if status == "RETIRED" else None,
+                        "projected_retirement_season": final_season,
+                        "debut_age": DEBUT_AGES[name],
+                        "current_age": current["age"],
+                        "retirement_age": RETIREMENT_AGE,
                         "current_season": current["number"],
                         "seasons": len(splits),
                         "experience": f"{len(splits)} VERIFIED SEASONS",
-                        "stage": "ESTABLISHED",
+                        "stage": "RETIRED" if status == "RETIRED" else current["stage"],
                         "role": "Starter" if roster_index < 5 else "Sixth player",
                         "tier": player_tier(overall),
                         "rating_band": rating_band,
                         "specialty": player_specialty(player),
-                        "durable_ratings": True,
+                        "bounded_rating_changes": True,
+                        "specialty_preserved": True,
                         "life_brain": "PLANNED / NOT ACTIVE",
                         "totals": career_line,
                     },
                     "availability": {
-                        "available": final_availability[name] == 0,
-                        "label": "AVAILABLE" if final_availability[name] == 0 else "OUT",
+                        "available": status == "ACTIVE" and final_availability[name] == 0,
+                        "label": "RETIRED"
+                        if status == "RETIRED"
+                        else "AVAILABLE"
+                        if final_availability[name] == 0
+                        else "OUT",
                     },
                     "season": current,
                     "seasons": splits,
@@ -681,13 +724,17 @@ def athlete_profiles_payload() -> dict[str, object]:
         "archive": {
             "seasons": len(state.seasons),
             "games": sum(len(season.games) for season in state.seasons),
-            "active_athletes": len(profiles),
-            "retired_athletes": 0,
+            "active_athletes": sum(
+                profile["career"]["status"] == "ACTIVE" for profile in profiles
+            ),
+            "retired_athletes": sum(
+                profile["career"]["status"] == "RETIRED" for profile in profiles
+            ),
         },
         "boundary": (
-            "Three verified seasons and cumulative career totals are active. All 12 athletes remain "
-            "ACTIVE; retired history has a stable boundary, but retirement, aging, rating development, "
-            "contracts, and Athlete Life Brain consequences are not simulated yet."
+            "Age-driven lifecycle v1 is active across three verified seasons: young signature skills "
+            "develop gradually, veterans decline gradually, specialties are preserved, and careers retire "
+            "after the age-35 season. Contracts and Athlete Life Brain consequences are not active."
         ),
         "profiles": profiles,
     }
@@ -803,6 +850,7 @@ def self_check() -> None:
     athletes = athlete_profiles_payload()
     assert len(status["brains"]) == 6
     assert status["prediction_version"] == PREDICTION_VERSION
+    assert status["career_version"] == CAREER_VERSION
     assert [module["id"] for module in status["admin_modules"]] == [
         "overview", "brains", "athletes", "simulation", "content", "world", "operations", "audit"
     ]
@@ -838,8 +886,8 @@ def self_check() -> None:
     assert athletes["archive"] == {
         "seasons": CAREER_SEASONS,
         "games": CAREER_SEASONS * LEAGUE_VIEW_GAMES,
-        "active_athletes": 12,
-        "retired_athletes": 0,
+        "active_athletes": 11,
+        "retired_athletes": 1,
     }
     assert all(len(profile["seasons"]) == CAREER_SEASONS for profile in athletes["profiles"])
     assert all(
@@ -853,7 +901,31 @@ def self_check() -> None:
         for profile in athletes["profiles"]
     )
     assert len({profile["id"] for profile in athletes["profiles"]}) == 12
-    assert all(profile["career"]["status"] == "ACTIVE" for profile in athletes["profiles"])
+    retired = [
+        profile
+        for profile in athletes["profiles"]
+        if profile["career"]["status"] == "RETIRED"
+    ]
+    assert len(retired) == 1 and retired[0]["name"] == "Roman Voss"
+    assert retired[0]["career"]["retired_after_season"] == CAREER_SEASONS
+    assert retired[0]["availability"] == {"available": False, "label": "RETIRED"}
+    assert all(
+        abs(current["ratings"][rating] - previous["ratings"][rating]) <= 1
+        for profile in athletes["profiles"]
+        for previous, current in zip(profile["seasons"], profile["seasons"][1:])
+        for rating in RATING_NAMES
+    )
+    base_players = {player.name: player for team in default_teams() for player in team.players}
+    lifecycle_players = {
+        number: {player.name: player for team in teams_for_season(number) for player in team.players}
+        for number in range(1, CAREER_SEASONS + 1)
+    }
+    assert all(
+        player_specialty(base_players[profile["name"]])
+        == player_specialty(lifecycle_players[season["number"]][profile["name"]])
+        for profile in athletes["profiles"]
+        for season in profile["seasons"]
+    )
     assert sum(profile["career"]["totals"]["total_points"] for profile in athletes["profiles"]) == sum(
         standing.points_for
         for season in career_league().seasons

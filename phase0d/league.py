@@ -313,8 +313,9 @@ def simulate_season(
     initial_fatigue: FatigueSnapshot | None = None,
     initial_availability: AvailabilitySnapshot | None = None,
     season_number: int = 1,
+    teams: tuple[Team, Team] | None = None,
 ) -> SeasonResult:
-    teams = default_teams()
+    teams = teams or default_teams()
     schedule = build_schedule(game_count, start_seed, teams)
     fatigue = initial_fatigue or empty_fatigue(teams)
     fatigue = fatigue_snapshot(dict(fatigue), teams)
@@ -375,7 +376,11 @@ def new_league(start_seed: int = 10_000) -> LeagueState:
     return LeagueState(STATE_SCHEMA, 1, start_seed, empty_fatigue(), empty_availability(), ())
 
 
-def simulate_next_season(state: LeagueState, game_count: int = 20) -> LeagueState:
+def simulate_next_season(
+    state: LeagueState,
+    game_count: int = 20,
+    teams: tuple[Team, Team] | None = None,
+) -> LeagueState:
     if state.schema != STATE_SCHEMA:
         raise ValueError(f"unsupported league state schema: {state.schema}")
     initial_fatigue = (
@@ -392,6 +397,7 @@ def simulate_next_season(state: LeagueState, game_count: int = 20) -> LeagueStat
         initial_fatigue,
         initial_availability,
         state.next_season,
+        teams,
     )
     return LeagueState(
         STATE_SCHEMA,
