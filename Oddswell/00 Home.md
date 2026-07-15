@@ -39,7 +39,7 @@ tags:
 
 ## Current focus
 
-Phase 0D.4 is complete with leakage-safe public pregame snapshots, 100/100 verified locked-holdout commitments, and a small public-model calibration gain at $0. The next gate is the Phase 0.5 read-only sports interface; no live model, credits, wagering, or retraining job is authorized.
+Phase 0.5A is complete: the Admin Console can run a real seeded game and animate its recorded lineups, passes, shots, rebounds, turnovers, clock, score, and final replay seal in the Game Theater. Phase 0.5B is the read-only League Viewer; no live model, credits, wagering, or retraining job is authorized.
 
 ## Current state
 

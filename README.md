@@ -83,8 +83,10 @@ The evaluation excludes seeds, RNG, hidden fatigue/injury state, results, replay
 
 ## Local Admin Console
 
-Double-click [`Start Brain Observatory.cmd`](Start%20Brain%20Observatory.cmd) to open the local-only Admin Console. Its primary Brain Observatory module visualizes the six brain/authority components, runs a real seeded game through the current simulator, and animates its recorded decision and outcome flow. General navigation now covers Overview, Brains, Simulation, Content, World / League, Operations, and Audit.
+Double-click [`Start Brain Observatory.cmd`](Start%20Brain%20Observatory.cmd) to open the local-only Admin Console. Its Brain Observatory visualizes the six brain/authority components. The Simulation page now provides a Game Theater that runs a real seeded game and animates recorded lineups, passes, shots, rebounds, turnovers, clock, score, and final replay evidence on a symbolic court. General navigation covers Overview, Brains, Simulation, Content, World / League, Operations, and Audit.
 
 Only seeded simulation and status refresh are operational controls today, and successful actions are written to `brain_admin/admin-audit.log`. The World / League page also exposes the current prediction-evaluation version as read-only evidence. Clothing, items, economy, moderation, releases, and other unbuilt systems are clearly locked rather than represented by fake switches. The training preview is explicitly a visual demonstration; it does not claim model weights are changing.
+
+Game Theater scores, clocks, lineups, and play labels come from the authoritative event log. Player-marker coordinates are illustrative because the headless simulator does not yet model physical or 3D court positions.
 
 The server binds only to `127.0.0.1`. It intentionally has no pretend login: authentication, role-based access control, and secure deployment are required before any network exposure.

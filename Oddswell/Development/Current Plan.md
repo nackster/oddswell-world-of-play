@@ -108,6 +108,15 @@ status: active
 4. Replay event logs through a simple interface.
 5. Record credit transactions and prediction history.
 
+### Phase 0.5A Game Theater implementation status
+
+- **Status:** Complete on `agent/phase-0d`.
+- **Implemented:** a local Admin Console Game Theater that runs the real seeded simulator and animates a replay-safe 96-frame sample of recorded passes, shots, rebounds, turnovers, lineup changes, clock, score, and final replay seal.
+- **Visual language:** all twelve roster athletes appear as team-colored markers; active ballhandlers, pass targets, ball travel, benches, court markings, play callouts, progress, replay speed, and replay-last-game controls are visible.
+- **Truth boundary:** scores, clock, lineups, and play labels come from the authoritative event log. Court coordinates are explicitly illustrative because Phase 0 does not simulate physical player positions or 3D movement.
+- **Validation:** Admin Console self-check, simulator/league/prediction regression tests, localhost API check, and a browser-driven seed `42` replay passed. The browser displayed a sealed Harbor City Waves `111`–`114` Mesa Vista Sol result with no console errors.
+- **Next gate:** Phase 0.5B read-only League Viewer for teams, athlete ratings, schedules, standings, availability, prediction commitments, and per-game inspection.
+
 ## Phase 1: 3D vertical slice
 
 Build the one-city scope defined in [[Design/Decisions/DEC-002 First Playable Scope]].

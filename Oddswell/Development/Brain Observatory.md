@@ -21,6 +21,7 @@ Double-click `Start Brain Observatory.cmd` in the project root. The launcher sta
 - Reads the current engine, league, basketball brain, and LLM policy versions directly from the executable project.
 - Shows the Phase 0D.4 public prediction-evaluation version as read-only World / League evidence.
 - Runs a real seeded basketball simulation and animates a cinematic sample of its recorded decisions and outcomes.
+- Provides a dedicated Game Theater with a symbolic court, all twelve roster athletes, real recorded plays, lineup changes, clock and score progression, replay speed, and replay-last-game control.
 - Shows the final score, decision count, activity tape, training state, and approved $5 experiment ceiling.
 - Includes a clearly marked training-visual preview so the intended presentation can be reviewed before actual model training exists.
 - Provides navigation for Overview, Brains, Simulation, Content, World / League, Operations, and Audit.
@@ -35,6 +36,8 @@ The server is hard-bound to `127.0.0.1`. There is intentionally no login screen 
 ## Truth rule
 
 Animation must never imply that model weights are changing when no training job is active. The current Basketball Brain is deterministic `baseline-v2`; Phase 0C proved the guarded LLM contract, not a trained neural network.
+
+The Game Theater follows the same truth rule: event labels, lineups, clock, and scores are authoritative, while marker coordinates are illustrative because physical player locations are not yet simulated.
 
 When genuine training is approved, connect provider progress, dataset version, candidate version, validation metrics, estimated and actual cost, and promotion-gate results to the existing interface. Hosted LLM internals remain opaque, so the Observatory will display observable telemetry rather than fabricated neuron activations.
 

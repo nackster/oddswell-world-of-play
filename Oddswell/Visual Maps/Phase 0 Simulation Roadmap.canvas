@@ -12,7 +12,8 @@
     {"id":"p0-evidence-d","type":"text","text":"## 🩹 Availability evidence\n[[Development/Reports/Phase 0D3 Availability and Recovery|Phase 0D.3 report]]\n1.43% injuries • 20/20 absences at 0 minutes • $0","x":290,"y":40,"width":420,"height":160,"color":"3"},
     {"id":"p0-playable","type":"text","text":"## 0D.4 ✅ PUBLIC PREDICTIONS\n15 warm-up + 5 locked holdout seasons\n• 100/100 commitments verified\n• best Brier 0.2416 vs 0.2500\n• $0 and no wagering","x":-650,"y":280,"width":650,"height":190,"color":"3"},
     {"id":"p0-life","type":"text","text":"## 🧍 LATER: ATHLETE LIFE BRAIN\nTraining • rest • recovery • social life\nRelationships, nightlife, media, and long-term consequences follow a stable sports loop.","x":60,"y":280,"width":650,"height":150,"color":"5"},
-    {"id":"p0-next","type":"text","text":"## NEXT: PHASE 0.5 READ-ONLY SPORTS INTERFACE\nTeams • athletes • schedule • standings • availability • committed prediction history\nCredits and settlement remain separate later gates.","x":-650,"y":530,"width":1360,"height":150,"color":"4"}
+    {"id":"p0-next","type":"text","text":"## 0.5A ✅ GAME THEATER\nReal seeded game → recorded visual replay\n• lineups • plays • clock • score • ball motion\nSymbolic positions are clearly labeled.","x":-650,"y":530,"width":650,"height":170,"color":"3"},
+    {"id":"p0-5b","type":"text","text":"## NEXT: 0.5B LEAGUE VIEWER\nTeams • athletes • schedule • standings\nAvailability • commitments • per-game inspection\nCredits and settlement remain later gates.","x":60,"y":530,"width":650,"height":170,"color":"4"}
   ],
   "edges": [
     {"id":"p0-edge-1","fromNode":"p0-a","fromSide":"right","toNode":"p0-b","toSide":"left"},
@@ -21,6 +22,7 @@
     {"id":"p0-edge-4","fromNode":"p0-d","fromSide":"left","toNode":"p0-d2","toSide":"right"},
     {"id":"p0-edge-5","fromNode":"p0-d2","fromSide":"left","toNode":"p0-d3","toSide":"right"},
     {"id":"p0-edge-6","fromNode":"p0-d3","fromSide":"bottom","toNode":"p0-playable","toSide":"top"},
-    {"id":"p0-edge-7","fromNode":"p0-playable","fromSide":"bottom","toNode":"p0-next","toSide":"top"}
+    {"id":"p0-edge-7","fromNode":"p0-playable","fromSide":"bottom","toNode":"p0-next","toSide":"top"},
+    {"id":"p0-edge-8","fromNode":"p0-next","fromSide":"right","toNode":"p0-5b","toSide":"left"}
   ]
 }

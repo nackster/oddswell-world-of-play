@@ -18,7 +18,7 @@ AUDIT_PATH = Path(__file__).with_name("admin-audit.log")
 AUDIT_LOCK = threading.Lock()
 sys.path.insert(0, str(ROOT))
 
-from phase0a.simulator import BRAIN_VERSION, ENGINE_VERSION, simulate_game  # noqa: E402
+from phase0a.simulator import BRAIN_VERSION, ENGINE_VERSION, default_teams, simulate_game  # noqa: E402
 from phase0c.policy import POLICY_VERSION  # noqa: E402
 from phase0d.league import LEAGUE_VERSION  # noqa: E402
 from phase0d.prediction import PREDICTION_VERSION  # noqa: E402
@@ -35,7 +35,7 @@ def status_payload() -> dict[str, object]:
         "admin_modules": [
             {"id": "overview", "name": "Overview", "state": "AVAILABLE", "detail": "Verified local system summary."},
             {"id": "brains", "name": "Brains", "state": "ACTIVE", "detail": "Cinematic Observatory and truthful training preview."},
-            {"id": "simulation", "name": "Simulation", "state": "ACTIVE", "detail": "Runs the current seeded authoritative simulator."},
+            {"id": "simulation", "name": "Simulation", "state": "ACTIVE", "detail": "Runs the seeded authoritative simulator and opens its recorded Game Theater replay."},
             {"id": "content", "name": "Content", "state": "LOCKED", "detail": "Clothing and item systems are not implemented."},
             {"id": "world", "name": "World / League", "state": "READ ONLY", "detail": "League and public prediction evidence are visible; admin mutations are not implemented."},
             {"id": "operations", "name": "Operations", "state": "LOCKED", "detail": "Economy, moderation, releases, and support are not implemented."},
@@ -129,6 +129,12 @@ def audit_payload(limit: int = 100, path: Path | None = None) -> dict[str, objec
     return {"entries": entries[-limit:][::-1]}
 
 
+def evenly_sample(events: list[dict[str, object]], count: int) -> list[dict[str, object]]:
+    if len(events) <= count:
+        return events
+    return [events[round(index * (len(events) - 1) / (count - 1))] for index in range(count)]
+
+
 def simulation_payload(seed: int) -> dict[str, object]:
     if not 0 <= seed <= 2_147_483_647:
         raise ValueError("seed must be between 0 and 2147483647")
@@ -144,11 +150,21 @@ def simulation_payload(seed: int) -> dict[str, object]:
     ]
     scores = {game.home_team: 0, game.away_team: 0}
     possession_team: dict[int, str] = {}
+    possession_context: dict[int, dict[str, object]] = {}
+    lineups: dict[str, list[str]] = {game.home_team: [], game.away_team: []}
+    theater_events: list[dict[str, object]] = []
 
     for record in game.records:
         event_type = record["type"]
-        if event_type == "possession_started":
-            possession_team[int(record["possession"])] = str(record["offense"])
+        if event_type == "lineup_changed":
+            lineups[str(record["team"])] = [str(player) for player in record["players"]]
+        elif event_type == "possession_started":
+            possession = int(record["possession"])
+            possession_team[possession] = str(record["offense"])
+            possession_context[possession] = {
+                "offense": str(record["offense"]),
+                "clock_seconds": int(record["clock_seconds"]),
+            }
         elif event_type == "brain_decision" and record["action"]["role"] == "offense":
             action = record["action"]
             score = record["score"]
@@ -184,12 +200,50 @@ def simulation_payload(seed: int) -> dict[str, object]:
                 }
             )
 
+        if event_type not in {
+            "pass_completed",
+            "turnover",
+            "shot_made",
+            "shot_missed",
+            "offensive_rebound",
+            "defensive_rebound",
+            "shot_clock_violation",
+        }:
+            continue
+        possession = int(record["possession"])
+        context = possession_context[possession]
+        offense = str(context["offense"])
+        actor = str(
+            record.get("passer")
+            or record.get("player")
+            or record.get("team")
+            or ""
+        )
+        target = str(record.get("receiver") or "")
+        labels = {
+            "pass_completed": f"Pass · {record.get('passer')} → {record.get('receiver')}",
+            "turnover": f"Turnover · {record.get('player')}",
+            "shot_made": f"{record.get('points')} points · {record.get('player')}",
+            "shot_missed": f"Missed {str(record.get('action')).replace('_', ' ')} · {record.get('player')}",
+            "offensive_rebound": f"Offensive rebound · {record.get('player')}",
+            "defensive_rebound": f"Defensive rebound · {record.get('player')}",
+            "shot_clock_violation": f"Shot-clock violation · {record.get('team')}",
+        }
+        theater_events.append(
+            {
+                "kind": event_type,
+                "label": labels[event_type],
+                "clock_seconds": context["clock_seconds"],
+                "score": [scores[game.home_team], scores[game.away_team]],
+                "offense": offense,
+                "actor": actor,
+                "target": target,
+                "lineups": {team: list(players) for team, players in lineups.items()},
+            }
+        )
+
     # ponytail: a cinematic sample keeps the browser smooth; expose full logs when an audit viewer needs them.
-    frame_count = 34
-    if len(candidates) > frame_count:
-        selected = [candidates[round(index * (len(candidates) - 1) / (frame_count - 1))] for index in range(frame_count)]
-    else:
-        selected = candidates
+    selected = evenly_sample(candidates, 34)
     selected.append(
         {
             "source": "rules",
@@ -199,6 +253,20 @@ def simulation_payload(seed: int) -> dict[str, object]:
             "score": [game.home_score, game.away_score],
         }
     )
+    theater_timeline = evenly_sample(theater_events, 96)
+    theater_timeline.append(
+        {
+            "kind": "final",
+            "label": "Final result · replay evidence sealed",
+            "clock_seconds": 0,
+            "score": [game.home_score, game.away_score],
+            "offense": "",
+            "actor": "",
+            "target": "",
+            "lineups": {team: list(players) for team, players in lineups.items()},
+        }
+    )
+    teams = default_teams()
     return {
         "summary": {
             "seed": seed,
@@ -210,8 +278,11 @@ def simulation_payload(seed: int) -> dict[str, object]:
             "records": len(game.records),
             "brain_version": BRAIN_VERSION,
             "engine_version": ENGINE_VERSION,
+            "home_players": [player.name for player in teams[0].players],
+            "away_players": [player.name for player in teams[1].players],
         },
         "timeline": selected,
+        "theater_timeline": theater_timeline,
     }
 
 
@@ -305,6 +376,9 @@ def self_check() -> None:
     ]
     assert game["summary"]["home_score"] != game["summary"]["away_score"]
     assert game["timeline"][-1]["kind"] == "final"
+    assert game["theater_timeline"][-1]["kind"] == "final"
+    assert len(game["theater_timeline"]) <= 97
+    assert all(len(event["score"]) == 2 for event in game["theater_timeline"])
     with tempfile.TemporaryDirectory() as temporary_directory:
         path = Path(temporary_directory) / "audit.log"
         record_audit("self-check", "admin-console", {"seed": 42}, path)

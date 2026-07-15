@@ -218,6 +218,141 @@
     .log-line { color: var(--muted); }
     .log-time { color: var(--violet); margin-right: 8px; }
     .log-line.demo { color: var(--amber); }
+    .game-theater {
+      margin-top: 16px;
+      overflow: hidden;
+      border: 1px solid rgba(92, 236, 255, 0.25);
+      border-radius: 20px;
+      background: rgba(4, 13, 25, 0.88);
+      box-shadow: 0 26px 80px rgba(0, 0, 0, 0.42), inset 0 1px rgba(255, 255, 255, 0.035);
+    }
+    .game-hud {
+      display: grid;
+      grid-template-columns: minmax(120px, 1fr) auto minmax(120px, 1fr);
+      align-items: center;
+      gap: 14px;
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--line);
+      background: linear-gradient(90deg, rgba(92, 236, 255, 0.08), transparent 38%, transparent 62%, rgba(173, 124, 255, 0.08));
+    }
+    .game-team { min-width: 0; }
+    .game-team:last-child { text-align: right; }
+    .game-team-name { overflow: hidden; color: var(--muted); font-size: 0.72rem; letter-spacing: 0.08em; text-overflow: ellipsis; white-space: nowrap; }
+    .game-team-score { margin-top: 3px; font: 600 1.6rem ui-monospace, SFMono-Regular, Consolas, monospace; }
+    .game-team:last-child .game-team-score { color: #d3b9ff; }
+    .game-team:first-child .game-team-score { color: var(--cyan); }
+    .game-clock { text-align: center; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; }
+    .game-clock strong { display: block; font-size: 1.3rem; font-variant-numeric: tabular-nums; }
+    .game-clock span { color: var(--green); font-size: 0.58rem; letter-spacing: 0.17em; }
+    .court {
+      position: relative;
+      min-height: 520px;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at center, rgba(92, 236, 255, 0.08), transparent 32%),
+        repeating-linear-gradient(90deg, rgba(255,255,255,0.018) 0 56px, rgba(255,255,255,0.04) 57px 58px),
+        linear-gradient(120deg, #0b3b45, #092936 46%, #161f46);
+      isolation: isolate;
+      transition: box-shadow 220ms ease;
+    }
+    .court::before {
+      content: "";
+      position: absolute;
+      z-index: -1;
+      inset: 5%;
+      border: 2px solid rgba(228, 249, 255, 0.44);
+      border-radius: 3px;
+      background:
+        linear-gradient(90deg, transparent calc(50% - 1px), rgba(228,249,255,.38) 50%, transparent calc(50% + 1px));
+      box-shadow: inset 0 0 40px rgba(92, 236, 255, 0.05), 0 0 36px rgba(92, 236, 255, 0.06);
+    }
+    .court::after {
+      content: "";
+      position: absolute;
+      z-index: -1;
+      left: 50%; top: 50%;
+      width: 104px; height: 104px;
+      border: 2px solid rgba(228, 249, 255, 0.42);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+    }
+    .paint, .arc, .hoop { position: absolute; z-index: -1; top: 50%; transform: translateY(-50%); }
+    .paint { width: 16%; height: 48%; border: 2px solid rgba(228,249,255,.36); background: rgba(92,236,255,.025); }
+    .paint.left { left: 5%; border-left: 0; }
+    .paint.right { right: 5%; border-right: 0; }
+    .arc { width: 26%; height: 74%; border: 2px solid rgba(228,249,255,.3); border-radius: 50%; }
+    .arc.left { left: -8%; }
+    .arc.right { right: -8%; }
+    .hoop { width: 13px; height: 38px; border: 3px solid var(--amber); filter: drop-shadow(0 0 8px rgba(255,199,101,.75)); }
+    .hoop.left { left: 8.5%; border-left: 0; }
+    .hoop.right { right: 8.5%; border-right: 0; }
+    .court.made { box-shadow: inset 0 0 95px rgba(125, 255, 179, 0.24); }
+    .court-player {
+      position: absolute;
+      z-index: 4;
+      width: 38px; height: 38px;
+      display: grid;
+      place-items: center;
+      border: 2px solid var(--cyan);
+      border-radius: 50%;
+      background: rgba(5, 17, 30, 0.95);
+      color: var(--ink);
+      font: 700 0.65rem ui-monospace, SFMono-Regular, Consolas, monospace;
+      transform: translate(-50%, -50%);
+      transition: left 300ms ease, top 300ms ease, opacity 200ms ease, box-shadow 200ms ease, transform 200ms ease;
+      box-shadow: 0 0 18px rgba(92, 236, 255, 0.2);
+    }
+    .court-player.away { border-color: var(--violet); box-shadow: 0 0 18px rgba(173,124,255,.22); }
+    .court-player.bench { opacity: 0.32; transform: translate(-50%, -50%) scale(0.72); }
+    .court-player.active { z-index: 6; transform: translate(-50%, -50%) scale(1.22); box-shadow: 0 0 0 6px rgba(255,199,101,.14), 0 0 32px var(--amber); border-color: var(--amber); }
+    .court-player.target { box-shadow: 0 0 0 5px rgba(125,255,179,.12), 0 0 24px var(--green); }
+    .court-player-name {
+      position: absolute;
+      top: 44px; left: 50%;
+      width: max-content; max-width: 120px;
+      padding: 3px 6px;
+      border-radius: 6px;
+      background: rgba(2, 8, 18, 0.82);
+      color: var(--muted);
+      font: 500 0.58rem ui-sans-serif, system-ui;
+      opacity: 0;
+      transform: translateX(-50%);
+      transition: opacity 160ms ease;
+    }
+    .court-player.active .court-player-name, .court-player:hover .court-player-name { opacity: 1; }
+    .basketball {
+      position: absolute;
+      z-index: 8;
+      left: 50%; top: 50%;
+      width: 15px; height: 15px;
+      border: 1px solid #32170a;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 30%, #ffd09a 0 9%, #f19039 12% 58%, #743014 61%);
+      transform: translate(-50%, -50%);
+      transition: left 230ms ease, top 230ms ease, opacity 160ms ease;
+      box-shadow: 0 0 18px rgba(255, 145, 57, 0.9);
+    }
+    .court-callout {
+      position: absolute;
+      z-index: 10;
+      left: 50%; bottom: 25px;
+      min-width: min(520px, 88%);
+      padding: 12px 18px;
+      border: 1px solid rgba(92,236,255,.2);
+      border-radius: 999px;
+      background: rgba(2, 8, 18, 0.84);
+      text-align: center;
+      transform: translateX(-50%);
+      backdrop-filter: blur(12px);
+    }
+    .court-callout strong { display: block; font-size: 0.88rem; font-weight: 550; }
+    .court-callout span { color: var(--muted); font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; }
+    .theater-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; padding: 13px 17px; }
+    .theater-controls label { display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: 0.7rem; }
+    .theater-controls select { color: var(--ink); border: 1px solid var(--line); border-radius: 999px; background: #071526; padding: 8px 12px; }
+    .theater-truth { margin-left: auto; color: var(--muted); font-size: 0.65rem; }
+    .theater-progress { height: 3px; background: rgba(255,255,255,.05); }
+    .theater-progress span { display: block; width: 0; height: 100%; background: linear-gradient(90deg, var(--cyan), var(--violet)); box-shadow: 0 0 15px var(--cyan); transition: width 140ms linear; }
     .footer { display: flex; justify-content: space-between; gap: 10px; margin-top: 11px; color: #607a8d; font-size: 0.63rem; letter-spacing: 0.08em; text-transform: uppercase; }
     @media (max-width: 980px) {
       .app-shell { grid-template-columns: 1fr; }
@@ -247,6 +382,13 @@
       .module-card.wide { grid-column: auto; }
       .audit-entry { grid-template-columns: 1fr auto; }
       .audit-time, .audit-target { grid-column: 1 / -1; }
+      .court { min-height: 430px; }
+      .game-hud { grid-template-columns: 1fr auto 1fr; padding: 11px; }
+      .game-team-name { font-size: 0.6rem; }
+      .game-team-score { font-size: 1.2rem; }
+      .court-player { width: 31px; height: 31px; }
+      .court-player-name { display: none; }
+      .theater-truth { flex-basis: 100%; margin-left: 0; }
     }
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after { scroll-behavior: auto !important; transition-duration: 0.001ms !important; animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; }
@@ -345,12 +487,12 @@
           </section>
 
           <section class="page" data-page-view="simulation" hidden>
-            <div class="page-head"><div><h2>Simulation control</h2><p>Runs the current deterministic game simulator and opens its visual replay in the Observatory.</p></div></div>
+            <div class="page-head"><div><h2>Game Theater</h2><p>Run the authoritative simulator, then watch a cinematic replay built from its recorded events.</p></div></div>
             <div class="module-grid">
               <div class="module-card wide">
                 <span class="state">Implemented control</span>
                 <h3>Seeded game</h3>
-                <p>The server validates the seed, runs the authoritative simulation, and writes the action to the local audit trail.</p>
+                <p>The server validates the seed, runs the authoritative simulation, writes the action to the audit trail, and returns a replay-safe activity tape.</p>
                 <div class="form-row">
                   <label class="field-label" for="simulation-seed">Seed<input class="seed" id="simulation-seed" type="number" min="0" max="2147483647" value="42"></label>
                   <button class="control primary" id="simulate-page" type="button">Run and watch</button>
@@ -358,6 +500,33 @@
               </div>
               <div class="module-card"><span class="state read-only">Read only</span><h3>Current versions</h3><p id="simulation-versions">Loading verified versions…</p></div>
             </div>
+            <section class="game-theater" aria-label="Symbolic recorded basketball game replay">
+              <div class="game-hud" aria-live="polite">
+                <div class="game-team"><div class="game-team-name" id="theater-home">Harbor City Waves</div><div class="game-team-score" id="theater-home-score">0</div></div>
+                <div class="game-clock"><strong id="theater-clock">48:00</strong><span id="theater-status">READY</span></div>
+                <div class="game-team"><div class="game-team-name" id="theater-away">Mesa Vista Sol</div><div class="game-team-score" id="theater-away-score">0</div></div>
+              </div>
+              <div class="court" id="game-court">
+                <span class="paint left"></span><span class="paint right"></span>
+                <span class="arc left"></span><span class="arc right"></span>
+                <span class="hoop left"></span><span class="hoop right"></span>
+                <div id="court-players"></div>
+                <div class="basketball" id="court-ball" aria-hidden="true"></div>
+                <div class="court-callout"><strong id="theater-play">Run a seeded game to begin</strong><span id="theater-detail">Recorded events · symbolic positions</span></div>
+              </div>
+              <div class="theater-progress" aria-hidden="true"><span id="theater-progress"></span></div>
+              <div class="theater-controls">
+                <button class="control" id="replay-game" type="button" disabled>Replay last game</button>
+                <label for="theater-speed">Replay speed
+                  <select id="theater-speed">
+                    <option value="280">Slow</option>
+                    <option value="170" selected>Cinematic</option>
+                    <option value="80">Fast</option>
+                  </select>
+                </label>
+                <span class="theater-truth">Real scores and events · illustrative court positions · 96-frame cinematic sample</span>
+              </div>
+            </section>
           </section>
 
           <section class="page" data-page-view="content" hidden>
@@ -426,6 +595,9 @@
     let pulses = [];
     let lastFrame = performance.now();
     let playing = false;
+    let lastSimulation = null;
+    const courtPlayers = new Map();
+    const courtPositions = new Map();
 
     const $ = (id) => document.getElementById(id);
 
@@ -713,6 +885,101 @@
 
     const sleep = (milliseconds) => new Promise((resolve) => setTimeout(resolve, reducedMotion ? 20 : milliseconds));
 
+    function clockText(seconds) {
+      const minutes = Math.floor(Math.max(0, seconds) / 60);
+      return `${String(minutes).padStart(2, '0')}:${String(Math.max(0, seconds) % 60).padStart(2, '0')}`;
+    }
+
+    function resetCourt(data) {
+      courtPlayers.clear();
+      courtPositions.clear();
+      $('court-players').replaceChildren();
+      const rosters = [
+        ['home', data.summary.home, data.summary.home_players],
+        ['away', data.summary.away, data.summary.away_players]
+      ];
+      for (const [side, team, names] of rosters) {
+        names.forEach((name, index) => {
+          const marker = document.createElement('div');
+          marker.className = `court-player ${side} bench`;
+          marker.dataset.name = name;
+          marker.dataset.team = team;
+          marker.textContent = name.split(' ').map((part) => part[0]).join('').slice(0, 2);
+          const label = document.createElement('span');
+          label.className = 'court-player-name';
+          label.textContent = name;
+          marker.append(label);
+          marker.style.left = side === 'home' ? '3%' : '97%';
+          marker.style.top = `${15 + index * 12}%`;
+          $('court-players').append(marker);
+          courtPlayers.set(name, marker);
+        });
+      }
+      $('theater-home').textContent = data.summary.home;
+      $('theater-away').textContent = data.summary.away;
+      $('theater-home-score').textContent = '0';
+      $('theater-away-score').textContent = '0';
+      $('theater-clock').textContent = '48:00';
+      $('theater-progress').style.width = '0%';
+      $('court-ball').style.left = '50%';
+      $('court-ball').style.top = '50%';
+    }
+
+    function placeTeam(team, roster, lineup, side, offense) {
+      const base = side === 'home'
+        ? [[18, 50], [28, 20], [28, 80], [40, 34], [40, 66]]
+        : [[82, 50], [72, 20], [72, 80], [60, 34], [60, 66]];
+      const shift = offense === team ? (side === 'home' ? 13 : -13) : 0;
+      roster.forEach((name, rosterIndex) => {
+        const marker = courtPlayers.get(name);
+        const lineupIndex = lineup.indexOf(name);
+        const active = lineupIndex >= 0;
+        const [x, y] = active ? base[lineupIndex] : [side === 'home' ? 3 : 97, 15 + rosterIndex * 12];
+        const position = {x: x + (active ? shift : 0), y};
+        marker.classList.toggle('bench', !active);
+        marker.style.left = `${position.x}%`;
+        marker.style.top = `${position.y}%`;
+        courtPositions.set(name, position);
+      });
+    }
+
+    function showCourtEvent(event, data, index) {
+      const lineups = event.lineups;
+      placeTeam(data.summary.home, data.summary.home_players, lineups[data.summary.home] || [], 'home', event.offense);
+      placeTeam(data.summary.away, data.summary.away_players, lineups[data.summary.away] || [], 'away', event.offense);
+      courtPlayers.forEach((marker) => marker.classList.remove('active', 'target'));
+      courtPlayers.get(event.actor)?.classList.add('active');
+      courtPlayers.get(event.target)?.classList.add('target');
+
+      let ballPosition = courtPositions.get(event.actor) || {x: 50, y: 50};
+      if (event.kind === 'shot_made' || event.kind === 'shot_missed') {
+        ballPosition = {x: event.offense === data.summary.home ? 91 : 9, y: 50};
+      }
+      $('court-ball').style.left = `${ballPosition.x}%`;
+      $('court-ball').style.top = `${ballPosition.y}%`;
+      $('game-court').classList.toggle('made', event.kind === 'shot_made');
+      $('theater-home-score').textContent = event.score[0];
+      $('theater-away-score').textContent = event.score[1];
+      $('theater-clock').textContent = clockText(event.clock_seconds);
+      $('theater-play').textContent = event.label;
+      $('theater-detail').textContent = `Frame ${index + 1} of ${data.theater_timeline.length} · ${event.kind.replaceAll('_', ' ')}`;
+      $('theater-progress').style.width = `${(index + 1) / data.theater_timeline.length * 100}%`;
+    }
+
+    async function playGameTimeline(data) {
+      playing = true;
+      resetCourt(data);
+      $('replay-game').disabled = true;
+      $('theater-status').textContent = 'RECORDED REPLAY';
+      for (const [index, event] of data.theater_timeline.entries()) {
+        showCourtEvent(event, data, index);
+        await sleep(Number($('theater-speed').value));
+      }
+      $('theater-status').textContent = 'REPLAY SEALED';
+      $('replay-game').disabled = false;
+      playing = false;
+    }
+
     async function playTimeline(timeline, demo = false) {
       playing = true;
       for (const event of timeline) {
@@ -726,21 +993,32 @@
       playing = false;
     }
 
-    async function runSimulation(seedInput, button) {
+    async function runSimulation(seedInput, button, destination) {
       if (playing) return;
       const seed = seedInput.valueAsNumber;
+      const theater = destination === 'simulation';
       if (!Number.isInteger(seed) || seed < 0 || seed > 2147483647) {
-        navigate('brains');
-        $('mode').textContent = 'INPUT ERROR';
-        $('event-title').textContent = 'Seed must be a whole number from 0 through 2147483647';
+        navigate(destination);
+        if (theater) {
+          $('theater-status').textContent = 'INPUT ERROR';
+          $('theater-play').textContent = 'Seed must be a whole number from 0 through 2147483647';
+        } else {
+          $('mode').textContent = 'INPUT ERROR';
+          $('event-title').textContent = 'Seed must be a whole number from 0 through 2147483647';
+        }
         return;
       }
       $('seed').value = String(seed);
       $('simulation-seed').value = String(seed);
-      navigate('brains');
+      navigate(destination);
       button.disabled = true;
-      $('mode').textContent = 'REAL SIMULATION ACTIVITY';
-      $('event-title').textContent = 'Authoritative simulator is running…';
+      if (theater) {
+        $('theater-status').textContent = 'SIMULATING';
+        $('theater-play').textContent = 'Authoritative simulator is running…';
+      } else {
+        $('mode').textContent = 'REAL SIMULATION ACTIVITY';
+        $('event-title').textContent = 'Authoritative simulator is running…';
+      }
       try {
         const response = await fetch('/api/simulate', {
           method: 'POST',
@@ -749,17 +1027,28 @@
         });
         const data = await response.json();
         if (!response.ok) throw new Error(data.error || 'simulation failed');
+        lastSimulation = data;
+        $('replay-game').disabled = false;
         $('home-team').textContent = data.summary.home;
         $('away-team').textContent = data.summary.away;
         $('score').textContent = '0 : 0';
         appendLog(`Simulation seed ${data.summary.seed} · ${data.summary.decisions} decisions`);
         loadAudit();
-        await playTimeline(data.timeline);
-        $('event-title').textContent = `${data.summary.home} ${data.summary.home_score} — ${data.summary.away_score} ${data.summary.away}`;
-        $('mode').textContent = 'REPLAY EVIDENCE SEALED';
+        if (theater) {
+          await playGameTimeline(data);
+        } else {
+          await playTimeline(data.timeline);
+          $('event-title').textContent = `${data.summary.home} ${data.summary.home_score} — ${data.summary.away_score} ${data.summary.away}`;
+          $('mode').textContent = 'REPLAY EVIDENCE SEALED';
+        }
       } catch (error) {
-        $('mode').textContent = 'SIMULATION ERROR';
-        $('event-title').textContent = error.message;
+        if (theater) {
+          $('theater-status').textContent = 'SIMULATION ERROR';
+          $('theater-play').textContent = error.message;
+        } else {
+          $('mode').textContent = 'SIMULATION ERROR';
+          $('event-title').textContent = error.message;
+        }
         appendLog(`Error · ${error.message}`);
       } finally {
         button.disabled = false;
@@ -785,8 +1074,9 @@
     }
 
     document.querySelectorAll('[data-page]').forEach((button) => button.addEventListener('click', () => navigate(button.dataset.page)));
-    $('simulate').addEventListener('click', () => runSimulation($('seed'), $('simulate')));
-    $('simulate-page').addEventListener('click', () => runSimulation($('simulation-seed'), $('simulate-page')));
+    $('simulate').addEventListener('click', () => runSimulation($('seed'), $('simulate'), 'brains'));
+    $('simulate-page').addEventListener('click', () => runSimulation($('simulation-seed'), $('simulate-page'), 'simulation'));
+    $('replay-game').addEventListener('click', () => { if (lastSimulation && !playing) playGameTimeline(lastSimulation); });
     $('refresh-status').addEventListener('click', refreshStatus);
     $('refresh-audit').addEventListener('click', loadAudit);
     $('preview').addEventListener('click', previewTraining);
