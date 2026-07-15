@@ -72,10 +72,19 @@ python -m phase0d.league --games 20 --seasons 3 --start-seed 13100 --output "Odd
 python -m unittest phase0a.test_simulator phase0b.test_analyze phase0c.test_policy phase0d.test_league -v
 ```
 
+Phase 0D.4 commits public-only pregame predictions before each authoritative game and scores three fixed models on a locked holdout:
+
+```powershell
+python -m phase0d.prediction --warmup-seasons 15 --holdout-seasons 5 --games 20 --start-seed 14000 --output "Oddswell/Development/Reports/Phase 0D4 Public Prediction Evaluation.md"
+python -m unittest phase0d.test_prediction -v
+```
+
+The evaluation excludes seeds, RNG, hidden fatigue/injury state, results, replay data, economy data, and user data. It is a $0 fictional-simulator study, not a wagering product or real-world prediction claim.
+
 ## Local Admin Console
 
 Double-click [`Start Brain Observatory.cmd`](Start%20Brain%20Observatory.cmd) to open the local-only Admin Console. Its primary Brain Observatory module visualizes the six brain/authority components, runs a real seeded game through the current simulator, and animates its recorded decision and outcome flow. General navigation now covers Overview, Brains, Simulation, Content, World / League, Operations, and Audit.
 
-Only seeded simulation and status refresh are operational controls today, and successful actions are written to `brain_admin/admin-audit.log`. Clothing, items, economy, moderation, releases, and other unbuilt systems are clearly locked rather than represented by fake switches. The training preview is explicitly a visual demonstration; it does not claim model weights are changing.
+Only seeded simulation and status refresh are operational controls today, and successful actions are written to `brain_admin/admin-audit.log`. The World / League page also exposes the current prediction-evaluation version as read-only evidence. Clothing, items, economy, moderation, releases, and other unbuilt systems are clearly locked rather than represented by fake switches. The training preview is explicitly a visual demonstration; it does not claim model weights are changing.
 
 The server binds only to `127.0.0.1`. It intentionally has no pretend login: authentication, role-based access control, and secure deployment are required before any network exposure.

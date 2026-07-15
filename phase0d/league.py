@@ -258,6 +258,55 @@ def add_game_load(
     )
 
 
+def simulate_scheduled_game(
+    fixture: ScheduledGame,
+    fatigue: FatigueSnapshot,
+    availability: AvailabilitySnapshot,
+    teams: tuple[Team, Team],
+) -> SeasonGame:
+    """Resolve one scheduled game through the authoritative league transition."""
+    matchup = (fixture.home, fixture.away)
+    result = simulate_game(
+        fixture.seed,
+        matchup=matchup,
+        initial_fatigue=dict(fatigue),
+        initial_availability=dict(availability),
+    )
+    played = minutes_snapshot(dict(result.minutes_played), teams)
+    postgame_fatigue = add_game_load(fatigue, teams, played)
+    postgame_availability = add_minor_injuries(
+        availability, fatigue, played, teams, fixture.seed
+    )
+    manifest = replay_manifest(
+        result,
+        matchup,
+        BRAIN_VERSION,
+        {
+            "injury_model_version": INJURY_MODEL_VERSION,
+            "minutes_played": dict(played),
+            "pregame_availability": dict(availability),
+            "postgame_availability": dict(postgame_availability),
+        },
+    )
+    if not verify_replay_manifest(manifest):
+        raise RuntimeError(f"replay manifest failed for game {fixture.number}")
+    return SeasonGame(
+        fixture.number,
+        fixture.seed,
+        result.home_team,
+        result.away_team,
+        result.home_score,
+        result.away_score,
+        result.home_team if result.home_score > result.away_score else result.away_team,
+        manifest["sha256"],
+        fatigue,
+        postgame_fatigue,
+        played,
+        availability,
+        postgame_availability,
+    )
+
+
 def simulate_season(
     game_count: int = 20,
     start_seed: int = 10_000,
@@ -280,57 +329,19 @@ def simulate_season(
         if index:
             fatigue = recover_fatigue(fatigue, BETWEEN_GAME_REST_DAYS, teams)
             availability = recover_availability(availability, BETWEEN_GAME_REST_DAYS, teams)
-        matchup = (fixture.home, fixture.away)
-        result = simulate_game(
-            fixture.seed,
-            matchup=matchup,
-            initial_fatigue=dict(fatigue),
-            initial_availability=dict(availability),
-        )
-        winner = result.home_team if result.home_score > result.away_score else result.away_team
-        loser = result.away_team if winner == result.home_team else result.home_team
-        played = minutes_snapshot(dict(result.minutes_played), teams)
-        postgame_fatigue = add_game_load(fatigue, teams, played)
-        postgame_availability = add_minor_injuries(availability, fatigue, played, teams, fixture.seed)
-        manifest = replay_manifest(
-            result,
-            matchup,
-            BRAIN_VERSION,
-            {
-                "injury_model_version": INJURY_MODEL_VERSION,
-                "minutes_played": dict(played),
-                "pregame_availability": dict(availability),
-                "postgame_availability": dict(postgame_availability),
-            },
-        )
-        if not verify_replay_manifest(manifest):
-            raise RuntimeError(f"replay manifest failed for game {fixture.number}")
+        game = simulate_scheduled_game(fixture, fatigue, availability, teams)
+        winner = game.winner
+        loser = game.away_team if winner == game.home_team else game.home_team
 
         totals[winner]["wins"] += 1
         totals[loser]["losses"] += 1
-        totals[result.home_team]["points_for"] += result.home_score
-        totals[result.home_team]["points_against"] += result.away_score
-        totals[result.away_team]["points_for"] += result.away_score
-        totals[result.away_team]["points_against"] += result.home_score
-        games.append(
-            SeasonGame(
-                fixture.number,
-                fixture.seed,
-                result.home_team,
-                result.away_team,
-                result.home_score,
-                result.away_score,
-                winner,
-                manifest["sha256"],
-                fatigue,
-                postgame_fatigue,
-                played,
-                availability,
-                postgame_availability,
-            )
-        )
-        fatigue = postgame_fatigue
-        availability = postgame_availability
+        totals[game.home_team]["points_for"] += game.home_score
+        totals[game.home_team]["points_against"] += game.away_score
+        totals[game.away_team]["points_for"] += game.away_score
+        totals[game.away_team]["points_against"] += game.home_score
+        games.append(game)
+        fatigue = game.postgame_fatigue
+        availability = game.postgame_availability
 
     standings = tuple(
         sorted(

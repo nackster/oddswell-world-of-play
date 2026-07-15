@@ -88,6 +88,18 @@ status: active
 - **Known limit:** injuries occur after games and create binary availability only. In-game injuries, diagnoses, limited status, permanent injuries, treatment choices, and off-court injuries remain later work.
 - **Next Phase 0D gate:** expose public schedules, standings, fatigue, and availability for prediction-quality validation before any credit or wagering implementation.
 
+### Phase 0D.4 implementation status
+
+- **Status:** Complete on `agent/phase-0d`.
+- **Implemented:** versioned public-only pregame snapshots, deterministic projected minutes, fixed 50%/public Elo/Elo-plus-availability models, chronological warm-up, a locked holdout, five-bin calibration error, and SHA-256 prediction commitments created before each authoritative game transition.
+- **Leakage boundary:** commitments exclude seeds, RNG state, hidden fatigue and injury-risk internals, results, replay/action tapes, future games, economy data, and user data. Verified outcomes and replay hashes are linked only after games finish.
+- **Locked evaluation:** 15 warm-up seasons followed by a fixed 5-season/100-game holdout using seeds `14000`-`14399`. All 100 holdout commitments verify.
+- **Measured result:** fixed 50% Brier `0.2500`; public-history Elo `0.2417`; Elo plus public availability/rotation `0.2416`. The adjusted model achieved `+3.3%` Brier skill despite lower threshold accuracy, so calibration—not raw winner count—drives this gate.
+- **Absence subset:** 34 holdout games had at least one published absence. Public Elo Brier was `0.2363`; adding the provisional availability adjustment changed it to `0.2367`, so no extra benefit is claimed on that subset.
+- **Result:** 29 focused and regression tests pass; Admin Console self-check passes. Cost was `$0.00`. See [[Development/Reports/Phase 0D4 Public Prediction Evaluation]].
+- **Known limit:** this measures fictional simulator data, not real-world predictive power. No model was trained, tuned on the holdout, or connected to wagering.
+- **Next gate:** begin the Phase 0.5 read-only sports interface for public teams, athletes, schedule, standings, availability, and committed prediction history before adding credits or settlement.
+
 ## Phase 0.5: Functional sports loop
 
 1. Display teams, athletes, schedules, standings, and public information.

@@ -373,6 +373,7 @@
             <div class="page-head"><div><h2>World / League</h2><p>The deterministic league exists; admin mutation controls do not.</p></div></div>
             <div class="module-grid">
               <div class="module-card"><span class="state read-only">Read only</span><h3>League engine</h3><p id="league-version">Loading verified league version…</p></div>
+              <div class="module-card"><span class="state read-only">Validated</span><h3>Public prediction evidence</h3><p id="prediction-version">Loading evaluation version…</p></div>
               <div class="module-card"><span class="state locked">Not implemented</span><h3>World state</h3><p>No live world-state administration service exists.</p></div>
               <div class="module-card"><span class="state locked">Not implemented</span><h3>Season operations</h3><p>Schedule edits, team management, and season intervention remain locked until validated commands exist.</p></div>
             </div>
@@ -615,6 +616,7 @@
       $('brain-version').textContent = data.brain_version;
       $('engine-version').textContent = data.engine_version;
       $('league-version').textContent = `${data.league_version}. Status is exposed here without mutation controls.`;
+      $('prediction-version').textContent = `${data.prediction_version}. Locked holdout evidence is recorded in the project brain; no wagering controls exist.`;
       $('simulation-versions').textContent = `Brain ${data.brain_version} · engine ${data.engine_version}.`;
       $('training-cost').textContent = `$${data.training.spent_usd.toFixed(2)} / $${data.training.budget_usd.toFixed(2)}`;
       $('training-truth').textContent = `${data.training.label}. Current motion shows real simulator decisions or an explicitly labeled visual preview.`;

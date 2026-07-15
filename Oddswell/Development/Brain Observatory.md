@@ -19,6 +19,7 @@ Double-click `Start Brain Observatory.cmd` in the project root. The launcher sta
 
 - Shows the Project, Athlete Life, World and League, Basketball, Rules and Outcome, and Learning components.
 - Reads the current engine, league, basketball brain, and LLM policy versions directly from the executable project.
+- Shows the Phase 0D.4 public prediction-evaluation version as read-only World / League evidence.
 - Runs a real seeded basketball simulation and animates a cinematic sample of its recorded decisions and outcomes.
 - Shows the final score, decision count, activity tape, training state, and approved $5 experiment ceiling.
 - Includes a clearly marked training-visual preview so the intended presentation can be reviewed before actual model training exists.

@@ -21,6 +21,7 @@ sys.path.insert(0, str(ROOT))
 from phase0a.simulator import BRAIN_VERSION, ENGINE_VERSION, simulate_game  # noqa: E402
 from phase0c.policy import POLICY_VERSION  # noqa: E402
 from phase0d.league import LEAGUE_VERSION  # noqa: E402
+from phase0d.prediction import PREDICTION_VERSION  # noqa: E402
 
 
 def status_payload() -> dict[str, object]:
@@ -30,12 +31,13 @@ def status_payload() -> dict[str, object]:
         "engine_version": ENGINE_VERSION,
         "brain_version": BRAIN_VERSION,
         "league_version": LEAGUE_VERSION,
+        "prediction_version": PREDICTION_VERSION,
         "admin_modules": [
             {"id": "overview", "name": "Overview", "state": "AVAILABLE", "detail": "Verified local system summary."},
             {"id": "brains", "name": "Brains", "state": "ACTIVE", "detail": "Cinematic Observatory and truthful training preview."},
             {"id": "simulation", "name": "Simulation", "state": "ACTIVE", "detail": "Runs the current seeded authoritative simulator."},
             {"id": "content", "name": "Content", "state": "LOCKED", "detail": "Clothing and item systems are not implemented."},
-            {"id": "world", "name": "World / League", "state": "READ ONLY", "detail": "Current league version is visible; admin mutations are not implemented."},
+            {"id": "world", "name": "World / League", "state": "READ ONLY", "detail": "League and public prediction evidence are visible; admin mutations are not implemented."},
             {"id": "operations", "name": "Operations", "state": "LOCKED", "detail": "Economy, moderation, releases, and support are not implemented."},
             {"id": "audit", "name": "Audit", "state": "ACTIVE", "detail": "Persistent local record of console actions."},
         ],
@@ -65,7 +67,7 @@ def status_payload() -> dict[str, object]:
                 "name": "World + League Brain",
                 "status": "PARTLY ACTIVE",
                 "version": LEAGUE_VERSION,
-                "detail": "Schedules, standings, minutes, fatigue, availability, recovery, persistence, and league history.",
+                "detail": "Schedules, standings, minutes, fatigue, availability, recovery, persistence, league history, and public prediction evidence.",
             },
             {
                 "id": "basketball",
@@ -297,6 +299,7 @@ def self_check() -> None:
     status = status_payload()
     game = simulation_payload(42)
     assert len(status["brains"]) == 6
+    assert status["prediction_version"] == PREDICTION_VERSION
     assert [module["id"] for module in status["admin_modules"]] == [
         "overview", "brains", "simulation", "content", "world", "operations", "audit"
     ]

@@ -29,6 +29,8 @@ tags:
 - [[Development/Reports/Phase 0D Schedule and Standings|Phase 0D schedule and standings]]
 - [[Development/Reports/Phase 0D1 Multi-Season Fatigue|Phase 0D.1 multi-season fatigue]]
 - [[Development/Reports/Phase 0D2 Rotation Minutes and Workload|Phase 0D.2 rotation minutes and workload]]
+- [[Development/Reports/Phase 0D3 Availability and Recovery|Phase 0D.3 availability and recovery]]
+- [[Development/Reports/Phase 0D4 Public Prediction Evaluation|Phase 0D.4 public prediction evaluation]]
 - [[Visual Maps/Project Tool Map|Master project tool map]]
 - [[Visual Maps/3D Asset Toolchain|3D asset toolchain canvas]]
 - [[Visual Maps/Multi-Brain Architecture|Multi-brain architecture canvas]]
@@ -37,7 +39,7 @@ tags:
 
 ## Current focus
 
-Phase 0D.2 is complete with deterministic rotations, authoritative player minutes, minutes-driven fatigue, exact replay, and exact save/resume. The next no-cost gate is deterministic injury availability and recovery; no live model or retraining job is authorized.
+Phase 0D.4 is complete with leakage-safe public pregame snapshots, 100/100 verified locked-holdout commitments, and a small public-model calibration gain at $0. The next gate is the Phase 0.5 read-only sports interface; no live model, credits, wagering, or retraining job is authorized.
 
 ## Current state
 
