@@ -147,6 +147,16 @@ status: active
 - **Cost:** `$0.00`.
 - **Next gate:** Phase 0.5E Athlete Career Persistence for multi-season cumulative totals, experience/career stage, and active/retired history.
 
+### Phase 0.5E Athlete Career Persistence implementation status
+
+- **Status:** Complete on `agent/phase-0d`.
+- **Implemented:** twelve stable athlete IDs across three deterministic 20-game seasons, cumulative career totals, experience and career-stage labels, selectable season splits, current availability, and exact archived replay links for every season.
+- **Record boundary:** all twelve athletes are explicitly `ACTIVE`; zero are `RETIRED`. The retired-history field is stable, but no retirement rule is claimed.
+- **Measured archive:** 60 games and 720 scheduled player-games. Jalen Cross recorded 57 games, 1,188 points, 582 rebounds, 2,481.2 minutes, and 20.84 career PPG.
+- **Validation:** cumulative player scoring reconciles exactly with league scoring; Admin Console self-check and all 29 regression tests pass. Browser QA switched season splits and completed a Season 3 archived replay with no console errors. See [[Development/Reports/Phase 05E Athlete Career Persistence]].
+- **Cost:** `$0.00`; the existing league state and standard-library cache were reused without a database or new dependency.
+- **Next gate:** Phase 0.5F Career Lifecycle Rules for bounded development and decline, specialty preservation, and real retirement criteria before Athlete Life Brain consequences.
+
 ## Phase 1: 3D vertical slice
 
 Build the one-city scope defined in [[Design/Decisions/DEC-002 First Playable Scope]].

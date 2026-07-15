@@ -34,6 +34,7 @@ tags:
 - [[Development/Reports/Phase 05B League Viewer|Phase 0.5B League Viewer]]
 - [[Development/Reports/Phase 05C Archived Game Playback|Phase 0.5C archived game playback]]
 - [[Development/Reports/Phase 05D Athlete Career Profiles|Phase 0.5D Athlete Career Profiles]]
+- [[Development/Reports/Phase 05E Athlete Career Persistence|Phase 0.5E Athlete Career Persistence]]
 - [[Visual Maps/Project Tool Map|Master project tool map]]
 - [[Visual Maps/3D Asset Toolchain|3D asset toolchain canvas]]
 - [[Visual Maps/Multi-Brain Architecture|Multi-brain architecture canvas]]
@@ -42,7 +43,7 @@ tags:
 
 ## Current focus
 
-Phase 0.5D is complete: the Admin Console now exposes twelve Athlete Career Profiles with durable ratings, specialties, current availability, verified season performance, five-game form, full history, and game replay links. Phase 0.5E Athlete Career Persistence is next; Athlete Life Brain choices and consequences remain planned, and no live model, credits, wagering, or retraining job is authorized.
+Phase 0.5E is complete: twelve stable Athlete Career Profiles now span three verified seasons with cumulative totals, selectable season evidence, exact replay links, and an explicit 12-active/0-retired record boundary. Phase 0.5F Career Lifecycle Rules is next; rating development, retirement mechanics, Athlete Life Brain consequences, live models, credits, wagering, and retraining remain inactive.
 
 ## Current state
 

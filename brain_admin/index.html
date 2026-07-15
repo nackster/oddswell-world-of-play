@@ -466,6 +466,15 @@
     .career-metric { min-width: 0; padding: 12px; border: 1px solid var(--line); border-radius: 12px; background: rgba(255,255,255,.025); }
     .career-metric span { display: block; color: var(--muted); font-size: .53rem; letter-spacing: .1em; text-transform: uppercase; }
     .career-metric strong { display: block; margin-top: 6px; overflow: hidden; color: var(--ink); font: 600 .92rem ui-monospace, SFMono-Regular, Consolas, monospace; text-overflow: ellipsis; white-space: nowrap; }
+    .career-ledger .career-metric { background: linear-gradient(145deg, rgba(92,236,255,.055), rgba(173,124,255,.035)); }
+    .career-ledger .career-metric strong { font-size: .78rem; white-space: normal; }
+    .career-season-tabs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+    .career-season-button { display: grid; grid-template-columns: auto 1fr auto; gap: 10px; align-items: center; padding: 11px 12px; border: 1px solid var(--line); border-radius: 11px; background: rgba(255,255,255,.02); color: var(--ink); cursor: pointer; text-align: left; }
+    .career-season-button:hover, .career-season-button.selected { border-color: rgba(92,236,255,.4); background: rgba(92,236,255,.07); }
+    .career-season-button.selected { box-shadow: inset 2px 0 var(--cyan); }
+    .career-season-button strong { color: var(--cyan); font: 650 .7rem ui-monospace, SFMono-Regular, Consolas, monospace; }
+    .career-season-button span { color: var(--muted); font-size: .58rem; }
+    .career-season-button small { color: var(--amber); font: .58rem ui-monospace, SFMono-Regular, Consolas, monospace; }
     .career-profile-grid { display: grid; grid-template-columns: minmax(280px, .9fr) minmax(360px, 1.1fr); gap: 14px; }
     .career-ratings { display: grid; gap: 10px; }
     .career-rating-row { display: grid; grid-template-columns: 88px minmax(80px, 1fr) 30px; gap: 9px; align-items: center; color: var(--muted); font-size: .62rem; }
@@ -537,6 +546,7 @@
       .career-availability { margin: 0 0 0 auto; }
       .career-profile-grid { grid-template-columns: 1fr; }
       .career-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .career-season-tabs { grid-template-columns: 1fr; }
     }
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after { scroll-behavior: auto !important; transition-duration: 0.001ms !important; animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; }
@@ -636,7 +646,7 @@
           </section>
 
           <section class="page" data-page-view="athletes" hidden>
-            <div class="page-head"><div><h2>Athlete Career Profiles</h2><p>Inspect durable basketball identity and verified season performance without inventing an active life simulation.</p></div></div>
+            <div class="page-head"><div><h2>Athlete Career Profiles</h2><p>Inspect stable multi-season identity, cumulative totals, season evidence, and the active/retired record boundary.</p></div></div>
             <div class="career-boundary" id="career-boundary">Loading the athlete truth boundary.</div>
             <div class="athlete-shell">
               <section class="league-panel athlete-directory">
@@ -649,17 +659,32 @@
                   <div class="career-identity">
                     <h3 id="profile-name">Select an athlete</h3>
                     <p id="profile-team">Career evidence is loading.</p>
-                    <div class="career-tags"><span class="career-tag" id="profile-role">Role</span><span class="career-tag" id="profile-tier">Tier</span><span class="career-tag" id="profile-band">Rating band</span></div>
+                    <div class="career-tags"><span class="career-tag" id="profile-status">Status</span><span class="career-tag" id="profile-role">Role</span><span class="career-tag" id="profile-tier">Tier</span><span class="career-tag" id="profile-band">Rating band</span></div>
                   </div>
                   <div class="career-rating"><strong id="profile-overall">--</strong><span>Overall</span><div class="career-availability" id="profile-availability">--</div></div>
                 </section>
+                <section class="league-panel">
+                  <div class="league-panel-head"><h3>Career ledger</h3><span id="profile-career-record">Verified cumulative record</span></div>
+                  <div class="career-metrics career-ledger">
+                    <div class="career-metric"><span>Experience</span><strong id="profile-experience">--</strong></div>
+                    <div class="career-metric"><span>Career stage</span><strong id="profile-stage">--</strong></div>
+                    <div class="career-metric"><span>Games / missed</span><strong id="profile-career-games">--</strong></div>
+                    <div class="career-metric"><span>Career points</span><strong id="profile-career-points">--</strong></div>
+                    <div class="career-metric"><span>Career rebounds</span><strong id="profile-career-rebounds">--</strong></div>
+                    <div class="career-metric"><span>Career minutes</span><strong id="profile-career-minutes">--</strong></div>
+                  </div>
+                </section>
+                <section class="league-panel">
+                  <div class="league-panel-head"><h3>Season archive</h3><span id="profile-season-label">Select a season</span></div>
+                  <div class="career-season-tabs" id="profile-seasons"></div>
+                </section>
                 <div class="career-metrics">
-                  <div class="career-metric"><span>Points / game</span><strong id="profile-ppg">--</strong></div>
-                  <div class="career-metric"><span>Rebounds / game</span><strong id="profile-rpg">--</strong></div>
-                  <div class="career-metric"><span>Minutes / game</span><strong id="profile-mpg">--</strong></div>
-                  <div class="career-metric"><span>Field goal</span><strong id="profile-fg">--</strong></div>
-                  <div class="career-metric"><span>Passes / game</span><strong id="profile-passes">--</strong></div>
-                  <div class="career-metric"><span>Games / missed</span><strong id="profile-games">--</strong></div>
+                  <div class="career-metric"><span>Season PPG</span><strong id="profile-ppg">--</strong></div>
+                  <div class="career-metric"><span>Season RPG</span><strong id="profile-rpg">--</strong></div>
+                  <div class="career-metric"><span>Season MPG</span><strong id="profile-mpg">--</strong></div>
+                  <div class="career-metric"><span>Season field goal</span><strong id="profile-fg">--</strong></div>
+                  <div class="career-metric"><span>Season passes / game</span><strong id="profile-passes">--</strong></div>
+                  <div class="career-metric"><span>Season games / missed</span><strong id="profile-games">--</strong></div>
                 </div>
                 <div class="career-profile-grid">
                   <section class="league-panel">
@@ -832,6 +857,7 @@
     let athleteData = null;
     let athleteLoading = false;
     let selectedAthleteId = null;
+    let selectedAthleteSeason = null;
     const courtPlayers = new Map();
     const courtPositions = new Map();
 
@@ -1313,8 +1339,11 @@
       return name.split(' ').map((part) => part[0]).join('').slice(0, 2);
     }
 
-    function showAthleteProfile(profile) {
+    function showAthleteProfile(profile, seasonNumber = null) {
+      const latestSeason = profile.seasons[profile.seasons.length - 1];
+      const season = profile.seasons.find((item) => item.number === seasonNumber) || latestSeason;
       selectedAthleteId = profile.id;
+      selectedAthleteSeason = season.number;
       document.querySelectorAll('.athlete-button').forEach((button) => {
         const selected = button.dataset.id === profile.id;
         button.classList.toggle('selected', selected);
@@ -1322,22 +1351,49 @@
       });
       $('profile-initials').textContent = athleteInitials(profile.name);
       $('profile-name').textContent = profile.name;
-      $('profile-team').textContent = `${profile.team} · ${profile.career.specialty} · Season ${profile.career.season} · Athlete Life Brain not active`;
+      $('profile-team').textContent = `${profile.team} · ${profile.career.specialty} · ${profile.career.experience} · Athlete Life Brain not active`;
+      $('profile-status').textContent = profile.career.status;
       $('profile-role').textContent = profile.career.role;
       $('profile-tier').textContent = profile.career.tier;
       $('profile-band').textContent = profile.career.rating_band;
       $('profile-overall').textContent = profile.overall;
       $('profile-availability').textContent = profile.availability.label;
       $('profile-availability').classList.toggle('out', !profile.availability.available);
-      $('profile-ppg').textContent = profile.season.points_per_game.toFixed(2);
-      $('profile-rpg').textContent = profile.season.rebounds_per_game.toFixed(2);
-      $('profile-mpg').textContent = profile.season.minutes_per_game.toFixed(2);
-      $('profile-fg').textContent = `${(profile.season.field_goal_percentage * 100).toFixed(1)}%`;
-      $('profile-passes').textContent = profile.season.passes_per_game.toFixed(2);
-      $('profile-games').textContent = `${profile.season.games_played} / ${profile.season.missed_games}`;
+      $('profile-experience').textContent = `${profile.career.seasons} seasons`;
+      $('profile-stage').textContent = profile.career.stage;
+      $('profile-career-games').textContent = `${profile.career.totals.games_played} / ${profile.career.totals.missed_games}`;
+      $('profile-career-points').textContent = profile.career.totals.total_points.toLocaleString();
+      $('profile-career-rebounds').textContent = profile.career.totals.total_rebounds.toLocaleString();
+      $('profile-career-minutes').textContent = profile.career.totals.total_minutes.toLocaleString(undefined, { maximumFractionDigits: 1 });
+      $('profile-career-record').textContent = `${profile.career.totals.team_record} team record · ${profile.career.status} record`;
+      $('profile-season-label').textContent = `Season ${season.number} selected · ${season.team_record} team record`;
+      $('profile-ppg').textContent = season.points_per_game.toFixed(2);
+      $('profile-rpg').textContent = season.rebounds_per_game.toFixed(2);
+      $('profile-mpg').textContent = season.minutes_per_game.toFixed(2);
+      $('profile-fg').textContent = `${(season.field_goal_percentage * 100).toFixed(1)}%`;
+      $('profile-passes').textContent = season.passes_per_game.toFixed(2);
+      $('profile-games').textContent = `${season.games_played} / ${season.missed_games}`;
       $('profile-specialty').textContent = `${profile.career.specialty} · ratings remain durable`;
-      $('profile-form-label').textContent = `${profile.form.label} · ${profile.form.points_per_game.toFixed(2)} PPG`;
-      $('profile-record').textContent = `${profile.team} ${profile.season.team_record} · Season ${profile.career.season}`;
+      $('profile-form-label').textContent = `${season.form.label} · ${season.form.points_per_game.toFixed(2)} PPG`;
+      $('profile-record').textContent = `${profile.team} ${season.team_record} · Season ${season.number}`;
+
+      const seasons = $('profile-seasons');
+      seasons.replaceChildren();
+      for (const split of profile.seasons) {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'career-season-button' + (split.number === season.number ? ' selected' : '');
+        button.setAttribute('aria-pressed', String(split.number === season.number));
+        const number = document.createElement('strong');
+        number.textContent = `S${split.number}`;
+        const record = document.createElement('span');
+        record.textContent = `${split.team_record} · ${split.games_played} GP`;
+        const scoring = document.createElement('small');
+        scoring.textContent = `${split.points_per_game.toFixed(1)} PPG`;
+        button.append(number, record, scoring);
+        button.addEventListener('click', () => showAthleteProfile(profile, split.number));
+        seasons.append(button);
+      }
 
       const ratings = $('profile-ratings');
       ratings.replaceChildren();
@@ -1361,8 +1417,8 @@
 
       const form = $('profile-form');
       form.replaceChildren();
-      const maxPoints = Math.max(1, ...profile.form.games.map((game) => game.points));
-      for (const game of profile.form.games) {
+      const maxPoints = Math.max(1, ...season.form.games.map((game) => game.points));
+      for (const game of season.form.games) {
         const column = document.createElement('div');
         column.className = 'career-form-game' + (game.available ? '' : ' out');
         const bar = document.createElement('div');
@@ -1378,7 +1434,7 @@
 
       const history = $('profile-history');
       history.replaceChildren();
-      for (const game of profile.history) {
+      for (const game of season.history) {
         const row = document.createElement('div');
         row.className = 'career-history-row';
         const number = document.createElement('span');
@@ -1399,7 +1455,7 @@
         replay.className = 'control history-replay';
         replay.textContent = 'Watch';
         replay.setAttribute('aria-label', `Watch ${profile.name} in Game ${game.game}`);
-        replay.addEventListener('click', () => openArchivedReplay(game.game, replay));
+        replay.addEventListener('click', () => openArchivedReplay(game.game, replay, game.season));
         row.append(number, opponent, result, points, rebounds, minutes, replay);
         history.append(row);
       }
@@ -1408,7 +1464,7 @@
     function populateAthletes(data) {
       athleteData = data;
       $('career-boundary').textContent = data.boundary;
-      $('athlete-count').textContent = `${data.profiles.length} active profiles`;
+      $('athlete-count').textContent = `${data.archive.active_athletes} active · ${data.archive.retired_athletes} retired`;
       const list = $('athlete-list');
       list.replaceChildren();
       for (const profile of data.profiles) {
@@ -1429,11 +1485,11 @@
         overall.className = 'athlete-list-overall';
         overall.textContent = profile.overall;
         button.append(avatar, name, overall);
-        button.addEventListener('click', () => showAthleteProfile(profile));
+        button.addEventListener('click', () => showAthleteProfile(profile, profile.seasons[profile.seasons.length - 1].number));
         list.append(button);
       }
       const selected = data.profiles.find((profile) => profile.id === selectedAthleteId) || data.profiles[0];
-      showAthleteProfile(selected);
+      showAthleteProfile(selected, selected.id === selectedAthleteId ? selectedAthleteSeason : null);
     }
 
     async function loadAthletes() {
@@ -1551,14 +1607,17 @@
       playing = false;
     }
 
-    async function openArchivedReplay(gameNumber, button) {
+    async function openArchivedReplay(gameNumber, button, seasonNumber = 1) {
       if (playing) return;
-      if (!Number.isInteger(gameNumber)) return;
+      if (!Number.isInteger(gameNumber) || !Number.isInteger(seasonNumber)) return;
       const originalText = button.textContent;
       button.disabled = true;
       button.textContent = 'Loading verified replay…';
       try {
-        const response = await fetch(`/api/league/replay/${gameNumber}`);
+        const endpoint = seasonNumber === 1
+          ? `/api/league/replay/${gameNumber}`
+          : `/api/career/replay/${seasonNumber}/${gameNumber}`;
+        const response = await fetch(endpoint);
         const data = await response.json();
         if (!response.ok) throw new Error(data.error || 'archived replay unavailable');
         lastSimulation = data;
