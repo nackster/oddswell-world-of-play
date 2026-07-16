@@ -11,17 +11,91 @@ from phase0d.league import (
     load_league,
     new_league,
     save_league,
+    simulate_scheduled_game,
     simulate_next_season,
     simulate_season,
 )
 from phase0d.life import (
     LIFE_BRAIN_VERSION,
+    LIFE_BRAIN_V2_VERSION,
+    OFF_DAY_PREFERENCES,
     apply_life_action,
     between_game_choices,
+    choose_life_action,
 )
 
 
 class AthleteLifeBrainTests(unittest.TestCase):
+    def test_preference_pilot_is_explicit_complete_and_resumable(self) -> None:
+        self.assertEqual(set(OFF_DAY_PREFERENCES), {
+            player.name
+            for season_number in range(1, 5)
+            for team in teams_for_season(season_number)
+            for player in team.players
+        })
+        for season_number in range(1, 5):
+            for team in teams_for_season(season_number):
+                self.assertEqual(
+                    sorted(OFF_DAY_PREFERENCES[player.name] for player in team.players),
+                    ["practice"] * 3 + ["social"] * 3,
+                )
+        self.assertEqual(
+            choose_life_action("Jalen Cross", 2, 0, 0.2399, 0, policy_version=LIFE_BRAIN_V2_VERSION),
+            "train",
+        )
+        self.assertEqual(
+            choose_life_action("Micah Vale", 2, 1, 0.2399, 0, policy_version=LIFE_BRAIN_V2_VERSION),
+            "socialize",
+        )
+        self.assertEqual(
+            choose_life_action("Jalen Cross", 2, 0, 0.24, 0, policy_version=LIFE_BRAIN_V2_VERSION),
+            "rest",
+        )
+        self.assertEqual(
+            choose_life_action("Jalen Cross", 2, 0, 0.3, 2, policy_version=LIFE_BRAIN_V2_VERSION),
+            "recover",
+        )
+        teams = teams_for_season(1)
+        decisions = between_game_choices(
+            2,
+            dict(empty_fatigue(teams)),
+            dict(empty_availability(teams)),
+            teams,
+            policy_version=LIFE_BRAIN_V2_VERSION,
+        )
+        with self.assertRaisesRegex(ValueError, "policy does not match"):
+            simulate_scheduled_game(
+                build_schedule(2, 1_950, teams)[1],
+                empty_fatigue(teams),
+                empty_availability(teams),
+                teams,
+                life_decisions=decisions,
+            )
+        with self.assertRaisesRegex(ValueError, "missing off-day preference"):
+            choose_life_action(
+                "Unknown Athlete", 2, 0, 0.3, 2,
+                policy_version=LIFE_BRAIN_V2_VERSION,
+            )
+        state = simulate_next_season(
+            new_league(1_950), 4, teams_for_season(1),
+            life_policy_version=LIFE_BRAIN_V2_VERSION,
+        )
+        with TemporaryDirectory() as directory:
+            path = Path(directory) / "pilot.json"
+            save_league(state, path)
+            loaded = load_league(path)
+        self.assertEqual(state, loaded)
+        self.assertEqual(
+            simulate_next_season(
+                state, 4, teams_for_season(2),
+                life_policy_version=LIFE_BRAIN_V2_VERSION,
+            ),
+            simulate_next_season(
+                loaded, 4, teams_for_season(2),
+                life_policy_version=LIFE_BRAIN_V2_VERSION,
+            ),
+        )
+
     def test_choices_are_deterministic_auditable_and_bounded(self) -> None:
         teams = default_teams()
         fatigue = dict(empty_fatigue(teams))

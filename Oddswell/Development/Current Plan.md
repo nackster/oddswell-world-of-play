@@ -208,6 +208,17 @@ status: active
 - **Cost:** `$0.00`; runtime code, tests, schemas, archives, Admin Console behavior, LLMs, training, economy, credits, and wagering remain unchanged. See [[Development/Reports/Phase 05J Life Preference Policy Review]].
 - **Next gate:** Phase 0.5K may implement and evaluate the preference pilot beside immutable v1.
 
+### Phase 0.5K Versioned Life Preference Pilot implementation status
+
+- **Status:** Complete on `agent/phase-0d` after a bounded versioning audit.
+- **Implemented:** explicit opt-in `athlete-life-v2` preference decisions beside default v1, keyword-only policy propagation, exact preference reasons, decision/replay version agreement, policy-version-aware evaluation, and unchanged save/load/resume under the existing state schema.
+- **Fresh archive:** 912 v2 decisions across four seasons and 80 games: 379 rest, 271 socialize, 239 train, and 23 recover. All 80 games reconstruct; policy and tenure violations are zero.
+- **Preference evidence:** 456 practice-group choices contain no socialize action; 456 social-group choices contain no train action. Recovery and high-fatigue rest retain priority.
+- **Same-seed sensitivity:** v1 and v2 differ on 381/912 sequential choices, 15/80 winners, and 5.725 mean absolute margin points. Both samples record 20 new injuries and 14 missed player-games; this single fixed archive is not a promotion decision.
+- **Compatibility:** every omitted policy argument remains v1, Phase 0.5I evidence stays exact, the Admin Console stays v1, and durable athlete identity is unchanged.
+- **Cost:** `$0.00`; no new dependency, schema, UI, LLM, learning, retraining, memory, narrative, economy, credits, or wagering was added. See [[Development/Reports/Phase 05K Versioned Life Preference Pilot]].
+- **Next gate:** Phase 0.5L read-only multi-seed evaluation before any v2 promotion or added trait.
+
 ## Phase 1: 3D vertical slice
 
 Build the one-city scope defined in [[Design/Decisions/DEC-002 First Playable Scope]].
@@ -228,7 +239,7 @@ The shared life, world, memory, and learning layers will support every sport. Ea
 - Minimal athlete attributes.
 - Initial live LLM provider/model and separate inference budget.
 - First retraining dataset and method that fit the $5 ceiling.
-- Athlete Life Brain v2 versioned preference pilot and fresh evaluation archive.
+- Athlete Life Brain v1/v2 multi-seed preference evaluation and promotion criteria.
 - AI evaluation criteria and model-update cadence.
 - Ranked competition scoring.
 - Match schedule and season length.

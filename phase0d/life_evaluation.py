@@ -7,7 +7,12 @@ from functools import lru_cache
 from phase0a.simulator import GameResult, simulate_game
 from phase0d.career import teams_for_season
 from phase0d.league import new_league, simulate_next_season
-from phase0d.life import choose_life_action
+from phase0d.life import (
+    LIFE_BRAIN_V2_VERSION,
+    LIFE_BRAIN_VERSION,
+    OFF_DAY_PREFERENCES,
+    choose_life_action,
+)
 
 
 LIFE_EVALUATION_VERSION = "life-evaluation-v1"
@@ -16,6 +21,7 @@ LIFE_EVALUATION_VERSION = "life-evaluation-v1"
 @dataclass(frozen=True)
 class LifeEvaluation:
     version: str
+    policy_version: str
     seasons: int
     games: int
     decisions: int
@@ -24,6 +30,7 @@ class LifeEvaluation:
     choice_shares: tuple[tuple[str, float], ...]
     choices_by_season: tuple[tuple[int, tuple[tuple[str, int], ...]], ...]
     choices_by_athlete: tuple[tuple[str, int], ...]
+    choices_by_preference: tuple[tuple[str, tuple[tuple[str, int], ...]], ...]
     policy_violations: int
     tenure_violations: int
     reconstructed_games: int
@@ -52,15 +59,19 @@ def _box_totals(game: GameResult) -> tuple[int, int, int]:
     return made, attempts, turnovers
 
 
-@lru_cache(maxsize=1)
-def run_life_evaluation() -> LifeEvaluation:
+@lru_cache(maxsize=2)
+def _run_life_evaluation(policy_version: str) -> LifeEvaluation:
     state = new_league(15_000)
     for season_number in range(1, 5):
-        state = simulate_next_season(state, 20, teams_for_season(season_number))
+        state = simulate_next_season(
+            state, 20, teams_for_season(season_number),
+            life_policy_version=policy_version,
+        )
 
     choices = Counter()
     choices_by_season: list[tuple[int, tuple[tuple[str, int], ...]]] = []
     choices_by_athlete = Counter()
+    choices_by_preference = {"practice": Counter(), "social": Counter()}
     policy_violations = tenure_violations = reconstructed_games = 0
     readiness_values = []
     net_fatigue_change = 0.0
@@ -123,6 +134,7 @@ def run_life_evaluation() -> LifeEvaluation:
                 choices[decision.selected] += 1
                 season_choices[decision.selected] += 1
                 choices_by_athlete[decision.athlete] += 1
+                choices_by_preference[OFF_DAY_PREFERENCES[decision.athlete]][decision.selected] += 1
                 tenure_violations += decision.athlete not in roster_index
                 if decision.athlete in roster_index:
                     expected = choose_life_action(
@@ -131,6 +143,7 @@ def run_life_evaluation() -> LifeEvaluation:
                         roster_index[decision.athlete],
                         decision.fatigue_before,
                         decision.recovery_before,
+                        policy_version=decision.policy_version,
                     )
                     policy_violations += expected != decision.selected
                 readiness_values.append(decision.readiness)
@@ -144,6 +157,7 @@ def run_life_evaluation() -> LifeEvaluation:
     team_games = len(margin_changes) * 2
     return LifeEvaluation(
         LIFE_EVALUATION_VERSION,
+        policy_version,
         len(state.seasons),
         len(margin_changes),
         decisions,
@@ -152,6 +166,10 @@ def run_life_evaluation() -> LifeEvaluation:
         tuple((choice, round(count / decisions, 4)) for choice, count in sorted(choices.items())),
         tuple(choices_by_season),
         tuple(sorted(choices_by_athlete.items())),
+        tuple(
+            (preference, tuple(sorted(counts.items())))
+            for preference, counts in choices_by_preference.items()
+        ),
         policy_violations,
         tenure_violations,
         reconstructed_games,
@@ -168,3 +186,11 @@ def run_life_evaluation() -> LifeEvaluation:
         winner_flips,
         round(sum(margin_changes) / len(margin_changes), 3),
     )
+
+
+def run_life_evaluation() -> LifeEvaluation:
+    return _run_life_evaluation(LIFE_BRAIN_VERSION)
+
+
+def run_life_v2_pilot() -> LifeEvaluation:
+    return _run_life_evaluation(LIFE_BRAIN_V2_VERSION)

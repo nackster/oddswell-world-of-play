@@ -7,8 +7,24 @@ from phase0a.simulator import MAX_READINESS_MODIFIER, Team, clamp
 
 
 LIFE_BRAIN_VERSION = "athlete-life-v1"
+LIFE_BRAIN_V2_VERSION = "athlete-life-v2"
 LIFE_CHOICES = ("train", "rest", "recover", "socialize")
 HIGH_FATIGUE = 0.24
+OFF_DAY_PREFERENCES = {
+    "Jalen Cross": "practice",
+    "Micah Vale": "social",
+    "Dorian Pike": "practice",
+    "Kellan Shore": "social",
+    "Andre North": "social",
+    "Malik Frost": "practice",
+    "Nico Reyes": "practice",
+    "Tariq Stone": "social",
+    "Eli Mercer": "practice",
+    "Roman Voss": "social",
+    "Cal Brooks": "practice",
+    "Mateo Cruz": "social",
+    "Soren Lake": "social",
+}
 
 
 @dataclass(frozen=True)
@@ -33,13 +49,21 @@ def choose_life_action(
     roster_index: int,
     fatigue: float,
     recovery_days: int,
+    *,
+    policy_version: str = LIFE_BRAIN_VERSION,
 ) -> str:
     if athlete == "" or game_number < 2 or roster_index < 0:
         raise ValueError("athlete, between-game number, and roster index are required")
+    if policy_version not in {LIFE_BRAIN_VERSION, LIFE_BRAIN_V2_VERSION}:
+        raise ValueError(f"unsupported Athlete Life Brain policy: {policy_version!r}")
+    if policy_version == LIFE_BRAIN_V2_VERSION and athlete not in OFF_DAY_PREFERENCES:
+        raise ValueError(f"missing off-day preference for {athlete!r}")
     if recovery_days > 0:
         return "recover"
     if fatigue >= HIGH_FATIGUE:
         return "rest"
+    if policy_version == LIFE_BRAIN_V2_VERSION:
+        return "train" if OFF_DAY_PREFERENCES[athlete] == "practice" else "socialize"
     return "train" if (game_number + roster_index) % 2 == 0 else "socialize"
 
 
@@ -49,11 +73,17 @@ def apply_life_action(
     action: str,
     fatigue: float,
     recovery_days: int,
+    *,
+    policy_version: str = LIFE_BRAIN_VERSION,
 ) -> LifeDecision:
     if action not in LIFE_CHOICES:
         raise ValueError(f"illegal Athlete Life Brain choice: {action!r}")
     if not 0 <= fatigue <= 0.45 or not 0 <= recovery_days <= 7:
         raise ValueError("invalid temporary athlete state")
+    if policy_version not in {LIFE_BRAIN_VERSION, LIFE_BRAIN_V2_VERSION}:
+        raise ValueError(f"unsupported Athlete Life Brain policy: {policy_version!r}")
+    if policy_version == LIFE_BRAIN_V2_VERSION and athlete not in OFF_DAY_PREFERENCES:
+        raise ValueError(f"missing off-day preference for {athlete!r}")
 
     after_fatigue = fatigue
     after_recovery = recovery_days
@@ -71,12 +101,20 @@ def apply_life_action(
     elif action == "train":
         after_fatigue = min(0.35, fatigue + 0.02)
         readiness = 0.015
-        reason = "Deterministic practice rotation"
+        reason = (
+            f"{OFF_DAY_PREFERENCES[athlete].title()} off-day preference"
+            if policy_version == LIFE_BRAIN_V2_VERSION
+            else "Deterministic practice rotation"
+        )
         effect = "Practice +1.5%, fatigue +0.02; consumed next game"
     else:
         after_fatigue = min(0.35, fatigue + 0.01)
         readiness = 0.01
-        reason = "Deterministic social rotation"
+        reason = (
+            f"{OFF_DAY_PREFERENCES[athlete].title()} off-day preference"
+            if policy_version == LIFE_BRAIN_V2_VERSION
+            else "Deterministic social rotation"
+        )
         effect = "Morale +1.0%, fatigue +0.01; consumed next game"
 
     return LifeDecision(
@@ -84,7 +122,7 @@ def apply_life_action(
         game_number,
         LIFE_CHOICES,
         action,
-        LIFE_BRAIN_VERSION,
+        policy_version,
         reason,
         round(fatigue, 4),
         round(after_fatigue, 4),
@@ -100,6 +138,8 @@ def between_game_choices(
     fatigue: Mapping[str, float],
     availability: Mapping[str, int],
     teams: tuple[Team, Team],
+    *,
+    policy_version: str = LIFE_BRAIN_VERSION,
 ) -> tuple[LifeDecision, ...]:
     roster = tuple(player.name for team in teams for player in team.players)
     if set(fatigue) != set(roster) or set(availability) != set(roster):
@@ -112,6 +152,7 @@ def between_game_choices(
             index,
             float(fatigue[athlete]),
             int(availability[athlete]),
+            policy_version=policy_version,
         )
         decisions.append(
             apply_life_action(
@@ -120,6 +161,7 @@ def between_game_choices(
                 action,
                 float(fatigue[athlete]),
                 int(availability[athlete]),
+                policy_version=policy_version,
             )
         )
     return tuple(decisions)

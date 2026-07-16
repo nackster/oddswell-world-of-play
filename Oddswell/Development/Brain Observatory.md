@@ -54,6 +54,8 @@ Phase 0.5I evaluates Athlete Life Brain v1 outside the interface. It reconstruct
 
 Phase 0.5J defines a future fictional practice/social off-day preference and a version-safe history contract. It is not active in the Observatory or simulator. The displayed Athlete Life Brain remains v1 until a fresh v2 archive passes its own evaluation; archived v1 decisions must never be reinterpreted under later rules.
 
+Phase 0.5K adds v2 only as an explicit local pilot path and produces a separate fixed-seed archive. The Admin Console deliberately remains on default v1; showing or promoting v2 waits for multi-seed evidence. Preference-group animation must not imply learning, personality inference, or neural-network training.
+
 The League Viewer follows the Phase 0D.4 public-information boundary. Hidden fatigue, recovery timers, injury-risk internals, seeds, RNG state, economy data, and admin mutations stay outside its payload.
 
 Archived games reuse hidden authoritative league state only on the server. The browser receives the complete recorded play-frame stream and verified archive metadata, never the hidden reconstruction inputs.
