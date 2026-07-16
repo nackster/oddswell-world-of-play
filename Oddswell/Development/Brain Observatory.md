@@ -24,7 +24,7 @@ Double-click `Start Brain Observatory.cmd` in the project root. The launcher sta
 - Provides a dedicated Game Theater with a symbolic court, all twelve roster athletes, real recorded plays, lineup changes, clock and score progression, replay speed, and replay-last-game control.
 - Provides a read-only League Viewer with standings, the complete archived schedule, public rosters and ratings, availability, per-game minutes, prediction probabilities, pregame commitments, and replay hashes.
 - Opens every League Viewer result in the Game Theater as a full archived playback and verifies the reconstructed score and player minutes before display.
-- Provides twelve stable Athlete Career Profiles spanning three verified seasons, with explicit ages, bounded development and decline, preserved specialties, retirement status, cumulative totals, selectable season splits, and direct cross-season replay links.
+- Provides thirteen stable Athlete Career Profiles across four verified seasons, with explicit ages, bounded development and decline, preserved retired history, stable incoming roster identity, cumulative totals, selectable season splits, and direct cross-roster replay links.
 - Shows the final score, decision count, activity tape, training state, and approved $5 experiment ceiling.
 - Includes a clearly marked training-visual preview so the intended presentation can be reviewed before actual model training exists.
 - Provides navigation for Overview, Brains, Athletes, Simulation, Content, World / League, Operations, and Audit.
@@ -46,7 +46,7 @@ The League Viewer follows the Phase 0D.4 public-information boundary. Hidden fat
 
 Archived games reuse hidden authoritative league state only on the server. The browser receives the complete recorded play-frame stream and verified archive metadata, never the hidden reconstruction inputs.
 
-Athlete profiles keep durable specialty identity separate from temporary form. Lifecycle v1 now applies transparent fictional age, bounded development/decline, and age-35 retirement rules to the same ratings used by the games. Contracts, replacement players, personal-life decisions, and Athlete Life Brain consequences remain inactive.
+Athlete profiles keep durable specialty identity separate from temporary form. Lifecycle v1 applies fictional age, bounded development/decline, and age-35 retirement; roster continuity v1 preserves Roman's retired record and introduces Soren Lake in Season 4. Contracts, draft/free agency, personal-life decisions, and Athlete Life Brain consequences remain inactive.
 
 When genuine training is approved, connect provider progress, dataset version, candidate version, validation metrics, estimated and actual cost, and promotion-gate results to the existing interface. Hosted LLM internals remain opaque, so the Observatory will display observable telemetry rather than fabricated neuron activations.
 

@@ -168,6 +168,16 @@ status: active
 - **Cost:** `$0.00`; no model, database, or dependency was added.
 - **Next gate:** Phase 0.5G Roster Continuity, followed by the first small Athlete Life Brain choice loop.
 
+### Phase 0.5G Roster Continuity implementation status
+
+- **Status:** Complete on `agent/phase-0d`.
+- **Implemented:** stable incoming athlete Soren Lake, a deterministic Roman-to-Soren roster transition, newcomer fatigue/availability initialization, removal of the retired athlete from active snapshots, six-player roster preservation, and exact Season 4 replay reconstruction.
+- **Historical boundary:** Roman retains all three career seasons and remains visible as `RETIRED`; Soren begins a separate stable career in Season 4.
+- **Measured archive:** 4 seasons, 80 games, 13 profiles, 12 active athletes, and 1 retired athlete. Soren played 20 games with 358 points, 276 rebounds, 17.90 PPG, and 13.80 RPG as Mesa Vista finished 13-7.
+- **Validation:** all 30 regression tests and the Admin Console self-check pass. Browser QA verifies the incoming and retired profiles plus an exact Season 4 replay. See [[Development/Reports/Phase 05G Roster Continuity]].
+- **Cost:** `$0.00`; no model, database, or dependency was added.
+- **Next gate:** an agent audit will confirm Phase 0.5H Athlete Life Brain v1 before implementation.
+
 ## Phase 1: 3D vertical slice
 
 Build the one-city scope defined in [[Design/Decisions/DEC-002 First Playable Scope]].

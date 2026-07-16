@@ -469,7 +469,7 @@
     .career-ledger .career-metric { background: linear-gradient(145deg, rgba(92,236,255,.055), rgba(173,124,255,.035)); }
     .career-ledger .career-metric strong { font-size: .78rem; white-space: normal; }
     .career-ledger { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-    .career-season-tabs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+    .career-season-tabs { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 8px; }
     .career-season-button { display: grid; grid-template-columns: auto 1fr auto; gap: 10px; align-items: center; padding: 11px 12px; border: 1px solid var(--line); border-radius: 11px; background: rgba(255,255,255,.02); color: var(--ink); cursor: pointer; text-align: left; }
     .career-season-button:hover, .career-season-button.selected { border-color: rgba(92,236,255,.4); background: rgba(92,236,255,.07); }
     .career-season-button.selected { box-shadow: inset 2px 0 var(--cyan); }

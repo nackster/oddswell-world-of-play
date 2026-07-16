@@ -2,6 +2,7 @@ import unittest
 
 from phase0a.simulator import default_teams
 from phase0d.career import (
+    REPLACEMENTS,
     RATING_NAMES,
     RETIREMENT_AGE,
     age_for_season,
@@ -10,6 +11,7 @@ from phase0d.career import (
     retirement_season,
     teams_for_season,
 )
+from phase0d.league import new_league, simulate_next_season
 
 
 class CareerLifecycleTests(unittest.TestCase):
@@ -35,8 +37,19 @@ class CareerLifecycleTests(unittest.TestCase):
         self.assertEqual(retirement_season("Roman Voss"), 3)
         self.assertEqual(career_status("Roman Voss", 3), "RETIRED")
         self.assertEqual(career_status("Jalen Cross", 3), "ACTIVE")
-        with self.assertRaisesRegex(ValueError, "retired after season 3"):
-            teams_for_season(4)
+        season_four = teams_for_season(4)
+        season_four_names = {player.name for team in season_four for player in team.players}
+        self.assertNotIn("Roman Voss", season_four_names)
+        self.assertIn(REPLACEMENTS["Roman Voss"].name, season_four_names)
+        self.assertTrue(all(len(team.players) == 6 for team in season_four))
+
+        state = new_league(1_600)
+        for season_number in range(1, 5):
+            state = simulate_next_season(state, 2, teams_for_season(season_number))
+        current_names = {name for name, _ in state.fatigue}
+        self.assertNotIn("Roman Voss", current_names)
+        self.assertIn("Soren Lake", current_names)
+        self.assertEqual(len(current_names), 12)
 
 
 if __name__ == "__main__":

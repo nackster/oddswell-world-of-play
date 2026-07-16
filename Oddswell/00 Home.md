@@ -36,6 +36,7 @@ tags:
 - [[Development/Reports/Phase 05D Athlete Career Profiles|Phase 0.5D Athlete Career Profiles]]
 - [[Development/Reports/Phase 05E Athlete Career Persistence|Phase 0.5E Athlete Career Persistence]]
 - [[Development/Reports/Phase 05F Career Lifecycle Rules|Phase 0.5F Career Lifecycle Rules]]
+- [[Development/Reports/Phase 05G Roster Continuity|Phase 0.5G Roster Continuity]]
 - [[Visual Maps/Project Tool Map|Master project tool map]]
 - [[Visual Maps/3D Asset Toolchain|3D asset toolchain canvas]]
 - [[Visual Maps/Multi-Brain Architecture|Multi-brain architecture canvas]]
@@ -44,7 +45,7 @@ tags:
 
 ## Current focus
 
-Phase 0.5F is complete: the three-season career archive now uses explicit fictional ages, bounded development and decline, preserved specialties, and an age-35 retirement rule inside authoritative games and replays. The archive has 11 active careers and Roman Voss as its first retired career. Phase 0.5G Roster Continuity is next; Athlete Life Brain consequences, live models, credits, wagering, and retraining remain inactive.
+Phase 0.5G is complete: the four-season career archive preserves Roman Voss's retired history while stable incoming athlete Soren Lake fills his Season 4 roster slot. The Admin Console now shows 13 profiles, 12 active athletes, 1 retired athlete, and exact cross-roster replays. Phase 0.5H Athlete Life Brain v1 is next pending an agent audit; live models, credits, wagering, and retraining remain inactive.
 
 ## Current state
 

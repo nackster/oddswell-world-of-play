@@ -383,13 +383,34 @@ def simulate_next_season(
 ) -> LeagueState:
     if state.schema != STATE_SCHEMA:
         raise ValueError(f"unsupported league state schema: {state.schema}")
+    season_teams = teams or default_teams()
+    fatigue_values = dict(state.fatigue)
+    availability_values = dict(state.availability)
+    aligned_fatigue = fatigue_snapshot(
+        {
+            player.name: fatigue_values.get(player.name, 0.0)
+            for team in season_teams
+            for player in team.players
+        },
+        season_teams,
+    )
+    aligned_availability = availability_snapshot(
+        {
+            player.name: availability_values.get(player.name, 0)
+            for team in season_teams
+            for player in team.players
+        },
+        season_teams,
+    )
     initial_fatigue = (
-        recover_fatigue(state.fatigue, OFFSEASON_REST_DAYS) if state.seasons else state.fatigue
+        recover_fatigue(aligned_fatigue, OFFSEASON_REST_DAYS, season_teams)
+        if state.seasons
+        else aligned_fatigue
     )
     initial_availability = (
-        recover_availability(state.availability, OFFSEASON_REST_DAYS)
+        recover_availability(aligned_availability, OFFSEASON_REST_DAYS, season_teams)
         if state.seasons
-        else state.availability
+        else aligned_availability
     )
     season = simulate_season(
         game_count,
@@ -397,7 +418,7 @@ def simulate_next_season(
         initial_fatigue,
         initial_availability,
         state.next_season,
-        teams,
+        season_teams,
     )
     return LeagueState(
         STATE_SCHEMA,

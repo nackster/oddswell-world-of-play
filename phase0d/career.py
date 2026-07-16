@@ -19,15 +19,23 @@ DEBUT_AGES = {
     "Roman Voss": 33,
     "Cal Brooks": 30,
     "Mateo Cruz": 24,
+    "Soren Lake": 21,
 }
+DEBUT_SEASONS = {"Soren Lake": 4}
+REPLACEMENTS = {"Roman Voss": Player("Soren Lake", 74, 72, 73, 78, 84)}
+
+
+def debut_season(player_name: str) -> int:
+    if player_name not in DEBUT_AGES:
+        raise ValueError(f"missing career age for {player_name!r}")
+    return DEBUT_SEASONS.get(player_name, 1)
 
 
 def age_for_season(player_name: str, season_number: int) -> int:
-    if player_name not in DEBUT_AGES:
-        raise ValueError(f"missing career age for {player_name!r}")
-    if season_number < 1:
-        raise ValueError("season number must be positive")
-    return DEBUT_AGES[player_name] + season_number - 1
+    first_season = debut_season(player_name)
+    if season_number < first_season:
+        raise ValueError(f"{player_name} does not enter until season {first_season}")
+    return DEBUT_AGES[player_name] + season_number - first_season
 
 
 def career_stage(age: int) -> str:
@@ -41,7 +49,7 @@ def career_stage(age: int) -> str:
 
 
 def retirement_season(player_name: str) -> int:
-    return RETIREMENT_AGE - age_for_season(player_name, 1) + 1
+    return debut_season(player_name) + RETIREMENT_AGE - DEBUT_AGES[player_name]
 
 
 def career_status(player_name: str, completed_seasons: int) -> str:
@@ -69,7 +77,7 @@ def player_for_season(player: Player, season_number: int) -> Player:
         (name for name in RATING_NAMES if name not in signatures),
         key=lambda name: (ratings[name], RATING_NAMES.index(name)),
     )
-    for year in range(2, season_number + 1):
+    for year in range(debut_season(player.name) + 1, season_number + 1):
         age = age_for_season(player.name, year)
         if age <= 24:
             for name in signatures:
@@ -82,7 +90,20 @@ def player_for_season(player: Player, season_number: int) -> Player:
 
 
 def teams_for_season(season_number: int) -> tuple[Team, Team]:
+    if season_number < 1:
+        raise ValueError("season number must be positive")
     return tuple(
-        Team(team.name, tuple(player_for_season(player, season_number) for player in team.players))
+        Team(
+            team.name,
+            tuple(
+                player_for_season(
+                    player
+                    if season_number <= retirement_season(player.name)
+                    else REPLACEMENTS.get(player.name, player),
+                    season_number,
+                )
+                for player in team.players
+            ),
+        )
         for team in default_teams()
     )
