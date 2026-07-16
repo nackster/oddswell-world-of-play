@@ -50,6 +50,8 @@ Animation must never imply that model weights are changing when no training job 
 
 The Game Theater follows the same truth rule: event labels, lineups, clock, and scores are authoritative, while marker coordinates are illustrative because physical player locations are not yet simulated.
 
+Phase 0.5I evaluates Athlete Life Brain v1 outside the interface. It reconstructs all 80 archived games and measures 912 choices, policy compliance, readiness exposure, and a fixed-seed zero-readiness comparison. These are simulator diagnostics, not neural-network training, learned behavior, or real-world performance claims; Admin Console behavior is intentionally unchanged.
+
 The League Viewer follows the Phase 0D.4 public-information boundary. Hidden fatigue, recovery timers, injury-risk internals, seeds, RNG state, economy data, and admin mutations stay outside its payload.
 
 Archived games reuse hidden authoritative league state only on the server. The browser receives the complete recorded play-frame stream and verified archive metadata, never the hidden reconstruction inputs.

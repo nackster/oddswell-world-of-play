@@ -188,6 +188,16 @@ status: active
 - **Cost:** `$0.00`; the standard library and existing deterministic simulator were reused.
 - **Next gate:** Phase 0.5I should evaluate the choice distribution and measured game impact before adding traits, long-term memory, narratives, or an LLM.
 
+### Phase 0.5I Athlete Life Brain Evaluation implementation status
+
+- **Status:** Complete on `agent/phase-0d` after a basketball-realism audit.
+- **Implemented:** a read-only, fixed-archive evaluator covering choice distribution, per-season and per-athlete tenure, exact v1 policy compliance, readiness exposure, fatigue/recovery effects, archived replay reconstruction, and a zero-readiness fixed-seed sensitivity comparison.
+- **Measured archive:** 912/912 expected choices across four seasons: 386 rest (42.32%), 252 socialize (27.63%), 251 train (27.52%), and 23 recover (2.52%). All 80 games reconstruct; policy and roster-tenure violations are both zero.
+- **Measured influence:** readiness appeared in 503 choices (55.15%), averaged 0.6891% overall and 1.2495% when active, and never exceeded 1.5%. Against identical zero-readiness replays, it changed results by +1.4125 points per team-game, +0.6654 field-goal percentage points, -0.275 turnovers per team-game, 22/80 winners, and 6.275 mean absolute margin points.
+- **Truth boundary:** these are path-sensitive effects in fictional fixed-seed games, not real-world estimates or evidence of learning. Training/socializing parity comes from deterministic alternation; rest dominance comes from the explicit fatigue threshold.
+- **Cost:** `$0.00`; no gameplay, policy, schema, Admin Console, LLM, training, retraining, economy, credits, or wagering behavior changed. See [[Development/Reports/Phase 05I Athlete Life Brain Evaluation]].
+- **Next gate:** Phase 0.5J should review the v1 policy and define the smallest explicit fictional trait input before any long-term memory, narrative event, or LLM control.
+
 ## Phase 1: 3D vertical slice
 
 Build the one-city scope defined in [[Design/Decisions/DEC-002 First Playable Scope]].
@@ -208,7 +218,7 @@ The shared life, world, memory, and learning layers will support every sport. Ea
 - Minimal athlete attributes.
 - Initial live LLM provider/model and separate inference budget.
 - First retraining dataset and method that fit the $5 ceiling.
-- Athlete Life Brain v1 evaluation criteria and future trait inputs.
+- Athlete Life Brain v1 policy review and smallest future fictional trait input.
 - AI evaluation criteria and model-update cadence.
 - Ranked competition scoring.
 - Match schedule and season length.

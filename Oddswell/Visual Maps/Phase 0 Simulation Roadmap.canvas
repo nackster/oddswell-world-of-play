@@ -20,7 +20,8 @@
     {"id":"p0-5f","type":"text","text":"## 0.5F ✅ CAREER LIFECYCLE RULES\nExplicit ages • bounded growth + decline • specialties preserved\nAge-35 retirement • 11 active / 1 retired • authoritative ratings + replays • $0","x":-650,"y":1390,"width":1360,"height":150,"color":"3"},
     {"id":"p0-5g","type":"text","text":"## 0.5G ✅ ROSTER CONTINUITY\nRoman history preserved • Soren Lake enters Season 4\n6 athletes per team • 13 profiles • 12 active / 1 retired • exact replays • $0","x":-650,"y":1600,"width":1360,"height":150,"color":"3"},
     {"id":"p0-5h","type":"text","text":"## 0.5H ✅ ATHLETE LIFE BRAIN v1\n912 auditable train • rest • recover • socialize choices\nTemporary next-game effects • durable ratings unchanged • exact save + replay • $0","x":-650,"y":1810,"width":1360,"height":150,"color":"3"},
-    {"id":"p0-5i","type":"text","text":"## NEXT: 0.5I LIFE BRAIN EVALUATION\nMeasure choice distribution and game impact\nTune only from evidence before traits, memory, narratives, or LLM control","x":-650,"y":2020,"width":1360,"height":150,"color":"4"}
+    {"id":"p0-5i","type":"text","text":"## 0.5I ✅ LIFE BRAIN EVALUATION\n912/912 choices • 80/80 games reconstructed • 0 policy violations\nBounded influence measured • no gameplay or policy change • $0","x":-650,"y":2020,"width":1360,"height":150,"color":"3"},
+    {"id":"p0-5j","type":"text","text":"## NEXT: 0.5J LIFE POLICY REVIEW\nUse measured evidence to define one small fictional trait input\nNo memory, narratives, LLM control, or durable rating changes yet","x":-650,"y":2230,"width":1360,"height":150,"color":"4"}
   ],
   "edges": [
     {"id":"p0-edge-1","fromNode":"p0-a","fromSide":"right","toNode":"p0-b","toSide":"left"},
@@ -37,6 +38,7 @@
     {"id":"p0-edge-12","fromNode":"p0-5e","fromSide":"bottom","toNode":"p0-5f","toSide":"top"},
     {"id":"p0-edge-13","fromNode":"p0-5f","fromSide":"bottom","toNode":"p0-5g","toSide":"top"},
     {"id":"p0-edge-14","fromNode":"p0-5g","fromSide":"bottom","toNode":"p0-5h","toSide":"top"},
-    {"id":"p0-edge-15","fromNode":"p0-5h","fromSide":"bottom","toNode":"p0-5i","toSide":"top"}
+    {"id":"p0-edge-15","fromNode":"p0-5h","fromSide":"bottom","toNode":"p0-5i","toSide":"top"},
+    {"id":"p0-edge-16","fromNode":"p0-5i","fromSide":"bottom","toNode":"p0-5j","toSide":"top"}
   ]
 }
