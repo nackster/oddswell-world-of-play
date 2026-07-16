@@ -44,6 +44,7 @@ from phase0d.career import (  # noqa: E402
     teams_for_season,
 )
 from phase0d.league import LEAGUE_VERSION, new_league, simulate_next_season  # noqa: E402
+from phase0d.life import LIFE_BRAIN_VERSION  # noqa: E402
 from phase0d.prediction import PREDICTION_VERSION, run_prediction_study  # noqa: E402
 
 
@@ -123,9 +124,9 @@ def status_payload() -> dict[str, object]:
             {
                 "id": "athlete",
                 "name": "Athlete Life Brain",
-                "status": "PLANNED",
-                "version": "Not implemented",
-                "detail": "Future career development, training, rest, recovery, habits, relationships, social choices, legal consequences, and long-term memory.",
+                "status": "ACTIVE PILOT",
+                "version": LIFE_BRAIN_VERSION,
+                "detail": "Deterministic between-game train, rest, recover, and socialize choices with auditable temporary effects. No LLM or permanent rating changes.",
             },
             {
                 "id": "world",
@@ -485,6 +486,7 @@ def archived_game_result(game_number: int, season_number: int = 1) -> GameResult
         matchup=matchup,
         initial_fatigue=dict(archived.pregame_fatigue),
         initial_availability=dict(archived.pregame_availability),
+        initial_readiness=dict(archived.pregame_readiness),
     )
     if (
         game.home_score != archived.home_score
@@ -612,11 +614,21 @@ def athlete_profiles_payload() -> dict[str, object]:
         standings = {standing.team: standing for standing in season.standings}
         totals: dict[str, Counter[str]] = defaultdict(Counter)
         histories: dict[str, list[dict[str, object]]] = defaultdict(list)
+        life_histories: dict[str, list[dict[str, object]]] = defaultdict(list)
         for archived in season.games:
             game = archived_game_result(archived.number, season.season_number)
             game_stats = player_game_stats(game)
             minutes = dict(game.minutes_played)
             availability = dict(archived.pregame_availability)
+            for decision in archived.life_decisions:
+                life_histories[decision.athlete].append(
+                    {
+                        "game": archived.number,
+                        "choice": decision.selected.upper(),
+                        "reason": decision.reason,
+                        "effect": decision.temporary_effect,
+                    }
+                )
             for player in season_players[season.season_number].values():
                 name = player.name
                 team = player_team[name]
@@ -662,6 +674,14 @@ def athlete_profiles_payload() -> dict[str, object]:
                     },
                     **line,
                     "form": athlete_form(histories[name], float(line["points_per_game"])),
+                    "life": {
+                        "version": LIFE_BRAIN_VERSION,
+                        "choices": len(life_histories[name]),
+                        "breakdown": dict(
+                            Counter(entry["choice"] for entry in life_histories[name])
+                        ),
+                        "recent": list(reversed(life_histories[name][-5:])),
+                    },
                     "history": list(reversed(histories[name])),
                 }
             )
@@ -717,7 +737,7 @@ def athlete_profiles_payload() -> dict[str, object]:
                     "specialty": player_specialty(player),
                     "bounded_rating_changes": True,
                     "specialty_preserved": True,
-                    "life_brain": "PLANNED / NOT ACTIVE",
+                    "life_brain": LIFE_BRAIN_VERSION,
                     "totals": career_line,
                 },
                 "availability": {
@@ -750,8 +770,8 @@ def athlete_profiles_payload() -> dict[str, object]:
         },
         "boundary": (
             "Four verified seasons now preserve retired history and fill Roman Voss's roster slot with "
-            "stable incoming athlete Soren Lake. Lifecycle ratings, availability, minutes, and replays "
-            "remain authoritative; contracts and Athlete Life Brain consequences are not active."
+            "stable incoming athlete Soren Lake. Athlete Life Brain v1 records bounded between-game "
+            "choices and temporary next-game effects without changing durable ratings or retired history."
         ),
         "profiles": profiles,
     }
@@ -868,6 +888,9 @@ def self_check() -> None:
     assert len(status["brains"]) == 6
     assert status["prediction_version"] == PREDICTION_VERSION
     assert status["career_version"] == CAREER_VERSION
+    athlete_brain = next(brain for brain in status["brains"] if brain["id"] == "athlete")
+    assert athlete_brain["status"] == "ACTIVE PILOT"
+    assert athlete_brain["version"] == LIFE_BRAIN_VERSION
     assert [module["id"] for module in status["admin_modules"]] == [
         "overview", "brains", "athletes", "simulation", "content", "world", "operations", "audit"
     ]
@@ -884,7 +907,7 @@ def self_check() -> None:
     public_json = json.dumps(league, sort_keys=True)
     assert not any(
         forbidden in public_json
-        for forbidden in ('"seed"', '"fatigue"', '"recovery_days"', '"injury_risk"')
+        for forbidden in ('"seed"', '"fatigue"', '"readiness"', '"recovery_days"', '"injury_risk"')
     )
     assert archived["archive"]["replay_sha256"] == league["games"][19]["replay_sha256"]
     assert archived["summary"]["home_score"] == league["games"][19]["home_score"]
@@ -895,7 +918,7 @@ def self_check() -> None:
     archived_json = json.dumps(archived, sort_keys=True)
     assert not any(
         forbidden in archived_json
-        for forbidden in ('"seed"', '"fatigue"', '"recovery_days"', '"injury_risk"')
+        for forbidden in ('"seed"', '"fatigue"', '"readiness"', '"recovery_days"', '"injury_risk"')
     )
     assert career_archived["archive"]["season"] == CAREER_SEASONS
     assert career_archived["archive"]["game"] == 20
@@ -936,6 +959,17 @@ def self_check() -> None:
     assert [season["number"] for season in incoming["seasons"]] == [CAREER_SEASONS]
     assert incoming["career"]["status"] == "ACTIVE"
     assert all(
+        season["life"]["choices"] == LEAGUE_VIEW_GAMES - 1
+        for profile in athletes["profiles"]
+        for season in profile["seasons"]
+    )
+    assert sum(season["life"]["choices"] for season in retired[0]["seasons"]) == 57
+    assert sum(season["life"]["choices"] for season in incoming["seasons"]) == 19
+    assert all(
+        profile["career"]["life_brain"] == LIFE_BRAIN_VERSION
+        for profile in athletes["profiles"]
+    )
+    assert all(
         abs(current["ratings"][rating] - previous["ratings"][rating]) <= 1
         for profile in athletes["profiles"]
         for previous, current in zip(profile["seasons"], profile["seasons"][1:])
@@ -962,7 +996,7 @@ def self_check() -> None:
     athlete_json = json.dumps(athletes, sort_keys=True)
     assert not any(
         forbidden in athlete_json
-        for forbidden in ('"seed"', '"fatigue"', '"recovery_days"', '"injury_risk"')
+        for forbidden in ('"seed"', '"fatigue"', '"readiness"', '"recovery_days"', '"injury_risk"')
     )
     with tempfile.TemporaryDirectory() as temporary_directory:
         path = Path(temporary_directory) / "audit.log"

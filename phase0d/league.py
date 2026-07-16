@@ -11,16 +11,18 @@ from typing import Mapping
 from phase0a.simulator import (
     BRAIN_VERSION,
     ENGINE_VERSION,
+    MAX_READINESS_MODIFIER,
     MAX_RECOVERY_DAYS,
     Team,
     default_teams,
     simulate_game,
 )
 from phase0c.replay import replay_manifest, verify_replay_manifest
+from phase0d.life import LIFE_BRAIN_VERSION, LifeDecision, between_game_choices
 
 
-LEAGUE_VERSION = "phase0d3-v1"
-STATE_SCHEMA = "oddswell-league-state-v3"
+LEAGUE_VERSION = "phase05h-v1"
+STATE_SCHEMA = "oddswell-league-state-v4"
 FATIGUE_MODEL_VERSION = "minutes-workload-v1"
 INJURY_MODEL_VERSION = "minor-availability-v1"
 INJURY_SEED_SALT = 0x1A11AB1E
@@ -35,6 +37,7 @@ OFFSEASON_REST_DAYS = 7
 FatigueSnapshot = tuple[tuple[str, float], ...]
 MinutesSnapshot = tuple[tuple[str, float], ...]
 AvailabilitySnapshot = tuple[tuple[str, int], ...]
+ReadinessSnapshot = tuple[tuple[str, float], ...]
 
 
 @dataclass(frozen=True)
@@ -60,6 +63,8 @@ class SeasonGame:
     minutes_played: MinutesSnapshot
     pregame_availability: AvailabilitySnapshot
     postgame_availability: AvailabilitySnapshot
+    pregame_readiness: ReadinessSnapshot
+    life_decisions: tuple[LifeDecision, ...]
 
 
 @dataclass(frozen=True)
@@ -167,6 +172,53 @@ def empty_availability(teams: tuple[Team, Team] | None = None) -> AvailabilitySn
     return tuple((player.name, 0) for team in (teams or default_teams()) for player in team.players)
 
 
+def readiness_snapshot(
+    values: Mapping[str, float],
+    teams: tuple[Team, Team] | None = None,
+) -> ReadinessSnapshot:
+    roster = teams or default_teams()
+    expected = {player.name for team in roster for player in team.players}
+    if set(values) != expected or any(
+        not isinstance(values[name], (int, float))
+        or isinstance(values[name], bool)
+        or not -MAX_READINESS_MODIFIER <= values[name] <= MAX_READINESS_MODIFIER
+        for name in expected
+    ):
+        raise ValueError("invalid readiness roster or value")
+    return tuple(
+        (player.name, round(float(values[player.name]), 4))
+        for team in roster
+        for player in team.players
+    )
+
+
+def empty_readiness(teams: tuple[Team, Team] | None = None) -> ReadinessSnapshot:
+    return tuple((player.name, 0.0) for team in (teams or default_teams()) for player in team.players)
+
+
+def apply_life_day(
+    game_number: int,
+    fatigue: FatigueSnapshot,
+    availability: AvailabilitySnapshot,
+    teams: tuple[Team, Team],
+) -> tuple[FatigueSnapshot, AvailabilitySnapshot, ReadinessSnapshot, tuple[LifeDecision, ...]]:
+    decisions = between_game_choices(
+        game_number, dict(fatigue), dict(availability), teams
+    )
+    return (
+        fatigue_snapshot(
+            {decision.athlete: decision.fatigue_after for decision in decisions}, teams
+        ),
+        availability_snapshot(
+            {decision.athlete: decision.recovery_after for decision in decisions}, teams
+        ),
+        readiness_snapshot(
+            {decision.athlete: decision.readiness for decision in decisions}, teams
+        ),
+        decisions,
+    )
+
+
 def recover_fatigue(
     fatigue: FatigueSnapshot,
     rest_days: int,
@@ -263,14 +315,18 @@ def simulate_scheduled_game(
     fatigue: FatigueSnapshot,
     availability: AvailabilitySnapshot,
     teams: tuple[Team, Team],
+    readiness: ReadinessSnapshot | None = None,
+    life_decisions: tuple[LifeDecision, ...] = (),
 ) -> SeasonGame:
     """Resolve one scheduled game through the authoritative league transition."""
     matchup = (fixture.home, fixture.away)
+    readiness = readiness or empty_readiness(teams)
     result = simulate_game(
         fixture.seed,
         matchup=matchup,
         initial_fatigue=dict(fatigue),
         initial_availability=dict(availability),
+        initial_readiness=dict(readiness),
     )
     played = minutes_snapshot(dict(result.minutes_played), teams)
     postgame_fatigue = add_game_load(fatigue, teams, played)
@@ -286,6 +342,9 @@ def simulate_scheduled_game(
             "minutes_played": dict(played),
             "pregame_availability": dict(availability),
             "postgame_availability": dict(postgame_availability),
+            "life_brain_version": LIFE_BRAIN_VERSION,
+            "life_decisions": [asdict(decision) for decision in life_decisions],
+            "pregame_readiness": dict(readiness),
         },
     )
     if not verify_replay_manifest(manifest):
@@ -304,6 +363,8 @@ def simulate_scheduled_game(
         played,
         availability,
         postgame_availability,
+        readiness,
+        life_decisions,
     )
 
 
@@ -327,10 +388,17 @@ def simulate_season(
     games = []
 
     for index, fixture in enumerate(schedule):
+        readiness = empty_readiness(teams)
+        life_decisions: tuple[LifeDecision, ...] = ()
         if index:
             fatigue = recover_fatigue(fatigue, BETWEEN_GAME_REST_DAYS, teams)
             availability = recover_availability(availability, BETWEEN_GAME_REST_DAYS, teams)
-        game = simulate_scheduled_game(fixture, fatigue, availability, teams)
+            fatigue, availability, readiness, life_decisions = apply_life_day(
+                fixture.number, fatigue, availability, teams
+            )
+        game = simulate_scheduled_game(
+            fixture, fatigue, availability, teams, readiness, life_decisions
+        )
         winner = game.winner
         loser = game.away_team if winner == game.home_team else game.home_team
 
@@ -486,6 +554,35 @@ def _availability_from_json(value: object) -> AvailabilitySnapshot:
     return availability_snapshot({name: recovery_days for name, recovery_days in value})
 
 
+def _readiness_from_json(value: object) -> ReadinessSnapshot:
+    if not isinstance(value, list) or any(
+        not isinstance(item, list)
+        or len(item) != 2
+        or not isinstance(item[0], str)
+        or not isinstance(item[1], (int, float))
+        or isinstance(item[1], bool)
+        for item in value
+    ):
+        raise ValueError("invalid readiness snapshot")
+    return readiness_snapshot({name: amount for name, amount in value})
+
+
+def _life_decisions_from_json(value: object) -> tuple[LifeDecision, ...]:
+    if not isinstance(value, list):
+        raise ValueError("invalid life decisions")
+    decisions = []
+    for item in value:
+        if not isinstance(item, dict):
+            raise ValueError("invalid life decision")
+        decision = dict(item)
+        legal_choices = decision.get("legal_choices")
+        if not isinstance(legal_choices, list):
+            raise ValueError("invalid life decision choices")
+        decision["legal_choices"] = tuple(legal_choices)
+        decisions.append(LifeDecision(**decision))
+    return tuple(decisions)
+
+
 def load_league(path: Path) -> LeagueState:
     try:
         value = json.loads(path.read_text(encoding="utf-8"))
@@ -516,6 +613,12 @@ def load_league(path: Path) -> LeagueState:
                 )
                 game_data["postgame_availability"] = _availability_from_json(
                     game_data["postgame_availability"]
+                )
+                game_data["pregame_readiness"] = _readiness_from_json(
+                    game_data["pregame_readiness"]
+                )
+                game_data["life_decisions"] = _life_decisions_from_json(
+                    game_data["life_decisions"]
                 )
                 games.append(SeasonGame(**game_data))
             standings = tuple(Standing(**row) for row in season_data.pop("standings"))

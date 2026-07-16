@@ -476,6 +476,11 @@
     .career-season-button strong { color: var(--cyan); font: 650 .7rem ui-monospace, SFMono-Regular, Consolas, monospace; }
     .career-season-button span { color: var(--muted); font-size: .58rem; }
     .career-season-button small { color: var(--amber); font: .58rem ui-monospace, SFMono-Regular, Consolas, monospace; }
+    .life-timeline { display: grid; grid-template-columns: repeat(auto-fit, minmax(185px, 1fr)); gap: 8px; }
+    .life-choice { min-width: 0; padding: 11px; border: 1px solid rgba(173,124,255,.2); border-radius: 11px; background: linear-gradient(145deg, rgba(173,124,255,.07), rgba(92,236,255,.035)); }
+    .life-choice strong { display: block; color: #d9c7ff; font: 650 .66rem ui-monospace, SFMono-Regular, Consolas, monospace; letter-spacing: .08em; }
+    .life-choice span { display: block; margin-top: 6px; color: var(--muted); font-size: .57rem; line-height: 1.45; }
+    .life-choice small { display: block; margin-top: 5px; color: #b8eefa; font-size: .54rem; line-height: 1.4; }
     .career-profile-grid { display: grid; grid-template-columns: minmax(280px, .9fr) minmax(360px, 1.1fr); gap: 14px; }
     .career-ratings { display: grid; gap: 10px; }
     .career-rating-row { display: grid; grid-template-columns: 88px minmax(80px, 1fr) 30px; gap: 9px; align-items: center; color: var(--muted); font-size: .62rem; }
@@ -678,6 +683,10 @@
                 <section class="league-panel">
                   <div class="league-panel-head"><h3>Season archive</h3><span id="profile-season-label">Select a season</span></div>
                   <div class="career-season-tabs" id="profile-seasons"></div>
+                </section>
+                <section class="league-panel">
+                  <div class="league-panel-head"><h3>Athlete Life Brain v1</h3><span id="profile-life-label">Auditable temporary choices</span></div>
+                  <div class="life-timeline" id="profile-life"></div>
                 </section>
                 <div class="career-metrics">
                   <div class="career-metric"><span>Season PPG</span><strong id="profile-ppg">--</strong></div>
@@ -1352,7 +1361,7 @@
       });
       $('profile-initials').textContent = athleteInitials(profile.name);
       $('profile-name').textContent = profile.name;
-      $('profile-team').textContent = `${profile.team} · ${profile.career.specialty} · Age ${season.age} ${season.stage} · Athlete Life Brain not active`;
+      $('profile-team').textContent = `${profile.team} · ${profile.career.specialty} · Age ${season.age} ${season.stage} · Athlete Life Brain v1`;
       $('profile-status').textContent = profile.career.status;
       $('profile-role').textContent = profile.career.role;
       $('profile-tier').textContent = profile.career.tier;
@@ -1370,6 +1379,10 @@
       $('profile-career-minutes').textContent = profile.career.totals.total_minutes.toLocaleString(undefined, { maximumFractionDigits: 1 });
       $('profile-career-record').textContent = `${profile.career.totals.team_record} team record · ${profile.career.status} record`;
       $('profile-season-label').textContent = `Season ${season.number} selected · ${season.team_record} team record`;
+      const lifeBreakdown = Object.entries(season.life.breakdown)
+        .map(([choice, count]) => `${choice.toLowerCase()} ${count}`)
+        .join(' · ');
+      $('profile-life-label').textContent = `${season.life.choices} choices · ${lifeBreakdown || 'opening game only'}`;
       $('profile-ppg').textContent = season.points_per_game.toFixed(2);
       $('profile-rpg').textContent = season.rebounds_per_game.toFixed(2);
       $('profile-mpg').textContent = season.minutes_per_game.toFixed(2);
@@ -1397,6 +1410,27 @@
         button.append(number, record, scoring);
         button.addEventListener('click', () => showAthleteProfile(profile, split.number));
         seasons.append(button);
+      }
+
+      const lifeTimeline = $('profile-life');
+      lifeTimeline.replaceChildren();
+      if (!season.life.recent.length) {
+        const empty = document.createElement('div');
+        empty.className = 'empty';
+        empty.textContent = 'No between-game decision precedes the opening game.';
+        lifeTimeline.append(empty);
+      }
+      for (const decision of season.life.recent) {
+        const card = document.createElement('article');
+        card.className = 'life-choice';
+        const choice = document.createElement('strong');
+        choice.textContent = `G${decision.game} · ${decision.choice}`;
+        const reason = document.createElement('span');
+        reason.textContent = decision.reason;
+        const effect = document.createElement('small');
+        effect.textContent = decision.effect;
+        card.append(choice, reason, effect);
+        lifeTimeline.append(card);
       }
 
       const ratings = $('profile-ratings');

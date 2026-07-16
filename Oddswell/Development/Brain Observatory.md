@@ -46,7 +46,7 @@ The League Viewer follows the Phase 0D.4 public-information boundary. Hidden fat
 
 Archived games reuse hidden authoritative league state only on the server. The browser receives the complete recorded play-frame stream and verified archive metadata, never the hidden reconstruction inputs.
 
-Athlete profiles keep durable specialty identity separate from temporary form. Lifecycle v1 applies fictional age, bounded development/decline, and age-35 retirement; roster continuity v1 preserves Roman's retired record and introduces Soren Lake in Season 4. Contracts, draft/free agency, personal-life decisions, and Athlete Life Brain consequences remain inactive.
+Athlete profiles keep durable specialty identity separate from temporary form. Lifecycle v1 applies fictional age, bounded development/decline, and age-35 retirement; roster continuity v1 preserves Roman's retired record and introduces Soren Lake in Season 4. Athlete Life Brain v1 now shows each athlete's recent train, rest, recover, or socialize choice and its bounded next-game effect. Hidden readiness, fatigue, recovery timers, and seeds remain private; contracts, draft/free agency, stories, legal events, and permanent life-driven rating changes remain inactive.
 
 When genuine training is approved, connect provider progress, dataset version, candidate version, validation metrics, estimated and actual cost, and promotion-gate results to the existing interface. Hosted LLM internals remain opaque, so the Observatory will display observable telemetry rather than fabricated neuron activations.
 

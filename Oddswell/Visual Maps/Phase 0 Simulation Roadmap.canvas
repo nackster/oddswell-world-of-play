@@ -11,7 +11,7 @@
     {"id":"p0-evidence-c","type":"text","text":"## 🛡️ AI evidence\n[[Development/Reports/Phase 0C Offline LLM Policy Pilot|Phase 0C report]]\n8,140 decisions • fairness • $0","x":-180,"y":40,"width":420,"height":160,"color":"2"},
     {"id":"p0-evidence-d","type":"text","text":"## 🩹 Availability evidence\n[[Development/Reports/Phase 0D3 Availability and Recovery|Phase 0D.3 report]]\n1.43% injuries • 20/20 absences at 0 minutes • $0","x":290,"y":40,"width":420,"height":160,"color":"3"},
     {"id":"p0-playable","type":"text","text":"## 0D.4 ✅ PUBLIC PREDICTIONS\n15 warm-up + 5 locked holdout seasons\n• 100/100 commitments verified\n• best Brier 0.2416 vs 0.2500\n• $0 and no wagering","x":-650,"y":280,"width":650,"height":190,"color":"3"},
-    {"id":"p0-life","type":"text","text":"## 🧍 LATER: ATHLETE LIFE BRAIN\nTraining • rest • recovery • social life\nRelationships, nightlife, media, and long-term consequences follow a stable sports loop.","x":60,"y":280,"width":650,"height":150,"color":"5"},
+    {"id":"p0-life","type":"text","text":"## 🧍 ATHLETE LIFE BRAIN: ACTIVE PILOT\nTrain • rest • recover • socialize\nBounded temporary consequences now precede narrative and long-term systems.","x":60,"y":280,"width":650,"height":150,"color":"3"},
     {"id":"p0-next","type":"text","text":"## 0.5A ✅ GAME THEATER\nReal seeded game → recorded visual replay\n• lineups • plays • clock • score • ball motion\nSymbolic positions are clearly labeled.","x":-650,"y":530,"width":650,"height":170,"color":"3"},
     {"id":"p0-5b","type":"text","text":"## 0.5B ✅ LEAGUE VIEWER\nTeams • athletes • schedule • standings\nAvailability • commitments • per-game inspection\n20 verified results • $0 • read only","x":60,"y":530,"width":650,"height":170,"color":"3"},
     {"id":"p0-5c","type":"text","text":"## 0.5C ✅ ARCHIVED GAME PLAYBACK\nSelect result → full recorded Game Theater replay\nScore + minutes verified • hidden state server-side • $0","x":-650,"y":760,"width":1360,"height":150,"color":"3"},
@@ -19,7 +19,8 @@
     {"id":"p0-5e","type":"text","text":"## 0.5E ✅ CAREER PERSISTENCE\n12 stable careers • 3 verified seasons • 60 games\nCumulative totals • season selector • cross-season replays • 12 active / 0 retired • $0","x":-650,"y":1180,"width":1360,"height":150,"color":"3"},
     {"id":"p0-5f","type":"text","text":"## 0.5F ✅ CAREER LIFECYCLE RULES\nExplicit ages • bounded growth + decline • specialties preserved\nAge-35 retirement • 11 active / 1 retired • authoritative ratings + replays • $0","x":-650,"y":1390,"width":1360,"height":150,"color":"3"},
     {"id":"p0-5g","type":"text","text":"## 0.5G ✅ ROSTER CONTINUITY\nRoman history preserved • Soren Lake enters Season 4\n6 athletes per team • 13 profiles • 12 active / 1 retired • exact replays • $0","x":-650,"y":1600,"width":1360,"height":150,"color":"3"},
-    {"id":"p0-5h","type":"text","text":"## NEXT: 0.5H ATHLETE LIFE BRAIN v1\nTrain • rest • recover • socialize\nAuditable daily choices • temporary effects • durable ability remains separate","x":-650,"y":1810,"width":1360,"height":150,"color":"4"}
+    {"id":"p0-5h","type":"text","text":"## 0.5H ✅ ATHLETE LIFE BRAIN v1\n912 auditable train • rest • recover • socialize choices\nTemporary next-game effects • durable ratings unchanged • exact save + replay • $0","x":-650,"y":1810,"width":1360,"height":150,"color":"3"},
+    {"id":"p0-5i","type":"text","text":"## NEXT: 0.5I LIFE BRAIN EVALUATION\nMeasure choice distribution and game impact\nTune only from evidence before traits, memory, narratives, or LLM control","x":-650,"y":2020,"width":1360,"height":150,"color":"4"}
   ],
   "edges": [
     {"id":"p0-edge-1","fromNode":"p0-a","fromSide":"right","toNode":"p0-b","toSide":"left"},
@@ -35,6 +36,7 @@
     {"id":"p0-edge-11","fromNode":"p0-5d","fromSide":"bottom","toNode":"p0-5e","toSide":"top"},
     {"id":"p0-edge-12","fromNode":"p0-5e","fromSide":"bottom","toNode":"p0-5f","toSide":"top"},
     {"id":"p0-edge-13","fromNode":"p0-5f","fromSide":"bottom","toNode":"p0-5g","toSide":"top"},
-    {"id":"p0-edge-14","fromNode":"p0-5g","fromSide":"bottom","toNode":"p0-5h","toSide":"top"}
+    {"id":"p0-edge-14","fromNode":"p0-5g","fromSide":"bottom","toNode":"p0-5h","toSide":"top"},
+    {"id":"p0-edge-15","fromNode":"p0-5h","fromSide":"bottom","toNode":"p0-5i","toSide":"top"}
   ]
 }

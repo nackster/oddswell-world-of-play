@@ -14,6 +14,7 @@ from phase0d.league import (
     OFFSEASON_REST_DAYS,
     AvailabilitySnapshot,
     ScheduledGame,
+    apply_life_day,
     availability_snapshot,
     build_schedule,
     empty_availability,
@@ -264,10 +265,15 @@ def run_prediction_study(
             teams,
         )
         for index, fixture in enumerate(schedule):
+            readiness = None
+            life_decisions = ()
             rest_days = OFFSEASON_REST_DAYS if index == 0 else BETWEEN_GAME_REST_DAYS
             if index:
                 fatigue = recover_fatigue(fatigue, rest_days, teams)
                 availability = recover_availability(availability, rest_days, teams)
+                fatigue, availability, readiness, life_decisions = apply_life_day(
+                    fixture.number, fatigue, availability, teams
+                )
             snapshot = public_pregame_snapshot(
                 season_number,
                 fixture,
@@ -282,7 +288,9 @@ def run_prediction_study(
             )
             commitment_sha256 = hashlib.sha256(commitment_json.encode()).hexdigest()
 
-            game = simulate_scheduled_game(fixture, fatigue, availability, teams)
+            game = simulate_scheduled_game(
+                fixture, fatigue, availability, teams, readiness, life_decisions
+            )
             home_win = int(game.winner == game.home_team)
             injury_subset = any(
                 not bool(player["available"])

@@ -178,13 +178,23 @@ status: active
 - **Cost:** `$0.00`; no model, database, or dependency was added.
 - **Next gate:** an agent audit will confirm Phase 0.5H Athlete Life Brain v1 before implementation.
 
+### Phase 0.5H Athlete Life Brain v1 implementation status
+
+- **Status:** Complete on `agent/phase-0d` after the basketball-realism agent gate.
+- **Implemented:** every active athlete makes one deterministic between-game choice from `train`, `rest`, `recover`, or `socialize`. Unavailable athletes recover, high-fatigue athletes rest, and the remaining roster alternates training and social choices by stable schedule context.
+- **Temporary effects:** train and socialize add at most `+1.5%` next-game readiness with bounded workload; rest reduces carryover fatigue; recover shortens recovery by one day. Readiness is consumed by the next game. Durable ratings, specialties, age, development, and retired history never change through this system.
+- **Audit and replay:** each internal decision records the exact legal choices, selected action, policy version, reason, before/after temporary state, and next-game effect. Decisions are bound into the replay manifest and survive league save/load/resume. Public athlete profiles show only choice, reason, and effect; hidden readiness, fatigue, recovery timers, seeds, and RNG state remain server-side.
+- **Measured archive:** 912 choices across four 20-game seasons: 386 rest, 252 socialize, 251 train, and 23 recover. Roman has 57 choices only in Seasons 1-3; Soren has 19 choices only in Season 4.
+- **Cost:** `$0.00`; the standard library and existing deterministic simulator were reused.
+- **Next gate:** Phase 0.5I should evaluate the choice distribution and measured game impact before adding traits, long-term memory, narratives, or an LLM.
+
 ## Phase 1: 3D vertical slice
 
 Build the one-city scope defined in [[Design/Decisions/DEC-002 First Playable Scope]].
 
 ## Future shared simulation layer
 
-After the basketball loop is stable, pilot the shared Athlete Life Brain with a few daily choices: train, rest, recover, and socialize. Expand into relationships, nightlife, media, discipline, career decisions, and other sports only after the smaller loop produces believable, auditable consequences.
+Athlete Life Brain v1 now pilots train, rest, recover, and socialize as deterministic between-game choices with bounded, auditable temporary consequences. Expand into traits, relationships, nightlife, media, discipline, career decisions, and other sports only after the smaller loop passes measured realism evaluation.
 
 Athletes keep distinct career identities: stars, specialists, average players, and below-average players are allowed and should not be automatically equalized. Durable ability changes gradually, while temporary form, fatigue, availability, practice, discipline, partying, fictional legal trouble, and other life consequences can alter performance and career outcomes through visible causal chains. See [[Design/Decisions/DEC-003 Multi-Brain AI Architecture]].
 
@@ -198,7 +208,7 @@ The shared life, world, memory, and learning layers will support every sport. Ea
 - Minimal athlete attributes.
 - Initial live LLM provider/model and separate inference budget.
 - First retraining dataset and method that fit the $5 ceiling.
-- Minimal Athlete Life Brain traits and daily choices.
+- Athlete Life Brain v1 evaluation criteria and future trait inputs.
 - AI evaluation criteria and model-update cadence.
 - Ranked competition scoring.
 - Match schedule and season length.
