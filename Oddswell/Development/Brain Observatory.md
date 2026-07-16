@@ -52,6 +52,8 @@ The Game Theater follows the same truth rule: event labels, lineups, clock, and 
 
 Phase 0.5I evaluates Athlete Life Brain v1 outside the interface. It reconstructs all 80 archived games and measures 912 choices, policy compliance, readiness exposure, and a fixed-seed zero-readiness comparison. These are simulator diagnostics, not neural-network training, learned behavior, or real-world performance claims; Admin Console behavior is intentionally unchanged.
 
+Phase 0.5J defines a future fictional practice/social off-day preference and a version-safe history contract. It is not active in the Observatory or simulator. The displayed Athlete Life Brain remains v1 until a fresh v2 archive passes its own evaluation; archived v1 decisions must never be reinterpreted under later rules.
+
 The League Viewer follows the Phase 0D.4 public-information boundary. Hidden fatigue, recovery timers, injury-risk internals, seeds, RNG state, economy data, and admin mutations stay outside its payload.
 
 Archived games reuse hidden authoritative league state only on the server. The browser receives the complete recorded play-frame stream and verified archive metadata, never the hidden reconstruction inputs.

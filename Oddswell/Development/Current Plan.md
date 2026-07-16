@@ -198,6 +198,16 @@ status: active
 - **Cost:** `$0.00`; no gameplay, policy, schema, Admin Console, LLM, training, retraining, economy, credits, or wagering behavior changed. See [[Development/Reports/Phase 05I Athlete Life Brain Evaluation]].
 - **Next gate:** Phase 0.5J should review the v1 policy and define the smallest explicit fictional trait input before any long-term memory, narrative event, or LLM control.
 
+### Phase 0.5J Life Preference Policy Review implementation status
+
+- **Status:** Complete on `agent/phase-0d` after two bounded agent audits.
+- **Decision:** define exactly one future input, `off_day_preference = practice | social`, from a version-owned fictional mapping of stable athlete identities. Every active team has three athletes in each group in every current season.
+- **Proposed v2 precedence:** unavailable athletes recover; fatigue at or above `0.24` forces rest; otherwise practice-preferring athletes train and social-preferring athletes socialize. Existing temporary consequences and bounds remain unchanged.
+- **Frozen-state review:** the 912 stored v1 before-states split evenly across preference groups. A one-step counterfactual changes 240 stored choices, but it does not resimulate sequential fatigue, injuries, RNG, or results and is not a realism claim.
+- **History contract:** v1 remains immutable. Future v2 decisions start in a new archive, reuse the existing stored policy version and reason fields, and must be validated by their own version without rewriting Phase 0.5I evidence.
+- **Cost:** `$0.00`; runtime code, tests, schemas, archives, Admin Console behavior, LLMs, training, economy, credits, and wagering remain unchanged. See [[Development/Reports/Phase 05J Life Preference Policy Review]].
+- **Next gate:** Phase 0.5K may implement and evaluate the preference pilot beside immutable v1.
+
 ## Phase 1: 3D vertical slice
 
 Build the one-city scope defined in [[Design/Decisions/DEC-002 First Playable Scope]].
@@ -218,7 +228,7 @@ The shared life, world, memory, and learning layers will support every sport. Ea
 - Minimal athlete attributes.
 - Initial live LLM provider/model and separate inference budget.
 - First retraining dataset and method that fit the $5 ceiling.
-- Athlete Life Brain v1 policy review and smallest future fictional trait input.
+- Athlete Life Brain v2 versioned preference pilot and fresh evaluation archive.
 - AI evaluation criteria and model-update cadence.
 - Ranked competition scoring.
 - Match schedule and season length.
