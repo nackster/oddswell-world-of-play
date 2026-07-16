@@ -15,6 +15,8 @@ The local Admin Console is the first operational shell for OddsWell. The cinemat
 
 Double-click `Start Brain Observatory.cmd` in the project root. The launcher starts a local-only server and opens `http://127.0.0.1:8765`. Close the terminal window or press `Ctrl+C` there to stop it.
 
+The server now requires exclusive ownership of its port. If an older console is still running, close it before starting the current build; duplicate local instances are rejected so stale and current interfaces cannot answer on the same address.
+
 ## Current capabilities
 
 - Shows the Project, Athlete Life, World and League, Basketball, Rules and Outcome, and Learning components.
@@ -35,6 +37,12 @@ Double-click `Start Brain Observatory.cmd` in the project root. The launcher sta
 ## Security boundary
 
 The server is hard-bound to `127.0.0.1`. There is intentionally no login screen because no real authentication exists yet. Authentication, secure sessions, least-privilege role-based access control, and deployment hardening are mandatory before any network exposure. The local audit actor is labeled `local-admin`; that label is not an authenticated identity.
+
+## Phase 0D integration validation
+
+The 2026-07-15 integration pass confirmed the committed D.2 rotation/minutes, D.3 availability/recovery, and D.4 public-prediction gates through all 38 regression tests, the Admin Console self-check, and fresh deterministic runs. The D.2-D.4 reports remain historical evidence for their named engine/state versions; current reruns use `phase05h-v1` and must not overwrite those earlier measurements.
+
+Live localhost checks confirmed server-side seed guards, an audit entry surviving a server restart, read-only minutes/availability/prediction evidence, executable brain/engine/league/policy versions, and locked clothing/items/economy/moderation controls. Browser checks confirmed the Observatory animation at desktop and 390-pixel mobile widths with no console errors or horizontal page overflow. External cost remained `$0.00`; no paid API, credits, wagering, monetization, deployment, or retraining was used.
 
 ## Truth rule
 

@@ -5,6 +5,7 @@ from collections import Counter, defaultdict
 from datetime import datetime, timezone
 from functools import lru_cache
 import json
+import socket
 import sys
 import tempfile
 import threading
@@ -777,6 +778,15 @@ def athlete_profiles_payload() -> dict[str, object]:
     }
 
 
+class LocalHTTPServer(ThreadingHTTPServer):
+    allow_reuse_address = False
+
+    def server_bind(self) -> None:
+        if hasattr(socket, "SO_EXCLUSIVEADDRUSE"):
+            self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_EXCLUSIVEADDRUSE, 1)
+        super().server_bind()
+
+
 class Handler(BaseHTTPRequestHandler):
     def send_bytes(self, body: bytes, content_type: str, status: int = 200) -> None:
         self.send_response(status)
@@ -1003,6 +1013,17 @@ def self_check() -> None:
         record_audit("self-check", "admin-console", {"seed": 42}, path)
         entries = audit_payload(path=path)["entries"]
         assert len(entries) == 1 and entries[0]["details"] == {"seed": 42}
+    server = LocalHTTPServer(("127.0.0.1", 0), Handler)
+    try:
+        try:
+            duplicate = LocalHTTPServer(server.server_address, Handler)
+        except OSError:
+            pass
+        else:
+            duplicate.server_close()
+            raise AssertionError("duplicate local server binding was accepted")
+    finally:
+        server.server_close()
     print("OddsWell Admin Console self-check passed.")
 
 
@@ -1019,7 +1040,10 @@ def main() -> None:
         parser.error("port must be between 1024 and 65535")
 
     url = f"http://127.0.0.1:{args.port}"
-    server = ThreadingHTTPServer(("127.0.0.1", args.port), Handler)
+    try:
+        server = LocalHTTPServer(("127.0.0.1", args.port), Handler)
+    except OSError as error:
+        parser.error(f"cannot bind {url}; close the existing Admin Console first ({error})")
     if not args.no_browser:
         threading.Timer(0.5, webbrowser.open, args=(url,)).start()
     print(f"OddsWell Admin Console is running at {url}")
