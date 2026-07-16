@@ -1,11 +1,29 @@
 from dataclasses import replace
 import json
+import math
+from pathlib import Path
+import tempfile
 import unittest
+from unittest.mock import patch
 
 from phase0a.simulator import default_teams
-from phase0d.league import availability_snapshot, build_schedule, empty_availability
+from phase0d.league import (
+    OFFSEASON_REST_DAYS,
+    availability_snapshot,
+    build_schedule,
+    empty_availability,
+    empty_fatigue,
+    load_league,
+    new_league,
+    recover_availability,
+    save_league,
+    simulate_next_season,
+    simulate_scheduled_game,
+)
 from phase0d.prediction import (
     MODEL_NAMES,
+    _metrics,
+    canonical_json,
     prediction_probabilities,
     public_pregame_snapshot,
     run_prediction_study,
@@ -91,6 +109,89 @@ class PredictionTests(unittest.TestCase):
                 replace(first.records[-1], commitment_json=first.records[-1].commitment_json + " ")
             )
         )
+
+    def test_commitment_is_created_before_each_authoritative_game(self) -> None:
+        events = []
+
+        def record_commitment(value):
+            events.append("commitment")
+            return canonical_json(value)
+
+        def record_game(*args, **kwargs):
+            events.append("game")
+            return simulate_scheduled_game(*args, **kwargs)
+
+        with patch("phase0d.prediction.canonical_json", side_effect=record_commitment), patch(
+            "phase0d.prediction.simulate_scheduled_game", side_effect=record_game
+        ):
+            run_prediction_study(0, 1, 4, 702)
+
+        self.assertEqual(events, ["commitment", "game"] * 4)
+
+    def test_metrics_match_fixed_formulas(self) -> None:
+        template = run_prediction_study(0, 1, 4, 703).records[0]
+        snapshot = json.loads(template.commitment_json)["snapshot"]
+        pairs = ((0.1, 0), (0.3, 0), (0.7, 1), (0.9, 1))
+        records = tuple(
+            replace(
+                template,
+                predictions=tuple((model, probability) for model in MODEL_NAMES),
+                home_win=outcome,
+                winner=snapshot["home_team"] if outcome else snapshot["away_team"],
+            )
+            for probability, outcome in pairs
+        )
+
+        metrics = _metrics(records, "public_elo", 0.25)
+        self.assertEqual(metrics.accuracy, 1.0)
+        self.assertAlmostEqual(metrics.brier, 0.05)
+        self.assertAlmostEqual(
+            metrics.log_loss,
+            -(2 * math.log(0.9) + 2 * math.log(0.7)) / 4,
+        )
+        self.assertAlmostEqual(metrics.ece, 0.2)
+        self.assertAlmostEqual(metrics.brier_skill, 0.8)
+
+    def test_saved_public_state_resumes_with_identical_prediction(self) -> None:
+        teams = default_teams()
+        state = simulate_next_season(new_league(704), 4)
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            path = Path(temporary_directory) / "league.json"
+            save_league(state, path)
+            loaded = load_league(path)
+
+        fixture = build_schedule(4, state.next_seed, teams)[0]
+
+        def next_prediction(source):
+            availability = recover_availability(
+                source.availability, OFFSEASON_REST_DAYS, teams
+            )
+            snapshot = public_pregame_snapshot(
+                source.next_season,
+                fixture,
+                {team.name: (0, 0) for team in teams},
+                availability,
+                OFFSEASON_REST_DAYS,
+                teams,
+            )
+            return canonical_json(snapshot), prediction_probabilities(
+                snapshot, {team.name: 1500.0 for team in teams}
+            )
+
+        self.assertEqual(next_prediction(state), next_prediction(loaded))
+
+    def test_outcomes_and_replay_hashes_link_to_authoritative_games(self) -> None:
+        study = run_prediction_study(0, 1, 4, 705)
+        first = study.records[0]
+        teams = default_teams()
+        game = simulate_scheduled_game(
+            build_schedule(4, 705, teams)[0],
+            empty_fatigue(teams),
+            empty_availability(teams),
+            teams,
+        )
+        self.assertEqual((first.winner, first.replay_sha256), (game.winner, game.replay_sha256))
+        self.assertFalse(verify_prediction_record(replace(first, replay_sha256="tampered")))
 
     def test_invalid_study_sizes_are_rejected(self) -> None:
         with self.assertRaises(ValueError):
