@@ -51,6 +51,7 @@ tags:
 - [[Development/Reports/Phase 05S Post-Rollout Integration Review|Phase 0.5S Athlete Life Brain v3 post-rollout review]]
 - [[Development/Reports/Phase 05T Recent Performance Response Review|Phase 0.5T recent performance response review]]
 - [[Development/Reports/Phase 05U Opt-In Recent Scoring Response Pilot|Phase 0.5U opt-in recent scoring response pilot]]
+- [[Development/Reports/Phase 05V V4 Promotion Review|Phase 0.5V Athlete Life Brain v4 promotion review]]
 - [[Visual Maps/Project Tool Map|Master project tool map]]
 - [[Visual Maps/3D Asset Toolchain|3D asset toolchain canvas]]
 - [[Visual Maps/Multi-Brain Architecture|Multi-brain architecture canvas]]
@@ -59,7 +60,7 @@ tags:
 
 ## Current focus
 
-Phase 0.5U is complete: opt-in v4 applies one chronology-safe recent-scoring response after recovery, fatigue, and routine priorities. Its fresh 800-games-per-policy evaluation passed every frozen integrity and provisional stability gate, but v3 remains the active default and v4 is not promoted. Phase 0.5V is a deliberate review only. Live models, stories, credits, wagering, and retraining remain inactive.
+Phase 0.5V is complete: v4 is approved for a separate controlled rollout, not promoted. V3 remains the active default until the prediction path reconstructs the league's season-local routine and chronological scoring history and all history, replay, persistence, Admin-label, and rollback gates pass. The 2,529 action and 130/800 winner differences are path sensitivity, not proof of learning, intelligence, realism, or better outcomes. Live models, stories, credits, wagering, and retraining remain inactive.
 
 ## Current state
 

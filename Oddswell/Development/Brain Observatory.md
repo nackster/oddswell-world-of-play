@@ -76,6 +76,8 @@ Phase 0.5T defines one possible chronology-safe `recent_scoring_form` input for 
 
 Phase 0.5U implements that input only through an explicit v4 league policy and evaluates it across 800 fresh games per policy. All 2,089 reached response states, chronological reconstruction checks, replay checks, routine bounds, and provisional stability alarms pass. The Observatory remains on v3 `ACTIVE DEFAULT`; it does not display the opt-in evaluation as live training or changing neural weights. V4 is eligible for a later review only, not promoted.
 
+Phase 0.5V approves v4 for a separate controlled rollout without changing the Observatory or default. The review keeps the material 2,529 action and 130/800 winner differences visible as path sensitivity, not better outcomes. Before v4 can become `ACTIVE DEFAULT`, the Admin prediction path must reconstruct the league's season-local routine and chronological scoring history, all v1-v4 evidence must remain pinned, and replay, persistence, truthful labels, and one-constant rollback must pass. Until then, v3 remains `ACTIVE DEFAULT`.
+
 The League Viewer follows the Phase 0D.4 public-information boundary. Hidden fatigue, recovery timers, injury-risk internals, seeds, RNG state, economy data, and admin mutations stay outside its payload.
 
 Archived games reuse hidden authoritative league state only on the server. The browser receives the complete recorded play-frame stream and verified archive metadata, never the hidden reconstruction inputs.
