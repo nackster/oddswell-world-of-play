@@ -230,6 +230,15 @@ status: active
 - **Cost:** `$0.00`; no schema, gameplay, default policy, UI, historical archive, LLM, learning, retraining, memory, narrative, economy, credits, or wagering changed. See [[Development/Reports/Phase 05L Multi-Seed Life Preference Evaluation]].
 - **Next gate:** Phase 0.5M deliberate v2 promotion review.
 
+### Phase 0.5M Athlete Life Brain v2 Promotion Review implementation status
+
+- **Status:** Complete on `agent/phase-0d`.
+- **Decision:** v2 is approved for a controlled promotion, but this review does not change the default. Phase 0.5L's ten untouched seed blocks passed every frozen integrity and provisional stability gate.
+- **History boundary:** the current default also feeds frozen Phase 0.5I, Phase 0.5L, Phase 0D.4, league, test, and Admin Console paths. The rollout must first pin historical evidence explicitly to v1 so a default change cannot reinterpret it.
+- **Rollout contract:** use immutable v1/v2 constants, move only new league and Admin Console state to v2, keep old decisions and replay manifests unchanged, display the active version truthfully, and retain a one-constant rollback.
+- **Cost and scope:** `$0.00`; no runtime, schema, archive, interface, LLM, learning, retraining, narrative, economy, credits, or wagering behavior changed. See [[Development/Reports/Phase 05M V2 Promotion Review]].
+- **Next gate:** Phase 0.5N controlled v2 default rollout with explicit historical v1 pins and full replay/regression validation.
+
 ## Phase 1: 3D vertical slice
 
 Build the one-city scope defined in [[Design/Decisions/DEC-002 First Playable Scope]].
@@ -250,7 +259,7 @@ The shared life, world, memory, and learning layers will support every sport. Ea
 - Minimal athlete attributes.
 - Initial live LLM provider/model and separate inference budget.
 - First retraining dataset and method that fit the $5 ceiling.
-- Athlete Life Brain v2 deliberate promotion review; no automatic default change.
+- Athlete Life Brain v2 controlled default rollout with explicit historical v1 pins.
 - AI evaluation criteria and model-update cadence.
 - Ranked competition scoring.
 - Match schedule and season length.

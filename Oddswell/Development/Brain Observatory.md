@@ -58,6 +58,8 @@ Phase 0.5K adds v2 only as an explicit local pilot path and produces a separate 
 
 Phase 0.5L evaluates v1 and v2 across 800 paired games per policy. The stability guardrails pass, but v2 remains unpromoted and invisible in the Admin Console. Winner differences and animated comparisons are path-sensitive simulator telemetry, not accuracy, intelligence, or real-world realism.
 
+Phase 0.5M approves v2 for a controlled promotion without changing runtime behavior. The Admin Console still displays and runs v1 until Phase 0.5N explicitly pins historical studies to v1, moves only new league state to v2, and proves replay, persistence, version display, and rollback. Approval is an engineering release decision, not evidence of learning or a neural-network training event.
+
 The League Viewer follows the Phase 0D.4 public-information boundary. Hidden fatigue, recovery timers, injury-risk internals, seeds, RNG state, economy data, and admin mutations stay outside its payload.
 
 Archived games reuse hidden authoritative league state only on the server. The browser receives the complete recorded play-frame stream and verified archive metadata, never the hidden reconstruction inputs.
