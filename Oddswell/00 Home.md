@@ -44,6 +44,7 @@ tags:
 - [[Development/Reports/Phase 05L Multi-Seed Life Preference Evaluation|Phase 0.5L multi-seed Life Preference evaluation]]
 - [[Development/Reports/Phase 05M V2 Promotion Review|Phase 0.5M Athlete Life Brain v2 promotion review]]
 - [[Development/Reports/Phase 05N Controlled V2 Default Rollout|Phase 0.5N controlled Athlete Life Brain v2 rollout]]
+- [[Development/Reports/Phase 05O Short-Term Routine Memory Review|Phase 0.5O short-term routine memory review]]
 - [[Visual Maps/Project Tool Map|Master project tool map]]
 - [[Visual Maps/3D Asset Toolchain|3D asset toolchain canvas]]
 - [[Visual Maps/Multi-Brain Architecture|Multi-brain architecture canvas]]
@@ -52,7 +53,7 @@ tags:
 
 ## Current focus
 
-Phase 0.5N is complete: Athlete Life Brain v2 is the default for newly generated league and Admin decisions. Frozen Phase 0.5I, Phase 0.5L, and Phase 0D.4 evidence remains explicitly v1; stored decisions and replay manifests keep their original versions. Phase 0.5O will review one bounded short-term memory input before implementation. Live models, stories, credits, wagering, and retraining remain inactive.
+Phase 0.5O is complete: a future opt-in v3 may use one signed `-2..+2` routine streak to vary an athlete's choice after two consecutive train or socialize decisions. V2 remains the default; v1/v2 history and runtime are unchanged. Phase 0.5P will implement and evaluate v3 on fresh paired seeds before any promotion review. Live models, stories, credits, wagering, and retraining remain inactive.
 
 ## Current state
 

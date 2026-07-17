@@ -62,6 +62,8 @@ Phase 0.5M approved v2 for a controlled promotion without changing runtime behav
 
 Phase 0.5N makes v2 the default for newly generated Admin and league decisions. Frozen Phase 0.5I, Phase 0.5L, and Phase 0D.4 paths remain explicitly v1, while every saved decision and replay manifest retains its stored version. The interface derives each season label from those stored decisions and reports the current v2 default as `ACTIVE DEFAULT`. Changing the default requires an Admin process restart because payloads are cached.
 
+Phase 0.5O defines one possible short-term routine streak for a future opt-in v3 but changes no runtime or Observatory behavior. The state is reconstructible from same-season decisions, expires at rest/recovery and season boundaries, and may only vary the existing train/socialize choice after two identical elective decisions. It is a mechanical pilot design—not learned memory, personality, discipline, partying, or model training. V2 remains displayed as the active default.
+
 The League Viewer follows the Phase 0D.4 public-information boundary. Hidden fatigue, recovery timers, injury-risk internals, seeds, RNG state, economy data, and admin mutations stay outside its payload.
 
 Archived games reuse hidden authoritative league state only on the server. The browser receives the complete recorded play-frame stream and verified archive metadata, never the hidden reconstruction inputs.

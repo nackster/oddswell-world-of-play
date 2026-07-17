@@ -26,7 +26,8 @@
     {"id":"p0-5l","type":"text","text":"## 0.5L ✅ MULTI-SEED EVALUATION\n800 games + 9,120 decisions per policy • 10 untouched seed blocks\nAll stability alarms pass • v2 eligible, not promoted • $0","x":-650,"y":2650,"width":1360,"height":150,"color":"3"},
     {"id":"p0-5m","type":"text","text":"## 0.5M ✅ V2 PROMOTION REVIEW\nApproved for controlled promotion • default remains v1 during review\nHistorical evidence must be pinned before rollout • $0","x":-650,"y":2860,"width":1360,"height":150,"color":"3"},
     {"id":"p0-5n","type":"text","text":"## 0.5N ✅ CONTROLLED V2 ROLLOUT\nV2 default for new league/Admin decisions • frozen studies pinned to v1\nOld replays preserved • stored-version display • one-constant rollback • $0","x":-650,"y":3070,"width":1360,"height":150,"color":"3"},
-    {"id":"p0-5o","type":"text","text":"## NEXT: 0.5O MEMORY CONTRACT REVIEW\nDefine one bounded short-term memory input before implementation\nAuditable state • expiry • consequence • history contract • evaluation gate","x":-650,"y":3280,"width":1360,"height":150,"color":"4"}
+    {"id":"p0-5o","type":"text","text":"## 0.5O ✅ ROUTINE MEMORY REVIEW\nOne signed -2..+2 same-season streak • rest/recover/offseason reset\nFuture opt-in v3 only • v2 stays default • no runtime or schema change • $0","x":-650,"y":3280,"width":1360,"height":150,"color":"3"},
+    {"id":"p0-5p","type":"text","text":"## NEXT: 0.5P OPT-IN V3 PILOT\nImplement routine variation beside immutable v1/v2\n10 fresh paired seed blocks • exact history/replay • no automatic promotion","x":-650,"y":3490,"width":1360,"height":150,"color":"4"}
   ],
   "edges": [
     {"id":"p0-edge-1","fromNode":"p0-a","fromSide":"right","toNode":"p0-b","toSide":"left"},
@@ -49,6 +50,7 @@
     {"id":"p0-edge-18","fromNode":"p0-5k","fromSide":"bottom","toNode":"p0-5l","toSide":"top"},
     {"id":"p0-edge-19","fromNode":"p0-5l","fromSide":"bottom","toNode":"p0-5m","toSide":"top"},
     {"id":"p0-edge-20","fromNode":"p0-5m","fromSide":"bottom","toNode":"p0-5n","toSide":"top"},
-    {"id":"p0-edge-21","fromNode":"p0-5n","fromSide":"bottom","toNode":"p0-5o","toSide":"top"}
+    {"id":"p0-edge-21","fromNode":"p0-5n","fromSide":"bottom","toNode":"p0-5o","toSide":"top"},
+    {"id":"p0-edge-22","fromNode":"p0-5o","fromSide":"bottom","toNode":"p0-5p","toSide":"top"}
   ]
 }

@@ -248,6 +248,16 @@ status: active
 - **Validation:** 16 focused tests and all 44 regression tests pass; the Admin Console self-check passes. Cost was `$0.00`. No schema migration, dependency, LLM, learning, retraining, narrative, economy, credits, or wagering was added. See [[Development/Reports/Phase 05N Controlled V2 Default Rollout]].
 - **Next gate:** Phase 0.5O review of one bounded short-term Athlete Life Brain memory input before implementation.
 
+### Phase 0.5O Short-Term Routine Memory Review implementation status
+
+- **Status:** Complete on `agent/phase-0d` after two bounded read-only audits.
+- **Decision:** define one future signed `routine_streak` from `-2` to `+2`. Two consecutive train choices trigger one socialize choice; two consecutive socialize choices trigger one train choice. Rest, recovery, offseason, and debut reset the state.
+- **History contract:** future behavior must be opt-in `athlete-life-v3`; v2 remains default and v1/v2 stay immutable. Reconstruct the same-season streak from ordered archived decisions, so the completed-season save model needs no new schema or duplicated persistent state.
+- **Frozen diagnostic:** 120/912 stored v2 choices reach the proposed variation gate. Practice/social trigger rates are 21.76%/25.09%, a 3.33-point gap; one-step choice totals become 255 train, 255 socialize, 379 rest, and 23 recover. This is not a sequential outcome forecast.
+- **Validation:** 5 focused tests and all 44 regression tests pass; the Admin Console self-check and both clean canvas checks pass.
+- **Cost and scope:** `$0.00`; no runtime, schema, archive, interface, LLM, learning, narrative, ratings, economy, credits, or wagering behavior changed. See [[Development/Reports/Phase 05O Short-Term Routine Memory Review]].
+- **Next gate:** Phase 0.5P opt-in v3 routine-memory pilot and fresh paired evaluation; no automatic promotion.
+
 ## Phase 1: 3D vertical slice
 
 Build the one-city scope defined in [[Design/Decisions/DEC-002 First Playable Scope]].
@@ -268,7 +278,7 @@ The shared life, world, memory, and learning layers will support every sport. Ea
 - Minimal athlete attributes.
 - Initial live LLM provider/model and separate inference budget.
 - First retraining dataset and method that fit the $5 ceiling.
-- Athlete Life Brain short-term memory contract and evaluation gate.
+- Athlete Life Brain v3 opt-in routine-memory pilot and paired evaluation.
 - AI evaluation criteria and model-update cadence.
 - Ranked competition scoring.
 - Match schedule and season length.
