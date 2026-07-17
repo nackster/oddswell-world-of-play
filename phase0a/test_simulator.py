@@ -45,6 +45,22 @@ class SimulatorTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "readiness"):
             simulate_game(46, matchup=teams, initial_readiness=readiness)
 
+    def test_game_form_is_opt_in_bounded_and_replayable(self) -> None:
+        teams = default_teams()
+        form = {player.name: 0.01 for team in teams for player in team.players}
+        original = simulate_game(47, matchup=teams, initial_game_form=form)
+        replayed = simulate_game(
+            47,
+            original.action_tape,
+            matchup=teams,
+            initial_game_form=form,
+        )
+        self.assertEqual(original, replayed)
+        self.assertNotEqual(original.records, simulate_game(47, matchup=teams).records)
+        form[teams[0].players[0].name] = 0.016
+        with self.assertRaisesRegex(ValueError, "game form"):
+            simulate_game(47, matchup=teams, initial_game_form=form)
+
     def test_rotation_minutes_drive_workload_and_replay_exactly(self) -> None:
         teams = default_teams()
         original = simulate_game(44, matchup=teams)

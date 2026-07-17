@@ -54,6 +54,7 @@ tags:
 - [[Development/Reports/Phase 05V V4 Promotion Review|Phase 0.5V Athlete Life Brain v4 promotion review]]
 - [[Development/Reports/Phase 05W Controlled V4 Default Rollout|Phase 0.5W controlled Athlete Life Brain v4 rollout]]
 - [[Development/Reports/Phase 05X V4 Post-Rollout Integration Review|Phase 0.5X Athlete Life Brain v4 post-rollout review]]
+- [[Development/Reports/Phase 06A Opt-In Athlete Consistency Pilot|Phase 0.6A opt-in Athlete Game Consistency pilot]]
 - [[Visual Maps/Project Tool Map|Master project tool map]]
 - [[Visual Maps/3D Asset Toolchain|3D asset toolchain canvas]]
 - [[Visual Maps/Multi-Brain Architecture|Multi-brain architecture canvas]]
@@ -62,7 +63,7 @@ tags:
 
 ## Current focus
 
-Phase 0.5X is complete: the active deterministic v4 default remains clean across 912 decisions, 204/204 reached scoring responses, chronology, precedence, prediction, history, replay, persistence, and rollback evidence. The response is not learning, confidence, personality, intelligence, realism, or proof of better outcomes. Next is a design-only review that may select at most one bounded Athlete Life input, or none. Live models, stories, credits, wagering, and retraining remain inactive.
+Phase 0.6A is complete: Phase 0.5Y selected no new Life Brain input and placed game consistency in the Athlete Profile and Basketball Brain. The opt-in pilot has one elite, four steady, five normal, and two volatile active-athlete tiers; its 80-game evidence is bounded and replayable while the authoritative v4 league remains unchanged. Phase 0.6B will calibrate the same ratings under every tier before any rollout. Live models, stories, credits, wagering, and retraining remain inactive.
 
 ## Current state
 

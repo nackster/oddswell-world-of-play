@@ -36,7 +36,9 @@
     {"id":"p0-5v","type":"text","text":"## 0.5V ✅ DELIBERATE V4 REVIEW\nApproved for a separate controlled rollout • v3 remains default\n2,529 action + 130/800 winner differences visible • prediction blocker recorded • $0","x":-650,"y":4750,"width":1360,"height":150,"color":"3"},
     {"id":"p0-5w","type":"text","text":"## 0.5W ✅ CONTROLLED V4 ROLLOUT\nV4 default • prediction + league chronology aligned • 20/20 archive agreement\nV1-v4 history pinned • replay + persistence + Admin labels + rollback pass • $0","x":-650,"y":4960,"width":1360,"height":150,"color":"3"},
     {"id":"p0-5x","type":"text","text":"## 0.5X ✅ POST-ROLLOUT REVIEW\n912 v4 decisions • 204/204 responses • zero integrity violations\n20/20 prediction agreement • Game 5 exact replay verified • 50/50 tests • $0","x":-650,"y":5170,"width":1360,"height":150,"color":"3"},
-    {"id":"p0-5y","type":"text","text":"## NEXT: 0.5Y INPUT SELECTION REVIEW\nDesign only • compare bounded Athlete Life candidates\nSelect at most one chronology-safe input, or none, before implementation","x":-650,"y":5380,"width":1360,"height":150,"color":"4"}
+    {"id":"p0-5y","type":"text","text":"## 0.5Y ✅ INPUT SELECTION\nNo new Life Brain input • consistency belongs to athlete performance\nRatings define talent • consistency controls game-to-game variance • $0","x":-650,"y":5380,"width":1360,"height":150,"color":"3"},
+    {"id":"p0-6a","type":"text","text":"## 0.6A ✅ OPT-IN CONSISTENCY PILOT\n1 elite • 4 steady • 5 normal • 2 volatile active athletes\n80 games • 47 score + 12 winner differences • exact replay • 53/53 tests • $0","x":-650,"y":5590,"width":1360,"height":150,"color":"3"},
+    {"id":"p0-6b","type":"text","text":"## NEXT: 0.6B CONSISTENCY CALIBRATION\nSame ratings under every tier • multi-season healthy-game evidence\nMeasure bad-night rate + performance floor before any rollout","x":-650,"y":5800,"width":1360,"height":150,"color":"4"}
   ],
   "edges": [
     {"id":"p0-edge-1","fromNode":"p0-a","fromSide":"right","toNode":"p0-b","toSide":"left"},
@@ -69,6 +71,8 @@
     {"id":"p0-edge-28","fromNode":"p0-5u","fromSide":"bottom","toNode":"p0-5v","toSide":"top"},
     {"id":"p0-edge-29","fromNode":"p0-5v","fromSide":"bottom","toNode":"p0-5w","toSide":"top"},
     {"id":"p0-edge-30","fromNode":"p0-5w","fromSide":"bottom","toNode":"p0-5x","toSide":"top"},
-    {"id":"p0-edge-31","fromNode":"p0-5x","fromSide":"bottom","toNode":"p0-5y","toSide":"top"}
+    {"id":"p0-edge-31","fromNode":"p0-5x","fromSide":"bottom","toNode":"p0-5y","toSide":"top"},
+    {"id":"p0-edge-32","fromNode":"p0-5y","fromSide":"bottom","toNode":"p0-6a","toSide":"top"},
+    {"id":"p0-edge-33","fromNode":"p0-6a","fromSide":"bottom","toNode":"p0-6b","toSide":"top"}
   ]
 }

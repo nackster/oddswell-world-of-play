@@ -82,6 +82,8 @@ Phase 0.5W satisfies that contract. The Observatory now displays v4 as `ACTIVE D
 
 Phase 0.5X rechecks that rollout without changing the Admin Console or simulator. The four-season archive contains 912 v4 decisions, 204/204 reached scoring responses, zero chronology/precedence/replay violations, and 20/20 first-season prediction/replay agreement. Its first response is Jalen Cross before Season 1 Game 5 after a chronology-safe above-typical scoring classification; the 104-101 archive reconstructs 423 frames with a verified replay seal. These remain auditable deterministic transitions, not learning, confidence, personality, intelligence, or neural-network training.
 
+Phase 0.5Y selects no additional Life Brain input. Phase 0.6A instead adds an opt-in Athlete Profile and Basketball Brain consistency pilot: one elite, four steady, five normal, and two volatile active-athlete tiers generate bounded zero-centered game form only on the explicit pilot path. Athlete profiles label the value `OPT-IN PILOT`; the authoritative v4 league and historical replays remain unchanged. The animation must not present consistency as confidence, personality, learning, intelligence, or neural-network training.
+
 The League Viewer follows the Phase 0D.4 public-information boundary. Hidden fatigue, recovery timers, injury-risk internals, seeds, RNG state, economy data, and admin mutations stay outside its payload.
 
 Archived games reuse hidden authoritative league state only on the server. The browser receives the complete recorded play-frame stream and verified archive metadata, never the hidden reconstruction inputs.

@@ -353,6 +353,22 @@ status: active
 - **Decision:** keep v4 as the default. This remains deterministic scoring-response telemetry, not learning, confidence, personality, intelligence, or real-world evidence.
 - **Next gate:** Phase 0.5Y design-only Next Athlete Life Input Selection Review; choose at most one justified bounded input, or none, before implementation.
 
+### Phase 0.5Y Next Athlete Input Selection decision
+
+- **Decision:** select no new Athlete Life Brain input. The requested star-versus-average behavior is competitive performance variance, so it belongs in the Athlete Profile and Basketball Brain rather than personal-life policy.
+- **Selected core input:** one durable `game_consistency` tier that changes variance around existing ratings without adding talent.
+- **Next gate:** Phase 0.6A opt-in Athlete Game Consistency pilot; default league behavior must remain unchanged.
+
+### Phase 0.6A Opt-In Athlete Game Consistency Pilot status
+
+- **Status:** Complete on `agent/phase-0d`; explicit pilot only, not authoritative league behavior.
+- **Implemented:** versioned volatile/normal/steady/elite tiers produce one deterministic zero-centered game-form modifier per athlete and seed. The bounded modifier reaches passing/turnover and shooting/defense resolution only when explicitly supplied.
+- **Rarity:** the active twelve-athlete prototype has 1 elite, 4 steady, 5 normal, and 2 volatile athletes. Elite consistency alone does not create a superstar; rare high ratings must also be present.
+- **80-game evidence:** tier form width is strictly ordered; 47 scores and 12 winners differ, mean absolute team-score difference is 4.2062 points, and replay violations are zero.
+- **History/Admin boundary:** omission returns the exact legacy resolver; frozen v1-v4 studies remain clean. Athlete profiles show the value as an `OPT-IN PILOT`, not active training or learned behavior.
+- **Validation:** 10 focused tests, all 53 regressions, and the Admin Console self-check pass. Cost was `$0.00`. See [[Development/Reports/Phase 06A Opt-In Athlete Consistency Pilot]].
+- **Next gate:** Phase 0.6B read-only multi-season same-athlete calibration before any rollout decision.
+
 ## Phase 1: 3D vertical slice
 
 Build the one-city scope defined in [[Design/Decisions/DEC-002 First Playable Scope]].
@@ -373,7 +389,7 @@ The shared life, world, memory, and learning layers will support every sport. Ea
 - Minimal athlete attributes.
 - Initial live LLM provider/model and separate inference budget.
 - First retraining dataset and method that fit the $5 ceiling.
-- One design-only next-input selection review before another Athlete Life Brain implementation.
+- Multi-season same-athlete consistency calibration before any performance-factor rollout.
 - AI evaluation criteria and model-update cadence.
 - Ranked competition scoring.
 - Match schedule and season length.

@@ -44,6 +44,7 @@ from phase0d.career import (  # noqa: E402
     retirement_season,
     teams_for_season,
 )
+from phase0d.consistency import CONSISTENCY_VERSION, consistency_tier  # noqa: E402
 from phase0d.league import (  # noqa: E402
     LEAGUE_VERSION,
     SeasonResult,
@@ -763,6 +764,11 @@ def athlete_profiles_payload() -> dict[str, object]:
                     "tier": player_tier(overall),
                     "rating_band": rating_band,
                     "specialty": player_specialty(player),
+                    "game_consistency": {
+                        "tier": consistency_tier(name),
+                        "version": CONSISTENCY_VERSION,
+                        "status": "OPT-IN PILOT",
+                    },
                     "bounded_rating_changes": True,
                     "specialty_preserved": True,
                     "life_brain": current["life"]["version"],
@@ -1007,6 +1013,14 @@ def self_check() -> None:
     assert sum(season["life"]["choices"] for season in incoming["seasons"]) == 19
     assert all(
         profile["career"]["life_brain"] == DEFAULT_LIFE_BRAIN_VERSION
+        for profile in athletes["profiles"]
+    )
+    assert sum(
+        profile["career"]["game_consistency"]["tier"] == "elite"
+        for profile in athletes["profiles"]
+    ) == 1
+    assert all(
+        profile["career"]["game_consistency"]["status"] == "OPT-IN PILOT"
         for profile in athletes["profiles"]
     )
     assert all(

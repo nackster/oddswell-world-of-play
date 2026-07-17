@@ -16,6 +16,7 @@ POSSESSION_SECONDS = 14
 MAX_GAME_FATIGUE = 0.45
 MAX_RECOVERY_DAYS = 7
 MAX_READINESS_MODIFIER = 0.02
+MAX_GAME_FORM_MODIFIER = 0.015
 ACTION_KEYS = {"role", "kind", "actor", "target"}
 OFFENSE_ACTIONS = {"pass", "drive", "shoot_2", "shoot_3"}
 
@@ -225,6 +226,7 @@ def simulate_game(
     initial_fatigue: Mapping[str, float] | None = None,
     initial_availability: Mapping[str, int] | None = None,
     initial_readiness: Mapping[str, float] | None = None,
+    initial_game_form: Mapping[str, float] | None = None,
 ) -> GameResult:
     home, away = matchup or default_teams()
     state = GameState(home=home, away=away, possession=home.name)
@@ -278,6 +280,25 @@ def simulate_game(
             )
         readiness = {name: float(initial_readiness[name]) for name in player_names}
 
+    if initial_game_form is None:
+        game_form = {name: 0.0 for name in player_names}
+    else:
+        if set(initial_game_form) != set(player_names):
+            raise ValueError("initial_game_form must contain every matchup player exactly once")
+        if any(
+            not isinstance(initial_game_form[name], (int, float))
+            or isinstance(initial_game_form[name], bool)
+            or not -MAX_GAME_FORM_MODIFIER
+            <= initial_game_form[name]
+            <= MAX_GAME_FORM_MODIFIER
+            for name in player_names
+        ):
+            raise ValueError(
+                f"game form must be between {-MAX_GAME_FORM_MODIFIER} and "
+                f"{MAX_GAME_FORM_MODIFIER}"
+            )
+        game_form = {name: float(initial_game_form[name]) for name in player_names}
+
     decision_rng = random.Random(seed ^ 0xA11CE)
     outcome_rng = random.Random(seed ^ 0xDDF00D)
     replay = iter(action_tape) if action_tape is not None else None
@@ -326,6 +347,10 @@ def simulate_game(
         start_details["pregame_readiness"] = {
             name: round(readiness[name], 4) for name in player_names
         }
+    if initial_game_form is not None:
+        start_details["pregame_game_form"] = {
+            name: round(game_form[name], 4) for name in player_names
+        }
     record("game_started", **start_details)
     overtime = 0
 
@@ -373,7 +398,9 @@ def simulate_game(
                     0.17
                     + (defender.defense - attacker.passing) / 250
                     + attacker_fatigue * 0.12
-                    - readiness[attacker.name],
+                    - readiness[attacker.name]
+                    + game_form[defender.name]
+                    - game_form[attacker.name],
                     0.05,
                     0.32,
                 )
@@ -400,7 +427,9 @@ def simulate_game(
                 base_chance
                 + (attacker.shooting - defender.defense) / 220
                 - attacker_fatigue * 0.15
-                + readiness[attacker.name],
+                + readiness[attacker.name]
+                + game_form[attacker.name]
+                - game_form[defender.name],
                 0.08,
                 0.78,
             )
