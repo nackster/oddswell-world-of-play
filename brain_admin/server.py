@@ -132,7 +132,7 @@ def status_payload() -> dict[str, object]:
                 "name": "Athlete Life Brain",
                 "status": "ACTIVE DEFAULT",
                 "version": DEFAULT_LIFE_BRAIN_VERSION,
-                "detail": "Deterministic between-game train, rest, recover, and socialize choices with auditable temporary effects. No LLM or permanent rating changes.",
+                "detail": "Deterministic between-game train, rest, recover, and socialize choices with bounded same-season routine variation and auditable temporary effects. No learning, LLM, or permanent rating changes.",
             },
             {
                 "id": "world",
@@ -799,8 +799,8 @@ def athlete_profiles_payload() -> dict[str, object]:
         "boundary": (
             "Four verified seasons now preserve retired history and fill Roman Voss's roster slot with "
             f"stable incoming athlete Soren Lake. Athlete Life Brain {DEFAULT_LIFE_BRAIN_VERSION} "
-            "records bounded between-game "
-            "choices and temporary next-game effects without changing durable ratings or retired history."
+            "records bounded between-game choices, same-season routine variation, and temporary next-game "
+            "effects without learning or changing durable ratings or retired history."
         ),
         "profiles": profiles,
     }

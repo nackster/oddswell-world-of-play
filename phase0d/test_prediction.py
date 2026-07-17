@@ -29,7 +29,7 @@ from phase0d.prediction import (
     run_prediction_study,
     verify_prediction_record,
 )
-from phase0d.life import LIFE_BRAIN_V1_VERSION
+from phase0d.life import LIFE_BRAIN_V1_VERSION, LIFE_BRAIN_V3_VERSION
 
 
 class PredictionTests(unittest.TestCase):
@@ -121,6 +121,32 @@ class PredictionTests(unittest.TestCase):
             life_policy_version=LIFE_BRAIN_V1_VERSION,
         )
         self.assertEqual(default, explicit)
+
+    def test_v3_prediction_memory_matches_two_authoritative_seasons(self) -> None:
+        teams = default_teams()
+        state = new_league(706)
+        for _ in range(2):
+            state = simulate_next_season(
+                state,
+                4,
+                teams,
+                life_policy_version=LIFE_BRAIN_V3_VERSION,
+            )
+        study = run_prediction_study(
+            1,
+            1,
+            4,
+            706,
+            life_policy_version=LIFE_BRAIN_V3_VERSION,
+        )
+        self.assertEqual(
+            tuple((record.winner, record.replay_sha256) for record in study.records),
+            tuple(
+                (game.winner, game.replay_sha256)
+                for season in state.seasons
+                for game in season.games
+            ),
+        )
 
     def test_commitment_is_created_before_each_authoritative_game(self) -> None:
         events = []

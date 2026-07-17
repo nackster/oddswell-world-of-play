@@ -40,7 +40,7 @@ The server is hard-bound to `127.0.0.1`. There is intentionally no login screen 
 
 ## Phase 0D integration validation
 
-The 2026-07-15 integration pass confirmed the committed D.2 rotation/minutes, D.3 availability/recovery, and D.4 public-prediction gates through all 38 regression tests, the Admin Console self-check, and fresh deterministic runs. The D.2-D.4 reports remain historical evidence for their named engine/state versions; current reruns use engine `phase05h-v1` and league `phase05n-v1` and must not overwrite those earlier measurements.
+The 2026-07-15 integration pass confirmed the committed D.2 rotation/minutes, D.3 availability/recovery, and D.4 public-prediction gates through all 38 regression tests, the Admin Console self-check, and fresh deterministic runs. The D.2-D.4 reports remain historical evidence for their named engine/state versions; current reruns use engine `phase05h-v1` and league `phase05r-v1` and must not overwrite those earlier measurements.
 
 Live localhost checks confirmed server-side seed guards, an audit entry surviving a server restart, read-only minutes/availability/prediction evidence, executable brain/engine/league/policy versions, and locked clothing/items/economy/moderation controls. Browser checks confirmed the Observatory animation at desktop and 390-pixel mobile widths with no console errors or horizontal page overflow. External cost remained `$0.00`; no paid API, credits, wagering, monetization, deployment, or retraining was used.
 
@@ -67,6 +67,8 @@ Phase 0.5O defines one possible short-term routine streak for a future opt-in v3
 Phase 0.5P implements that rule only through an explicit v3 policy path and evaluates it outside the interface across 800 fresh paired games per policy. Its integrity and provisional stability alarms pass, making v3 eligible for a later review only. The Observatory remains on v2 and must not animate this result as neural-network training, learning, personality growth, or a promotion.
 
 Phase 0.5Q approves v3 for a separate controlled rollout but changes nothing in the Observatory. Before v3 can become the displayed default, the Admin prediction study must carry the same season-local routine mapping as its league archive, all historical evidence must stay explicitly version-pinned, and rollback must remain a single default change plus process restart. Until that gate passes, v2 remains `ACTIVE DEFAULT`.
+
+Phase 0.5R satisfies that gate. The Observatory now displays v3 as `ACTIVE DEFAULT`; Admin league and prediction paths share its season-local routine transitions and agree on winners and replay hashes. V1/v2 archives remain version-pinned, rollback remains one constant plus restart, and the animation still represents observable deterministic decisions—not learned memory or changing neural weights.
 
 The League Viewer follows the Phase 0D.4 public-information boundary. Hidden fatigue, recovery timers, injury-risk internals, seeds, RNG state, economy data, and admin mutations stay outside its payload.
 

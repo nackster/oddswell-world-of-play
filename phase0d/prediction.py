@@ -23,7 +23,11 @@ from phase0d.league import (
     recover_fatigue,
     simulate_scheduled_game,
 )
-from phase0d.life import LIFE_BRAIN_V1_VERSION
+from phase0d.life import (
+    LIFE_BRAIN_V1_VERSION,
+    LIFE_BRAIN_V3_VERSION,
+    next_routine_streak,
+)
 
 
 PREDICTION_VERSION = "phase0d4-v1"
@@ -258,6 +262,11 @@ def run_prediction_study(
     records: list[PredictionRecord] = []
 
     for season_number in range(1, warmup_seasons + holdout_seasons + 1):
+        routine_streaks = (
+            {player.name: 0 for team in teams for player in team.players}
+            if life_policy_version == LIFE_BRAIN_V3_VERSION
+            else None
+        )
         if season_number > 1:
             fatigue = recover_fatigue(fatigue, OFFSEASON_REST_DAYS, teams)
             availability = recover_availability(availability, OFFSEASON_REST_DAYS, teams)
@@ -277,7 +286,15 @@ def run_prediction_study(
                 fatigue, availability, readiness, life_decisions = apply_life_day(
                     fixture.number, fatigue, availability, teams,
                     policy_version=life_policy_version,
+                    routine_streaks=routine_streaks,
                 )
+                if routine_streaks is not None:
+                    routine_streaks = {
+                        decision.athlete: next_routine_streak(
+                            routine_streaks[decision.athlete], decision.selected
+                        )
+                        for decision in life_decisions
+                    }
             snapshot = public_pregame_snapshot(
                 season_number,
                 fixture,

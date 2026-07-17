@@ -9,7 +9,7 @@ from phase0a.simulator import MAX_READINESS_MODIFIER, Team, clamp
 LIFE_BRAIN_V1_VERSION = "athlete-life-v1"
 LIFE_BRAIN_V2_VERSION = "athlete-life-v2"
 LIFE_BRAIN_V3_VERSION = "athlete-life-v3"
-DEFAULT_LIFE_BRAIN_VERSION = LIFE_BRAIN_V2_VERSION
+DEFAULT_LIFE_BRAIN_VERSION = LIFE_BRAIN_V3_VERSION
 LIFE_CHOICES = ("train", "rest", "recover", "socialize")
 HIGH_FATIGUE = 0.24
 OFF_DAY_PREFERENCES = {

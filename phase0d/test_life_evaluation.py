@@ -9,6 +9,7 @@ from phase0d.life import (
     DEFAULT_LIFE_BRAIN_VERSION,
     LIFE_BRAIN_V1_VERSION,
     LIFE_BRAIN_V2_VERSION,
+    LIFE_BRAIN_V3_VERSION,
 )
 
 
@@ -17,7 +18,7 @@ class AthleteLifeEvaluationTests(unittest.TestCase):
         first = run_life_evaluation()
         self.assertIs(first, run_life_evaluation())
         self.assertEqual(first.version, LIFE_EVALUATION_VERSION)
-        self.assertEqual(DEFAULT_LIFE_BRAIN_VERSION, LIFE_BRAIN_V2_VERSION)
+        self.assertEqual(DEFAULT_LIFE_BRAIN_VERSION, LIFE_BRAIN_V3_VERSION)
         self.assertEqual(first.policy_version, LIFE_BRAIN_V1_VERSION)
         self.assertEqual((first.seasons, first.games), (4, 80))
         self.assertEqual(first.decisions, first.expected_decisions)

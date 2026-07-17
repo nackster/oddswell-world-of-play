@@ -278,13 +278,24 @@ status: active
 - **Validation:** the focused Phase 0.5P evidence lock, all 46 regression tests, Admin Console self-check, and both affected clean canvas checks pass. Cost was `$0.00`. See [[Development/Reports/Phase 05Q V3 Promotion Review]].
 - **Next gate:** Phase 0.5R controlled v3 rollout; stop without changing the default if the prediction/history/replay contract cannot be satisfied.
 
+### Phase 0.5R Controlled Athlete Life Brain v3 Default Rollout implementation status
+
+- **Status:** Complete on `agent/phase-0d` after two bounded read-only audits.
+- **Implemented:** season-local v3 routine state in the prediction path, one default-constant switch to v3, league implementation `phase05r-v1`, truthful Admin descriptions, and unchanged state schema v4. Historical Phase 0D.4 remains v1.
+- **Fresh default evidence:** the four-season Admin archive contains 80 games and 912/912 v3 decisions: 23 recover, 382 rest, 252 socialize, and 255 train. Its first season finished Harbor City 13-7, with 20/20 prediction winners and replay hashes matching the league archive.
+- **History boundary:** saved v1/v2 seasons remain byte-for-byte equivalent as objects when a default-v3 season is appended. Phase 0.5L and 0.5P digests remain exact; explicit v2/v3 save, resume, and replay paths pass.
+- **Admin/browser evidence:** the Observatory displays `athlete-life-v3` as `ACTIVE DEFAULT`; the League Viewer displays `phase05r-v1`; archived Game 1 completed 422/422 frames at 78-117 with `ARCHIVE VERIFIED` and no console warnings or errors.
+- **Validation:** 20 focused tests and all 47 regression tests pass; Admin Console self-check and both affected clean canvas checks pass. Cost was `$0.00`. See [[Development/Reports/Phase 05R Controlled V3 Default Rollout]].
+- **Rollback:** change one default constant back to v2 and restart; preserve all stored v3 history.
+- **Next gate:** Phase 0.5S read-only post-rollout integration review before another Athlete Life Brain input.
+
 ## Phase 1: 3D vertical slice
 
 Build the one-city scope defined in [[Design/Decisions/DEC-002 First Playable Scope]].
 
 ## Future shared simulation layer
 
-Athlete Life Brain v2 is the default for newly generated train, rest, recover, and socialize decisions with bounded, auditable temporary consequences. V1 remains immutable for historical evidence. Opt-in v3 is approved for a later controlled rollout but remains unpromoted until its prediction/history/replay contract passes. Expand into longer memory, traits, relationships, nightlife, media, discipline, career decisions, and other sports only after each smaller input passes its own engineering evaluation.
+Athlete Life Brain v3 is the default for newly generated train, rest, recover, and socialize decisions. It adds only bounded, same-season deterministic routine variation to v2's auditable temporary consequences. V1/v2 history remains immutable. Expand into longer memory, traits, relationships, nightlife, media, discipline, career decisions, and other sports only after each smaller input passes its own engineering evaluation.
 
 Athletes keep distinct career identities: stars, specialists, average players, and below-average players are allowed and should not be automatically equalized. Durable ability changes gradually, while temporary form, fatigue, availability, practice, discipline, partying, fictional legal trouble, and other life consequences can alter performance and career outcomes through visible causal chains. See [[Design/Decisions/DEC-003 Multi-Brain AI Architecture]].
 
@@ -298,7 +309,7 @@ The shared life, world, memory, and learning layers will support every sport. Ea
 - Minimal athlete attributes.
 - Initial live LLM provider/model and separate inference budget.
 - First retraining dataset and method that fit the $5 ceiling.
-- Athlete Life Brain v3 controlled rollout with aligned prediction memory and one-constant rollback.
+- Athlete Life Brain v3 post-rollout observation, then the next smallest life input review.
 - AI evaluation criteria and model-update cadence.
 - Ranked competition scoring.
 - Match schedule and season length.
