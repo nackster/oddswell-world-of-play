@@ -50,6 +50,7 @@ tags:
 - [[Development/Reports/Phase 05R Controlled V3 Default Rollout|Phase 0.5R controlled Athlete Life Brain v3 rollout]]
 - [[Development/Reports/Phase 05S Post-Rollout Integration Review|Phase 0.5S Athlete Life Brain v3 post-rollout review]]
 - [[Development/Reports/Phase 05T Recent Performance Response Review|Phase 0.5T recent performance response review]]
+- [[Development/Reports/Phase 05U Opt-In Recent Scoring Response Pilot|Phase 0.5U opt-in recent scoring response pilot]]
 - [[Visual Maps/Project Tool Map|Master project tool map]]
 - [[Visual Maps/3D Asset Toolchain|3D asset toolchain canvas]]
 - [[Visual Maps/Multi-Brain Architecture|Multi-brain architecture canvas]]
@@ -58,7 +59,7 @@ tags:
 
 ## Current focus
 
-Phase 0.5T is complete: one chronology-safe future input compares the immediately previous game's scoring with that athlete's earlier same-season appearance average. The design defaults safely without enough history, expires after one decision, and preserves recovery, fatigue, and routine precedence. V3 remains the active default; Phase 0.5U may build an opt-in v4 pilot without promotion. Live models, stories, credits, wagering, and retraining remain inactive.
+Phase 0.5U is complete: opt-in v4 applies one chronology-safe recent-scoring response after recovery, fatigue, and routine priorities. Its fresh 800-games-per-policy evaluation passed every frozen integrity and provisional stability gate, but v3 remains the active default and v4 is not promoted. Phase 0.5V is a deliberate review only. Live models, stories, credits, wagering, and retraining remain inactive.
 
 ## Current state
 

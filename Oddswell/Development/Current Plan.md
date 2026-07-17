@@ -310,13 +310,24 @@ status: active
 - **Truth boundary:** this is a deterministic scoring-response proposal, not overall performance, personality, confidence, learning, intelligence, or real-world evidence.
 - **Next gate:** Phase 0.5U opt-in v4 recent-scoring-response pilot and fresh paired evaluation on ten untouched seed blocks; no automatic promotion.
 
+### Phase 0.5U Opt-In Recent Scoring Response Pilot status
+
+- **Status:** Complete on `agent/phase-0d`; v4 remains opt-in and v3 remains the default.
+- **Implemented:** one chronology-safe `recent_scoring_form` derived from the immediately previous game versus earlier same-season appearances, with the Phase 0.5T minimum-history and neutral-band rules. Recovery, fatigue rest, and routine variation retain priority.
+- **Fresh paired evidence:** ten seed blocks beginning at 50,000 contain 800 games and 9,120 decisions per policy. V4 has 7,564 covered decisions and applies 2,089/2,089 reached responses. All integrity and provisional stability gates pass.
+- **Measured impact:** 2,529 action differences, 130/800 winner differences, 5.4813-point margin MAE, +0.1906 mean team points, +1.0-point Harbor win-rate shift, +0.0113-point injury-rate change, and +0.0417-point missed-game-rate change.
+- **History boundary:** v1-v3 history remains immutable, Phase 0.5L/0.5P digests remain pinned, the state schema stays v4, explicit v4 save/resume and replay pass, and omission of the v4 argument returns to default v3.
+- **Validation:** 12 focused tests pass; final full-suite, Admin self-check, canvas, and whitespace results are recorded in [[Development/Reports/Phase 05U Opt-In Recent Scoring Response Pilot]]. Cost was `$0.00`.
+- **Truth boundary:** this is deterministic fictional scoring-response telemetry, not learning, confidence, personality, intelligence, or real-world evidence.
+- **Next gate:** Phase 0.5V deliberate v4 promotion review; the review must not change the default.
+
 ## Phase 1: 3D vertical slice
 
 Build the one-city scope defined in [[Design/Decisions/DEC-002 First Playable Scope]].
 
 ## Future shared simulation layer
 
-Athlete Life Brain v3 is the default for newly generated train, rest, recover, and socialize decisions. It adds only bounded, same-season deterministic routine variation to v2's auditable temporary consequences. V1/v2 history remains immutable. Expand into longer memory, traits, relationships, nightlife, media, discipline, career decisions, and other sports only after each smaller input passes its own engineering evaluation.
+Athlete Life Brain v3 remains the default for newly generated train, rest, recover, and socialize decisions. Opt-in v4 adds only a one-decision, same-season recent-scoring response and has passed its pilot gates without promotion. V1-v3 history remains immutable. Expand into longer memory, traits, relationships, nightlife, media, discipline, career decisions, and other sports only after each smaller input passes its own engineering evaluation.
 
 Athletes keep distinct career identities: stars, specialists, average players, and below-average players are allowed and should not be automatically equalized. Durable ability changes gradually, while temporary form, fatigue, availability, practice, discipline, partying, fictional legal trouble, and other life consequences can alter performance and career outcomes through visible causal chains. See [[Design/Decisions/DEC-003 Multi-Brain AI Architecture]].
 
@@ -330,7 +341,7 @@ The shared life, world, memory, and learning layers will support every sport. Ea
 - Minimal athlete attributes.
 - Initial live LLM provider/model and separate inference budget.
 - First retraining dataset and method that fit the $5 ceiling.
-- One opt-in recent-scoring-response v4 pilot under the completed Phase 0.5T contract.
+- One deliberate v4 promotion review without changing the default.
 - AI evaluation criteria and model-update cadence.
 - Ranked competition scoring.
 - Match schedule and season length.

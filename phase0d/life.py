@@ -9,8 +9,10 @@ from phase0a.simulator import MAX_READINESS_MODIFIER, Team, clamp
 LIFE_BRAIN_V1_VERSION = "athlete-life-v1"
 LIFE_BRAIN_V2_VERSION = "athlete-life-v2"
 LIFE_BRAIN_V3_VERSION = "athlete-life-v3"
+LIFE_BRAIN_V4_VERSION = "athlete-life-v4"
 DEFAULT_LIFE_BRAIN_VERSION = LIFE_BRAIN_V3_VERSION
 LIFE_CHOICES = ("train", "rest", "recover", "socialize")
+SCORING_FORMS = ("below", "typical", "above")
 HIGH_FATIGUE = 0.24
 OFF_DAY_PREFERENCES = {
     "Jalen Cross": "practice",
@@ -54,31 +56,39 @@ def choose_life_action(
     *,
     policy_version: str = DEFAULT_LIFE_BRAIN_VERSION,
     routine_streak: int = 0,
+    recent_scoring_form: str = "typical",
 ) -> str:
     if athlete == "" or game_number < 2 or roster_index < 0:
         raise ValueError("athlete, between-game number, and roster index are required")
     if policy_version not in {
-        LIFE_BRAIN_V1_VERSION, LIFE_BRAIN_V2_VERSION, LIFE_BRAIN_V3_VERSION
+        LIFE_BRAIN_V1_VERSION, LIFE_BRAIN_V2_VERSION, LIFE_BRAIN_V3_VERSION,
+        LIFE_BRAIN_V4_VERSION,
     }:
         raise ValueError(f"unsupported Athlete Life Brain policy: {policy_version!r}")
     if (
         not isinstance(routine_streak, int)
         or isinstance(routine_streak, bool)
         or not -2 <= routine_streak <= 2
-        or (policy_version != LIFE_BRAIN_V3_VERSION and routine_streak)
+        or (policy_version not in {LIFE_BRAIN_V3_VERSION, LIFE_BRAIN_V4_VERSION} and routine_streak)
     ):
-        raise ValueError("routine streak must be an integer from -2 to 2 and v3-only")
-    if policy_version in {LIFE_BRAIN_V2_VERSION, LIFE_BRAIN_V3_VERSION} and athlete not in OFF_DAY_PREFERENCES:
+        raise ValueError("routine streak must be an integer from -2 to 2 and v3/v4-only")
+    if recent_scoring_form not in SCORING_FORMS:
+        raise ValueError(f"invalid recent scoring form: {recent_scoring_form!r}")
+    if policy_version != LIFE_BRAIN_V4_VERSION and recent_scoring_form != "typical":
+        raise ValueError("recent scoring form is v4-only")
+    if policy_version in {LIFE_BRAIN_V2_VERSION, LIFE_BRAIN_V3_VERSION, LIFE_BRAIN_V4_VERSION} and athlete not in OFF_DAY_PREFERENCES:
         raise ValueError(f"missing off-day preference for {athlete!r}")
     if recovery_days > 0:
         return "recover"
     if fatigue >= HIGH_FATIGUE:
         return "rest"
-    if policy_version == LIFE_BRAIN_V3_VERSION and routine_streak == 2:
+    if policy_version in {LIFE_BRAIN_V3_VERSION, LIFE_BRAIN_V4_VERSION} and routine_streak == 2:
         return "socialize"
-    if policy_version == LIFE_BRAIN_V3_VERSION and routine_streak == -2:
+    if policy_version in {LIFE_BRAIN_V3_VERSION, LIFE_BRAIN_V4_VERSION} and routine_streak == -2:
         return "train"
-    if policy_version in {LIFE_BRAIN_V2_VERSION, LIFE_BRAIN_V3_VERSION}:
+    if policy_version == LIFE_BRAIN_V4_VERSION and recent_scoring_form != "typical":
+        return "train" if recent_scoring_form == "below" else "socialize"
+    if policy_version in {LIFE_BRAIN_V2_VERSION, LIFE_BRAIN_V3_VERSION, LIFE_BRAIN_V4_VERSION}:
         return "train" if OFF_DAY_PREFERENCES[athlete] == "practice" else "socialize"
     return "train" if (game_number + roster_index) % 2 == 0 else "socialize"
 
@@ -92,23 +102,29 @@ def apply_life_action(
     *,
     policy_version: str = DEFAULT_LIFE_BRAIN_VERSION,
     routine_streak: int = 0,
+    recent_scoring_form: str = "typical",
 ) -> LifeDecision:
     if action not in LIFE_CHOICES:
         raise ValueError(f"illegal Athlete Life Brain choice: {action!r}")
     if not 0 <= fatigue <= 0.45 or not 0 <= recovery_days <= 7:
         raise ValueError("invalid temporary athlete state")
     if policy_version not in {
-        LIFE_BRAIN_V1_VERSION, LIFE_BRAIN_V2_VERSION, LIFE_BRAIN_V3_VERSION
+        LIFE_BRAIN_V1_VERSION, LIFE_BRAIN_V2_VERSION, LIFE_BRAIN_V3_VERSION,
+        LIFE_BRAIN_V4_VERSION,
     }:
         raise ValueError(f"unsupported Athlete Life Brain policy: {policy_version!r}")
     if (
         not isinstance(routine_streak, int)
         or isinstance(routine_streak, bool)
         or not -2 <= routine_streak <= 2
-        or (policy_version != LIFE_BRAIN_V3_VERSION and routine_streak)
+        or (policy_version not in {LIFE_BRAIN_V3_VERSION, LIFE_BRAIN_V4_VERSION} and routine_streak)
     ):
-        raise ValueError("routine streak must be an integer from -2 to 2 and v3-only")
-    if policy_version in {LIFE_BRAIN_V2_VERSION, LIFE_BRAIN_V3_VERSION} and athlete not in OFF_DAY_PREFERENCES:
+        raise ValueError("routine streak must be an integer from -2 to 2 and v3/v4-only")
+    if recent_scoring_form not in SCORING_FORMS:
+        raise ValueError(f"invalid recent scoring form: {recent_scoring_form!r}")
+    if policy_version != LIFE_BRAIN_V4_VERSION and recent_scoring_form != "typical":
+        raise ValueError("recent scoring form is v4-only")
+    if policy_version in {LIFE_BRAIN_V2_VERSION, LIFE_BRAIN_V3_VERSION, LIFE_BRAIN_V4_VERSION} and athlete not in OFF_DAY_PREFERENCES:
         raise ValueError(f"missing off-day preference for {athlete!r}")
 
     after_fatigue = fatigue
@@ -129,9 +145,11 @@ def apply_life_action(
         readiness = 0.015
         reason = (
             "Routine variation after two socialize choices"
-            if policy_version == LIFE_BRAIN_V3_VERSION and routine_streak == -2
+            if policy_version in {LIFE_BRAIN_V3_VERSION, LIFE_BRAIN_V4_VERSION} and routine_streak == -2
+            else "Recent scoring below earlier same-season average"
+            if policy_version == LIFE_BRAIN_V4_VERSION and recent_scoring_form == "below"
             else f"{OFF_DAY_PREFERENCES[athlete].title()} off-day preference"
-            if policy_version in {LIFE_BRAIN_V2_VERSION, LIFE_BRAIN_V3_VERSION}
+            if policy_version in {LIFE_BRAIN_V2_VERSION, LIFE_BRAIN_V3_VERSION, LIFE_BRAIN_V4_VERSION}
             else "Deterministic practice rotation"
         )
         effect = "Practice +1.5%, fatigue +0.02; consumed next game"
@@ -140,9 +158,11 @@ def apply_life_action(
         readiness = 0.01
         reason = (
             "Routine variation after two train choices"
-            if policy_version == LIFE_BRAIN_V3_VERSION and routine_streak == 2
+            if policy_version in {LIFE_BRAIN_V3_VERSION, LIFE_BRAIN_V4_VERSION} and routine_streak == 2
+            else "Recent scoring above earlier same-season average"
+            if policy_version == LIFE_BRAIN_V4_VERSION and recent_scoring_form == "above"
             else f"{OFF_DAY_PREFERENCES[athlete].title()} off-day preference"
-            if policy_version in {LIFE_BRAIN_V2_VERSION, LIFE_BRAIN_V3_VERSION}
+            if policy_version in {LIFE_BRAIN_V2_VERSION, LIFE_BRAIN_V3_VERSION, LIFE_BRAIN_V4_VERSION}
             else "Deterministic social rotation"
         )
         effect = "Morale +1.0%, fatigue +0.01; consumed next game"
@@ -179,6 +199,17 @@ def next_routine_streak(streak: int, action: str) -> int:
     return 0
 
 
+def recent_scoring_form(history: tuple[tuple[int, float], ...]) -> str:
+    """Classify only the last appearance against earlier same-season appearances."""
+    if not history or history[-1][1] <= 0:
+        return "typical"
+    earlier = [points for points, minutes in history[:-1] if minutes > 0]
+    if len(earlier) < 3:
+        return "typical"
+    difference = history[-1][0] - sum(earlier) / len(earlier)
+    return "above" if difference > 2 else "below" if difference < -2 else "typical"
+
+
 def between_game_choices(
     game_number: int,
     fatigue: Mapping[str, float],
@@ -187,15 +218,21 @@ def between_game_choices(
     *,
     policy_version: str = DEFAULT_LIFE_BRAIN_VERSION,
     routine_streaks: Mapping[str, int] | None = None,
+    recent_scoring_forms: Mapping[str, str] | None = None,
 ) -> tuple[LifeDecision, ...]:
     roster = tuple(player.name for team in teams for player in team.players)
     if set(fatigue) != set(roster) or set(availability) != set(roster):
         raise ValueError("life choices require the exact active roster")
-    if policy_version == LIFE_BRAIN_V3_VERSION:
+    if policy_version in {LIFE_BRAIN_V3_VERSION, LIFE_BRAIN_V4_VERSION}:
         if routine_streaks is None or set(routine_streaks) != set(roster):
-            raise ValueError("v3 routine streaks require the exact active roster")
+            raise ValueError("v3/v4 routine streaks require the exact active roster")
     elif routine_streaks is not None:
-        raise ValueError("routine streaks are v3-only")
+        raise ValueError("routine streaks are v3/v4-only")
+    if policy_version == LIFE_BRAIN_V4_VERSION:
+        if recent_scoring_forms is None or set(recent_scoring_forms) != set(roster):
+            raise ValueError("v4 scoring forms require the exact active roster")
+    elif recent_scoring_forms is not None:
+        raise ValueError("recent scoring forms are v4-only")
     decisions = []
     for index, athlete in enumerate(roster):
         action = choose_life_action(
@@ -206,6 +243,9 @@ def between_game_choices(
             int(availability[athlete]),
             policy_version=policy_version,
             routine_streak=0 if routine_streaks is None else routine_streaks[athlete],
+            recent_scoring_form=(
+                "typical" if recent_scoring_forms is None else recent_scoring_forms[athlete]
+            ),
         )
         decisions.append(
             apply_life_action(
@@ -216,6 +256,9 @@ def between_game_choices(
                 int(availability[athlete]),
                 policy_version=policy_version,
                 routine_streak=0 if routine_streaks is None else routine_streaks[athlete],
+                recent_scoring_form=(
+                    "typical" if recent_scoring_forms is None else recent_scoring_forms[athlete]
+                ),
             )
         )
     return tuple(decisions)

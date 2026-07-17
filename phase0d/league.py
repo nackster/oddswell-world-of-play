@@ -23,9 +23,11 @@ from phase0d.life import (
     LIFE_BRAIN_V1_VERSION,
     LIFE_BRAIN_V2_VERSION,
     LIFE_BRAIN_V3_VERSION,
+    LIFE_BRAIN_V4_VERSION,
     LifeDecision,
     between_game_choices,
     next_routine_streak,
+    recent_scoring_form,
 )
 
 
@@ -212,11 +214,13 @@ def apply_life_day(
     *,
     policy_version: str = DEFAULT_LIFE_BRAIN_VERSION,
     routine_streaks: Mapping[str, int] | None = None,
+    recent_scoring_forms: Mapping[str, str] | None = None,
 ) -> tuple[FatigueSnapshot, AvailabilitySnapshot, ReadinessSnapshot, tuple[LifeDecision, ...]]:
     decisions = between_game_choices(
         game_number, dict(fatigue), dict(availability), teams,
         policy_version=policy_version,
         routine_streaks=routine_streaks,
+        recent_scoring_forms=recent_scoring_forms,
     )
     return (
         fatigue_snapshot(
@@ -332,10 +336,12 @@ def simulate_scheduled_game(
     life_decisions: tuple[LifeDecision, ...] = (),
     *,
     life_policy_version: str = DEFAULT_LIFE_BRAIN_VERSION,
+    _player_points: dict[str, int] | None = None,
 ) -> SeasonGame:
     """Resolve one scheduled game through the authoritative league transition."""
     if life_policy_version not in {
-        LIFE_BRAIN_V1_VERSION, LIFE_BRAIN_V2_VERSION, LIFE_BRAIN_V3_VERSION
+        LIFE_BRAIN_V1_VERSION, LIFE_BRAIN_V2_VERSION, LIFE_BRAIN_V3_VERSION,
+        LIFE_BRAIN_V4_VERSION,
     }:
         raise ValueError(f"unsupported Athlete Life Brain policy: {life_policy_version!r}")
     matchup = (fixture.home, fixture.away)
@@ -349,6 +355,11 @@ def simulate_scheduled_game(
         initial_availability=dict(availability),
         initial_readiness=dict(readiness),
     )
+    if _player_points is not None:
+        _player_points.update({player.name: 0 for team in teams for player in team.players})
+        for record in result.records:
+            if record["type"] == "shot_made":
+                _player_points[str(record["player"])] += int(record["points"])
     played = minutes_snapshot(dict(result.minutes_played), teams)
     postgame_fatigue = add_game_load(fatigue, teams, played)
     postgame_availability = add_minor_injuries(
@@ -411,9 +422,12 @@ def simulate_season(
     games = []
     routine_streaks = (
         {player.name: 0 for team in teams for player in team.players}
-        if life_policy_version == LIFE_BRAIN_V3_VERSION
+        if life_policy_version in {LIFE_BRAIN_V3_VERSION, LIFE_BRAIN_V4_VERSION}
         else None
     )
+    scoring_history: dict[str, tuple[tuple[int, float], ...]] = {
+        player.name: () for team in teams for player in team.players
+    }
 
     for index, fixture in enumerate(schedule):
         readiness = empty_readiness(teams)
@@ -421,10 +435,17 @@ def simulate_season(
         if index:
             fatigue = recover_fatigue(fatigue, BETWEEN_GAME_REST_DAYS, teams)
             availability = recover_availability(availability, BETWEEN_GAME_REST_DAYS, teams)
+            scoring_forms = None
+            if life_policy_version == LIFE_BRAIN_V4_VERSION:
+                scoring_forms = {
+                    athlete: recent_scoring_form(history)
+                    for athlete, history in scoring_history.items()
+                }
             fatigue, availability, readiness, life_decisions = apply_life_day(
                 fixture.number, fatigue, availability, teams,
                 policy_version=life_policy_version,
                 routine_streaks=routine_streaks,
+                recent_scoring_forms=scoring_forms,
             )
             if routine_streaks is not None:
                 routine_streaks = {
@@ -433,10 +454,21 @@ def simulate_season(
                     )
                     for decision in life_decisions
                 }
+        player_points: dict[str, int] | None = (
+            {} if life_policy_version == LIFE_BRAIN_V4_VERSION else None
+        )
         game = simulate_scheduled_game(
             fixture, fatigue, availability, teams, readiness, life_decisions,
             life_policy_version=life_policy_version,
+            _player_points=player_points,
         )
+        if life_policy_version == LIFE_BRAIN_V4_VERSION:
+            assert player_points is not None
+            minutes = dict(game.minutes_played)
+            scoring_history = {
+                athlete: history + ((player_points[athlete], minutes[athlete]),)
+                for athlete, history in scoring_history.items()
+            }
         winner = game.winner
         loser = game.away_team if winner == game.home_team else game.home_team
 

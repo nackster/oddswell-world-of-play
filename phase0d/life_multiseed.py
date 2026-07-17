@@ -7,14 +7,23 @@ import hashlib
 import json
 
 from phase0d.career import teams_for_season
-from phase0d.league import STATE_SCHEMA, LeagueState, new_league, simulate_next_season
+from phase0d.league import (
+    STATE_SCHEMA,
+    LeagueState,
+    ScheduledGame,
+    new_league,
+    simulate_next_season,
+    simulate_scheduled_game,
+)
 from phase0d.life import (
     LIFE_BRAIN_V3_VERSION,
+    LIFE_BRAIN_V4_VERSION,
     LIFE_BRAIN_V1_VERSION,
     LIFE_BRAIN_V2_VERSION,
     OFF_DAY_PREFERENCES,
     choose_life_action,
     next_routine_streak,
+    recent_scoring_form,
 )
 
 
@@ -161,6 +170,9 @@ def _summarize(states: tuple[LeagueState, ...], policy_version: str) -> PolicyMe
             roster = tuple(player.name for team in teams for player in team.players)
             roster_index = {name: index for index, name in enumerate(roster)}
             routine_streaks = {name: 0 for name in roster}
+            scoring_history: dict[str, tuple[tuple[int, float], ...]] = {
+                name: () for name in roster
+            }
             for game in season.games:
                 games += 1
                 total_points += game.home_score + game.away_score
@@ -209,6 +221,11 @@ def _summarize(states: tuple[LeagueState, ...], policy_version: str) -> PolicyMe
                     tenure_violations += decision.athlete not in roster_index
                     version_violations += decision.policy_version != policy_version
                     if decision.athlete in roster_index:
+                        scoring_form = (
+                            recent_scoring_form(scoring_history[decision.athlete])
+                            if decision.policy_version == LIFE_BRAIN_V4_VERSION
+                            else "typical"
+                        )
                         expected = choose_life_action(
                             decision.athlete,
                             decision.game_number,
@@ -218,15 +235,43 @@ def _summarize(states: tuple[LeagueState, ...], policy_version: str) -> PolicyMe
                             policy_version=decision.policy_version,
                             routine_streak=(
                                 routine_streaks[decision.athlete]
-                                if decision.policy_version == LIFE_BRAIN_V3_VERSION
+                                if decision.policy_version in {
+                                    LIFE_BRAIN_V3_VERSION, LIFE_BRAIN_V4_VERSION
+                                }
                                 else 0
                             ),
+                            recent_scoring_form=scoring_form,
                         )
                         policy_violations += expected != decision.selected
-                        if decision.policy_version == LIFE_BRAIN_V3_VERSION:
+                        if decision.policy_version in {
+                            LIFE_BRAIN_V3_VERSION, LIFE_BRAIN_V4_VERSION
+                        }:
                             routine_streaks[decision.athlete] = next_routine_streak(
                                 routine_streaks[decision.athlete], decision.selected
                             )
+                if policy_version == LIFE_BRAIN_V4_VERSION:
+                    team_by_name = {team.name: team for team in teams}
+                    points: dict[str, int] = {}
+                    simulate_scheduled_game(
+                        ScheduledGame(
+                            game.number,
+                            game.seed,
+                            team_by_name[game.home_team],
+                            team_by_name[game.away_team],
+                        ),
+                        game.pregame_fatigue,
+                        game.pregame_availability,
+                        teams,
+                        game.pregame_readiness,
+                        game.life_decisions,
+                        life_policy_version=policy_version,
+                        _player_points=points,
+                    )
+                    minutes = dict(game.minutes_played)
+                    scoring_history = {
+                        name: history + ((points[name], minutes[name]),)
+                        for name, history in scoring_history.items()
+                    }
 
     preferences = []
     for preference, group in groups.items():
