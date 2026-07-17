@@ -29,7 +29,12 @@ from phase0d.prediction import (
     run_prediction_study,
     verify_prediction_record,
 )
-from phase0d.life import LIFE_BRAIN_V1_VERSION, LIFE_BRAIN_V3_VERSION
+from phase0d.life import (
+    DEFAULT_LIFE_BRAIN_VERSION,
+    LIFE_BRAIN_V1_VERSION,
+    LIFE_BRAIN_V3_VERSION,
+    LIFE_BRAIN_V4_VERSION,
+)
 
 
 class PredictionTests(unittest.TestCase):
@@ -141,6 +146,28 @@ class PredictionTests(unittest.TestCase):
         )
         self.assertEqual(
             tuple((record.winner, record.replay_sha256) for record in study.records),
+            tuple(
+                (game.winner, game.replay_sha256)
+                for season in state.seasons
+                for game in season.games
+            ),
+        )
+
+    def test_default_v4_prediction_chronology_matches_authoritative_league(self) -> None:
+        self.assertEqual(DEFAULT_LIFE_BRAIN_VERSION, LIFE_BRAIN_V4_VERSION)
+        teams = default_teams()
+        state = new_league(707)
+        for _ in range(2):
+            state = simulate_next_season(state, 8, teams)
+        default = run_prediction_study(
+            1, 1, 8, 707, life_policy_version=DEFAULT_LIFE_BRAIN_VERSION
+        )
+        explicit = run_prediction_study(
+            1, 1, 8, 707, life_policy_version=LIFE_BRAIN_V4_VERSION
+        )
+        self.assertEqual(default, explicit)
+        self.assertEqual(
+            tuple((record.winner, record.replay_sha256) for record in default.records),
             tuple(
                 (game.winner, game.replay_sha256)
                 for season in state.seasons

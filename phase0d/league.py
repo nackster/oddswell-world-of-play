@@ -31,7 +31,7 @@ from phase0d.life import (
 )
 
 
-LEAGUE_VERSION = "phase05r-v1"
+LEAGUE_VERSION = "phase05w-v1"
 STATE_SCHEMA = "oddswell-league-state-v4"
 FATIGUE_MODEL_VERSION = "minutes-workload-v1"
 INJURY_MODEL_VERSION = "minor-availability-v1"

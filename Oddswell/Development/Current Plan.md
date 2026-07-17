@@ -331,13 +331,24 @@ status: active
 - **Validation:** the expected prediction-path blocker is reproduced, 2 focused evaluator/digest tests and all 49 regressions pass, and the Admin Console self-check passes. Cost was `$0.00`. See [[Development/Reports/Phase 05V V4 Promotion Review]].
 - **Next gate:** Phase 0.5W controlled v4 rollout; stop without changing the default if any frozen rollout requirement fails.
 
+### Phase 0.5W Controlled Athlete Life Brain v4 Default Rollout status
+
+- **Status:** Complete on `agent/phase-0d`; controlled rollout passed every frozen stop condition.
+- **Implemented:** the explicit v4 prediction path now reconstructs the authoritative league's season-local routine map and chronology-safe scoring history. The default changed to v4 only after an 8/8 winner/replay compatibility gate passed; league implementation is `phase05w-v1` and state schema remains v4.
+- **Fresh default evidence:** the four-season Admin archive contains 80 games and 912/912 v4 decisions: 24 recover, 386 rest, 234 socialize, and 268 train. It records 204 reached recent-scoring responses; first-season prediction winners and replay hashes agree with the league on 20/20 games.
+- **History boundary:** saved v1/v2/v3 seasons remain unchanged when a default-v4 season is appended. Phase 0.5L, 0.5P, and 0.5U retain their exact canonical digests; explicit v4 replay and save/load/resume pass.
+- **Admin/browser evidence:** the Observatory displays `athlete-life-v4` as `ACTIVE DEFAULT`; the League Viewer displays `phase05w-v1`; archived Game 1 completed 422/422 frames at 78-117 with `ARCHIVE VERIFIED` and no console warnings or errors.
+- **Validation:** 17 focused tests and all 50 regressions pass; Admin Console self-check and both affected clean canvas checks pass. Cost was `$0.00`. See [[Development/Reports/Phase 05W Controlled V4 Default Rollout]].
+- **Rollback:** change the one default constant back to v3 and restart; preserve all stored v4 history.
+- **Next gate:** Phase 0.5X read-only v4 post-rollout integration review before another Athlete Life Brain input.
+
 ## Phase 1: 3D vertical slice
 
 Build the one-city scope defined in [[Design/Decisions/DEC-002 First Playable Scope]].
 
 ## Future shared simulation layer
 
-Athlete Life Brain v3 remains the default for newly generated train, rest, recover, and socialize decisions. Opt-in v4 adds only a one-decision, same-season recent-scoring response and is approved for a later controlled rollout without promotion. V1-v4 history remains immutable. Expand into longer memory, traits, relationships, nightlife, media, discipline, career decisions, and other sports only after each smaller input passes its own engineering evaluation.
+Athlete Life Brain v4 is the default for newly generated train, rest, recover, and socialize decisions. It adds only one bounded, one-decision, same-season recent-scoring response above v3's routine behavior. V1-v4 history remains immutable. Expand into longer memory, traits, relationships, nightlife, media, discipline, career decisions, and other sports only after each smaller input passes its own engineering evaluation.
 
 Athletes keep distinct career identities: stars, specialists, average players, and below-average players are allowed and should not be automatically equalized. Durable ability changes gradually, while temporary form, fatigue, availability, practice, discipline, partying, fictional legal trouble, and other life consequences can alter performance and career outcomes through visible causal chains. See [[Design/Decisions/DEC-003 Multi-Brain AI Architecture]].
 
@@ -351,7 +362,7 @@ The shared life, world, memory, and learning layers will support every sport. Ea
 - Minimal athlete attributes.
 - Initial live LLM provider/model and separate inference budget.
 - First retraining dataset and method that fit the $5 ceiling.
-- One controlled v4 rollout with prediction chronology, history, replay, Admin labels, and rollback locked.
+- One read-only v4 post-rollout integration review before another Athlete Life Brain input.
 - AI evaluation criteria and model-update cadence.
 - Ranked competition scoring.
 - Match schedule and season length.

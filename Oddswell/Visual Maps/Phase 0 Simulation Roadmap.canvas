@@ -34,7 +34,8 @@
     {"id":"p0-5t","type":"text","text":"## 0.5T ✅ RECENT PERFORMANCE REVIEW\nOne previous-game scoring signal • chronology-safe same-season baseline\n211 response states • 93 one-step changes • v3 remains default • $0","x":-650,"y":4330,"width":1360,"height":150,"color":"3"},
     {"id":"p0-5u","type":"text","text":"## 0.5U ✅ OPT-IN V4 PILOT\n800 games + 9,120 decisions per policy • 2,089/2,089 responses\nZero integrity failures • v4 eligible, not promoted • v3 default • $0","x":-650,"y":4540,"width":1360,"height":150,"color":"3"},
     {"id":"p0-5v","type":"text","text":"## 0.5V ✅ DELIBERATE V4 REVIEW\nApproved for a separate controlled rollout • v3 remains default\n2,529 action + 130/800 winner differences visible • prediction blocker recorded • $0","x":-650,"y":4750,"width":1360,"height":150,"color":"3"},
-    {"id":"p0-5w","type":"text","text":"## NEXT: 0.5W CONTROLLED V4 ROLLOUT\nAlign prediction + league chronology • pin v1-v4 history\nReplay + persistence + Admin labels + one-constant rollback must pass","x":-650,"y":4960,"width":1360,"height":150,"color":"4"}
+    {"id":"p0-5w","type":"text","text":"## 0.5W ✅ CONTROLLED V4 ROLLOUT\nV4 default • prediction + league chronology aligned • 20/20 archive agreement\nV1-v4 history pinned • replay + persistence + Admin labels + rollback pass • $0","x":-650,"y":4960,"width":1360,"height":150,"color":"3"},
+    {"id":"p0-5x","type":"text","text":"## NEXT: 0.5X POST-ROLLOUT REVIEW\nRead-only default-v4 archive + first scoring-response inspection\nRecheck prediction chronology • history • replay • persistence • rollback","x":-650,"y":5170,"width":1360,"height":150,"color":"4"}
   ],
   "edges": [
     {"id":"p0-edge-1","fromNode":"p0-a","fromSide":"right","toNode":"p0-b","toSide":"left"},
@@ -65,6 +66,7 @@
     {"id":"p0-edge-26","fromNode":"p0-5s","fromSide":"bottom","toNode":"p0-5t","toSide":"top"},
     {"id":"p0-edge-27","fromNode":"p0-5t","fromSide":"bottom","toNode":"p0-5u","toSide":"top"},
     {"id":"p0-edge-28","fromNode":"p0-5u","fromSide":"bottom","toNode":"p0-5v","toSide":"top"},
-    {"id":"p0-edge-29","fromNode":"p0-5v","fromSide":"bottom","toNode":"p0-5w","toSide":"top"}
+    {"id":"p0-edge-29","fromNode":"p0-5v","fromSide":"bottom","toNode":"p0-5w","toSide":"top"},
+    {"id":"p0-edge-30","fromNode":"p0-5w","fromSide":"bottom","toNode":"p0-5x","toSide":"top"}
   ]
 }

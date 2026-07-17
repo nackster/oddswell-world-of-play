@@ -40,7 +40,7 @@ The server is hard-bound to `127.0.0.1`. There is intentionally no login screen 
 
 ## Phase 0D integration validation
 
-The 2026-07-15 integration pass confirmed the committed D.2 rotation/minutes, D.3 availability/recovery, and D.4 public-prediction gates through all 38 regression tests, the Admin Console self-check, and fresh deterministic runs. The D.2-D.4 reports remain historical evidence for their named engine/state versions; current reruns use engine `phase05h-v1` and league `phase05r-v1` and must not overwrite those earlier measurements.
+The 2026-07-15 integration pass confirmed the committed D.2 rotation/minutes, D.3 availability/recovery, and D.4 public-prediction gates through all 38 regression tests, the Admin Console self-check, and fresh deterministic runs. The D.2-D.4 reports remain historical evidence for their named engine/state versions; current reruns use engine `phase05h-v1` and league `phase05w-v1` and must not overwrite those earlier measurements.
 
 Live localhost checks confirmed server-side seed guards, an audit entry surviving a server restart, read-only minutes/availability/prediction evidence, executable brain/engine/league/policy versions, and locked clothing/items/economy/moderation controls. Browser checks confirmed the Observatory animation at desktop and 390-pixel mobile widths with no console errors or horizontal page overflow. External cost remained `$0.00`; no paid API, credits, wagering, monetization, deployment, or retraining was used.
 
@@ -78,11 +78,13 @@ Phase 0.5U implements that input only through an explicit v4 league policy and e
 
 Phase 0.5V approves v4 for a separate controlled rollout without changing the Observatory or default. The review keeps the material 2,529 action and 130/800 winner differences visible as path sensitivity, not better outcomes. Before v4 can become `ACTIVE DEFAULT`, the Admin prediction path must reconstruct the league's season-local routine and chronological scoring history, all v1-v4 evidence must remain pinned, and replay, persistence, truthful labels, and one-constant rollback must pass. Until then, v3 remains `ACTIVE DEFAULT`.
 
+Phase 0.5W satisfies that contract. The Observatory now displays v4 as `ACTIVE DEFAULT`; Admin league and prediction paths share season-local routine state and chronological completed-game scoring history and agree on all 20 first-season winners and replay hashes. V1-v4 evidence remains version-pinned, rollback remains one constant plus restart, and the animation still represents observable deterministic decisions—not learning, confidence, personality, or changing neural weights.
+
 The League Viewer follows the Phase 0D.4 public-information boundary. Hidden fatigue, recovery timers, injury-risk internals, seeds, RNG state, economy data, and admin mutations stay outside its payload.
 
 Archived games reuse hidden authoritative league state only on the server. The browser receives the complete recorded play-frame stream and verified archive metadata, never the hidden reconstruction inputs.
 
-Athlete profiles keep durable specialty identity separate from temporary form. Lifecycle v1 applies fictional age, bounded development/decline, and age-35 retirement; roster continuity v1 preserves Roman's retired record and introduces Soren Lake in Season 4. Athlete Life Brain v3 now drives new train, rest, recover, or socialize choices and shows each athlete's bounded next-game effect. Historical seasons continue to display their stored policy version. Hidden readiness, fatigue, recovery timers, and seeds remain private; contracts, draft/free agency, stories, legal events, and permanent life-driven rating changes remain inactive.
+Athlete profiles keep durable specialty identity separate from temporary form. Lifecycle v1 applies fictional age, bounded development/decline, and age-35 retirement; roster continuity v1 preserves Roman's retired record and introduces Soren Lake in Season 4. Athlete Life Brain v4 now drives new train, rest, recover, or socialize choices with bounded routine variation and a one-decision recent-scoring response, and shows each athlete's bounded next-game effect. Historical seasons continue to display their stored policy version. Hidden readiness, fatigue, recovery timers, scoring history, and seeds remain private; contracts, draft/free agency, stories, legal events, and permanent life-driven rating changes remain inactive.
 
 When genuine training is approved, connect provider progress, dataset version, candidate version, validation metrics, estimated and actual cost, and promotion-gate results to the existing interface. Hosted LLM internals remain opaque, so the Observatory will display observable telemetry rather than fabricated neuron activations.
 

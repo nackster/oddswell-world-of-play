@@ -21,8 +21,8 @@ from phase0d.life_performance import (
 
 
 class LifePerformanceTests(unittest.TestCase):
-    def test_v4_is_opt_in_chronology_safe_and_resumable(self) -> None:
-        self.assertEqual(DEFAULT_LIFE_BRAIN_VERSION, LIFE_BRAIN_V3_VERSION)
+    def test_v4_is_chronology_safe_and_resumable(self) -> None:
+        self.assertEqual(DEFAULT_LIFE_BRAIN_VERSION, LIFE_BRAIN_V4_VERSION)
         self.assertEqual(recent_scoring_form(((8, 30.0), (10, 30.0), (12, 30.0))), "typical")
         self.assertEqual(
             recent_scoring_form(((8, 30.0), (10, 30.0), (12, 30.0), (13, 30.0))),
@@ -80,6 +80,7 @@ class LifePerformanceTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "v4-only"):
             choose_life_action(
                 "Jalen Cross", 5, 0, 0.1, 0,
+                policy_version=LIFE_BRAIN_V3_VERSION,
                 recent_scoring_form="above",
             )
 

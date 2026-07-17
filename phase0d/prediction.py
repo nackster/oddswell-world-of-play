@@ -26,7 +26,9 @@ from phase0d.league import (
 from phase0d.life import (
     LIFE_BRAIN_V1_VERSION,
     LIFE_BRAIN_V3_VERSION,
+    LIFE_BRAIN_V4_VERSION,
     next_routine_streak,
+    recent_scoring_form,
 )
 
 
@@ -264,9 +266,12 @@ def run_prediction_study(
     for season_number in range(1, warmup_seasons + holdout_seasons + 1):
         routine_streaks = (
             {player.name: 0 for team in teams for player in team.players}
-            if life_policy_version == LIFE_BRAIN_V3_VERSION
+            if life_policy_version in {LIFE_BRAIN_V3_VERSION, LIFE_BRAIN_V4_VERSION}
             else None
         )
+        scoring_history: dict[str, tuple[tuple[int, float], ...]] = {
+            player.name: () for team in teams for player in team.players
+        }
         if season_number > 1:
             fatigue = recover_fatigue(fatigue, OFFSEASON_REST_DAYS, teams)
             availability = recover_availability(availability, OFFSEASON_REST_DAYS, teams)
@@ -283,10 +288,19 @@ def run_prediction_study(
             if index:
                 fatigue = recover_fatigue(fatigue, rest_days, teams)
                 availability = recover_availability(availability, rest_days, teams)
+                scoring_forms = (
+                    {
+                        athlete: recent_scoring_form(history)
+                        for athlete, history in scoring_history.items()
+                    }
+                    if life_policy_version == LIFE_BRAIN_V4_VERSION
+                    else None
+                )
                 fatigue, availability, readiness, life_decisions = apply_life_day(
                     fixture.number, fatigue, availability, teams,
                     policy_version=life_policy_version,
                     routine_streaks=routine_streaks,
+                    recent_scoring_forms=scoring_forms,
                 )
                 if routine_streaks is not None:
                     routine_streaks = {
@@ -309,10 +323,21 @@ def run_prediction_study(
             )
             commitment_sha256 = hashlib.sha256(commitment_json.encode()).hexdigest()
 
+            player_points: dict[str, int] | None = (
+                {} if life_policy_version == LIFE_BRAIN_V4_VERSION else None
+            )
             game = simulate_scheduled_game(
                 fixture, fatigue, availability, teams, readiness, life_decisions,
                 life_policy_version=life_policy_version,
+                _player_points=player_points,
             )
+            if life_policy_version == LIFE_BRAIN_V4_VERSION:
+                assert player_points is not None
+                minutes = dict(game.minutes_played)
+                scoring_history = {
+                    athlete: history + ((player_points[athlete], minutes[athlete]),)
+                    for athlete, history in scoring_history.items()
+                }
             home_win = int(game.winner == game.home_team)
             injury_subset = any(
                 not bool(player["available"])
