@@ -299,6 +299,17 @@ status: active
 - **Decision:** keep v3 as the default. This remains deterministic routine telemetry, not learning, intelligence, personality, or real-world validation.
 - **Next gate:** Phase 0.5T design-only Recent Performance Response Review; define and evaluate the information boundary before any new policy version or gameplay change.
 
+### Phase 0.5T Recent Performance Response Review status
+
+- **Status:** Complete on `agent/phase-0d`; design-only review with no runtime or data change.
+- **Decision:** define one future three-value `recent_scoring_form` from the immediately previous game's points versus that athlete's earlier same-season appearance average. It defaults to `typical` without three prior appearances or when the athlete did not play.
+- **Boundary:** only completed chronological points/minutes enter the signal; it expires after one decision and at every season boundary. Recovery, fatigue rest, and v3 routine variation keep priority. The retrospective Admin form label is not reused because its full-season comparison would leak future games during simulation.
+- **Frozen diagnostic:** 912 stored v3 decisions classify as 342 below, 343 typical, and 227 above; 755 have enough prior evidence. The response gate is reached in 211 states and changes 93 choices in a one-step counterfactual without resimulation.
+- **Version contract:** any implementation must be opt-in `athlete-life-v4`; v1-v3 history and digests remain immutable, v3 remains the default, and no persistence schema is added.
+- **Validation:** 7 focused tests and all 47 regression tests pass; the Admin Console self-check and both affected clean canvas checks pass. Cost was `$0.00`. See [[Development/Reports/Phase 05T Recent Performance Response Review]].
+- **Truth boundary:** this is a deterministic scoring-response proposal, not overall performance, personality, confidence, learning, intelligence, or real-world evidence.
+- **Next gate:** Phase 0.5U opt-in v4 recent-scoring-response pilot and fresh paired evaluation on ten untouched seed blocks; no automatic promotion.
+
 ## Phase 1: 3D vertical slice
 
 Build the one-city scope defined in [[Design/Decisions/DEC-002 First Playable Scope]].
@@ -319,7 +330,7 @@ The shared life, world, memory, and learning layers will support every sport. Ea
 - Minimal athlete attributes.
 - Initial live LLM provider/model and separate inference budget.
 - First retraining dataset and method that fit the $5 ceiling.
-- One bounded recent-performance response input review after the completed v3 post-rollout observation.
+- One opt-in recent-scoring-response v4 pilot under the completed Phase 0.5T contract.
 - AI evaluation criteria and model-update cadence.
 - Ranked competition scoring.
 - Match schedule and season length.

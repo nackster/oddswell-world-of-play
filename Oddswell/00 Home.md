@@ -49,6 +49,7 @@ tags:
 - [[Development/Reports/Phase 05Q V3 Promotion Review|Phase 0.5Q Athlete Life Brain v3 promotion review]]
 - [[Development/Reports/Phase 05R Controlled V3 Default Rollout|Phase 0.5R controlled Athlete Life Brain v3 rollout]]
 - [[Development/Reports/Phase 05S Post-Rollout Integration Review|Phase 0.5S Athlete Life Brain v3 post-rollout review]]
+- [[Development/Reports/Phase 05T Recent Performance Response Review|Phase 0.5T recent performance response review]]
 - [[Visual Maps/Project Tool Map|Master project tool map]]
 - [[Visual Maps/3D Asset Toolchain|3D asset toolchain canvas]]
 - [[Visual Maps/Multi-Brain Architecture|Multi-brain architecture canvas]]
@@ -57,7 +58,7 @@ tags:
 
 ## Current focus
 
-Phase 0.5S is complete: the read-only post-rollout review found 119 bounded routine variations, zero violations, 20/20 matching first-season predictions, and a verified 108-93 replay of the first routine-trigger game. V3 remains the active default and rollback remains one constant plus restart. Phase 0.5T will review one bounded recent-performance response input on paper before any new policy version. Live models, stories, credits, wagering, and retraining remain inactive.
+Phase 0.5T is complete: one chronology-safe future input compares the immediately previous game's scoring with that athlete's earlier same-season appearance average. The design defaults safely without enough history, expires after one decision, and preserves recovery, fatigue, and routine precedence. V3 remains the active default; Phase 0.5U may build an opt-in v4 pilot without promotion. Live models, stories, credits, wagering, and retraining remain inactive.
 
 ## Current state
 

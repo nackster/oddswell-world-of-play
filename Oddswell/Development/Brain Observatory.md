@@ -72,6 +72,8 @@ Phase 0.5R satisfies that gate. The Observatory now displays v3 as `ACTIVE DEFAU
 
 Phase 0.5S rechecks that rollout without changing runtime behavior. The four-season archive contains 119 bounded routine variations across 507 eligible decisions with zero rule violations; the first triggering archive, Season 1 Game 4, completes its exact 108-93 replay at frame 452/452 with `ARCHIVE VERIFIED`. Prediction, persistence, historical digest, full regression, and Admin self-check evidence remain clean. These visuals show auditable recorded transitions, not neurons, training, personality inference, or real-world learning.
 
+Phase 0.5T defines one possible chronology-safe `recent_scoring_form` input for a future opt-in v4 but changes no runtime or Observatory behavior. It reads only the immediately previous game's points and the athlete's earlier same-season appearance average, expires after one decision, and keeps recovery, fatigue rest, and v3 routine variation above it. The current retrospective five-game form display is not a policy input because its completed-season baseline would leak future games during simulation. V3 remains `ACTIVE DEFAULT`; this proposal is deterministic scoring telemetry, not overall performance, confidence, personality, learning, or neural training.
+
 The League Viewer follows the Phase 0D.4 public-information boundary. Hidden fatigue, recovery timers, injury-risk internals, seeds, RNG state, economy data, and admin mutations stay outside its payload.
 
 Archived games reuse hidden authoritative league state only on the server. The browser receives the complete recorded play-frame stream and verified archive metadata, never the hidden reconstruction inputs.
