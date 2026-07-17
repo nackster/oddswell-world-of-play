@@ -369,6 +369,16 @@ status: active
 - **Validation:** 10 focused tests, all 53 regressions, and the Admin Console self-check pass. Cost was `$0.00`. See [[Development/Reports/Phase 06A Opt-In Athlete Consistency Pilot]].
 - **Next gate:** Phase 0.6B read-only multi-season same-athlete calibration before any rollout decision.
 
+### Phase 0.6B Athlete Game Consistency Calibration status
+
+- **Status:** Complete on `agent/phase-0d`; read-only outcome calibration with no rollout or authoritative-league change.
+- **Controlled evidence:** Tariq Stone keeps identical ratings, role, team, matchup, and healthy/rested state across 1,000 games per tier. All other athlete form is zero.
+- **Passed:** tier means stay within 0.057 points, team win-rate spread is 0.8 percentage points, and all 4,000 pilot games replay exactly.
+- **Failed:** elite point deviation is 6.3128 versus volatile 6.3590; bad-night rates are 19.2% versus 19.3%; both 20th-percentile floors are 14 points. The frozen reliability gates therefore fail.
+- **Decision:** keep `athlete-consistency-v1` opt-in and do not promote it. Its label is mechanically real but does not yet create the intended superstar reliability.
+- **Validation:** all 54 regressions pass and the Admin self-check remains green. Cost was `$0.00`. See [[Development/Reports/Phase 06B Athlete Consistency Calibration]].
+- **Next gate:** Phase 0.6C design-only Consistency Resolver Redesign Review; freeze a mean-preserving outcome-variance mechanism before implementation.
+
 ## Phase 1: 3D vertical slice
 
 Build the one-city scope defined in [[Design/Decisions/DEC-002 First Playable Scope]].
@@ -389,7 +399,7 @@ The shared life, world, memory, and learning layers will support every sport. Ea
 - Minimal athlete attributes.
 - Initial live LLM provider/model and separate inference budget.
 - First retraining dataset and method that fit the $5 ceiling.
-- Multi-season same-athlete consistency calibration before any performance-factor rollout.
+- Mean-preserving consistency-resolver redesign review after the failed rollout gate.
 - AI evaluation criteria and model-update cadence.
 - Ranked competition scoring.
 - Match schedule and season length.

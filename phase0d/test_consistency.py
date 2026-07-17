@@ -5,6 +5,7 @@ from phase0d.consistency import (
     ATHLETE_CONSISTENCY,
     CONSISTENCY_SPREAD,
     CONSISTENCY_VERSION,
+    calibrate_consistency,
     consistency_tier,
     evaluate_consistency,
     game_form,
@@ -54,6 +55,17 @@ class AthleteConsistencyTests(unittest.TestCase):
     def test_unknown_player_is_rejected(self) -> None:
         with self.assertRaisesRegex(ValueError, "missing game consistency"):
             consistency_tier("Unknown Athlete")
+
+    def test_same_athlete_calibration_blocks_promotion(self) -> None:
+        result = calibrate_consistency(100)
+        self.assertEqual(result, calibrate_consistency(100))
+        self.assertFalse(result["eligible_for_rollout"])
+        self.assertEqual(result["replay_violations"], 0)
+        self.assertEqual(result["failures"], [
+            "elite point-deviation reduction",
+            "elite bad-night reduction",
+            "elite performance floor",
+        ])
 
 
 if __name__ == "__main__":

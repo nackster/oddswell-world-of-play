@@ -84,6 +84,8 @@ Phase 0.5X rechecks that rollout without changing the Admin Console or simulator
 
 Phase 0.5Y selects no additional Life Brain input. Phase 0.6A instead adds an opt-in Athlete Profile and Basketball Brain consistency pilot: one elite, four steady, five normal, and two volatile active-athlete tiers generate bounded zero-centered game form only on the explicit pilot path. Athlete profiles label the value `OPT-IN PILOT`; the authoritative v4 league and historical replays remain unchanged. The animation must not present consistency as confidence, personality, learning, intelligence, or neural-network training.
 
+Phase 0.6B blocks that pilot from rollout. Holding Tariq Stone's ratings and role constant across 1,000 healthy games per tier shows virtually unchanged bad-night rates and the same 14-point performance floor; the small form modifier does not overcome possession and outcome variance. The Admin tier remains labeled `OPT-IN PILOT`, and no visual may imply that elite consistency already produces superstar reliability.
+
 The League Viewer follows the Phase 0D.4 public-information boundary. Hidden fatigue, recovery timers, injury-risk internals, seeds, RNG state, economy data, and admin mutations stay outside its payload.
 
 Archived games reuse hidden authoritative league state only on the server. The browser receives the complete recorded play-frame stream and verified archive metadata, never the hidden reconstruction inputs.
