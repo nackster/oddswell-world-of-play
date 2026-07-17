@@ -66,6 +66,8 @@ Phase 0.5O defines one possible short-term routine streak for a future opt-in v3
 
 Phase 0.5P implements that rule only through an explicit v3 policy path and evaluates it outside the interface across 800 fresh paired games per policy. Its integrity and provisional stability alarms pass, making v3 eligible for a later review only. The Observatory remains on v2 and must not animate this result as neural-network training, learning, personality growth, or a promotion.
 
+Phase 0.5Q approves v3 for a separate controlled rollout but changes nothing in the Observatory. Before v3 can become the displayed default, the Admin prediction study must carry the same season-local routine mapping as its league archive, all historical evidence must stay explicitly version-pinned, and rollback must remain a single default change plus process restart. Until that gate passes, v2 remains `ACTIVE DEFAULT`.
+
 The League Viewer follows the Phase 0D.4 public-information boundary. Hidden fatigue, recovery timers, injury-risk internals, seeds, RNG state, economy data, and admin mutations stay outside its payload.
 
 Archived games reuse hidden authoritative league state only on the server. The browser receives the complete recorded play-frame stream and verified archive metadata, never the hidden reconstruction inputs.

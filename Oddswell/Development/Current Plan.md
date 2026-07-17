@@ -268,13 +268,23 @@ status: active
 - **Validation:** 7 focused tests and all 46 regression tests pass; the Admin Console self-check and both affected clean canvas checks pass. Cost was `$0.00`. See [[Development/Reports/Phase 05P Opt-In Routine Memory Pilot]].
 - **Next gate:** Phase 0.5Q deliberate v3 review; the review must not change the default.
 
+### Phase 0.5Q Athlete Life Brain v3 Promotion Review implementation status
+
+- **Status:** Complete on `agent/phase-0d` after two bounded read-only audits.
+- **Decision:** approve v3 for a later controlled rollout, but do not promote it during this review. Phase 0.5P passed every frozen aggregate integrity and stability gate; v2 remains the default.
+- **Risk boundary:** v2/v3 differ on 2,899 decisions and 130/800 winners. One seed block reached 8.3875 margin MAE even though the frozen aggregate result is 5.8438. These are path-sensitivity signals, not evidence of intelligence, learning, realism, or better outcomes.
+- **Required blocker:** the explicit v3 prediction-study path must maintain and reset the same season-local routine mapping before the Admin default can change. Historical Phase 0D.4 remains pinned to v1.
+- **Rollout contract:** pin Phase 0.5I to v1, Phase 0.5L to v1/v2, and Phase 0.5P to v2/v3; align new Admin league and prediction state under v3; preserve old history; prove replay, persistence, locked digests, and one-constant rollback; keep state schema v4.
+- **Validation:** the focused Phase 0.5P evidence lock, all 46 regression tests, Admin Console self-check, and both affected clean canvas checks pass. Cost was `$0.00`. See [[Development/Reports/Phase 05Q V3 Promotion Review]].
+- **Next gate:** Phase 0.5R controlled v3 rollout; stop without changing the default if the prediction/history/replay contract cannot be satisfied.
+
 ## Phase 1: 3D vertical slice
 
 Build the one-city scope defined in [[Design/Decisions/DEC-002 First Playable Scope]].
 
 ## Future shared simulation layer
 
-Athlete Life Brain v2 is the default for newly generated train, rest, recover, and socialize decisions with bounded, auditable temporary consequences. V1 remains immutable for historical evidence. Opt-in v3 has passed its first bounded same-season routine-memory evaluation but remains unpromoted. Expand into longer memory, traits, relationships, nightlife, media, discipline, career decisions, and other sports only after each smaller input passes its own engineering evaluation.
+Athlete Life Brain v2 is the default for newly generated train, rest, recover, and socialize decisions with bounded, auditable temporary consequences. V1 remains immutable for historical evidence. Opt-in v3 is approved for a later controlled rollout but remains unpromoted until its prediction/history/replay contract passes. Expand into longer memory, traits, relationships, nightlife, media, discipline, career decisions, and other sports only after each smaller input passes its own engineering evaluation.
 
 Athletes keep distinct career identities: stars, specialists, average players, and below-average players are allowed and should not be automatically equalized. Durable ability changes gradually, while temporary form, fatigue, availability, practice, discipline, partying, fictional legal trouble, and other life consequences can alter performance and career outcomes through visible causal chains. See [[Design/Decisions/DEC-003 Multi-Brain AI Architecture]].
 
@@ -288,7 +298,7 @@ The shared life, world, memory, and learning layers will support every sport. Ea
 - Minimal athlete attributes.
 - Initial live LLM provider/model and separate inference budget.
 - First retraining dataset and method that fit the $5 ceiling.
-- Athlete Life Brain v3 deliberate review and controlled-rollout decision.
+- Athlete Life Brain v3 controlled rollout with aligned prediction memory and one-constant rollback.
 - AI evaluation criteria and model-update cadence.
 - Ranked competition scoring.
 - Match schedule and season length.

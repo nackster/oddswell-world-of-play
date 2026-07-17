@@ -28,7 +28,8 @@
     {"id":"p0-5n","type":"text","text":"## 0.5N ✅ CONTROLLED V2 ROLLOUT\nV2 default for new league/Admin decisions • frozen studies pinned to v1\nOld replays preserved • stored-version display • one-constant rollback • $0","x":-650,"y":3070,"width":1360,"height":150,"color":"3"},
     {"id":"p0-5o","type":"text","text":"## 0.5O ✅ ROUTINE MEMORY REVIEW\nOne signed -2..+2 same-season streak • rest/recover/offseason reset\nFuture opt-in v3 only • v2 stays default • no runtime or schema change • $0","x":-650,"y":3280,"width":1360,"height":150,"color":"3"},
     {"id":"p0-5p","type":"text","text":"## 0.5P ✅ OPT-IN V3 PILOT\n800 games + 9,120 decisions per policy • zero integrity failures\nTwo-choice routine ceiling • v3 eligible, not promoted • v2 default • $0","x":-650,"y":3490,"width":1360,"height":150,"color":"3"},
-    {"id":"p0-5q","type":"text","text":"## NEXT: 0.5Q DELIBERATE V3 REVIEW\nInterpret the paired evidence • verify rollout + rollback boundaries\nReview only • default must not change","x":-650,"y":3700,"width":1360,"height":150,"color":"4"}
+    {"id":"p0-5q","type":"text","text":"## 0.5Q ✅ DELIBERATE V3 REVIEW\nApproved for a separate controlled rollout • v2 remains default\nPrediction-memory blocker + history pins + rollback contract recorded • $0","x":-650,"y":3700,"width":1360,"height":150,"color":"3"},
+    {"id":"p0-5r","type":"text","text":"## NEXT: 0.5R CONTROLLED V3 ROLLOUT\nAlign prediction memory → pin historical evidence → switch new state\nProve replay + persistence + Admin agreement + one-constant rollback","x":-650,"y":3910,"width":1360,"height":150,"color":"4"}
   ],
   "edges": [
     {"id":"p0-edge-1","fromNode":"p0-a","fromSide":"right","toNode":"p0-b","toSide":"left"},
@@ -53,6 +54,7 @@
     {"id":"p0-edge-20","fromNode":"p0-5m","fromSide":"bottom","toNode":"p0-5n","toSide":"top"},
     {"id":"p0-edge-21","fromNode":"p0-5n","fromSide":"bottom","toNode":"p0-5o","toSide":"top"},
     {"id":"p0-edge-22","fromNode":"p0-5o","fromSide":"bottom","toNode":"p0-5p","toSide":"top"},
-    {"id":"p0-edge-23","fromNode":"p0-5p","fromSide":"bottom","toNode":"p0-5q","toSide":"top"}
+    {"id":"p0-edge-23","fromNode":"p0-5p","fromSide":"bottom","toNode":"p0-5q","toSide":"top"},
+    {"id":"p0-edge-24","fromNode":"p0-5q","fromSide":"bottom","toNode":"p0-5r","toSide":"top"}
   ]
 }
