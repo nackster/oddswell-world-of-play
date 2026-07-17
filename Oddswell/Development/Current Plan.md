@@ -342,6 +342,17 @@ status: active
 - **Rollback:** change the one default constant back to v3 and restart; preserve all stored v4 history.
 - **Next gate:** Phase 0.5X read-only v4 post-rollout integration review before another Athlete Life Brain input.
 
+### Phase 0.5X Athlete Life Brain v4 Post-Rollout Integration Review status
+
+- **Status:** Complete on `agent/phase-0d`; read-only review with no runtime or data change.
+- **Archive evidence:** 912/912 v4 decisions classify as 235 above, 327 below, and 350 typical. There are 754 covered classifications, 14 no-appearance defaults, 144 insufficient-history defaults, and 204/204 reached scoring responses.
+- **Integrity evidence:** maximum routine streak and elective run remain 2; policy, version, tenure, chronology, classification, precedence, transition, ordering, and replay violations are all zero.
+- **Prediction/history evidence:** first-season prediction winners and replay hashes agree 20/20. V1-v3 saved history remains unchanged when v4 is appended, and Phase 0.5L/0.5P/0.5U digests remain exact.
+- **Replay evidence:** the first response, Jalen Cross before Season 1 Game 5, follows a chronology-safe `above` classification. The 104-101 archive reconstructs all 423 frames with replay SHA `94afac0a7d08cbea7518acf036363ea25bceada15c1ea71b13351aeeec81c90c` and a verified seal.
+- **Validation:** 5 focused locks and all 50 regressions pass; Admin Console self-check and both affected clean canvas checks pass. Cost was `$0.00`. See [[Development/Reports/Phase 05X V4 Post-Rollout Integration Review]].
+- **Decision:** keep v4 as the default. This remains deterministic scoring-response telemetry, not learning, confidence, personality, intelligence, or real-world evidence.
+- **Next gate:** Phase 0.5Y design-only Next Athlete Life Input Selection Review; choose at most one justified bounded input, or none, before implementation.
+
 ## Phase 1: 3D vertical slice
 
 Build the one-city scope defined in [[Design/Decisions/DEC-002 First Playable Scope]].
@@ -362,7 +373,7 @@ The shared life, world, memory, and learning layers will support every sport. Ea
 - Minimal athlete attributes.
 - Initial live LLM provider/model and separate inference budget.
 - First retraining dataset and method that fit the $5 ceiling.
-- One read-only v4 post-rollout integration review before another Athlete Life Brain input.
+- One design-only next-input selection review before another Athlete Life Brain implementation.
 - AI evaluation criteria and model-update cadence.
 - Ranked competition scoring.
 - Match schedule and season length.

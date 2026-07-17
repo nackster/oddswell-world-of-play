@@ -80,6 +80,8 @@ Phase 0.5V approves v4 for a separate controlled rollout without changing the Ob
 
 Phase 0.5W satisfies that contract. The Observatory now displays v4 as `ACTIVE DEFAULT`; Admin league and prediction paths share season-local routine state and chronological completed-game scoring history and agree on all 20 first-season winners and replay hashes. V1-v4 evidence remains version-pinned, rollback remains one constant plus restart, and the animation still represents observable deterministic decisions—not learning, confidence, personality, or changing neural weights.
 
+Phase 0.5X rechecks that rollout without changing the Admin Console or simulator. The four-season archive contains 912 v4 decisions, 204/204 reached scoring responses, zero chronology/precedence/replay violations, and 20/20 first-season prediction/replay agreement. Its first response is Jalen Cross before Season 1 Game 5 after a chronology-safe above-typical scoring classification; the 104-101 archive reconstructs 423 frames with a verified replay seal. These remain auditable deterministic transitions, not learning, confidence, personality, intelligence, or neural-network training.
+
 The League Viewer follows the Phase 0D.4 public-information boundary. Hidden fatigue, recovery timers, injury-risk internals, seeds, RNG state, economy data, and admin mutations stay outside its payload.
 
 Archived games reuse hidden authoritative league state only on the server. The browser receives the complete recorded play-frame stream and verified archive metadata, never the hidden reconstruction inputs.
