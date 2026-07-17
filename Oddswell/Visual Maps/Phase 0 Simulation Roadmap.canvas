@@ -23,7 +23,8 @@
     {"id":"p0-5i","type":"text","text":"## 0.5I ✅ LIFE BRAIN EVALUATION\n912/912 choices • 80/80 games reconstructed • 0 policy violations\nBounded influence measured • no gameplay or policy change • $0","x":-650,"y":2020,"width":1360,"height":150,"color":"3"},
     {"id":"p0-5j","type":"text","text":"## 0.5J ✅ LIFE PREFERENCE REVIEW\nFuture practice | social input defined • v1 history stays immutable\nDesign only • no runtime, schema, archive, or outcome change • $0","x":-650,"y":2230,"width":1360,"height":150,"color":"3"},
     {"id":"p0-5k","type":"text","text":"## 0.5K ✅ VERSIONED PREFERENCE PILOT\nOpt-in v2 • 912 fresh choices • exact preference adherence\nDefault v1 + history unchanged • same state schema • $0","x":-650,"y":2440,"width":1360,"height":150,"color":"3"},
-    {"id":"p0-5l","type":"text","text":"## NEXT: 0.5L MULTI-SEED EVALUATION\nCompare v1 | v2 workload • injuries • readiness • outcomes\nRead only • no promotion or added trait yet","x":-650,"y":2650,"width":1360,"height":150,"color":"4"}
+    {"id":"p0-5l","type":"text","text":"## 0.5L ✅ MULTI-SEED EVALUATION\n800 games + 9,120 decisions per policy • 10 untouched seed blocks\nAll stability alarms pass • v2 eligible, not promoted • $0","x":-650,"y":2650,"width":1360,"height":150,"color":"3"},
+    {"id":"p0-5m","type":"text","text":"## NEXT: 0.5M V2 PROMOTION REVIEW\nReview evidence deliberately before any default-policy change\nNo automatic promotion • no new trait or narrative yet","x":-650,"y":2860,"width":1360,"height":150,"color":"4"}
   ],
   "edges": [
     {"id":"p0-edge-1","fromNode":"p0-a","fromSide":"right","toNode":"p0-b","toSide":"left"},
@@ -43,6 +44,7 @@
     {"id":"p0-edge-15","fromNode":"p0-5h","fromSide":"bottom","toNode":"p0-5i","toSide":"top"},
     {"id":"p0-edge-16","fromNode":"p0-5i","fromSide":"bottom","toNode":"p0-5j","toSide":"top"},
     {"id":"p0-edge-17","fromNode":"p0-5j","fromSide":"bottom","toNode":"p0-5k","toSide":"top"},
-    {"id":"p0-edge-18","fromNode":"p0-5k","fromSide":"bottom","toNode":"p0-5l","toSide":"top"}
+    {"id":"p0-edge-18","fromNode":"p0-5k","fromSide":"bottom","toNode":"p0-5l","toSide":"top"},
+    {"id":"p0-edge-19","fromNode":"p0-5l","fromSide":"bottom","toNode":"p0-5m","toSide":"top"}
   ]
 }

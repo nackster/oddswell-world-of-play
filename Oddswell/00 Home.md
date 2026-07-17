@@ -41,6 +41,7 @@ tags:
 - [[Development/Reports/Phase 05I Athlete Life Brain Evaluation|Phase 0.5I Athlete Life Brain evaluation]]
 - [[Development/Reports/Phase 05J Life Preference Policy Review|Phase 0.5J Life Preference policy review]]
 - [[Development/Reports/Phase 05K Versioned Life Preference Pilot|Phase 0.5K versioned Life Preference pilot]]
+- [[Development/Reports/Phase 05L Multi-Seed Life Preference Evaluation|Phase 0.5L multi-seed Life Preference evaluation]]
 - [[Visual Maps/Project Tool Map|Master project tool map]]
 - [[Visual Maps/3D Asset Toolchain|3D asset toolchain canvas]]
 - [[Visual Maps/Multi-Brain Architecture|Multi-brain architecture canvas]]
@@ -49,7 +50,7 @@ tags:
 
 ## Current focus
 
-Phase 0.5K is complete: an explicit opt-in Athlete Life Brain v2 generates a fresh 912-decision preference pilot while default v1 and its historical evidence remain unchanged. Phase 0.5L multi-seed evaluation is next; v2 is not promoted, and live models, stories, credits, wagering, and retraining remain inactive.
+Phase 0.5L is complete: ten untouched paired seed blocks validate 800 games and 9,120 decisions per policy. V2 stays inside the provisional workload, injury, readiness, scoring, and outcome alarms and is eligible for later review—but remains opt-in and unpromoted. Phase 0.5M promotion review is next; live models, stories, credits, wagering, and retraining remain inactive.
 
 ## Current state
 

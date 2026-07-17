@@ -56,6 +56,8 @@ Phase 0.5J defines a future fictional practice/social off-day preference and a v
 
 Phase 0.5K adds v2 only as an explicit local pilot path and produces a separate fixed-seed archive. The Admin Console deliberately remains on default v1; showing or promoting v2 waits for multi-seed evidence. Preference-group animation must not imply learning, personality inference, or neural-network training.
 
+Phase 0.5L evaluates v1 and v2 across 800 paired games per policy. The stability guardrails pass, but v2 remains unpromoted and invisible in the Admin Console. Winner differences and animated comparisons are path-sensitive simulator telemetry, not accuracy, intelligence, or real-world realism.
+
 The League Viewer follows the Phase 0D.4 public-information boundary. Hidden fatigue, recovery timers, injury-risk internals, seeds, RNG state, economy data, and admin mutations stay outside its payload.
 
 Archived games reuse hidden authoritative league state only on the server. The browser receives the complete recorded play-frame stream and verified archive metadata, never the hidden reconstruction inputs.
