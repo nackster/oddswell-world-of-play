@@ -70,6 +70,8 @@ Phase 0.5Q approves v3 for a separate controlled rollout but changes nothing in 
 
 Phase 0.5R satisfies that gate. The Observatory now displays v3 as `ACTIVE DEFAULT`; Admin league and prediction paths share its season-local routine transitions and agree on winners and replay hashes. V1/v2 archives remain version-pinned, rollback remains one constant plus restart, and the animation still represents observable deterministic decisions—not learned memory or changing neural weights.
 
+Phase 0.5S rechecks that rollout without changing runtime behavior. The four-season archive contains 119 bounded routine variations across 507 eligible decisions with zero rule violations; the first triggering archive, Season 1 Game 4, completes its exact 108-93 replay at frame 452/452 with `ARCHIVE VERIFIED`. Prediction, persistence, historical digest, full regression, and Admin self-check evidence remain clean. These visuals show auditable recorded transitions, not neurons, training, personality inference, or real-world learning.
+
 The League Viewer follows the Phase 0D.4 public-information boundary. Hidden fatigue, recovery timers, injury-risk internals, seeds, RNG state, economy data, and admin mutations stay outside its payload.
 
 Archived games reuse hidden authoritative league state only on the server. The browser receives the complete recorded play-frame stream and verified archive metadata, never the hidden reconstruction inputs.

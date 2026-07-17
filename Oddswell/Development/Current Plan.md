@@ -289,6 +289,16 @@ status: active
 - **Rollback:** change one default constant back to v2 and restart; preserve all stored v3 history.
 - **Next gate:** Phase 0.5S read-only post-rollout integration review before another Athlete Life Brain input.
 
+### Phase 0.5S Athlete Life Brain v3 Post-Rollout Integration Review status
+
+- **Status:** Complete on `agent/phase-0d`; read-only review with no runtime or data change.
+- **Archive evidence:** 912 v3 decisions include 507 elective routine-eligible decisions, 119 bounded variations, a maximum absolute streak and elective run of 2, and 0 routine violations. Practice-group variation was 57/250 (22.8%); social-group variation was 62/257 (24.1245%).
+- **Prediction/history evidence:** all 20 first-season Admin predictions agree with league winners and replay hashes. Frozen Phase 0.5L and 0.5P digests remain exact; v1/v2 append-history and explicit v2/v3 replay/resume tests pass.
+- **Admin/browser evidence:** the first routine-trigger archive, Season 1 Game 4, completed 452/452 frames at 108-93 with `ARCHIVE VERIFIED`, the expected replay SHA, and no console warnings or errors.
+- **Validation:** 2 focused evidence locks and all 47 regression tests pass; Admin Console self-check and both affected clean canvas checks pass. Cost was `$0.00`. See [[Development/Reports/Phase 05S Post-Rollout Integration Review]].
+- **Decision:** keep v3 as the default. This remains deterministic routine telemetry, not learning, intelligence, personality, or real-world validation.
+- **Next gate:** Phase 0.5T design-only Recent Performance Response Review; define and evaluate the information boundary before any new policy version or gameplay change.
+
 ## Phase 1: 3D vertical slice
 
 Build the one-city scope defined in [[Design/Decisions/DEC-002 First Playable Scope]].
@@ -309,7 +319,7 @@ The shared life, world, memory, and learning layers will support every sport. Ea
 - Minimal athlete attributes.
 - Initial live LLM provider/model and separate inference budget.
 - First retraining dataset and method that fit the $5 ceiling.
-- Athlete Life Brain v3 post-rollout observation, then the next smallest life input review.
+- One bounded recent-performance response input review after the completed v3 post-rollout observation.
 - AI evaluation criteria and model-update cadence.
 - Ranked competition scoring.
 - Match schedule and season length.

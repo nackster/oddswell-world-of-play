@@ -48,6 +48,7 @@ tags:
 - [[Development/Reports/Phase 05P Opt-In Routine Memory Pilot|Phase 0.5P opt-in routine memory pilot]]
 - [[Development/Reports/Phase 05Q V3 Promotion Review|Phase 0.5Q Athlete Life Brain v3 promotion review]]
 - [[Development/Reports/Phase 05R Controlled V3 Default Rollout|Phase 0.5R controlled Athlete Life Brain v3 rollout]]
+- [[Development/Reports/Phase 05S Post-Rollout Integration Review|Phase 0.5S Athlete Life Brain v3 post-rollout review]]
 - [[Visual Maps/Project Tool Map|Master project tool map]]
 - [[Visual Maps/3D Asset Toolchain|3D asset toolchain canvas]]
 - [[Visual Maps/Multi-Brain Architecture|Multi-brain architecture canvas]]
@@ -56,7 +57,7 @@ tags:
 
 ## Current focus
 
-Phase 0.5R is complete: v3 is the active default for new league and Admin decisions, with matching season-local routine memory in prediction and league paths. Historical v1/v2 evidence, replay, and persistence remain exact; rollback is one constant plus restart. Phase 0.5S will perform a read-only post-rollout review before another life-brain input. Live models, stories, credits, wagering, and retraining remain inactive.
+Phase 0.5S is complete: the read-only post-rollout review found 119 bounded routine variations, zero violations, 20/20 matching first-season predictions, and a verified 108-93 replay of the first routine-trigger game. V3 remains the active default and rollback remains one constant plus restart. Phase 0.5T will review one bounded recent-performance response input on paper before any new policy version. Live models, stories, credits, wagering, and retraining remain inactive.
 
 ## Current state
 
