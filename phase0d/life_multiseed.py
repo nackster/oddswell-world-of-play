@@ -9,8 +9,8 @@ import json
 from phase0d.career import teams_for_season
 from phase0d.league import STATE_SCHEMA, LeagueState, new_league, simulate_next_season
 from phase0d.life import (
+    LIFE_BRAIN_V1_VERSION,
     LIFE_BRAIN_V2_VERSION,
-    LIFE_BRAIN_VERSION,
     OFF_DAY_PREFERENCES,
     choose_life_action,
 )
@@ -289,9 +289,9 @@ def _compare(v1: LeagueState, v2: LeagueState) -> tuple[int, int, float]:
 
 @lru_cache(maxsize=1)
 def run_life_multiseed_evaluation() -> MultiSeedEvaluation:
-    v1_states = tuple(_league(seed, LIFE_BRAIN_VERSION) for seed in SEED_BLOCKS)
+    v1_states = tuple(_league(seed, LIFE_BRAIN_V1_VERSION) for seed in SEED_BLOCKS)
     v2_states = tuple(_league(seed, LIFE_BRAIN_V2_VERSION) for seed in SEED_BLOCKS)
-    v1 = _summarize(v1_states, LIFE_BRAIN_VERSION)
+    v1 = _summarize(v1_states, LIFE_BRAIN_V1_VERSION)
     v2 = _summarize(v2_states, LIFE_BRAIN_V2_VERSION)
     blocks = []
     total_actions = total_winners = 0
@@ -303,7 +303,7 @@ def run_life_multiseed_evaluation() -> MultiSeedEvaluation:
         weighted_margin += margin * SEASONS_PER_BLOCK * GAMES_PER_SEASON
         blocks.append(BlockComparison(
             seed,
-            _summarize((v1_state,), LIFE_BRAIN_VERSION),
+            _summarize((v1_state,), LIFE_BRAIN_V1_VERSION),
             _summarize((v2_state,), LIFE_BRAIN_V2_VERSION),
             actions,
             winners,

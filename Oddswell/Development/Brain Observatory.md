@@ -40,7 +40,7 @@ The server is hard-bound to `127.0.0.1`. There is intentionally no login screen 
 
 ## Phase 0D integration validation
 
-The 2026-07-15 integration pass confirmed the committed D.2 rotation/minutes, D.3 availability/recovery, and D.4 public-prediction gates through all 38 regression tests, the Admin Console self-check, and fresh deterministic runs. The D.2-D.4 reports remain historical evidence for their named engine/state versions; current reruns use `phase05h-v1` and must not overwrite those earlier measurements.
+The 2026-07-15 integration pass confirmed the committed D.2 rotation/minutes, D.3 availability/recovery, and D.4 public-prediction gates through all 38 regression tests, the Admin Console self-check, and fresh deterministic runs. The D.2-D.4 reports remain historical evidence for their named engine/state versions; current reruns use engine `phase05h-v1` and league `phase05n-v1` and must not overwrite those earlier measurements.
 
 Live localhost checks confirmed server-side seed guards, an audit entry surviving a server restart, read-only minutes/availability/prediction evidence, executable brain/engine/league/policy versions, and locked clothing/items/economy/moderation controls. Browser checks confirmed the Observatory animation at desktop and 390-pixel mobile widths with no console errors or horizontal page overflow. External cost remained `$0.00`; no paid API, credits, wagering, monetization, deployment, or retraining was used.
 
@@ -58,13 +58,15 @@ Phase 0.5K adds v2 only as an explicit local pilot path and produces a separate 
 
 Phase 0.5L evaluates v1 and v2 across 800 paired games per policy. The stability guardrails pass, but v2 remains unpromoted and invisible in the Admin Console. Winner differences and animated comparisons are path-sensitive simulator telemetry, not accuracy, intelligence, or real-world realism.
 
-Phase 0.5M approves v2 for a controlled promotion without changing runtime behavior. The Admin Console still displays and runs v1 until Phase 0.5N explicitly pins historical studies to v1, moves only new league state to v2, and proves replay, persistence, version display, and rollback. Approval is an engineering release decision, not evidence of learning or a neural-network training event.
+Phase 0.5M approved v2 for a controlled promotion without changing runtime behavior at that gate. Approval was an engineering release decision, not evidence of learning or a neural-network training event.
+
+Phase 0.5N makes v2 the default for newly generated Admin and league decisions. Frozen Phase 0.5I, Phase 0.5L, and Phase 0D.4 paths remain explicitly v1, while every saved decision and replay manifest retains its stored version. The interface derives each season label from those stored decisions and reports the current v2 default as `ACTIVE DEFAULT`. Changing the default requires an Admin process restart because payloads are cached.
 
 The League Viewer follows the Phase 0D.4 public-information boundary. Hidden fatigue, recovery timers, injury-risk internals, seeds, RNG state, economy data, and admin mutations stay outside its payload.
 
 Archived games reuse hidden authoritative league state only on the server. The browser receives the complete recorded play-frame stream and verified archive metadata, never the hidden reconstruction inputs.
 
-Athlete profiles keep durable specialty identity separate from temporary form. Lifecycle v1 applies fictional age, bounded development/decline, and age-35 retirement; roster continuity v1 preserves Roman's retired record and introduces Soren Lake in Season 4. Athlete Life Brain v1 now shows each athlete's recent train, rest, recover, or socialize choice and its bounded next-game effect. Hidden readiness, fatigue, recovery timers, and seeds remain private; contracts, draft/free agency, stories, legal events, and permanent life-driven rating changes remain inactive.
+Athlete profiles keep durable specialty identity separate from temporary form. Lifecycle v1 applies fictional age, bounded development/decline, and age-35 retirement; roster continuity v1 preserves Roman's retired record and introduces Soren Lake in Season 4. Athlete Life Brain v2 now drives new train, rest, recover, or socialize choices and shows each athlete's bounded next-game effect. Historical seasons continue to display their stored policy version. Hidden readiness, fatigue, recovery timers, and seeds remain private; contracts, draft/free agency, stories, legal events, and permanent life-driven rating changes remain inactive.
 
 When genuine training is approved, connect provider progress, dataset version, candidate version, validation metrics, estimated and actual cost, and promotion-gate results to the existing interface. Hosted LLM internals remain opaque, so the Observatory will display observable telemetry rather than fabricated neuron activations.
 

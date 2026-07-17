@@ -16,7 +16,8 @@ from phase0d.league import (
     simulate_season,
 )
 from phase0d.life import (
-    LIFE_BRAIN_VERSION,
+    DEFAULT_LIFE_BRAIN_VERSION,
+    LIFE_BRAIN_V1_VERSION,
     LIFE_BRAIN_V2_VERSION,
     OFF_DAY_PREFERENCES,
     apply_life_action,
@@ -27,6 +28,7 @@ from phase0d.life import (
 
 class AthleteLifeBrainTests(unittest.TestCase):
     def test_preference_pilot_is_explicit_complete_and_resumable(self) -> None:
+        self.assertEqual(DEFAULT_LIFE_BRAIN_VERSION, LIFE_BRAIN_V2_VERSION)
         self.assertEqual(set(OFF_DAY_PREFERENCES), {
             player.name
             for season_number in range(1, 5)
@@ -63,13 +65,20 @@ class AthleteLifeBrainTests(unittest.TestCase):
             teams,
             policy_version=LIFE_BRAIN_V2_VERSION,
         )
+        legacy_decisions = between_game_choices(
+            2,
+            dict(empty_fatigue(teams)),
+            dict(empty_availability(teams)),
+            teams,
+            policy_version=LIFE_BRAIN_V1_VERSION,
+        )
         with self.assertRaisesRegex(ValueError, "policy does not match"):
             simulate_scheduled_game(
                 build_schedule(2, 1_950, teams)[1],
                 empty_fatigue(teams),
                 empty_availability(teams),
                 teams,
-                life_decisions=decisions,
+                life_decisions=legacy_decisions,
             )
         with self.assertRaisesRegex(ValueError, "missing off-day preference"):
             choose_life_action(
@@ -80,6 +89,7 @@ class AthleteLifeBrainTests(unittest.TestCase):
             new_league(1_950), 4, teams_for_season(1),
             life_policy_version=LIFE_BRAIN_V2_VERSION,
         )
+        self.assertEqual(state, simulate_next_season(new_league(1_950), 4, teams_for_season(1)))
         with TemporaryDirectory() as directory:
             path = Path(directory) / "pilot.json"
             save_league(state, path)
@@ -104,7 +114,18 @@ class AthleteLifeBrainTests(unittest.TestCase):
         self.assertEqual(first, between_game_choices(2, fatigue, availability, teams))
         self.assertEqual(len(first), 12)
         self.assertEqual({decision.selected for decision in first}, {"train", "socialize"})
-        self.assertTrue(all(decision.policy_version == LIFE_BRAIN_VERSION for decision in first))
+        self.assertTrue(
+            all(decision.policy_version == DEFAULT_LIFE_BRAIN_VERSION for decision in first)
+        )
+        legacy = between_game_choices(
+            2,
+            dict(empty_fatigue(teams)),
+            dict(empty_availability(teams)),
+            teams,
+            policy_version=LIFE_BRAIN_V1_VERSION,
+        )
+        self.assertTrue(all(decision.policy_version == LIFE_BRAIN_V1_VERSION for decision in legacy))
+        self.assertNotEqual(first, legacy)
         self.assertTrue(all(0 <= decision.readiness <= 0.02 for decision in first))
         self.assertTrue(all(decision.legal_choices for decision in first))
 
@@ -156,6 +177,37 @@ class AthleteLifeBrainTests(unittest.TestCase):
         self.assertEqual(
             simulate_next_season(state, 4),
             simulate_next_season(loaded, 4),
+        )
+
+    def test_saved_v1_history_is_unchanged_when_default_v2_is_appended(self) -> None:
+        legacy = simulate_next_season(
+            new_league(1_850),
+            4,
+            teams_for_season(1),
+            life_policy_version=LIFE_BRAIN_V1_VERSION,
+        )
+        with TemporaryDirectory() as directory:
+            path = Path(directory) / "legacy.json"
+            save_league(legacy, path)
+            loaded = load_league(path)
+        self.assertEqual(legacy, loaded)
+        mixed = simulate_next_season(loaded, 4, teams_for_season(2))
+        self.assertEqual(mixed.seasons[0], legacy.seasons[0])
+        self.assertEqual(
+            {
+                decision.policy_version
+                for game in mixed.seasons[0].games
+                for decision in game.life_decisions
+            },
+            {LIFE_BRAIN_V1_VERSION},
+        )
+        self.assertEqual(
+            {
+                decision.policy_version
+                for game in mixed.seasons[1].games
+                for decision in game.life_decisions
+            },
+            {LIFE_BRAIN_V2_VERSION},
         )
 
     def test_retirement_and_debut_bound_the_choice_history(self) -> None:

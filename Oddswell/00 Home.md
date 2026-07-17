@@ -43,6 +43,7 @@ tags:
 - [[Development/Reports/Phase 05K Versioned Life Preference Pilot|Phase 0.5K versioned Life Preference pilot]]
 - [[Development/Reports/Phase 05L Multi-Seed Life Preference Evaluation|Phase 0.5L multi-seed Life Preference evaluation]]
 - [[Development/Reports/Phase 05M V2 Promotion Review|Phase 0.5M Athlete Life Brain v2 promotion review]]
+- [[Development/Reports/Phase 05N Controlled V2 Default Rollout|Phase 0.5N controlled Athlete Life Brain v2 rollout]]
 - [[Visual Maps/Project Tool Map|Master project tool map]]
 - [[Visual Maps/3D Asset Toolchain|3D asset toolchain canvas]]
 - [[Visual Maps/Multi-Brain Architecture|Multi-brain architecture canvas]]
@@ -51,7 +52,7 @@ tags:
 
 ## Current focus
 
-Phase 0.5M is complete: Athlete Life Brain v2 is approved for a controlled promotion after passing all Phase 0.5L gates, but it remains opt-in until the history-safe rollout is implemented. Phase 0.5N will pin frozen evidence to v1, move only new league/Admin state to v2, and prove replay plus rollback. Live models, stories, credits, wagering, and retraining remain inactive.
+Phase 0.5N is complete: Athlete Life Brain v2 is the default for newly generated league and Admin decisions. Frozen Phase 0.5I, Phase 0.5L, and Phase 0D.4 evidence remains explicitly v1; stored decisions and replay manifests keep their original versions. Phase 0.5O will review one bounded short-term memory input before implementation. Live models, stories, credits, wagering, and retraining remain inactive.
 
 ## Current state
 

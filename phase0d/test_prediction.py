@@ -29,6 +29,7 @@ from phase0d.prediction import (
     run_prediction_study,
     verify_prediction_record,
 )
+from phase0d.life import LIFE_BRAIN_V1_VERSION
 
 
 class PredictionTests(unittest.TestCase):
@@ -110,6 +111,17 @@ class PredictionTests(unittest.TestCase):
             )
         )
 
+    def test_historical_study_defaults_explicitly_to_v1(self) -> None:
+        default = run_prediction_study(0, 1, 4, 701)
+        explicit = run_prediction_study(
+            0,
+            1,
+            4,
+            701,
+            life_policy_version=LIFE_BRAIN_V1_VERSION,
+        )
+        self.assertEqual(default, explicit)
+
     def test_commitment_is_created_before_each_authoritative_game(self) -> None:
         events = []
 
@@ -189,6 +201,7 @@ class PredictionTests(unittest.TestCase):
             empty_fatigue(teams),
             empty_availability(teams),
             teams,
+            life_policy_version=LIFE_BRAIN_V1_VERSION,
         )
         self.assertEqual((first.winner, first.replay_sha256), (game.winner, game.replay_sha256))
         self.assertFalse(verify_prediction_record(replace(first, replay_sha256="tampered")))

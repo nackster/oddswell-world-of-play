@@ -8,8 +8,8 @@ from phase0a.simulator import GameResult, simulate_game
 from phase0d.career import teams_for_season
 from phase0d.league import new_league, simulate_next_season
 from phase0d.life import (
+    LIFE_BRAIN_V1_VERSION,
     LIFE_BRAIN_V2_VERSION,
-    LIFE_BRAIN_VERSION,
     OFF_DAY_PREFERENCES,
     choose_life_action,
 )
@@ -189,7 +189,7 @@ def _run_life_evaluation(policy_version: str) -> LifeEvaluation:
 
 
 def run_life_evaluation() -> LifeEvaluation:
-    return _run_life_evaluation(LIFE_BRAIN_VERSION)
+    return _run_life_evaluation(LIFE_BRAIN_V1_VERSION)
 
 
 def run_life_v2_pilot() -> LifeEvaluation:

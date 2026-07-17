@@ -109,7 +109,7 @@ class LeagueTests(unittest.TestCase):
         recovered = recover_availability(after, 7, teams)
         self.assertTrue(all(days == 0 for _, days in recovered))
 
-    def test_fixed_seed_injury_rate_stays_broadly_realistic(self) -> None:
+    def test_fixed_seed_injury_rate_stays_inside_provisional_bound(self) -> None:
         teams = default_teams()
         availability = empty_availability(teams)
         fatigue = tuple((player.name, 0.25) for team in teams for player in team.players)

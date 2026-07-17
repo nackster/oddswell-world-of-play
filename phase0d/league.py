@@ -19,14 +19,15 @@ from phase0a.simulator import (
 )
 from phase0c.replay import replay_manifest, verify_replay_manifest
 from phase0d.life import (
+    DEFAULT_LIFE_BRAIN_VERSION,
+    LIFE_BRAIN_V1_VERSION,
     LIFE_BRAIN_V2_VERSION,
-    LIFE_BRAIN_VERSION,
     LifeDecision,
     between_game_choices,
 )
 
 
-LEAGUE_VERSION = "phase05h-v1"
+LEAGUE_VERSION = "phase05n-v1"
 STATE_SCHEMA = "oddswell-league-state-v4"
 FATIGUE_MODEL_VERSION = "minutes-workload-v1"
 INJURY_MODEL_VERSION = "minor-availability-v1"
@@ -207,7 +208,7 @@ def apply_life_day(
     availability: AvailabilitySnapshot,
     teams: tuple[Team, Team],
     *,
-    policy_version: str = LIFE_BRAIN_VERSION,
+    policy_version: str = DEFAULT_LIFE_BRAIN_VERSION,
 ) -> tuple[FatigueSnapshot, AvailabilitySnapshot, ReadinessSnapshot, tuple[LifeDecision, ...]]:
     decisions = between_game_choices(
         game_number, dict(fatigue), dict(availability), teams,
@@ -326,10 +327,10 @@ def simulate_scheduled_game(
     readiness: ReadinessSnapshot | None = None,
     life_decisions: tuple[LifeDecision, ...] = (),
     *,
-    life_policy_version: str = LIFE_BRAIN_VERSION,
+    life_policy_version: str = DEFAULT_LIFE_BRAIN_VERSION,
 ) -> SeasonGame:
     """Resolve one scheduled game through the authoritative league transition."""
-    if life_policy_version not in {LIFE_BRAIN_VERSION, LIFE_BRAIN_V2_VERSION}:
+    if life_policy_version not in {LIFE_BRAIN_V1_VERSION, LIFE_BRAIN_V2_VERSION}:
         raise ValueError(f"unsupported Athlete Life Brain policy: {life_policy_version!r}")
     matchup = (fixture.home, fixture.away)
     if any(decision.policy_version != life_policy_version for decision in life_decisions):
@@ -390,7 +391,7 @@ def simulate_season(
     season_number: int = 1,
     teams: tuple[Team, Team] | None = None,
     *,
-    life_policy_version: str = LIFE_BRAIN_VERSION,
+    life_policy_version: str = DEFAULT_LIFE_BRAIN_VERSION,
 ) -> SeasonResult:
     teams = teams or default_teams()
     schedule = build_schedule(game_count, start_seed, teams)
@@ -467,7 +468,7 @@ def simulate_next_season(
     game_count: int = 20,
     teams: tuple[Team, Team] | None = None,
     *,
-    life_policy_version: str = LIFE_BRAIN_VERSION,
+    life_policy_version: str = DEFAULT_LIFE_BRAIN_VERSION,
 ) -> LeagueState:
     if state.schema != STATE_SCHEMA:
         raise ValueError(f"unsupported league state schema: {state.schema}")

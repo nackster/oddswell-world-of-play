@@ -6,8 +6,9 @@ from typing import Mapping
 from phase0a.simulator import MAX_READINESS_MODIFIER, Team, clamp
 
 
-LIFE_BRAIN_VERSION = "athlete-life-v1"
+LIFE_BRAIN_V1_VERSION = "athlete-life-v1"
 LIFE_BRAIN_V2_VERSION = "athlete-life-v2"
+DEFAULT_LIFE_BRAIN_VERSION = LIFE_BRAIN_V2_VERSION
 LIFE_CHOICES = ("train", "rest", "recover", "socialize")
 HIGH_FATIGUE = 0.24
 OFF_DAY_PREFERENCES = {
@@ -50,11 +51,11 @@ def choose_life_action(
     fatigue: float,
     recovery_days: int,
     *,
-    policy_version: str = LIFE_BRAIN_VERSION,
+    policy_version: str = DEFAULT_LIFE_BRAIN_VERSION,
 ) -> str:
     if athlete == "" or game_number < 2 or roster_index < 0:
         raise ValueError("athlete, between-game number, and roster index are required")
-    if policy_version not in {LIFE_BRAIN_VERSION, LIFE_BRAIN_V2_VERSION}:
+    if policy_version not in {LIFE_BRAIN_V1_VERSION, LIFE_BRAIN_V2_VERSION}:
         raise ValueError(f"unsupported Athlete Life Brain policy: {policy_version!r}")
     if policy_version == LIFE_BRAIN_V2_VERSION and athlete not in OFF_DAY_PREFERENCES:
         raise ValueError(f"missing off-day preference for {athlete!r}")
@@ -74,13 +75,13 @@ def apply_life_action(
     fatigue: float,
     recovery_days: int,
     *,
-    policy_version: str = LIFE_BRAIN_VERSION,
+    policy_version: str = DEFAULT_LIFE_BRAIN_VERSION,
 ) -> LifeDecision:
     if action not in LIFE_CHOICES:
         raise ValueError(f"illegal Athlete Life Brain choice: {action!r}")
     if not 0 <= fatigue <= 0.45 or not 0 <= recovery_days <= 7:
         raise ValueError("invalid temporary athlete state")
-    if policy_version not in {LIFE_BRAIN_VERSION, LIFE_BRAIN_V2_VERSION}:
+    if policy_version not in {LIFE_BRAIN_V1_VERSION, LIFE_BRAIN_V2_VERSION}:
         raise ValueError(f"unsupported Athlete Life Brain policy: {policy_version!r}")
     if policy_version == LIFE_BRAIN_V2_VERSION and athlete not in OFF_DAY_PREFERENCES:
         raise ValueError(f"missing off-day preference for {athlete!r}")
@@ -139,7 +140,7 @@ def between_game_choices(
     availability: Mapping[str, int],
     teams: tuple[Team, Team],
     *,
-    policy_version: str = LIFE_BRAIN_VERSION,
+    policy_version: str = DEFAULT_LIFE_BRAIN_VERSION,
 ) -> tuple[LifeDecision, ...]:
     roster = tuple(player.name for team in teams for player in team.players)
     if set(fatigue) != set(roster) or set(availability) != set(roster):

@@ -2,6 +2,7 @@ import time
 import unittest
 
 from phase0d.league import STATE_SCHEMA
+from phase0d.life import LIFE_BRAIN_V1_VERSION, LIFE_BRAIN_V2_VERSION
 from phase0d.life_multiseed import (
     LIFE_MULTISEED_VERSION,
     SEED_BLOCKS,
@@ -20,6 +21,8 @@ class LifeMultiSeedEvaluationTests(unittest.TestCase):
         self.assertEqual(result.seed_blocks, SEED_BLOCKS)
         self.assertEqual(result.games_per_policy, 800)
         self.assertEqual((result.v1.decisions, result.v2.decisions), (9_120, 9_120))
+        self.assertEqual(result.v1.policy_version, LIFE_BRAIN_V1_VERSION)
+        self.assertEqual(result.v2.policy_version, LIFE_BRAIN_V2_VERSION)
         self.assertTrue(all(block.v1.decisions == block.v2.decisions == 912 for block in result.blocks))
         self.assertEqual(result.failures, ())
         self.assertEqual(result.promotion_status, "ELIGIBLE FOR LATER REVIEW")

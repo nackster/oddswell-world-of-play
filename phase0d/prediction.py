@@ -23,6 +23,7 @@ from phase0d.league import (
     recover_fatigue,
     simulate_scheduled_game,
 )
+from phase0d.life import LIFE_BRAIN_V1_VERSION
 
 
 PREDICTION_VERSION = "phase0d4-v1"
@@ -245,6 +246,8 @@ def run_prediction_study(
     holdout_seasons: int = 5,
     games_per_season: int = 20,
     start_seed: int = 14_000,
+    *,
+    life_policy_version: str = LIFE_BRAIN_V1_VERSION,
 ) -> PredictionStudy:
     if warmup_seasons < 0 or holdout_seasons < 1:
         raise ValueError("warmup must be nonnegative and holdout must be positive")
@@ -272,7 +275,8 @@ def run_prediction_study(
                 fatigue = recover_fatigue(fatigue, rest_days, teams)
                 availability = recover_availability(availability, rest_days, teams)
                 fatigue, availability, readiness, life_decisions = apply_life_day(
-                    fixture.number, fatigue, availability, teams
+                    fixture.number, fatigue, availability, teams,
+                    policy_version=life_policy_version,
                 )
             snapshot = public_pregame_snapshot(
                 season_number,
@@ -289,7 +293,8 @@ def run_prediction_study(
             commitment_sha256 = hashlib.sha256(commitment_json.encode()).hexdigest()
 
             game = simulate_scheduled_game(
-                fixture, fatigue, availability, teams, readiness, life_decisions
+                fixture, fatigue, availability, teams, readiness, life_decisions,
+                life_policy_version=life_policy_version,
             )
             home_win = int(game.winner == game.home_team)
             injury_subset = any(

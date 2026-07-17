@@ -44,8 +44,13 @@ from phase0d.career import (  # noqa: E402
     retirement_season,
     teams_for_season,
 )
-from phase0d.league import LEAGUE_VERSION, new_league, simulate_next_season  # noqa: E402
-from phase0d.life import LIFE_BRAIN_VERSION  # noqa: E402
+from phase0d.league import (  # noqa: E402
+    LEAGUE_VERSION,
+    SeasonResult,
+    new_league,
+    simulate_next_season,
+)
+from phase0d.life import DEFAULT_LIFE_BRAIN_VERSION  # noqa: E402
 from phase0d.prediction import PREDICTION_VERSION, run_prediction_study  # noqa: E402
 
 
@@ -125,8 +130,8 @@ def status_payload() -> dict[str, object]:
             {
                 "id": "athlete",
                 "name": "Athlete Life Brain",
-                "status": "ACTIVE PILOT",
-                "version": LIFE_BRAIN_VERSION,
+                "status": "ACTIVE DEFAULT",
+                "version": DEFAULT_LIFE_BRAIN_VERSION,
                 "detail": "Deterministic between-game train, rest, recover, and socialize choices with auditable temporary effects. No LLM or permanent rating changes.",
             },
             {
@@ -202,7 +207,10 @@ def career_league():
     state = new_league(LEAGUE_VIEW_START_SEED)
     for _ in range(CAREER_SEASONS):
         state = simulate_next_season(
-            state, LEAGUE_VIEW_GAMES, teams_for_season(state.next_season)
+            state,
+            LEAGUE_VIEW_GAMES,
+            teams_for_season(state.next_season),
+            life_policy_version=DEFAULT_LIFE_BRAIN_VERSION,
         )
     return state
 
@@ -214,7 +222,24 @@ def league_season():
 
 @lru_cache(maxsize=1)
 def league_prediction_study():
-    return run_prediction_study(0, 1, LEAGUE_VIEW_GAMES, LEAGUE_VIEW_START_SEED)
+    return run_prediction_study(
+        0,
+        1,
+        LEAGUE_VIEW_GAMES,
+        LEAGUE_VIEW_START_SEED,
+        life_policy_version=DEFAULT_LIFE_BRAIN_VERSION,
+    )
+
+
+def season_life_brain_version(season: SeasonResult) -> str:
+    versions = {
+        decision.policy_version
+        for game in season.games
+        for decision in game.life_decisions
+    }
+    if len(versions) != 1:
+        raise RuntimeError("season must contain exactly one Athlete Life Brain version")
+    return versions.pop()
 
 
 @lru_cache(maxsize=1)
@@ -262,6 +287,7 @@ def league_payload() -> dict[str, object]:
             "prediction": PREDICTION_VERSION,
             "brain": BRAIN_VERSION,
             "engine": ENGINE_VERSION,
+            "life_brain": season_life_brain_version(season),
         },
         "boundary": (
             "Public-only read model. Hidden fatigue, recovery timers, injury-risk internals, "
@@ -612,6 +638,7 @@ def athlete_profiles_payload() -> dict[str, object]:
     season_splits: dict[str, list[dict[str, object]]] = defaultdict(list)
 
     for season in state.seasons:
+        life_brain_version = season_life_brain_version(season)
         standings = {standing.team: standing for standing in season.standings}
         totals: dict[str, Counter[str]] = defaultdict(Counter)
         histories: dict[str, list[dict[str, object]]] = defaultdict(list)
@@ -676,7 +703,7 @@ def athlete_profiles_payload() -> dict[str, object]:
                     **line,
                     "form": athlete_form(histories[name], float(line["points_per_game"])),
                     "life": {
-                        "version": LIFE_BRAIN_VERSION,
+                        "version": life_brain_version,
                         "choices": len(life_histories[name]),
                         "breakdown": dict(
                             Counter(entry["choice"] for entry in life_histories[name])
@@ -738,7 +765,7 @@ def athlete_profiles_payload() -> dict[str, object]:
                     "specialty": player_specialty(player),
                     "bounded_rating_changes": True,
                     "specialty_preserved": True,
-                    "life_brain": LIFE_BRAIN_VERSION,
+                    "life_brain": current["life"]["version"],
                     "totals": career_line,
                 },
                 "availability": {
@@ -771,7 +798,8 @@ def athlete_profiles_payload() -> dict[str, object]:
         },
         "boundary": (
             "Four verified seasons now preserve retired history and fill Roman Voss's roster slot with "
-            "stable incoming athlete Soren Lake. Athlete Life Brain v1 records bounded between-game "
+            f"stable incoming athlete Soren Lake. Athlete Life Brain {DEFAULT_LIFE_BRAIN_VERSION} "
+            "records bounded between-game "
             "choices and temporary next-game effects without changing durable ratings or retired history."
         ),
         "profiles": profiles,
@@ -899,8 +927,8 @@ def self_check() -> None:
     assert status["prediction_version"] == PREDICTION_VERSION
     assert status["career_version"] == CAREER_VERSION
     athlete_brain = next(brain for brain in status["brains"] if brain["id"] == "athlete")
-    assert athlete_brain["status"] == "ACTIVE PILOT"
-    assert athlete_brain["version"] == LIFE_BRAIN_VERSION
+    assert athlete_brain["status"] == "ACTIVE DEFAULT"
+    assert athlete_brain["version"] == DEFAULT_LIFE_BRAIN_VERSION
     assert [module["id"] for module in status["admin_modules"]] == [
         "overview", "brains", "athletes", "simulation", "content", "world", "operations", "audit"
     ]
@@ -912,6 +940,7 @@ def self_check() -> None:
     assert league["season"]["games"] == LEAGUE_VIEW_GAMES
     assert sum(standing["wins"] for standing in league["standings"]) == LEAGUE_VIEW_GAMES
     assert len(league["games"]) == LEAGUE_VIEW_GAMES
+    assert league["versions"]["life_brain"] == DEFAULT_LIFE_BRAIN_VERSION
     assert all(len(game["replay_sha256"]) == 64 for game in league["games"])
     assert all(len(game["prediction_commitment_sha256"]) == 64 for game in league["games"])
     public_json = json.dumps(league, sort_keys=True)
@@ -976,8 +1005,13 @@ def self_check() -> None:
     assert sum(season["life"]["choices"] for season in retired[0]["seasons"]) == 57
     assert sum(season["life"]["choices"] for season in incoming["seasons"]) == 19
     assert all(
-        profile["career"]["life_brain"] == LIFE_BRAIN_VERSION
+        profile["career"]["life_brain"] == DEFAULT_LIFE_BRAIN_VERSION
         for profile in athletes["profiles"]
+    )
+    assert all(
+        season["life"]["version"] == DEFAULT_LIFE_BRAIN_VERSION
+        for profile in athletes["profiles"]
+        for season in profile["seasons"]
     )
     assert all(
         abs(current["ratings"][rating] - previous["ratings"][rating]) <= 1

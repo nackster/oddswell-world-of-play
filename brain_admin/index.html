@@ -685,7 +685,7 @@
                   <div class="career-season-tabs" id="profile-seasons"></div>
                 </section>
                 <section class="league-panel">
-                  <div class="league-panel-head"><h3>Athlete Life Brain v1</h3><span id="profile-life-label">Auditable temporary choices</span></div>
+                  <div class="league-panel-head"><h3 id="profile-life-title">Athlete Life Brain</h3><span id="profile-life-label">Auditable temporary choices</span></div>
                   <div class="life-timeline" id="profile-life"></div>
                 </section>
                 <div class="career-metrics">
@@ -1361,7 +1361,8 @@
       });
       $('profile-initials').textContent = athleteInitials(profile.name);
       $('profile-name').textContent = profile.name;
-      $('profile-team').textContent = `${profile.team} · ${profile.career.specialty} · Age ${season.age} ${season.stage} · Athlete Life Brain v1`;
+      $('profile-team').textContent = `${profile.team} · ${profile.career.specialty} · Age ${season.age} ${season.stage} · Athlete Life Brain ${season.life.version}`;
+      $('profile-life-title').textContent = `Athlete Life Brain ${season.life.version}`;
       $('profile-status').textContent = profile.career.status;
       $('profile-role').textContent = profile.career.role;
       $('profile-tier').textContent = profile.career.tier;
