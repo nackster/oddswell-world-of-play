@@ -9,10 +9,12 @@ import json
 from phase0d.career import teams_for_season
 from phase0d.league import STATE_SCHEMA, LeagueState, new_league, simulate_next_season
 from phase0d.life import (
+    LIFE_BRAIN_V3_VERSION,
     LIFE_BRAIN_V1_VERSION,
     LIFE_BRAIN_V2_VERSION,
     OFF_DAY_PREFERENCES,
     choose_life_action,
+    next_routine_streak,
 )
 
 
@@ -158,6 +160,7 @@ def _summarize(states: tuple[LeagueState, ...], policy_version: str) -> PolicyMe
             teams = teams_for_season(season.season_number)
             roster = tuple(player.name for team in teams for player in team.players)
             roster_index = {name: index for index, name in enumerate(roster)}
+            routine_streaks = {name: 0 for name in roster}
             for game in season.games:
                 games += 1
                 total_points += game.home_score + game.away_score
@@ -213,8 +216,17 @@ def _summarize(states: tuple[LeagueState, ...], policy_version: str) -> PolicyMe
                             decision.fatigue_before,
                             decision.recovery_before,
                             policy_version=decision.policy_version,
+                            routine_streak=(
+                                routine_streaks[decision.athlete]
+                                if decision.policy_version == LIFE_BRAIN_V3_VERSION
+                                else 0
+                            ),
                         )
                         policy_violations += expected != decision.selected
+                        if decision.policy_version == LIFE_BRAIN_V3_VERSION:
+                            routine_streaks[decision.athlete] = next_routine_streak(
+                                routine_streaks[decision.athlete], decision.selected
+                            )
 
     preferences = []
     for preference, group in groups.items():

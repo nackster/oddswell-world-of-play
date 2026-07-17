@@ -19,14 +19,111 @@ from phase0d.life import (
     DEFAULT_LIFE_BRAIN_VERSION,
     LIFE_BRAIN_V1_VERSION,
     LIFE_BRAIN_V2_VERSION,
+    LIFE_BRAIN_V3_VERSION,
     OFF_DAY_PREFERENCES,
     apply_life_action,
     between_game_choices,
     choose_life_action,
+    next_routine_streak,
 )
 
 
 class AthleteLifeBrainTests(unittest.TestCase):
+    def test_routine_memory_is_opt_in_bounded_and_season_local(self) -> None:
+        self.assertEqual(DEFAULT_LIFE_BRAIN_VERSION, LIFE_BRAIN_V2_VERSION)
+        self.assertEqual(
+            next_routine_streak(next_routine_streak(0, "train"), "train"),
+            2,
+        )
+        self.assertEqual(next_routine_streak(2, "socialize"), -1)
+        self.assertEqual(next_routine_streak(-2, "train"), 1)
+        self.assertEqual(next_routine_streak(2, "rest"), 0)
+        for invalid in (True, 3):
+            with self.assertRaisesRegex(ValueError, "routine streak"):
+                next_routine_streak(invalid, "train")
+
+        self.assertEqual(
+            choose_life_action(
+                "Jalen Cross", 4, 0, 0.1, 0,
+                policy_version=LIFE_BRAIN_V3_VERSION,
+                routine_streak=2,
+            ),
+            "socialize",
+        )
+        self.assertEqual(
+            choose_life_action(
+                "Micah Vale", 4, 1, 0.1, 0,
+                policy_version=LIFE_BRAIN_V3_VERSION,
+                routine_streak=-2,
+            ),
+            "train",
+        )
+        self.assertEqual(
+            choose_life_action(
+                "Jalen Cross", 4, 0, 0.3, 2,
+                policy_version=LIFE_BRAIN_V3_VERSION,
+                routine_streak=2,
+            ),
+            "recover",
+        )
+        teams = teams_for_season(1)
+        roster = tuple(player.name for team in teams for player in team.players)
+        with self.assertRaisesRegex(ValueError, "exact active roster"):
+            between_game_choices(
+                2,
+                dict(empty_fatigue(teams)),
+                dict(empty_availability(teams)),
+                teams,
+                policy_version=LIFE_BRAIN_V3_VERSION,
+            )
+        choices = between_game_choices(
+            2,
+            dict(empty_fatigue(teams)),
+            dict(empty_availability(teams)),
+            teams,
+            policy_version=LIFE_BRAIN_V3_VERSION,
+            routine_streaks={name: 0 for name in roster},
+        )
+        self.assertTrue(all(choice.policy_version == LIFE_BRAIN_V3_VERSION for choice in choices))
+
+        state = simulate_next_season(
+            new_league(1_960), 8, teams,
+            life_policy_version=LIFE_BRAIN_V3_VERSION,
+        )
+        runs = {name: ("", 0) for name in roster}
+        maximum = 0
+        for game in state.seasons[0].games:
+            for decision in game.life_decisions:
+                previous, length = runs[decision.athlete]
+                if decision.selected in {"train", "socialize"}:
+                    length = length + 1 if previous == decision.selected else 1
+                    previous = decision.selected
+                else:
+                    previous, length = "", 0
+                runs[decision.athlete] = previous, length
+                maximum = max(maximum, length)
+        self.assertLessEqual(maximum, 2)
+        self.assertTrue(any(
+            decision.reason.startswith("Routine variation")
+            for game in state.seasons[0].games
+            for decision in game.life_decisions
+        ))
+        with TemporaryDirectory() as directory:
+            path = Path(directory) / "routine.json"
+            save_league(state, path)
+            loaded = load_league(path)
+        self.assertEqual(state, loaded)
+        self.assertEqual(
+            simulate_next_season(
+                state, 4, teams_for_season(2),
+                life_policy_version=LIFE_BRAIN_V3_VERSION,
+            ),
+            simulate_next_season(
+                loaded, 4, teams_for_season(2),
+                life_policy_version=LIFE_BRAIN_V3_VERSION,
+            ),
+        )
+
     def test_preference_pilot_is_explicit_complete_and_resumable(self) -> None:
         self.assertEqual(DEFAULT_LIFE_BRAIN_VERSION, LIFE_BRAIN_V2_VERSION)
         self.assertEqual(set(OFF_DAY_PREFERENCES), {

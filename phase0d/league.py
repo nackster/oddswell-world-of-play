@@ -22,8 +22,10 @@ from phase0d.life import (
     DEFAULT_LIFE_BRAIN_VERSION,
     LIFE_BRAIN_V1_VERSION,
     LIFE_BRAIN_V2_VERSION,
+    LIFE_BRAIN_V3_VERSION,
     LifeDecision,
     between_game_choices,
+    next_routine_streak,
 )
 
 
@@ -209,10 +211,12 @@ def apply_life_day(
     teams: tuple[Team, Team],
     *,
     policy_version: str = DEFAULT_LIFE_BRAIN_VERSION,
+    routine_streaks: Mapping[str, int] | None = None,
 ) -> tuple[FatigueSnapshot, AvailabilitySnapshot, ReadinessSnapshot, tuple[LifeDecision, ...]]:
     decisions = between_game_choices(
         game_number, dict(fatigue), dict(availability), teams,
         policy_version=policy_version,
+        routine_streaks=routine_streaks,
     )
     return (
         fatigue_snapshot(
@@ -330,7 +334,9 @@ def simulate_scheduled_game(
     life_policy_version: str = DEFAULT_LIFE_BRAIN_VERSION,
 ) -> SeasonGame:
     """Resolve one scheduled game through the authoritative league transition."""
-    if life_policy_version not in {LIFE_BRAIN_V1_VERSION, LIFE_BRAIN_V2_VERSION}:
+    if life_policy_version not in {
+        LIFE_BRAIN_V1_VERSION, LIFE_BRAIN_V2_VERSION, LIFE_BRAIN_V3_VERSION
+    }:
         raise ValueError(f"unsupported Athlete Life Brain policy: {life_policy_version!r}")
     matchup = (fixture.home, fixture.away)
     if any(decision.policy_version != life_policy_version for decision in life_decisions):
@@ -403,6 +409,11 @@ def simulate_season(
     season_start_availability = availability
     totals: dict[str, Counter[str]] = {team.name: Counter() for team in teams}
     games = []
+    routine_streaks = (
+        {player.name: 0 for team in teams for player in team.players}
+        if life_policy_version == LIFE_BRAIN_V3_VERSION
+        else None
+    )
 
     for index, fixture in enumerate(schedule):
         readiness = empty_readiness(teams)
@@ -413,7 +424,15 @@ def simulate_season(
             fatigue, availability, readiness, life_decisions = apply_life_day(
                 fixture.number, fatigue, availability, teams,
                 policy_version=life_policy_version,
+                routine_streaks=routine_streaks,
             )
+            if routine_streaks is not None:
+                routine_streaks = {
+                    decision.athlete: next_routine_streak(
+                        routine_streaks[decision.athlete], decision.selected
+                    )
+                    for decision in life_decisions
+                }
         game = simulate_scheduled_game(
             fixture, fatigue, availability, teams, readiness, life_decisions,
             life_policy_version=life_policy_version,

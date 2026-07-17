@@ -45,6 +45,7 @@ tags:
 - [[Development/Reports/Phase 05M V2 Promotion Review|Phase 0.5M Athlete Life Brain v2 promotion review]]
 - [[Development/Reports/Phase 05N Controlled V2 Default Rollout|Phase 0.5N controlled Athlete Life Brain v2 rollout]]
 - [[Development/Reports/Phase 05O Short-Term Routine Memory Review|Phase 0.5O short-term routine memory review]]
+- [[Development/Reports/Phase 05P Opt-In Routine Memory Pilot|Phase 0.5P opt-in routine memory pilot]]
 - [[Visual Maps/Project Tool Map|Master project tool map]]
 - [[Visual Maps/3D Asset Toolchain|3D asset toolchain canvas]]
 - [[Visual Maps/Multi-Brain Architecture|Multi-brain architecture canvas]]
@@ -53,7 +54,7 @@ tags:
 
 ## Current focus
 
-Phase 0.5O is complete: a future opt-in v3 may use one signed `-2..+2` routine streak to vary an athlete's choice after two consecutive train or socialize decisions. V2 remains the default; v1/v2 history and runtime are unchanged. Phase 0.5P will implement and evaluate v3 on fresh paired seeds before any promotion review. Live models, stories, credits, wagering, and retraining remain inactive.
+Phase 0.5P is complete: opt-in v3 uses one signed `-2..+2` same-season routine streak and passes a fresh 800-game-per-policy paired evaluation with zero integrity failures. V3 is eligible for later review only; v2 remains the default and v1/v2 history stays immutable. Phase 0.5Q will review the evidence without changing the default. Live models, stories, credits, wagering, and retraining remain inactive.
 
 ## Current state
 
