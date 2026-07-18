@@ -7,6 +7,8 @@ status: working
 
 # Game Vision
 
+> Beta product authority: [[Design/Beta Game Bible|OddsWell Beta Game Bible]]. The long-term vision below does not automatically place a feature in beta.
+
 **OddsWell: World of Play** is a persistent 3D fantasy sports and lifestyle world. Players create a character, live in an original city, follow a shared fictional basketball league, research teams and athletes, wager game credits, watch authoritative simulated matches, work, travel, and customize their homes and identities.
 
 ## Design pillars

@@ -7,6 +7,13 @@ status: active
 
 # Current Plan
 
+## Planning authority
+
+- The Scope Director must read [[Design/Beta Game Bible|OddsWell Beta Game Bible]] before selecting a phase.
+- **LOCKED** and **BETA TARGET** describe product intent, not proof that a feature exists.
+- Work depending on an **OPEN** decision stops for the owner; **LATER** items are not scheduled beta work.
+- This plan and phase reports remain the implementation truth.
+
 ## Phase 0: Simulation foundation
 
 1. Define two teams and a minimal athlete attribute model.

@@ -10,6 +10,7 @@ tags:
 
 ## Project map
 
+- [[Design/Beta Game Bible|Beta Game Bible — canonical beta scope]]
 - [[Design/Game Vision|Game vision]]
 - [[Design/Decisions/DEC-001 Unified Credits|Unified credit economy]]
 - [[Design/Decisions/DEC-002 First Playable Scope|First playable scope]]
@@ -70,6 +71,7 @@ tags:
 - [[Development/Reports/Phase 06N Athlete Performance Scope Freeze and Phase 1 Handoff|Phase 0.6N Athlete Performance scope freeze and Phase 1 handoff]]
 - [[Development/Reports/Phase 1A0 Local 3D Toolchain and Replay Interface Readiness Audit|Phase 1A.0 local 3D toolchain and replay-interface readiness audit]]
 - [[Visual Maps/Project Tool Map|Master project tool map]]
+- [[Visual Maps/Beta Game Scope|Complete beta game scope map]]
 - [[Visual Maps/3D Asset Toolchain|3D asset toolchain canvas]]
 - [[Visual Maps/Multi-Brain Architecture|Multi-brain architecture canvas]]
 - [[Visual Maps/Phase 0 Simulation Roadmap|Phase 0 simulation roadmap]]
