@@ -447,6 +447,17 @@ status: active
 - **Validation:** authoritative 80-game archive evidence was reconstructed from event records; 4/4 focused Consistency v2 boundary tests, the Admin self-check, documentation, affected canvas structure, and whitespace checks pass. Cost was `$0.00`. See [[Development/Reports/Phase 06H Next Athlete Performance Input Selection Review]].
 - **Next gate:** Phase 0.6I opt-in Offensive Involvement pilot; keep the authoritative league default unchanged and stop without promotion if the frozen opportunity, talent, replay, history, Admin-label, or rollback boundary fails.
 
+### Phase 0.6I Opt-In Offensive Involvement Pilot status
+
+- **Status:** Complete on `agent/phase-0d`; explicit pilot only, not authoritative league behavior.
+- **Implemented:** frozen low/standard/featured weights of 0.85/1.00/1.15 multiply only initial-ballhandler and pass-target selection. Ratings, action weights after possession starts, shot probability, minutes, Consistency v2, Life Brain decisions, and career progression are unchanged.
+- **Paired evidence:** 200 Jalen seeds per tier produce strictly ordered mean selection opportunities of 25.375, 28.085, and 31.085. Mean shot attempts are 19.180, 20.990, and 23.290 while field-goal percentage stays at 45.26%, 45.21%, and 45.38%.
+- **Sensitivity:** low/featured change 157/146 scores and 54/43 winners versus standard. These are visible path differences, not claimed improvements.
+- **Integrity:** 600/600 pilot games and 200/200 omitted controls replay exactly; manifests bind the exact version and snapshot, tampering fails, and shot-formula violations are zero.
+- **Admin/history:** profiles say `OPT-IN PILOT` and `OPPORTUNITY ONLY`; no production roster tiers, default, prediction, schema, or stored-history behavior changed.
+- **Validation:** 3 focused tests, all 62 regressions, Admin Console self-check, canvas structure, and whitespace checks pass. Cost was `$0.00`. See [[Development/Reports/Phase 06I Opt-In Offensive Involvement Pilot]].
+- **Next gate:** Phase 0.6J read-only multi-athlete Offensive Involvement calibration across a high-passing creator, a lower-rated scorer, and Jalen's control before any promotion review.
+
 ## Phase 1: 3D vertical slice
 
 Build the one-city scope defined in [[Design/Decisions/DEC-002 First Playable Scope]].

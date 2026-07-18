@@ -57,6 +57,7 @@ from phase0d.league import (  # noqa: E402
     simulate_next_season,
     simulate_scheduled_game,
 )
+from phase0d.involvement import OFFENSIVE_INVOLVEMENT_VERSION  # noqa: E402
 from phase0d.life import DEFAULT_LIFE_BRAIN_VERSION  # noqa: E402
 from phase0d.prediction import PREDICTION_VERSION, run_prediction_study  # noqa: E402
 
@@ -111,6 +112,11 @@ def status_payload() -> dict[str, object]:
         "career_version": CAREER_VERSION,
         "prediction_version": PREDICTION_VERSION,
         "consistency_version": DEFAULT_CONSISTENCY_VERSION,
+        "offensive_involvement": {
+            "version": OFFENSIVE_INVOLVEMENT_VERSION,
+            "status": "OPT-IN PILOT",
+            "scope": "OPPORTUNITY ONLY",
+        },
         "admin_modules": [
             {"id": "overview", "name": "Overview", "state": "AVAILABLE", "detail": "Verified local system summary."},
             {"id": "brains", "name": "Brains", "state": "ACTIVE", "detail": "Cinematic Observatory and truthful training preview."},
@@ -154,7 +160,7 @@ def status_payload() -> dict[str, object]:
                 "name": "Basketball Brain",
                 "status": "ACTIVE BASELINE",
                 "version": BRAIN_VERSION,
-                "detail": "Chooses legal intents from each athlete's distinct ratings and game context. The active version is deterministic; a trained model is not active yet.",
+                "detail": "Chooses legal intents from each athlete's distinct ratings and game context. Offensive involvement is an OPT-IN PILOT with OPPORTUNITY ONLY scope; it is not active in the league.",
             },
             {
                 "id": "rules",
@@ -812,6 +818,11 @@ def athlete_profiles_payload() -> dict[str, object]:
                         "status": "ACTIVE DEFAULT",
                         "scope": "SHOOTING ONLY",
                     },
+                    "offensive_involvement": {
+                        "version": OFFENSIVE_INVOLVEMENT_VERSION,
+                        "status": "OPT-IN PILOT",
+                        "scope": "OPPORTUNITY ONLY",
+                    },
                     "bounded_rating_changes": True,
                     "specialty_preserved": True,
                     "life_brain": current["life"]["version"],
@@ -976,6 +987,11 @@ def self_check() -> None:
     assert len(status["brains"]) == 6
     assert status["prediction_version"] == PREDICTION_VERSION
     assert status["consistency_version"] == DEFAULT_CONSISTENCY_VERSION
+    assert status["offensive_involvement"] == {
+        "version": OFFENSIVE_INVOLVEMENT_VERSION,
+        "status": "OPT-IN PILOT",
+        "scope": "OPPORTUNITY ONLY",
+    }
     assert status["career_version"] == CAREER_VERSION
     athlete_brain = next(brain for brain in status["brains"] if brain["id"] == "athlete")
     assert athlete_brain["status"] == "ACTIVE DEFAULT"
@@ -1072,6 +1088,10 @@ def self_check() -> None:
             "status": "ACTIVE DEFAULT",
             "scope": "SHOOTING ONLY",
         }
+        for profile in athletes["profiles"]
+    )
+    assert all(
+        profile["career"]["offensive_involvement"] == status["offensive_involvement"]
         for profile in athletes["profiles"]
     )
     assert all(

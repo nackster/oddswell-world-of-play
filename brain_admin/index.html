@@ -1361,7 +1361,7 @@
       });
       $('profile-initials').textContent = athleteInitials(profile.name);
       $('profile-name').textContent = profile.name;
-      $('profile-team').textContent = `${profile.team} · ${profile.career.specialty} · ${profile.career.game_consistency.tier.toUpperCase()} consistency · ${profile.career.game_consistency.status} (${profile.career.game_consistency.scope.toLowerCase()}) · Age ${season.age} ${season.stage} · Athlete Life Brain ${season.life.version}`;
+      $('profile-team').textContent = `${profile.team} · ${profile.career.specialty} · ${profile.career.game_consistency.tier.toUpperCase()} consistency · ${profile.career.game_consistency.status} (${profile.career.game_consistency.scope.toLowerCase()}) · offensive involvement ${profile.career.offensive_involvement.status} (${profile.career.offensive_involvement.scope.toLowerCase()}) · Age ${season.age} ${season.stage} · Athlete Life Brain ${season.life.version}`;
       $('profile-life-title').textContent = `Athlete Life Brain ${season.life.version}`;
       $('profile-status').textContent = profile.career.status;
       $('profile-role').textContent = profile.career.role;

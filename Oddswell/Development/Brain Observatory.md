@@ -98,6 +98,8 @@ Phase 0.6G rechecks that rollout without changing the Admin Console or simulator
 
 Phase 0.6H selects one future opt-in `offensive_involvement` tier after a design-only review of the authoritative 80-game archive. Its only permitted scope is initial-ballhandler and pass-target opportunity; it cannot alter ratings, shot probabilities, minutes, Consistency v2, life choices, or career progression. The Observatory remains unchanged until a separate pilot exists, and any future display must say `OPT-IN PILOT` and `OPPORTUNITY ONLY`, never active training, confidence, personality, intelligence, or real-world realism.
 
+Phase 0.6I implements that input only as an explicit local pilot. The Athlete Profile and Basketball Brain status now say `OPT-IN PILOT` and `OPPORTUNITY ONLY`; the current league still supplies no involvement snapshot. Across 600 paired games, Jalen's selection opportunity is strictly ordered from low through standard to featured, every replay and manifest verifies, and the existing shooting formula has zero involvement fields. The display must not present the pilot as a production role, rating, intelligence, coaching, learning, personality, or neural-network training.
+
 The League Viewer follows the Phase 0D.4 public-information boundary. Hidden fatigue, recovery timers, injury-risk internals, seeds, RNG state, economy data, and admin mutations stay outside its payload.
 
 Archived games reuse hidden authoritative league state only on the server. The browser receives the complete recorded play-frame stream and verified archive metadata, never the hidden reconstruction inputs.

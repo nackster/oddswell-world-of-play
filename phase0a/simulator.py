@@ -17,6 +17,8 @@ MAX_GAME_FATIGUE = 0.45
 MAX_RECOVERY_DAYS = 7
 MAX_READINESS_MODIFIER = 0.02
 MAX_GAME_FORM_MODIFIER = 0.015
+MIN_OFFENSIVE_INVOLVEMENT = 0.85
+MAX_OFFENSIVE_INVOLVEMENT = 1.15
 ACTION_KEYS = {"role", "kind", "actor", "target"}
 OFFENSE_ACTIONS = {"pass", "drive", "shoot_2", "shoot_3"}
 
@@ -195,6 +197,7 @@ def baseline_action(
     team: Team,
     ballhandler: str,
     rng: random.Random,
+    offensive_involvement: Mapping[str, float] | None = None,
 ) -> Action:
     if role == "defense":
         defender = rng.choices(team.players, weights=[player.defense for player in team.players], k=1)[0]
@@ -212,7 +215,13 @@ def baseline_action(
     kind = rng.choices(kinds, weights=weights, k=1)[0]
     if kind == "pass":
         targets = tuple(teammate for teammate in team.players if teammate != player)
-        target = rng.choices(targets, weights=[teammate.shooting for teammate in targets], k=1)[0]
+        weights = [teammate.shooting for teammate in targets]
+        if offensive_involvement is not None:
+            weights = [
+                teammate.shooting * offensive_involvement[teammate.name]
+                for teammate in targets
+            ]
+        target = rng.choices(targets, weights=weights, k=1)[0]
         return Action("offense", kind, player.name, target.name)
     return Action("offense", kind, player.name, None)
 
@@ -228,6 +237,7 @@ def simulate_game(
     initial_readiness: Mapping[str, float] | None = None,
     initial_game_form: Mapping[str, float] | None = None,
     initial_shooting_consistency: Mapping[str, tuple[float, float]] | None = None,
+    initial_offensive_involvement: Mapping[str, float] | None = None,
 ) -> GameResult:
     home, away = matchup or default_teams()
     state = GameState(home=home, away=away, possession=home.name)
@@ -328,6 +338,31 @@ def simulate_game(
             for name in player_names
         }
 
+    if initial_offensive_involvement is None:
+        offensive_involvement = {name: 1.0 for name in player_names}
+    else:
+        if decision_policy is not None:
+            raise ValueError("offensive involvement pilot requires the baseline decision policy")
+        if set(initial_offensive_involvement) != set(player_names):
+            raise ValueError(
+                "initial_offensive_involvement must contain every matchup player exactly once"
+            )
+        if any(
+            not isinstance(initial_offensive_involvement[name], (int, float))
+            or isinstance(initial_offensive_involvement[name], bool)
+            or not MIN_OFFENSIVE_INVOLVEMENT
+            <= initial_offensive_involvement[name]
+            <= MAX_OFFENSIVE_INVOLVEMENT
+            for name in player_names
+        ):
+            raise ValueError(
+                "offensive involvement must be between "
+                f"{MIN_OFFENSIVE_INVOLVEMENT} and {MAX_OFFENSIVE_INVOLVEMENT}"
+            )
+        offensive_involvement = {
+            name: float(initial_offensive_involvement[name]) for name in player_names
+        }
+
     decision_rng = random.Random(seed ^ 0xA11CE)
     outcome_rng = random.Random(seed ^ 0xDDF00D)
     replay = iter(action_tape) if action_tape is not None else None
@@ -346,7 +381,14 @@ def simulate_game(
             action = (
                 decision_policy(role, state, team, opponent, ballhandler, decision_rng)
                 if decision_policy is not None
-                else baseline_action(role, state, team, ballhandler, decision_rng)
+                else baseline_action(
+                    role,
+                    state,
+                    team,
+                    ballhandler,
+                    decision_rng,
+                    offensive_involvement if initial_offensive_involvement is not None else None,
+                )
             )
         else:
             try:
@@ -387,6 +429,8 @@ def simulate_game(
             name: {"strength": strength, "cap": cap}
             for name, (strength, cap) in shooting_consistency.items()
         }
+    if initial_offensive_involvement is not None:
+        start_details["pregame_offensive_involvement"] = dict(offensive_involvement)
     record("game_started", **start_details)
     overtime = 0
 
@@ -407,9 +451,15 @@ def simulate_game(
         offense = home_lineup if state.possession == home.name else away_lineup
         defense = away_lineup if offense.name == home.name else home_lineup
         state.possession_number += 1
+        ballhandler_weights = [player.passing + player.shooting for player in offense.players]
+        if initial_offensive_involvement is not None:
+            ballhandler_weights = [
+                weight * offensive_involvement[player.name]
+                for player, weight in zip(offense.players, ballhandler_weights)
+            ]
         ballhandler = outcome_rng.choices(
             offense.players,
-            weights=[player.passing + player.shooting for player in offense.players],
+            weights=ballhandler_weights,
             k=1,
         )[0].name
         record(
