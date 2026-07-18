@@ -49,7 +49,8 @@
     {"id":"p0-6j","type":"text","text":"## 0.6J ✅ 3-ATHLETE CALIBRATION\n🎯 Micah creator • Cal lower-rated scorer • Jalen control\n↕ Opportunity shifts 8.89%-12.17% • FG spread ≤ 0.98 points\n🔒 1,800/1,800 replays + manifests • league still opt-in • $0","x":-650,"y":7530,"width":1360,"height":190,"color":"3"},
     {"id":"p0-6k","type":"text","text":"## 0.6K ✅ PROMOTION REVIEW\n✅ Approved for separate controlled rollout • default unchanged\n⚠ 19.0%-25.5% paired winner changes stay visible\n🔒 Roster + history + prediction + archive + rollback gates frozen • $0\nNEXT: 0.6L controlled rollout; stop on any failed gate","x":-650,"y":7780,"width":1360,"height":200,"color":"3"}
     ,{"id":"p0-6l","type":"text","text":"## 0.6L ✅ CONTROLLED INVOLVEMENT ROLLOUT\n🎯 v1 active default • OPPORTUNITY ONLY • baseline policy only\n🔒 v6 stored roster snapshots • v4/v5 migration • archive rollback safe\n✅ 80/80 snapshots • 20/20 prediction agreement • 65/65 tests • $0","x":-650,"y":8040,"width":1360,"height":210,"color":"3"}
-    ,{"id":"p0-6m","type":"text","text":"## 0.6M ✅ POST-ROLLOUT REVIEW\n🔎 80/80 v1 snapshots • Soren 20/20 Season 4 games\n🎞️ 421-frame archive • prediction 20/20 • history + rollback clean\n✅ 11/11 focused • 65/65 full • $0\nNEXT: 0.6N bounded input selection or none","x":-650,"y":8310,"width":1360,"height":210,"color":"3"}
+    ,{"id":"p0-6m","type":"text","text":"## 0.6M ✅ POST-ROLLOUT REVIEW\n🔎 80/80 v1 snapshots • Soren 20/20 Season 4 games\n🎞️ 421-frame archive • prediction 20/20 • history + rollback clean\n✅ 11/11 focused • 65/65 full • $0","x":-650,"y":8310,"width":1360,"height":210,"color":"3"}
+    ,{"id":"p0-6n","type":"text","text":"## 0.6N ✅ PHASE 0 FROZEN\n🧠 No additional Athlete Performance input\n🔒 Life v4 • Consistency v2 • Involvement v1 • v6 history • replay/Admin boundaries\n➡️ NEXT: 1A one-block 3D benchmark • render authoritative replay • never resimulate\n📊 Measure frame time • memory • build time • asset iteration • $0","x":-650,"y":8580,"width":1360,"height":230,"color":"5"}
   ],
   "edges": [
     {"id":"p0-edge-1","fromNode":"p0-a","fromSide":"right","toNode":"p0-b","toSide":"left"},
@@ -95,6 +96,7 @@
     {"id":"p0-edge-41","fromNode":"p0-6i","fromSide":"bottom","toNode":"p0-6j","toSide":"top"},
     {"id":"p0-edge-42","fromNode":"p0-6j","fromSide":"bottom","toNode":"p0-6k","toSide":"top"},
     {"id":"p0-edge-43","fromNode":"p0-6k","fromSide":"bottom","toNode":"p0-6l","toSide":"top"},
-    {"id":"p0-edge-44","fromNode":"p0-6l","fromSide":"bottom","toNode":"p0-6m","toSide":"top"}
+    {"id":"p0-edge-44","fromNode":"p0-6l","fromSide":"bottom","toNode":"p0-6m","toSide":"top"},
+    {"id":"p0-edge-45","fromNode":"p0-6m","fromSide":"bottom","toNode":"p0-6n","toSide":"top"}
   ]
 }

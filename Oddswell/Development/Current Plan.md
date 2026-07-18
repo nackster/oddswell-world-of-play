@@ -501,9 +501,25 @@ status: active
 - **Validation:** 11/11 focused locks, all 65 regressions, Admin self-check, compilation, canvas structure, and whitespace pass. Cost was `$0.00`. See [[Development/Reports/Phase 06M Offensive Involvement Post-Rollout Integration Review]].
 - **Next gate:** Phase 0.6N design-only Next Athlete Performance Input Selection Review; select at most one bounded input or explicitly select none.
 
+### Phase 0.6N Athlete Performance Scope Freeze and Phase 1 Handoff status
+
+- **Status:** Complete on `agent/phase-0d`; documentation-only decision with no runtime, source, schema, roster, prediction, replay, API, or Admin behavior change.
+- **Decision:** select no additional Athlete Performance input. Phase 0 is frozen except for demonstrated defects in an existing contract.
+- **Frozen stack:** Athlete Life Brain v4, shooting-only Consistency v2, opportunity-only Offensive Involvement v1, v6 stored history, authoritative event-log outcomes, archived replay, Admin truth labels, historical pins, migration, and rollback boundaries remain unchanged.
+- **Reopen rule:** a deferred input requires a named first-playable experience failure, a preregistered controlled miss of at least 10% across at least 1,000 paired seeds, or a verified replay/persistence/migration/Admin defect. Backlog ideas are not scheduled work without one of these triggers.
+- **Validation:** all 65 frozen regressions, Admin self-check, compilation, Obsidian links, affected canvas structure, and whitespace pass. Cost was `$0.00`. See [[Development/Reports/Phase 06N Athlete Performance Scope Freeze and Phase 1 Handoff]].
+- **Next gate:** Phase 1A One-Block 3D Vertical-Slice Engine Benchmark. Use placeholders, measure frame time, memory, build time, and asset iteration, and keep the engine/version choice open until evidence exists.
+
 ## Phase 1: 3D vertical slice
 
 Build the one-city scope defined in [[Design/Decisions/DEC-002 First Playable Scope]].
+
+### Phase 1A next gate
+
+- Benchmark one compact street block, one court, one controllable rigged avatar, basic lighting/collision/navigation, placeholder NPCs, and one recorded-game adapter.
+- Preserve the authority boundary: the 3D client renders stored event-log outcomes and never resimulates basketball.
+- Record packaged-build frame time, memory use, build time, and one representative asset-iteration time before selecting an engine and version.
+- Do not install an engine, create final art, add economy/credits/wagering, deploy, use paid APIs, or train a model as part of the Phase 0.6N handoff.
 
 ## Future shared simulation layer
 
@@ -521,7 +537,6 @@ The shared life, world, memory, and learning layers will support every sport. Ea
 - Minimal athlete attributes.
 - Initial live LLM provider/model and separate inference budget.
 - First retraining dataset and method that fit the $5 ceiling.
-- Next bounded Athlete Performance input selection, or an explicit decision to add none.
 - AI evaluation criteria and model-update cadence.
 - Ranked competition scoring.
 - Match schedule and season length.

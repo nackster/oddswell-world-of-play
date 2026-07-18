@@ -67,6 +67,7 @@ tags:
 - [[Development/Reports/Phase 06K Offensive Involvement Promotion Review|Phase 0.6K Offensive Involvement promotion review]]
 - [[Development/Reports/Phase 06L Controlled Offensive Involvement Rollout|Phase 0.6L controlled Offensive Involvement rollout]]
 - [[Development/Reports/Phase 06M Offensive Involvement Post-Rollout Integration Review|Phase 0.6M Offensive Involvement post-rollout review]]
+- [[Development/Reports/Phase 06N Athlete Performance Scope Freeze and Phase 1 Handoff|Phase 0.6N Athlete Performance scope freeze and Phase 1 handoff]]
 - [[Visual Maps/Project Tool Map|Master project tool map]]
 - [[Visual Maps/3D Asset Toolchain|3D asset toolchain canvas]]
 - [[Visual Maps/Multi-Brain Architecture|Multi-brain architecture canvas]]
@@ -75,7 +76,7 @@ tags:
 
 ## Current focus
 
-Phase 0.6M keeps `offensive-involvement-v1` as the `ACTIVE DEFAULT` after a fresh 80-game archive, 20/20 prediction agreement, verified stored replay, v5 migration, historical locks, and one-switch rollback all pass again. The scope remains `OPPORTUNITY ONLY` and baseline-policy only. Phase 0.6N will decide whether one more bounded Athlete Performance input is justified, or select none; live models, stories, credits, wagering, and retraining remain inactive.
+Phase 0.6N selects no additional Athlete Performance input and freezes Phase 0 except for demonstrated defects. Athlete Life Brain v4, shooting-only Consistency v2, opportunity-only Offensive Involvement v1, v6 history, authoritative replay, and Admin truth boundaries remain unchanged. Next is Phase 1A: a placeholder one-block 3D vertical-slice engine benchmark that renders an existing authoritative replay without resimulating it. Engine/version selection, final art, live models, stories, credits, wagering, deployment, and retraining remain inactive.
 
 ## Current state
 
