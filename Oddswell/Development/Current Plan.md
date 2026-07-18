@@ -402,7 +402,19 @@ status: active
 - **Integrity:** every frozen gate passes, replay violations are 0/8,000, omission preserves legacy behavior, and all historical paths remain green.
 - **Admin boundary:** profiles display v2 as `OPT-IN CANDIDATE` with `SHOOTING ONLY` scope. Passing, defense, rebounding, confidence, personality, learning, and real-world evidence are not claimed.
 - **Validation:** 13 focused tests and all 56 regressions pass; Admin Console self-check passes. Cost was `$0.00`. See [[Development/Reports/Phase 06D Opt-In Consistency Resolver v2 Pilot]].
-- **Next gate:** Phase 0.6E deliberate promotion review; do not change the default during the review.
+- **Next gate:** Completed as Phase 0.6E; v2 is approved for a separate controlled rollout while the default remains unchanged.
+
+### Phase 0.6E Consistency v2 Promotion Review status
+
+- **Status:** Complete on `agent/phase-0d`; read-only review with no runtime, default, schema, league, prediction, or Admin behavior change.
+- **Decision:** approve the shooting-only v2 candidate for a separate controlled rollout. It remains opt-in during this review.
+- **Path sensitivity:** elite versus volatile changes 815/1,000 Tariq scores and 231/1,000 winners; Jalen changes 816/1,000 scores and 238/1,000 winners. Mean absolute team-score differences are 5.7725 and 5.5495 points.
+- **Audit evidence:** 20,312 Tariq and 20,912 Jalen shots have complete audit fields and zero violations. Roughly 95% receive a nonzero correction and about 80% hit the 0.10 cap; this saturation remains visible and parameters may not be tuned during rollout.
+- **Required blocker:** the authoritative league, replay manifest, persisted season history, prediction study, and Admin archive reconstruction do not yet share or store a consistency version and tier snapshot.
+- **Rollout contract:** add one v2/disabled default switch, bind exact settings into replay evidence, store versioned history with safe v4 compatibility, align new predictions with the league, preserve historical disabled paths, keep the shooting-only label, and prove rollback without reinterpreting stored v2 games.
+- **Validation:** four focused consistency tests, Admin self-check, both clean canvas checks, and whitespace validation pass; the unchanged runtime retains Phase 0.6D's 56/56 full regression evidence.
+- **Cost and truth:** `$0.00`; deterministic fictional scoring-variance control, not learning, intelligence, confidence, mentality, or real-world validation. See [[Development/Reports/Phase 06E Consistency v2 Promotion Review]].
+- **Next gate:** Phase 0.6F controlled v2 rollout; stop without promotion if any frozen integration or rollback requirement fails.
 
 ## Phase 1: 3D vertical slice
 
@@ -424,7 +436,7 @@ The shared life, world, memory, and learning layers will support every sport. Ea
 - Minimal athlete attributes.
 - Initial live LLM provider/model and separate inference budget.
 - First retraining dataset and method that fit the $5 ceiling.
-- Mean-preserving consistency-resolver redesign review after the failed rollout gate.
+- Controlled v2 league, prediction, persistence, replay, Admin, and rollback integration.
 - AI evaluation criteria and model-update cadence.
 - Ranked competition scoring.
 - Match schedule and season length.

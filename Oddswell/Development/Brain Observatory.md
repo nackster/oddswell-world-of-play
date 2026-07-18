@@ -90,6 +90,8 @@ Phase 0.6C freezes a replacement design without changing the Admin Console or si
 
 Phase 0.6D implements that ledger only on an explicit v2 path. Across 8,000 frozen games and 8,000 exact replays, both evaluated athletes pass every reliability, mean-talent, attempts, exceptional-game, balance, and replay gate. Athlete profiles now label the tier as `OPT-IN CANDIDATE (shooting only)`; the authoritative league still does not use it. The Observatory must not extend this result to passing, defense, rebounding, confidence, personality, learning, or real-world players.
 
+Phase 0.6E approves v2 for a later controlled rollout but leaves the Observatory and league default unchanged. Paired elite-versus-volatile runs change roughly 23% of winners, and about 80% of covered shots reach the correction cap. Before any `ACTIVE DEFAULT` label appears, the league, prediction study, state history, replay manifest, archived Game Theater, and rollback switch must share one stored consistency version and exact tier snapshot. Historical v2 seasons must still replay after a rollback.
+
 The League Viewer follows the Phase 0D.4 public-information boundary. Hidden fatigue, recovery timers, injury-risk internals, seeds, RNG state, economy data, and admin mutations stay outside its payload.
 
 Archived games reuse hidden authoritative league state only on the server. The browser receives the complete recorded play-frame stream and verified archive metadata, never the hidden reconstruction inputs.

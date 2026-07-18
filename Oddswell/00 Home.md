@@ -58,6 +58,7 @@ tags:
 - [[Development/Reports/Phase 06B Athlete Consistency Calibration|Phase 0.6B Athlete Game Consistency calibration]]
 - [[Development/Reports/Phase 06C Consistency Resolver Redesign Review|Phase 0.6C Consistency Resolver redesign review]]
 - [[Development/Reports/Phase 06D Opt-In Consistency Resolver v2 Pilot|Phase 0.6D opt-in Consistency Resolver v2 pilot]]
+- [[Development/Reports/Phase 06E Consistency v2 Promotion Review|Phase 0.6E Consistency v2 promotion review]]
 - [[Visual Maps/Project Tool Map|Master project tool map]]
 - [[Visual Maps/3D Asset Toolchain|3D asset toolchain canvas]]
 - [[Visual Maps/Multi-Brain Architecture|Multi-brain architecture canvas]]
@@ -66,7 +67,7 @@ tags:
 
 ## Current focus
 
-Phase 0.6D is complete: the opt-in v2 shooting ledger passes every frozen gate for Tariq Stone and Jalen Cross across 8,000 games and 8,000 exact replays. Elite consistency materially lowers variance and bad-night frequency while preserving mean scoring, attempts, exceptional games, team balance, and replay. V2 is an eligible shooting-only candidate, not active league behavior. Phase 0.6E will review promotion requirements without changing the default. Live models, stories, credits, wagering, and retraining remain inactive.
+Phase 0.6E approves the shooting-only v2 candidate for a separate controlled rollout without changing the current league. Paired evidence shows material path sensitivity—23.1% and 23.8% winner differences—and roughly 80% cap saturation, so Phase 0.6F must version and bind consistency through league, prediction, persistence, archived replay, Admin, and rollback together. The candidate remains `OPT-IN`; live models, stories, credits, wagering, and retraining remain inactive.
 
 ## Current state
 
