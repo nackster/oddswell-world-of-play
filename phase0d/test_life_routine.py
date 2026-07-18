@@ -7,7 +7,7 @@ from phase0d.life import (
     LIFE_BRAIN_V3_VERSION,
     LIFE_BRAIN_V4_VERSION,
 )
-from phase0d.league import STATE_SCHEMA
+from phase0d.league import LEGACY_STATE_SCHEMA
 from phase0d.life_routine import (
     LIFE_ROUTINE_VERSION,
     SEED_BLOCKS,
@@ -23,7 +23,7 @@ class LifeRoutineEvaluationTests(unittest.TestCase):
         self.assertIs(result, run_life_routine_evaluation())
         self.assertEqual(DEFAULT_LIFE_BRAIN_VERSION, LIFE_BRAIN_V4_VERSION)
         self.assertEqual(result.version, LIFE_ROUTINE_VERSION)
-        self.assertEqual(result.state_schema, STATE_SCHEMA)
+        self.assertEqual(result.state_schema, LEGACY_STATE_SCHEMA)
         self.assertEqual(result.seed_blocks, SEED_BLOCKS)
         self.assertEqual(result.games_per_policy, 800)
         self.assertEqual(result.v2.policy_version, LIFE_BRAIN_V2_VERSION)

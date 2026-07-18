@@ -59,6 +59,7 @@ tags:
 - [[Development/Reports/Phase 06C Consistency Resolver Redesign Review|Phase 0.6C Consistency Resolver redesign review]]
 - [[Development/Reports/Phase 06D Opt-In Consistency Resolver v2 Pilot|Phase 0.6D opt-in Consistency Resolver v2 pilot]]
 - [[Development/Reports/Phase 06E Consistency v2 Promotion Review|Phase 0.6E Consistency v2 promotion review]]
+- [[Development/Reports/Phase 06F Controlled Consistency v2 Rollout|Phase 0.6F controlled Consistency v2 rollout]]
 - [[Visual Maps/Project Tool Map|Master project tool map]]
 - [[Visual Maps/3D Asset Toolchain|3D asset toolchain canvas]]
 - [[Visual Maps/Multi-Brain Architecture|Multi-brain architecture canvas]]
@@ -67,7 +68,7 @@ tags:
 
 ## Current focus
 
-Phase 0.6E approves the shooting-only v2 candidate for a separate controlled rollout without changing the current league. Paired evidence shows material path sensitivity—23.1% and 23.8% winner differences—and roughly 80% cap saturation, so Phase 0.6F must version and bind consistency through league, prediction, persistence, archived replay, Admin, and rollback together. The candidate remains `OPT-IN`; live models, stories, credits, wagering, and retraining remain inactive.
+Phase 0.6F makes shooting-only Consistency v2 the `ACTIVE DEFAULT` for newly generated games after league, prediction, v5 persistence, replay manifests, archived Game Theater, Admin labels, v4 migration, historical evidence, and one-switch rollback all pass together. Stored v2 games keep their exact snapshots; historical studies remain disabled. Phase 0.6G is a read-only post-rollout review. Live models, stories, credits, wagering, and retraining remain inactive.
 
 ## Current state
 

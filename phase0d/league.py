@@ -6,7 +6,7 @@ import random
 from collections import Counter
 from dataclasses import asdict, dataclass
 from pathlib import Path
-from typing import Mapping
+from typing import Iterable, Mapping
 
 from phase0a.simulator import (
     BRAIN_VERSION,
@@ -18,6 +18,14 @@ from phase0a.simulator import (
     simulate_game,
 )
 from phase0c.replay import replay_manifest, verify_replay_manifest
+from phase0d.consistency import (
+    ATHLETE_CONSISTENCY,
+    CONSISTENCY_DISABLED_VERSION,
+    DEFAULT_CONSISTENCY_VERSION,
+    ConsistencySnapshot,
+    consistency_snapshot,
+    shooting_consistency_settings,
+)
 from phase0d.life import (
     DEFAULT_LIFE_BRAIN_VERSION,
     LIFE_BRAIN_V1_VERSION,
@@ -31,8 +39,9 @@ from phase0d.life import (
 )
 
 
-LEAGUE_VERSION = "phase05w-v1"
-STATE_SCHEMA = "oddswell-league-state-v4"
+LEAGUE_VERSION = "phase06f-v1"
+LEGACY_STATE_SCHEMA = "oddswell-league-state-v4"
+STATE_SCHEMA = "oddswell-league-state-v5"
 FATIGUE_MODEL_VERSION = "minutes-workload-v1"
 INJURY_MODEL_VERSION = "minor-availability-v1"
 INJURY_SEED_SALT = 0x1A11AB1E
@@ -75,6 +84,8 @@ class SeasonGame:
     postgame_availability: AvailabilitySnapshot
     pregame_readiness: ReadinessSnapshot
     life_decisions: tuple[LifeDecision, ...]
+    consistency_version: str
+    consistency_snapshot: ConsistencySnapshot
 
 
 @dataclass(frozen=True)
@@ -336,6 +347,8 @@ def simulate_scheduled_game(
     life_decisions: tuple[LifeDecision, ...] = (),
     *,
     life_policy_version: str = DEFAULT_LIFE_BRAIN_VERSION,
+    consistency_version: str = DEFAULT_CONSISTENCY_VERSION,
+    stored_consistency_snapshot: ConsistencySnapshot | None = None,
     _player_points: dict[str, int] | None = None,
 ) -> SeasonGame:
     """Resolve one scheduled game through the authoritative league transition."""
@@ -348,12 +361,20 @@ def simulate_scheduled_game(
     if any(decision.policy_version != life_policy_version for decision in life_decisions):
         raise ValueError("life decision policy does not match replay metadata")
     readiness = readiness or empty_readiness(teams)
+    active_consistency_snapshot = (
+        stored_consistency_snapshot
+        if stored_consistency_snapshot is not None
+        else consistency_snapshot(consistency_version, matchup)
+    )
     result = simulate_game(
         fixture.seed,
         matchup=matchup,
         initial_fatigue=dict(fatigue),
         initial_availability=dict(availability),
         initial_readiness=dict(readiness),
+        initial_shooting_consistency=shooting_consistency_settings(
+            consistency_version, active_consistency_snapshot, matchup
+        ),
     )
     if _player_points is not None:
         _player_points.update({player.name: 0 for team in teams for player in team.players})
@@ -365,20 +386,21 @@ def simulate_scheduled_game(
     postgame_availability = add_minor_injuries(
         availability, fatigue, played, teams, fixture.seed
     )
-    manifest = replay_manifest(
-        result,
-        matchup,
-        BRAIN_VERSION,
-        {
-            "injury_model_version": INJURY_MODEL_VERSION,
-            "minutes_played": dict(played),
-            "pregame_availability": dict(availability),
-            "postgame_availability": dict(postgame_availability),
-            "life_brain_version": life_policy_version,
-            "life_decisions": [asdict(decision) for decision in life_decisions],
-            "pregame_readiness": dict(readiness),
-        },
-    )
+    audit = {
+        "injury_model_version": INJURY_MODEL_VERSION,
+        "minutes_played": dict(played),
+        "pregame_availability": dict(availability),
+        "postgame_availability": dict(postgame_availability),
+        "life_brain_version": life_policy_version,
+        "life_decisions": [asdict(decision) for decision in life_decisions],
+        "pregame_readiness": dict(readiness),
+    }
+    if consistency_version != CONSISTENCY_DISABLED_VERSION:
+        audit.update({
+            "consistency_version": consistency_version,
+            "consistency_snapshot": active_consistency_snapshot,
+        })
+    manifest = replay_manifest(result, matchup, BRAIN_VERSION, audit)
     if not verify_replay_manifest(manifest):
         raise RuntimeError(f"replay manifest failed for game {fixture.number}")
     return SeasonGame(
@@ -397,6 +419,8 @@ def simulate_scheduled_game(
         postgame_availability,
         readiness,
         life_decisions,
+        consistency_version,
+        active_consistency_snapshot,
     )
 
 
@@ -409,6 +433,7 @@ def simulate_season(
     teams: tuple[Team, Team] | None = None,
     *,
     life_policy_version: str = DEFAULT_LIFE_BRAIN_VERSION,
+    consistency_version: str = DEFAULT_CONSISTENCY_VERSION,
 ) -> SeasonResult:
     teams = teams or default_teams()
     schedule = build_schedule(game_count, start_seed, teams)
@@ -460,6 +485,7 @@ def simulate_season(
         game = simulate_scheduled_game(
             fixture, fatigue, availability, teams, readiness, life_decisions,
             life_policy_version=life_policy_version,
+            consistency_version=consistency_version,
             _player_points=player_points,
         )
         if life_policy_version == LIFE_BRAIN_V4_VERSION:
@@ -520,6 +546,7 @@ def simulate_next_season(
     teams: tuple[Team, Team] | None = None,
     *,
     life_policy_version: str = DEFAULT_LIFE_BRAIN_VERSION,
+    consistency_version: str = DEFAULT_CONSISTENCY_VERSION,
 ) -> LeagueState:
     if state.schema != STATE_SCHEMA:
         raise ValueError(f"unsupported league state schema: {state.schema}")
@@ -560,6 +587,7 @@ def simulate_next_season(
         state.next_season,
         season_teams,
         life_policy_version=life_policy_version,
+        consistency_version=consistency_version,
     )
     return LeagueState(
         STATE_SCHEMA,
@@ -576,6 +604,15 @@ def save_league(state: LeagueState, path: Path) -> None:
     path.write_text(json.dumps(asdict(state), indent=2, sort_keys=True) + "\n", encoding="utf-8", newline="\n")
 
 
+def _valid_player_names(names: Iterable[str]) -> bool:
+    values = tuple(names)
+    return (
+        len(values) == len(default_teams()[0].players) * 2
+        and len(set(values)) == len(values)
+        and set(values) <= set(ATHLETE_CONSISTENCY)
+    )
+
+
 def _snapshot_from_json(value: object) -> FatigueSnapshot:
     if not isinstance(value, list) or any(
         not isinstance(item, list)
@@ -586,8 +623,7 @@ def _snapshot_from_json(value: object) -> FatigueSnapshot:
     ):
         raise ValueError("invalid fatigue snapshot")
     snapshot = tuple((item[0], float(item[1])) for item in value)
-    expected = {player.name for team in default_teams() for player in team.players}
-    if len(snapshot) != len(expected) or {name for name, _ in snapshot} != expected or any(
+    if not _valid_player_names(name for name, _ in snapshot) or any(
         not 0 <= amount <= MAX_CARRYOVER_FATIGUE for _, amount in snapshot
     ):
         raise ValueError("invalid fatigue roster or value")
@@ -605,8 +641,7 @@ def _minutes_from_json(value: object) -> MinutesSnapshot:
     ):
         raise ValueError("invalid minutes snapshot")
     snapshot = tuple((item[0], float(item[1])) for item in value)
-    expected = {player.name for team in default_teams() for player in team.players}
-    if len(snapshot) != len(expected) or {name for name, _ in snapshot} != expected or any(
+    if not _valid_player_names(name for name, _ in snapshot) or any(
         not 0 <= minutes <= 100 for _, minutes in snapshot
     ):
         raise ValueError("invalid minutes roster or value")
@@ -614,8 +649,7 @@ def _minutes_from_json(value: object) -> MinutesSnapshot:
 
 
 def _availability_from_json(value: object) -> AvailabilitySnapshot:
-    expected_count = sum(len(team.players) for team in default_teams())
-    if not isinstance(value, list) or len(value) != expected_count or any(
+    if not isinstance(value, list) or any(
         not isinstance(item, list)
         or len(item) != 2
         or not isinstance(item[0], str)
@@ -624,7 +658,13 @@ def _availability_from_json(value: object) -> AvailabilitySnapshot:
         for item in value
     ):
         raise ValueError("invalid availability snapshot")
-    return availability_snapshot({name: recovery_days for name, recovery_days in value})
+    snapshot = tuple((name, recovery_days) for name, recovery_days in value)
+    if not _valid_player_names(name for name, _ in snapshot) or any(
+        not 0 <= recovery_days <= MAX_RECOVERY_DAYS
+        for _, recovery_days in snapshot
+    ):
+        raise ValueError("invalid availability roster or recovery days")
+    return snapshot
 
 
 def _readiness_from_json(value: object) -> ReadinessSnapshot:
@@ -637,7 +677,29 @@ def _readiness_from_json(value: object) -> ReadinessSnapshot:
         for item in value
     ):
         raise ValueError("invalid readiness snapshot")
-    return readiness_snapshot({name: amount for name, amount in value})
+    snapshot = tuple((name, float(amount)) for name, amount in value)
+    if not _valid_player_names(name for name, _ in snapshot) or any(
+        not -MAX_READINESS_MODIFIER <= amount <= MAX_READINESS_MODIFIER
+        for _, amount in snapshot
+    ):
+        raise ValueError("invalid readiness roster or value")
+    return snapshot
+
+
+def _consistency_snapshot_from_json(value: object) -> ConsistencySnapshot:
+    if not isinstance(value, list) or any(
+        not isinstance(item, list)
+        or len(item) != 4
+        or not isinstance(item[0], str)
+        or not isinstance(item[1], str)
+        or not isinstance(item[2], (int, float))
+        or isinstance(item[2], bool)
+        or not isinstance(item[3], (int, float))
+        or isinstance(item[3], bool)
+        for item in value
+    ):
+        raise ValueError("invalid consistency snapshot")
+    return tuple((name, tier, float(strength), float(cap)) for name, tier, strength, cap in value)
 
 
 def _life_decisions_from_json(value: object) -> tuple[LifeDecision, ...]:
@@ -668,8 +730,12 @@ def load_league(path: Path) -> LeagueState:
             "seasons",
         }:
             raise ValueError("invalid league state fields")
-        if value["schema"] != STATE_SCHEMA:
-            raise ValueError(f"unsupported league state schema {value['schema']!r}; expected {STATE_SCHEMA!r}")
+        source_schema = value["schema"]
+        if source_schema not in {LEGACY_STATE_SCHEMA, STATE_SCHEMA}:
+            raise ValueError(
+                f"unsupported league state schema {source_schema!r}; "
+                f"expected {LEGACY_STATE_SCHEMA!r} or {STATE_SCHEMA!r}"
+            )
         if not isinstance(value["seasons"], list):
             raise ValueError("invalid seasons")
         seasons = []
@@ -693,6 +759,17 @@ def load_league(path: Path) -> LeagueState:
                 game_data["life_decisions"] = _life_decisions_from_json(
                     game_data["life_decisions"]
                 )
+                if source_schema == LEGACY_STATE_SCHEMA:
+                    game_data["consistency_version"] = CONSISTENCY_DISABLED_VERSION
+                    game_data["consistency_snapshot"] = ()
+                else:
+                    game_data["consistency_snapshot"] = _consistency_snapshot_from_json(
+                        game_data["consistency_snapshot"]
+                    )
+                    shooting_consistency_settings(
+                        game_data["consistency_version"],
+                        game_data["consistency_snapshot"],
+                    )
                 games.append(SeasonGame(**game_data))
             standings = tuple(Standing(**row) for row in season_data.pop("standings"))
             season_data["initial_fatigue"] = _snapshot_from_json(season_data["initial_fatigue"])
@@ -705,7 +782,7 @@ def load_league(path: Path) -> LeagueState:
             )
             seasons.append(SeasonResult(games=tuple(games), standings=standings, **season_data))
         return LeagueState(
-            value["schema"],
+            STATE_SCHEMA,
             int(value["next_season"]),
             int(value["next_seed"]),
             _snapshot_from_json(value["fatigue"]),

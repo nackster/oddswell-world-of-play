@@ -4,6 +4,7 @@ import unittest
 
 from phase0a.simulator import default_teams, simulate_game
 from phase0d.career import teams_for_season
+from phase0d.consistency import CONSISTENCY_DISABLED_VERSION, shooting_consistency_settings
 from phase0d.league import (
     build_schedule,
     empty_availability,
@@ -279,6 +280,11 @@ class AthleteLifeBrainTests(unittest.TestCase):
             initial_fatigue=dict(archived.pregame_fatigue),
             initial_availability=dict(archived.pregame_availability),
             initial_readiness=dict(archived.pregame_readiness),
+            initial_shooting_consistency=shooting_consistency_settings(
+                archived.consistency_version,
+                archived.consistency_snapshot,
+                (fixture.home, fixture.away),
+            ),
         )
         replayed = simulate_game(
             archived.seed,
@@ -287,6 +293,11 @@ class AthleteLifeBrainTests(unittest.TestCase):
             initial_fatigue=dict(archived.pregame_fatigue),
             initial_availability=dict(archived.pregame_availability),
             initial_readiness=dict(archived.pregame_readiness),
+            initial_shooting_consistency=shooting_consistency_settings(
+                archived.consistency_version,
+                archived.consistency_snapshot,
+                (fixture.home, fixture.away),
+            ),
         )
         self.assertEqual(original, replayed)
         self.assertEqual(
@@ -312,18 +323,21 @@ class AthleteLifeBrainTests(unittest.TestCase):
             4,
             teams_for_season(1),
             life_policy_version=LIFE_BRAIN_V1_VERSION,
+            consistency_version=CONSISTENCY_DISABLED_VERSION,
         )
         legacy = simulate_next_season(
             legacy,
             4,
             teams_for_season(2),
             life_policy_version=LIFE_BRAIN_V2_VERSION,
+            consistency_version=CONSISTENCY_DISABLED_VERSION,
         )
         legacy = simulate_next_season(
             legacy,
             4,
             teams_for_season(3),
             life_policy_version=LIFE_BRAIN_V3_VERSION,
+            consistency_version=CONSISTENCY_DISABLED_VERSION,
         )
         with TemporaryDirectory() as directory:
             path = Path(directory) / "legacy.json"

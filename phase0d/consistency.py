@@ -9,6 +9,8 @@ from phase0a.simulator import Team, default_teams, simulate_game
 
 CONSISTENCY_VERSION = "athlete-consistency-v1"
 CONSISTENCY_V2_VERSION = "athlete-consistency-v2"
+CONSISTENCY_DISABLED_VERSION = "athlete-consistency-disabled"
+DEFAULT_CONSISTENCY_VERSION = CONSISTENCY_V2_VERSION
 CONSISTENCY_SPREAD = {
     "volatile": 0.015,
     "normal": 0.01,
@@ -25,6 +27,7 @@ CONSISTENCY_V2_CALIBRATION = {
     "Tariq Stone": (70_000, 14),
     "Jalen Cross": (72_000, 16),
 }
+ConsistencySnapshot = tuple[tuple[str, str, float, float], ...]
 ATHLETE_CONSISTENCY = {
     "Jalen Cross": "steady",
     "Micah Vale": "normal",
@@ -47,6 +50,55 @@ def consistency_tier(player_name: str) -> str:
         return ATHLETE_CONSISTENCY[player_name]
     except KeyError as error:
         raise ValueError(f"missing game consistency for {player_name!r}") from error
+
+
+def consistency_snapshot(
+    version: str,
+    teams: tuple[Team, Team] | None = None,
+) -> ConsistencySnapshot:
+    if version == CONSISTENCY_DISABLED_VERSION:
+        return ()
+    if version != CONSISTENCY_V2_VERSION:
+        raise ValueError(f"unsupported consistency version: {version!r}")
+    return tuple(
+        (
+            player.name,
+            consistency_tier(player.name),
+            *CONSISTENCY_V2_PARAMETERS[consistency_tier(player.name)],
+        )
+        for team in (teams or default_teams())
+        for player in team.players
+    )
+
+
+def shooting_consistency_settings(
+    version: str,
+    snapshot: ConsistencySnapshot | None = None,
+    teams: tuple[Team, Team] | None = None,
+) -> dict[str, tuple[float, float]] | None:
+    if version == CONSISTENCY_DISABLED_VERSION:
+        if snapshot not in (None, ()):
+            raise ValueError("disabled consistency must have an empty snapshot")
+        return None
+    if version != CONSISTENCY_V2_VERSION:
+        raise ValueError(f"unsupported consistency version: {version!r}")
+    values = snapshot if snapshot is not None else consistency_snapshot(version, teams)
+    if not values:
+        raise ValueError("v2 consistency requires a roster snapshot")
+    expected = (
+        {row[0] for row in values}
+        if teams is None and snapshot is not None
+        else {player.name for team in (teams or default_teams()) for player in team.players}
+    )
+    if len(values) != len(expected) or {row[0] for row in values} != expected:
+        raise ValueError("consistency snapshot must contain every matchup player exactly once")
+    for name, tier, strength, cap in values:
+        if tier not in CONSISTENCY_V2_PARAMETERS:
+            raise ValueError(f"unknown consistency tier: {tier!r}")
+        if not 0 <= strength <= 1 or not 0 <= cap <= 1:
+            raise ValueError("consistency parameters must be between zero and one")
+        consistency_tier(name)
+    return {name: (strength, cap) for name, _, strength, cap in values}
 
 
 def game_form(

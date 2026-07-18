@@ -7,8 +7,9 @@ import hashlib
 import json
 
 from phase0d.career import teams_for_season
+from phase0d.consistency import CONSISTENCY_DISABLED_VERSION
 from phase0d.league import (
-    STATE_SCHEMA,
+    LEGACY_STATE_SCHEMA,
     LeagueState,
     ScheduledGame,
     new_league,
@@ -134,6 +135,7 @@ def _league(start_seed: int, policy_version: str) -> LeagueState:
             GAMES_PER_SEASON,
             teams_for_season(season_number),
             life_policy_version=policy_version,
+            consistency_version=CONSISTENCY_DISABLED_VERSION,
         )
     return state
 
@@ -265,6 +267,7 @@ def _summarize(states: tuple[LeagueState, ...], policy_version: str) -> PolicyMe
                         game.pregame_readiness,
                         game.life_decisions,
                         life_policy_version=policy_version,
+                        consistency_version=CONSISTENCY_DISABLED_VERSION,
                         _player_points=points,
                     )
                     minutes = dict(game.minutes_played)
@@ -438,7 +441,7 @@ def run_life_multiseed_evaluation() -> MultiSeedEvaluation:
 
     result = MultiSeedEvaluation(
         LIFE_MULTISEED_VERSION,
-        STATE_SCHEMA,
+        LEGACY_STATE_SCHEMA,
         SEED_BLOCKS,
         SEASONS_PER_BLOCK,
         GAMES_PER_SEASON,

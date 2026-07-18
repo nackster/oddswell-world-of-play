@@ -7,7 +7,8 @@ import hashlib
 import json
 
 from phase0d.career import teams_for_season
-from phase0d.league import STATE_SCHEMA, LeagueState, ScheduledGame, simulate_scheduled_game
+from phase0d.consistency import CONSISTENCY_DISABLED_VERSION
+from phase0d.league import LEGACY_STATE_SCHEMA, LeagueState, ScheduledGame, simulate_scheduled_game
 from phase0d.life import (
     HIGH_FATIGUE,
     LIFE_BRAIN_V3_VERSION,
@@ -252,6 +253,7 @@ def _audit(states: tuple[LeagueState, ...]) -> PerformanceAudit:
                     game.pregame_readiness,
                     game.life_decisions,
                     life_policy_version=LIFE_BRAIN_V4_VERSION,
+                    consistency_version=CONSISTENCY_DISABLED_VERSION,
                     _player_points=points,
                 )
                 replay += reconstructed != game
@@ -397,7 +399,7 @@ def run_life_performance_evaluation() -> PerformanceEvaluation:
 
     result = PerformanceEvaluation(
         LIFE_PERFORMANCE_VERSION,
-        STATE_SCHEMA,
+        LEGACY_STATE_SCHEMA,
         SEED_BLOCKS,
         SEASONS_PER_BLOCK,
         GAMES_PER_SEASON,

@@ -6,6 +6,7 @@ from functools import lru_cache
 
 from phase0a.simulator import GameResult, simulate_game
 from phase0d.career import teams_for_season
+from phase0d.consistency import CONSISTENCY_DISABLED_VERSION
 from phase0d.league import new_league, simulate_next_season
 from phase0d.life import (
     LIFE_BRAIN_V1_VERSION,
@@ -66,6 +67,7 @@ def _run_life_evaluation(policy_version: str) -> LifeEvaluation:
         state = simulate_next_season(
             state, 20, teams_for_season(season_number),
             life_policy_version=policy_version,
+            consistency_version=CONSISTENCY_DISABLED_VERSION,
         )
 
     choices = Counter()

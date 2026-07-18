@@ -1,11 +1,20 @@
 import copy
+import json
+from dataclasses import replace
 from pathlib import Path
 from tempfile import TemporaryDirectory
 import unittest
 
 from phase0a.simulator import BRAIN_VERSION, default_teams, simulate_game
 from phase0c.replay import replay_manifest, verify_replay_manifest
+from phase0d.consistency import (
+    CONSISTENCY_DISABLED_VERSION,
+    CONSISTENCY_V2_VERSION,
+    DEFAULT_CONSISTENCY_VERSION,
+)
 from phase0d.league import (
+    LEGACY_STATE_SCHEMA,
+    STATE_SCHEMA,
     MAX_INJURY_RISK,
     add_minor_injuries,
     MAX_CARRYOVER_FATIGUE,
@@ -86,6 +95,42 @@ class LeagueTests(unittest.TestCase):
         self.assertEqual(first, loaded)
         self.assertEqual(uninterrupted, simulate_next_season(loaded, 6))
         self.assertIn("Availability and Recovery", render_league_markdown(uninterrupted))
+
+    def test_v2_is_default_and_disabled_is_one_switch_rollback(self) -> None:
+        default = simulate_season(2, 901)
+        explicit = simulate_season(2, 901, consistency_version=CONSISTENCY_V2_VERSION)
+        disabled = simulate_season(2, 901, consistency_version=CONSISTENCY_DISABLED_VERSION)
+        self.assertEqual(DEFAULT_CONSISTENCY_VERSION, CONSISTENCY_V2_VERSION)
+        self.assertEqual(default, explicit)
+        self.assertTrue(all(game.consistency_version == CONSISTENCY_V2_VERSION for game in default.games))
+        self.assertTrue(all(len(game.consistency_snapshot) == 12 for game in default.games))
+        self.assertNotEqual(
+            tuple(game.replay_sha256 for game in default.games),
+            tuple(game.replay_sha256 for game in disabled.games),
+        )
+        self.assertTrue(all(game.consistency_snapshot == () for game in disabled.games))
+
+    def test_v4_state_loads_as_disabled_v5_without_changing_history(self) -> None:
+        state = simulate_next_season(
+            new_league(902),
+            2,
+            consistency_version=CONSISTENCY_DISABLED_VERSION,
+        )
+        value = json.loads(json.dumps(state, default=lambda item: item.__dict__))
+        value["schema"] = LEGACY_STATE_SCHEMA
+        for season in value["seasons"]:
+            for game in season["games"]:
+                game.pop("consistency_version")
+                game.pop("consistency_snapshot")
+        with TemporaryDirectory() as directory:
+            path = Path(directory) / "legacy.json"
+            path.write_text(json.dumps(value), encoding="utf-8")
+            loaded = load_league(path)
+        self.assertEqual(loaded.schema, STATE_SCHEMA)
+        self.assertEqual(
+            loaded,
+            replace(state, schema=STATE_SCHEMA),
+        )
 
     def test_injury_risk_is_minutes_linked_monotonic_and_bounded(self) -> None:
         self.assertEqual(injury_risk(0, 0.35), 0)

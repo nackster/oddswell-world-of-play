@@ -416,6 +416,17 @@ status: active
 - **Cost and truth:** `$0.00`; deterministic fictional scoring-variance control, not learning, intelligence, confidence, mentality, or real-world validation. See [[Development/Reports/Phase 06E Consistency v2 Promotion Review]].
 - **Next gate:** Phase 0.6F controlled v2 rollout; stop without promotion if any frozen integration or rollback requirement fails.
 
+### Phase 0.6F Controlled Consistency v2 Rollout status
+
+- **Status:** Complete on `agent/phase-0d`; every frozen Phase 0.6E rollout condition passed.
+- **Implemented:** `athlete-consistency-v2` is the default for new games through one explicit switch. League `phase06f-v1` passes a full frozen roster snapshot through the shooting resolver, stores it in v5 season history, and binds it into v2 replay evidence.
+- **Compatibility:** existing v4 state loads as v5 with consistency disabled; disabled manifests preserve old replay hashes. V5 save/load also supports the Roman Voss to Soren Lake roster transition.
+- **Prediction/Admin:** historical Phase 0D.4 studies stay disabled. The current Admin league and prediction study explicitly share v2, archived Game Theater uses each stored snapshot, and profiles show `ACTIVE DEFAULT` with `SHOOTING ONLY` scope.
+- **History and rollback:** frozen life-policy digests remain exact. Changing one default constant to `athlete-consistency-disabled` plus restart affects new games only; stored v2 games remain replayable.
+- **Validation:** 23/23 league/prediction rollout tests, 4/4 frozen multi-seed checks, all 59 regressions, and the Admin Console self-check pass. Cost was `$0.00`. See [[Development/Reports/Phase 06F Controlled Consistency v2 Rollout]].
+- **Truth boundary:** deterministic fictional shooting-variance control, not learning, confidence, personality, intelligence, or real-world evidence.
+- **Next gate:** Phase 0.6G read-only post-rollout integration review before another athlete-performance input.
+
 ## Phase 1: 3D vertical slice
 
 Build the one-city scope defined in [[Design/Decisions/DEC-002 First Playable Scope]].
@@ -436,7 +447,7 @@ The shared life, world, memory, and learning layers will support every sport. Ea
 - Minimal athlete attributes.
 - Initial live LLM provider/model and separate inference budget.
 - First retraining dataset and method that fit the $5 ceiling.
-- Controlled v2 league, prediction, persistence, replay, Admin, and rollback integration.
+- Consistency v2 post-rollout archive, prediction, migration, history, and rollback review.
 - AI evaluation criteria and model-update cadence.
 - Ranked competition scoring.
 - Match schedule and season length.

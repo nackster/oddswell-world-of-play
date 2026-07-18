@@ -40,7 +40,7 @@ The server is hard-bound to `127.0.0.1`. There is intentionally no login screen 
 
 ## Phase 0D integration validation
 
-The 2026-07-15 integration pass confirmed the committed D.2 rotation/minutes, D.3 availability/recovery, and D.4 public-prediction gates through all 38 regression tests, the Admin Console self-check, and fresh deterministic runs. The D.2-D.4 reports remain historical evidence for their named engine/state versions; current reruns use engine `phase05h-v1` and league `phase05w-v1` and must not overwrite those earlier measurements.
+The 2026-07-15 integration pass confirmed the committed D.2 rotation/minutes, D.3 availability/recovery, and D.4 public-prediction gates through all 38 regression tests, the Admin Console self-check, and fresh deterministic runs. The D.2-D.4 reports remain historical evidence for their named engine/state versions; current reruns use engine `phase05h-v1` and league `phase06f-v1` and must not overwrite those earlier measurements.
 
 Live localhost checks confirmed server-side seed guards, an audit entry surviving a server restart, read-only minutes/availability/prediction evidence, executable brain/engine/league/policy versions, and locked clothing/items/economy/moderation controls. Browser checks confirmed the Observatory animation at desktop and 390-pixel mobile widths with no console errors or horizontal page overflow. External cost remained `$0.00`; no paid API, credits, wagering, monetization, deployment, or retraining was used.
 
@@ -91,6 +91,8 @@ Phase 0.6C freezes a replacement design without changing the Admin Console or si
 Phase 0.6D implements that ledger only on an explicit v2 path. Across 8,000 frozen games and 8,000 exact replays, both evaluated athletes pass every reliability, mean-talent, attempts, exceptional-game, balance, and replay gate. Athlete profiles now label the tier as `OPT-IN CANDIDATE (shooting only)`; the authoritative league still does not use it. The Observatory must not extend this result to passing, defense, rebounding, confidence, personality, learning, or real-world players.
 
 Phase 0.6E approves v2 for a later controlled rollout but leaves the Observatory and league default unchanged. Paired elite-versus-volatile runs change roughly 23% of winners, and about 80% of covered shots reach the correction cap. Before any `ACTIVE DEFAULT` label appears, the league, prediction study, state history, replay manifest, archived Game Theater, and rollback switch must share one stored consistency version and exact tier snapshot. Historical v2 seasons must still replay after a rollback.
+
+Phase 0.6F satisfies that contract. The Observatory now labels shooting-only Consistency v2 as `ACTIVE DEFAULT`; current league and prediction paths share it, v5 history stores the exact roster settings, replay evidence binds them, and archived Game Theater reconstructs from each stored snapshot. Historical studies remain explicitly disabled, v4 files migrate safely, and rollback remains one constant plus restart without reinterpreting stored v2 seasons. The visualization still represents deterministic audit telemetry, not training, confidence, personality, intelligence, or changing neural weights.
 
 The League Viewer follows the Phase 0D.4 public-information boundary. Hidden fatigue, recovery timers, injury-risk internals, seeds, RNG state, economy data, and admin mutations stay outside its payload.
 

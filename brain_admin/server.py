@@ -44,12 +44,18 @@ from phase0d.career import (  # noqa: E402
     retirement_season,
     teams_for_season,
 )
-from phase0d.consistency import CONSISTENCY_V2_VERSION, consistency_tier  # noqa: E402
+from phase0d.consistency import (  # noqa: E402
+    DEFAULT_CONSISTENCY_VERSION,
+    consistency_tier,
+    shooting_consistency_settings,
+)
 from phase0d.league import (  # noqa: E402
     LEAGUE_VERSION,
+    ScheduledGame,
     SeasonResult,
     new_league,
     simulate_next_season,
+    simulate_scheduled_game,
 )
 from phase0d.life import DEFAULT_LIFE_BRAIN_VERSION  # noqa: E402
 from phase0d.prediction import PREDICTION_VERSION, run_prediction_study  # noqa: E402
@@ -104,6 +110,7 @@ def status_payload() -> dict[str, object]:
         "league_version": LEAGUE_VERSION,
         "career_version": CAREER_VERSION,
         "prediction_version": PREDICTION_VERSION,
+        "consistency_version": DEFAULT_CONSISTENCY_VERSION,
         "admin_modules": [
             {"id": "overview", "name": "Overview", "state": "AVAILABLE", "detail": "Verified local system summary."},
             {"id": "brains", "name": "Brains", "state": "ACTIVE", "detail": "Cinematic Observatory and truthful training preview."},
@@ -212,6 +219,7 @@ def career_league():
             LEAGUE_VIEW_GAMES,
             teams_for_season(state.next_season),
             life_policy_version=DEFAULT_LIFE_BRAIN_VERSION,
+            consistency_version=DEFAULT_CONSISTENCY_VERSION,
         )
     return state
 
@@ -229,6 +237,7 @@ def league_prediction_study():
         LEAGUE_VIEW_GAMES,
         LEAGUE_VIEW_START_SEED,
         life_policy_version=DEFAULT_LIFE_BRAIN_VERSION,
+        consistency_version=DEFAULT_CONSISTENCY_VERSION,
     )
 
 
@@ -250,6 +259,10 @@ def league_payload() -> dict[str, object]:
     season = league_season()
     study = league_prediction_study()
     predictions = {record.game_number: record for record in study.records}
+    if study.consistency_version != DEFAULT_CONSISTENCY_VERSION or any(
+        game.consistency_version != study.consistency_version for game in season.games
+    ):
+        raise RuntimeError("league and prediction consistency versions do not match")
     final_availability = dict(season.final_availability)
 
     games: list[dict[str, object]] = []
@@ -289,6 +302,7 @@ def league_payload() -> dict[str, object]:
             "brain": BRAIN_VERSION,
             "engine": ENGINE_VERSION,
             "life_brain": season_life_brain_version(season),
+            "consistency": study.consistency_version,
         },
         "boundary": (
             "Public-only read model. Hidden fatigue, recovery timers, injury-risk internals, "
@@ -497,7 +511,19 @@ def simulation_payload(seed: int) -> dict[str, object]:
     if not 0 <= seed <= 2_147_483_647:
         raise ValueError("seed must be between 0 and 2147483647")
     matchup = default_teams()
-    return recorded_game_payload(simulate_game(seed, matchup=matchup), matchup, seed)
+    payload = recorded_game_payload(
+        simulate_game(
+            seed,
+            matchup=matchup,
+            initial_shooting_consistency=shooting_consistency_settings(
+                DEFAULT_CONSISTENCY_VERSION, teams=matchup
+            ),
+        ),
+        matchup,
+        seed,
+    )
+    payload["summary"]["consistency_version"] = DEFAULT_CONSISTENCY_VERSION
+    return payload
 
 
 @lru_cache(maxsize=LEAGUE_VIEW_GAMES * CAREER_SEASONS)
@@ -506,21 +532,37 @@ def archived_game_result(game_number: int, season_number: int = 1) -> GameResult
         raise ValueError(f"season number must be between 1 and {CAREER_SEASONS}")
     if not 1 <= game_number <= LEAGUE_VIEW_GAMES:
         raise ValueError(f"game number must be between 1 and {LEAGUE_VIEW_GAMES}")
-    archived = career_league().seasons[season_number - 1].games[game_number - 1]
-    teams = {team.name: team for team in teams_for_season(season_number)}
+    season = career_league().seasons[season_number - 1]
+    archived = season.games[game_number - 1]
+    season_teams = teams_for_season(season_number)
+    teams = {team.name: team for team in season_teams}
     matchup = (teams[archived.home_team], teams[archived.away_team])
+    reconstructed = simulate_scheduled_game(
+        ScheduledGame(archived.number, archived.seed, *matchup),
+        archived.pregame_fatigue,
+        archived.pregame_availability,
+        season_teams,
+        archived.pregame_readiness,
+        archived.life_decisions,
+        life_policy_version=season_life_brain_version(season),
+        consistency_version=archived.consistency_version,
+        stored_consistency_snapshot=archived.consistency_snapshot,
+    )
+    if reconstructed != archived:
+        raise RuntimeError(f"archived evidence mismatch for season {season_number}, game {game_number}")
     game = simulate_game(
         archived.seed,
         matchup=matchup,
         initial_fatigue=dict(archived.pregame_fatigue),
         initial_availability=dict(archived.pregame_availability),
         initial_readiness=dict(archived.pregame_readiness),
+        initial_shooting_consistency=shooting_consistency_settings(
+            archived.consistency_version,
+            archived.consistency_snapshot,
+            matchup,
+        ),
     )
-    if (
-        game.home_score != archived.home_score
-        or game.away_score != archived.away_score
-        or dict(game.minutes_played) != dict(archived.minutes_played)
-    ):
+    if game.home_score != archived.home_score or game.away_score != archived.away_score:
         raise RuntimeError(f"archived replay mismatch for season {season_number}, game {game_number}")
     return game
 
@@ -766,8 +808,8 @@ def athlete_profiles_payload() -> dict[str, object]:
                     "specialty": player_specialty(player),
                     "game_consistency": {
                         "tier": consistency_tier(name),
-                        "version": CONSISTENCY_V2_VERSION,
-                        "status": "OPT-IN CANDIDATE",
+                        "version": DEFAULT_CONSISTENCY_VERSION,
+                        "status": "ACTIVE DEFAULT",
                         "scope": "SHOOTING ONLY",
                     },
                     "bounded_rating_changes": True,
@@ -933,6 +975,7 @@ def self_check() -> None:
     athletes = athlete_profiles_payload()
     assert len(status["brains"]) == 6
     assert status["prediction_version"] == PREDICTION_VERSION
+    assert status["consistency_version"] == DEFAULT_CONSISTENCY_VERSION
     assert status["career_version"] == CAREER_VERSION
     athlete_brain = next(brain for brain in status["brains"] if brain["id"] == "athlete")
     assert athlete_brain["status"] == "ACTIVE DEFAULT"
@@ -941,6 +984,7 @@ def self_check() -> None:
         "overview", "brains", "athletes", "simulation", "content", "world", "operations", "audit"
     ]
     assert game["summary"]["home_score"] != game["summary"]["away_score"]
+    assert game["summary"]["consistency_version"] == DEFAULT_CONSISTENCY_VERSION
     assert game["timeline"][-1]["kind"] == "final"
     assert game["theater_timeline"][-1]["kind"] == "final"
     assert len(game["theater_timeline"]) <= 97
@@ -949,6 +993,7 @@ def self_check() -> None:
     assert sum(standing["wins"] for standing in league["standings"]) == LEAGUE_VIEW_GAMES
     assert len(league["games"]) == LEAGUE_VIEW_GAMES
     assert league["versions"]["life_brain"] == DEFAULT_LIFE_BRAIN_VERSION
+    assert league["versions"]["consistency"] == DEFAULT_CONSISTENCY_VERSION
     assert all(len(game["replay_sha256"]) == 64 for game in league["games"])
     assert all(len(game["prediction_commitment_sha256"]) == 64 for game in league["games"])
     public_json = json.dumps(league, sort_keys=True)
@@ -1023,8 +1068,8 @@ def self_check() -> None:
     assert all(
         profile["career"]["game_consistency"] == {
             "tier": consistency_tier(profile["name"]),
-            "version": CONSISTENCY_V2_VERSION,
-            "status": "OPT-IN CANDIDATE",
+            "version": DEFAULT_CONSISTENCY_VERSION,
+            "status": "ACTIVE DEFAULT",
             "scope": "SHOOTING ONLY",
         }
         for profile in athletes["profiles"]

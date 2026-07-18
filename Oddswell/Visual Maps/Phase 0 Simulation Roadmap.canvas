@@ -42,7 +42,8 @@
     {"id":"p0-6c","type":"text","text":"## 0.6C ✅ RESOLVER REDESIGN REVIEW\nOpt-in v2 shooting ledger • rating-based expectation • bounded correction\nNo runtime change • preserve bad + exceptional nights • $0","x":-650,"y":6010,"width":1360,"height":150,"color":"3"},
     {"id":"p0-6d","type":"text","text":"## 0.6D ✅ OPT-IN V2 PILOT\n8,000 games + 8,000 exact replays • both athletes pass every frozen gate\nElite variance -21% to -26% • bad nights -29% to -41% • shooting-only candidate • $0","x":-650,"y":6220,"width":1360,"height":150,"color":"3"},
     {"id":"p0-6e","type":"text","text":"## 0.6E ✅ PROMOTION REVIEW\nApproved for controlled rollout • default unchanged • shooting-only limit visible\n23% paired winner changes • ~80% cap hits • integration + rollback contract frozen • $0","x":-650,"y":6430,"width":1360,"height":150,"color":"3"},
-    {"id":"p0-6f","type":"text","text":"## NEXT: 0.6F CONTROLLED V2 ROLLOUT\nVersion league + predictions + state + replay + Admin together\nPreserve old history • one-switch rollback • stop if any gate fails","x":-650,"y":6640,"width":1360,"height":150,"color":"4"}
+    {"id":"p0-6f","type":"text","text":"## 0.6F ✅ CONTROLLED V2 ROLLOUT\nV2 active default • league + prediction + v5 history aligned\nStored replay snapshots • old history pinned • 59/59 tests • $0","x":-650,"y":6640,"width":1360,"height":150,"color":"3"},
+    {"id":"p0-6g","type":"text","text":"## NEXT: 0.6G POST-ROLLOUT REVIEW\nRead-only archive + prediction + migration + rollback audit\nNo tuning • no new athlete input • preserve shooting-only scope","x":-650,"y":6850,"width":1360,"height":150,"color":"4"}
   ],
   "edges": [
     {"id":"p0-edge-1","fromNode":"p0-a","fromSide":"right","toNode":"p0-b","toSide":"left"},
@@ -81,6 +82,7 @@
     {"id":"p0-edge-34","fromNode":"p0-6b","fromSide":"bottom","toNode":"p0-6c","toSide":"top"},
     {"id":"p0-edge-35","fromNode":"p0-6c","fromSide":"bottom","toNode":"p0-6d","toSide":"top"},
     {"id":"p0-edge-36","fromNode":"p0-6d","fromSide":"bottom","toNode":"p0-6e","toSide":"top"},
-    {"id":"p0-edge-37","fromNode":"p0-6e","fromSide":"bottom","toNode":"p0-6f","toSide":"top"}
+    {"id":"p0-edge-37","fromNode":"p0-6e","fromSide":"bottom","toNode":"p0-6f","toSide":"top"},
+    {"id":"p0-edge-38","fromNode":"p0-6f","fromSide":"bottom","toNode":"p0-6g","toSide":"top"}
   ]
 }

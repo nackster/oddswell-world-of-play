@@ -1,3 +1,5 @@
+from pathlib import Path
+from tempfile import TemporaryDirectory
 import unittest
 
 from phase0a.simulator import default_teams
@@ -11,7 +13,7 @@ from phase0d.career import (
     retirement_season,
     teams_for_season,
 )
-from phase0d.league import new_league, simulate_next_season
+from phase0d.league import load_league, new_league, save_league, simulate_next_season
 
 
 class CareerLifecycleTests(unittest.TestCase):
@@ -50,6 +52,10 @@ class CareerLifecycleTests(unittest.TestCase):
         self.assertNotIn("Roman Voss", current_names)
         self.assertIn("Soren Lake", current_names)
         self.assertEqual(len(current_names), 12)
+        with TemporaryDirectory() as directory:
+            path = Path(directory) / "career.json"
+            save_league(state, path)
+            self.assertEqual(load_league(path), state)
 
 
 if __name__ == "__main__":

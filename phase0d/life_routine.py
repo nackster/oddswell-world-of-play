@@ -7,7 +7,7 @@ import hashlib
 import json
 
 from phase0d.career import teams_for_season
-from phase0d.league import STATE_SCHEMA, LeagueState
+from phase0d.league import LEGACY_STATE_SCHEMA, LeagueState
 from phase0d.life import (
     HIGH_FATIGUE,
     LIFE_BRAIN_V2_VERSION,
@@ -286,7 +286,7 @@ def run_life_routine_evaluation() -> RoutineEvaluation:
 
     result = RoutineEvaluation(
         LIFE_ROUTINE_VERSION,
-        STATE_SCHEMA,
+        LEGACY_STATE_SCHEMA,
         SEED_BLOCKS,
         SEASONS_PER_BLOCK,
         GAMES_PER_SEASON,

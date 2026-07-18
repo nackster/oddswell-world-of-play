@@ -1,7 +1,7 @@
 import time
 import unittest
 
-from phase0d.league import STATE_SCHEMA
+from phase0d.league import LEGACY_STATE_SCHEMA
 from phase0d.life import LIFE_BRAIN_V1_VERSION, LIFE_BRAIN_V2_VERSION
 from phase0d.life_multiseed import (
     LIFE_MULTISEED_VERSION,
@@ -17,7 +17,7 @@ class LifeMultiSeedEvaluationTests(unittest.TestCase):
         self.assertLess(time.perf_counter() - started, 60)
         self.assertIs(result, run_life_multiseed_evaluation())
         self.assertEqual(result.version, LIFE_MULTISEED_VERSION)
-        self.assertEqual(result.state_schema, STATE_SCHEMA)
+        self.assertEqual(result.state_schema, LEGACY_STATE_SCHEMA)
         self.assertEqual(result.seed_blocks, SEED_BLOCKS)
         self.assertEqual(result.games_per_policy, 800)
         self.assertEqual((result.v1.decisions, result.v2.decisions), (9_120, 9_120))
