@@ -491,6 +491,16 @@ status: active
 - **Truth boundary:** deterministic fictional opportunity weighting, not learning, coaching intelligence, confidence, personality, player quality, or real-world usage evidence.
 - **Next gate:** Phase 0.6M read-only post-rollout integration review before another athlete-performance input.
 
+### Phase 0.6M Offensive Involvement Post-Rollout Integration Review status
+
+- **Status:** Complete on `agent/phase-0d`; read-only review with no runtime, default, tier, weight, schema, rating, prediction, replay, API, or Admin behavior change.
+- **Fresh archive:** all 80 games store v1 and complete 12-athlete snapshots; all 20 Season 4 snapshots contain Soren Lake, first-season prediction winners and replay hashes agree 20/20, and Season 1 Game 1 reconstructs 421 verified frames.
+- **Integration:** Admin status and all 13 durable profiles retain `ACTIVE DEFAULT`, `OPPORTUNITY ONLY`, and baseline-policy-only labels. Stored archive reconstruction uses each game's snapshot.
+- **Migration/history/rollback:** v5 loads as v6 with involvement disabled, historical prediction and Life Brain studies remain disabled, all three frozen digests stay exact, and one-switch rollback changes only new games.
+- **Decision:** keep `offensive-involvement-v1` as the default without tuning. No real-world usage, learning, intelligence, coaching, confidence, personality, or player-quality claim is authorized.
+- **Validation:** 11/11 focused locks, all 65 regressions, Admin self-check, compilation, canvas structure, and whitespace pass. Cost was `$0.00`. See [[Development/Reports/Phase 06M Offensive Involvement Post-Rollout Integration Review]].
+- **Next gate:** Phase 0.6N design-only Next Athlete Performance Input Selection Review; select at most one bounded input or explicitly select none.
+
 ## Phase 1: 3D vertical slice
 
 Build the one-city scope defined in [[Design/Decisions/DEC-002 First Playable Scope]].
@@ -511,7 +521,7 @@ The shared life, world, memory, and learning layers will support every sport. Ea
 - Minimal athlete attributes.
 - Initial live LLM provider/model and separate inference budget.
 - First retraining dataset and method that fit the $5 ceiling.
-- Offensive Involvement post-rollout integration review.
+- Next bounded Athlete Performance input selection, or an explicit decision to add none.
 - AI evaluation criteria and model-update cadence.
 - Ranked competition scoring.
 - Match schedule and season length.
