@@ -57,7 +57,11 @@ from phase0d.league import (  # noqa: E402
     simulate_next_season,
     simulate_scheduled_game,
 )
-from phase0d.involvement import OFFENSIVE_INVOLVEMENT_VERSION  # noqa: E402
+from phase0d.involvement import (  # noqa: E402
+    DEFAULT_OFFENSIVE_INVOLVEMENT_VERSION,
+    offensive_involvement_settings,
+    production_involvement_tier,
+)
 from phase0d.life import DEFAULT_LIFE_BRAIN_VERSION  # noqa: E402
 from phase0d.prediction import PREDICTION_VERSION, run_prediction_study  # noqa: E402
 
@@ -113,8 +117,8 @@ def status_payload() -> dict[str, object]:
         "prediction_version": PREDICTION_VERSION,
         "consistency_version": DEFAULT_CONSISTENCY_VERSION,
         "offensive_involvement": {
-            "version": OFFENSIVE_INVOLVEMENT_VERSION,
-            "status": "OPT-IN PILOT",
+            "version": DEFAULT_OFFENSIVE_INVOLVEMENT_VERSION,
+            "status": "ACTIVE DEFAULT",
             "scope": "OPPORTUNITY ONLY",
         },
         "admin_modules": [
@@ -160,7 +164,7 @@ def status_payload() -> dict[str, object]:
                 "name": "Basketball Brain",
                 "status": "ACTIVE BASELINE",
                 "version": BRAIN_VERSION,
-                "detail": "Chooses legal intents from each athlete's distinct ratings and game context. Offensive involvement is an OPT-IN PILOT with OPPORTUNITY ONLY scope; it is not active in the league.",
+                "detail": "Chooses legal intents from each athlete's distinct ratings and game context. Offensive involvement is the baseline-policy ACTIVE DEFAULT with OPPORTUNITY ONLY scope.",
             },
             {
                 "id": "rules",
@@ -226,6 +230,7 @@ def career_league():
             teams_for_season(state.next_season),
             life_policy_version=DEFAULT_LIFE_BRAIN_VERSION,
             consistency_version=DEFAULT_CONSISTENCY_VERSION,
+            offensive_involvement_version=DEFAULT_OFFENSIVE_INVOLVEMENT_VERSION,
         )
     return state
 
@@ -244,6 +249,7 @@ def league_prediction_study():
         LEAGUE_VIEW_START_SEED,
         life_policy_version=DEFAULT_LIFE_BRAIN_VERSION,
         consistency_version=DEFAULT_CONSISTENCY_VERSION,
+        offensive_involvement_version=DEFAULT_OFFENSIVE_INVOLVEMENT_VERSION,
     )
 
 
@@ -269,6 +275,11 @@ def league_payload() -> dict[str, object]:
         game.consistency_version != study.consistency_version for game in season.games
     ):
         raise RuntimeError("league and prediction consistency versions do not match")
+    if study.offensive_involvement_version != DEFAULT_OFFENSIVE_INVOLVEMENT_VERSION or any(
+        game.offensive_involvement_version != study.offensive_involvement_version
+        for game in season.games
+    ):
+        raise RuntimeError("league and prediction offensive involvement versions do not match")
     final_availability = dict(season.final_availability)
 
     games: list[dict[str, object]] = []
@@ -309,6 +320,7 @@ def league_payload() -> dict[str, object]:
             "engine": ENGINE_VERSION,
             "life_brain": season_life_brain_version(season),
             "consistency": study.consistency_version,
+            "offensive_involvement": study.offensive_involvement_version,
         },
         "boundary": (
             "Public-only read model. Hidden fatigue, recovery timers, injury-risk internals, "
@@ -524,11 +536,17 @@ def simulation_payload(seed: int) -> dict[str, object]:
             initial_shooting_consistency=shooting_consistency_settings(
                 DEFAULT_CONSISTENCY_VERSION, teams=matchup
             ),
+            initial_offensive_involvement=offensive_involvement_settings(
+                DEFAULT_OFFENSIVE_INVOLVEMENT_VERSION, teams=matchup
+            ),
         ),
         matchup,
         seed,
     )
     payload["summary"]["consistency_version"] = DEFAULT_CONSISTENCY_VERSION
+    payload["summary"]["offensive_involvement_version"] = (
+        DEFAULT_OFFENSIVE_INVOLVEMENT_VERSION
+    )
     return payload
 
 
@@ -553,6 +571,8 @@ def archived_game_result(game_number: int, season_number: int = 1) -> GameResult
         life_policy_version=season_life_brain_version(season),
         consistency_version=archived.consistency_version,
         stored_consistency_snapshot=archived.consistency_snapshot,
+        offensive_involvement_version=archived.offensive_involvement_version,
+        stored_offensive_involvement_snapshot=archived.offensive_involvement_snapshot,
     )
     if reconstructed != archived:
         raise RuntimeError(f"archived evidence mismatch for season {season_number}, game {game_number}")
@@ -565,6 +585,11 @@ def archived_game_result(game_number: int, season_number: int = 1) -> GameResult
         initial_shooting_consistency=shooting_consistency_settings(
             archived.consistency_version,
             archived.consistency_snapshot,
+            matchup,
+        ),
+        initial_offensive_involvement=offensive_involvement_settings(
+            archived.offensive_involvement_version,
+            archived.offensive_involvement_snapshot,
             matchup,
         ),
     )
@@ -585,6 +610,7 @@ def archived_replay_payload(season_number: int, game_number: int) -> dict[str, o
         "season": season.season_number,
         "game": game_number,
         "replay_sha256": archived.replay_sha256,
+        "offensive_involvement_version": archived.offensive_involvement_version,
         "verified": True,
     }
     return payload
@@ -819,8 +845,9 @@ def athlete_profiles_payload() -> dict[str, object]:
                         "scope": "SHOOTING ONLY",
                     },
                     "offensive_involvement": {
-                        "version": OFFENSIVE_INVOLVEMENT_VERSION,
-                        "status": "OPT-IN PILOT",
+                        "tier": production_involvement_tier(name),
+                        "version": DEFAULT_OFFENSIVE_INVOLVEMENT_VERSION,
+                        "status": "ACTIVE DEFAULT",
                         "scope": "OPPORTUNITY ONLY",
                     },
                     "bounded_rating_changes": True,
@@ -988,8 +1015,8 @@ def self_check() -> None:
     assert status["prediction_version"] == PREDICTION_VERSION
     assert status["consistency_version"] == DEFAULT_CONSISTENCY_VERSION
     assert status["offensive_involvement"] == {
-        "version": OFFENSIVE_INVOLVEMENT_VERSION,
-        "status": "OPT-IN PILOT",
+        "version": DEFAULT_OFFENSIVE_INVOLVEMENT_VERSION,
+        "status": "ACTIVE DEFAULT",
         "scope": "OPPORTUNITY ONLY",
     }
     assert status["career_version"] == CAREER_VERSION
@@ -1001,6 +1028,10 @@ def self_check() -> None:
     ]
     assert game["summary"]["home_score"] != game["summary"]["away_score"]
     assert game["summary"]["consistency_version"] == DEFAULT_CONSISTENCY_VERSION
+    assert (
+        game["summary"]["offensive_involvement_version"]
+        == DEFAULT_OFFENSIVE_INVOLVEMENT_VERSION
+    )
     assert game["timeline"][-1]["kind"] == "final"
     assert game["theater_timeline"][-1]["kind"] == "final"
     assert len(game["theater_timeline"]) <= 97
@@ -1010,6 +1041,10 @@ def self_check() -> None:
     assert len(league["games"]) == LEAGUE_VIEW_GAMES
     assert league["versions"]["life_brain"] == DEFAULT_LIFE_BRAIN_VERSION
     assert league["versions"]["consistency"] == DEFAULT_CONSISTENCY_VERSION
+    assert (
+        league["versions"]["offensive_involvement"]
+        == DEFAULT_OFFENSIVE_INVOLVEMENT_VERSION
+    )
     assert all(len(game["replay_sha256"]) == 64 for game in league["games"])
     assert all(len(game["prediction_commitment_sha256"]) == 64 for game in league["games"])
     public_json = json.dumps(league, sort_keys=True)
@@ -1018,6 +1053,10 @@ def self_check() -> None:
         for forbidden in ('"seed"', '"fatigue"', '"readiness"', '"recovery_days"', '"injury_risk"')
     )
     assert archived["archive"]["replay_sha256"] == league["games"][19]["replay_sha256"]
+    assert (
+        archived["archive"]["offensive_involvement_version"]
+        == DEFAULT_OFFENSIVE_INVOLVEMENT_VERSION
+    )
     assert archived["summary"]["home_score"] == league["games"][19]["home_score"]
     assert archived["summary"]["away_score"] == league["games"][19]["away_score"]
     assert "seed" not in archived["summary"]
@@ -1091,7 +1130,10 @@ def self_check() -> None:
         for profile in athletes["profiles"]
     )
     assert all(
-        profile["career"]["offensive_involvement"] == status["offensive_involvement"]
+        profile["career"]["offensive_involvement"] == {
+            "tier": production_involvement_tier(profile["name"]),
+            **status["offensive_involvement"],
+        }
         for profile in athletes["profiles"]
     )
     assert all(

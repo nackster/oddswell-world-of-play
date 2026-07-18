@@ -8,6 +8,7 @@ import json
 
 from phase0d.career import teams_for_season
 from phase0d.consistency import CONSISTENCY_DISABLED_VERSION
+from phase0d.involvement import OFFENSIVE_INVOLVEMENT_DISABLED_VERSION
 from phase0d.league import (
     LEGACY_STATE_SCHEMA,
     LeagueState,
@@ -136,6 +137,7 @@ def _league(start_seed: int, policy_version: str) -> LeagueState:
             teams_for_season(season_number),
             life_policy_version=policy_version,
             consistency_version=CONSISTENCY_DISABLED_VERSION,
+            offensive_involvement_version=OFFENSIVE_INVOLVEMENT_DISABLED_VERSION,
         )
     return state
 
@@ -268,6 +270,7 @@ def _summarize(states: tuple[LeagueState, ...], policy_version: str) -> PolicyMe
                         game.life_decisions,
                         life_policy_version=policy_version,
                         consistency_version=CONSISTENCY_DISABLED_VERSION,
+                        offensive_involvement_version=OFFENSIVE_INVOLVEMENT_DISABLED_VERSION,
                         _player_points=points,
                     )
                     minutes = dict(game.minutes_played)

@@ -11,9 +11,67 @@ from phase0d.consistency import (
 )
 
 
+OFFENSIVE_INVOLVEMENT_DISABLED_VERSION = "offensive-involvement-disabled"
 OFFENSIVE_INVOLVEMENT_VERSION = "offensive-involvement-v1"
+DEFAULT_OFFENSIVE_INVOLVEMENT_VERSION = OFFENSIVE_INVOLVEMENT_VERSION
 OFFENSIVE_INVOLVEMENT_WEIGHTS = {"low": 0.85, "standard": 1.0, "featured": 1.15}
+ATHLETE_OFFENSIVE_INVOLVEMENT = {
+    "Jalen Cross": "featured",
+    "Micah Vale": "featured",
+    "Dorian Pike": "standard",
+    "Kellan Shore": "low",
+    "Andre North": "low",
+    "Malik Frost": "standard",
+    "Nico Reyes": "featured",
+    "Tariq Stone": "standard",
+    "Eli Mercer": "featured",
+    "Roman Voss": "low",
+    "Cal Brooks": "low",
+    "Mateo Cruz": "standard",
+    "Soren Lake": "low",
+}
 OffensiveInvolvementSnapshot = tuple[tuple[str, str, float], ...]
+
+
+def production_involvement_tier(athlete: str) -> str:
+    try:
+        return ATHLETE_OFFENSIVE_INVOLVEMENT[athlete]
+    except KeyError as error:
+        raise ValueError(f"unknown offensive involvement athlete: {athlete!r}") from error
+
+
+def production_involvement_snapshot(
+    version: str,
+    teams: tuple[Team, Team] | None = None,
+) -> OffensiveInvolvementSnapshot:
+    if version == OFFENSIVE_INVOLVEMENT_DISABLED_VERSION:
+        return ()
+    if version != OFFENSIVE_INVOLVEMENT_VERSION:
+        raise ValueError(f"unsupported offensive involvement version: {version!r}")
+    return tuple(
+        (player.name, tier, OFFENSIVE_INVOLVEMENT_WEIGHTS[tier])
+        for team in (teams or default_teams())
+        for player in team.players
+        for tier in (production_involvement_tier(player.name),)
+    )
+
+
+def offensive_involvement_settings(
+    version: str,
+    snapshot: OffensiveInvolvementSnapshot | None = None,
+    teams: tuple[Team, Team] | None = None,
+) -> dict[str, float] | None:
+    if version == OFFENSIVE_INVOLVEMENT_DISABLED_VERSION:
+        if snapshot not in (None, ()):
+            raise ValueError("disabled offensive involvement requires an empty snapshot")
+        return None
+    if version != OFFENSIVE_INVOLVEMENT_VERSION:
+        raise ValueError(f"unsupported offensive involvement version: {version!r}")
+    values = snapshot or production_involvement_snapshot(version, teams)
+    names = tuple(player.name for team in (teams or default_teams()) for player in team.players)
+    if len(values) != len(names) or {name for name, _, _ in values} != set(names):
+        raise ValueError("offensive involvement snapshot must contain every matchup player exactly once")
+    return involvement_settings(values)
 
 
 def involvement_snapshot(

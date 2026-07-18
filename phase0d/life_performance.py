@@ -8,6 +8,7 @@ import json
 
 from phase0d.career import teams_for_season
 from phase0d.consistency import CONSISTENCY_DISABLED_VERSION
+from phase0d.involvement import OFFENSIVE_INVOLVEMENT_DISABLED_VERSION
 from phase0d.league import LEGACY_STATE_SCHEMA, LeagueState, ScheduledGame, simulate_scheduled_game
 from phase0d.life import (
     HIGH_FATIGUE,
@@ -254,6 +255,7 @@ def _audit(states: tuple[LeagueState, ...]) -> PerformanceAudit:
                     game.life_decisions,
                     life_policy_version=LIFE_BRAIN_V4_VERSION,
                     consistency_version=CONSISTENCY_DISABLED_VERSION,
+                    offensive_involvement_version=OFFENSIVE_INVOLVEMENT_DISABLED_VERSION,
                     _player_points=points,
                 )
                 replay += reconstructed != game

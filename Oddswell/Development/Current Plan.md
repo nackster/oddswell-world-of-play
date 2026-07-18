@@ -480,6 +480,17 @@ status: active
 - **Validation:** 3/3 focused tests, all 62 regressions, Admin Console self-check, canvas structure, and whitespace checks pass. Cost was `$0.00`. See [[Development/Reports/Phase 06K Offensive Involvement Promotion Review]].
 - **Next gate:** Phase 0.6L controlled Offensive Involvement rollout; stop without promotion if any frozen integration, history, labeling, or rollback condition fails.
 
+### Phase 0.6L Controlled Offensive Involvement Rollout status
+
+- **Status:** Complete on `agent/phase-0d`; every frozen Phase 0.6K rollout condition passed.
+- **Implemented:** `offensive-involvement-v1` is the default for new baseline-policy games through one explicit switch. The frozen full-career table produces exact 12-athlete matchup snapshots and covers the Roman Voss to Soren Lake transition without changing the `0.85`/`1.00`/`1.15` weights.
+- **Persistence and replay:** league `phase06l-v1` stores version and snapshot in v6 history and replay evidence. V4/V5 history migrates with involvement disabled; stored v1 archives reconstruct from their own snapshot after rollback.
+- **Current surfaces:** league, prediction, Admin live simulation, Athlete Profiles, and archived playback agree on v1. Labels say `ACTIVE DEFAULT`, `OPPORTUNITY ONLY`, and baseline policy only.
+- **Historical boundary:** Phase 0D.4 and frozen Life Brain studies remain explicitly disabled. All three historical digests stay exact.
+- **Validation:** 29/29 focused checks, all 65 regressions, Admin self-check, archive reconstruction, compilation, canvas structure, and whitespace pass. Cost was `$0.00`.
+- **Truth boundary:** deterministic fictional opportunity weighting, not learning, coaching intelligence, confidence, personality, player quality, or real-world usage evidence.
+- **Next gate:** Phase 0.6M read-only post-rollout integration review before another athlete-performance input.
+
 ## Phase 1: 3D vertical slice
 
 Build the one-city scope defined in [[Design/Decisions/DEC-002 First Playable Scope]].
@@ -500,7 +511,7 @@ The shared life, world, memory, and learning layers will support every sport. Ea
 - Minimal athlete attributes.
 - Initial live LLM provider/model and separate inference budget.
 - First retraining dataset and method that fit the $5 ceiling.
-- Controlled Offensive Involvement rollout integration and rollback evidence.
+- Offensive Involvement post-rollout integration review.
 - AI evaluation criteria and model-update cadence.
 - Ranked competition scoring.
 - Match schedule and season length.

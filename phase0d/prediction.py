@@ -10,6 +10,7 @@ from typing import Mapping
 
 from phase0a.simulator import Player, Team, default_teams
 from phase0d.consistency import CONSISTENCY_DISABLED_VERSION
+from phase0d.involvement import OFFENSIVE_INVOLVEMENT_DISABLED_VERSION
 from phase0d.league import (
     BETWEEN_GAME_REST_DAYS,
     OFFSEASON_REST_DAYS,
@@ -80,6 +81,7 @@ class PredictionStudy:
     metrics: tuple[ModelMetrics, ...]
     injury_metrics: tuple[ModelMetrics, ...]
     consistency_version: str
+    offensive_involvement_version: str
 
 
 def canonical_json(value: object) -> str:
@@ -257,6 +259,7 @@ def run_prediction_study(
     *,
     life_policy_version: str = LIFE_BRAIN_V1_VERSION,
     consistency_version: str = CONSISTENCY_DISABLED_VERSION,
+    offensive_involvement_version: str = OFFENSIVE_INVOLVEMENT_DISABLED_VERSION,
 ) -> PredictionStudy:
     if warmup_seasons < 0 or holdout_seasons < 1:
         raise ValueError("warmup must be nonnegative and holdout must be positive")
@@ -333,6 +336,7 @@ def run_prediction_study(
                 fixture, fatigue, availability, teams, readiness, life_decisions,
                 life_policy_version=life_policy_version,
                 consistency_version=consistency_version,
+                offensive_involvement_version=offensive_involvement_version,
                 _player_points=player_points,
             )
             if life_policy_version == LIFE_BRAIN_V4_VERSION:
@@ -394,6 +398,7 @@ def run_prediction_study(
         metrics,
         injury_metrics,
         consistency_version,
+        offensive_involvement_version,
     )
 
 

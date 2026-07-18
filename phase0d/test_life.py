@@ -5,6 +5,7 @@ import unittest
 from phase0a.simulator import default_teams, simulate_game
 from phase0d.career import teams_for_season
 from phase0d.consistency import CONSISTENCY_DISABLED_VERSION, shooting_consistency_settings
+from phase0d.involvement import offensive_involvement_settings
 from phase0d.league import (
     build_schedule,
     empty_availability,
@@ -285,6 +286,11 @@ class AthleteLifeBrainTests(unittest.TestCase):
                 archived.consistency_snapshot,
                 (fixture.home, fixture.away),
             ),
+            initial_offensive_involvement=offensive_involvement_settings(
+                archived.offensive_involvement_version,
+                archived.offensive_involvement_snapshot,
+                (fixture.home, fixture.away),
+            ),
         )
         replayed = simulate_game(
             archived.seed,
@@ -296,6 +302,11 @@ class AthleteLifeBrainTests(unittest.TestCase):
             initial_shooting_consistency=shooting_consistency_settings(
                 archived.consistency_version,
                 archived.consistency_snapshot,
+                (fixture.home, fixture.away),
+            ),
+            initial_offensive_involvement=offensive_involvement_settings(
+                archived.offensive_involvement_version,
+                archived.offensive_involvement_snapshot,
                 (fixture.home, fixture.away),
             ),
         )

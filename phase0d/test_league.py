@@ -14,6 +14,7 @@ from phase0d.consistency import (
 )
 from phase0d.league import (
     LEGACY_STATE_SCHEMA,
+    PRIOR_STATE_SCHEMA,
     STATE_SCHEMA,
     MAX_INJURY_RISK,
     add_minor_injuries,
@@ -32,7 +33,13 @@ from phase0d.league import (
     render_markdown,
     save_league,
     simulate_next_season,
+    simulate_scheduled_game,
     simulate_season,
+)
+from phase0d.involvement import (
+    DEFAULT_OFFENSIVE_INVOLVEMENT_VERSION,
+    OFFENSIVE_INVOLVEMENT_DISABLED_VERSION,
+    OFFENSIVE_INVOLVEMENT_VERSION,
 )
 
 
@@ -110,11 +117,12 @@ class LeagueTests(unittest.TestCase):
         )
         self.assertTrue(all(game.consistency_snapshot == () for game in disabled.games))
 
-    def test_v4_state_loads_as_disabled_v5_without_changing_history(self) -> None:
+    def test_v4_state_loads_as_disabled_v6_without_changing_history(self) -> None:
         state = simulate_next_season(
             new_league(902),
             2,
             consistency_version=CONSISTENCY_DISABLED_VERSION,
+            offensive_involvement_version=OFFENSIVE_INVOLVEMENT_DISABLED_VERSION,
         )
         value = json.loads(json.dumps(state, default=lambda item: item.__dict__))
         value["schema"] = LEGACY_STATE_SCHEMA
@@ -131,6 +139,62 @@ class LeagueTests(unittest.TestCase):
             loaded,
             replace(state, schema=STATE_SCHEMA),
         )
+
+    def test_v5_state_loads_as_involvement_disabled_v6_without_changing_history(self) -> None:
+        state = simulate_next_season(
+            new_league(903),
+            2,
+            offensive_involvement_version=OFFENSIVE_INVOLVEMENT_DISABLED_VERSION,
+        )
+        value = json.loads(json.dumps(state, default=lambda item: item.__dict__))
+        value["schema"] = PRIOR_STATE_SCHEMA
+        for season in value["seasons"]:
+            for game in season["games"]:
+                game.pop("offensive_involvement_version")
+                game.pop("offensive_involvement_snapshot")
+        with TemporaryDirectory() as directory:
+            path = Path(directory) / "v5.json"
+            path.write_text(json.dumps(value), encoding="utf-8")
+            loaded = load_league(path)
+        self.assertEqual(loaded, replace(state, schema=STATE_SCHEMA))
+
+    def test_involvement_v1_is_default_and_disabled_is_one_switch_rollback(self) -> None:
+        default = simulate_season(2, 904)
+        explicit = simulate_season(
+            2, 904, offensive_involvement_version=OFFENSIVE_INVOLVEMENT_VERSION
+        )
+        disabled = simulate_season(
+            2, 904,
+            offensive_involvement_version=OFFENSIVE_INVOLVEMENT_DISABLED_VERSION,
+        )
+        self.assertEqual(
+            DEFAULT_OFFENSIVE_INVOLVEMENT_VERSION, OFFENSIVE_INVOLVEMENT_VERSION
+        )
+        self.assertEqual(default, explicit)
+        self.assertTrue(
+            all(game.offensive_involvement_version == OFFENSIVE_INVOLVEMENT_VERSION for game in default.games)
+        )
+        self.assertTrue(all(len(game.offensive_involvement_snapshot) == 12 for game in default.games))
+        self.assertTrue(all(game.offensive_involvement_snapshot == () for game in disabled.games))
+        self.assertNotEqual(
+            tuple(game.replay_sha256 for game in default.games),
+            tuple(game.replay_sha256 for game in disabled.games),
+        )
+        teams = default_teams()
+        archived = default.games[0]
+        reconstructed = simulate_scheduled_game(
+            build_schedule(2, 904, teams)[0],
+            archived.pregame_fatigue,
+            archived.pregame_availability,
+            teams,
+            archived.pregame_readiness,
+            archived.life_decisions,
+            consistency_version=archived.consistency_version,
+            stored_consistency_snapshot=archived.consistency_snapshot,
+            offensive_involvement_version=archived.offensive_involvement_version,
+            stored_offensive_involvement_snapshot=archived.offensive_involvement_snapshot,
+        )
+        self.assertEqual(reconstructed, archived)
 
     def test_injury_risk_is_minutes_linked_monotonic_and_bounded(self) -> None:
         self.assertEqual(injury_risk(0, 0.35), 0)

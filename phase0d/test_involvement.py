@@ -2,15 +2,36 @@ import unittest
 
 from phase0a.simulator import default_teams, simulate_game
 from phase0d.involvement import (
+    DEFAULT_OFFENSIVE_INVOLVEMENT_VERSION,
+    OFFENSIVE_INVOLVEMENT_DISABLED_VERSION,
     OFFENSIVE_INVOLVEMENT_VERSION,
     OFFENSIVE_INVOLVEMENT_WEIGHTS,
     evaluate_offensive_involvement,
     involvement_settings,
     involvement_snapshot,
+    offensive_involvement_settings,
+    production_involvement_snapshot,
+    production_involvement_tier,
 )
+from phase0d.career import teams_for_season
 
 
 class OffensiveInvolvementTests(unittest.TestCase):
+    def test_production_snapshot_is_complete_frozen_and_covers_replacement(self) -> None:
+        first = production_involvement_snapshot(OFFENSIVE_INVOLVEMENT_VERSION)
+        fourth = production_involvement_snapshot(
+            OFFENSIVE_INVOLVEMENT_VERSION, teams_for_season(4)
+        )
+        self.assertEqual(DEFAULT_OFFENSIVE_INVOLVEMENT_VERSION, OFFENSIVE_INVOLVEMENT_VERSION)
+        self.assertEqual(len(first), len(fourth), 12)
+        self.assertIn(("Roman Voss", "low", 0.85), first)
+        self.assertIn(("Soren Lake", "low", 0.85), fourth)
+        self.assertNotIn("Roman Voss", {name for name, _, _ in fourth})
+        self.assertEqual(production_involvement_tier("Jalen Cross"), "featured")
+        self.assertIsNone(
+            offensive_involvement_settings(OFFENSIVE_INVOLVEMENT_DISABLED_VERSION)
+        )
+
     def test_snapshot_is_bounded_explicit_and_validated(self) -> None:
         snapshot = involvement_snapshot("Jalen Cross", "featured")
         self.assertEqual(dict((name, weight) for name, _, weight in snapshot)["Jalen Cross"], 1.15)

@@ -65,6 +65,7 @@ tags:
 - [[Development/Reports/Phase 06I Opt-In Offensive Involvement Pilot|Phase 0.6I opt-in Offensive Involvement pilot]]
 - [[Development/Reports/Phase 06J Multi-Athlete Offensive Involvement Calibration|Phase 0.6J multi-athlete Offensive Involvement calibration]]
 - [[Development/Reports/Phase 06K Offensive Involvement Promotion Review|Phase 0.6K Offensive Involvement promotion review]]
+- [[Development/Reports/Phase 06L Controlled Offensive Involvement Rollout|Phase 0.6L controlled Offensive Involvement rollout]]
 - [[Visual Maps/Project Tool Map|Master project tool map]]
 - [[Visual Maps/3D Asset Toolchain|3D asset toolchain canvas]]
 - [[Visual Maps/Multi-Brain Architecture|Multi-brain architecture canvas]]
@@ -73,7 +74,7 @@ tags:
 
 ## Current focus
 
-Phase 0.6K approves the frozen `offensive-involvement-v1` pilot for a separate controlled rollout after reviewing 2,400 pilot games and 800 omitted controls across Phases 0.6I-0.6J. The feature remains an `OPT-IN PILOT` with `OPPORTUNITY ONLY` scope until league history, replay, prediction, Admin archive, full-roster snapshot, historical isolation, and one-switch rollback all pass. Live models, stories, credits, wagering, and retraining remain inactive.
+Phase 0.6L promotes `offensive-involvement-v1` for new baseline-policy games after every frozen integration and rollback gate passes. League, prediction, Admin live simulation, Athlete Profiles, and archived playback now share exact stored roster snapshots under v6 history. Labels remain `ACTIVE DEFAULT` and `OPPORTUNITY ONLY`; custom policies, real-world usage claims, live models, stories, credits, wagering, and retraining remain inactive. Next is a read-only Phase 0.6M post-rollout review.
 
 ## Current state
 

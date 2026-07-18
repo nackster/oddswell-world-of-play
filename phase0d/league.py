@@ -26,6 +26,15 @@ from phase0d.consistency import (
     consistency_snapshot,
     shooting_consistency_settings,
 )
+from phase0d.involvement import (
+    DEFAULT_OFFENSIVE_INVOLVEMENT_VERSION,
+    OFFENSIVE_INVOLVEMENT_DISABLED_VERSION,
+    OFFENSIVE_INVOLVEMENT_VERSION,
+    OffensiveInvolvementSnapshot,
+    involvement_settings,
+    offensive_involvement_settings,
+    production_involvement_snapshot,
+)
 from phase0d.life import (
     DEFAULT_LIFE_BRAIN_VERSION,
     LIFE_BRAIN_V1_VERSION,
@@ -39,9 +48,10 @@ from phase0d.life import (
 )
 
 
-LEAGUE_VERSION = "phase06f-v1"
+LEAGUE_VERSION = "phase06l-v1"
 LEGACY_STATE_SCHEMA = "oddswell-league-state-v4"
-STATE_SCHEMA = "oddswell-league-state-v5"
+PRIOR_STATE_SCHEMA = "oddswell-league-state-v5"
+STATE_SCHEMA = "oddswell-league-state-v6"
 FATIGUE_MODEL_VERSION = "minutes-workload-v1"
 INJURY_MODEL_VERSION = "minor-availability-v1"
 INJURY_SEED_SALT = 0x1A11AB1E
@@ -86,6 +96,8 @@ class SeasonGame:
     life_decisions: tuple[LifeDecision, ...]
     consistency_version: str
     consistency_snapshot: ConsistencySnapshot
+    offensive_involvement_version: str
+    offensive_involvement_snapshot: OffensiveInvolvementSnapshot
 
 
 @dataclass(frozen=True)
@@ -349,6 +361,8 @@ def simulate_scheduled_game(
     life_policy_version: str = DEFAULT_LIFE_BRAIN_VERSION,
     consistency_version: str = DEFAULT_CONSISTENCY_VERSION,
     stored_consistency_snapshot: ConsistencySnapshot | None = None,
+    offensive_involvement_version: str = DEFAULT_OFFENSIVE_INVOLVEMENT_VERSION,
+    stored_offensive_involvement_snapshot: OffensiveInvolvementSnapshot | None = None,
     _player_points: dict[str, int] | None = None,
 ) -> SeasonGame:
     """Resolve one scheduled game through the authoritative league transition."""
@@ -366,6 +380,11 @@ def simulate_scheduled_game(
         if stored_consistency_snapshot is not None
         else consistency_snapshot(consistency_version, matchup)
     )
+    active_offensive_involvement_snapshot = (
+        stored_offensive_involvement_snapshot
+        if stored_offensive_involvement_snapshot is not None
+        else production_involvement_snapshot(offensive_involvement_version, matchup)
+    )
     result = simulate_game(
         fixture.seed,
         matchup=matchup,
@@ -374,6 +393,11 @@ def simulate_scheduled_game(
         initial_readiness=dict(readiness),
         initial_shooting_consistency=shooting_consistency_settings(
             consistency_version, active_consistency_snapshot, matchup
+        ),
+        initial_offensive_involvement=offensive_involvement_settings(
+            offensive_involvement_version,
+            active_offensive_involvement_snapshot,
+            matchup,
         ),
     )
     if _player_points is not None:
@@ -400,6 +424,11 @@ def simulate_scheduled_game(
             "consistency_version": consistency_version,
             "consistency_snapshot": active_consistency_snapshot,
         })
+    if offensive_involvement_version != OFFENSIVE_INVOLVEMENT_DISABLED_VERSION:
+        audit.update({
+            "offensive_involvement_version": offensive_involvement_version,
+            "offensive_involvement_snapshot": active_offensive_involvement_snapshot,
+        })
     manifest = replay_manifest(result, matchup, BRAIN_VERSION, audit)
     if not verify_replay_manifest(manifest):
         raise RuntimeError(f"replay manifest failed for game {fixture.number}")
@@ -421,6 +450,8 @@ def simulate_scheduled_game(
         life_decisions,
         consistency_version,
         active_consistency_snapshot,
+        offensive_involvement_version,
+        active_offensive_involvement_snapshot,
     )
 
 
@@ -434,6 +465,7 @@ def simulate_season(
     *,
     life_policy_version: str = DEFAULT_LIFE_BRAIN_VERSION,
     consistency_version: str = DEFAULT_CONSISTENCY_VERSION,
+    offensive_involvement_version: str = DEFAULT_OFFENSIVE_INVOLVEMENT_VERSION,
 ) -> SeasonResult:
     teams = teams or default_teams()
     schedule = build_schedule(game_count, start_seed, teams)
@@ -486,6 +518,7 @@ def simulate_season(
             fixture, fatigue, availability, teams, readiness, life_decisions,
             life_policy_version=life_policy_version,
             consistency_version=consistency_version,
+            offensive_involvement_version=offensive_involvement_version,
             _player_points=player_points,
         )
         if life_policy_version == LIFE_BRAIN_V4_VERSION:
@@ -547,6 +580,7 @@ def simulate_next_season(
     *,
     life_policy_version: str = DEFAULT_LIFE_BRAIN_VERSION,
     consistency_version: str = DEFAULT_CONSISTENCY_VERSION,
+    offensive_involvement_version: str = DEFAULT_OFFENSIVE_INVOLVEMENT_VERSION,
 ) -> LeagueState:
     if state.schema != STATE_SCHEMA:
         raise ValueError(f"unsupported league state schema: {state.schema}")
@@ -588,6 +622,7 @@ def simulate_next_season(
         season_teams,
         life_policy_version=life_policy_version,
         consistency_version=consistency_version,
+        offensive_involvement_version=offensive_involvement_version,
     )
     return LeagueState(
         STATE_SCHEMA,
@@ -702,6 +737,22 @@ def _consistency_snapshot_from_json(value: object) -> ConsistencySnapshot:
     return tuple((name, tier, float(strength), float(cap)) for name, tier, strength, cap in value)
 
 
+def _offensive_involvement_snapshot_from_json(
+    value: object,
+) -> OffensiveInvolvementSnapshot:
+    if not isinstance(value, list) or any(
+        not isinstance(item, list)
+        or len(item) != 3
+        or not isinstance(item[0], str)
+        or not isinstance(item[1], str)
+        or not isinstance(item[2], (int, float))
+        or isinstance(item[2], bool)
+        for item in value
+    ):
+        raise ValueError("invalid offensive involvement snapshot")
+    return tuple((name, tier, float(weight)) for name, tier, weight in value)
+
+
 def _life_decisions_from_json(value: object) -> tuple[LifeDecision, ...]:
     if not isinstance(value, list):
         raise ValueError("invalid life decisions")
@@ -731,10 +782,11 @@ def load_league(path: Path) -> LeagueState:
         }:
             raise ValueError("invalid league state fields")
         source_schema = value["schema"]
-        if source_schema not in {LEGACY_STATE_SCHEMA, STATE_SCHEMA}:
+        if source_schema not in {LEGACY_STATE_SCHEMA, PRIOR_STATE_SCHEMA, STATE_SCHEMA}:
             raise ValueError(
                 f"unsupported league state schema {source_schema!r}; "
-                f"expected {LEGACY_STATE_SCHEMA!r} or {STATE_SCHEMA!r}"
+                f"expected {LEGACY_STATE_SCHEMA!r}, {PRIOR_STATE_SCHEMA!r}, "
+                f"or {STATE_SCHEMA!r}"
             )
         if not isinstance(value["seasons"], list):
             raise ValueError("invalid seasons")
@@ -770,6 +822,32 @@ def load_league(path: Path) -> LeagueState:
                         game_data["consistency_version"],
                         game_data["consistency_snapshot"],
                     )
+                if source_schema in {LEGACY_STATE_SCHEMA, PRIOR_STATE_SCHEMA}:
+                    game_data["offensive_involvement_version"] = (
+                        OFFENSIVE_INVOLVEMENT_DISABLED_VERSION
+                    )
+                    game_data["offensive_involvement_snapshot"] = ()
+                else:
+                    game_data["offensive_involvement_snapshot"] = (
+                        _offensive_involvement_snapshot_from_json(
+                            game_data["offensive_involvement_snapshot"]
+                        )
+                    )
+                    if (
+                        game_data["offensive_involvement_version"]
+                        == OFFENSIVE_INVOLVEMENT_DISABLED_VERSION
+                    ):
+                        offensive_involvement_settings(
+                            game_data["offensive_involvement_version"],
+                            game_data["offensive_involvement_snapshot"],
+                        )
+                    else:
+                        snapshot = game_data["offensive_involvement_snapshot"]
+                        if game_data["offensive_involvement_version"] != OFFENSIVE_INVOLVEMENT_VERSION:
+                            raise ValueError("unsupported offensive involvement version")
+                        if not _valid_player_names(name for name, _, _ in snapshot):
+                            raise ValueError("invalid offensive involvement roster")
+                        involvement_settings(snapshot)
                 games.append(SeasonGame(**game_data))
             standings = tuple(Standing(**row) for row in season_data.pop("standings"))
             season_data["initial_fatigue"] = _snapshot_from_json(season_data["initial_fatigue"])

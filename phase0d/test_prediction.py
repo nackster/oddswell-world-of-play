@@ -11,6 +11,10 @@ from phase0d.consistency import (
     CONSISTENCY_DISABLED_VERSION,
     CONSISTENCY_V2_VERSION,
 )
+from phase0d.involvement import (
+    DEFAULT_OFFENSIVE_INVOLVEMENT_VERSION,
+    OFFENSIVE_INVOLVEMENT_DISABLED_VERSION,
+)
 from phase0d.league import (
     OFFSEASON_REST_DAYS,
     availability_snapshot,
@@ -131,6 +135,10 @@ class PredictionTests(unittest.TestCase):
         )
         self.assertEqual(default, explicit)
         self.assertEqual(default.consistency_version, CONSISTENCY_DISABLED_VERSION)
+        self.assertEqual(
+            default.offensive_involvement_version,
+            OFFENSIVE_INVOLVEMENT_DISABLED_VERSION,
+        )
 
     def test_v3_prediction_memory_matches_two_authoritative_seasons(self) -> None:
         teams = default_teams()
@@ -142,6 +150,7 @@ class PredictionTests(unittest.TestCase):
                 teams,
                 life_policy_version=LIFE_BRAIN_V3_VERSION,
                 consistency_version=CONSISTENCY_DISABLED_VERSION,
+                offensive_involvement_version=OFFENSIVE_INVOLVEMENT_DISABLED_VERSION,
             )
         study = run_prediction_study(
             1,
@@ -167,6 +176,7 @@ class PredictionTests(unittest.TestCase):
             state = simulate_next_season(
                 state, 8, teams,
                 consistency_version=CONSISTENCY_DISABLED_VERSION,
+                offensive_involvement_version=OFFENSIVE_INVOLVEMENT_DISABLED_VERSION,
             )
         default = run_prediction_study(
             1, 1, 8, 707, life_policy_version=DEFAULT_LIFE_BRAIN_VERSION
@@ -195,8 +205,13 @@ class PredictionTests(unittest.TestCase):
             708,
             life_policy_version=DEFAULT_LIFE_BRAIN_VERSION,
             consistency_version=CONSISTENCY_V2_VERSION,
+            offensive_involvement_version=DEFAULT_OFFENSIVE_INVOLVEMENT_VERSION,
         )
         self.assertEqual(study.consistency_version, CONSISTENCY_V2_VERSION)
+        self.assertEqual(
+            study.offensive_involvement_version,
+            DEFAULT_OFFENSIVE_INVOLVEMENT_VERSION,
+        )
         self.assertEqual(
             tuple((record.winner, record.replay_sha256) for record in study.records),
             tuple((game.winner, game.replay_sha256) for game in state.seasons[0].games),
@@ -283,6 +298,7 @@ class PredictionTests(unittest.TestCase):
             teams,
             life_policy_version=LIFE_BRAIN_V1_VERSION,
             consistency_version=CONSISTENCY_DISABLED_VERSION,
+            offensive_involvement_version=OFFENSIVE_INVOLVEMENT_DISABLED_VERSION,
         )
         self.assertEqual((first.winner, first.replay_sha256), (game.winner, game.replay_sha256))
         self.assertFalse(verify_prediction_record(replace(first, replay_sha256="tampered")))
