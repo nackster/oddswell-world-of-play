@@ -39,7 +39,8 @@
     {"id":"p0-5y","type":"text","text":"## 0.5Y ✅ INPUT SELECTION\nNo new Life Brain input • consistency belongs to athlete performance\nRatings define talent • consistency controls game-to-game variance • $0","x":-650,"y":5380,"width":1360,"height":150,"color":"3"},
     {"id":"p0-6a","type":"text","text":"## 0.6A ✅ OPT-IN CONSISTENCY PILOT\n1 elite • 4 steady • 5 normal • 2 volatile active athletes\n80 games • 47 score + 12 winner differences • exact replay • 53/53 tests • $0","x":-650,"y":5590,"width":1360,"height":150,"color":"3"},
     {"id":"p0-6b","type":"text","text":"## 0.6B ✅ CALIBRATION • NOT ELIGIBLE\n4,000 same-athlete games + exact replays • mean talent + balance pass\nElite 19.2% vs volatile 19.3% bad nights • same 14-point floor • rollout blocked","x":-650,"y":5800,"width":1360,"height":150,"color":"2"},
-    {"id":"p0-6c","type":"text","text":"## NEXT: 0.6C RESOLVER REDESIGN REVIEW\nDesign only • narrow outcome variance without raising average talent\nPreserve bad nights + ratings + usage + balance + replay before implementation","x":-650,"y":6010,"width":1360,"height":150,"color":"4"}
+    {"id":"p0-6c","type":"text","text":"## 0.6C ✅ RESOLVER REDESIGN REVIEW\nOpt-in v2 shooting ledger • rating-based expectation • bounded correction\nNo runtime change • preserve bad + exceptional nights • $0","x":-650,"y":6010,"width":1360,"height":150,"color":"3"},
+    {"id":"p0-6d","type":"text","text":"## NEXT: 0.6D OPT-IN V2 PILOT\nImplement the game-local ledger • same-athlete frozen comparison\nReliability + talent + usage + balance + replay gates • no automatic rollout","x":-650,"y":6220,"width":1360,"height":150,"color":"4"}
   ],
   "edges": [
     {"id":"p0-edge-1","fromNode":"p0-a","fromSide":"right","toNode":"p0-b","toSide":"left"},
@@ -75,6 +76,7 @@
     {"id":"p0-edge-31","fromNode":"p0-5x","fromSide":"bottom","toNode":"p0-5y","toSide":"top"},
     {"id":"p0-edge-32","fromNode":"p0-5y","fromSide":"bottom","toNode":"p0-6a","toSide":"top"},
     {"id":"p0-edge-33","fromNode":"p0-6a","fromSide":"bottom","toNode":"p0-6b","toSide":"top"},
-    {"id":"p0-edge-34","fromNode":"p0-6b","fromSide":"bottom","toNode":"p0-6c","toSide":"top"}
+    {"id":"p0-edge-34","fromNode":"p0-6b","fromSide":"bottom","toNode":"p0-6c","toSide":"top"},
+    {"id":"p0-edge-35","fromNode":"p0-6c","fromSide":"bottom","toNode":"p0-6d","toSide":"top"}
   ]
 }

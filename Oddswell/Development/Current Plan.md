@@ -377,7 +377,20 @@ status: active
 - **Failed:** elite point deviation is 6.3128 versus volatile 6.3590; bad-night rates are 19.2% versus 19.3%; both 20th-percentile floors are 14 points. The frozen reliability gates therefore fail.
 - **Decision:** keep `athlete-consistency-v1` opt-in and do not promote it. Its label is mechanically real but does not yet create the intended superstar reliability.
 - **Validation:** all 54 regressions pass and the Admin self-check remains green. Cost was `$0.00`. See [[Development/Reports/Phase 06B Athlete Consistency Calibration]].
-- **Next gate:** Phase 0.6C design-only Consistency Resolver Redesign Review; freeze a mean-preserving outcome-variance mechanism before implementation.
+- **Next gate:** Completed as Phase 0.6C; the first replacement contract is frozen before implementation.
+
+### Phase 0.6C Consistency Resolver Redesign Review status
+
+- **Status:** Complete on `agent/phase-0d`; design-only, with no simulator, league, Admin, schema, or historical-evidence change.
+- **Decision:** approve one explicit opt-in `athlete-consistency-v2` candidate for testing. A game-local shooting ledger compares cumulative unmodified expected shot points with actual shot points and applies a bounded next-shot correction.
+- **Talent boundary:** ratings, matchup, fatigue, and readiness continue to define the base probability. Consistency narrows variance around that expectation; it does not add ratings, usage, opportunity, or career value.
+- **Frozen tiers:** volatile has no correction; normal, steady, and elite use increasing strengths with 3-, 6-, and 10-percentage-point caps. V1 and v2 may not run together.
+- **Scope:** shooting only. Passing, defense, rebounding, opportunity smoothing, confidence, personality, cross-game memory, and generic specialist consistency remain later work.
+- **Promotion gates:** at least 10% lower elite point deviation, 20% fewer elite bad nights, a one-point higher 20th-percentile floor, preserved nonzero bad nights and 90th-percentile highs, means within 0.5 points, attempts within 0.5, team win spread within five points, exact replay, and unchanged legacy/history paths.
+- **Frozen scoring floors:** Tariq retains the Phase 0.6B fewer-than-14-point threshold. Jalen's untouched 1,000-game control averaged 20.565 points, freezing his bad night as fewer than 16 points before v2 implementation.
+- **Rarity:** elite consistency is not a superstar by itself. The future production target is no more than about 1% of established athletes combining top-tier ability with elite consistency; the current one-of-twelve fixture is calibration only.
+- **Cost and truth:** `$0.00`; deterministic variance control, not learning, confidence, mentality, personality, neural-network training, or real-world evidence. See [[Development/Reports/Phase 06C Consistency Resolver Redesign Review]].
+- **Next gate:** Phase 0.6D opt-in v2 shooting-ledger implementation and frozen same-athlete evaluation; no automatic promotion.
 
 ## Phase 1: 3D vertical slice
 

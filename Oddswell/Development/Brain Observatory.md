@@ -86,6 +86,8 @@ Phase 0.5Y selects no additional Life Brain input. Phase 0.6A instead adds an op
 
 Phase 0.6B blocks that pilot from rollout. Holding Tariq Stone's ratings and role constant across 1,000 healthy games per tier shows virtually unchanged bad-night rates and the same 14-point performance floor; the small form modifier does not overcome possession and outcome variance. The Admin tier remains labeled `OPT-IN PILOT`, and no visual may imply that elite consistency already produces superstar reliability.
 
+Phase 0.6C freezes a replacement design without changing the Admin Console or simulator. A future opt-in v2 path may use a bounded, game-local shooting ledger to move actual shot points toward unmodified rating-based expectation. It must record every correction, reset each game, preserve bad and exceptional nights, and remain invisible as active behavior until Phase 0.6D passes. The Observatory must not portray the ledger as learning, confidence, mentality, or neural training.
+
 The League Viewer follows the Phase 0D.4 public-information boundary. Hidden fatigue, recovery timers, injury-risk internals, seeds, RNG state, economy data, and admin mutations stay outside its payload.
 
 Archived games reuse hidden authoritative league state only on the server. The browser receives the complete recorded play-frame stream and verified archive metadata, never the hidden reconstruction inputs.

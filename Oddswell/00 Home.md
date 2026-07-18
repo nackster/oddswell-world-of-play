@@ -56,6 +56,7 @@ tags:
 - [[Development/Reports/Phase 05X V4 Post-Rollout Integration Review|Phase 0.5X Athlete Life Brain v4 post-rollout review]]
 - [[Development/Reports/Phase 06A Opt-In Athlete Consistency Pilot|Phase 0.6A opt-in Athlete Game Consistency pilot]]
 - [[Development/Reports/Phase 06B Athlete Consistency Calibration|Phase 0.6B Athlete Game Consistency calibration]]
+- [[Development/Reports/Phase 06C Consistency Resolver Redesign Review|Phase 0.6C Consistency Resolver redesign review]]
 - [[Visual Maps/Project Tool Map|Master project tool map]]
 - [[Visual Maps/3D Asset Toolchain|3D asset toolchain canvas]]
 - [[Visual Maps/Multi-Brain Architecture|Multi-brain architecture canvas]]
@@ -64,7 +65,7 @@ tags:
 
 ## Current focus
 
-Phase 0.6B is complete: same-athlete calibration blocks the opt-in consistency pilot from rollout. Mean talent, team balance, and all 4,000 exact replays pass, but elite and volatile tiers retain almost identical bad-night rates and the same 14-point floor. Phase 0.6C will redesign the resolver on paper before another implementation. Live models, stories, credits, wagering, and retraining remain inactive.
+Phase 0.6C is complete: an opt-in v2 shooting-execution ledger is frozen for testing. It will mean-revert actual shot points toward rating-based expectation without changing ratings, roles, usage selection, or career state. Phase 0.6D will implement and test it against the existing reliability, talent, balance, exceptional-game, and replay gates; no rollout is authorized. Live models, stories, credits, wagering, and retraining remain inactive.
 
 ## Current state
 
