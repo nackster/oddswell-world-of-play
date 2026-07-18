@@ -100,6 +100,8 @@ Phase 0.6H selects one future opt-in `offensive_involvement` tier after a design
 
 Phase 0.6I implements that input only as an explicit local pilot. The Athlete Profile and Basketball Brain status now say `OPT-IN PILOT` and `OPPORTUNITY ONLY`; the current league still supplies no involvement snapshot. Across 600 paired games, Jalen's selection opportunity is strictly ordered from low through standard to featured, every replay and manifest verifies, and the existing shooting formula has zero involvement fields. The display must not present the pilot as a production role, rating, intelligence, coaching, learning, personality, or neural-network training.
 
+Phase 0.6J rechecks the frozen pilot across high-passing Micah Vale, lower-rated scorer Cal Brooks, and the original Jalen Cross control. All three pass preregistered opportunity, shooting-efficiency, team-possession, talent, replay, manifest, and formula gates across 1,800 pilot games, but the Observatory remains unchanged: `OPT-IN PILOT`, `OPPORTUNITY ONLY`, and no authoritative league snapshot. This evidence is eligible only for a separate promotion review and must not be animated as learning, confidence, personality, intelligence, coaching, or real-world realism.
+
 The League Viewer follows the Phase 0D.4 public-information boundary. Hidden fatigue, recovery timers, injury-risk internals, seeds, RNG state, economy data, and admin mutations stay outside its payload.
 
 Archived games reuse hidden authoritative league state only on the server. The browser receives the complete recorded play-frame stream and verified archive metadata, never the hidden reconstruction inputs.

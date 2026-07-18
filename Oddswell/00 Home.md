@@ -63,6 +63,7 @@ tags:
 - [[Development/Reports/Phase 06G Consistency v2 Post-Rollout Integration Review|Phase 0.6G Consistency v2 post-rollout review]]
 - [[Development/Reports/Phase 06H Next Athlete Performance Input Selection Review|Phase 0.6H next athlete-performance input selection]]
 - [[Development/Reports/Phase 06I Opt-In Offensive Involvement Pilot|Phase 0.6I opt-in Offensive Involvement pilot]]
+- [[Development/Reports/Phase 06J Multi-Athlete Offensive Involvement Calibration|Phase 0.6J multi-athlete Offensive Involvement calibration]]
 - [[Visual Maps/Project Tool Map|Master project tool map]]
 - [[Visual Maps/3D Asset Toolchain|3D asset toolchain canvas]]
 - [[Visual Maps/Multi-Brain Architecture|Multi-brain architecture canvas]]
@@ -71,7 +72,7 @@ tags:
 
 ## Current focus
 
-Phase 0.6I implements the bounded `offensive-involvement-v1` input as an `OPT-IN PILOT` with `OPPORTUNITY ONLY` scope. A 200-seed-per-tier Jalen control produces strictly ordered selection opportunity with 600/600 exact pilot replays and zero shot-formula leakage. The authoritative league remains unchanged. Phase 0.6J will test the frozen weights across multiple athlete roles before any promotion review. Live models, stories, credits, wagering, and retraining remain inactive.
+Phase 0.6J verifies the unchanged `offensive-involvement-v1` weights across high-passing Micah Vale, lower-rated scorer Cal Brooks, and the original Jalen Cross control. All three pass preregistered opportunity, shooting-efficiency, possession, talent, replay, and audit gates across 1,800 pilot games. The feature remains an `OPT-IN PILOT` with `OPPORTUNITY ONLY` scope; Phase 0.6K is a read-only promotion review, not a rollout. Live models, stories, credits, wagering, and retraining remain inactive.
 
 ## Current state
 

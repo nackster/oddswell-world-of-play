@@ -458,6 +458,17 @@ status: active
 - **Validation:** 3 focused tests, all 62 regressions, Admin Console self-check, canvas structure, and whitespace checks pass. Cost was `$0.00`. See [[Development/Reports/Phase 06I Opt-In Offensive Involvement Pilot]].
 - **Next gate:** Phase 0.6J read-only multi-athlete Offensive Involvement calibration across a high-passing creator, a lower-rated scorer, and Jalen's control before any promotion review.
 
+### Phase 0.6J Multi-Athlete Offensive Involvement Calibration status
+
+- **Status:** Complete on `agent/phase-0d`; read-only calibration with the athlete set, seeds, and numeric gates frozen before measurement.
+- **Role coverage:** 200 paired seeds per tier cover high-passing Micah Vale, lower-rated scorer Cal Brooks, and the original Jalen Cross control. The existing 0.85/1.00/1.15 weights and all player ratings remain unchanged.
+- **Opportunity result:** low is 9.95%-12.17% below standard and featured is 8.89%-11.71% above standard for all three athletes. Field-goal percentage spreads stay within 0.54-0.98 percentage points and team-possession spreads within 0.220-0.495.
+- **Talent boundary:** Cal's featured 39.54% field-goal rate remains below Jalen's standard 44.02%; added opportunity does not erase their frozen shooting-rating difference.
+- **Integrity:** 1,800/1,800 pilot replays, 600/600 omitted-control checks, and 1,800/1,800 manifests pass. Three snapshot-tamper checks fail verification as required; shot-formula violations are zero.
+- **Decision:** eligible only for a separate promotion review. The pilot remains `OPT-IN PILOT` and `OPPORTUNITY ONLY`; the authoritative league still supplies no snapshot.
+- **Validation:** 3 focused tests, all 62 regressions, Admin Console self-check, canvas structure, and whitespace checks pass. Cost was `$0.00`. See [[Development/Reports/Phase 06J Multi-Athlete Offensive Involvement Calibration]].
+- **Next gate:** Phase 0.6K read-only Offensive Involvement Promotion Review; decide controlled-rollout eligibility without implementing rollout.
+
 ## Phase 1: 3D vertical slice
 
 Build the one-city scope defined in [[Design/Decisions/DEC-002 First Playable Scope]].
