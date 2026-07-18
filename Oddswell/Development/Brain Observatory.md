@@ -94,6 +94,8 @@ Phase 0.6E approves v2 for a later controlled rollout but leaves the Observatory
 
 Phase 0.6F satisfies that contract. The Observatory now labels shooting-only Consistency v2 as `ACTIVE DEFAULT`; current league and prediction paths share it, v5 history stores the exact roster settings, replay evidence binds them, and archived Game Theater reconstructs from each stored snapshot. Historical studies remain explicitly disabled, v4 files migrate safely, and rollback remains one constant plus restart without reinterpreting stored v2 seasons. The visualization still represents deterministic audit telemetry, not training, confidence, personality, intelligence, or changing neural weights.
 
+Phase 0.6G rechecks that rollout without changing the Admin Console or simulator. The fresh four-season archive stores v2 and a complete 12-athlete snapshot in all 80 games, first-season predictions and replay hashes agree 20/20, and archived Season 1 Game 1 reconstructs all 428 frames with a verified replay seal. V4 migration, historical disabled paths, digest locks, and one-switch rollback remain clean. These visuals still show deterministic shooting audit telemetry, not learning, confidence, personality, intelligence, or neural-network training.
+
 The League Viewer follows the Phase 0D.4 public-information boundary. Hidden fatigue, recovery timers, injury-risk internals, seeds, RNG state, economy data, and admin mutations stay outside its payload.
 
 Archived games reuse hidden authoritative league state only on the server. The browser receives the complete recorded play-frame stream and verified archive metadata, never the hidden reconstruction inputs.

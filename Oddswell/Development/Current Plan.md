@@ -427,6 +427,16 @@ status: active
 - **Truth boundary:** deterministic fictional shooting-variance control, not learning, confidence, personality, intelligence, or real-world evidence.
 - **Next gate:** Phase 0.6G read-only post-rollout integration review before another athlete-performance input.
 
+### Phase 0.6G Consistency v2 Post-Rollout Integration Review status
+
+- **Status:** Complete on `agent/phase-0d`; read-only review with no runtime, default, parameter, schema, API, or Admin behavior change.
+- **Fresh archive:** all 80/80 games use v2 with complete 12-athlete stored snapshots. First-season prediction winners and replay hashes agree 20/20; archived Season 1 Game 1 reconstructs all 428 frames with a verified replay seal.
+- **Compatibility:** v4-to-v5 disabled migration, historical Phase 0D.4 prediction isolation, frozen life-policy digests, and stored-v2 replay remain exact.
+- **Rollback:** one default-constant change to disabled plus restart still affects only new games; stored v2 history retains its version and snapshot.
+- **Validation:** 7/7 focused locks, all 59 regressions, Admin Console self-check, fresh archive reconstruction, and the affected clean canvas pass. Cost was `$0.00`. See [[Development/Reports/Phase 06G Consistency v2 Post-Rollout Integration Review]].
+- **Decision:** keep shooting-only v2 as the active default. No realism, learning, confidence, personality, or real-world claim is added.
+- **Next gate:** Phase 0.6H design-only Next Athlete Performance Input Selection Review; choose at most one justified bounded input or none before implementation.
+
 ## Phase 1: 3D vertical slice
 
 Build the one-city scope defined in [[Design/Decisions/DEC-002 First Playable Scope]].
@@ -447,7 +457,7 @@ The shared life, world, memory, and learning layers will support every sport. Ea
 - Minimal athlete attributes.
 - Initial live LLM provider/model and separate inference budget.
 - First retraining dataset and method that fit the $5 ceiling.
-- Consistency v2 post-rollout archive, prediction, migration, history, and rollback review.
+- Next bounded athlete-performance input, or an explicit decision to add none.
 - AI evaluation criteria and model-update cadence.
 - Ranked competition scoring.
 - Match schedule and season length.

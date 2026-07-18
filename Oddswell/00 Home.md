@@ -60,6 +60,7 @@ tags:
 - [[Development/Reports/Phase 06D Opt-In Consistency Resolver v2 Pilot|Phase 0.6D opt-in Consistency Resolver v2 pilot]]
 - [[Development/Reports/Phase 06E Consistency v2 Promotion Review|Phase 0.6E Consistency v2 promotion review]]
 - [[Development/Reports/Phase 06F Controlled Consistency v2 Rollout|Phase 0.6F controlled Consistency v2 rollout]]
+- [[Development/Reports/Phase 06G Consistency v2 Post-Rollout Integration Review|Phase 0.6G Consistency v2 post-rollout review]]
 - [[Visual Maps/Project Tool Map|Master project tool map]]
 - [[Visual Maps/3D Asset Toolchain|3D asset toolchain canvas]]
 - [[Visual Maps/Multi-Brain Architecture|Multi-brain architecture canvas]]
@@ -68,7 +69,7 @@ tags:
 
 ## Current focus
 
-Phase 0.6F makes shooting-only Consistency v2 the `ACTIVE DEFAULT` for newly generated games after league, prediction, v5 persistence, replay manifests, archived Game Theater, Admin labels, v4 migration, historical evidence, and one-switch rollback all pass together. Stored v2 games keep their exact snapshots; historical studies remain disabled. Phase 0.6G is a read-only post-rollout review. Live models, stories, credits, wagering, and retraining remain inactive.
+Phase 0.6G keeps shooting-only Consistency v2 as the `ACTIVE DEFAULT` after a fresh 80-game archive, 20/20 prediction agreement, exact archived replay, v4 migration, historical evidence, and one-switch rollback all pass again. Phase 0.6H is a design-only review that may select at most one bounded athlete-performance input or explicitly select none. Live models, stories, credits, wagering, and retraining remain inactive.
 
 ## Current state
 
