@@ -10,6 +10,7 @@ status: active
 ## Planning authority
 
 - The Scope Director must read [[Design/Beta Game Bible|OddsWell Beta Game Bible]] before selecting a phase.
+- [[Design/Version 1 Game Bible|OddsWell Version 1 Game Bible]] is a future boundary only until the owner approves beta exit and a Version 1 scope freeze.
 - **LOCKED** and **BETA TARGET** describe product intent, not proof that a feature exists.
 - Work depending on an **OPEN** decision stops for the owner; **LATER** items are not scheduled beta work.
 - This plan and phase reports remain the implementation truth.

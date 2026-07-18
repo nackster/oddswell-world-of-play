@@ -11,6 +11,7 @@ tags:
 ## Project map
 
 - [[Design/Beta Game Bible|Beta Game Bible — canonical beta scope]]
+- [[Design/Version 1 Game Bible|Version 1 Game Bible — post-beta scope]]
 - [[Design/Game Vision|Game vision]]
 - [[Design/Decisions/DEC-001 Unified Credits|Unified credit economy]]
 - [[Design/Decisions/DEC-002 First Playable Scope|First playable scope]]

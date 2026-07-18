@@ -112,10 +112,19 @@ The presets must not attach ability, wealth, intelligence, behavior, or athlete 
 ### World rules
 
 - **LOCKED:** one city only for beta.
+- **LOCKED:** players can walk around the city together and see one another's equipped clothing.
 - **BETA TARGET:** compact, dense, memorable, and understandable on foot.
 - **BETA TARGET:** the player should be able to enjoy moving through the city outside game time.
 - **LATER:** additional cities, intercity travel, houses, mansions, vehicles, large social districts, and other sports venues.
 - **GUARDRAIL:** do not build a generalized multi-city system before the first city proves what needs reuse.
+
+### Shared player presence
+
+- **LOCKED:** the beta city is multiplayer rather than a private city with only shared league results.
+- **LOCKED:** clothing is a visible form of earned status and self-expression around other players.
+- **BETA TARGET:** player movement, appearance, and equipped clothing replicate reliably within a bounded city instance.
+- **OPEN:** instance capacity, regions, player collision, names, emotes, friends, parties, apartment visits, text chat, voice chat, blocking, reporting, and moderation.
+- **LATER:** player-to-player exchange or trading of clothing and furniture. The future direction is preserved in [[Design/Version 1 Game Bible|Version 1 Game Bible]], but it is not beta authorization.
 
 ## Avatar and clothing
 
@@ -132,8 +141,7 @@ The presets must not attach ability, wealth, intelligence, behavior, or athlete 
 
 - **LOCKED:** studio apartment is the starting home.
 - **LOCKED:** the beta needs a visible ladder of larger apartments purchased with substantial amounts of Odds Bucks.
-- **BETA TARGET:** one-bedroom, two-bedroom, three-bedroom, and four-bedroom apartments are named upgrade levels.
-- **OPEN:** the owner's speech also named a "pet house," likely meaning "penthouse," while describing five apartment levels. Confirm the intended word and whether the studio is included in the count.
+- **LOCKED:** there are six named tiers: Studio, One-bedroom, Two-bedroom, Three-bedroom, Four-bedroom, and Penthouse.
 - **LATER:** detached houses and mansions.
 
 ### Furniture
@@ -150,9 +158,12 @@ The presets must not attach ability, wealth, intelligence, behavior, or athlete 
 - **LOCKED:** basketball is the only beta sport.
 - **LOCKED:** begin with two fictional teams in one shared authoritative league.
 - **LOCKED:** athletes, results, statistics, injuries, and history persist.
-- **OPEN:** the owner referenced a regular-basketball-like season length, but the exact number was unclear in the speech. The Scope Director must not infer it.
+- **LOCKED:** the regular-season target is 82 games per team, matching the current NBA regular-season count as a scale reference.
+- **OPEN:** an 82-game season with only two beta teams may become repetitive; the owner must approve any team-count or schedule-format change rather than having an agent invent one.
 - **LATER:** additional basketball teams, playoffs, full drafts, trades, free agency, detailed contracts, and complete 10-20-year career simulation unless separately promoted into beta.
 - **LATER:** combat sports/fights are the next sport direction after basketball proves the full loop.
+
+Official scale reference: [NBA 2025-26 regular-season schedule](https://www.nba.com/news/2025-26-nba-regular-season-schedule), which states that each team plays 82 regular-season games.
 
 ### Beta wager markets
 
@@ -265,7 +276,7 @@ Admin features do not become beta player features. The server remains authoritat
 | Full career ecosystem | 10-20 years, deep contracts, retirement, post-career roles | LATER |
 | Other sports | Combat sports/fights after basketball | LATER |
 | Houses and mansions | Beyond apartment progression | LATER |
-| Multiplayer city presence | Not yet decided | OPEN |
+| Multiplayer city presence | Players walk together and show equipped clothing | LOCKED / capacity OPEN |
 | City theme and names | Must be owner-approved | OPEN |
 
 ## Explicitly outside beta unless the owner changes scope
@@ -277,6 +288,7 @@ Admin features do not become beta player features. The server remains authoritat
 - Combat sports or any sport besides basketball.
 - Full 10-20-year career ecosystem.
 - Large clothing or furniture catalogs.
+- Player-to-player exchange, trading, marketplace, or gifting of clothing and furniture.
 - Open voice/text chat and large social systems.
 - Final live-service scale, deployment, or monetization claims.
 - Silent self-training, uncontrolled model updates, or invented neural-network claims.
@@ -288,16 +300,15 @@ The Scope Director must stop and ask when a phase depends on one of these:
 1. First world and city name, theme, geography, culture, and visual identity.
 2. Exact player camera and movement style.
 3. Exact character preset range and post-start customization.
-4. Whether "pet house" meant "penthouse," and whether beta has five or six total apartment tiers.
-5. Apartment upgrade layouts and decorating interaction.
-6. Exact job, payout, allowance, and recovery cadence.
-7. Exact basketball season length; the spoken number was unclear.
-8. Final game-presentation duration and fidelity.
-9. Order, rules, limits, and payout formulas for the four beta wager markets.
-10. Initial clothing and furniture catalog sizes.
-11. Whether beta players see one another in the city or only share the league and results.
-12. Engine and exact version, followed by explicit download, license, disk, and project-creation approval.
-13. Minimum PC specification, release model, age target, and regions.
+4. Apartment upgrade layouts and decorating interaction.
+5. Exact job, payout, allowance, and recovery cadence.
+6. How an 82-game season stays varied with the initial two-team scope.
+7. Final game-presentation duration and fidelity.
+8. Order, rules, limits, and payout formulas for the four beta wager markets.
+9. Initial clothing and furniture catalog sizes.
+10. Shared-city capacity, instancing, regions, communication, blocking, reporting, and moderation.
+11. Engine and exact version, followed by explicit download, license, disk, and project-creation approval.
+12. Minimum PC specification, release model, age target, and regions.
 
 ## Scope Director rules
 
@@ -320,4 +331,3 @@ Before proposing a phase, the Scope Director must:
 - Phase 1A.0 verified the local workstation and replay interface.
 - The next implementation gate is owner-approved installation of one named 3D engine/version and an empty packaged-build benchmark.
 - No engine installation, city, avatar, apartment, Odds Bucks ledger, wager settlement, clothing store, or furniture store is complete merely because it appears in this beta plan.
-

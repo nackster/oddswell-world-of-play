@@ -12,10 +12,10 @@
 		{"id":"bgs-hour-2","type":"text","text":"## 🏙️ ARRIVE\nEnter one original 3D city • see the studio apartment • begin on foot","x":40,"y":295,"width":540,"height":115,"color":"5"},
 		{"id":"bgs-hour-3","type":"text","text":"## 🔎 DISCOVER\nFind the job • stadium/sportsbook • clothing store • furniture store","x":40,"y":435,"width":540,"height":115,"color":"5"},
 		{"id":"bgs-hour-4","type":"text","text":"## 🎯 COMPLETE THE LOOP\nEarn → wager → watch → settle → save or buy an upgrade","x":40,"y":575,"width":540,"height":55,"color":"5"},
-		{"id":"bgs-city-1","type":"text","text":"## 🏙️ ONE CITY\nCompact, memorable, walkable. Name, world, theme, biome, culture, and visual identity require owner approval.","x":750,"y":145,"width":540,"height":145,"color":"4"},
-		{"id":"bgs-city-2","type":"text","text":"## 🏠 APARTMENT LADDER\nStudio → 1BR → 2BR → 3BR → 4BR → penthouse?\nExact count and final tier remain OPEN.","x":750,"y":320,"width":540,"height":135,"color":"4"},
+		{"id":"bgs-city-1","type":"text","text":"## 🏙️ ONE SHARED CITY\nCompact, memorable, walkable. Players see one another and show equipped clothing. City identity requires owner approval.","x":750,"y":145,"width":540,"height":145,"color":"4"},
+		{"id":"bgs-city-2","type":"text","text":"## 🏠 SIX APARTMENT TIERS\nStudio → 1BR → 2BR → 3BR → 4BR → Penthouse\nHouses and mansions come later.","x":750,"y":320,"width":540,"height":135,"color":"4"},
 		{"id":"bgs-city-3","type":"text","text":"## 🛍️ BASIC STORES\nSmall clothing and furniture catalogs. Purchased items visibly improve the avatar or apartment.","x":750,"y":485,"width":540,"height":125,"color":"4"},
-		{"id":"bgs-sport-1","type":"text","text":"## 🏀 FIRST SPORT\nTwo fictional teams • persistent athletes • shared authoritative games • short visual presentation","x":1460,"y":145,"width":540,"height":135,"color":"2"},
+		{"id":"bgs-sport-1","type":"text","text":"## 🏀 FIRST SPORT\nTwo fictional teams • persistent athletes • 82-game season target • shared authoritative games • short visual presentation","x":1460,"y":145,"width":540,"height":135,"color":"2"},
 		{"id":"bgs-sport-2","type":"text","text":"## 🎟️ BETA MARKET TARGETS\n1. Winner  2. Margin  3. Overtime  4. Player points\nIntroduce and validate one market at a time.","x":1460,"y":310,"width":540,"height":145,"color":"2"},
 		{"id":"bgs-sport-3","type":"text","text":"## 🎬 WATCH\nInitial target: 2–5 minutes • show score, clock, athletes, key actions, overtime, and wager events • never resimulate","x":1460,"y":485,"width":540,"height":145,"color":"2"},
 		{"id":"bgs-brain-1","type":"text","text":"## 🧠 DISTINCT ATHLETES\nRare generational stars • specialists • average and below-average players • durable strengths and weaknesses","x":40,"y":795,"width":540,"height":145,"color":"3"},
@@ -25,8 +25,8 @@
 		{"id":"bgs-money-2","type":"text","text":"## 🧰 RECOVERY LOOP\nIf broke, wait for or complete the next job/allowance opportunity. Amounts and timing remain OPEN.","x":750,"y":970,"width":540,"height":135,"color":"6"},
 		{"id":"bgs-money-3","type":"text","text":"## ⏳ NOT IN BETA\nNo real-money Odds Bucks purchases. Later only after legal, platform, payment, age, region, fraud, and audit gates.","x":750,"y":1135,"width":540,"height":110,"color":"6"},
 		{"id":"bgs-boundary-1","type":"text","text":"## ✅ BETA MUST PROVE\nOne complete city → work → wager → watch → settlement → lifestyle-upgrade loop","x":1460,"y":795,"width":540,"height":125,"color":"1"},
-		{"id":"bgs-boundary-2","type":"text","text":"## ❓ ASK THE OWNER\nCity identity • engine/version • apartment tier count • season length • multiplayer presence • job/economy numbers • visual fidelity","x":1460,"y":950,"width":540,"height":160,"color":"1"},
-		{"id":"bgs-boundary-3","type":"text","text":"## 🚧 LATER\nOther sports/fights • houses/mansions • multiple cities • travel • full careers • real-money credits • large social systems","x":1460,"y":1140,"width":540,"height":105,"color":"1"}
+		{"id":"bgs-boundary-2","type":"text","text":"## ❓ ASK THE OWNER\nCity identity • engine/version • 82-game variety/team count • multiplayer capacity • job/economy numbers • visual fidelity","x":1460,"y":950,"width":540,"height":160,"color":"1"},
+		{"id":"bgs-boundary-3","type":"text","text":"## 🚧 LATER\nItem trading • other sports/fights • houses/mansions • multiple cities • travel • full careers • real-money credits","x":1460,"y":1140,"width":540,"height":105,"color":"1"}
 	],
 	"edges":[]
 }
