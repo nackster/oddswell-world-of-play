@@ -32,20 +32,23 @@ This register is the searchable source of truth for which tools OddsWell uses, w
 | Shared athlete simulation | Athlete Life Brain | Planned after stable basketball loop | Model persistent personalities, memory, relationships, habits, training, rest, social choices, and career consequences across sports. |
 | AI learning | Memory + versioned evaluation loop | Planned | Learn from structured history immediately and promote tested policy, prompt, fine-tune, or model versions deliberately. |
 | Source control | [GitHub](https://github.com/nackster/oddswell-world-of-play) | Active; private | Version control, branches, reviews, CI, and release history for the project. |
+| Local source control | Git 2.49.0 | Active | Local versioning client verified during Phase 1A.0. |
 | Repository administration | GitHub CLI 2.96.0 | Active | Create and administer the project repository from the local workstation. |
-| Large asset versioning | Git LFS 3.7.1 | Active | Version large binary assets through Git using the project tracking policy in `.gitattributes`. |
+| Large asset versioning | Git LFS 3.6.1 | Active | Version large binary assets through Git using the project tracking policy in `.gitattributes`; no large 3D/engine assets are tracked yet. |
 | Work tracking | GitHub Issues/Projects | Active | Track executable tasks, bugs, pull requests, milestones, and roadmap views without adding another planning service. |
 | Build automation | GitHub Actions | Pending tests | Run automated tests and builds; consider a private self-hosted runner on project servers after the repository is secured. |
 | Agent orchestration | Ruflo | Deferred | Revisit after the Phase 0 simulator exists and parallel automation would provide measurable value. |
 | Visual references | Higgsfield | Active subscription | Controlled character and item references, turnarounds, storyboards, and cinematic exploration. |
-| 3D production | Blender 4.5.5 LTS | Primary; installed and pinned | Final geometry, topology, UVs, materials, optimization, LODs, collision, rigs, and exports. |
+| 3D production | Blender 4.5.5 LTS | Primary; installed and verified | Final geometry, topology, UVs, materials, optimization, LODs, collision, rigs, and exports. |
 | Image to 3D | Meshy | Pilot | First-pass props and environment objects before Blender cleanup. |
 | Character rigging | Rigify | Primary | Controllable production rigs for main characters. |
 | Fast rigging | AccuRIG | Active alternative | Rapid humanoid rigs for prototypes or imported meshes. |
 | Human/NPC generation | Character Creator + Headshot | Deferred | Revisit if the approved style and NPC volume justify it. |
 | Local image to 3D | TRELLIS.2 / Hunyuan3D | Deferred | Benchmark on project servers when volume, privacy, or per-generation cost justifies setup. |
-| Runtime | Game engine | Pending | Select before the 3D vertical slice; evaluate world streaming, character pipeline, networking, performance, and team familiarity. |
-| Runtime candidate | Unreal Engine 5.8 | Benchmark next | Front-runner for the one-city 3D vertical slice; adopt only after a representative street-block benchmark. |
+| Engine distribution | Epic Games Launcher 1.3.150.0 | Installed | Available for an owner-approved candidate installation; no game engine is installed. |
+| Native build toolchain | Visual Studio 2022 + MSVC 14.44 + Windows SDK 10.0.22000.0 | Present; compatibility pending | Local compiler, MSBuild, and SDK exist; verify them against the exact owner-approved engine version before adoption. |
+| Runtime | Game engine | Pending; not installed | Select and install only after owner approval, then evaluate world streaming, character pipeline, networking, performance, and team familiarity. |
+| Runtime candidate | Unreal Engine | Candidate; owner approval pending | Version remains open. Benchmark one representative street block and authoritative replay before adoption. |
 | Game backend | Nakama | Pilot after Phase 0 | Self-hosted accounts, social systems, matchmaking, leaderboards, tournaments, chat, and server runtime. Keep purchased-credit accounting in a dedicated auditable ledger design. |
 | Procedural environment | Blender Geometry Nodes | Active; included | First choice for repeated city assets and rule-based placement before considering Houdini. |
 | Texture production | Substance 3D Painter | Phase 1 pilot | Benchmark one hero character and one city prop before purchasing or standardizing. |

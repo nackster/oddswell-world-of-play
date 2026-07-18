@@ -519,7 +519,17 @@ Build the one-city scope defined in [[Design/Decisions/DEC-002 First Playable Sc
 - Benchmark one compact street block, one court, one controllable rigged avatar, basic lighting/collision/navigation, placeholder NPCs, and one recorded-game adapter.
 - Preserve the authority boundary: the 3D client renders stored event-log outcomes and never resimulates basketball.
 - Record packaged-build frame time, memory use, build time, and one representative asset-iteration time before selecting an engine and version.
-- Do not install an engine, create final art, add economy/credits/wagering, deploy, use paid APIs, or train a model as part of the Phase 0.6N handoff.
+- Begin with the owner-gated local readiness audit; do not install an engine, create final art, add economy/credits/wagering, deploy, use paid APIs, or train a model without a later explicit phase.
+
+### Phase 1A.0 Local 3D Toolchain and Replay Interface Readiness Audit status
+
+- **Status:** Complete on `agent/phase-0d`; read-only audit with no download, install, project scaffold, adapter, schema, API, simulator, Admin, art, backend, deployment, or model change.
+- **Measured workstation:** Windows 11 Pro; Core Ultra 9 185H; 63.4 GiB RAM; RTX 4070 Laptop GPU with 8,188 MiB; 3,053.6 GiB free on `C:`.
+- **Toolchain:** Epic Launcher, Blender 4.5.5 LTS, Visual Studio 2022 C++/MSVC 14.44, Windows SDK 10.0.22000.0, Git 2.49.0, and Git LFS 3.6.1 are present. No Unreal installation was found beyond PATH in Epic manifests, Unreal registries, or common fixed-drive install roots.
+- **Repository:** existing generated-directory ignores and LFS rules cover the first expected engine/3D paths; no speculative rule changed.
+- **Replay interface:** Season 1 Game 1 independently reproduces Harbor City `101`–`104` Mesa Vista across 421 public frames with the exact verified replay seal. Hidden seed, fatigue/readiness, recovery, injury-risk, RNG, and resolver snapshots remain server-side; a 3D client renders recorded outcomes and never resimulates.
+- **Validation:** all 65 frozen regressions, Admin self-check, compilation, Obsidian links, affected canvas structure, whitespace, and scoped diff pass. Cost was `$0.00`. See [[Development/Reports/Phase 1A0 Local 3D Toolchain and Replay Interface Readiness Audit]].
+- **Outcome:** **READY FOR OWNER INSTALL APPROVAL**. Engine/version selection and compatibility remain unverified until the owner approves one installer; Phase 1A.0 starts no later phase.
 
 ## Future shared simulation layer
 

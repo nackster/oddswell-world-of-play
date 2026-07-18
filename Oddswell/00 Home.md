@@ -68,6 +68,7 @@ tags:
 - [[Development/Reports/Phase 06L Controlled Offensive Involvement Rollout|Phase 0.6L controlled Offensive Involvement rollout]]
 - [[Development/Reports/Phase 06M Offensive Involvement Post-Rollout Integration Review|Phase 0.6M Offensive Involvement post-rollout review]]
 - [[Development/Reports/Phase 06N Athlete Performance Scope Freeze and Phase 1 Handoff|Phase 0.6N Athlete Performance scope freeze and Phase 1 handoff]]
+- [[Development/Reports/Phase 1A0 Local 3D Toolchain and Replay Interface Readiness Audit|Phase 1A.0 local 3D toolchain and replay-interface readiness audit]]
 - [[Visual Maps/Project Tool Map|Master project tool map]]
 - [[Visual Maps/3D Asset Toolchain|3D asset toolchain canvas]]
 - [[Visual Maps/Multi-Brain Architecture|Multi-brain architecture canvas]]
@@ -76,7 +77,7 @@ tags:
 
 ## Current focus
 
-Phase 0.6N selects no additional Athlete Performance input and freezes Phase 0 except for demonstrated defects. Athlete Life Brain v4, shooting-only Consistency v2, opportunity-only Offensive Involvement v1, v6 history, authoritative replay, and Admin truth boundaries remain unchanged. Next is Phase 1A: a placeholder one-block 3D vertical-slice engine benchmark that renders an existing authoritative replay without resimulating it. Engine/version selection, final art, live models, stories, credits, wagering, deployment, and retraining remain inactive.
+Phase 1A.0 finds the local 3D workstation and existing authoritative replay interface **READY FOR OWNER INSTALL APPROVAL**. Epic Launcher, Blender, C++ build tools, Windows SDK, Git, and Git LFS are present; no Unreal engine is installed. The verified Season 1 Game 1 payload supplies 421 public frames and a sealed 101–104 outcome for a future client to render without resimulating. Engine/version selection, installation, project scaffolding, final art, live models, stories, credits, wagering, deployment, and retraining remain inactive.
 
 ## Current state
 
