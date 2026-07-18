@@ -96,6 +96,8 @@ Phase 0.6F satisfies that contract. The Observatory now labels shooting-only Con
 
 Phase 0.6G rechecks that rollout without changing the Admin Console or simulator. The fresh four-season archive stores v2 and a complete 12-athlete snapshot in all 80 games, first-season predictions and replay hashes agree 20/20, and archived Season 1 Game 1 reconstructs all 428 frames with a verified replay seal. V4 migration, historical disabled paths, digest locks, and one-switch rollback remain clean. These visuals still show deterministic shooting audit telemetry, not learning, confidence, personality, intelligence, or neural-network training.
 
+Phase 0.6H selects one future opt-in `offensive_involvement` tier after a design-only review of the authoritative 80-game archive. Its only permitted scope is initial-ballhandler and pass-target opportunity; it cannot alter ratings, shot probabilities, minutes, Consistency v2, life choices, or career progression. The Observatory remains unchanged until a separate pilot exists, and any future display must say `OPT-IN PILOT` and `OPPORTUNITY ONLY`, never active training, confidence, personality, intelligence, or real-world realism.
+
 The League Viewer follows the Phase 0D.4 public-information boundary. Hidden fatigue, recovery timers, injury-risk internals, seeds, RNG state, economy data, and admin mutations stay outside its payload.
 
 Archived games reuse hidden authoritative league state only on the server. The browser receives the complete recorded play-frame stream and verified archive metadata, never the hidden reconstruction inputs.

@@ -437,6 +437,16 @@ status: active
 - **Decision:** keep shooting-only v2 as the active default. No realism, learning, confidence, personality, or real-world claim is added.
 - **Next gate:** Phase 0.6H design-only Next Athlete Performance Input Selection Review; choose at most one justified bounded input or none before implementation.
 
+### Phase 0.6H Next Athlete Performance Input Selection decision
+
+- **Status:** Complete on `agent/phase-0d`; design-only review with no runtime, schema, replay, prediction, Admin, or default behavior change.
+- **Decision:** select one durable `offensive_involvement` tier (`low`, `standard`, or `featured`) for an opt-in pilot. It may only redistribute initial ballhandler and pass-target selection, so its truthful scope is `OPPORTUNITY ONLY`.
+- **Evidence:** the four-season archive shows a compact opportunity range across visibly different roles. Cal Brooks records 22.18 field-goal attempts per 48 minutes with 70 shooting, only 4.8% below Nico Reyes at 23.29; high-passing Micah Vale and Eli Mercer record 19.80 and 19.93.
+- **Boundaries:** ratings and circumstances still define ability and shot probability; Consistency v2 still controls shooting variance. The future pilot is bounded to 0.85-1.15 selection weights, one frozen pregame snapshot, exact replay evidence, explicit opt-in, and immutable history.
+- **Not selected:** shot-location profiles, clutch/confidence/mentality, defensive consistency, and another Life Brain input. None has a smaller measured need than opportunity.
+- **Validation:** authoritative 80-game archive evidence was reconstructed from event records; 4/4 focused Consistency v2 boundary tests, the Admin self-check, documentation, affected canvas structure, and whitespace checks pass. Cost was `$0.00`. See [[Development/Reports/Phase 06H Next Athlete Performance Input Selection Review]].
+- **Next gate:** Phase 0.6I opt-in Offensive Involvement pilot; keep the authoritative league default unchanged and stop without promotion if the frozen opportunity, talent, replay, history, Admin-label, or rollback boundary fails.
+
 ## Phase 1: 3D vertical slice
 
 Build the one-city scope defined in [[Design/Decisions/DEC-002 First Playable Scope]].
@@ -457,7 +467,7 @@ The shared life, world, memory, and learning layers will support every sport. Ea
 - Minimal athlete attributes.
 - Initial live LLM provider/model and separate inference budget.
 - First retraining dataset and method that fit the $5 ceiling.
-- Next bounded athlete-performance input, or an explicit decision to add none.
+- Opt-in offensive-involvement pilot evidence and a later separate rollout decision.
 - AI evaluation criteria and model-update cadence.
 - Ranked competition scoring.
 - Match schedule and season length.
