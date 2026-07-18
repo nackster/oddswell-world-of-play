@@ -10,6 +10,7 @@ status: active
 ## Planning authority
 
 - The Scope Director must read [[Design/Beta Game Bible|OddsWell Beta Game Bible]] before selecting a phase.
+- It must then follow [[Development/Beta Delivery Roadmap|Beta Delivery Roadmap]] and the earliest incomplete dependency unless measured evidence requires a corrective gate.
 - [[Design/Version 1 Game Bible|OddsWell Version 1 Game Bible]] is a future boundary only until the owner approves beta exit and a Version 1 scope freeze.
 - **LOCKED** and **BETA TARGET** describe product intent, not proof that a feature exists.
 - Work depending on an **OPEN** decision stops for the owner; **LATER** items are not scheduled beta work.
@@ -557,4 +558,4 @@ The shared life, world, memory, and learning layers will support every sport. Ea
 - First retraining dataset and method that fit the $5 ceiling.
 - AI evaluation criteria and model-update cadence.
 - Ranked competition scoring.
-- Match schedule and season length.
+- 82-game schedule variety, team count, calendar, and presentation cadence.

@@ -34,6 +34,8 @@ The Scope Director must read this document before selecting a phase. It may not 
 
 [[Development/Current Plan|Current Plan]] and phase reports prove what is actually built. They do not turn an idea into a product decision.
 
+[[Development/Beta Delivery Roadmap|Beta Delivery Roadmap]] defines the dependency order used to turn this Bible into achievable phases. The Bible remains product authority when the roadmap is updated.
+
 ## Beta promise
 
 **LOCKED:** OddsWell is a walkable 3D fantasy city centered on a persistent fictional basketball league and one unified virtual currency called **Odds Bucks**.
@@ -263,7 +265,7 @@ Admin features do not become beta player features. The server remains authoritat
 | --- | --- | --- |
 | Character | Fast preset selection, varied appearances, minimal worn starter outfit | LOCKED / details OPEN |
 | World | One walkable original 3D city | LOCKED / identity OPEN |
-| Home | Starter studio and purchasable larger-apartment ladder | LOCKED / exact tiers OPEN |
+| Home | Studio, 1BR, 2BR, 3BR, 4BR, and Penthouse progression | LOCKED / layouts OPEN |
 | Work | One physical job location and repeatable Odds Bucks recovery | LOCKED / mechanic OPEN |
 | Basketball | Two fictional teams, persistent league, watchable authoritative games | LOCKED |
 | Wagers | Winner, margin, overtime, and player-points targets, introduced one at a time | BETA TARGET |
@@ -314,7 +316,7 @@ The Scope Director must stop and ask when a phase depends on one of these:
 
 Before proposing a phase, the Scope Director must:
 
-1. Read this entire document, [[Development/Current Plan|Current Plan]], the latest phase report, and relevant accepted decisions.
+1. Read this entire document, [[Development/Beta Delivery Roadmap|Beta Delivery Roadmap]], [[Development/Current Plan|Current Plan]], the latest phase report, and relevant accepted decisions.
 2. Name the Beta Game Bible section advanced by the phase.
 3. Explain the player-facing beta risk reduced by the phase.
 4. Select the smallest phase that produces evidence or a usable piece of the core loop.
