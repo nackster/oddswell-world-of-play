@@ -88,6 +88,8 @@ Phase 0.6B blocks that pilot from rollout. Holding Tariq Stone's ratings and rol
 
 Phase 0.6C freezes a replacement design without changing the Admin Console or simulator. A future opt-in v2 path may use a bounded, game-local shooting ledger to move actual shot points toward unmodified rating-based expectation. It must record every correction, reset each game, preserve bad and exceptional nights, and remain invisible as active behavior until Phase 0.6D passes. The Observatory must not portray the ledger as learning, confidence, mentality, or neural training.
 
+Phase 0.6D implements that ledger only on an explicit v2 path. Across 8,000 frozen games and 8,000 exact replays, both evaluated athletes pass every reliability, mean-talent, attempts, exceptional-game, balance, and replay gate. Athlete profiles now label the tier as `OPT-IN CANDIDATE (shooting only)`; the authoritative league still does not use it. The Observatory must not extend this result to passing, defense, rebounding, confidence, personality, learning, or real-world players.
+
 The League Viewer follows the Phase 0D.4 public-information boundary. Hidden fatigue, recovery timers, injury-risk internals, seeds, RNG state, economy data, and admin mutations stay outside its payload.
 
 Archived games reuse hidden authoritative league state only on the server. The browser receives the complete recorded play-frame stream and verified archive metadata, never the hidden reconstruction inputs.

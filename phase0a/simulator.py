@@ -227,6 +227,7 @@ def simulate_game(
     initial_availability: Mapping[str, int] | None = None,
     initial_readiness: Mapping[str, float] | None = None,
     initial_game_form: Mapping[str, float] | None = None,
+    initial_shooting_consistency: Mapping[str, tuple[float, float]] | None = None,
 ) -> GameResult:
     home, away = matchup or default_teams()
     state = GameState(home=home, away=away, possession=home.name)
@@ -299,12 +300,42 @@ def simulate_game(
             )
         game_form = {name: float(initial_game_form[name]) for name in player_names}
 
+    if initial_game_form is not None and initial_shooting_consistency is not None:
+        raise ValueError("game form and shooting consistency cannot run together")
+    if initial_shooting_consistency is None:
+        shooting_consistency = {name: (0.0, 0.0) for name in player_names}
+    else:
+        if set(initial_shooting_consistency) != set(player_names):
+            raise ValueError(
+                "initial_shooting_consistency must contain every matchup player exactly once"
+            )
+        if any(
+            not isinstance(initial_shooting_consistency[name], tuple)
+            or len(initial_shooting_consistency[name]) != 2
+            or any(
+                not isinstance(value, (int, float)) or isinstance(value, bool)
+                for value in initial_shooting_consistency[name]
+            )
+            or not 0 <= initial_shooting_consistency[name][0] <= 0.5
+            or not 0 <= initial_shooting_consistency[name][1] <= 0.1
+            for name in player_names
+        ):
+            raise ValueError(
+                "shooting consistency must be (strength, cap) within 0..0.5 and 0..0.1"
+            )
+        shooting_consistency = {
+            name: tuple(float(value) for value in initial_shooting_consistency[name])
+            for name in player_names
+        }
+
     decision_rng = random.Random(seed ^ 0xA11CE)
     outcome_rng = random.Random(seed ^ 0xDDF00D)
     replay = iter(action_tape) if action_tape is not None else None
     emitted_actions: list[dict[str, object]] = []
     records: list[dict[str, object]] = []
     seconds_played = {name: 0 for name in player_names}
+    expected_shot_points = {name: 0.0 for name in player_names}
+    actual_shot_points = {name: 0 for name in player_names}
     previous_lineups: dict[str, tuple[str, ...]] = {}
 
     def record(event_type: str, **details: object) -> None:
@@ -350,6 +381,11 @@ def simulate_game(
     if initial_game_form is not None:
         start_details["pregame_game_form"] = {
             name: round(game_form[name], 4) for name in player_names
+        }
+    if initial_shooting_consistency is not None:
+        start_details["pregame_shooting_consistency"] = {
+            name: {"strength": strength, "cap": cap}
+            for name, (strength, cap) in shooting_consistency.items()
         }
     record("game_started", **start_details)
     overtime = 0
@@ -423,7 +459,7 @@ def simulate_game(
 
             points = 3 if offense_action.kind == "shoot_3" else 2
             base_chance = {"drive": 0.52, "shoot_2": 0.45, "shoot_3": 0.34}[offense_action.kind]
-            make_chance = clamp(
+            base_make_chance = clamp(
                 base_chance
                 + (attacker.shooting - defender.defense) / 220
                 - attacker_fatigue * 0.15
@@ -433,16 +469,29 @@ def simulate_game(
                 0.08,
                 0.78,
             )
+            residual = expected_shot_points[attacker.name] - actual_shot_points[attacker.name]
+            strength, cap = shooting_consistency[attacker.name]
+            consistency_correction = clamp((residual / 2) * strength, -cap, cap)
+            make_chance = clamp(base_make_chance + consistency_correction, 0.08, 0.78)
             made = outcome_rng.random() < make_chance
-            record(
-                "shot_made" if made else "shot_missed",
-                possession=state.possession_number,
-                player=attacker.name,
-                defense=defender.name,
-                action=offense_action.kind,
-                points=points,
-                probability=round(make_chance, 4),
-            )
+            shot_details: dict[str, object] = {
+                "possession": state.possession_number,
+                "player": attacker.name,
+                "defense": defender.name,
+                "action": offense_action.kind,
+                "points": points,
+                "probability": round(make_chance, 4),
+            }
+            if initial_shooting_consistency is not None:
+                shot_details.update(
+                    base_probability=round(base_make_chance, 4),
+                    consistency_correction=round(consistency_correction, 4),
+                    performance_residual=round(residual, 4),
+                )
+            record("shot_made" if made else "shot_missed", **shot_details)
+            expected_shot_points[attacker.name] += base_make_chance * points
+            if made:
+                actual_shot_points[attacker.name] += points
             if made:
                 state.score[offense.name] += points
                 break

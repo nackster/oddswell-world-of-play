@@ -4,8 +4,12 @@ from phase0a.simulator import default_teams
 from phase0d.consistency import (
     ATHLETE_CONSISTENCY,
     CONSISTENCY_SPREAD,
+    CONSISTENCY_V2_CALIBRATION,
+    CONSISTENCY_V2_PARAMETERS,
+    CONSISTENCY_V2_VERSION,
     CONSISTENCY_VERSION,
     calibrate_consistency,
+    calibrate_consistency_v2,
     consistency_tier,
     evaluate_consistency,
     game_form,
@@ -65,6 +69,29 @@ class AthleteConsistencyTests(unittest.TestCase):
             "elite point-deviation reduction",
             "elite bad-night reduction",
             "elite performance floor",
+        ])
+
+    def test_v2_calibration_is_frozen_deterministic_and_replayable(self) -> None:
+        self.assertEqual(CONSISTENCY_V2_PARAMETERS["elite"], (0.5, 0.1))
+        self.assertEqual(CONSISTENCY_V2_CALIBRATION, {
+            "Tariq Stone": (70_000, 14),
+            "Jalen Cross": (72_000, 16),
+        })
+        result = calibrate_consistency_v2(20)
+        self.assertEqual(result, calibrate_consistency_v2(20))
+        self.assertEqual(result["version"], CONSISTENCY_V2_VERSION)
+        self.assertEqual(result["replay_violations"], 0)
+        self.assertEqual(set(result["athletes"]), set(CONSISTENCY_V2_CALIBRATION))
+        self.assertEqual(result["failures"], [
+            "Tariq Stone: elite point-deviation reduction",
+            "Tariq Stone: elite bad-night reduction",
+            "Tariq Stone: elite performance floor",
+            "Tariq Stone: mean-talent preservation",
+            "Tariq Stone: team-balance shift",
+            "Jalen Cross: elite point-deviation reduction",
+            "Jalen Cross: mean-talent preservation",
+            "Jalen Cross: usage preservation",
+            "Jalen Cross: team-balance shift",
         ])
 
 

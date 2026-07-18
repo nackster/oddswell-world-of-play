@@ -390,7 +390,19 @@ status: active
 - **Frozen scoring floors:** Tariq retains the Phase 0.6B fewer-than-14-point threshold. Jalen's untouched 1,000-game control averaged 20.565 points, freezing his bad night as fewer than 16 points before v2 implementation.
 - **Rarity:** elite consistency is not a superstar by itself. The future production target is no more than about 1% of established athletes combining top-tier ability with elite consistency; the current one-of-twelve fixture is calibration only.
 - **Cost and truth:** `$0.00`; deterministic variance control, not learning, confidence, mentality, personality, neural-network training, or real-world evidence. See [[Development/Reports/Phase 06C Consistency Resolver Redesign Review]].
-- **Next gate:** Phase 0.6D opt-in v2 shooting-ledger implementation and frozen same-athlete evaluation; no automatic promotion.
+- **Next gate:** Completed as Phase 0.6D; the opt-in v2 candidate passed the frozen evaluation without automatic promotion.
+
+### Phase 0.6D Opt-In Consistency Resolver v2 Pilot status
+
+- **Status:** Complete on `agent/phase-0d`; v2 is eligible for a separate review but remains inactive in the authoritative league.
+- **Implemented:** a per-game expected-versus-actual shot-points ledger, frozen tier strengths and caps, bounded next-shot correction, per-shot audit fields, exact replay reconstruction, full input validation, and rejection of simultaneous v1/v2 inputs.
+- **Controlled evidence:** Tariq Stone and Jalen Cross each ran 1,000 games per tier with identical ratings and circumstances: 8,000 games plus 8,000 exact replays.
+- **Tariq result:** elite deviation falls 26.14%, bad nights fall 40.93%, and the P20 floor rises from 14 to 15. Tier means span 0.076 points, attempts span 0.083, P90 remains within two points, and team wins span 2.0 percentage points.
+- **Jalen result:** elite deviation falls 21.42%, bad nights fall 28.50%, and the P20 floor rises from 15 to 16. Tier means span 0.246 points, attempts span 0.122, P90 remains within two points, and team wins span 2.2 percentage points.
+- **Integrity:** every frozen gate passes, replay violations are 0/8,000, omission preserves legacy behavior, and all historical paths remain green.
+- **Admin boundary:** profiles display v2 as `OPT-IN CANDIDATE` with `SHOOTING ONLY` scope. Passing, defense, rebounding, confidence, personality, learning, and real-world evidence are not claimed.
+- **Validation:** 13 focused tests and all 56 regressions pass; Admin Console self-check passes. Cost was `$0.00`. See [[Development/Reports/Phase 06D Opt-In Consistency Resolver v2 Pilot]].
+- **Next gate:** Phase 0.6E deliberate promotion review; do not change the default during the review.
 
 ## Phase 1: 3D vertical slice
 

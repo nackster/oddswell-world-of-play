@@ -8,11 +8,22 @@ from phase0a.simulator import Team, default_teams, simulate_game
 
 
 CONSISTENCY_VERSION = "athlete-consistency-v1"
+CONSISTENCY_V2_VERSION = "athlete-consistency-v2"
 CONSISTENCY_SPREAD = {
     "volatile": 0.015,
     "normal": 0.01,
     "steady": 0.006,
     "elite": 0.0025,
+}
+CONSISTENCY_V2_PARAMETERS = {
+    "volatile": (0.0, 0.0),
+    "normal": (0.15, 0.03),
+    "steady": (0.30, 0.06),
+    "elite": (0.50, 0.10),
+}
+CONSISTENCY_V2_CALIBRATION = {
+    "Tariq Stone": (70_000, 14),
+    "Jalen Cross": (72_000, 16),
 }
 ATHLETE_CONSISTENCY = {
     "Jalen Cross": "steady",
@@ -197,4 +208,118 @@ def calibrate_consistency(
         "replay_violations": replay_violations,
         "failures": failures,
         "eligible_for_rollout": not failures,
+    }
+
+
+def calibrate_consistency_v2(game_count: int = 1_000) -> dict[str, object]:
+    if game_count <= 0:
+        raise ValueError("game_count must be positive")
+    teams = default_teams()
+    players = [player.name for team in teams for player in team.players]
+    athlete_results: dict[str, object] = {}
+    all_failures: list[str] = []
+    replay_violations = 0
+
+    for athlete, (start_seed, bad_night_threshold) in CONSISTENCY_V2_CALIBRATION.items():
+        athlete_team = next(
+            team.name for team in teams if any(player.name == athlete for player in team.players)
+        )
+        tier_metrics: dict[str, dict[str, float | int]] = {}
+        for tier, parameters in CONSISTENCY_V2_PARAMETERS.items():
+            points: list[int] = []
+            attempts: list[int] = []
+            team_wins = 0
+            settings = {player: (0.0, 0.0) for player in players}
+            settings[athlete] = parameters
+            for seed in range(start_seed, start_seed + game_count):
+                game = simulate_game(
+                    seed,
+                    matchup=teams,
+                    initial_shooting_consistency=settings,
+                )
+                replay = simulate_game(
+                    seed,
+                    game.action_tape,
+                    matchup=teams,
+                    initial_shooting_consistency=settings,
+                )
+                replay_violations += game != replay
+                athlete_shots = [
+                    record
+                    for record in game.records
+                    if record["type"] in {"shot_made", "shot_missed"}
+                    and record["player"] == athlete
+                ]
+                points.append(
+                    sum(
+                        int(record["points"])
+                        for record in athlete_shots
+                        if record["type"] == "shot_made"
+                    )
+                )
+                attempts.append(len(athlete_shots))
+                winner = game.home_team if game.home_score > game.away_score else game.away_team
+                team_wins += winner == athlete_team
+
+            ordered = sorted(points)
+            tier_metrics[tier] = {
+                "mean_points": round(fmean(points), 4),
+                "point_deviation": round(pstdev(points), 4),
+                "mean_attempts": round(fmean(attempts), 4),
+                "bad_night_rate": round(
+                    sum(value < bad_night_threshold for value in points) / game_count,
+                    4,
+                ),
+                "twentieth_percentile_points": ordered[max(0, (game_count + 4) // 5 - 1)],
+                "ninetieth_percentile_points": ordered[max(0, (9 * game_count + 9) // 10 - 1)],
+                "team_win_rate": round(team_wins / game_count, 4),
+            }
+
+        elite = tier_metrics["elite"]
+        volatile = tier_metrics["volatile"]
+        failures: list[str] = []
+        if float(elite["point_deviation"]) > float(volatile["point_deviation"]) * 0.9:
+            failures.append("elite point-deviation reduction")
+        if float(elite["bad_night_rate"]) > float(volatile["bad_night_rate"]) * 0.8:
+            failures.append("elite bad-night reduction")
+        if int(elite["twentieth_percentile_points"]) < int(
+            volatile["twentieth_percentile_points"]
+        ) + 1:
+            failures.append("elite performance floor")
+        if float(elite["bad_night_rate"]) == 0:
+            failures.append("bad-night possibility")
+        if max(float(value["mean_points"]) for value in tier_metrics.values()) - min(
+            float(value["mean_points"]) for value in tier_metrics.values()
+        ) > 0.5:
+            failures.append("mean-talent preservation")
+        if max(float(value["mean_attempts"]) for value in tier_metrics.values()) - min(
+            float(value["mean_attempts"]) for value in tier_metrics.values()
+        ) > 0.5:
+            failures.append("usage preservation")
+        if int(elite["ninetieth_percentile_points"]) < int(
+            volatile["ninetieth_percentile_points"]
+        ) - 2:
+            failures.append("exceptional-game preservation")
+        if max(float(value["team_win_rate"]) for value in tier_metrics.values()) - min(
+            float(value["team_win_rate"]) for value in tier_metrics.values()
+        ) > 0.05:
+            failures.append("team-balance shift")
+
+        athlete_results[athlete] = {
+            "start_seed": start_seed,
+            "bad_night_threshold": bad_night_threshold,
+            "tiers": tier_metrics,
+            "failures": failures,
+        }
+        all_failures.extend(f"{athlete}: {failure}" for failure in failures)
+
+    if replay_violations:
+        all_failures.append("replay integrity")
+    return {
+        "version": CONSISTENCY_V2_VERSION,
+        "games_per_tier": game_count,
+        "athletes": athlete_results,
+        "replay_violations": replay_violations,
+        "failures": all_failures,
+        "eligible_for_review": not all_failures,
     }

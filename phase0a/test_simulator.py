@@ -61,6 +61,45 @@ class SimulatorTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "game form"):
             simulate_game(47, matchup=teams, initial_game_form=form)
 
+    def test_shooting_consistency_is_opt_in_audited_and_replayable(self) -> None:
+        teams = default_teams()
+        players = [player.name for team in teams for player in team.players]
+        settings = {player: (0.0, 0.0) for player in players}
+        settings["Tariq Stone"] = (0.5, 0.1)
+        original = simulate_game(48, matchup=teams, initial_shooting_consistency=settings)
+        replayed = simulate_game(
+            48,
+            original.action_tape,
+            matchup=teams,
+            initial_shooting_consistency=settings,
+        )
+        self.assertEqual(original, replayed)
+        shot = next(
+            record
+            for record in original.records
+            if record["type"] in {"shot_made", "shot_missed"}
+        )
+        self.assertTrue(
+            {"base_probability", "consistency_correction", "performance_residual"}
+            <= shot.keys()
+        )
+        self.assertTrue(
+            any(
+                record.get("player") == "Tariq Stone"
+                and record.get("consistency_correction") != 0
+                for record in original.records
+            )
+        )
+        with self.assertRaisesRegex(ValueError, "every matchup player"):
+            simulate_game(48, initial_shooting_consistency={})
+        form = {player: 0.0 for player in players}
+        with self.assertRaisesRegex(ValueError, "cannot run together"):
+            simulate_game(
+                48,
+                initial_game_form=form,
+                initial_shooting_consistency=settings,
+            )
+
     def test_rotation_minutes_drive_workload_and_replay_exactly(self) -> None:
         teams = default_teams()
         original = simulate_game(44, matchup=teams)
