@@ -64,6 +64,7 @@ tags:
 - [[Development/Reports/Phase 06H Next Athlete Performance Input Selection Review|Phase 0.6H next athlete-performance input selection]]
 - [[Development/Reports/Phase 06I Opt-In Offensive Involvement Pilot|Phase 0.6I opt-in Offensive Involvement pilot]]
 - [[Development/Reports/Phase 06J Multi-Athlete Offensive Involvement Calibration|Phase 0.6J multi-athlete Offensive Involvement calibration]]
+- [[Development/Reports/Phase 06K Offensive Involvement Promotion Review|Phase 0.6K Offensive Involvement promotion review]]
 - [[Visual Maps/Project Tool Map|Master project tool map]]
 - [[Visual Maps/3D Asset Toolchain|3D asset toolchain canvas]]
 - [[Visual Maps/Multi-Brain Architecture|Multi-brain architecture canvas]]
@@ -72,7 +73,7 @@ tags:
 
 ## Current focus
 
-Phase 0.6J verifies the unchanged `offensive-involvement-v1` weights across high-passing Micah Vale, lower-rated scorer Cal Brooks, and the original Jalen Cross control. All three pass preregistered opportunity, shooting-efficiency, possession, talent, replay, and audit gates across 1,800 pilot games. The feature remains an `OPT-IN PILOT` with `OPPORTUNITY ONLY` scope; Phase 0.6K is a read-only promotion review, not a rollout. Live models, stories, credits, wagering, and retraining remain inactive.
+Phase 0.6K approves the frozen `offensive-involvement-v1` pilot for a separate controlled rollout after reviewing 2,400 pilot games and 800 omitted controls across Phases 0.6I-0.6J. The feature remains an `OPT-IN PILOT` with `OPPORTUNITY ONLY` scope until league history, replay, prediction, Admin archive, full-roster snapshot, historical isolation, and one-switch rollback all pass. Live models, stories, credits, wagering, and retraining remain inactive.
 
 ## Current state
 

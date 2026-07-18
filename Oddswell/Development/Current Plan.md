@@ -469,6 +469,17 @@ status: active
 - **Validation:** 3 focused tests, all 62 regressions, Admin Console self-check, canvas structure, and whitespace checks pass. Cost was `$0.00`. See [[Development/Reports/Phase 06J Multi-Athlete Offensive Involvement Calibration]].
 - **Next gate:** Phase 0.6K read-only Offensive Involvement Promotion Review; decide controlled-rollout eligibility without implementing rollout.
 
+### Phase 0.6K Offensive Involvement Promotion Review status
+
+- **Status:** Complete on `agent/phase-0d`; read-only review with no runtime, default, schema, parameter, rating, prediction, replay, or Admin behavior change.
+- **Decision:** approve `offensive-involvement-v1` for a separate controlled rollout. It remains `OPT-IN PILOT` and `OPPORTUNITY ONLY` during this review.
+- **Evidence:** 2,400 pilot games and 800 omitted controls across Phases 0.6I-0.6J retain ordered opportunity, stable shooting efficiency and team possessions, exact replay/manifests, an unchanged shot formula, and a preserved Cal/Jalen shooting-talent boundary.
+- **Sensitivity and limits:** 19.0%-25.5% of paired winners change across the six multi-role comparisons. The reviewed creator, lower-rated scorer, and higher-rated control support an engineering rollout only; no real-world usage distribution, intelligence, confidence, personality, or learning claim is authorized.
+- **Required integration:** add one v1/disabled default switch, freeze a complete roster snapshot, persist version/snapshot with safe v5-disabled migration, bind replay evidence, align current league/prediction/Admin/archive paths, preserve all historical evidence, and keep custom decision policies disabled for involvement.
+- **Rollback:** one default-constant change to disabled plus restart affects new games only; stored v1 seasons must replay from their stored snapshots.
+- **Validation:** 3/3 focused tests, all 62 regressions, Admin Console self-check, canvas structure, and whitespace checks pass. Cost was `$0.00`. See [[Development/Reports/Phase 06K Offensive Involvement Promotion Review]].
+- **Next gate:** Phase 0.6L controlled Offensive Involvement rollout; stop without promotion if any frozen integration, history, labeling, or rollback condition fails.
+
 ## Phase 1: 3D vertical slice
 
 Build the one-city scope defined in [[Design/Decisions/DEC-002 First Playable Scope]].
@@ -489,7 +500,7 @@ The shared life, world, memory, and learning layers will support every sport. Ea
 - Minimal athlete attributes.
 - Initial live LLM provider/model and separate inference budget.
 - First retraining dataset and method that fit the $5 ceiling.
-- Opt-in offensive-involvement pilot evidence and a later separate rollout decision.
+- Controlled Offensive Involvement rollout integration and rollback evidence.
 - AI evaluation criteria and model-update cadence.
 - Ranked competition scoring.
 - Match schedule and season length.

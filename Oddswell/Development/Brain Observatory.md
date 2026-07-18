@@ -102,6 +102,8 @@ Phase 0.6I implements that input only as an explicit local pilot. The Athlete Pr
 
 Phase 0.6J rechecks the frozen pilot across high-passing Micah Vale, lower-rated scorer Cal Brooks, and the original Jalen Cross control. All three pass preregistered opportunity, shooting-efficiency, team-possession, talent, replay, manifest, and formula gates across 1,800 pilot games, but the Observatory remains unchanged: `OPT-IN PILOT`, `OPPORTUNITY ONLY`, and no authoritative league snapshot. This evidence is eligible only for a separate promotion review and must not be animated as learning, confidence, personality, intelligence, coaching, or real-world realism.
 
+Phase 0.6K approves that pilot only for a separate controlled rollout. The Observatory remains unchanged at `OPT-IN PILOT` and `OPPORTUNITY ONLY` until one explicit v1/disabled switch, a full roster snapshot, versioned history, league/prediction agreement, archived replay reconstruction, historical isolation, and one-switch rollback all pass. Winner changes of 19.0%-25.5% across the reviewed multi-role comparisons stay visible as path sensitivity, not performance quality or real-world realism. No animation may imply coaching intelligence, confidence, personality, learning, neural-network training, or correct real-world usage.
+
 The League Viewer follows the Phase 0D.4 public-information boundary. Hidden fatigue, recovery timers, injury-risk internals, seeds, RNG state, economy data, and admin mutations stay outside its payload.
 
 Archived games reuse hidden authoritative league state only on the server. The browser receives the complete recorded play-frame stream and verified archive metadata, never the hidden reconstruction inputs.
