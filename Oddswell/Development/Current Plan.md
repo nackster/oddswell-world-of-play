@@ -562,6 +562,16 @@ Build the one-city scope defined in [[Design/Decisions/DEC-002 First Playable Sc
 - **Validation:** final frozen regressions, Brain Admin self-check, documentation, canvas, and hygiene evidence are recorded in [[Development/Reports/Phase 1A1b Visual Cpp Runtime Prerequisite Alignment and Unreal Recheck]]. Cost was `$0.00`.
 - **Next gate:** Phase 1A.1c creates and reopens the smallest empty local Windows project in a separate phase. Packaging, permanent adoption, final art, and the one-block replay benchmark remain inactive.
 
+### Phase 1A.1c Minimal Blank OddsWell Project Bootstrap and Reopen status
+
+- **Status:** Complete on `agent/phase-0d`; smallest portable UE 5.8 Blueprint-only desktop project and reopen proof only.
+- **Portable project:** `client/OddsWell/OddsWell.uproject` associates with Engine `5.8`, declares no modules or plugins, and has four generated portable config files plus exactly one map.
+- **Map and settings:** `Content/Maps/Bootstrap.umap` is an 8,422-byte empty level with zero actors. Editor and game defaults point to `/Game/Maps/Bootstrap.Bootstrap`; ray tracing and its project proxies are disabled.
+- **Scope:** no Starter Content, `.uasset`, C++ source/build target, gameplay Blueprint, package, replay adapter, art, backend, economy, wagering, API, Admin runtime, or model work was added.
+- **Reopen evidence:** UE Project Browser identified the exact disk path and Engine 5.8; the reopened editor loaded `Bootstrap`, logged startup completion with zero fatal/critical/unhandled/assert matches, and closed normally with no editor or shader worker left.
+- **Repository:** the map uses Git LFS; `DerivedDataCache`, `Intermediate`, and `Saved` remain ignored and unstaged. See [[Development/Reports/Phase 1A1c Minimal Blank OddsWell Project Bootstrap and Reopen]]. Cost was `$0.00`.
+- **Next gate:** Phase 1A.1d packages and runs this unchanged empty Windows project and records disk, build, launch, frame-time, and memory evidence. No gameplay or permanent engine adoption begins automatically.
+
 ## Future shared simulation layer
 
 Athlete Life Brain v4 is the default for newly generated train, rest, recover, and socialize decisions. It adds only one bounded, one-decision, same-season recent-scoring response above v3's routine behavior. V1-v4 history remains immutable. Expand into longer memory, traits, relationships, nightlife, media, discipline, career decisions, and other sports only after each smaller input passes its own engineering evaluation.

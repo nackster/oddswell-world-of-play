@@ -74,6 +74,7 @@ tags:
 - [[Development/Reports/Phase 1A0 Local 3D Toolchain and Replay Interface Readiness Audit|Phase 1A.0 local 3D toolchain and replay-interface readiness audit]]
 - [[Development/Reports/Phase 1A1a Unreal Engine Installation and Editor Launch Verification|Phase 1A.1a Unreal Engine installation and editor-launch verification]]
 - [[Development/Reports/Phase 1A1b Visual Cpp Runtime Prerequisite Alignment and Unreal Recheck|Phase 1A.1b Visual C++ runtime alignment and Unreal recheck]]
+- [[Development/Reports/Phase 1A1c Minimal Blank OddsWell Project Bootstrap and Reopen|Phase 1A.1c minimal blank OddsWell project bootstrap and reopen]]
 - [[Visual Maps/Project Tool Map|Master project tool map]]
 - [[Visual Maps/Beta Game Scope|Complete beta game scope map]]
 - [[Visual Maps/Beta Delivery Roadmap|Beta delivery roadmap map]]
@@ -84,7 +85,7 @@ tags:
 
 ## Current focus
 
-Phase 1A.1b aligned the official Microsoft Visual C++ x64 runtime to `v14.51.36247.00` and verified UE 5.8 after the required owner reboot. The no-project Project Browser returned without the old runtime warning, logged no fatal startup match, closed normally, and left no UE 5.8 process behind. Phase 1A.1c is the next separate gate: create and reopen the smallest empty local Windows project. Packaging, permanent engine adoption, final art, live models, stories, credits, wagering, deployment, and retraining remain inactive.
+Phase 1A.1c created and reopened the minimal Blueprint-only UE 5.8 project at `client/OddsWell`. The editor loaded the sole empty `Bootstrap` map with zero actors, ray tracing off, no Starter Content, no code or gameplay plugin, and no fatal startup match; both sessions closed normally. Phase 1A.1d is the next separate gate: package and run this unchanged empty Windows project and record the benchmark. Permanent engine adoption, final art, live models, stories, credits, wagering, deployment, and retraining remain inactive.
 
 ## Current state
 
