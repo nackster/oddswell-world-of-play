@@ -591,6 +591,16 @@ Build the one-city scope defined in [[Design/Decisions/DEC-002 First Playable Sc
 - **Integrity:** all 65 frozen regressions passed in `160.509s`; Brain Admin self-check and Python compilation passed; the empty package remains 51 files and 968,413,407 bytes; no Unreal, crash, trace, or shader-worker process remained. Cost was `$0.00`. See [[Development/Reports/Phase 1A2a Noncanonical Street Block and Basketball Court Graybox]].
 - **Next gate:** Phase 1A.2b directly renders the existing verified 421-frame replay in the benchmark client without resimulating basketball. It remains a separate phase; permanent Unreal adoption still waits for replay evidence and owner review.
 
+### Phase 1A.2b Authoritative 421-Frame Replay Renderer status
+
+- **Status:** Complete on `agent/phase-0d`; the benchmark-only UE 5.8 runtime directly displays the frozen public Season 1 Game 1 replay. The default Bootstrap map and noncanonical block/court map remain unchanged.
+- **Input:** tracked 256,442-byte public fixture with 421 frames, exact Harbor City 101-104 Mesa Vista final, fixture SHA-256 `35d03b7b472901ab3f498c8cd389cea4b9cd1ed9309bafe85cbbd3af1160719f`, and authoritative replay seal `00e4f82c2bb4da5d9ad53d75bf76ece7b97ed9b05ca2f7a8a2628d396c779b75`. Forbidden hidden-state keys are absent.
+- **Client boundary:** 12 symbolic built-in markers, fixed illustrative positions, public clock/score/event text, actor/target emphasis, and final seal. The module activates only for `-ReplayBenchmark`; it has no simulator, random source, Python runtime, network call, external service, or plugin dependency.
+- **Build evidence:** owner-approved Visual Studio Installer added only the required .NET Framework 4.8 SDK. Final editor/game compilation and Windows BuildCookRun passed; the final incremental package completed in `58.14s`.
+- **Runtime evidence:** two final packaged runs each rendered all 421 frames, exited `0`, produced zero replay errors, ended 101-104 with the exact seal, and shared canonical trace SHA-256 `12fb61d032a93e667451c364f77907e68e53b934c46f765b6f32eefe9316dbbe`. A final measured run completed in `8.861s` with `1.213 GiB` average and `1.763 GiB` peak working set across startup, accelerated replay, and shutdown.
+- **Integrity:** all 65 frozen regressions passed in `131.138s`; Brain Admin self-check, fixture export, Python compilation, packaged-copy hashes, and repository hygiene passed. Cost was `$0.00`. See [[Development/Reports/Phase 1A2b Authoritative 421-Frame Replay Renderer]].
+- **Next gate:** Phase 1A.3 is an owner review: accept Unreal Engine 5.8 for continued beta work, reject it, or request one specific measured comparison. Character selection and every later roadmap phase remain inactive until that decision is recorded.
+
 ## Future shared simulation layer
 
 Athlete Life Brain v4 is the default for newly generated train, rest, recover, and socialize decisions. It adds only one bounded, one-decision, same-season recent-scoring response above v3's routine behavior. V1-v4 history remains immutable. Expand into longer memory, traits, relationships, nightlife, media, discipline, career decisions, and other sports only after each smaller input passes its own engineering evaluation.

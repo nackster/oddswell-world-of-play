@@ -77,6 +77,7 @@ tags:
 - [[Development/Reports/Phase 1A1c Minimal Blank OddsWell Project Bootstrap and Reopen|Phase 1A.1c minimal blank OddsWell project bootstrap and reopen]]
 - [[Development/Reports/Phase 1A1d Empty Windows Package Launch and Baseline Measurement|Phase 1A.1d empty Windows package, launch, and baseline measurement]]
 - [[Development/Reports/Phase 1A2a Noncanonical Street Block and Basketball Court Graybox|Phase 1A.2a noncanonical street block and basketball court graybox]]
+- [[Development/Reports/Phase 1A2b Authoritative 421-Frame Replay Renderer|Phase 1A.2b authoritative 421-frame replay renderer]]
 - [[Visual Maps/Project Tool Map|Master project tool map]]
 - [[Visual Maps/Beta Game Scope|Complete beta game scope map]]
 - [[Visual Maps/Beta Delivery Roadmap|Beta delivery roadmap map]]
@@ -87,7 +88,7 @@ tags:
 
 ## Current focus
 
-Phase 1A.2a added one separate, noncanonical UE 5.8 benchmark map containing a compact primitive street block, basketball court, two hoop assemblies, road, sidewalks, four building masses, native lighting, and collision. One building resize/reposition iteration was timed, the map reopened and verified in a fresh process, and the frozen 65-test simulation plus Brain Admin remained green. Phase 1A.2b is next: render the existing verified 421-frame replay without resimulating basketball. Permanent engine adoption, final art, live models, stories, credits, wagering, deployment, and retraining remain inactive.
+Phase 1A.2b now directly renders the existing verified 421-frame public replay in the UE 5.8 block/court benchmark without resimulating basketball. Two final packaged runs each completed all 421 frames, ended Harbor City 101-104 Mesa Vista with the exact replay seal, and produced the same canonical trace hash; the frozen 65-test simulation and Brain Admin remain green. Phase 1A.3 is now the owner gate: accept Unreal Engine 5.8 for continued beta work, reject it, or request one specific measured comparison. Character selection, city canon, final art, live models, credits, wagering, deployment, and retraining remain inactive.
 
 ## Current state
 

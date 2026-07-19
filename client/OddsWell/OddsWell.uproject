@@ -2,5 +2,12 @@
 	"FileVersion": 3,
 	"EngineAssociation": "5.8",
 	"Category": "",
-	"Description": ""
+	"Description": "",
+	"Modules": [
+		{
+			"Name": "OddsWell",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		}
+	]
 }
