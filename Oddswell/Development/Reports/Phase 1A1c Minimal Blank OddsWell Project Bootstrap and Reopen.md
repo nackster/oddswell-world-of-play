@@ -39,7 +39,7 @@ Only these six files are portable candidates:
 | --- | ---: | --- |
 | `client/OddsWell/OddsWell.uproject` | 91 | `647D8775736EF90E3590EB7D98F5A301458948C2804AF2CFD68A272F9B5BB6D8` |
 | `client/OddsWell/Config/DefaultEditor.ini` | 0 | `E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855` |
-| `client/OddsWell/Config/DefaultEngine.ini` | 2,931 | `397496CDE882FAB6FDE14608BC9690C2A348C1CEC660E3D77E4E6EAA30A3EBFB` |
+| `client/OddsWell/Config/DefaultEngine.ini` | 2,684 | `A3572A2B40D00436686E523150B8796F36C44EF40584F63B25A26BDBACC4BB8A` |
 | `client/OddsWell/Config/DefaultGame.ini` | 357 | `728B0C6F53C5112F7715C5E26B901D9735C6D3FFA9CA83DE317CDBEA1CF727FB` |
 | `client/OddsWell/Config/DefaultInput.ini` | 9,022 | `967BDF33123519D5270F44B2A686BE523DE7326CD2C038623B1D1C31FE7B49EA` |
 | `client/OddsWell/Content/Maps/Bootstrap.umap` | 8,422 | `44FC5E531591672E10E3740A780EAFB34326C2EADC7D85A37CFA352541932C16` |
@@ -69,13 +69,14 @@ Windows had no `.uproject` association, and the bounded file-picker attempts exp
 
 - `.gitattributes` assigns `*.umap` to Git LFS (`filter`, `diff`, and `merge` are `lfs`; text is unset).
 - Existing `.gitignore` rules exclude actual `DerivedDataCache`, `Intermediate`, and `Saved` output. Those generated/cache/local files remain ignored and unstaged.
+- Unreal's Blank template initially generated an enabled Android file-server block with a machine-local security token. Deleting the block alone was insufficient because the engine regenerated it on the next reopen. The portable config now explicitly sets `bEnablePlugin=False`, `bAllowNetworkConnection=False`, and an empty `SecurityToken`; a second reopen loaded `Bootstrap`, reached startup completion without a fatal/prerequisite match, closed normally, and left those exact disabled settings unchanged. A post-close scan found zero non-empty token, secret, password, API-key, credential, enabled file-server/plugin, network, remote, socket, HTTP, FTP, USB, connection-type, or manual-IP setting across every portable config and the descriptor.
 - The portable tree has one map and no other Content file. No package or build output exists.
 
 ## Validation
 
-- Full frozen regression suite: **65/65 passed** in `154.736s`.
+- Full frozen regression suite: **65/65 passed** in the corrected final state in `147.769s`.
 - Brain Admin self-check: **passed**.
-- Python compilation, affected Obsidian links, roadmap-canvas structure, Git LFS routing/pointer, generated-file hygiene, whitespace, and exact scoped diff: **passed**.
+- Python compilation, affected Obsidian links, roadmap-canvas structure, Git LFS routing/pointer, generated-file hygiene, portable-config secret/network scan, whitespace, and exact scoped diff: **passed**.
 
 ## Next gate
 

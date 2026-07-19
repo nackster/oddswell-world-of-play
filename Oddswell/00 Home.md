@@ -85,7 +85,7 @@ tags:
 
 ## Current focus
 
-Phase 1A.1c created and reopened the minimal Blueprint-only UE 5.8 project at `client/OddsWell`. The editor loaded the sole empty `Bootstrap` map with zero actors, ray tracing off, no Starter Content, no code or gameplay plugin, and no fatal startup match; both sessions closed normally. Phase 1A.1d is the next separate gate: package and run this unchanged empty Windows project and record the benchmark. Permanent engine adoption, final art, live models, stories, credits, wagering, deployment, and retraining remain inactive.
+Phase 1A.1c created and reopened the minimal Blueprint-only UE 5.8 project at `client/OddsWell`. The editor loaded the sole empty `Bootstrap` map with zero actors, ray tracing off, no Starter Content, no code or project plugin declaration, and no fatal startup match; all verification sessions closed normally. Unreal's default Android file-server path is explicitly disabled with no portable token. Phase 1A.1d is the next separate gate: package and run this unchanged empty Windows project and record the benchmark. Permanent engine adoption, final art, live models, stories, credits, wagering, deployment, and retraining remain inactive.
 
 ## Current state
 

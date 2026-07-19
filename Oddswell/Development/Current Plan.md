@@ -566,7 +566,7 @@ Build the one-city scope defined in [[Design/Decisions/DEC-002 First Playable Sc
 
 - **Status:** Complete on `agent/phase-0d`; smallest portable UE 5.8 Blueprint-only desktop project and reopen proof only.
 - **Portable project:** `client/OddsWell/OddsWell.uproject` associates with Engine `5.8`, declares no modules or plugins, and has four generated portable config files plus exactly one map.
-- **Map and settings:** `Content/Maps/Bootstrap.umap` is an 8,422-byte empty level with zero actors. Editor and game defaults point to `/Game/Maps/Bootstrap.Bootstrap`; ray tracing and its project proxies are disabled.
+- **Map and settings:** `Content/Maps/Bootstrap.umap` is an 8,422-byte empty level with zero actors. Editor and game defaults point to `/Game/Maps/Bootstrap.Bootstrap`; ray tracing and its project proxies are disabled. Unreal's default Android file-server path is explicitly disabled, network access is off, and no portable token remains.
 - **Scope:** no Starter Content, `.uasset`, C++ source/build target, gameplay Blueprint, package, replay adapter, art, backend, economy, wagering, API, Admin runtime, or model work was added.
 - **Reopen evidence:** UE Project Browser identified the exact disk path and Engine 5.8; the reopened editor loaded `Bootstrap`, logged startup completion with zero fatal/critical/unhandled/assert matches, and closed normally with no editor or shader worker left.
 - **Repository:** the map uses Git LFS; `DerivedDataCache`, `Intermediate`, and `Saved` remain ignored and unstaged. See [[Development/Reports/Phase 1A1c Minimal Blank OddsWell Project Bootstrap and Reopen]]. Cost was `$0.00`.
