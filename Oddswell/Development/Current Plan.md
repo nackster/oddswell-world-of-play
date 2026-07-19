@@ -601,6 +601,14 @@ Build the one-city scope defined in [[Design/Decisions/DEC-002 First Playable Sc
 - **Integrity:** all 65 frozen regressions passed in `131.138s`; Brain Admin self-check, fixture export, Python compilation, packaged-copy hashes, and repository hygiene passed. Cost was `$0.00`. See [[Development/Reports/Phase 1A2b Authoritative 421-Frame Replay Renderer]].
 - **Next gate:** Phase 1A.3 is an owner review: accept Unreal Engine 5.8 for continued beta work, reject it, or request one specific measured comparison. Character selection and every later roadmap phase remain inactive until that decision is recorded.
 
+### Phase 1A.3 Unreal Engine 5.8 Beta Adoption status
+
+- **Status:** Complete by explicit owner decision on July 19, 2026.
+- **Decision:** Unreal Engine 5.8 is approved for OddsWell beta client development; see [[Design/Decisions/DEC-006 Unreal Engine 5.8 Beta Adoption]].
+- **Accepted evidence:** portable project reopen, reproducible Windows packaging and launch, representative block/court iteration, packaged 421-frame authoritative replay rendering, deterministic replay traces, clean generated-file boundaries, frozen regressions, and Brain Admin checks.
+- **Boundary:** the decision approves the engine, not a city identity, camera, character-art direction, paid service, deployment, or later feature.
+- **Next gate:** Phase 1B needs the owner to approve camera/movement style and the minimum placeholder preset/character-art direction before implementation chooses those product details.
+
 ## Future shared simulation layer
 
 Athlete Life Brain v4 is the default for newly generated train, rest, recover, and socialize decisions. It adds only one bounded, one-decision, same-season recent-scoring response above v3's routine behavior. V1-v4 history remains immutable. Expand into longer memory, traits, relationships, nightlife, media, discipline, career decisions, and other sports only after each smaller input passes its own engineering evaluation.
@@ -611,7 +619,7 @@ The shared life, world, memory, and learning layers will support every sport. Ea
 
 ## Next unresolved decisions
 
-- Permanent engine adoption after packaged-build and representative benchmarks.
+- Camera and movement style plus the minimum placeholder character preset range and art direction.
 - First city identity.
 - First two team identities.
 - Minimal athlete attributes.

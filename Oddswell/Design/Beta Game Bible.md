@@ -5,7 +5,7 @@ tags:
   - scope
   - canonical
 status: canonical-beta-draft
-date: 2026-07-18
+date: 2026-07-19
 ---
 
 # OddsWell Beta Game Bible
@@ -309,7 +309,7 @@ The Scope Director must stop and ask when a phase depends on one of these:
 8. Order, rules, limits, and payout formulas for the four beta wager markets.
 9. Initial clothing and furniture catalog sizes.
 10. Shared-city capacity, instancing, regions, communication, blocking, reporting, and moderation.
-11. Engine and exact version, followed by explicit download, license, disk, and project-creation approval.
+11. **RESOLVED:** Unreal Engine 5.8 is approved for beta client development under [[Design/Decisions/DEC-006 Unreal Engine 5.8 Beta Adoption|DEC-006]].
 12. Minimum PC specification, release model, age target, and regions.
 
 ## Scope Director rules
@@ -330,6 +330,6 @@ Before proposing a phase, the Scope Director must:
 ## Current implementation boundary
 
 - Phase 0 basketball simulation is frozen at its validated baseline except for demonstrated defects or a measured beta requirement.
-- Phase 1A.0 verified the local workstation and replay interface.
-- The next implementation gate is owner-approved installation of one named 3D engine/version and an empty packaged-build benchmark.
-- No engine installation, city, avatar, apartment, Odds Bucks ledger, wager settlement, clothing store, or furniture store is complete merely because it appears in this beta plan.
+- Phase 1A is complete. The owner accepted the measured UE 5.8 packaged-build, graybox, and authoritative replay-rendering evidence in [[Design/Decisions/DEC-006 Unreal Engine 5.8 Beta Adoption|DEC-006]].
+- Phase 1B character selection and movement is the next delivery area. Its camera/movement style and minimum preset range/character-art direction remain **OPEN** owner gates.
+- No city, avatar selection flow, apartment, Odds Bucks ledger, wager settlement, clothing store, or furniture store is complete merely because it appears in this beta plan.

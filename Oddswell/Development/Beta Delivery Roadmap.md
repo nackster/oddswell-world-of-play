@@ -5,7 +5,7 @@ tags:
   - roadmap
   - scope
 status: active
-date: 2026-07-18
+date: 2026-07-19
 ---
 
 # OddsWell Beta Delivery Roadmap
@@ -34,8 +34,9 @@ The roadmap is intentionally made of measurable product gates, not hundreds of s
 - Phase 1A.1d empty Windows package, launch, and baseline measurement: **COMPLETE**; see [[Development/Reports/Phase 1A1d Empty Windows Package Launch and Baseline Measurement]].
 - Phase 1A.2a noncanonical primitive street block, basketball court, and representative asset iteration: **COMPLETE**; see [[Development/Reports/Phase 1A2a Noncanonical Street Block and Basketball Court Graybox]].
 - Phase 1A.2b direct rendering of the existing verified 421-frame replay: **COMPLETE**; see [[Development/Reports/Phase 1A2b Authoritative 421-Frame Replay Renderer]].
-- Next smallest gate: **Phase 1A.3 owner review of the Unreal benchmark evidence**.
-- Current prerequisite note: UE 5.8, the aligned x64 runtime and .NET Framework 4.8 SDK, portable project, reproducible local Windows package, empty-map launch, LFS, generated-file ignores, primitive block/court iteration, collision, cold-process reopen, direct recorded-replay rendering, deterministic packaged traces, and local resource sampling are verified. Permanent engine adoption remains unclaimed until the owner decides Phase 1A.3.
+- Phase 1A.3 Unreal Engine 5.8 beta adoption: **COMPLETE** by owner decision on July 19, 2026; see [[Design/Decisions/DEC-006 Unreal Engine 5.8 Beta Adoption]].
+- Next smallest gate: **Phase 1B owner decision on camera/movement and the minimum placeholder preset/art direction**.
+- Current prerequisite note: UE 5.8, the aligned x64 runtime and .NET Framework 4.8 SDK, portable project, reproducible local Windows package, empty-map launch, LFS, generated-file ignores, primitive block/court iteration, collision, cold-process reopen, direct recorded-replay rendering, deterministic packaged traces, and local resource sampling are verified. UE 5.8 is now the approved beta client engine.
 
 No later roadmap phase is authorized merely because it appears below.
 
@@ -43,8 +44,8 @@ No later roadmap phase is authorized merely because it appears below.
 
 | Order | Phase | Player-facing outcome | Status |
 | --- | --- | --- | --- |
-| 1 | 1A — Engine and packaged-build proof | A real 3D client can build and run | ACTIVE / OWNER GATE |
-| 2 | 1B — Character selection and movement | Choose a default avatar and enter the world | PENDING |
+| 1 | 1A — Engine and packaged-build proof | A real 3D client can build and run | COMPLETE |
+| 2 | 1B — Character selection and movement | Choose a default avatar and enter the world | ACTIVE / OWNER GATE |
 | 3 | 1C — First-city identity and graybox | Walk between every required beta location | PENDING / OWNER GATE |
 | 4 | 1D — Shared-city presence | Players see one another and equipped clothing | PENDING |
 | 5 | 1E — Studio and apartment progression | Enter a persistent home and see the six-tier goal | PENDING |
@@ -74,7 +75,7 @@ No later roadmap phase is authorized merely because it appears below.
 5. **1A.1d COMPLETE:** package and run that unchanged empty Windows project; record disk, build time, launch time, frame time, memory, and explained runtime networking.
 6. **1A.2a COMPLETE:** add one noncanonical primitive street block and basketball court to a separate benchmark map; record one representative asset iteration and preserve the empty-package baseline.
 7. **1A.2b COMPLETE:** directly render the existing verified 421-frame replay without resimulating basketball.
-8. **1A.3 OWNER GATE:** owner reviews benchmark evidence and accepts, rejects, or requests one measured comparison. No permanent engine choice is inferred from the completed pilot.
+8. **1A.3 COMPLETE:** owner accepted the benchmark evidence and approved Unreal Engine 5.8 for beta client development on July 19, 2026; see [[Design/Decisions/DEC-006 Unreal Engine 5.8 Beta Adoption]].
 
 ### Exit evidence
 
@@ -364,8 +365,8 @@ A Beta Exit Report states **READY**, **BLOCKED WITH MEASURED CAUSE**, or **NOT R
 
 ## Owner-decision queue in dependency order
 
-1. Permanent engine adoption after the UE 5.8 empty-project, packaged-build, and representative replay benchmarks.
-2. Camera, movement, minimum character presets, and character-art direction.
+1. **RESOLVED:** Unreal Engine 5.8 beta adoption; see [[Design/Decisions/DEC-006 Unreal Engine 5.8 Beta Adoption]].
+2. **NEXT:** Camera, movement, minimum character presets, and character-art direction.
 3. World/city name, theme, geography, visual language, and core layout.
 4. Shared-city instance capacity, regions, collision, names, and minimal safety surface.
 5. Apartment instancing, layouts, visits, and decorating controls.

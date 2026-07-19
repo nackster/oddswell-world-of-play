@@ -88,7 +88,7 @@ tags:
 
 ## Current focus
 
-Phase 1A.2b now directly renders the existing verified 421-frame public replay in the UE 5.8 block/court benchmark without resimulating basketball. Two final packaged runs each completed all 421 frames, ended Harbor City 101-104 Mesa Vista with the exact replay seal, and produced the same canonical trace hash; the frozen 65-test simulation and Brain Admin remain green. Phase 1A.3 is now the owner gate: accept Unreal Engine 5.8 for continued beta work, reject it, or request one specific measured comparison. Character selection, city canon, final art, live models, credits, wagering, deployment, and retraining remain inactive.
+Phase 1A is complete. The owner accepted the measured UE 5.8 package, graybox, and authoritative 421-frame replay evidence on July 19, 2026, making Unreal Engine 5.8 the approved beta client engine. Phase 1B character selection and movement is active at its owner gate: camera/movement style and the minimum placeholder preset/character-art direction must be approved before implementation chooses them. City canon, final art, live models, Odds Bucks, wagering, deployment, and retraining remain inactive.
 
 ## Current state
 
