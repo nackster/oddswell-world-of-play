@@ -540,6 +540,17 @@ Build the one-city scope defined in [[Design/Decisions/DEC-002 First Playable Sc
 - **Validation:** all 65 frozen regressions, Admin self-check, compilation, Obsidian links, affected canvas structure, whitespace, and scoped diff pass. Cost was `$0.00`. See [[Development/Reports/Phase 1A0 Local 3D Toolchain and Replay Interface Readiness Audit]].
 - **Outcome:** **READY FOR OWNER INSTALL APPROVAL**. Engine/version selection and compatibility remain unverified until the owner approves one installer; Phase 1A.0 starts no later phase.
 
+### Phase 1A.1a Unreal Engine Installation and Editor Launch Verification status
+
+- **Status:** Complete on `agent/phase-0d`; owner-approved Unreal Engine 5.8 pilot installation and one first-launch verification only.
+- **Installed candidate:** UE `5.8.0`, changelist `55116800`, at `C:\Program Files\Epic Games\UE_5.8`; the approved default bundle also installed Quixel Bridge `2025.0.1` and Fab UE Plugin `0.0.13`.
+- **Install evidence:** all three manifests are present. Main and companion Build Patch jobs report success, `ErrorCode: OK`, and final progress `1.000000`; the main job downloaded 12.381 GB, wrote 30.676 GB, and completed in 58:17.
+- **Launch evidence:** the editor reached the no-project Project Browser, reported the exact 5.8 build, logged startup completion with zero fatal/critical/unhandled/assert matches, and created no repository `.uproject` file.
+- **Safety and prerequisite:** the owner manually handled two Windows Firewall prompts. UE reports installed Visual C++ Redistributable `14.44.35211.0` below recommended `14.50.35719.0`; no prerequisite installer ran.
+- **Exit:** normal editor shutdown completed and no Unreal Editor, trace, Zen, crash, or CEF process remained.
+- **Validation:** final frozen regressions, Brain Admin self-check, documentation, canvas, and hygiene evidence are recorded in [[Development/Reports/Phase 1A1a Unreal Engine Installation and Editor Launch Verification]]. Cost was `$0.00`.
+- **Next gate:** Phase 1A.1b creates and reopens the smallest empty local Windows project in a separate phase. Packaging, permanent engine adoption, final art, and the one-block replay benchmark remain inactive.
+
 ## Future shared simulation layer
 
 Athlete Life Brain v4 is the default for newly generated train, rest, recover, and socialize decisions. It adds only one bounded, one-decision, same-season recent-scoring response above v3's routine behavior. V1-v4 history remains immutable. Expand into longer memory, traits, relationships, nightlife, media, discipline, career decisions, and other sports only after each smaller input passes its own engineering evaluation.
@@ -550,7 +561,7 @@ The shared life, world, memory, and learning layers will support every sport. Ea
 
 ## Next unresolved decisions
 
-- Engine selection.
+- Permanent engine adoption after packaged-build and representative benchmarks.
 - First city identity.
 - First two team identities.
 - Minimal athlete attributes.

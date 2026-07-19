@@ -28,8 +28,9 @@ The roadmap is intentionally made of measurable product gates, not hundreds of s
 
 - Phase 0 simulation foundation: **COMPLETE and frozen** except for demonstrated defects or a measured beta requirement.
 - Phase 1A.0 local 3D readiness audit: **COMPLETE** at commit `2634541`.
-- Next smallest gate: **Phase 1A.1 owner-approved pilot engine installation and empty packaged-build bootstrap**.
-- Current blocker: the owner must approve the engine, exact installer version, large download/disk installation, current license terms, and one minimal local project.
+- Phase 1A.1a Unreal Engine 5.8 installation and first-editor-launch verification: **COMPLETE**; see [[Development/Reports/Phase 1A1a Unreal Engine Installation and Editor Launch Verification]].
+- Next smallest gate: **Phase 1A.1b smallest empty local Windows project creation and reopen**.
+- Current prerequisite note: UE 5.8 launched successfully but recommends Visual C++ Redistributable `14.50.35719.0` or newer; package/build compatibility remains unclaimed.
 
 No later roadmap phase is authorized merely because it appears below.
 
@@ -62,9 +63,11 @@ No later roadmap phase is authorized merely because it appears below.
 ### Ordered gates
 
 1. **1A.0 COMPLETE:** local hardware, compiler, Git/LFS, and replay-interface readiness audit.
-2. **1A.1 OWNER GATE:** install one approved free engine/version; create, reopen, package, and run the smallest empty Windows project; record disk, build time, launch time, frame time, and memory.
-3. **1A.2:** build one placeholder block and court; directly render the existing verified 421-frame replay without resimulating basketball.
-4. **1A.3:** owner reviews benchmark evidence and accepts, rejects, or requests one measured comparison. No permanent engine choice is inferred from an empty project.
+2. **1A.1a COMPLETE:** install the owner-approved free engine candidate and verify one no-project editor launch and normal exit.
+3. **1A.1b NEXT:** create and reopen the smallest empty local Windows project; resolve or explicitly accept the recorded Visual C++ prerequisite gap.
+4. **1A.1c:** package and run that empty Windows project; record disk, build time, launch time, frame time, and memory.
+5. **1A.2:** build one placeholder block and court; directly render the existing verified 421-frame replay without resimulating basketball.
+6. **1A.3:** owner reviews benchmark evidence and accepts, rejects, or requests one measured comparison. No permanent engine choice is inferred from an empty project.
 
 ### Exit evidence
 
@@ -354,7 +357,7 @@ A Beta Exit Report states **READY**, **BLOCKED WITH MEASURED CAUSE**, or **NOT R
 
 ## Owner-decision queue in dependency order
 
-1. Engine, exact version, installation, license, and minimal project.
+1. Permanent engine adoption after the UE 5.8 empty-project, packaged-build, and representative replay benchmarks.
 2. Camera, movement, minimum character presets, and character-art direction.
 3. World/city name, theme, geography, visual language, and core layout.
 4. Shared-city instance capacity, regions, collision, names, and minimal safety surface.
@@ -388,4 +391,3 @@ A Beta Exit Report states **READY**, **BLOCKED WITH MEASURED CAUSE**, or **NOT R
 - Full 10-20-year career ecosystem.
 - Open chat/voice or large social systems unless separately approved for beta safety needs.
 - Version 1 implementation before beta exit approval.
-

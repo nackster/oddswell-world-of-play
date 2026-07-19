@@ -72,6 +72,7 @@ tags:
 - [[Development/Reports/Phase 06M Offensive Involvement Post-Rollout Integration Review|Phase 0.6M Offensive Involvement post-rollout review]]
 - [[Development/Reports/Phase 06N Athlete Performance Scope Freeze and Phase 1 Handoff|Phase 0.6N Athlete Performance scope freeze and Phase 1 handoff]]
 - [[Development/Reports/Phase 1A0 Local 3D Toolchain and Replay Interface Readiness Audit|Phase 1A.0 local 3D toolchain and replay-interface readiness audit]]
+- [[Development/Reports/Phase 1A1a Unreal Engine Installation and Editor Launch Verification|Phase 1A.1a Unreal Engine installation and editor-launch verification]]
 - [[Visual Maps/Project Tool Map|Master project tool map]]
 - [[Visual Maps/Beta Game Scope|Complete beta game scope map]]
 - [[Visual Maps/Beta Delivery Roadmap|Beta delivery roadmap map]]
@@ -82,7 +83,7 @@ tags:
 
 ## Current focus
 
-Phase 1A.0 finds the local 3D workstation and existing authoritative replay interface **READY FOR OWNER INSTALL APPROVAL**. Epic Launcher, Blender, C++ build tools, Windows SDK, Git, and Git LFS are present; no Unreal engine is installed. The verified Season 1 Game 1 payload supplies 421 public frames and a sealed 101–104 outcome for a future client to render without resimulating. Engine/version selection, installation, project scaffolding, final art, live models, stories, credits, wagering, deployment, and retraining remain inactive.
+Phase 1A.1a installed and verified the owner-approved Unreal Engine 5.8 pilot. The no-project editor reached its Project Browser, logged zero fatal startup matches, closed normally, and left no Unreal process behind. No project exists yet. Phase 1A.1b is the next separate gate: create and reopen the smallest empty local Windows project while carrying forward UE's Visual C++ Redistributable recommendation. Packaging, permanent engine adoption, final art, live models, stories, credits, wagering, deployment, and retraining remain inactive.
 
 ## Current state
 
