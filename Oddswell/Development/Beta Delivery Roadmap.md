@@ -31,8 +31,9 @@ The roadmap is intentionally made of measurable product gates, not hundreds of s
 - Phase 1A.1a Unreal Engine 5.8 installation and first-editor-launch verification: **COMPLETE**; see [[Development/Reports/Phase 1A1a Unreal Engine Installation and Editor Launch Verification]].
 - Phase 1A.1b official Microsoft Visual C++ x64 runtime alignment and post-reboot Unreal recheck: **COMPLETE**; see [[Development/Reports/Phase 1A1b Visual Cpp Runtime Prerequisite Alignment and Unreal Recheck]].
 - Phase 1A.1c smallest empty local Windows project creation and reopen: **COMPLETE**; see [[Development/Reports/Phase 1A1c Minimal Blank OddsWell Project Bootstrap and Reopen]].
-- Next smallest gate: **Phase 1A.1d package and run the unchanged empty Windows project**.
-- Current prerequisite note: UE 5.8, the aligned x64 runtime, portable project descriptor/config, one empty map, LFS, and generated-file ignores are verified; packaged-build compatibility remains unclaimed.
+- Phase 1A.1d empty Windows package, launch, and baseline measurement: **COMPLETE**; see [[Development/Reports/Phase 1A1d Empty Windows Package Launch and Baseline Measurement]].
+- Next smallest gate: **Phase 1A.2a add one noncanonical primitive street block and basketball court to a separate benchmark map**.
+- Current prerequisite note: UE 5.8, the aligned x64 runtime, portable project, reproducible local Windows package, empty-map launch, LFS, and generated-file ignores are verified. Representative asset iteration, recorded-replay rendering, and permanent engine adoption remain unclaimed.
 
 No later roadmap phase is authorized merely because it appears below.
 
@@ -68,9 +69,10 @@ No later roadmap phase is authorized merely because it appears below.
 2. **1A.1a COMPLETE:** install the owner-approved free engine candidate and verify one no-project editor launch and normal exit.
 3. **1A.1b COMPLETE:** align the official Microsoft x64 runtime, reboot manually, and verify the no-project editor without the earlier prerequisite warning.
 4. **1A.1c COMPLETE:** create and reopen the smallest empty local Windows project with one empty default map.
-5. **1A.1d NEXT:** package and run that unchanged empty Windows project; record disk, build time, launch time, frame time, and memory.
-6. **1A.2:** build one placeholder block and court; directly render the existing verified 421-frame replay without resimulating basketball.
-7. **1A.3:** owner reviews benchmark evidence and accepts, rejects, or requests one measured comparison. No permanent engine choice is inferred from an empty project.
+5. **1A.1d COMPLETE:** package and run that unchanged empty Windows project; record disk, build time, launch time, frame time, memory, and explained runtime networking.
+6. **1A.2a NEXT:** add one noncanonical primitive street block and basketball court to a separate benchmark map; record one representative asset iteration and preserve the empty-package baseline.
+7. **1A.2b:** directly render the existing verified 421-frame replay without resimulating basketball.
+8. **1A.3:** owner reviews benchmark evidence and accepts, rejects, or requests one measured comparison. No permanent engine choice is inferred from an empty project.
 
 ### Exit evidence
 

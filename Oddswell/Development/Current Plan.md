@@ -572,6 +572,16 @@ Build the one-city scope defined in [[Design/Decisions/DEC-002 First Playable Sc
 - **Repository:** the map uses Git LFS; `DerivedDataCache`, `Intermediate`, and `Saved` remain ignored and unstaged. See [[Development/Reports/Phase 1A1c Minimal Blank OddsWell Project Bootstrap and Reopen]]. Cost was `$0.00`.
 - **Next gate:** Phase 1A.1d packages and runs this unchanged empty Windows project and records disk, build, launch, frame-time, and memory evidence. No gameplay or permanent engine adoption begins automatically.
 
+### Phase 1A.1d Empty Windows Package, Launch, and Baseline Measurement status
+
+- **Status:** Complete on `agent/phase-0d`; the unchanged empty UE 5.8 project packaged twice and launched as a local Windows Development executable.
+- **Packaging:** clean package passed in `191.420s`; unchanged incremental package passed in `69.497s`. The pre-launch archive contained 48 files and 968,411,765 bytes (`0.902 GiB`). Generated package, cook, cache, log, and local settings output remains ignored and unstaged.
+- **Runtime:** the visible 1280x720 window appeared in `0.656s`, engine initialization completed approximately `3.613s` after process start, and `/Game/Maps/Bootstrap` loaded in `0.086006s` with zero fatal/prerequisite match.
+- **Empty-map baseline:** three warm readings averaged `4.35 ms` frame, `3.61 ms` GPU, and `1.31 GB` displayed memory. Process samples averaged `1.307 GiB` working set and `2.364 GiB` private bytes. This is preliminary empty Development-build evidence only.
+- **Security/network:** no established TCP connection or UDP endpoint existed. Unreal Trace's explained Development listener used TCP `1985`; the owner manually selected **Cancel** on Windows Firewall, and automation changed no security setting.
+- **Integrity:** normal close left no related process, all six portable input hashes remained exact, 65/65 frozen regressions and the Brain Admin self-check passed, and cost was `$0.00`. See [[Development/Reports/Phase 1A1d Empty Windows Package Launch and Baseline Measurement]].
+- **Next gate:** Phase 1A.2a adds one noncanonical primitive street block and court in a separate benchmark map and measures one representative asset iteration. City identity, camera, avatar, multiplayer, final art, replay rendering, and permanent Unreal adoption remain inactive.
+
 ## Future shared simulation layer
 
 Athlete Life Brain v4 is the default for newly generated train, rest, recover, and socialize decisions. It adds only one bounded, one-decision, same-season recent-scoring response above v3's routine behavior. V1-v4 history remains immutable. Expand into longer memory, traits, relationships, nightlife, media, discipline, career decisions, and other sports only after each smaller input passes its own engineering evaluation.

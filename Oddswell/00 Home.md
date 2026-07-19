@@ -75,6 +75,7 @@ tags:
 - [[Development/Reports/Phase 1A1a Unreal Engine Installation and Editor Launch Verification|Phase 1A.1a Unreal Engine installation and editor-launch verification]]
 - [[Development/Reports/Phase 1A1b Visual Cpp Runtime Prerequisite Alignment and Unreal Recheck|Phase 1A.1b Visual C++ runtime alignment and Unreal recheck]]
 - [[Development/Reports/Phase 1A1c Minimal Blank OddsWell Project Bootstrap and Reopen|Phase 1A.1c minimal blank OddsWell project bootstrap and reopen]]
+- [[Development/Reports/Phase 1A1d Empty Windows Package Launch and Baseline Measurement|Phase 1A.1d empty Windows package, launch, and baseline measurement]]
 - [[Visual Maps/Project Tool Map|Master project tool map]]
 - [[Visual Maps/Beta Game Scope|Complete beta game scope map]]
 - [[Visual Maps/Beta Delivery Roadmap|Beta delivery roadmap map]]
@@ -85,7 +86,7 @@ tags:
 
 ## Current focus
 
-Phase 1A.1c created and reopened the minimal Blueprint-only UE 5.8 project at `client/OddsWell`. The editor loaded the sole empty `Bootstrap` map with zero actors, ray tracing off, no Starter Content, no code or project plugin declaration, and no fatal startup match; all verification sessions closed normally. Unreal's default Android file-server path is explicitly disabled with no portable token. Phase 1A.1d is the next separate gate: package and run this unchanged empty Windows project and record the benchmark. Permanent engine adoption, final art, live models, stories, credits, wagering, deployment, and retraining remain inactive.
+Phase 1A.1d packaged the unchanged Blueprint-only UE 5.8 project twice and launched the standalone Windows Development build. The runtime loaded the empty `Bootstrap` map, recorded the preliminary 1280x720 empty-map baseline, closed normally, left the portable project hashes exact, and kept every generated file ignored. Phase 1A.2a is the next separate gate: build one noncanonical primitive street block and court in a benchmark map and measure one representative asset iteration. Permanent engine adoption, final art, live models, stories, credits, wagering, deployment, and retraining remain inactive.
 
 ## Current state
 
