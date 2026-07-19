@@ -34,7 +34,7 @@ This register is the searchable source of truth for which tools OddsWell uses, w
 | Source control | [GitHub](https://github.com/nackster/oddswell-world-of-play) | Active; private | Version control, branches, reviews, CI, and release history for the project. |
 | Local source control | Git 2.49.0 | Active | Local versioning client verified during Phase 1A.0. |
 | Repository administration | GitHub CLI 2.96.0 | Active | Create and administer the project repository from the local workstation. |
-| Large asset versioning | Git LFS 3.6.1 | Active | Version large binary assets through Git using the project tracking policy in `.gitattributes`; no large 3D/engine assets are tracked yet. |
+| Large asset versioning | Git LFS 3.6.1 | Active | Version large binary assets through Git using the project tracking policy in `.gitattributes`; the bootstrap and noncanonical block/court benchmark maps are LFS-covered. |
 | Work tracking | GitHub Issues/Projects | Active | Track executable tasks, bugs, pull requests, milestones, and roadmap views without adding another planning service. |
 | Build automation | GitHub Actions | Pending tests | Run automated tests and builds; consider a private self-hosted runner on project servers after the repository is secured. |
 | Agent orchestration | Ruflo | Deferred | Revisit after the Phase 0 simulator exists and parallel automation would provide measurable value. |
@@ -47,8 +47,8 @@ This register is the searchable source of truth for which tools OddsWell uses, w
 | Local image to 3D | TRELLIS.2 / Hunyuan3D | Deferred | Benchmark on project servers when volume, privacy, or per-generation cost justifies setup. |
 | Engine distribution | Epic Games Launcher 1.3.150.0 | Installed; pilot delivered | Installed the owner-approved UE 5.8 default bundle and preserved its manifests and Build Patch success evidence. |
 | Native build toolchain | Visual Studio 2022 + MSVC 14.44 + Windows SDK + VC++ x64 runtime 14.51.36247.00 | Present; empty-package compatible | The official x64 runtime alignment passed; UE 5.8 AutomationTool validated Windows SDK `10.0.22621.0` and completed clean and incremental Windows Development packages. |
-| Runtime | Unreal Engine 5.8.0 CL 55116800 | Active pilot; empty package verified | `client/OddsWell` reopens and packages with one empty default map, ray tracing off, no code/project plugin declarations/Starter Content, disabled Android file-server networking, LFS coverage, and ignored generated outputs. Empty-package launch/performance evidence passed; representative block, replay, and permanent-adoption evidence remain pending. |
-| Runtime candidate | Unreal Engine 5.8 | Active pilot; adoption pending | Benchmark the smallest packaged Windows project, one representative street block, and the authoritative recorded replay before adoption. |
+| Runtime | Unreal Engine 5.8.0 CL 55116800 | Active pilot; block benchmark verified | `client/OddsWell` reopens and packages with the unchanged empty default map. A separate noncanonical built-in-primitive block/court map now passes collision, iteration, screenshot, reopen, and Map Check evidence. Recorded-replay rendering and permanent adoption remain pending. |
+| Runtime candidate | Unreal Engine 5.8 | Active pilot; adoption pending | The empty Windows package and representative primitive street-block iteration are verified. Direct rendering of the authoritative recorded replay remains the next benchmark before owner adoption review. |
 | Game backend | Nakama | Pilot after Phase 0 | Self-hosted accounts, social systems, matchmaking, leaderboards, tournaments, chat, and server runtime. Keep purchased-credit accounting in a dedicated auditable ledger design. |
 | Procedural environment | Blender Geometry Nodes | Active; included | First choice for repeated city assets and rule-based placement before considering Houdini. |
 | Texture production | Substance 3D Painter | Phase 1 pilot | Benchmark one hero character and one city prop before purchasing or standardizing. |
@@ -63,7 +63,7 @@ This register is the searchable source of truth for which tools OddsWell uses, w
 | Deterministic simulation engineering | Phase 0 | Next implementation focus. |
 | Backend, identity, ledger, and security | Phase 0.5 | Architecture pending. |
 | UI/UX and accessibility | Phase 0.5 | Direction pending. |
-| 3D modeling and technical art | Phase 1 | Pipeline selected; production benchmark pending. |
+| 3D modeling and technical art | Phase 1 | Built-in-primitive block/court iteration verified; production-asset and replay benchmarks remain pending. |
 | Rigging and animation | Phase 1 | Tool roles selected; deformation benchmark pending. |
 | Environment art and lighting | Phase 1 | Depends on first-city identity and engine selection. |
 | QA, balancing, telemetry, and live operations | Before public testing | Process and tools pending. |

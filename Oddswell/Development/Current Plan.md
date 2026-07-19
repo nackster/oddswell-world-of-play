@@ -582,6 +582,15 @@ Build the one-city scope defined in [[Design/Decisions/DEC-002 First Playable Sc
 - **Integrity:** normal close left no related process, all six portable input hashes remained exact, 65/65 frozen regressions and the Brain Admin self-check passed, and cost was `$0.00`. See [[Development/Reports/Phase 1A1d Empty Windows Package Launch and Baseline Measurement]].
 - **Next gate:** Phase 1A.2a adds one noncanonical primitive street block and court in a separate benchmark map and measures one representative asset iteration. City identity, camera, avatar, multiplayer, final art, replay rendering, and permanent Unreal adoption remain inactive.
 
+### Phase 1A.2a Noncanonical Street Block and Basketball Court Graybox status
+
+- **Status:** Complete on `agent/phase-0d`; one separate UE 5.8 benchmark map only. The empty `Bootstrap` default and all five portable configuration inputs remain byte-identical.
+- **Map:** `Content/Maps/BlockCourtBenchmark.umap` contains 25 labeled benchmark actors: 21 built-in cube/cylinder mesh actors with `BlockAll` collision plus four native lighting/environment actors. The geometry is explicitly noncanonical and does not select the city, art direction, camera, avatar, navigation, multiplayer, gameplay, or final assets.
+- **Representative iteration:** `Benchmark_Building_04` moved from `(3000, -2700, 450)` to `(3000, -2500, 450)` and resized from `(8, 5, 9)` to `(10, 5, 9)` in `0.486s`, including map save. A fresh editor-command process reopened and verified the result.
+- **Evidence:** final map size is `48,831` bytes with SHA-256 `F970A2F4609F2D6EC24475AE48C98E12DB53BDE2CD95A238F2015C3FF0840018`; Map Check reports 0 errors and 0 warnings. A local ignored `1920x1080` proof image frames the block, court, two hoop assemblies, road, sidewalks, and four building masses.
+- **Integrity:** all 65 frozen regressions passed in `160.509s`; Brain Admin self-check and Python compilation passed; the empty package remains 51 files and 968,413,407 bytes; no Unreal, crash, trace, or shader-worker process remained. Cost was `$0.00`. See [[Development/Reports/Phase 1A2a Noncanonical Street Block and Basketball Court Graybox]].
+- **Next gate:** Phase 1A.2b directly renders the existing verified 421-frame replay in the benchmark client without resimulating basketball. It remains a separate phase; permanent Unreal adoption still waits for replay evidence and owner review.
+
 ## Future shared simulation layer
 
 Athlete Life Brain v4 is the default for newly generated train, rest, recover, and socialize decisions. It adds only one bounded, one-decision, same-season recent-scoring response above v3's routine behavior. V1-v4 history remains immutable. Expand into longer memory, traits, relationships, nightlife, media, discipline, career decisions, and other sports only after each smaller input passes its own engineering evaluation.

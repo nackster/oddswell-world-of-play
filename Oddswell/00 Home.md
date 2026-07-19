@@ -76,6 +76,7 @@ tags:
 - [[Development/Reports/Phase 1A1b Visual Cpp Runtime Prerequisite Alignment and Unreal Recheck|Phase 1A.1b Visual C++ runtime alignment and Unreal recheck]]
 - [[Development/Reports/Phase 1A1c Minimal Blank OddsWell Project Bootstrap and Reopen|Phase 1A.1c minimal blank OddsWell project bootstrap and reopen]]
 - [[Development/Reports/Phase 1A1d Empty Windows Package Launch and Baseline Measurement|Phase 1A.1d empty Windows package, launch, and baseline measurement]]
+- [[Development/Reports/Phase 1A2a Noncanonical Street Block and Basketball Court Graybox|Phase 1A.2a noncanonical street block and basketball court graybox]]
 - [[Visual Maps/Project Tool Map|Master project tool map]]
 - [[Visual Maps/Beta Game Scope|Complete beta game scope map]]
 - [[Visual Maps/Beta Delivery Roadmap|Beta delivery roadmap map]]
@@ -86,7 +87,7 @@ tags:
 
 ## Current focus
 
-Phase 1A.1d packaged the unchanged Blueprint-only UE 5.8 project twice and launched the standalone Windows Development build. The runtime loaded the empty `Bootstrap` map, recorded the preliminary 1280x720 empty-map baseline, closed normally, left the portable project hashes exact, and kept every generated file ignored. Phase 1A.2a is the next separate gate: build one noncanonical primitive street block and court in a benchmark map and measure one representative asset iteration. Permanent engine adoption, final art, live models, stories, credits, wagering, deployment, and retraining remain inactive.
+Phase 1A.2a added one separate, noncanonical UE 5.8 benchmark map containing a compact primitive street block, basketball court, two hoop assemblies, road, sidewalks, four building masses, native lighting, and collision. One building resize/reposition iteration was timed, the map reopened and verified in a fresh process, and the frozen 65-test simulation plus Brain Admin remained green. Phase 1A.2b is next: render the existing verified 421-frame replay without resimulating basketball. Permanent engine adoption, final art, live models, stories, credits, wagering, deployment, and retraining remain inactive.
 
 ## Current state
 
