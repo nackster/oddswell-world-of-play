@@ -549,7 +549,18 @@ Build the one-city scope defined in [[Design/Decisions/DEC-002 First Playable Sc
 - **Safety and prerequisite:** the owner manually handled two Windows Firewall prompts. UE reports installed Visual C++ Redistributable `14.44.35211.0` below recommended `14.50.35719.0`; no prerequisite installer ran.
 - **Exit:** normal editor shutdown completed and no Unreal Editor, trace, Zen, crash, or CEF process remained.
 - **Validation:** final frozen regressions, Brain Admin self-check, documentation, canvas, and hygiene evidence are recorded in [[Development/Reports/Phase 1A1a Unreal Engine Installation and Editor Launch Verification]]. Cost was `$0.00`.
-- **Next gate:** Phase 1A.1b creates and reopens the smallest empty local Windows project in a separate phase. Packaging, permanent engine adoption, final art, and the one-block replay benchmark remain inactive.
+- **Next gate:** Phase 1A.1b aligns the official Microsoft x64 runtime and repeats the no-project editor check in a separate phase. Project creation, packaging, permanent engine adoption, final art, and the one-block replay benchmark remain inactive.
+
+### Phase 1A.1b Visual C++ Runtime Prerequisite Alignment and Unreal Recheck status
+
+- **Status:** Complete on `agent/phase-0d`; official Microsoft Visual C++ 2015–2022 x64 runtime alignment and post-reboot Unreal recheck only.
+- **Package evidence:** official Microsoft x64 package version `14.51.36247.0`, size `18,731,856` bytes, SHA-256 `843068991DAAA1F73AD9F6239BCE4D0F6A07A51F18C37EA2A867E9BECA71295C`, with valid Microsoft Corporation Authenticode signature.
+- **Install evidence:** registered x64 runtime advanced from `v14.44.35211.00` to `v14.51.36247.00`; Setup and both MSI packages succeeded, returned reboot-required code `3010`, and did not restart automatically.
+- **Safety:** the owner approved the exact installer at action time, manually handled UAC, and rebooted manually. No x86 package, Visual Studio workload, compiler, SDK, security control, or privacy control was changed.
+- **Recheck:** the UE 5.8 no-project Project Browser returned without the earlier runtime warning. The exact build logged startup completion with zero fatal/critical/unhandled/assert matches.
+- **Exit and scope:** normal close completed, no UE 5.8 process remained, and no repository `.uproject` exists.
+- **Validation:** final frozen regressions, Brain Admin self-check, documentation, canvas, and hygiene evidence are recorded in [[Development/Reports/Phase 1A1b Visual Cpp Runtime Prerequisite Alignment and Unreal Recheck]]. Cost was `$0.00`.
+- **Next gate:** Phase 1A.1c creates and reopens the smallest empty local Windows project in a separate phase. Packaging, permanent adoption, final art, and the one-block replay benchmark remain inactive.
 
 ## Future shared simulation layer
 

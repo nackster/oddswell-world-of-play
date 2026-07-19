@@ -73,6 +73,7 @@ tags:
 - [[Development/Reports/Phase 06N Athlete Performance Scope Freeze and Phase 1 Handoff|Phase 0.6N Athlete Performance scope freeze and Phase 1 handoff]]
 - [[Development/Reports/Phase 1A0 Local 3D Toolchain and Replay Interface Readiness Audit|Phase 1A.0 local 3D toolchain and replay-interface readiness audit]]
 - [[Development/Reports/Phase 1A1a Unreal Engine Installation and Editor Launch Verification|Phase 1A.1a Unreal Engine installation and editor-launch verification]]
+- [[Development/Reports/Phase 1A1b Visual Cpp Runtime Prerequisite Alignment and Unreal Recheck|Phase 1A.1b Visual C++ runtime alignment and Unreal recheck]]
 - [[Visual Maps/Project Tool Map|Master project tool map]]
 - [[Visual Maps/Beta Game Scope|Complete beta game scope map]]
 - [[Visual Maps/Beta Delivery Roadmap|Beta delivery roadmap map]]
@@ -83,7 +84,7 @@ tags:
 
 ## Current focus
 
-Phase 1A.1a installed and verified the owner-approved Unreal Engine 5.8 pilot. The no-project editor reached its Project Browser, logged zero fatal startup matches, closed normally, and left no Unreal process behind. No project exists yet. Phase 1A.1b is the next separate gate: create and reopen the smallest empty local Windows project while carrying forward UE's Visual C++ Redistributable recommendation. Packaging, permanent engine adoption, final art, live models, stories, credits, wagering, deployment, and retraining remain inactive.
+Phase 1A.1b aligned the official Microsoft Visual C++ x64 runtime to `v14.51.36247.00` and verified UE 5.8 after the required owner reboot. The no-project Project Browser returned without the old runtime warning, logged no fatal startup match, closed normally, and left no UE 5.8 process behind. Phase 1A.1c is the next separate gate: create and reopen the smallest empty local Windows project. Packaging, permanent engine adoption, final art, live models, stories, credits, wagering, deployment, and retraining remain inactive.
 
 ## Current state
 
