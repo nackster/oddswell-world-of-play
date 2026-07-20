@@ -14,6 +14,24 @@ class USpringArmComponent;
 class UStaticMeshComponent;
 class UTextRenderComponent;
 
+USTRUCT()
+struct FOddsWellSharedCityAppearance
+{
+	GENERATED_BODY()
+
+	UPROPERTY()
+	FName PresetId;
+
+	UPROPERTY()
+	FName TopItemId;
+
+	UPROPERTY()
+	FName BottomItemId;
+
+	UPROPERTY()
+	bool bOwnerSubmitted = false;
+};
+
 class FOddsWellStarterOutfitState
 {
 public:
@@ -21,6 +39,7 @@ public:
 	bool Unequip(EOddsWellStarterEquipmentSlot Slot, FString& OutError);
 	bool ValidateComplete(FString& OutError) const;
 	FName GetEquipped(EOddsWellStarterEquipmentSlot Slot) const;
+	void Reset();
 
 private:
 	FName EquippedTop;
@@ -37,9 +56,12 @@ public:
 	virtual void Tick(float DeltaSeconds) override;
 	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
 	virtual void PossessedBy(AController* NewController) override;
+	virtual void PawnClientRestart() override;
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 	void AssignSharedCityPlayerNumber(int32 PlayerNumber);
 	int32 GetSharedCityPlayerNumber() const { return SharedCityPlayerNumber; }
+	bool HasValidSharedCityAppearance() const;
+	bool HasSubmittedSharedCityAppearance() const { return SharedCityAppearance.bOwnerSubmitted; }
 
 protected:
 	virtual void BeginPlay() override;
@@ -61,6 +83,11 @@ private:
 	void FinishSundaleRouteQa(bool bPassed);
 	void RunSharedCityQa(float DeltaSeconds);
 	bool ApplySavedOrFallbackAppearance();
+	bool ResolveLocalAppearance(FOddsWellResolvedCharacterAppearance& OutAppearance, FString& OutSource, FString& OutError) const;
+	bool ApplyResolvedAppearance(const FOddsWellResolvedCharacterAppearance& Appearance, const FString& Source);
+	bool ApplySharedCityAppearance(const FString& Source);
+	void SubmitLocalSharedCityAppearance();
+	void SetAuthoritativeSharedCityAppearance(FName PresetId, FName TopItemId, FName BottomItemId, bool bOwnerSubmitted, const FString& Source);
 	void SyncOutfitComponents();
 	void SyncSharedCityNameplate();
 	void RunOutfitQa(float DeltaSeconds);
@@ -69,6 +96,12 @@ private:
 
 	UFUNCTION()
 	void OnRep_SharedCityPlayerNumber();
+
+	UFUNCTION()
+	void OnRep_SharedCityAppearance();
+
+	UFUNCTION(Server, Reliable)
+	void ServerSetSharedCityAppearance(FName PresetId, FName TopItemId, FName BottomItemId);
 
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UStaticMeshComponent> PrimitiveBody;
@@ -99,6 +132,9 @@ private:
 
 	UPROPERTY(ReplicatedUsing=OnRep_SharedCityPlayerNumber)
 	int32 SharedCityPlayerNumber = 0;
+
+	UPROPERTY(ReplicatedUsing=OnRep_SharedCityAppearance)
+	FOddsWellSharedCityAppearance SharedCityAppearance;
 
 	FOddsWellStarterOutfitState StarterOutfitState;
 	FVector QaStartLocation = FVector::ZeroVector;
@@ -134,6 +170,8 @@ private:
 	double SharedCityQaExitAt = 0.0;
 	bool bSharedCityQa = false;
 	bool bSharedCityQaVisibleLogged = false;
+	bool bSharedCityQaAppearanceLogged = false;
+	bool bSharedCityAppearanceSubmitted = false;
 };
 
 UCLASS()

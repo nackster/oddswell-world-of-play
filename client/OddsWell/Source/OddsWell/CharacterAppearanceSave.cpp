@@ -60,46 +60,61 @@ bool ValidateOddsWellCharacterAppearanceSave(
 		OutError = FString::Printf(TEXT("Unsupported appearance schema version: %d"), Record->SchemaVersion);
 		return false;
 	}
+	return ValidateOddsWellCharacterAppearanceIds(
+		Record->PresetId,
+		Record->TopItemId,
+		Record->BottomItemId,
+		OutAppearance,
+		OutError);
+}
+
+bool ValidateOddsWellCharacterAppearanceIds(
+	const FName PresetId,
+	const FName TopItemId,
+	const FName BottomItemId,
+	FOddsWellResolvedCharacterAppearance& OutAppearance,
+	FString& OutError)
+{
 	if (!ValidateOddsWellCharacterPresets(OutError))
 	{
 		return false;
 	}
-	const FOddsWellCharacterPreset* Preset = FindOddsWellCharacterPreset(Record->PresetId);
+	const FOddsWellCharacterPreset* Preset = FindOddsWellCharacterPreset(PresetId);
 	if (!Preset)
 	{
-		OutError = FString::Printf(TEXT("Unknown appearance preset ID: %s"), *Record->PresetId.ToString());
+		OutError = FString::Printf(TEXT("Unknown appearance preset ID: %s"), *PresetId.ToString());
 		return false;
 	}
-	if (Record->TopItemId.IsNone() || Record->BottomItemId.IsNone())
+	if (TopItemId.IsNone() || BottomItemId.IsNone())
 	{
-		OutError = TEXT("The appearance save is incomplete.");
+		OutError = TEXT("The appearance record is incomplete.");
 		return false;
 	}
-	if (Record->TopItemId == Record->BottomItemId)
+	if (TopItemId == BottomItemId)
 	{
-		OutError = TEXT("The appearance save assigns one item to both slots.");
+		OutError = TEXT("The appearance record assigns one item to both slots.");
 		return false;
 	}
 	EOddsWellStarterEquipmentSlot TopSlot = EOddsWellStarterEquipmentSlot::Bottom;
 	EOddsWellStarterEquipmentSlot BottomSlot = EOddsWellStarterEquipmentSlot::Top;
-	if (!ResolveOddsWellStarterEquipmentSlot(Record->TopItemId, TopSlot, OutError)
-		|| !ResolveOddsWellStarterEquipmentSlot(Record->BottomItemId, BottomSlot, OutError))
+	if (!ResolveOddsWellStarterEquipmentSlot(TopItemId, TopSlot, OutError)
+		|| !ResolveOddsWellStarterEquipmentSlot(BottomItemId, BottomSlot, OutError))
 	{
 		return false;
 	}
 	if (TopSlot != EOddsWellStarterEquipmentSlot::Top || BottomSlot != EOddsWellStarterEquipmentSlot::Bottom)
 	{
-		OutError = TEXT("The appearance save assigns starter equipment to the wrong slot.");
+		OutError = TEXT("The appearance record assigns starter equipment to the wrong slot.");
 		return false;
 	}
 	if (Preset->EquippedItemIds.Num() != 2
-		|| Record->TopItemId != Preset->EquippedItemIds[0]
-		|| Record->BottomItemId != Preset->EquippedItemIds[1])
+		|| TopItemId != Preset->EquippedItemIds[0]
+		|| BottomItemId != Preset->EquippedItemIds[1])
 	{
-		OutError = TEXT("The appearance save does not match the selected preset's complete starter outfit.");
+		OutError = TEXT("The appearance record does not match the selected preset's complete starter outfit.");
 		return false;
 	}
-	OutAppearance = {Preset, Record->TopItemId, Record->BottomItemId};
+	OutAppearance = {Preset, TopItemId, BottomItemId};
 	OutError.Reset();
 	return true;
 }
@@ -250,6 +265,23 @@ bool FOddsWellCharacterAppearancePersistenceTest::RunTest(const FString& Paramet
 
 	FOddsWellResolvedCharacterAppearance Appearance;
 	FString Source;
+	TestTrue(
+		TEXT("Shared-city IDs use the same validator as saved appearances"),
+		ValidateOddsWellCharacterAppearanceIds(
+			Presets[7].Id,
+			Presets[7].EquippedItemIds[0],
+			Presets[7].EquippedItemIds[1],
+			Appearance,
+			Error));
+	TestEqual(TEXT("Shared-city validation preserves the selected preset"), Appearance.Preset->Id, Presets[7].Id);
+	TestFalse(
+		TEXT("Shared-city validation rejects an unknown preset"),
+		ValidateOddsWellCharacterAppearanceIds(
+			TEXT("unknown_preset"),
+			Presets[0].EquippedItemIds[0],
+			Presets[0].EquippedItemIds[1],
+			Appearance,
+			Error));
 	TestTrue(TEXT("Missing save resolves safely"), ResolveOddsWellCharacterAppearance(nullptr, false, Appearance, Source, Error));
 	TestEqual(TEXT("Missing save uses deterministic source"), Source, FString(TEXT("fallback_missing")));
 	TestEqual(TEXT("Missing save uses first preset"), Appearance.Preset->Id, Presets[0].Id);

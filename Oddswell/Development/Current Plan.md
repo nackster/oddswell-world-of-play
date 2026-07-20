@@ -702,6 +702,16 @@ Build the one-city scope defined in [[Design/Decisions/DEC-002 First Playable Sc
 - **Boundary:** this does not prove synchronized appearance/clothing, reconnect, capacity, accounts, matchmaking, invitations, friends, chat, voice, moderation, blocking/reporting, external hosting, deployment, ownership transfer, economy, wagering, final art, or production multiplayer readiness.
 - **Next gate:** Phase 1D.2 synchronizes the selected placeholder appearance and equipped starter top/bottom between the same two local clients. Reconnect remains Phase 1D.3.
 
+### Phase 1D.2 Replicated Appearance and Starter Clothing status
+
+- **Status:** Complete on `agent/phase-0d`; smallest server-validated visible-state synchronization proof only.
+- **Implementation:** one replicated character tuple carries the selected preset, starter top, starter bottom, and an owner-submitted proof bit. Owners resolve the approved local appearance; the server validates the tuple against the same catalog rules and republishes it. Every viewer renders that authoritative tuple instead of reading its own local save for remote players.
+- **Packaged proof:** Player 1 selected `masculine_tone_3`; Player 2 selected `feminine_tone_4`. Both packaged processes independently reported the same two presets and the same off-white starter top/bottom, while the server measured `305.0 cm` of replicated movement. Both exited `0` without forced termination.
+- **Corrective evidence:** two preliminary comparisons were rejected—first because a deterministic fallback could be logged before owner submission, then because listen-host possession preceded material initialization. The final gate requires both accepted owner records, and host submission now occurs after initialization.
+- **Validation:** fresh BuildCookRun passed in `53.91s`; native character automation passed `5/5`; all `65/65` frozen regressions passed in `150.162s`; Brain Admin self-check, Python compilation, diff hygiene, accepted-log checks, and zero-process cleanup passed. Cost was `$0.00`. See [[Development/Reports/Phase 1D2 Replicated Appearance and Starter Clothing]].
+- **Boundary:** no reconnect, capacity, account, external hosting, matchmaking, chat, moderation, item ownership, trading, store, Odds Bucks, wagering, final art, model, training, or retraining behavior was added.
+- **Next gate:** Phase 1D.3 proves leave/reconnect restores the same server-visible preset and starter clothing before any capacity ladder.
+
 ## Future shared simulation layer
 
 Athlete Life Brain v4 is the default for newly generated train, rest, recover, and socialize decisions. It adds only one bounded, one-decision, same-season recent-scoring response above v3's routine behavior. V1-v4 history remains immutable. Expand into longer memory, traits, relationships, nightlife, media, discipline, career decisions, and other sports only after each smaller input passes its own engineering evaluation.

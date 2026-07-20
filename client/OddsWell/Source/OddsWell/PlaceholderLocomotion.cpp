@@ -157,6 +157,12 @@ FName FOddsWellStarterOutfitState::GetEquipped(const EOddsWellStarterEquipmentSl
 	return Slot == EOddsWellStarterEquipmentSlot::Top ? EquippedTop : EquippedBottom;
 }
 
+void FOddsWellStarterOutfitState::Reset()
+{
+	EquippedTop = NAME_None;
+	EquippedBottom = NAME_None;
+}
+
 AOddsWellPlaceholderCharacter::AOddsWellPlaceholderCharacter()
 {
 	PrimaryActorTick.bCanEverTick = true;
@@ -270,7 +276,31 @@ void AOddsWellPlaceholderCharacter::BeginPlay()
 			PrimitiveHead->SetMaterial(0, PrimitiveSkinMaterial);
 		}
 	}
-	if (!ApplySavedOrFallbackAppearance())
+	bool bAppearanceReady = true;
+	if (GetNetMode() == NM_Standalone)
+	{
+		bAppearanceReady = ApplySavedOrFallbackAppearance();
+	}
+	else if (HasAuthority())
+	{
+		FOddsWellResolvedCharacterAppearance Fallback;
+		FString Source;
+		FString Error;
+		bAppearanceReady = ResolveOddsWellCharacterAppearance(nullptr, false, Fallback, Source, Error);
+		if (bAppearanceReady && Fallback.Preset)
+		{
+			SetAuthoritativeSharedCityAppearance(Fallback.Preset->Id, Fallback.TopItemId, Fallback.BottomItemId, false, TEXT("server_fallback"));
+		}
+	}
+	else if (!SharedCityAppearance.PresetId.IsNone())
+	{
+		bAppearanceReady = ApplySharedCityAppearance(TEXT("replicated_initial"));
+	}
+	if (GetNetMode() == NM_ListenServer && IsLocallyControlled())
+	{
+		SubmitLocalSharedCityAppearance();
+	}
+	if (!bAppearanceReady)
 	{
 		bOutfitQaEnabled = false;
 	}
@@ -282,6 +312,7 @@ void AOddsWellPlaceholderCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeP
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 	DOREPLIFETIME(AOddsWellPlaceholderCharacter, SharedCityPlayerNumber);
+	DOREPLIFETIME(AOddsWellPlaceholderCharacter, SharedCityAppearance);
 }
 
 void AOddsWellPlaceholderCharacter::AssignSharedCityPlayerNumber(const int32 PlayerNumber)
@@ -298,6 +329,26 @@ void AOddsWellPlaceholderCharacter::AssignSharedCityPlayerNumber(const int32 Pla
 void AOddsWellPlaceholderCharacter::OnRep_SharedCityPlayerNumber()
 {
 	SyncSharedCityNameplate();
+}
+
+void AOddsWellPlaceholderCharacter::OnRep_SharedCityAppearance()
+{
+	if (PrimitiveSkinMaterial)
+	{
+		ApplySharedCityAppearance(TEXT("replicated"));
+	}
+}
+
+bool AOddsWellPlaceholderCharacter::HasValidSharedCityAppearance() const
+{
+	FOddsWellResolvedCharacterAppearance Appearance;
+	FString Error;
+	return ValidateOddsWellCharacterAppearanceIds(
+		SharedCityAppearance.PresetId,
+		SharedCityAppearance.TopItemId,
+		SharedCityAppearance.BottomItemId,
+		Appearance,
+		Error);
 }
 
 void AOddsWellPlaceholderCharacter::SyncSharedCityNameplate()
@@ -323,6 +374,15 @@ void AOddsWellPlaceholderCharacter::PossessedBy(AController* NewController)
 			PlayerController->PlayerCameraManager->ViewYawMin = CameraYawMin;
 			PlayerController->PlayerCameraManager->ViewYawMax = CameraYawMax;
 		}
+	}
+}
+
+void AOddsWellPlaceholderCharacter::PawnClientRestart()
+{
+	Super::PawnClientRestart();
+	if (GetNetMode() == NM_Client && IsLocallyControlled())
+	{
+		SubmitLocalSharedCityAppearance();
 	}
 }
 
@@ -382,6 +442,7 @@ void AOddsWellPlaceholderCharacter::RunSharedCityQa(const float DeltaSeconds)
 	SharedCityQaElapsed += DeltaSeconds;
 	int32 VisiblePlayers = 0;
 	int32 OtherPlayerNumber = 0;
+	AOddsWellPlaceholderCharacter* OtherPlayer = nullptr;
 	for (TActorIterator<AOddsWellPlaceholderCharacter> It(GetWorld()); It; ++It)
 	{
 		if (It->SharedCityPlayerNumber > 0 && It->SharedCityNameplate && It->SharedCityNameplate->IsVisible())
@@ -390,6 +451,7 @@ void AOddsWellPlaceholderCharacter::RunSharedCityQa(const float DeltaSeconds)
 			if (*It != this)
 			{
 				OtherPlayerNumber = It->SharedCityPlayerNumber;
+				OtherPlayer = *It;
 			}
 		}
 	}
@@ -403,6 +465,28 @@ void AOddsWellPlaceholderCharacter::RunSharedCityQa(const float DeltaSeconds)
 			SharedCityPlayerNumber,
 			OtherPlayerNumber,
 			VisiblePlayers);
+	}
+	if (!bSharedCityQaAppearanceLogged
+		&& bSharedCityQaVisibleLogged
+		&& OtherPlayer
+		&& HasValidSharedCityAppearance()
+		&& OtherPlayer->HasValidSharedCityAppearance()
+		&& HasSubmittedSharedCityAppearance()
+		&& OtherPlayer->HasSubmittedSharedCityAppearance())
+	{
+		bSharedCityQaAppearanceLogged = true;
+		UE_LOG(
+			LogOddsWellLocomotion,
+			Display,
+			TEXT("ODDSWELL_SHARED_CITY_APPEARANCE|local=Player_%d|local_preset=%s|local_top=%s|local_bottom=%s|other=Player_%d|other_preset=%s|other_top=%s|other_bottom=%s|agreement=true"),
+			SharedCityPlayerNumber,
+			*SharedCityAppearance.PresetId.ToString(),
+			*SharedCityAppearance.TopItemId.ToString(),
+			*SharedCityAppearance.BottomItemId.ToString(),
+			OtherPlayerNumber,
+			*OtherPlayer->SharedCityAppearance.PresetId.ToString(),
+			*OtherPlayer->SharedCityAppearance.TopItemId.ToString(),
+			*OtherPlayer->SharedCityAppearance.BottomItemId.ToString());
 		if (GetNetMode() == NM_Client && FParse::Param(FCommandLine::Get(), TEXT("SharedCityAutoExit")))
 		{
 			SharedCityQaExitAt = FPlatformTime::Seconds() + 3.0;
@@ -461,7 +545,7 @@ bool AOddsWellPlaceholderCharacter::ApplySavedOrFallbackAppearance()
 	FOddsWellResolvedCharacterAppearance Appearance;
 	FString Source;
 	FString Error;
-	if (!LoadOddsWellCharacterAppearance(bAppearanceQa, Appearance, Source, Error) || !Appearance.Preset)
+	if (!ResolveLocalAppearance(Appearance, Source, Error) || !Appearance.Preset)
 	{
 		ReportAppearanceError(Error.IsEmpty() ? TEXT("No valid local or fallback appearance is available.") : Error);
 		return false;
@@ -470,11 +554,45 @@ bool AOddsWellPlaceholderCharacter::ApplySavedOrFallbackAppearance()
 	{
 		UE_LOG(LogOddsWellLocomotion, Warning, TEXT("ODDSWELL_APPEARANCE_FALLBACK|source=%s|reason=%s|record_preserved=true"), *Source, *Error);
 	}
+	return ApplyResolvedAppearance(Appearance, Source);
+}
+
+bool AOddsWellPlaceholderCharacter::ResolveLocalAppearance(
+	FOddsWellResolvedCharacterAppearance& OutAppearance,
+	FString& OutSource,
+	FString& OutError) const
+{
+	FString QaPresetId;
+	if (bSharedCityQa && FParse::Value(FCommandLine::Get(), TEXT("SharedCityQaPreset="), QaPresetId))
+	{
+		const FOddsWellCharacterPreset* Preset = FindOddsWellCharacterPreset(FName(*QaPresetId));
+		if (!Preset || Preset->EquippedItemIds.Num() != 2)
+		{
+			OutError = FString::Printf(TEXT("Unsupported shared-city QA preset: %s"), *QaPresetId);
+			return false;
+		}
+		OutSource = TEXT("shared_city_qa");
+		return ValidateOddsWellCharacterAppearanceIds(
+			Preset->Id,
+			Preset->EquippedItemIds[0],
+			Preset->EquippedItemIds[1],
+			OutAppearance,
+			OutError);
+	}
+	return LoadOddsWellCharacterAppearance(bAppearanceQa, OutAppearance, OutSource, OutError);
+}
+
+bool AOddsWellPlaceholderCharacter::ApplyResolvedAppearance(
+	const FOddsWellResolvedCharacterAppearance& Appearance,
+	const FString& Source)
+{
+	FString Error;
 	if (!PrimitiveSkinMaterial)
 	{
 		ReportAppearanceError(TEXT("The primitive skin material is unavailable."));
 		return false;
 	}
+	StarterOutfitState.Reset();
 	if (!StarterOutfitState.Equip(Appearance.TopItemId, EOddsWellStarterEquipmentSlot::Top, Error)
 		|| !StarterOutfitState.Equip(Appearance.BottomItemId, EOddsWellStarterEquipmentSlot::Bottom, Error)
 		|| !StarterOutfitState.ValidateComplete(Error))
@@ -502,6 +620,100 @@ bool AOddsWellPlaceholderCharacter::ApplySavedOrFallbackAppearance()
 		*Appearance.TopItemId.ToString(),
 		*Appearance.BottomItemId.ToString());
 	return true;
+}
+
+bool AOddsWellPlaceholderCharacter::ApplySharedCityAppearance(const FString& Source)
+{
+	FOddsWellResolvedCharacterAppearance Appearance;
+	FString Error;
+	if (!ValidateOddsWellCharacterAppearanceIds(
+		SharedCityAppearance.PresetId,
+		SharedCityAppearance.TopItemId,
+		SharedCityAppearance.BottomItemId,
+		Appearance,
+		Error))
+	{
+		ReportAppearanceError(Error);
+		return false;
+	}
+	return ApplyResolvedAppearance(Appearance, Source);
+}
+
+void AOddsWellPlaceholderCharacter::SubmitLocalSharedCityAppearance()
+{
+	if (bSharedCityAppearanceSubmitted)
+	{
+		return;
+	}
+	FOddsWellResolvedCharacterAppearance Appearance;
+	FString Source;
+	FString Error;
+	if (!ResolveLocalAppearance(Appearance, Source, Error) || !Appearance.Preset)
+	{
+		ReportAppearanceError(Error.IsEmpty() ? TEXT("No valid local shared-city appearance is available.") : Error);
+		return;
+	}
+	if (!Error.IsEmpty())
+	{
+		UE_LOG(LogOddsWellLocomotion, Warning, TEXT("ODDSWELL_APPEARANCE_FALLBACK|source=%s|reason=%s|record_preserved=true"), *Source, *Error);
+	}
+	if (!ApplyResolvedAppearance(Appearance, Source))
+	{
+		return;
+	}
+	bSharedCityAppearanceSubmitted = true;
+	if (HasAuthority())
+	{
+		SetAuthoritativeSharedCityAppearance(Appearance.Preset->Id, Appearance.TopItemId, Appearance.BottomItemId, true, Source);
+	}
+	else
+	{
+		ServerSetSharedCityAppearance(Appearance.Preset->Id, Appearance.TopItemId, Appearance.BottomItemId);
+	}
+}
+
+void AOddsWellPlaceholderCharacter::ServerSetSharedCityAppearance_Implementation(
+	const FName PresetId,
+	const FName TopItemId,
+	const FName BottomItemId)
+{
+	SetAuthoritativeSharedCityAppearance(PresetId, TopItemId, BottomItemId, true, TEXT("client_rpc"));
+}
+
+void AOddsWellPlaceholderCharacter::SetAuthoritativeSharedCityAppearance(
+	const FName PresetId,
+	const FName TopItemId,
+	const FName BottomItemId,
+	const bool bOwnerSubmitted,
+	const FString& Source)
+{
+	if (!HasAuthority())
+	{
+		return;
+	}
+	FOddsWellResolvedCharacterAppearance Appearance;
+	FString Error;
+	if (!ValidateOddsWellCharacterAppearanceIds(PresetId, TopItemId, BottomItemId, Appearance, Error))
+	{
+		UE_LOG(LogOddsWellLocomotion, Error, TEXT("ODDSWELL_SHARED_CITY_APPEARANCE_REJECTED|player=%d|reason=%s"), SharedCityPlayerNumber, *Error);
+		return;
+	}
+	SharedCityAppearance.PresetId = PresetId;
+	SharedCityAppearance.TopItemId = TopItemId;
+	SharedCityAppearance.BottomItemId = BottomItemId;
+	SharedCityAppearance.bOwnerSubmitted = bOwnerSubmitted;
+	ApplyResolvedAppearance(Appearance, Source);
+	ForceNetUpdate();
+	UE_LOG(
+		LogOddsWellLocomotion,
+		Display,
+		TEXT("ODDSWELL_SHARED_CITY_APPEARANCE_ACCEPTED|player=%d|preset=%s|top=%s|bottom=%s|owner_submitted=%s|source=%s"),
+		SharedCityPlayerNumber,
+		*PresetId.ToString(),
+		*TopItemId.ToString(),
+		*BottomItemId.ToString(),
+		bOwnerSubmitted ? TEXT("true") : TEXT("false"),
+		*Source);
 }
 
 void AOddsWellPlaceholderCharacter::SyncOutfitComponents()
@@ -912,17 +1124,24 @@ void AOddsWellLocomotionGameMode::Tick(const float DeltaSeconds)
 		UE_LOG(LogOddsWellLocomotion, Display, TEXT("ODDSWELL_SHARED_CITY_READY|clients=%d|map=%s|spawn_spacing=%.0f"), Players.Num(), *GetWorld()->GetMapName(), SharedCitySpawnSpacing);
 		return;
 	}
+	const bool bAppearancesReady = !Players.ContainsByPredicate(
+		[](const AOddsWellPlaceholderCharacter* Player)
+		{
+			return !Player->HasValidSharedCityAppearance() || !Player->HasSubmittedSharedCityAppearance();
+		});
 	for (const AOddsWellPlaceholderCharacter* Player : Players)
 	{
 		const FVector* Start = SharedCityQaStartLocations.Find(Player->GetSharedCityPlayerNumber());
 		const float Distance = Start ? FVector::Dist2D(*Start, Player->GetActorLocation()) : 0.0f;
-		if (Player->GetSharedCityPlayerNumber() > 1 && Distance >= SharedCityQaMovementDistance)
+		if (Player->GetSharedCityPlayerNumber() > 1
+			&& Distance >= SharedCityQaMovementDistance
+			&& bAppearancesReady)
 		{
 			bSharedCityQaPassed = true;
 			UE_LOG(
 				LogOddsWellLocomotion,
 				Display,
-				TEXT("ODDSWELL_SHARED_CITY_PASS|clients=%d|moving_player=Player_%d|server_distance=%.1f|replicated_movement=true|names=true|pawn_collision=ignore"),
+				TEXT("ODDSWELL_SHARED_CITY_PASS|clients=%d|moving_player=Player_%d|server_distance=%.1f|replicated_movement=true|appearance_synced=true|starter_clothing_synced=true|names=true|pawn_collision=ignore"),
 				Players.Num(),
 				Player->GetSharedCityPlayerNumber(),
 				Distance);

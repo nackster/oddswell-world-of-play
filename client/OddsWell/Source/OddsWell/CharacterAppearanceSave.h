@@ -37,6 +37,12 @@ ODDSWELL_API bool ValidateOddsWellCharacterAppearanceSave(
 	const UObject* SaveObject,
 	FOddsWellResolvedCharacterAppearance& OutAppearance,
 	FString& OutError);
+ODDSWELL_API bool ValidateOddsWellCharacterAppearanceIds(
+	FName PresetId,
+	FName TopItemId,
+	FName BottomItemId,
+	FOddsWellResolvedCharacterAppearance& OutAppearance,
+	FString& OutError);
 ODDSWELL_API bool ResolveOddsWellCharacterAppearance(
 	const UObject* SaveObject,
 	bool bSaveExists,
