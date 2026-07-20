@@ -12,7 +12,7 @@
 		{"id":"fcc-c-group","type":"group","label":"C — ALDERPOINT","x":1400,"y":90,"width":640,"height":900,"color":"3"},
 		{"id":"fcc-c-image","type":"file","file":"90 Assets/City Concepts/Phase 1C0/alderpoint-concept.png","x":1420,"y":140,"width":600,"height":340},
 		{"id":"fcc-c-text","type":"text","text":"## C 🌲 NORTHREACH / ALDERPOINT\n**Green urban rise**\n\nLOWER: 🏠 Studio + 💼 Job → RAMP → MIDDLE: 👕 Shops + 🏀 Court → RAMP → UPPER: 🏟️ Arena / Sportsbook → return path\n\n**Geography:** two accessible terraces\n**Planning target:** 7–9 minutes\n**Look:** slate, dark brick, moss, amber blue hour\n**Best at:** memorable skyline + progression metaphor\n**Watch:** slope, navigation, collision, and camera work","x":1420,"y":510,"width":600,"height":440,"color":"3"},
-		{"id":"fcc-footer","type":"text","text":"## SELECTED BETA BOUNDARY\nOne modern-day Sundale-direction city • same required locations • compact commons ring • concept art only • no production assets • no water city or Tartaria city in beta\n\n**Next:** Phase 1C.1 freezes the minimal art-direction sheet and measurable walking loop. The name remains working.","x":0,"y":1040,"width":2040,"height":180,"color":"2"}
+		{"id":"fcc-footer","type":"text","text":"## SELECTED BETA BOUNDARY\nOne modern-day Sundale-direction city • compact commons ring • concept art only • no production assets • no water city or Tartaria city in beta\n\n✅ Phase 1C.1 plan frozen in [[Visual Maps/Sundale Core Loop|Sundale Core Loop]] • **Next:** Phase 1C.2 primitive packaged graybox and measured traversal. The name remains working.","x":0,"y":1040,"width":2040,"height":180,"color":"2"}
 	],
 	"edges":[]
 }

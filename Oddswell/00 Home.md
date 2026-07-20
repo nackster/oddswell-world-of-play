@@ -86,10 +86,12 @@ tags:
 - [[Development/Reports/Phase 1B5 Local Character Appearance Persistence and First-Playable Handoff|Phase 1B.5 local character appearance persistence and first-playable handoff]]
 - [[Development/Reports/Phase 1B Exit Review Character Onboarding Evidence Closure|Phase 1B character onboarding exit review]]
 - [[Development/Reports/Phase 1C0 Noncanonical First City Concept Packages|Phase 1C.0 noncanonical first-city concept packages]]
+- [[Development/Reports/Phase 1C1 Sundale Art Direction and Core Loop Freeze|Phase 1C.1 Sundale art and loop freeze]]
 - [[Visual Maps/Project Tool Map|Master project tool map]]
 - [[Visual Maps/Beta Game Scope|Complete beta game scope map]]
 - [[Visual Maps/Beta Delivery Roadmap|Beta delivery roadmap map]]
 - [[Visual Maps/First City Concepts|First-city visual comparison]]
+- [[Visual Maps/Sundale Core Loop|Sundale core-loop map]]
 - [[Visual Maps/3D Asset Toolchain|3D asset toolchain canvas]]
 - [[Visual Maps/Multi-Brain Architecture|Multi-brain architecture canvas]]
 - [[Visual Maps/Phase 0 Simulation Roadmap|Phase 0 simulation roadmap]]
@@ -97,7 +99,7 @@ tags:
 
 ## Current focus
 
-Phase 1A is complete and Unreal Engine 5.8 is the approved beta client engine. Phase 1B character onboarding is complete with committed packaged evidence. The owner selected **Concept B — Daymark / Sundale** as the canonical beta first-city direction; see [[Design/Decisions/DEC-008 Beta First City Direction]], [[Design/First City Concept Packages]], and [[Visual Maps/First City Concepts]]. Sundale remains a working name. Phase 1C.1 must now freeze the minimal art direction and measurable commons-ring walking loop before grayboxing. Final art, multiplayer, Odds Bucks, wagering, deployment, and retraining remain inactive.
+Phase 1A and Phase 1B are complete. The owner selected **Concept B — Daymark / Sundale**, and Phase 1C.1 now freezes its minimal art direction, `340 m × 280 m` graybox ceiling, and `800 m` projected commons-ring route in [[Design/Sundale Art Direction and Core Loop]] and [[Visual Maps/Sundale Core Loop]]. Sundale remains a working name. Phase 1C.2 must build and package a primitive separate-map graybox, then replace the walk/run projections with measured route evidence. Final art, multiplayer, Odds Bucks, wagering, deployment, and retraining remain inactive.
 
 ## Current state
 

@@ -70,7 +70,7 @@ The presets must not attach ability, wealth, intelligence, behavior, or athlete 
 
 - **LOCKED:** the player enters one original 3D city and can walk around it.
 - **LOCKED:** the first city needs an original name, theme, skyline, architecture, atmosphere, and visual identity.
-- **OPEN:** city name, world name, biome, culture, layout, weather, and art direction.
+- **PARTIALLY RESOLVED:** the owner selected the Sundale modern civic-commons direction under [[Design/Decisions/DEC-008 Beta First City Direction]], and Phase 1C.1 froze its minimal art direction and compact route in [[Design/Sundale Art Direction and Core Loop]]. The final city name, world name, culture details, and production art remain open.
 - **GUARDRAIL:** no agent may invent and canonize the city identity without owner approval.
 
 ### 3. Discover the starter home
@@ -266,7 +266,7 @@ Admin features do not become beta player features. The server remains authoritat
 | Area | Beta commitment | Status |
 | --- | --- | --- |
 | Character | Fast preset selection, varied appearances, minimal worn starter outfit | LOCKED / details OPEN |
-| World | One walkable original 3D city | LOCKED / identity OPEN |
+| World | One walkable original 3D city | LOCKED / SUNDALE DIRECTION APPROVED / NAME OPEN |
 | Home | Studio, 1BR, 2BR, 3BR, 4BR, and Penthouse progression | LOCKED / layouts OPEN |
 | Work | One physical job location and repeatable Odds Bucks recovery | LOCKED / mechanic OPEN |
 | Basketball | Two fictional teams, persistent league, watchable authoritative games | LOCKED |
@@ -281,7 +281,7 @@ Admin features do not become beta player features. The server remains authoritat
 | Other sports | Combat sports/fights after basketball | LATER |
 | Houses and mansions | Beyond apartment progression | LATER |
 | Multiplayer city presence | Players walk together and show equipped clothing | LOCKED / capacity OPEN |
-| City theme and names | Must be owner-approved | OPEN |
+| City theme and names | Sundale civic-commons direction; working name | DIRECTION APPROVED / NAME OPEN |
 
 ## Explicitly outside beta unless the owner changes scope
 
@@ -301,7 +301,7 @@ Admin features do not become beta player features. The server remains authoritat
 
 The Scope Director must stop and ask when a phase depends on one of these:
 
-1. First world and city name, theme, geography, culture, and visual identity.
+1. **PARTIALLY RESOLVED:** Sundale's theme, commons-ring geography, atmosphere, palette, material family, wayfinding, and minimal loop are approved under [[Design/Decisions/DEC-008 Beta First City Direction]] and [[Design/Sundale Art Direction and Core Loop]]. Final city/world names, culture details, and production art remain open.
 2. **RESOLVED:** beta camera and movement style under [[Design/Decisions/DEC-007 Phase 1B Character Defaults|DEC-007]].
 3. **PARTIALLY RESOLVED:** eight-placeholder minimum range under [[Design/Decisions/DEC-007 Phase 1B Character Defaults|DEC-007]]; final character art and post-start customization remain open.
 4. Apartment upgrade layouts and decorating interaction.
@@ -334,4 +334,4 @@ Before proposing a phase, the Scope Director must:
 - Phase 0 basketball simulation is frozen at its validated baseline except for demonstrated defects or a measured beta requirement.
 - Phase 1A is complete. The owner accepted the measured UE 5.8 packaged-build, graybox, and authoritative replay-rendering evidence in [[Design/Decisions/DEC-006 Unreal Engine 5.8 Beta Adoption|DEC-006]].
 - Phase 1B is complete. The committed catalog, safe-default selection, third-person movement, replaceable starter outfit, and exact local cold-process appearance recovery satisfy the character-onboarding exit evidence in [[Development/Reports/Phase 1B Exit Review Character Onboarding Evidence Closure]].
-- Phase 1C.0 produced three grounded modern-day comparison packages in [[Design/First City Concept Packages]]. The owner selected **Concept B — Daymark / Sundale** as the canonical beta first-city direction on July 20, 2026; see [[Design/Decisions/DEC-008 Beta First City Direction]]. Sundale remains the working name. The selected direction does not prove a graybox, apartment, Odds Bucks ledger, wager settlement, clothing store, furniture store, production asset, or complete city.
+- Phase 1C.0 produced three grounded modern-day comparison packages in [[Design/First City Concept Packages]], and the owner selected **Concept B — Daymark / Sundale** under [[Design/Decisions/DEC-008 Beta First City Direction]]. Phase 1C.1 froze a `340 m × 280 m` planning footprint, `800 m` clockwise route, minimal visual language, and graybox acceptance contract in [[Design/Sundale Art Direction and Core Loop]]. Sundale remains the working name. No Unreal graybox, production asset, apartment, Odds Bucks ledger, wager settlement, clothing store, furniture store, or complete city is proven.

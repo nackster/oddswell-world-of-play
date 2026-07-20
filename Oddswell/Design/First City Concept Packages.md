@@ -103,4 +103,4 @@ Every package preserves the same player-facing beta scope:
 
 ## Owner decision outcome
 
-The owner selected Package B on July 20, 2026. Phase 1C.1 may now freeze Sundale's minimal art-direction sheet and compact commons-ring graybox loop. The working city name may still be changed without reopening the selected city direction.
+The owner selected Package B on July 20, 2026. Phase 1C.1 subsequently froze Sundale's minimal art direction and `800 m` projected commons-ring loop in [[Design/Sundale Art Direction and Core Loop]]. The working city name may still be changed without reopening the selected city direction.

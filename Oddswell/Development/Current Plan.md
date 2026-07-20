@@ -660,7 +660,7 @@ Build the one-city scope defined in [[Design/Decisions/DEC-002 First Playable Sc
 - **Decision:** the committed Phase 1B.1–1B.5 path proves eight gameplay-identical presets, safe-default selection, direct packaged-world handoff, approved third-person movement, separate replaceable starter clothing, schema-v1 local appearance persistence, all-or-nothing fallback, exact non-default cold-process recovery, and no demographic gameplay effect.
 - **Accepted evidence:** contiguous commits `8fe374e` through `bada971`; corrected editor/game builds; 5/5 native character tests; fresh 58-file package; exact Process A/Process B recovery and QA cleanup; 65/65 frozen regressions; Brain Admin self-check; Python compilation; frozen hashes; Obsidian/Canvas/hygiene checks; and `$0.00` cost. This documentation-only review did not rebuild or relaunch Unreal.
 - **Boundary:** no runtime, source, map, config, save, gameplay, art, city, backend, multiplayer, economy, wagering, paid service, deployment, model, training, retraining, Phase 0, or replay behavior changed. See [[Development/Reports/Phase 1B Exit Review Character Onboarding Evidence Closure]].
-- **Next gate:** the owner selected Concept B — Daymark / Sundale on July 20, 2026. Phase 1C.1 may freeze its minimal art-direction sheet and compact commons-ring walking loop before grayboxing. Sundale remains a working name.
+- **Closed by later evidence:** the owner selected Concept B — Daymark / Sundale, and Phase 1C.1 froze its minimal art-direction sheet and compact commons-ring walking loop. Sundale remains a working name.
 
 ### Phase 1C.0 Noncanonical First City Concept Packages status
 
@@ -670,7 +670,17 @@ Build the one-city scope defined in [[Design/Decisions/DEC-002 First Playable Sc
 - **Visual evidence:** three project-local concept images plus [[Visual Maps/First City Concepts|a clean comparison canvas]] and [[Design/First City Concept Packages|the complete package document]]. The images are concepts only, not production-ready or license-approved assets.
 - **Owner selection:** Concept B — Daymark / Sundale is the canonical beta first-city direction under [[Design/Decisions/DEC-008 Beta First City Direction]]. The working name may still change without reopening the selected theme, geography, atmosphere, or visual language.
 - **Boundary:** the selection changes planning authority only. No Unreal map, source, configuration, runtime, graybox, production art, 3D asset, multiplayer, apartment, Odds Bucks, wagering, brain, deployment, or retraining behavior changed. See [[Development/Reports/Phase 1C0 Noncanonical First City Concept Packages]].
-- **Next gate:** Phase 1C.1 freezes the minimal Sundale art-direction sheet and measurable compact commons-ring walking loop before any city graybox begins.
+- **Closed by Phase 1C.1:** the minimal Sundale art-direction sheet and measurable compact commons-ring walking loop are frozen in [[Design/Sundale Art Direction and Core Loop]].
+
+### Phase 1C.1 Sundale Art Direction and Core Loop Freeze status
+
+- **Status:** Complete on `agent/phase-0d`; canonical planning freeze only.
+- **Art direction:** [[Design/Sundale Art Direction and Core Loop]] freezes the selected warm civic-commons identity, three-to-six-story human-scale massing, north arena landmark, limestone/terracotta/sage/cobalt palette, late-afternoon light, material family, wayfinding hierarchy, and explicit visual exclusions.
+- **Layout:** the graybox ceiling is `340 m × 280 m` with a `140 m × 90 m` central commons. One continuous step-free clockwise route covers the Studio, job, clothing store, arena, attached public sportsbook frontage, court, furniture store, and return streets in exactly `800 m` of planned centerline.
+- **Projection:** at the approved placeholder speeds, arithmetic estimates are approximately `5:08` walking at `260 cm/s` and `2:34` running at `520 cm/s`. These are unmeasured planning projections, not packaged runtime evidence.
+- **Visual evidence:** [[Visual Maps/Sundale Core Loop]] presents the approved image, art constraints, ordered location loop, segment distances, footprint, and next gate without overlapping information panels.
+- **Boundary:** no Unreal level, map geometry, collision, navigation, source, config, material, mesh, final art, interior, multiplayer, account, store system, inventory, Odds Bucks, wagering, deployment, model, training, or retraining behavior changed. See [[Development/Reports/Phase 1C1 Sundale Art Direction and Core Loop Freeze]].
+- **Next gate:** Phase 1C.2 creates a separate primitive Sundale graybox, adds named thresholds and collision-safe continuous streets, packages it, and replaces projected traversal with measured route, visibility, collision, and performance evidence.
 
 ## Future shared simulation layer
 

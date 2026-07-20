@@ -1,0 +1,29 @@
+{
+	"nodes":[
+		{"id":"scl-title","type":"text","text":"# SUNDALE CORE LOOP — PHASE 1C.1 FREEZE\nWarm modern civic commons • 800 m projected route • working city name","x":0,"y":-220,"width":1800,"height":130,"color":"2"},
+		{"id":"scl-doc","type":"file","file":"Design/Sundale Art Direction and Core Loop.md","x":0,"y":-60,"width":1120,"height":100,"color":"2"},
+		{"id":"scl-report","type":"file","file":"Development/Reports/Phase 1C1 Sundale Art Direction and Core Loop Freeze.md","x":1160,"y":-60,"width":640,"height":100,"color":"2"},
+		{"id":"scl-art-group","type":"group","label":"APPROVED VISUAL DIRECTION","x":0,"y":100,"width":700,"height":820,"color":"2"},
+		{"id":"scl-image","type":"file","file":"90 Assets/City Concepts/Phase 1C0/sundale-concept.png","x":20,"y":150,"width":660,"height":372},
+		{"id":"scl-art-text","type":"text","text":"## ☀️ SUNLIT CIVIC COMMONS\nWarm limestone • muted terracotta • sand concrete • sage trees • cobalt route marks • burnt-orange accents\n\n🏙️ 3–6 story human-scale perimeter\n🏟️ Arena is the single north landmark\n🌳 Mature shade + worn brick paving\n🛍️ Separate clothing and furniture entrances\n🚫 No luxury resort, futurism, water city, monuments, or final assets","x":20,"y":550,"width":660,"height":330,"color":"2"},
+		{"id":"scl-map-group","type":"group","label":"CLOCKWISE ACCEPTANCE LOOP — 800 m","x":740,"y":100,"width":1060,"height":820,"color":"4"},
+		{"id":"scl-arena","type":"text","text":"4 🏟️ ARENA\n→ 60 m","x":1080,"y":160,"width":220,"height":110,"color":"4"},
+		{"id":"scl-sportsbook","type":"text","text":"5 🎟️ SPORTSBOOK\n→ 125 m","x":1440,"y":270,"width":240,"height":110,"color":"4"},
+		{"id":"scl-court","type":"text","text":"6 🏀 PUBLIC COURT\n→ 110 m","x":1480,"y":500,"width":240,"height":110,"color":"4"},
+		{"id":"scl-furniture","type":"text","text":"7 🪑 FURNITURE\n→ 145 m","x":1320,"y":730,"width":240,"height":110,"color":"4"},
+		{"id":"scl-studio","type":"text","text":"1 🏠 STARTER STUDIO\n→ 95 m","x":880,"y":730,"width":240,"height":110,"color":"4"},
+		{"id":"scl-job","type":"text","text":"2 💼 JOB FRONTAGE\n→ 120 m","x":780,"y":500,"width":240,"height":110,"color":"4"},
+		{"id":"scl-clothing","type":"text","text":"3 👕 CLOTHING\n→ 145 m","x":800,"y":270,"width":240,"height":110,"color":"4"},
+		{"id":"scl-commons","type":"text","text":"## 🌳 CENTRAL COMMONS\n140 m × 90 m\nCross-path shortcuts\nArena visible north","x":1100,"y":430,"width":300,"height":170,"color":"2"},
+		{"id":"scl-footer","type":"text","text":"## PLANNING PROJECTION — NOT RUNTIME EVIDENCE\n🚶 260 cm/s → approximately 5:08 • 🏃 520 cm/s → approximately 2:34\nFootprint ceiling: 340 m × 280 m • clear path: 4 m normal / 3 m pinch • continuous and step-free\n\n**Next:** Phase 1C.2 builds a separate primitive Unreal graybox, packages it, and records actual route, collision, visibility, and performance evidence.","x":0,"y":970,"width":1800,"height":210,"color":"6"}
+	],
+	"edges":[
+		{"id":"scl-e1","fromNode":"scl-studio","fromSide":"left","toNode":"scl-job","toSide":"bottom","toEnd":"arrow"},
+		{"id":"scl-e2","fromNode":"scl-job","fromSide":"top","toNode":"scl-clothing","toSide":"bottom","toEnd":"arrow"},
+		{"id":"scl-e3","fromNode":"scl-clothing","fromSide":"right","toNode":"scl-arena","toSide":"left","toEnd":"arrow"},
+		{"id":"scl-e4","fromNode":"scl-arena","fromSide":"right","toNode":"scl-sportsbook","toSide":"top","toEnd":"arrow"},
+		{"id":"scl-e5","fromNode":"scl-sportsbook","fromSide":"bottom","toNode":"scl-court","toSide":"top","toEnd":"arrow"},
+		{"id":"scl-e6","fromNode":"scl-court","fromSide":"bottom","toNode":"scl-furniture","toSide":"right","toEnd":"arrow"},
+		{"id":"scl-e7","fromNode":"scl-furniture","fromSide":"left","toNode":"scl-studio","toSide":"right","toEnd":"arrow"}
+	]
+}
