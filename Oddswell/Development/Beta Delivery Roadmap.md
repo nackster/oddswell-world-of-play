@@ -41,7 +41,8 @@ The roadmap is intentionally made of measurable product gates, not hundreds of s
 - Phase 1B.3 controllable primitive placeholder and approved locomotion: **COMPLETE**; see [[Development/Reports/Phase 1B3 Controllable Placeholder Avatar and Approved Locomotion]].
 - Phase 1B.4 separate replaceable starter outfit: **COMPLETE**; see [[Development/Reports/Phase 1B4 Replaceable Starter Outfit]].
 - Phase 1B.5 local appearance persistence and first-playable handoff: **COMPLETE**; see [[Development/Reports/Phase 1B5 Local Character Appearance Persistence and First-Playable Handoff]].
-- Next smallest gate: **Phase 1B exit review**. Phase 1C remains blocked by its first-city owner gate.
+- Phase 1B character onboarding exit review: **COMPLETE**; see [[Development/Reports/Phase 1B Exit Review Character Onboarding Evidence Closure]].
+- Next gate: **Phase 1C OWNER GATE**. City implementation remains stopped until the owner approves the required first-city direction.
 - Current prerequisite note: UE 5.8, the aligned x64 runtime and .NET Framework 4.8 SDK, portable project, reproducible local Windows package, empty-map launch, LFS, generated-file ignores, primitive block/court iteration, collision, cold-process reopen, direct recorded-replay rendering, deterministic packaged traces, and local resource sampling are verified. UE 5.8 is now the approved beta client engine.
 
 No later roadmap phase is authorized merely because it appears below.
@@ -51,8 +52,8 @@ No later roadmap phase is authorized merely because it appears below.
 | Order | Phase | Player-facing outcome | Status |
 | --- | --- | --- | --- |
 | 1 | 1A — Engine and packaged-build proof | A real 3D client can build and run | COMPLETE |
-| 2 | 1B — Character selection and movement | Choose a default avatar and enter the world | ACTIVE / OWNER GATE |
-| 3 | 1C — First-city identity and graybox | Walk between every required beta location | PENDING / OWNER GATE |
+| 2 | 1B — Character selection and movement | Choose a default avatar and enter the world | COMPLETE |
+| 3 | 1C — First-city identity and graybox | Walk between every required beta location | OWNER GATE |
 | 4 | 1D — Shared-city presence | Players see one another and equipped clothing | PENDING |
 | 5 | 1E — Studio and apartment progression | Enter a persistent home and see the six-tier goal | PENDING |
 | 6 | 1F — League, stadium, and match viewing | Research and watch authoritative basketball | PENDING |
@@ -114,6 +115,8 @@ No later roadmap phase is authorized merely because it appears below.
 ### Exit evidence
 
 A fresh player can choose a preset, enter a packaged placeholder world, move, close, reopen, and recover the same appearance without demographic attributes affecting gameplay.
+
+**PASSED:** the committed Phase 1B.1–1B.5 evidence satisfies every clause; see [[Development/Reports/Phase 1B Exit Review Character Onboarding Evidence Closure]].
 
 ## Phase 1C — First-city identity and graybox
 

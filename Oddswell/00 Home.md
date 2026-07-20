@@ -83,6 +83,7 @@ tags:
 - [[Development/Reports/Phase 1B3 Controllable Placeholder Avatar and Approved Locomotion|Phase 1B.3 controllable placeholder avatar and approved locomotion]]
 - [[Development/Reports/Phase 1B4 Replaceable Starter Outfit|Phase 1B.4 replaceable starter outfit]]
 - [[Development/Reports/Phase 1B5 Local Character Appearance Persistence and First-Playable Handoff|Phase 1B.5 local character appearance persistence and first-playable handoff]]
+- [[Development/Reports/Phase 1B Exit Review Character Onboarding Evidence Closure|Phase 1B character onboarding exit review]]
 - [[Visual Maps/Project Tool Map|Master project tool map]]
 - [[Visual Maps/Beta Game Scope|Complete beta game scope map]]
 - [[Visual Maps/Beta Delivery Roadmap|Beta delivery roadmap map]]
@@ -93,7 +94,7 @@ tags:
 
 ## Current focus
 
-Phase 1A is complete and Unreal Engine 5.8 is the approved beta client engine. Phase 1B.5 now saves a chosen placeholder locally, enters the packaged benchmark, and cold-loads the same catalog skin tone plus exact starter outfit without changing gameplay. The next gate is the Phase 1B exit review. Phase 1C remains stopped for owner approval of the first-city identity and minimal art-direction sheet; final art, multiplayer, Odds Bucks, wagering, deployment, and retraining remain inactive.
+Phase 1A is complete and Unreal Engine 5.8 is the approved beta client engine. Phase 1B character onboarding is complete: choose, enter, move, close/reopen, and exact appearance recovery all have committed packaged evidence with no demographic gameplay effect. Phase 1C is now stopped at the owner gate for the world/city name, theme, geography and core walking-loop direction, visual language, and minimal art-direction sheet. No city identity has been canonized; final art, multiplayer, Odds Bucks, wagering, deployment, and retraining remain inactive.
 
 ## Current state
 

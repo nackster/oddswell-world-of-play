@@ -652,7 +652,15 @@ Build the one-city scope defined in [[Design/Decisions/DEC-002 First Playable Sc
 - **Corrective evidence:** the first handoff exposed a UE 5.8 ensure from binding digital W/A/S/D through `BindAxisKey`. That run was rejected. Keyboard movement now uses native key polling; only verified `Axis1D` mouse/controller keys use axis binding. All corrected build, automation, package, and runtime evidence was regenerated with zero ensure matches.
 - **Validation:** corrected editor/game builds, 5/5 native character tests, and a fresh 58-file Windows package passed. All 65 frozen regressions passed in `132.457s`; Brain Admin self-check, Python compilation, documentation, canvas, hashes, and hygiene checks passed. The owner canceled the initial Windows Firewall prompt; automation changed no security setting. Cost was `$0.00`. See [[Development/Reports/Phase 1B5 Local Character Appearance Persistence and First-Playable Handoff]].
 - **Boundary:** no persistence framework, JSON/database/registry/cloud/account/backend/network/multiplayer/profile UI, other saved state, schema migration machinery, new clothing, final art, rig, animation, city canon, economy, wagering, Phase 0, replay, model, retraining, paid service, or deployment was added.
-- **Next gate:** Phase 1B exit review. If accepted, Phase 1C must stop for owner approval of the first-city identity and minimal art-direction sheet before any city implementation.
+- **Next gate:** the Phase 1B exit review, now complete in [[Development/Reports/Phase 1B Exit Review Character Onboarding Evidence Closure]].
+
+### Phase 1B Exit Review status
+
+- **Status:** Complete on `agent/phase-0d`; Phase 1B character onboarding evidence is closed.
+- **Decision:** the committed Phase 1B.1–1B.5 path proves eight gameplay-identical presets, safe-default selection, direct packaged-world handoff, approved third-person movement, separate replaceable starter clothing, schema-v1 local appearance persistence, all-or-nothing fallback, exact non-default cold-process recovery, and no demographic gameplay effect.
+- **Accepted evidence:** contiguous commits `8fe374e` through `bada971`; corrected editor/game builds; 5/5 native character tests; fresh 58-file package; exact Process A/Process B recovery and QA cleanup; 65/65 frozen regressions; Brain Admin self-check; Python compilation; frozen hashes; Obsidian/Canvas/hygiene checks; and `$0.00` cost. This documentation-only review did not rebuild or relaunch Unreal.
+- **Boundary:** no runtime, source, map, config, save, gameplay, art, city, backend, multiplayer, economy, wagering, paid service, deployment, model, training, retraining, Phase 0, or replay behavior changed. See [[Development/Reports/Phase 1B Exit Review Character Onboarding Evidence Closure]].
+- **Next gate:** Phase 1C is stopped at an owner decision. The owner must approve the world/city name, theme, geography and core walking-loop direction, visual language, and minimal art-direction sheet before city implementation begins.
 
 ## Future shared simulation layer
 

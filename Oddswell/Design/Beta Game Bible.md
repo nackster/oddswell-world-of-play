@@ -333,5 +333,5 @@ Before proposing a phase, the Scope Director must:
 
 - Phase 0 basketball simulation is frozen at its validated baseline except for demonstrated defects or a measured beta requirement.
 - Phase 1A is complete. The owner accepted the measured UE 5.8 packaged-build, graybox, and authoritative replay-rendering evidence in [[Design/Decisions/DEC-006 Unreal Engine 5.8 Beta Adoption|DEC-006]].
-- Phase 1B is active. Its approved defaults are recorded in [[Design/Decisions/DEC-007 Phase 1B Character Defaults|DEC-007]], and Phase 1B.1 implements the validated placeholder catalog and replaceable starter-outfit IDs.
-- The next implementation gate is a fast local character-selection screen with a safe default. No city, avatar selection flow, controllable character, apartment, Odds Bucks ledger, wager settlement, clothing store, or furniture store is complete merely because it appears in this beta plan.
+- Phase 1B is complete. The committed catalog, safe-default selection, third-person movement, replaceable starter outfit, and exact local cold-process appearance recovery satisfy the character-onboarding exit evidence in [[Development/Reports/Phase 1B Exit Review Character Onboarding Evidence Closure]].
+- Phase 1C is stopped at its owner gate. No first-city identity, graybox, apartment, Odds Bucks ledger, wager settlement, clothing store, or furniture store is complete merely because it appears in this beta plan; city implementation waits for explicit owner approval of the required first-city direction.
