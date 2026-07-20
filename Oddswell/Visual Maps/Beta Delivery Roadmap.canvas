@@ -2,7 +2,7 @@
 	"nodes":[
 		{"id":"bdr-title","type":"text","text":"# ODDSWELL BETA DELIVERY ROADMAP\nFollow the numbers. Each phase proves one player-facing dependency before the next begins.","x":0,"y":-260,"width":2040,"height":130,"color":"6"},
 		{"id":"bdr-file","type":"file","file":"Development/Beta Delivery Roadmap.md","x":0,"y":-100,"width":1320,"height":100,"color":"6"},
-		{"id":"bdr-now","type":"text","text":"## ▶ PHASE 1D.3 — RECONNECT RESTORE\n1D.2 passed • leave + rejoin must restore the same visible preset and starter outfit","x":1360,"y":-100,"width":680,"height":100,"color":"2"},
+		{"id":"bdr-now","type":"text","text":"## ▶ PHASE 1D.4 — LOCAL CONCURRENCY\n1D.3 passed • measure a small local client ladder before choosing a capacity ceiling","x":1360,"y":-100,"width":680,"height":100,"color":"2"},
 		{"id":"bdr-foundation-group","type":"group","x":0,"y":80,"width":2040,"height":340,"color":"5","label":"FOUNDATION — PROVE THE 3D WORLD"},
 		{"id":"bdr-core-group","type":"group","x":0,"y":500,"width":2040,"height":340,"color":"3","label":"CORE LOOP — HOME, SPORT, MONEY, WAGERS"},
 		{"id":"bdr-experience-group","type":"group","x":0,"y":920,"width":2040,"height":340,"color":"4","label":"PLAYER EXPERIENCE — PROGRESSION + UNDERSTANDING"},
@@ -10,7 +10,7 @@
 		{"id":"bdr-1a","type":"text","text":"## 1A 🧰 ENGINE PROOF\n✅ COMPLETE\nUE 5.8 approved after package, block/court, and 421-frame replay evidence","x":40,"y":145,"width":450,"height":220,"color":"3"},
 		{"id":"bdr-1b","type":"text","text":"## 1B 🧍 CHARACTER\n✅ COMPLETE — EXIT PASSED\n8 presets • choose • move • outfit • exact cold recovery\nNo demographic gameplay effect","x":540,"y":145,"width":450,"height":220,"color":"3"},
 		{"id":"bdr-1c","type":"text","text":"## 1C 🏙️ CITY GRAYBOX\n✅ COMPLETE — EXIT PASSED\n800 m packaged loop • walk 5:07 • run 2:35 • 11/11 • collision stable","x":1040,"y":145,"width":450,"height":220,"color":"3"},
-		{"id":"bdr-1d","type":"text","text":"## 1D 👥 SHARED CITY\n▶ ACTIVE — 1D.1 + 1D.2 COMPLETE\n2 clients ✓ • labels ✓ • movement ✓ • appearance ✓ • clothing ✓\nNEXT: reconnect → capacity","x":1540,"y":145,"width":450,"height":220,"color":"2"},
+		{"id":"bdr-1d","type":"text","text":"## 1D 👥 SHARED CITY\n▶ ACTIVE — 1D.1–1D.3 COMPLETE\n2 clients ✓ • movement ✓ • appearance ✓ • clothing ✓ • reconnect ✓\nNEXT: local capacity evidence","x":1540,"y":145,"width":450,"height":220,"color":"2"},
 		{"id":"bdr-1e","type":"text","text":"## 1E 🏠 APARTMENTS\nPersistent Studio • one furniture path • six-tier progression data • no six final interiors yet","x":40,"y":565,"width":450,"height":220,"color":"3"},
 		{"id":"bdr-1f","type":"text","text":"## 1F 🏀 LEAGUE + WATCH\nResearch teams/athletes • stadium • 421-frame replay • 2–5 minute presentation","x":540,"y":565,"width":450,"height":220,"color":"3"},
 		{"id":"bdr-1g","type":"text","text":"## 1G 💵 ODDS BUCKS + JOB\nAuthoritative ledger • one job/recovery path • persistence • Admin reconciliation","x":1040,"y":565,"width":450,"height":220,"color":"3"},

@@ -55,6 +55,17 @@ const FName BottomComponentName(TEXT("StarterOutfitBottom"));
 constexpr float SundaleRouteDistance = 80000.0f;
 constexpr float SundaleWaypointTolerance = 75.0f;
 
+bool MatchesSharedCityReconnectAppearance(
+	const FOddsWellSharedCityAppearance& Expected,
+	const FOddsWellSharedCityAppearance& Actual)
+{
+	return Expected.bOwnerSubmitted
+		&& Actual.bOwnerSubmitted
+		&& Expected.PresetId == Actual.PresetId
+		&& Expected.TopItemId == Actual.TopItemId
+		&& Expected.BottomItemId == Actual.BottomItemId;
+}
+
 const TArray<FVector>& GetSundaleRouteWaypoints()
 {
 	static const TArray<FVector> Waypoints = {
@@ -487,6 +498,21 @@ void AOddsWellPlaceholderCharacter::RunSharedCityQa(const float DeltaSeconds)
 			*OtherPlayer->SharedCityAppearance.PresetId.ToString(),
 			*OtherPlayer->SharedCityAppearance.TopItemId.ToString(),
 			*OtherPlayer->SharedCityAppearance.BottomItemId.ToString());
+		if (GetNetMode() == NM_Client
+			&& bAppearanceQa
+			&& FParse::Param(FCommandLine::Get(), TEXT("SharedCityReconnectCleanup")))
+		{
+			FString Error;
+			const bool bClean = DeleteOddsWellQaAppearanceAndVerify(Error);
+			if (bClean)
+			{
+				UE_LOG(LogOddsWellLocomotion, Display, TEXT("ODDSWELL_SHARED_CITY_RECONNECT_CLEANUP|result=PASS|slot=qa|exists=false"));
+			}
+			else
+			{
+				UE_LOG(LogOddsWellLocomotion, Error, TEXT("ODDSWELL_SHARED_CITY_RECONNECT_CLEANUP|result=FAIL|slot=qa|reason=%s"), *Error);
+			}
+		}
 		if (GetNetMode() == NM_Client && FParse::Param(FCommandLine::Get(), TEXT("SharedCityAutoExit")))
 		{
 			SharedCityQaExitAt = FPlatformTime::Seconds() + 3.0;
@@ -644,6 +670,22 @@ void AOddsWellPlaceholderCharacter::SubmitLocalSharedCityAppearance()
 	if (bSharedCityAppearanceSubmitted)
 	{
 		return;
+	}
+	if (bAppearanceQa && FParse::Param(FCommandLine::Get(), TEXT("SharedCityReconnectSeed")))
+	{
+		FString QaPresetId;
+		FString Error;
+		if (!FParse::Value(FCommandLine::Get(), TEXT("SharedCityQaPreset="), QaPresetId)
+			|| !SaveOddsWellCharacterAppearance(FName(*QaPresetId), true, Error))
+		{
+			ReportAppearanceError(Error.IsEmpty() ? TEXT("Reconnect QA requires a valid SharedCityQaPreset.") : Error);
+			return;
+		}
+		UE_LOG(
+			LogOddsWellLocomotion,
+			Display,
+			TEXT("ODDSWELL_SHARED_CITY_RECONNECT_SEED|result=PASS|preset=%s|slot=qa"),
+			*QaPresetId);
 	}
 	FOddsWellResolvedCharacterAppearance Appearance;
 	FString Source;
@@ -1069,6 +1111,7 @@ AOddsWellLocomotionGameMode::AOddsWellLocomotionGameMode()
 	PrimaryActorTick.bCanEverTick = true;
 	DefaultPawnClass = AOddsWellPlaceholderCharacter::StaticClass();
 	bSharedCityQa = FParse::Param(FCommandLine::Get(), TEXT("SharedCityQa"));
+	bSharedCityReconnectQa = FParse::Param(FCommandLine::Get(), TEXT("SharedCityReconnectQa"));
 }
 
 void AOddsWellLocomotionGameMode::PostLogin(APlayerController* NewPlayer)
@@ -1082,6 +1125,22 @@ void AOddsWellLocomotionGameMode::PostLogin(APlayerController* NewPlayer)
 
 void AOddsWellLocomotionGameMode::Logout(AController* Exiting)
 {
+	if (bSharedCityReconnectQa
+		&& !bSharedCityReconnectPassed
+		&& SharedCityReconnectExpectedAppearance.bOwnerSubmitted
+		&& Exiting
+		&& !Exiting->IsLocalController())
+	{
+		bSharedCityReconnectLeaveObserved = true;
+		UE_LOG(
+			LogOddsWellLocomotion,
+			Display,
+			TEXT("ODDSWELL_SHARED_CITY_RECONNECT_LEAVE|player=Player_%d|preset=%s|top=%s|bottom=%s|captured=true"),
+			SharedCityReconnectExpectedPlayerNumber,
+			*SharedCityReconnectExpectedAppearance.PresetId.ToString(),
+			*SharedCityReconnectExpectedAppearance.TopItemId.ToString(),
+			*SharedCityReconnectExpectedAppearance.BottomItemId.ToString());
+	}
 	Super::Logout(Exiting);
 	if (GetNetMode() != NM_Standalone)
 	{
@@ -1098,7 +1157,9 @@ void AOddsWellLocomotionGameMode::Tick(const float DeltaSeconds)
 		FPlatformMisc::RequestExit(false);
 		return;
 	}
-	if (!bSharedCityQa || bSharedCityQaPassed)
+	if (!bSharedCityQa
+		|| bSharedCityReconnectPassed
+		|| (bSharedCityQaPassed && !bSharedCityReconnectQa))
 	{
 		return;
 	}
@@ -1129,11 +1190,60 @@ void AOddsWellLocomotionGameMode::Tick(const float DeltaSeconds)
 		{
 			return !Player->HasValidSharedCityAppearance() || !Player->HasSubmittedSharedCityAppearance();
 		});
+	if (bSharedCityReconnectQa
+		&& !bSharedCityReconnectLeaveObserved
+		&& !SharedCityReconnectExpectedAppearance.bOwnerSubmitted)
+	{
+		for (const AOddsWellPlaceholderCharacter* Player : Players)
+		{
+			if (Player->GetSharedCityPlayerNumber() > 1 && Player->HasSubmittedSharedCityAppearance())
+			{
+				SharedCityReconnectExpectedAppearance = Player->GetSharedCityAppearance();
+				SharedCityReconnectExpectedPlayerNumber = Player->GetSharedCityPlayerNumber();
+				UE_LOG(
+					LogOddsWellLocomotion,
+					Display,
+					TEXT("ODDSWELL_SHARED_CITY_RECONNECT_BASELINE|player=Player_%d|preset=%s|top=%s|bottom=%s|captured=true"),
+					SharedCityReconnectExpectedPlayerNumber,
+					*SharedCityReconnectExpectedAppearance.PresetId.ToString(),
+					*SharedCityReconnectExpectedAppearance.TopItemId.ToString(),
+					*SharedCityReconnectExpectedAppearance.BottomItemId.ToString());
+				break;
+			}
+		}
+	}
+	if (bSharedCityReconnectQa && bSharedCityReconnectLeaveObserved)
+	{
+		for (const AOddsWellPlaceholderCharacter* Player : Players)
+		{
+			if (Player->GetSharedCityPlayerNumber() > SharedCityReconnectExpectedPlayerNumber
+				&& MatchesSharedCityReconnectAppearance(SharedCityReconnectExpectedAppearance, Player->GetSharedCityAppearance()))
+			{
+				bSharedCityReconnectPassed = true;
+				UE_LOG(
+					LogOddsWellLocomotion,
+					Display,
+					TEXT("ODDSWELL_SHARED_CITY_RECONNECT_PASS|before=Player_%d|after=Player_%d|preset=%s|top=%s|bottom=%s|server_visible_restore=true|clients=%d"),
+					SharedCityReconnectExpectedPlayerNumber,
+					Player->GetSharedCityPlayerNumber(),
+					*Player->GetSharedCityAppearance().PresetId.ToString(),
+					*Player->GetSharedCityAppearance().TopItemId.ToString(),
+					*Player->GetSharedCityAppearance().BottomItemId.ToString(),
+					Players.Num());
+				if (FParse::Param(FCommandLine::Get(), TEXT("SharedCityAutoExit")))
+				{
+					SharedCityQaExitAt = FPlatformTime::Seconds() + 5.0;
+				}
+				break;
+			}
+		}
+	}
 	for (const AOddsWellPlaceholderCharacter* Player : Players)
 	{
 		const FVector* Start = SharedCityQaStartLocations.Find(Player->GetSharedCityPlayerNumber());
 		const float Distance = Start ? FVector::Dist2D(*Start, Player->GetActorLocation()) : 0.0f;
-		if (Player->GetSharedCityPlayerNumber() > 1
+		if (!bSharedCityQaPassed
+			&& Player->GetSharedCityPlayerNumber() > 1
 			&& Distance >= SharedCityQaMovementDistance
 			&& bAppearancesReady)
 		{
@@ -1145,7 +1255,7 @@ void AOddsWellLocomotionGameMode::Tick(const float DeltaSeconds)
 				Players.Num(),
 				Player->GetSharedCityPlayerNumber(),
 				Distance);
-			if (FParse::Param(FCommandLine::Get(), TEXT("SharedCityAutoExit")))
+			if (!bSharedCityReconnectQa && FParse::Param(FCommandLine::Get(), TEXT("SharedCityAutoExit")))
 			{
 				SharedCityQaExitAt = FPlatformTime::Seconds() + 5.0;
 			}
@@ -1189,6 +1299,18 @@ bool FOddsWellLocomotionDefaultsTest::RunTest(const FString& Parameters)
 	TestTrue(TEXT("Two-player proof uses separated spawn points"), SharedCitySpawnSpacing > CapsuleRadius * 2.0f);
 	TestTrue(TEXT("Shared-city QA requires measurable movement"), SharedCityQaMovementDistance > SharedCitySpawnSpacing);
 	TestTrue(TEXT("Players pass through one another"), SharedCityPlayerCollision == ECR_Ignore);
+	FOddsWellSharedCityAppearance ReconnectBefore;
+	ReconnectBefore.PresetId = TEXT("feminine_tone_4");
+	ReconnectBefore.TopItemId = TEXT("starter_offwhite_top");
+	ReconnectBefore.BottomItemId = TEXT("starter_offwhite_bottom");
+	ReconnectBefore.bOwnerSubmitted = true;
+	FOddsWellSharedCityAppearance ReconnectAfter = ReconnectBefore;
+	TestTrue(TEXT("Reconnect accepts the same submitted visible state"), MatchesSharedCityReconnectAppearance(ReconnectBefore, ReconnectAfter));
+	ReconnectAfter.PresetId = TEXT("masculine_tone_1");
+	TestFalse(TEXT("Reconnect rejects a changed preset"), MatchesSharedCityReconnectAppearance(ReconnectBefore, ReconnectAfter));
+	ReconnectAfter = ReconnectBefore;
+	ReconnectAfter.bOwnerSubmitted = false;
+	TestFalse(TEXT("Reconnect rejects an unsubmitted fallback"), MatchesSharedCityReconnectAppearance(ReconnectBefore, ReconnectAfter));
 
 	const TArray<FKey> KeyboardMoveKeys = {KeyForward, KeyBackward, KeyLeft, KeyRight};
 	const TArray<FKey> MouseLookKeys = {KeyMouseYaw, KeyMousePitch};

@@ -60,6 +60,7 @@ public:
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 	void AssignSharedCityPlayerNumber(int32 PlayerNumber);
 	int32 GetSharedCityPlayerNumber() const { return SharedCityPlayerNumber; }
+	const FOddsWellSharedCityAppearance& GetSharedCityAppearance() const { return SharedCityAppearance; }
 	bool HasValidSharedCityAppearance() const;
 	bool HasSubmittedSharedCityAppearance() const { return SharedCityAppearance.bOwnerSubmitted; }
 
@@ -188,9 +189,14 @@ public:
 
 private:
 	TMap<int32, FVector> SharedCityQaStartLocations;
+	FOddsWellSharedCityAppearance SharedCityReconnectExpectedAppearance;
 	double SharedCityQaExitAt = 0.0;
 	int32 NextSharedCityPlayerNumber = 1;
+	int32 SharedCityReconnectExpectedPlayerNumber = 0;
 	bool bSharedCityQa = false;
 	bool bSharedCityQaStarted = false;
 	bool bSharedCityQaPassed = false;
+	bool bSharedCityReconnectQa = false;
+	bool bSharedCityReconnectLeaveObserved = false;
+	bool bSharedCityReconnectPassed = false;
 };

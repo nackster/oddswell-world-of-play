@@ -712,6 +712,16 @@ Build the one-city scope defined in [[Design/Decisions/DEC-002 First Playable Sc
 - **Boundary:** no reconnect, capacity, account, external hosting, matchmaking, chat, moderation, item ownership, trading, store, Odds Bucks, wagering, final art, model, training, or retraining behavior was added.
 - **Next gate:** Phase 1D.3 proves leave/reconnect restores the same server-visible preset and starter clothing before any capacity ladder.
 
+### Phase 1D.3 Cold Reconnect Visible-State Restore status
+
+- **Status:** Complete on `agent/phase-0d`; smallest local cold-process reconnect proof only.
+- **Implementation:** an opt-in QA harness reuses the existing local appearance SaveGame and Phase 1D.2 server validation. The server captures the first remote player's accepted preset/top/bottom tuple, observes the leave, and passes only when a later joining pawn submits the identical owner-approved tuple. No new persistence format or service exists.
+- **Packaged proof:** Player 2 joined with `feminine_tone_4`, seeded the bounded QA save, moved `305.7 cm`, and left. A new packaged process joined the same server as temporary Player 3, loaded `feminine_tone_4` plus the exact starter top/bottom with `source=loaded`, matched the server baseline, verified both clients' visible agreement, cleaned the QA save, and closed. Server and both clients exited `0`.
+- **Corrective evidence:** the first successful reconnect sequence was rejected because the prior movement-pass line repeated while the server waited. The final guard produces exactly one movement pass, one reconnect leave capture, and one reconnect pass.
+- **Validation:** fresh BuildCookRun passed in `60.68s`; native character automation passed `5/5`; all `65/65` frozen regressions passed in `137.551s`; Brain Admin self-check, Python compilation, accepted-log checks, diff hygiene, QA-save cleanup, and zero-process cleanup passed. Cost was `$0.00`. See [[Development/Reports/Phase 1D3 Cold Reconnect Visible State Restore]].
+- **Boundary:** no permanent identity, account, server profile, external hosting, matchmaking, chat, moderation, capacity conclusion, item ownership, trading, store, Odds Bucks, wagering, final art, model, training, or retraining behavior was added.
+- **Next gate:** Phase 1D.4 measures a small local concurrency ladder before any beta instance ceiling is selected.
+
 ## Future shared simulation layer
 
 Athlete Life Brain v4 is the default for newly generated train, rest, recover, and socialize decisions. It adds only one bounded, one-decision, same-season recent-scoring response above v3's routine behavior. V1-v4 history remains immutable. Expand into longer memory, traits, relationships, nightlife, media, discipline, career decisions, and other sports only after each smaller input passes its own engineering evaluation.

@@ -50,7 +50,8 @@ The roadmap is intentionally made of measurable product gates, not hundreds of s
 - Phase 1D owner defaults: **RESOLVED**; see [[Design/Decisions/DEC-010 Phase 1D Shared City Defaults]].
 - Phase 1D.1 local two-client shared-city presence: **COMPLETE**; see [[Development/Reports/Phase 1D1 Local Two-Client Shared City Presence]].
 - Phase 1D.2 replicated appearance and starter clothing: **COMPLETE**; see [[Development/Reports/Phase 1D2 Replicated Appearance and Starter Clothing]].
-- Next gate: **PHASE 1D.3 LEAVE, RECONNECT, AND VISIBLE-STATE RESTORE**. Sundale remains a working name.
+- Phase 1D.3 cold reconnect and visible-state restore: **COMPLETE**; see [[Development/Reports/Phase 1D3 Cold Reconnect Visible State Restore]].
+- Next gate: **PHASE 1D.4 LOCAL CONCURRENCY LADDER**. Sundale remains a working name.
 - Current prerequisite note: UE 5.8, the aligned x64 runtime and .NET Framework 4.8 SDK, portable project, reproducible local Windows package, empty-map launch, LFS, generated-file ignores, primitive block/court iteration, collision, cold-process reopen, direct recorded-replay rendering, deterministic packaged traces, and local resource sampling are verified. UE 5.8 is now the approved beta client engine.
 
 No later roadmap phase is authorized merely because it appears below.
@@ -162,8 +163,8 @@ The owner selected Concept B — Daymark / Sundale on July 20, 2026. The theme, 
 
 1. **1D.1 COMPLETE:** two local playable clients join the packaged Sundale instance, receive replicated temporary identities, pass through one another, and produce server-observed movement evidence; see [[Development/Reports/Phase 1D1 Local Two-Client Shared City Presence]].
 2. **1D.2 COMPLETE:** the server validates and replicates each selected preset plus equipped starter top/bottom; both packaged clients agree on both distinct players' visible state; see [[Development/Reports/Phase 1D2 Replicated Appearance and Starter Clothing]].
-3. **1D.3 NEXT:** leave, reconnect, and restore the same visible state.
-4. Measure a small concurrency ladder before choosing a beta instance ceiling.
+3. **1D.3 COMPLETE:** a cold local client process rejoins the same server from the existing validated appearance SaveGame and restores the exact server-visible preset/top/bottom tuple; see [[Development/Reports/Phase 1D3 Cold Reconnect Visible State Restore]].
+4. **1D.4 NEXT:** measure a small local concurrency ladder before choosing a beta instance ceiling.
 
 ### Owner gates
 
