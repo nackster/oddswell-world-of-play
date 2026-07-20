@@ -682,6 +682,16 @@ Build the one-city scope defined in [[Design/Decisions/DEC-002 First Playable Sc
 - **Boundary:** no Unreal level, map geometry, collision, navigation, source, config, material, mesh, final art, interior, multiplayer, account, store system, inventory, Odds Bucks, wagering, deployment, model, training, or retraining behavior changed. See [[Development/Reports/Phase 1C1 Sundale Art Direction and Core Loop Freeze]].
 - **Next gate:** Phase 1C.2 creates a separate primitive Sundale graybox, adds named thresholds and collision-safe continuous streets, packages it, and replaces projected traversal with measured route, visibility, collision, and performance evidence.
 
+### Phase 1C.2 Primitive Sundale Graybox and Packaged Route Measurement status
+
+- **Status:** Complete on `agent/phase-0d`; Phase 1C city-graybox exit evidence is closed.
+- **Implementation:** a separate `SundaleGraybox` map contains `45` labeled built-in/native primitive actors: bounded ground, central commons, the exact `800 m` route, two shortcuts, required location masses, six named thresholds, a public court, simple trees, and native environment lights. The map owns the existing locomotion game mode.
+- **Measured package:** walk passed in `307.074s` over `79,987.6 cm`; run passed in `155.201s` over `79,936.5 cm`. Both visited `11/11` checkpoints, returned home, stayed grounded, and retained blocking-floor collision. The first run caught a wall that touched the route; the wall was moved clear and all final evidence was rebuilt.
+- **Performance:** a `600`-frame rendered Development capture averaged `8.062 ms` frame time (`9.422 ms` p95) and `7.082 ms` GPU time (`7.513 ms` p95) after warm-up. This is primitive local evidence, not a final-art target.
+- **Integrity:** Map Check `0/0`; native character tests `5/5`; frozen regressions `65/65`; Brain Admin self-check; Python compilation; hashes; Obsidian/Canvas; and repository hygiene passed. Cost was `$0.00`. See [[Development/Reports/Phase 1C2 Primitive Sundale Graybox and Packaged Route Measurement]].
+- **Boundary:** no final asset, interior, multiplayer, backend, account, store catalog, item ownership, apartment system, Odds Bucks, wager, deployment, model, training, or retraining behavior was added.
+- **Next gate:** Phase 1D shared-city presence. Before implementation, freeze the smallest local two-client proof defaults for provisional capacity direction, player collision, visible names, and the no-external-hosting boundary.
+
 ## Future shared simulation layer
 
 Athlete Life Brain v4 is the default for newly generated train, rest, recover, and socialize decisions. It adds only one bounded, one-decision, same-season recent-scoring response above v3's routine behavior. V1-v4 history remains immutable. Expand into longer memory, traits, relationships, nightlife, media, discipline, career decisions, and other sports only after each smaller input passes its own engineering evaluation.

@@ -1,11 +1,11 @@
 {
 	"nodes":[
-		{"id":"scl-title","type":"text","text":"# SUNDALE CORE LOOP — PHASE 1C.1 FREEZE\nWarm modern civic commons • 800 m projected route • working city name","x":0,"y":-220,"width":1800,"height":130,"color":"2"},
+		{"id":"scl-title","type":"text","text":"# SUNDALE CORE LOOP — PHASE 1C EXIT PASSED\nWarm modern civic commons • 800 m packaged route • working city name","x":0,"y":-220,"width":1800,"height":130,"color":"2"},
 		{"id":"scl-doc","type":"file","file":"Design/Sundale Art Direction and Core Loop.md","x":0,"y":-60,"width":1120,"height":100,"color":"2"},
-		{"id":"scl-report","type":"file","file":"Development/Reports/Phase 1C1 Sundale Art Direction and Core Loop Freeze.md","x":1160,"y":-60,"width":640,"height":100,"color":"2"},
+		{"id":"scl-report","type":"file","file":"Development/Reports/Phase 1C2 Primitive Sundale Graybox and Packaged Route Measurement.md","x":1160,"y":-60,"width":640,"height":100,"color":"2"},
 		{"id":"scl-art-group","type":"group","label":"APPROVED VISUAL DIRECTION","x":0,"y":100,"width":700,"height":820,"color":"2"},
 		{"id":"scl-image","type":"file","file":"90 Assets/City Concepts/Phase 1C0/sundale-concept.png","x":20,"y":150,"width":660,"height":372},
-		{"id":"scl-art-text","type":"text","text":"## ☀️ SUNLIT CIVIC COMMONS\nWarm limestone • muted terracotta • sand concrete • sage trees • cobalt route marks • burnt-orange accents\n\n🏙️ 3–6 story human-scale perimeter\n🏟️ Arena is the single north landmark\n🌳 Mature shade + worn brick paving\n🛍️ Separate clothing and furniture entrances\n🚫 No luxury resort, futurism, water city, monuments, or final assets","x":20,"y":550,"width":660,"height":330,"color":"2"},
+		{"id":"scl-art-text","type":"text","text":"## ☀️ SUNLIT CIVIC COMMONS\nWarm limestone • muted terracotta • sand concrete • sage trees • cobalt route marks • burnt-orange accents\n\n🏙️ 3–6 story human-scale perimeter\n🏟️ Arena is the single north landmark\n🌳 Mature shade + worn brick paving\n🛍️ Separate stores • Sundale-origin merchandise\n🚫 No luxury resort, futurism, water city, monuments, or final assets","x":20,"y":550,"width":660,"height":330,"color":"2"},
 		{"id":"scl-map-group","type":"group","label":"CLOCKWISE ACCEPTANCE LOOP — 800 m","x":740,"y":100,"width":1060,"height":820,"color":"4"},
 		{"id":"scl-arena","type":"text","text":"4 🏟️ ARENA\n→ 60 m","x":1080,"y":160,"width":220,"height":110,"color":"4"},
 		{"id":"scl-sportsbook","type":"text","text":"5 🎟️ SPORTSBOOK\n→ 125 m","x":1440,"y":270,"width":240,"height":110,"color":"4"},
@@ -15,7 +15,7 @@
 		{"id":"scl-job","type":"text","text":"2 💼 JOB FRONTAGE\n→ 120 m","x":780,"y":500,"width":240,"height":110,"color":"4"},
 		{"id":"scl-clothing","type":"text","text":"3 👕 CLOTHING\n→ 145 m","x":800,"y":270,"width":240,"height":110,"color":"4"},
 		{"id":"scl-commons","type":"text","text":"## 🌳 CENTRAL COMMONS\n140 m × 90 m\nCross-path shortcuts\nArena visible north","x":1100,"y":430,"width":300,"height":170,"color":"2"},
-		{"id":"scl-footer","type":"text","text":"## PLANNING PROJECTION — NOT RUNTIME EVIDENCE\n🚶 260 cm/s → approximately 5:08 • 🏃 520 cm/s → approximately 2:34\nFootprint ceiling: 340 m × 280 m • clear path: 4 m normal / 3 m pinch • continuous and step-free\n\n**Next:** Phase 1C.2 builds a separate primitive Unreal graybox, packages it, and records actual route, collision, visibility, and performance evidence.","x":0,"y":970,"width":1800,"height":210,"color":"6"}
+		{"id":"scl-footer","type":"text","text":"## ✅ PACKAGED ROUTE PROOF\n🚶 Walk 5:07 • 🏃 Run 2:35 • 800 m • 11/11 checkpoints • returned home • blocking floor • Map Check 0/0\nPrimitive UE 5.8 graybox only — no final assets, interiors, stores, economy, or multiplayer yet.\n\n**Next:** Phase 1D owner defaults for the smallest local two-client shared-city proof.","x":0,"y":970,"width":1800,"height":210,"color":"3"}
 	],
 	"edges":[
 		{"id":"scl-e1","fromNode":"scl-studio","fromSide":"left","toNode":"scl-job","toSide":"bottom","toEnd":"arrow"},

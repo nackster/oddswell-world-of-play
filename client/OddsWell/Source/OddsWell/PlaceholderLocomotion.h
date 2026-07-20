@@ -53,6 +53,8 @@ private:
 	void StopJump();
 	void RunQa(float DeltaSeconds);
 	void FinishQa(bool bPassed);
+	void RunSundaleRouteQa(float DeltaSeconds);
+	void FinishSundaleRouteQa(bool bPassed);
 	bool ApplySavedOrFallbackAppearance();
 	void SyncOutfitComponents();
 	void RunOutfitQa(float DeltaSeconds);
@@ -101,6 +103,18 @@ private:
 	bool bOutfitQaEnabled = false;
 	bool bAppearanceQa = false;
 	bool bAppearanceQaCleanup = false;
+	FVector SundaleRouteStart = FVector::ZeroVector;
+	FVector SundalePreviousLocation = FVector::ZeroVector;
+	float SundaleRouteElapsed = 0.0f;
+	float SundaleSegmentElapsed = 0.0f;
+	float SundaleTravelDistance = 0.0f;
+	float SundaleMinZ = 0.0f;
+	float SundaleMaxZ = 0.0f;
+	int32 SundaleRouteIndex = 0;
+	bool bSundaleRouteQa = false;
+	bool bSundaleRouteRun = false;
+	bool bSundaleRouteStarted = false;
+	bool bSundaleRouteFinished = false;
 };
 
 UCLASS()

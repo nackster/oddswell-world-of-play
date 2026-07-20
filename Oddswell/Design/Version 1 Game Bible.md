@@ -70,6 +70,7 @@ The loop must remain understandable to a new player and durable for a returning 
 - **INHERITED:** fast default-character choice with varied masculine/feminine presentations, skin tones, and appearances.
 - **INHERITED:** worn off-white starter clothing.
 - **INHERITED:** basic clothing store using Odds Bucks.
+- **INHERITED:** purchased clothing retains its origin city; the beta catalog is Sundale-specific, and any separately approved future city receives its own catalog under [[Design/Decisions/DEC-009 City-Origin Clothing and Furniture]].
 - **INHERITED:** owned clothing can be equipped and shown to other players.
 - **V1 REQUIRED:** avatar appearance and equipped clothing persist accurately across sessions and city instances.
 - **V1 REQUIRED:** missing or invalid cosmetic data falls back safely without deleting ownership.
@@ -89,6 +90,7 @@ The loop must remain understandable to a new player and durable for a returning 
 
 - **INHERITED:** larger apartments are purchased with substantial Odds Bucks.
 - **INHERITED:** a basic furniture store supplies visible apartment items.
+- **INHERITED:** purchased furniture retains its origin city; the beta catalog is Sundale-specific, and any separately approved future city receives its own catalog under [[Design/Decisions/DEC-009 City-Origin Clothing and Furniture]].
 - **V1 REQUIRED:** apartment ownership, equipped/placed furniture, and upgrades persist without duplication or loss.
 - **OPEN:** layouts, prices, storage, placement rules, rotation, collision, capacity, refunds, apartment visits, and whether each tier is a separate interior.
 - **POST-V1 CANDIDATE:** houses and mansions.

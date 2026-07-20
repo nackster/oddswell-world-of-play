@@ -46,6 +46,36 @@ const FVector SafeSpawnLocation(0.0, 0.0, 220.0);
 const FLinearColor StarterOffWhite(0.92f, 0.90f, 0.82f);
 const FName TopComponentName(TEXT("StarterOutfitTop"));
 const FName BottomComponentName(TEXT("StarterOutfitBottom"));
+constexpr float SundaleRouteDistance = 80000.0f;
+constexpr float SundaleWaypointTolerance = 75.0f;
+
+const TArray<FVector>& GetSundaleRouteWaypoints()
+{
+	static const TArray<FVector> Waypoints = {
+		FVector(9500.0, 0.0, 0.0),
+		FVector(12500.0, 0.0, 0.0),
+		FVector(12500.0, 9000.0, 0.0),
+		FVector(12500.0, 18000.0, 0.0),
+		FVector(7000.0, 18000.0, 0.0),
+		FVector(1000.0, 18000.0, 0.0),
+		FVector(-9500.0, 18000.0, 0.0),
+		FVector(-9500.0, 16000.0, 0.0),
+		FVector(-9500.0, 5000.0, 0.0),
+		FVector(-9500.0, 0.0, 0.0),
+		FVector::ZeroVector,
+	};
+	return Waypoints;
+}
+
+const TArray<FString>& GetSundaleRouteWaypointLabels()
+{
+	static const TArray<FString> Labels = {
+		TEXT("Job"), TEXT("SoutheastCorner"), TEXT("Clothing"), TEXT("NortheastCorner"),
+		TEXT("Arena"), TEXT("Sportsbook"), TEXT("NorthwestCorner"), TEXT("Court"),
+		TEXT("Furniture"), TEXT("SouthwestCorner"), TEXT("Studio"),
+	};
+	return Labels;
+}
 
 const FKey KeyForward = EKeys::W;
 const FKey KeyBackward = EKeys::S;
@@ -195,6 +225,8 @@ void AOddsWellPlaceholderCharacter::BeginPlay()
 	bOutfitQaEnabled = FParse::Param(FCommandLine::Get(), TEXT("OutfitQa"));
 	bAppearanceQa = UseOddsWellAppearanceQaSlot();
 	bAppearanceQaCleanup = FParse::Param(FCommandLine::Get(), TEXT("AppearanceQaCleanup"));
+	bSundaleRouteQa = FParse::Param(FCommandLine::Get(), TEXT("SundaleRouteQa"));
+	bSundaleRouteRun = FParse::Param(FCommandLine::Get(), TEXT("SundaleRouteRun"));
 	UMaterialInterface* BasicShapeMaterial = LoadObject<UMaterialInterface>(nullptr, TEXT("/Engine/BasicShapes/BasicShapeMaterial.BasicShapeMaterial"));
 	if (!BasicShapeMaterial)
 	{
@@ -273,6 +305,10 @@ void AOddsWellPlaceholderCharacter::Tick(const float DeltaSeconds)
 	if (bOutfitQaEnabled)
 	{
 		RunOutfitQa(DeltaSeconds);
+	}
+	if (bSundaleRouteQa)
+	{
+		RunSundaleRouteQa(DeltaSeconds);
 	}
 	if (QaExitAt > 0.0 && FPlatformTime::Seconds() >= QaExitAt)
 	{
@@ -578,6 +614,142 @@ void AOddsWellPlaceholderCharacter::FinishQa(const bool bPassed)
 	}
 }
 
+void AOddsWellPlaceholderCharacter::RunSundaleRouteQa(const float DeltaSeconds)
+{
+	UCharacterMovementComponent* Movement = GetCharacterMovement();
+	if (bSundaleRouteFinished)
+	{
+		return;
+	}
+	if (!bSundaleRouteStarted)
+	{
+		SundaleRouteElapsed += DeltaSeconds;
+		if (!Movement->IsMovingOnGround())
+		{
+			if (SundaleRouteElapsed > 10.0f)
+			{
+				FinishSundaleRouteQa(false);
+			}
+			return;
+		}
+		if (!GetWorld()->GetMapName().Contains(TEXT("SundaleGraybox")))
+		{
+			UE_LOG(LogOddsWellLocomotion, Error, TEXT("ODDSWELL_SUNDALE_ROUTE_ERROR|reason=wrong_map|map=%s"), *GetWorld()->GetMapName());
+			FinishSundaleRouteQa(false);
+			return;
+		}
+		bSundaleRouteStarted = true;
+		SundaleRouteElapsed = 0.0f;
+		SundaleRouteStart = GetActorLocation();
+		SundalePreviousLocation = SundaleRouteStart;
+		SundaleMinZ = SundaleRouteStart.Z;
+		SundaleMaxZ = SundaleRouteStart.Z;
+		if (bSundaleRouteRun)
+		{
+			StartRun();
+		}
+		else
+		{
+			StopRun();
+		}
+		UE_LOG(
+			LogOddsWellLocomotion,
+			Display,
+			TEXT("ODDSWELL_SUNDALE_ROUTE_START|mode=%s|map=%s|start=%s|planned_distance=%.0f"),
+			bSundaleRouteRun ? TEXT("run") : TEXT("walk"),
+			*GetWorld()->GetMapName(),
+			*SundaleRouteStart.ToCompactString(),
+			SundaleRouteDistance);
+		return;
+	}
+	SundaleRouteElapsed += DeltaSeconds;
+	SundaleSegmentElapsed += DeltaSeconds;
+	const FVector CurrentLocation = GetActorLocation();
+	SundaleTravelDistance += FVector::Dist2D(SundalePreviousLocation, CurrentLocation);
+	SundalePreviousLocation = CurrentLocation;
+	SundaleMinZ = FMath::Min(SundaleMinZ, CurrentLocation.Z);
+	SundaleMaxZ = FMath::Max(SundaleMaxZ, CurrentLocation.Z);
+
+	const TArray<FVector>& Waypoints = GetSundaleRouteWaypoints();
+	if (!Waypoints.IsValidIndex(SundaleRouteIndex))
+	{
+		FinishSundaleRouteQa(true);
+		return;
+	}
+
+	FVector Direction = Waypoints[SundaleRouteIndex] - CurrentLocation;
+	Direction.Z = 0.0f;
+	if (Direction.Size2D() <= SundaleWaypointTolerance)
+	{
+		const TArray<FString>& Labels = GetSundaleRouteWaypointLabels();
+		UE_LOG(
+			LogOddsWellLocomotion,
+			Display,
+			TEXT("ODDSWELL_SUNDALE_ROUTE_POINT|index=%d|name=%s|segment_seconds=%.3f|location=%s"),
+			SundaleRouteIndex + 1,
+			*Labels[SundaleRouteIndex],
+			SundaleSegmentElapsed,
+			*CurrentLocation.ToCompactString());
+		++SundaleRouteIndex;
+		SundaleSegmentElapsed = 0.0f;
+		if (SundaleRouteIndex == Waypoints.Num())
+		{
+			FinishSundaleRouteQa(true);
+		}
+		return;
+	}
+
+	AddMovementInput(Direction.GetSafeNormal(), 1.0f);
+	const float PlannedSeconds = SundaleRouteDistance / (bSundaleRouteRun ? RunSpeed : WalkSpeed);
+	if (SundaleRouteElapsed > PlannedSeconds * 1.6f + 10.0f)
+	{
+		FinishSundaleRouteQa(false);
+	}
+}
+
+void AOddsWellPlaceholderCharacter::FinishSundaleRouteQa(const bool bPassed)
+{
+	if (bSundaleRouteFinished)
+	{
+		return;
+	}
+	bSundaleRouteFinished = true;
+	StopRun();
+	const bool bAllPoints = SundaleRouteIndex == GetSundaleRouteWaypoints().Num();
+	const bool bReturnedHome = FVector::Dist2D(SundaleRouteStart, GetActorLocation()) <= 150.0f;
+	const bool bDistancePlausible = SundaleTravelDistance >= SundaleRouteDistance * 0.96f
+		&& SundaleTravelDistance <= SundaleRouteDistance * 1.04f;
+	const bool bFloorBlocking = GetCharacterMovement()->CurrentFloor.bBlockingHit;
+	const bool bVerticalStable = SundaleMaxZ - SundaleMinZ <= 100.0f;
+	const bool bFinalPass = bPassed && bAllPoints && bReturnedHome && bDistancePlausible
+		&& GetCharacterMovement()->IsMovingOnGround() && bFloorBlocking && bVerticalStable;
+	const FString Evidence = FString::Printf(
+		TEXT("ODDSWELL_SUNDALE_ROUTE_QA|result=%s|mode=%s|seconds=%.3f|planned_distance=%.0f|traveled_distance=%.1f|points=%d/%d|returned_home=%s|landed=%s|floor_blocking=%s|vertical_range=%.1f"),
+		bFinalPass ? TEXT("PASS") : TEXT("FAIL"),
+		bSundaleRouteRun ? TEXT("run") : TEXT("walk"),
+		SundaleRouteElapsed,
+		SundaleRouteDistance,
+		SundaleTravelDistance,
+		SundaleRouteIndex,
+		GetSundaleRouteWaypoints().Num(),
+		bReturnedHome ? TEXT("true") : TEXT("false"),
+		GetCharacterMovement()->IsMovingOnGround() ? TEXT("true") : TEXT("false"),
+		bFloorBlocking ? TEXT("true") : TEXT("false"),
+		SundaleMaxZ - SundaleMinZ);
+	if (bFinalPass)
+	{
+		UE_LOG(LogOddsWellLocomotion, Display, TEXT("%s"), *Evidence);
+	}
+	else
+	{
+		UE_LOG(LogOddsWellLocomotion, Error, TEXT("%s"), *Evidence);
+	}
+	if (bQaAutoExit)
+	{
+		QaExitAt = FPlatformTime::Seconds() + 2.0;
+	}
+}
+
 AOddsWellLocomotionGameMode::AOddsWellLocomotionGameMode()
 {
 	DefaultPawnClass = AOddsWellPlaceholderCharacter::StaticClass();
@@ -636,6 +808,17 @@ bool FOddsWellLocomotionDefaultsTest::RunTest(const FString& Parameters)
 	TestFalse(TEXT("Crouch is not supported"), AllowCrouch);
 	TestFalse(TEXT("Flight is not supported"), AllowFlight);
 	TestFalse(TEXT("Swimming is not supported"), AllowSwimming);
+	const TArray<FVector>& SundaleWaypoints = GetSundaleRouteWaypoints();
+	TestEqual(TEXT("Sundale route keeps the minimal eleven waypoints"), SundaleWaypoints.Num(), 11);
+	float SundaleDistance = 0.0f;
+	FVector PreviousPoint = FVector::ZeroVector;
+	for (const FVector& Point : SundaleWaypoints)
+	{
+		SundaleDistance += FVector::Dist2D(PreviousPoint, Point);
+		PreviousPoint = Point;
+	}
+	TestTrue(TEXT("Sundale route remains exactly 800 meters"), FMath::IsNearlyEqual(SundaleDistance, SundaleRouteDistance));
+	TestEqual(TEXT("Sundale route labels match waypoints"), GetSundaleRouteWaypointLabels().Num(), SundaleWaypoints.Num());
 	return !HasAnyErrors();
 }
 

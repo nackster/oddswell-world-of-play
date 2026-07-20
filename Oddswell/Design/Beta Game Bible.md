@@ -70,7 +70,7 @@ The presets must not attach ability, wealth, intelligence, behavior, or athlete 
 
 - **LOCKED:** the player enters one original 3D city and can walk around it.
 - **LOCKED:** the first city needs an original name, theme, skyline, architecture, atmosphere, and visual identity.
-- **PARTIALLY RESOLVED:** the owner selected the Sundale modern civic-commons direction under [[Design/Decisions/DEC-008 Beta First City Direction]], and Phase 1C.1 froze its minimal art direction and compact route in [[Design/Sundale Art Direction and Core Loop]]. The final city name, world name, culture details, and production art remain open.
+- **PARTIALLY RESOLVED:** the owner selected the Sundale modern civic-commons direction under [[Design/Decisions/DEC-008 Beta First City Direction]]. Phase 1C then froze its compact route and proved the primitive packaged `800 m` graybox traversal in [[Development/Reports/Phase 1C2 Primitive Sundale Graybox and Packaged Route Measurement]]. The final city name, world name, culture details, and production art remain open.
 - **GUARDRAIL:** no agent may invent and canonize the city identity without owner approval.
 
 ### 3. Discover the starter home
@@ -135,6 +135,7 @@ The presets must not attach ability, wealth, intelligence, behavior, or athlete 
 - **LOCKED:** minimal worn off-white starter clothing.
 - **LOCKED:** third-person trailing camera; keyboard/mouse and controller walk, run, and jump; no beta combat, crouching, parkour, or vehicles. The beta starter top and bottom are replaceable equipment; see [[Design/Decisions/DEC-007 Phase 1B Character Defaults|DEC-007]].
 - **LOCKED:** a basic clothing store lets the player buy improvements with Odds Bucks.
+- **LOCKED:** purchasable clothing has durable city origin and is sold through its origin city's catalog; beta clothing merchandise is Sundale-specific under [[Design/Decisions/DEC-009 City-Origin Clothing and Furniture]]. The shared worn starter outfit is an onboarding exception.
 - **BETA TARGET:** purchased clothing visibly changes the avatar.
 - **OPEN:** final character proportions, animation set, exact store clothing count, sizing/body compatibility, changing-room flow, and whether later store items are individual garments or complete outfits.
 - **LATER:** a deep character creator, large cosmetic catalog, premium cosmetics, player marketplace, and user-generated items.
@@ -151,6 +152,7 @@ The presets must not attach ability, wealth, intelligence, behavior, or athlete 
 ### Furniture
 
 - **LOCKED:** a very basic furniture store sells items for Odds Bucks.
+- **LOCKED:** purchasable furniture has durable city origin and is sold through its origin city's catalog; beta furniture merchandise is Sundale-specific under [[Design/Decisions/DEC-009 City-Origin Clothing and Furniture]].
 - **LOCKED:** furniture is associated with the player's apartment progression.
 - **BETA TARGET:** the player can acquire and see at least a small approved set of furniture in the owned apartment.
 - **OPEN:** exact catalog, placement controls, rotation, storage, collision rules, room restrictions, refunds, and whether apartment layouts are separate interiors or upgrades of one interior.
@@ -334,4 +336,4 @@ Before proposing a phase, the Scope Director must:
 - Phase 0 basketball simulation is frozen at its validated baseline except for demonstrated defects or a measured beta requirement.
 - Phase 1A is complete. The owner accepted the measured UE 5.8 packaged-build, graybox, and authoritative replay-rendering evidence in [[Design/Decisions/DEC-006 Unreal Engine 5.8 Beta Adoption|DEC-006]].
 - Phase 1B is complete. The committed catalog, safe-default selection, third-person movement, replaceable starter outfit, and exact local cold-process appearance recovery satisfy the character-onboarding exit evidence in [[Development/Reports/Phase 1B Exit Review Character Onboarding Evidence Closure]].
-- Phase 1C.0 produced three grounded modern-day comparison packages in [[Design/First City Concept Packages]], and the owner selected **Concept B — Daymark / Sundale** under [[Design/Decisions/DEC-008 Beta First City Direction]]. Phase 1C.1 froze a `340 m × 280 m` planning footprint, `800 m` clockwise route, minimal visual language, and graybox acceptance contract in [[Design/Sundale Art Direction and Core Loop]]. Sundale remains the working name. No Unreal graybox, production asset, apartment, Odds Bucks ledger, wager settlement, clothing store, furniture store, or complete city is proven.
+- Phase 1C is complete at the primitive-graybox boundary. The owner selected **Concept B — Daymark / Sundale**, Phase 1C.1 froze the `340 m × 280 m` footprint and `800 m` route, and Phase 1C.2 proved packaged walk/run traversal in [[Development/Reports/Phase 1C2 Primitive Sundale Graybox and Packaged Route Measurement]]. Sundale remains the working name. No production asset, final city, interior, shared-city presence, apartment system, Odds Bucks ledger, wager settlement, clothing catalog, or furniture catalog is proven.

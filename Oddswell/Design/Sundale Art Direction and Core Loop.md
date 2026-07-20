@@ -1,12 +1,12 @@
 # Sundale Art Direction and Core Loop
 
-Status: **PHASE 1C.1 CANONICAL PLANNING FREEZE**
+Status: **PHASE 1C CANONICAL DIRECTION + VALIDATED PRIMITIVE GRAYBOX**
 
-This is the smallest buildable art and layout contract for the beta first city selected in [[Design/Decisions/DEC-008 Beta First City Direction]]. It guides the next Unreal graybox without pretending that concept art, final assets, interiors, multiplayer, economy, or wagering systems already exist.
+This is the smallest buildable art and layout contract for the beta first city selected in [[Design/Decisions/DEC-008 Beta First City Direction]]. It guided the validated primitive Unreal graybox without pretending that concept art, final assets, interiors, multiplayer, economy, or wagering systems already exist.
 
 **Working-name rule:** Sundale remains the working city name. Renaming it does not reopen the approved city direction or loop.
 
-See [[Visual Maps/Sundale Core Loop|the clean visual loop map]] and [[Development/Reports/Phase 1C1 Sundale Art Direction and Core Loop Freeze|the Phase 1C.1 evidence report]].
+See [[Visual Maps/Sundale Core Loop|the clean visual loop map]], [[Development/Reports/Phase 1C1 Sundale Art Direction and Core Loop Freeze|the Phase 1C.1 planning report]], and [[Development/Reports/Phase 1C2 Primitive Sundale Graybox and Packaged Route Measurement|the measured Phase 1C.2 report]].
 
 ## Identity sentence
 
@@ -21,6 +21,7 @@ See [[Visual Maps/Sundale Core Loop|the clean visual loop map]] and [[Developmen
 - The starter residential edge is visibly modest but maintained, never depicted as a slum.
 - The job frontage is practical and readable without choosing the job fantasy or mechanic.
 - Clothing and furniture storefronts share a covered promenade but remain separate entrances.
+- Their eventual beta merchandise is Sundale-specific under [[Design/Decisions/DEC-009 City-Origin Clothing and Furniture]]; this phase does not choose or implement the catalogs.
 - The sportsbook uses a distinct public entrance on the arena frontage. This freezes location only, not wager UI, rules, odds, payouts, or operations.
 - Repeated deep awnings, mature trees, worn brick paving, and a distinctive court edge keep the district from feeling like a generic new development.
 
@@ -98,14 +99,14 @@ The footprint is a graybox ceiling for Phase 1C, not a production-world size com
 | 7 | Furniture store entrance | `110 m` | `655 m` | Separate basic furniture storefront |
 | 8 | Return to Starter Studio | `145 m` | `800 m` | Completes the connected street loop |
 
-### Projected traversal only
+### Projection and measured primitive-graybox result
 
 Using the approved placeholder movement values from Phase 1B.3:
 
 - Walk at `260 cm/s`: `80,000 ÷ 260 = 307.7 seconds`, approximately **5 minutes 8 seconds** without stops.
 - Run at `520 cm/s`: `80,000 ÷ 520 = 153.8 seconds`, approximately **2 minutes 34 seconds** without stops.
 
-These are arithmetic planning projections, not measured Unreal evidence. Phase 1C.2 must build the graybox, then record actual packaged traversal time, collision, route continuity, visibility, and performance.
+The accepted packaged Phase 1C.2 runs measured **5:07 walking** (`307.074s`, `79,987.6 cm`) and **2:35 running** (`155.201s`, `79,936.5 cm`). Both visited all eleven route checkpoints, returned to the Studio, stayed grounded on a blocking floor, and required no jump. See [[Development/Reports/Phase 1C2 Primitive Sundale Graybox and Packaged Route Measurement]].
 
 ## Central commons shortcuts
 
@@ -118,7 +119,7 @@ Both shortcuts must preserve the commons as a social space and keep the arena vi
 
 ## Graybox acceptance contract for Phase 1C.2
 
-The next phase is complete only when one fresh packaged run proves:
+**Status: PASSED.** Phase 1C.2 is complete because fresh packaged runs proved:
 
 1. One avatar spawns at the Starter Studio entrance and can follow the full clockwise route back to the same point.
 2. Every required entrance is represented by a separately named, collision-safe placeholder threshold.
@@ -130,4 +131,4 @@ The next phase is complete only when one fresh packaged run proves:
 
 ## Boundary
 
-Phase 1C.1 changes planning authority only. It adds no Unreal level, map geometry, collision, navigation, source, config, material, mesh, final art, interior, multiplayer, account, store system, inventory, Odds Bucks, wagering logic, deployment, model, training, or retraining behavior.
+Phase 1C.1 changed planning authority only. Phase 1C.2 adds one separate primitive Unreal map and opt-in route evidence. It adds no final art, interior, multiplayer, account, store catalog, inventory, Odds Bucks, wagering logic, deployment, model, training, or retraining behavior.

@@ -45,7 +45,9 @@ The roadmap is intentionally made of measurable product gates, not hundreds of s
 - Phase 1C.0 noncanonical first-city concept packages: **COMPLETE**; see [[Development/Reports/Phase 1C0 Noncanonical First City Concept Packages]].
 - Phase 1C owner selection: **COMPLETE**. The owner selected Concept B — Daymark / Sundale on July 20, 2026; see [[Design/Decisions/DEC-008 Beta First City Direction]].
 - Phase 1C.1 minimal art-direction and loop freeze: **COMPLETE**; see [[Development/Reports/Phase 1C1 Sundale Art Direction and Core Loop Freeze]].
-- Next gate: **Phase 1C.2 PRIMITIVE SUNDALE GRAYBOX AND PACKAGED ROUTE MEASUREMENT**. Sundale is a working name; no city graybox or final art is complete.
+- Phase 1C.2 primitive Sundale graybox and packaged route measurement: **COMPLETE**; see [[Development/Reports/Phase 1C2 Primitive Sundale Graybox and Packaged Route Measurement]].
+- Phase 1C exit: **PASSED**. The primitive city route is measurable and traversable; final city art remains unbuilt.
+- Next gate: **PHASE 1D SHARED-CITY OWNER DEFAULTS** for the smallest local two-client proof. Sundale remains a working name.
 - Current prerequisite note: UE 5.8, the aligned x64 runtime and .NET Framework 4.8 SDK, portable project, reproducible local Windows package, empty-map launch, LFS, generated-file ignores, primitive block/court iteration, collision, cold-process reopen, direct recorded-replay rendering, deterministic packaged traces, and local resource sampling are verified. UE 5.8 is now the approved beta client engine.
 
 No later roadmap phase is authorized merely because it appears below.
@@ -56,8 +58,8 @@ No later roadmap phase is authorized merely because it appears below.
 | --- | --- | --- | --- |
 | 1 | 1A — Engine and packaged-build proof | A real 3D client can build and run | COMPLETE |
 | 2 | 1B — Character selection and movement | Choose a default avatar and enter the world | COMPLETE |
-| 3 | 1C — First-city identity and graybox | Walk between every required beta location | IN PROGRESS — 1C.1 PLAN FROZEN |
-| 4 | 1D — Shared-city presence | Players see one another and equipped clothing | PENDING |
+| 3 | 1C — First-city identity and graybox | Walk between every required beta location | COMPLETE |
+| 4 | 1D — Shared-city presence | Players see one another and equipped clothing | OWNER GATE |
 | 5 | 1E — Studio and apartment progression | Enter a persistent home and see the six-tier goal | PENDING |
 | 6 | 1F — League, stadium, and match viewing | Research and watch authoritative basketball | PENDING |
 | 7 | 1G — Odds Bucks and work recovery | Earn, persist, audit, and recover virtual currency | PENDING |
@@ -138,13 +140,13 @@ The owner selected Concept B — Daymark / Sundale on July 20, 2026. The theme, 
 ### Smallest delivery path
 
 1. **1C.1 COMPLETE:** freeze the minimal Sundale art-direction sheet and `800 m` projected compact walking loop; see [[Design/Sundale Art Direction and Core Loop]].
-2. **1C.2 NEXT:** graybox the apartment entrance, one job, stadium/sportsbook, clothing store, furniture store, public court, commons, and connecting streets in a separate map.
-3. Add collision, navigation, spawn, landmarks, and simple wayfinding.
-4. Benchmark the full required route in a packaged build before final city art.
+2. **1C.2 COMPLETE:** graybox the apartment entrance, one job, stadium/sportsbook, clothing store, furniture store, public court, commons, and connecting streets in a separate map.
+3. **COMPLETE IN 1C.2:** add blocking-floor collision, map-owned spawn/game mode, primitive landmarks, named thresholds, and simple route wayfinding. This does not claim NPC navigation or final assets.
+4. **COMPLETE IN 1C.2:** benchmark the full required route in a packaged build before final city art.
 
 ### Exit evidence
 
-One avatar can walk the entire core loop without dead ends, broken collision, excessive empty travel, or final assets.
+**PASSED:** one packaged placeholder avatar walked and ran the entire `800 m` core loop, visited all eleven checkpoints, returned home, and retained blocking-floor collision without final assets. See [[Development/Reports/Phase 1C2 Primitive Sundale Graybox and Packaged Route Measurement]].
 
 ## Phase 1D — Shared-city presence
 
@@ -281,7 +283,7 @@ Every accepted wager has one immutable request, balance entry, lock decision, au
 
 ### Smallest delivery path
 
-1. Freeze one tiny approved clothing set and one tiny furniture set.
+1. Freeze one tiny approved clothing set and one tiny furniture set. Both sets are Sundale-origin catalogs under [[Design/Decisions/DEC-009 City-Origin Clothing and Furniture]]; later cities receive separate catalogs rather than sharing one universal store inventory.
 2. Buy one clothing item with an idempotent Odds Bucks command.
 3. Equip it and show it to another city client.
 4. Buy one furniture item and show it in the Studio.
@@ -381,14 +383,14 @@ A Beta Exit Report states **READY**, **BLOCKED WITH MEASURED CAUSE**, or **NOT R
 
 1. **RESOLVED:** Unreal Engine 5.8 beta adoption; see [[Design/Decisions/DEC-006 Unreal Engine 5.8 Beta Adoption]].
 2. **RESOLVED FOR PHASE 1B:** camera, movement, and minimum placeholder presets; see [[Design/Decisions/DEC-007 Phase 1B Character Defaults]]. Final art remains later.
-3. **SUNDALE PLAN FROZEN:** Daymark / Sundale supplies the approved modern civic-commons direction, and Phase 1C.1 defines the minimal art sheet plus measurable loop. Build and measure the Phase 1C.2 primitive graybox next. Sundale remains a working name; see [[Design/Decisions/DEC-008 Beta First City Direction]] and [[Design/Sundale Art Direction and Core Loop]].
-4. Shared-city instance capacity, regions, collision, names, and minimal safety surface.
+3. **RESOLVED FOR PHASE 1C:** Daymark / Sundale supplies the approved modern civic-commons direction; the primitive packaged `800 m` route passed Phase 1C exit. Sundale remains a working name and final art remains open; see [[Design/Decisions/DEC-008 Beta First City Direction]], [[Design/Sundale Art Direction and Core Loop]], and [[Development/Reports/Phase 1C2 Primitive Sundale Graybox and Packaged Route Measurement]].
+4. **CURRENT OWNER GATE:** shared-city instance capacity, regions, collision, names, and minimal safety surface.
 5. Apartment instancing, layouts, visits, and decorating controls.
 6. 82-game schedule variety, team count, calendar, and presentation cadence.
 7. Match presentation fidelity, duration, skipping, and commentary.
 8. Job, starting Odds Bucks, income, allowance, recovery, prices, and limits.
 9. Wager markets, odds, payouts, lock, limits, correction, and cancellation.
-10. Clothing/furniture catalog, pricing, equipment, placement, and refunds.
+10. Clothing/furniture catalog, pricing, equipment, placement, and refunds. City-origin identity is resolved under [[Design/Decisions/DEC-009 City-Origin Clothing and Furniture]].
 11. Minimum PC, accessibility, beta audience, regions, and release channel.
 
 ## Scope Director operating rules

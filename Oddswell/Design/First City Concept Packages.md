@@ -103,4 +103,4 @@ Every package preserves the same player-facing beta scope:
 
 ## Owner decision outcome
 
-The owner selected Package B on July 20, 2026. Phase 1C.1 subsequently froze Sundale's minimal art direction and `800 m` projected commons-ring loop in [[Design/Sundale Art Direction and Core Loop]]. The working city name may still be changed without reopening the selected city direction.
+The owner selected Package B on July 20, 2026. Phase 1C.1 subsequently froze Sundale's minimal art direction and `800 m` commons-ring loop, and Phase 1C.2 proved that primitive route in a packaged build. See [[Design/Sundale Art Direction and Core Loop]] and [[Development/Reports/Phase 1C2 Primitive Sundale Graybox and Packaged Route Measurement]]. The working city name may still be changed without reopening the selected city direction.
