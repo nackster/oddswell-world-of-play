@@ -38,7 +38,8 @@ The roadmap is intentionally made of measurable product gates, not hundreds of s
 - Phase 1B camera/movement and minimum placeholder preset direction: **APPROVED**; see [[Design/Decisions/DEC-007 Phase 1B Character Defaults]].
 - Phase 1B.1 validated character preset and starter-outfit catalog: **COMPLETE**; see [[Development/Reports/Phase 1B1 Character Preset Catalog]].
 - Phase 1B.2 fast local character-selection screen with a safe default: **COMPLETE**; see [[Development/Reports/Phase 1B2 Fast Local Character Selection Screen]].
-- Next smallest gate: **Phase 1B.3 one controllable placeholder avatar with the approved camera and input direction**.
+- Phase 1B.3 controllable primitive placeholder and approved locomotion: **COMPLETE**; see [[Development/Reports/Phase 1B3 Controllable Placeholder Avatar and Approved Locomotion]].
+- Next smallest gate: **Phase 1B.4 render the worn off-white starter top and bottom as separate replaceable equipment**.
 - Current prerequisite note: UE 5.8, the aligned x64 runtime and .NET Framework 4.8 SDK, portable project, reproducible local Windows package, empty-map launch, LFS, generated-file ignores, primitive block/court iteration, collision, cold-process reopen, direct recorded-replay rendering, deterministic packaged traces, and local resource sampling are verified. UE 5.8 is now the approved beta client engine.
 
 No later roadmap phase is authorized merely because it appears below.
@@ -99,8 +100,8 @@ No later roadmap phase is authorized merely because it appears below.
 
 1. **1B.1 COMPLETE:** placeholder preset data for varied masculine/feminine presentations and skin tones; see [[Development/Reports/Phase 1B1 Character Preset Catalog]].
 2. **1B.2 COMPLETE:** fast local selection screen with a safe default; see [[Development/Reports/Phase 1B2 Fast Local Character Selection Screen]].
-3. **NEXT — 1B.3:** one controllable placeholder avatar with the approved camera and input direction.
-4. Worn off-white starter outfit represented as replaceable equipment, not permanent character geometry.
+3. **1B.3 COMPLETE:** one controllable primitive placeholder with the approved camera and input direction; see [[Development/Reports/Phase 1B3 Controllable Placeholder Avatar and Approved Locomotion]].
+4. **NEXT — 1B.4:** worn off-white starter outfit represented as replaceable equipment, not permanent character geometry.
 5. Save/reload the selected preset and equipped starter outfit locally before multiplayer persistence.
 
 ### Owner gates
