@@ -2,6 +2,7 @@
 
 #include "Camera/CameraComponent.h"
 #include "Camera/PlayerCameraManager.h"
+#include "CharacterPresetCatalog.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/InputComponent.h"
 #include "Components/SkeletalMeshComponent.h"
@@ -13,6 +14,8 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "HAL/PlatformMisc.h"
 #include "InputCoreTypes.h"
+#include "Materials/MaterialInstanceDynamic.h"
+#include "Materials/MaterialInterface.h"
 #include "Misc/CommandLine.h"
 #include "Misc/Parse.h"
 
@@ -39,6 +42,9 @@ constexpr bool AllowFlight = false;
 constexpr bool AllowSwimming = false;
 constexpr bool UseCameraCollision = true;
 const FVector SafeSpawnLocation(0.0, 0.0, 220.0);
+const FLinearColor StarterOffWhite(0.92f, 0.90f, 0.82f);
+const FName TopComponentName(TEXT("StarterOutfitTop"));
+const FName BottomComponentName(TEXT("StarterOutfitBottom"));
 
 const FKey KeyForward = EKeys::W;
 const FKey KeyBackward = EKeys::S;
@@ -54,6 +60,104 @@ const FKey KeyControllerLookX = EKeys::Gamepad_RightX;
 const FKey KeyControllerLookY = EKeys::Gamepad_RightY;
 const FKey KeyControllerRun = EKeys::Gamepad_LeftThumbstick;
 const FKey KeyControllerJump = EKeys::Gamepad_FaceButton_Bottom;
+
+bool GetStarterEquipmentIds(FName& OutTop, FName& OutBottom, FString& OutError)
+{
+	if (!ValidateOddsWellCharacterPresets(OutError))
+	{
+		return false;
+	}
+	const TArray<FOddsWellCharacterPreset>& Presets = GetOddsWellCharacterPresets();
+	if (Presets.IsEmpty() || Presets[0].EquippedItemIds.Num() != 2)
+	{
+		OutError = TEXT("The safe preset must contain one starter top and one starter bottom.");
+		return false;
+	}
+	OutTop = Presets[0].EquippedItemIds[0];
+	OutBottom = Presets[0].EquippedItemIds[1];
+	OutError.Reset();
+	return true;
+}
+
+bool ResolveStarterEquipmentSlot(const FName ItemId, EOddsWellStarterEquipmentSlot& OutSlot, FString& OutError)
+{
+	FName TopId;
+	FName BottomId;
+	if (!GetStarterEquipmentIds(TopId, BottomId, OutError))
+	{
+		return false;
+	}
+	if (ItemId == TopId)
+	{
+		OutSlot = EOddsWellStarterEquipmentSlot::Top;
+		return true;
+	}
+	if (ItemId == BottomId)
+	{
+		OutSlot = EOddsWellStarterEquipmentSlot::Bottom;
+		return true;
+	}
+	OutError = FString::Printf(TEXT("Unsupported starter equipment ID: %s"), *ItemId.ToString());
+	return false;
+}
+}
+
+bool FOddsWellStarterOutfitState::Equip(const FName ItemId, const EOddsWellStarterEquipmentSlot Slot, FString& OutError)
+{
+	EOddsWellStarterEquipmentSlot ResolvedSlot = EOddsWellStarterEquipmentSlot::Top;
+	if (!ResolveStarterEquipmentSlot(ItemId, ResolvedSlot, OutError))
+	{
+		return false;
+	}
+	if (ResolvedSlot != Slot)
+	{
+		OutError = FString::Printf(TEXT("Starter equipment %s does not belong in the requested slot."), *ItemId.ToString());
+		return false;
+	}
+	FName& Equipped = Slot == EOddsWellStarterEquipmentSlot::Top ? EquippedTop : EquippedBottom;
+	if (!Equipped.IsNone())
+	{
+		OutError = TEXT("The requested starter equipment slot is already occupied.");
+		return false;
+	}
+	Equipped = ItemId;
+	OutError.Reset();
+	return true;
+}
+
+bool FOddsWellStarterOutfitState::Unequip(const EOddsWellStarterEquipmentSlot Slot, FString& OutError)
+{
+	FName& Equipped = Slot == EOddsWellStarterEquipmentSlot::Top ? EquippedTop : EquippedBottom;
+	if (Equipped.IsNone())
+	{
+		OutError = TEXT("The requested starter equipment slot is already empty.");
+		return false;
+	}
+	Equipped = NAME_None;
+	OutError.Reset();
+	return true;
+}
+
+bool FOddsWellStarterOutfitState::ValidateComplete(FString& OutError) const
+{
+	FName TopId;
+	FName BottomId;
+	if (!GetStarterEquipmentIds(TopId, BottomId, OutError))
+	{
+		return false;
+	}
+	if (EquippedTop != TopId || EquippedBottom != BottomId)
+	{
+		OutError = TEXT("The starter outfit requires one valid top and one valid bottom.");
+		return false;
+	}
+	OutError.Reset();
+	return true;
+}
+
+FName FOddsWellStarterOutfitState::GetEquipped(const EOddsWellStarterEquipmentSlot Slot) const
+{
+	return Slot == EOddsWellStarterEquipmentSlot::Top ? EquippedTop : EquippedBottom;
 }
 
 AOddsWellPlaceholderCharacter::AOddsWellPlaceholderCharacter()
@@ -78,6 +182,22 @@ AOddsWellPlaceholderCharacter::AOddsWellPlaceholderCharacter()
 	PrimitiveHead->SetRelativeLocation(FVector(0.0, 0.0, 65.0));
 	PrimitiveHead->SetRelativeScale3D(FVector(0.55));
 	PrimitiveHead->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+	StarterOutfitTop = CreateDefaultSubobject<UStaticMeshComponent>(TopComponentName);
+	StarterOutfitTop->SetupAttachment(GetCapsuleComponent());
+	StarterOutfitTop->SetStaticMesh(Cube);
+	StarterOutfitTop->SetRelativeLocation(FVector(0.0, 0.0, 5.0));
+	StarterOutfitTop->SetRelativeScale3D(FVector(0.62, 0.50, 0.50));
+	StarterOutfitTop->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	StarterOutfitTop->SetVisibility(false);
+
+	StarterOutfitBottom = CreateDefaultSubobject<UStaticMeshComponent>(BottomComponentName);
+	StarterOutfitBottom->SetupAttachment(GetCapsuleComponent());
+	StarterOutfitBottom->SetStaticMesh(Cube);
+	StarterOutfitBottom->SetRelativeLocation(FVector(0.0, 0.0, -52.0));
+	StarterOutfitBottom->SetRelativeScale3D(FVector(0.56, 0.46, 0.48));
+	StarterOutfitBottom->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	StarterOutfitBottom->SetVisibility(false);
 
 	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("ThirdPersonCameraBoom"));
 	CameraBoom->SetupAttachment(GetCapsuleComponent());
@@ -111,6 +231,32 @@ void AOddsWellPlaceholderCharacter::BeginPlay()
 	Super::BeginPlay();
 	bQaEnabled = FParse::Param(FCommandLine::Get(), TEXT("LocomotionQa"));
 	bQaAutoExit = FParse::Param(FCommandLine::Get(), TEXT("LocomotionAutoExit"));
+	bOutfitQaEnabled = FParse::Param(FCommandLine::Get(), TEXT("OutfitQa"));
+	UMaterialInterface* BasicShapeMaterial = LoadObject<UMaterialInterface>(nullptr, TEXT("/Engine/BasicShapes/BasicShapeMaterial.BasicShapeMaterial"));
+	if (!BasicShapeMaterial)
+	{
+		ReportOutfitError(TEXT("The native starter outfit material could not be loaded."));
+		bOutfitQaEnabled = false;
+	}
+	else
+	{
+		StarterOutfitMaterial = UMaterialInstanceDynamic::Create(BasicShapeMaterial, this);
+		if (!StarterOutfitMaterial)
+		{
+			ReportOutfitError(TEXT("The native starter outfit material instance could not be created."));
+			bOutfitQaEnabled = false;
+		}
+		else
+		{
+			StarterOutfitMaterial->SetVectorParameterValue(TEXT("Color"), StarterOffWhite);
+			StarterOutfitTop->SetMaterial(0, StarterOutfitMaterial);
+			StarterOutfitBottom->SetMaterial(0, StarterOutfitMaterial);
+		}
+	}
+	if (!ApplySafeStarterOutfit())
+	{
+		bOutfitQaEnabled = false;
+	}
 	UE_LOG(LogOddsWellLocomotion, Display, TEXT("ODDSWELL_LOCOMOTION_READY|spawn=%s|walk=%.0f|run=%.0f|jump=%.0f"), *SafeSpawnLocation.ToCompactString(), WalkSpeed, RunSpeed, JumpVelocity);
 }
 
@@ -161,6 +307,10 @@ void AOddsWellPlaceholderCharacter::Tick(const float DeltaSeconds)
 	{
 		RunQa(DeltaSeconds);
 	}
+	if (bOutfitQaEnabled)
+	{
+		RunOutfitQa(DeltaSeconds);
+	}
 	if (QaExitAt > 0.0 && FPlatformTime::Seconds() >= QaExitAt)
 	{
 		QaExitAt = 0.0;
@@ -196,6 +346,104 @@ void AOddsWellPlaceholderCharacter::StartRun() { GetCharacterMovement()->MaxWalk
 void AOddsWellPlaceholderCharacter::StopRun() { GetCharacterMovement()->MaxWalkSpeed = WalkSpeed; }
 void AOddsWellPlaceholderCharacter::StartJump() { Jump(); }
 void AOddsWellPlaceholderCharacter::StopJump() { StopJumping(); }
+
+bool AOddsWellPlaceholderCharacter::ApplySafeStarterOutfit()
+{
+	FString Error;
+	const TArray<FOddsWellCharacterPreset>& Presets = GetOddsWellCharacterPresets();
+	if (!ValidateOddsWellCharacterPresets(Error) || Presets.IsEmpty() || Presets[0].EquippedItemIds.Num() != 2)
+	{
+		ReportOutfitError(Error.IsEmpty() ? TEXT("No valid safe starter outfit is available.") : Error);
+		return false;
+	}
+	if (!StarterOutfitState.Equip(Presets[0].EquippedItemIds[0], EOddsWellStarterEquipmentSlot::Top, Error)
+		|| !StarterOutfitState.Equip(Presets[0].EquippedItemIds[1], EOddsWellStarterEquipmentSlot::Bottom, Error)
+		|| !StarterOutfitState.ValidateComplete(Error))
+	{
+		ReportOutfitError(Error);
+		return false;
+	}
+	SyncOutfitComponents();
+	UE_LOG(
+		LogOddsWellLocomotion,
+		Display,
+		TEXT("ODDSWELL_OUTFIT_READY|top=%s|slot=top|bottom=%s|slot=bottom|replaceable=true"),
+		*StarterOutfitState.GetEquipped(EOddsWellStarterEquipmentSlot::Top).ToString(),
+		*StarterOutfitState.GetEquipped(EOddsWellStarterEquipmentSlot::Bottom).ToString());
+	return true;
+}
+
+void AOddsWellPlaceholderCharacter::SyncOutfitComponents()
+{
+	StarterOutfitTop->SetVisibility(!StarterOutfitState.GetEquipped(EOddsWellStarterEquipmentSlot::Top).IsNone(), true);
+	StarterOutfitBottom->SetVisibility(!StarterOutfitState.GetEquipped(EOddsWellStarterEquipmentSlot::Bottom).IsNone(), true);
+}
+
+void AOddsWellPlaceholderCharacter::RunOutfitQa(const float DeltaSeconds)
+{
+	OutfitQaElapsed += DeltaSeconds;
+	FString Error;
+	if (OutfitQaStage == 0 && OutfitQaElapsed >= 0.75f)
+	{
+		if (!StarterOutfitState.Unequip(EOddsWellStarterEquipmentSlot::Top, Error))
+		{
+			ReportOutfitError(Error);
+			bOutfitQaEnabled = false;
+			return;
+		}
+		SyncOutfitComponents();
+		UE_LOG(LogOddsWellLocomotion, Display, TEXT("ODDSWELL_OUTFIT_UNEQUIP|slot=top|top=none|bottom=%s|base_body=true"), *StarterOutfitState.GetEquipped(EOddsWellStarterEquipmentSlot::Bottom).ToString());
+		OutfitQaStage = 1;
+	}
+	else if (OutfitQaStage == 1 && OutfitQaElapsed >= 1.75f)
+	{
+		FName TopId;
+		FName BottomId;
+		if (!GetStarterEquipmentIds(TopId, BottomId, Error)
+			|| !StarterOutfitState.Equip(TopId, EOddsWellStarterEquipmentSlot::Top, Error)
+			|| !StarterOutfitState.ValidateComplete(Error))
+		{
+			ReportOutfitError(Error);
+			bOutfitQaEnabled = false;
+			return;
+		}
+		SyncOutfitComponents();
+		const bool bPassed = PrimitiveBody->IsVisible()
+			&& StarterOutfitTop->IsVisible()
+			&& StarterOutfitBottom->IsVisible()
+			&& GetCharacterMovement()->MaxWalkSpeed == WalkSpeed
+			&& RunSpeed == 520.0f
+			&& GetCharacterMovement()->JumpZVelocity == JumpVelocity;
+		const FString Evidence = FString::Printf(
+			TEXT("ODDSWELL_OUTFIT_QA|result=%s|top=%s|bottom=%s|replaceable=true|base_body=%s|top_component=%s|top_visible=%s|bottom_component=%s|bottom_visible=%s|walk=%.0f|run=%.0f|jump=%.0f"),
+			bPassed ? TEXT("PASS") : TEXT("FAIL"),
+			*StarterOutfitState.GetEquipped(EOddsWellStarterEquipmentSlot::Top).ToString(),
+			*StarterOutfitState.GetEquipped(EOddsWellStarterEquipmentSlot::Bottom).ToString(),
+			PrimitiveBody->IsVisible() ? TEXT("true") : TEXT("false"),
+			*StarterOutfitTop->GetFName().ToString(),
+			StarterOutfitTop->IsVisible() ? TEXT("true") : TEXT("false"),
+			*StarterOutfitBottom->GetFName().ToString(),
+			StarterOutfitBottom->IsVisible() ? TEXT("true") : TEXT("false"),
+			WalkSpeed,
+			RunSpeed,
+			JumpVelocity);
+		if (bPassed)
+		{
+			UE_LOG(LogOddsWellLocomotion, Display, TEXT("%s"), *Evidence);
+		}
+		else
+		{
+			UE_LOG(LogOddsWellLocomotion, Error, TEXT("%s"), *Evidence);
+		}
+		bOutfitQaEnabled = false;
+		OutfitQaStage = 2;
+	}
+}
+
+void AOddsWellPlaceholderCharacter::ReportOutfitError(const FString& Error) const
+{
+	UE_LOG(LogOddsWellLocomotion, Error, TEXT("ODDSWELL_OUTFIT_ERROR|%s"), *Error);
+}
 
 void AOddsWellPlaceholderCharacter::RunQa(const float DeltaSeconds)
 {
@@ -365,6 +613,66 @@ bool FOddsWellLocomotionDefaultsTest::RunTest(const FString& Parameters)
 	TestFalse(TEXT("Crouch is not supported"), AllowCrouch);
 	TestFalse(TEXT("Flight is not supported"), AllowFlight);
 	TestFalse(TEXT("Swimming is not supported"), AllowSwimming);
+	return !HasAnyErrors();
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(
+	FOddsWellStarterOutfitTest,
+	"OddsWell.Character.StarterOutfit",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+
+bool FOddsWellStarterOutfitTest::RunTest(const FString& Parameters)
+{
+	FString Error;
+	TestTrue(TEXT("Character preset catalog remains valid"), ValidateOddsWellCharacterPresets(Error));
+	const TArray<FOddsWellCharacterPreset>& Presets = GetOddsWellCharacterPresets();
+	TestEqual(TEXT("All eight presets remain available"), Presets.Num(), 8);
+	if (Presets.Num() != 8)
+	{
+		return false;
+	}
+	for (const FOddsWellCharacterPreset& Preset : Presets)
+	{
+		TestEqual(TEXT("Every preset has exactly two equipment IDs"), Preset.EquippedItemIds.Num(), 2);
+		if (Preset.EquippedItemIds.Num() != 2)
+		{
+			continue;
+		}
+		TestEqual(TEXT("Every preset top uses the exact approved ID"), Preset.EquippedItemIds[0], FName(TEXT("starter_offwhite_top")));
+		TestEqual(TEXT("Every preset bottom uses the exact approved ID"), Preset.EquippedItemIds[1], FName(TEXT("starter_offwhite_bottom")));
+		EOddsWellStarterEquipmentSlot TopSlot = EOddsWellStarterEquipmentSlot::Bottom;
+		EOddsWellStarterEquipmentSlot BottomSlot = EOddsWellStarterEquipmentSlot::Top;
+		TestTrue(TEXT("Catalog top resolves"), ResolveStarterEquipmentSlot(Preset.EquippedItemIds[0], TopSlot, Error));
+		TestTrue(TEXT("Catalog bottom resolves"), ResolveStarterEquipmentSlot(Preset.EquippedItemIds[1], BottomSlot, Error));
+		TestTrue(TEXT("Top maps only to Top"), TopSlot == EOddsWellStarterEquipmentSlot::Top);
+		TestTrue(TEXT("Bottom maps only to Bottom"), BottomSlot == EOddsWellStarterEquipmentSlot::Bottom);
+	}
+
+	FOddsWellStarterOutfitState State;
+	const FName TopId = Presets[0].EquippedItemIds[0];
+	const FName BottomId = Presets[0].EquippedItemIds[1];
+	TestFalse(TEXT("Unknown equipment is rejected"), State.Equip(FName(TEXT("unknown_item")), EOddsWellStarterEquipmentSlot::Top, Error));
+	TestFalse(TEXT("Unknown equipment reports an error"), Error.IsEmpty());
+	TestFalse(TEXT("Top cannot be applied to Bottom"), State.Equip(TopId, EOddsWellStarterEquipmentSlot::Bottom, Error));
+	TestFalse(TEXT("Wrong-slot application reports an error"), Error.IsEmpty());
+	TestFalse(TEXT("Incomplete outfit is rejected"), State.ValidateComplete(Error));
+	TestFalse(TEXT("Missing slot reports an error"), Error.IsEmpty());
+	TestTrue(TEXT("Top equips in Top"), State.Equip(TopId, EOddsWellStarterEquipmentSlot::Top, Error));
+	TestFalse(TEXT("Duplicate Top assignment is rejected"), State.Equip(TopId, EOddsWellStarterEquipmentSlot::Top, Error));
+	TestFalse(TEXT("Duplicate slot reports an error"), Error.IsEmpty());
+	TestTrue(TEXT("Bottom equips in Bottom"), State.Equip(BottomId, EOddsWellStarterEquipmentSlot::Bottom, Error));
+	TestTrue(TEXT("Complete outfit validates"), State.ValidateComplete(Error));
+	TestTrue(TEXT("Top removes independently"), State.Unequip(EOddsWellStarterEquipmentSlot::Top, Error));
+	TestEqual(TEXT("Bottom remains after Top removal"), State.GetEquipped(EOddsWellStarterEquipmentSlot::Bottom), BottomId);
+	TestTrue(TEXT("Top restores independently"), State.Equip(TopId, EOddsWellStarterEquipmentSlot::Top, Error));
+	TestTrue(TEXT("Bottom removes independently"), State.Unequip(EOddsWellStarterEquipmentSlot::Bottom, Error));
+	TestEqual(TEXT("Top remains after Bottom removal"), State.GetEquipped(EOddsWellStarterEquipmentSlot::Top), TopId);
+	TestTrue(TEXT("Bottom restores independently"), State.Equip(BottomId, EOddsWellStarterEquipmentSlot::Bottom, Error));
+	TestTrue(TEXT("Restored outfit validates"), State.ValidateComplete(Error));
+	TestTrue(TEXT("Top and Bottom component identities stay separate"), TopComponentName != BottomComponentName);
+	TestEqual(TEXT("Walk calibration is unchanged"), WalkSpeed, 260.0f);
+	TestEqual(TEXT("Run calibration is unchanged"), RunSpeed, 520.0f);
+	TestEqual(TEXT("Jump calibration is unchanged"), JumpVelocity, 520.0f);
 	return !HasAnyErrors();
 }
 #endif

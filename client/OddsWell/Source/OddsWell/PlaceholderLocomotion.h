@@ -6,8 +6,28 @@
 #include "PlaceholderLocomotion.generated.h"
 
 class UCameraComponent;
+class UMaterialInstanceDynamic;
 class USpringArmComponent;
 class UStaticMeshComponent;
+
+enum class EOddsWellStarterEquipmentSlot : uint8
+{
+	Top,
+	Bottom
+};
+
+class FOddsWellStarterOutfitState
+{
+public:
+	bool Equip(FName ItemId, EOddsWellStarterEquipmentSlot Slot, FString& OutError);
+	bool Unequip(EOddsWellStarterEquipmentSlot Slot, FString& OutError);
+	bool ValidateComplete(FString& OutError) const;
+	FName GetEquipped(EOddsWellStarterEquipmentSlot Slot) const;
+
+private:
+	FName EquippedTop;
+	FName EquippedBottom;
+};
 
 UCLASS()
 class ODDSWELL_API AOddsWellPlaceholderCharacter final : public ACharacter
@@ -37,6 +57,10 @@ private:
 	void StopJump();
 	void RunQa(float DeltaSeconds);
 	void FinishQa(bool bPassed);
+	bool ApplySafeStarterOutfit();
+	void SyncOutfitComponents();
+	void RunOutfitQa(float DeltaSeconds);
+	void ReportOutfitError(const FString& Error) const;
 
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UStaticMeshComponent> PrimitiveBody;
@@ -45,11 +69,21 @@ private:
 	TObjectPtr<UStaticMeshComponent> PrimitiveHead;
 
 	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<UStaticMeshComponent> StarterOutfitTop;
+
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<UStaticMeshComponent> StarterOutfitBottom;
+
+	UPROPERTY(Transient)
+	TObjectPtr<UMaterialInstanceDynamic> StarterOutfitMaterial;
+
+	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<USpringArmComponent> CameraBoom;
 
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UCameraComponent> FollowCamera;
 
+	FOddsWellStarterOutfitState StarterOutfitState;
 	FVector QaStartLocation = FVector::ZeroVector;
 	float QaElapsed = 0.0f;
 	float QaMaxZ = 0.0f;
@@ -62,6 +96,9 @@ private:
 	bool bQaJumpIssued = false;
 	bool bQaFinished = false;
 	bool bQaAutoExit = false;
+	float OutfitQaElapsed = 0.0f;
+	int32 OutfitQaStage = 0;
+	bool bOutfitQaEnabled = false;
 };
 
 UCLASS()

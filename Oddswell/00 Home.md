@@ -81,6 +81,7 @@ tags:
 - [[Development/Reports/Phase 1B1 Character Preset Catalog|Phase 1B.1 character preset catalog]]
 - [[Development/Reports/Phase 1B2 Fast Local Character Selection Screen|Phase 1B.2 fast local character selection screen]]
 - [[Development/Reports/Phase 1B3 Controllable Placeholder Avatar and Approved Locomotion|Phase 1B.3 controllable placeholder avatar and approved locomotion]]
+- [[Development/Reports/Phase 1B4 Replaceable Starter Outfit|Phase 1B.4 replaceable starter outfit]]
 - [[Visual Maps/Project Tool Map|Master project tool map]]
 - [[Visual Maps/Beta Game Scope|Complete beta game scope map]]
 - [[Visual Maps/Beta Delivery Roadmap|Beta delivery roadmap map]]
@@ -91,7 +92,7 @@ tags:
 
 ## Current focus
 
-Phase 1A is complete and Unreal Engine 5.8 is the approved beta client engine. Phase 1B.3 now provides one packaged neutral primitive avatar with the approved third-person camera and keyboard/mouse/controller walk, held run, look, and jump routes in the existing benchmark. The next smallest gate is Phase 1B.4: render the off-white starter top and bottom as separate replaceable equipment. Selection-to-pawn transfer, persistence, final art, and city canon remain inactive; Odds Bucks, wagering, deployment, and retraining remain inactive.
+Phase 1A is complete and Unreal Engine 5.8 is the approved beta client engine. Phase 1B.4 now renders the catalog-approved off-white top and bottom as separate replaceable primitive equipment on the packaged neutral avatar without changing locomotion. The next smallest gate is Phase 1B.5: locally save and reload the chosen preset plus equipped starter outfit. Selection-to-pawn transfer and persistence remain inactive until that separate gate; final art, city canon, Odds Bucks, wagering, deployment, and retraining remain inactive.
 
 ## Current state
 
