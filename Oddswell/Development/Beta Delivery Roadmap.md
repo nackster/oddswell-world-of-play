@@ -35,7 +35,9 @@ The roadmap is intentionally made of measurable product gates, not hundreds of s
 - Phase 1A.2a noncanonical primitive street block, basketball court, and representative asset iteration: **COMPLETE**; see [[Development/Reports/Phase 1A2a Noncanonical Street Block and Basketball Court Graybox]].
 - Phase 1A.2b direct rendering of the existing verified 421-frame replay: **COMPLETE**; see [[Development/Reports/Phase 1A2b Authoritative 421-Frame Replay Renderer]].
 - Phase 1A.3 Unreal Engine 5.8 beta adoption: **COMPLETE** by owner decision on July 19, 2026; see [[Design/Decisions/DEC-006 Unreal Engine 5.8 Beta Adoption]].
-- Next smallest gate: **Phase 1B owner decision on camera/movement and the minimum placeholder preset/art direction**.
+- Phase 1B camera/movement and minimum placeholder preset direction: **APPROVED**; see [[Design/Decisions/DEC-007 Phase 1B Character Defaults]].
+- Phase 1B.1 validated character preset and starter-outfit catalog: **COMPLETE**; see [[Development/Reports/Phase 1B1 Character Preset Catalog]].
+- Next smallest gate: **Phase 1B.2 fast local character-selection screen with a safe default**.
 - Current prerequisite note: UE 5.8, the aligned x64 runtime and .NET Framework 4.8 SDK, portable project, reproducible local Windows package, empty-map launch, LFS, generated-file ignores, primitive block/court iteration, collision, cold-process reopen, direct recorded-replay rendering, deterministic packaged traces, and local resource sampling are verified. UE 5.8 is now the approved beta client engine.
 
 No later roadmap phase is authorized merely because it appears below.
@@ -94,7 +96,7 @@ No later roadmap phase is authorized merely because it appears below.
 
 ### Smallest delivery path
 
-1. Placeholder preset data for varied masculine/feminine presentations and skin tones.
+1. **1B.1 COMPLETE:** placeholder preset data for varied masculine/feminine presentations and skin tones; see [[Development/Reports/Phase 1B1 Character Preset Catalog]].
 2. Fast selection screen with a safe default.
 3. One controllable placeholder avatar with the approved camera and input direction.
 4. Worn off-white starter outfit represented as replaceable equipment, not permanent character geometry.
@@ -102,8 +104,8 @@ No later roadmap phase is authorized merely because it appears below.
 
 ### Owner gates
 
-- Camera and movement style.
-- Minimum preset range and character-art direction.
+- **RESOLVED:** third-person camera and beta movement direction; see [[Design/Decisions/DEC-007 Phase 1B Character Defaults]].
+- **RESOLVED FOR PLACEHOLDERS:** eight-preset minimum and neutral placeholder direction; final character art remains deferred to the later art-direction gate.
 
 ### Exit evidence
 
@@ -366,7 +368,7 @@ A Beta Exit Report states **READY**, **BLOCKED WITH MEASURED CAUSE**, or **NOT R
 ## Owner-decision queue in dependency order
 
 1. **RESOLVED:** Unreal Engine 5.8 beta adoption; see [[Design/Decisions/DEC-006 Unreal Engine 5.8 Beta Adoption]].
-2. **NEXT:** Camera, movement, minimum character presets, and character-art direction.
+2. **RESOLVED FOR PHASE 1B:** camera, movement, and minimum placeholder presets; see [[Design/Decisions/DEC-007 Phase 1B Character Defaults]]. Final art remains later.
 3. World/city name, theme, geography, visual language, and core layout.
 4. Shared-city instance capacity, regions, collision, names, and minimal safety surface.
 5. Apartment instancing, layouts, visits, and decorating controls.

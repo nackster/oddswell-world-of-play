@@ -609,6 +609,15 @@ Build the one-city scope defined in [[Design/Decisions/DEC-002 First Playable Sc
 - **Boundary:** the decision approves the engine, not a city identity, camera, character-art direction, paid service, deployment, or later feature.
 - **Next gate:** Phase 1B needs the owner to approve camera/movement style and the minimum placeholder preset/character-art direction before implementation chooses those product details.
 
+### Phase 1B.1 Character Preset Catalog status
+
+- **Status:** Complete on `agent/phase-0d`; smallest executable Phase 1B data slice only.
+- **Owner direction:** third-person trailing camera; keyboard/mouse and controller walk, run, and jump; eight gameplay-identical placeholders covering two presentations and four shared skin tones; neutral placeholder proportions; replaceable worn off-white top and bottom. See [[Design/Decisions/DEC-007 Phase 1B Character Defaults]].
+- **Implementation:** a native UE 5.8 catalog stores only cosmetic preset identity, presentation, skin tone, and equipped item IDs. It contains no gameplay modifiers and adds no plugin or dependency.
+- **Validation:** final `OddsWellEditor` Development build passed; the native `OddsWell.Character.PresetCatalog` test passed 1/1; all 65 frozen regressions passed in `132.517s`; Brain Admin self-check and Python compilation passed. Cost was `$0.00`.
+- **Boundary:** no selection screen, mesh, animation, controllable pawn, save file, final character art, city, economy, wagering, service, or deployment was added. See [[Development/Reports/Phase 1B1 Character Preset Catalog]].
+- **Next gate:** Phase 1B.2 builds the fast local selection screen with a safe default from this catalog.
+
 ## Future shared simulation layer
 
 Athlete Life Brain v4 is the default for newly generated train, rest, recover, and socialize decisions. It adds only one bounded, one-decision, same-season recent-scoring response above v3's routine behavior. V1-v4 history remains immutable. Expand into longer memory, traits, relationships, nightlife, media, discipline, career decisions, and other sports only after each smaller input passes its own engineering evaluation.
@@ -619,7 +628,7 @@ The shared life, world, memory, and learning layers will support every sport. Ea
 
 ## Next unresolved decisions
 
-- Camera and movement style plus the minimum placeholder character preset range and art direction.
+- Final character art and post-start customization after the approved Phase 1B placeholder direction.
 - First city identity.
 - First two team identities.
 - Minimal athlete attributes.

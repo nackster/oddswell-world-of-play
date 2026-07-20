@@ -60,8 +60,9 @@ Every required beta feature must support this loop, the credibility of the ficti
 
 - **LOCKED:** choose from a small set of default masculine and feminine character presentations with varied skin tones and appearances.
 - **LOCKED:** the starting outfit is extremely simple, worn, nearly white clothing described by the owner as almost like rags.
+- **LOCKED:** the minimum beta range is eight gameplay-identical placeholders: masculine and feminine presentations across the same four skin tones; see [[Design/Decisions/DEC-007 Phase 1B Character Defaults|DEC-007]].
 - **BETA TARGET:** selection should be fast and should send the chosen preset directly into the game.
-- **OPEN:** exact preset count, body options, faces, hair, names, pronouns, accessibility options, and later editing.
+- **OPEN:** final body options, faces, hair, names, pronouns, accessibility options, and later editing.
 
 The presets must not attach ability, wealth, intelligence, behavior, or athlete outcomes to gender presentation, skin tone, or any demographic feature.
 
@@ -132,9 +133,10 @@ The presets must not attach ability, wealth, intelligence, behavior, or athlete 
 
 - **LOCKED:** player avatar selected from defaults during onboarding.
 - **LOCKED:** minimal worn off-white starter clothing.
+- **LOCKED:** third-person trailing camera; keyboard/mouse and controller walk, run, and jump; no beta combat, crouching, parkour, or vehicles. The beta starter top and bottom are replaceable equipment; see [[Design/Decisions/DEC-007 Phase 1B Character Defaults|DEC-007]].
 - **LOCKED:** a basic clothing store lets the player buy improvements with Odds Bucks.
 - **BETA TARGET:** purchased clothing visibly changes the avatar.
-- **OPEN:** character proportions, camera view, animation set, exact clothing count, sizing/body compatibility, changing-room flow, and whether individual garments or complete outfits are sold.
+- **OPEN:** final character proportions, animation set, exact store clothing count, sizing/body compatibility, changing-room flow, and whether later store items are individual garments or complete outfits.
 - **LATER:** a deep character creator, large cosmetic catalog, premium cosmetics, player marketplace, and user-generated items.
 
 ## Housing and furniture
@@ -300,8 +302,8 @@ Admin features do not become beta player features. The server remains authoritat
 The Scope Director must stop and ask when a phase depends on one of these:
 
 1. First world and city name, theme, geography, culture, and visual identity.
-2. Exact player camera and movement style.
-3. Exact character preset range and post-start customization.
+2. **RESOLVED:** beta camera and movement style under [[Design/Decisions/DEC-007 Phase 1B Character Defaults|DEC-007]].
+3. **PARTIALLY RESOLVED:** eight-placeholder minimum range under [[Design/Decisions/DEC-007 Phase 1B Character Defaults|DEC-007]]; final character art and post-start customization remain open.
 4. Apartment upgrade layouts and decorating interaction.
 5. Exact job, payout, allowance, and recovery cadence.
 6. How an 82-game season stays varied with the initial two-team scope.
@@ -331,5 +333,5 @@ Before proposing a phase, the Scope Director must:
 
 - Phase 0 basketball simulation is frozen at its validated baseline except for demonstrated defects or a measured beta requirement.
 - Phase 1A is complete. The owner accepted the measured UE 5.8 packaged-build, graybox, and authoritative replay-rendering evidence in [[Design/Decisions/DEC-006 Unreal Engine 5.8 Beta Adoption|DEC-006]].
-- Phase 1B character selection and movement is the next delivery area. Its camera/movement style and minimum preset range/character-art direction remain **OPEN** owner gates.
-- No city, avatar selection flow, apartment, Odds Bucks ledger, wager settlement, clothing store, or furniture store is complete merely because it appears in this beta plan.
+- Phase 1B is active. Its approved defaults are recorded in [[Design/Decisions/DEC-007 Phase 1B Character Defaults|DEC-007]], and Phase 1B.1 implements the validated placeholder catalog and replaceable starter-outfit IDs.
+- The next implementation gate is a fast local character-selection screen with a safe default. No city, avatar selection flow, controllable character, apartment, Odds Bucks ledger, wager settlement, clothing store, or furniture store is complete merely because it appears in this beta plan.

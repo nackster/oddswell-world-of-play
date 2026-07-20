@@ -78,6 +78,7 @@ tags:
 - [[Development/Reports/Phase 1A1d Empty Windows Package Launch and Baseline Measurement|Phase 1A.1d empty Windows package, launch, and baseline measurement]]
 - [[Development/Reports/Phase 1A2a Noncanonical Street Block and Basketball Court Graybox|Phase 1A.2a noncanonical street block and basketball court graybox]]
 - [[Development/Reports/Phase 1A2b Authoritative 421-Frame Replay Renderer|Phase 1A.2b authoritative 421-frame replay renderer]]
+- [[Development/Reports/Phase 1B1 Character Preset Catalog|Phase 1B.1 character preset catalog]]
 - [[Visual Maps/Project Tool Map|Master project tool map]]
 - [[Visual Maps/Beta Game Scope|Complete beta game scope map]]
 - [[Visual Maps/Beta Delivery Roadmap|Beta delivery roadmap map]]
@@ -88,7 +89,7 @@ tags:
 
 ## Current focus
 
-Phase 1A is complete. The owner accepted the measured UE 5.8 package, graybox, and authoritative 421-frame replay evidence on July 19, 2026, making Unreal Engine 5.8 the approved beta client engine. Phase 1B character selection and movement is active at its owner gate: camera/movement style and the minimum placeholder preset/character-art direction must be approved before implementation chooses them. City canon, final art, live models, Odds Bucks, wagering, deployment, and retraining remain inactive.
+Phase 1A is complete and Unreal Engine 5.8 is the approved beta client engine. Phase 1B.1 now provides a validated native catalog of eight gameplay-identical placeholder presets across the approved presentations and four shared skin tones, each equipped with replaceable off-white starter top and bottom IDs. The next smallest gate is Phase 1B.2: a fast local character-selection screen with a safe default. No controllable avatar or final character art exists yet; city canon, Odds Bucks, wagering, deployment, and retraining remain inactive.
 
 ## Current state
 
