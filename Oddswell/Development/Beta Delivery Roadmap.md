@@ -37,7 +37,8 @@ The roadmap is intentionally made of measurable product gates, not hundreds of s
 - Phase 1A.3 Unreal Engine 5.8 beta adoption: **COMPLETE** by owner decision on July 19, 2026; see [[Design/Decisions/DEC-006 Unreal Engine 5.8 Beta Adoption]].
 - Phase 1B camera/movement and minimum placeholder preset direction: **APPROVED**; see [[Design/Decisions/DEC-007 Phase 1B Character Defaults]].
 - Phase 1B.1 validated character preset and starter-outfit catalog: **COMPLETE**; see [[Development/Reports/Phase 1B1 Character Preset Catalog]].
-- Next smallest gate: **Phase 1B.2 fast local character-selection screen with a safe default**.
+- Phase 1B.2 fast local character-selection screen with a safe default: **COMPLETE**; see [[Development/Reports/Phase 1B2 Fast Local Character Selection Screen]].
+- Next smallest gate: **Phase 1B.3 one controllable placeholder avatar with the approved camera and input direction**.
 - Current prerequisite note: UE 5.8, the aligned x64 runtime and .NET Framework 4.8 SDK, portable project, reproducible local Windows package, empty-map launch, LFS, generated-file ignores, primitive block/court iteration, collision, cold-process reopen, direct recorded-replay rendering, deterministic packaged traces, and local resource sampling are verified. UE 5.8 is now the approved beta client engine.
 
 No later roadmap phase is authorized merely because it appears below.
@@ -97,8 +98,8 @@ No later roadmap phase is authorized merely because it appears below.
 ### Smallest delivery path
 
 1. **1B.1 COMPLETE:** placeholder preset data for varied masculine/feminine presentations and skin tones; see [[Development/Reports/Phase 1B1 Character Preset Catalog]].
-2. Fast selection screen with a safe default.
-3. One controllable placeholder avatar with the approved camera and input direction.
+2. **1B.2 COMPLETE:** fast local selection screen with a safe default; see [[Development/Reports/Phase 1B2 Fast Local Character Selection Screen]].
+3. **NEXT — 1B.3:** one controllable placeholder avatar with the approved camera and input direction.
 4. Worn off-white starter outfit represented as replaceable equipment, not permanent character geometry.
 5. Save/reload the selected preset and equipped starter outfit locally before multiplayer persistence.
 

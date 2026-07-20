@@ -618,6 +618,14 @@ Build the one-city scope defined in [[Design/Decisions/DEC-002 First Playable Sc
 - **Boundary:** no selection screen, mesh, animation, controllable pawn, save file, final character art, city, economy, wagering, service, or deployment was added. See [[Development/Reports/Phase 1B1 Character Preset Catalog]].
 - **Next gate:** Phase 1B.2 builds the fast local selection screen with a safe default from this catalog.
 
+### Phase 1B.2 Fast Local Character Selection Screen status
+
+- **Status:** Complete on `agent/phase-0d`; one local selection screen only.
+- **Implementation:** a native UE 5.8 HUD consumes the validated eight-entry catalog directly, shows the same neutral placeholder silhouette and replaceable off-white top and bottom for every option, starts on a deterministic safe default, wraps keyboard/controller navigation, and allows exactly one session-local confirmation. A transient URL-selected game mode leaves the Bootstrap default unchanged.
+- **Safety boundary:** catalog failure remains local and unconfirmed. The selected ID is not persisted or sent anywhere, and no pawn, movement, camera, mesh, animation, account, backend, multiplayer, economy, wagering, service, model, or retraining behavior was added.
+- **Validation:** final editor and Development game builds passed; native character automation passed 2/2; a 55-file Windows package visibly confirmed the default and one non-default option exactly once each with clean exits; all 65 frozen regressions, Brain Admin self-check, and Python compilation passed. After the owner manually canceled the initial Windows Firewall prompt, a bounded safe-default rerun showed no security prompt or modal and left no related process. Controller routes are automation-tested; physical controller hardware was not tested. Cost was `$0.00`. See [[Development/Reports/Phase 1B2 Fast Local Character Selection Screen]].
+- **Next gate:** Phase 1B.3 adds one controllable placeholder avatar with the approved third-person camera and keyboard/mouse/controller walk, run, and jump direction.
+
 ## Future shared simulation layer
 
 Athlete Life Brain v4 is the default for newly generated train, rest, recover, and socialize decisions. It adds only one bounded, one-decision, same-season recent-scoring response above v3's routine behavior. V1-v4 history remains immutable. Expand into longer memory, traits, relationships, nightlife, media, discipline, career decisions, and other sports only after each smaller input passes its own engineering evaluation.

@@ -79,6 +79,7 @@ tags:
 - [[Development/Reports/Phase 1A2a Noncanonical Street Block and Basketball Court Graybox|Phase 1A.2a noncanonical street block and basketball court graybox]]
 - [[Development/Reports/Phase 1A2b Authoritative 421-Frame Replay Renderer|Phase 1A.2b authoritative 421-frame replay renderer]]
 - [[Development/Reports/Phase 1B1 Character Preset Catalog|Phase 1B.1 character preset catalog]]
+- [[Development/Reports/Phase 1B2 Fast Local Character Selection Screen|Phase 1B.2 fast local character selection screen]]
 - [[Visual Maps/Project Tool Map|Master project tool map]]
 - [[Visual Maps/Beta Game Scope|Complete beta game scope map]]
 - [[Visual Maps/Beta Delivery Roadmap|Beta delivery roadmap map]]
@@ -89,7 +90,7 @@ tags:
 
 ## Current focus
 
-Phase 1A is complete and Unreal Engine 5.8 is the approved beta client engine. Phase 1B.1 now provides a validated native catalog of eight gameplay-identical placeholder presets across the approved presentations and four shared skin tones, each equipped with replaceable off-white starter top and bottom IDs. The next smallest gate is Phase 1B.2: a fast local character-selection screen with a safe default. No controllable avatar or final character art exists yet; city canon, Odds Bucks, wagering, deployment, and retraining remain inactive.
+Phase 1A is complete and Unreal Engine 5.8 is the approved beta client engine. Phase 1B.2 now provides a packaged local screen for all eight gameplay-identical placeholder presets, with a safe default, keyboard/controller selection, and one session-local confirmation. The next smallest gate is Phase 1B.3: one controllable placeholder avatar with the approved third-person camera and input direction. No persistent character, final art, or city canon exists yet; Odds Bucks, wagering, deployment, and retraining remain inactive.
 
 ## Current state
 
