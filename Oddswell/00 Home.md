@@ -93,6 +93,7 @@ tags:
 - [[Development/Reports/Phase 1D1 Local Two-Client Shared City Presence|Phase 1D.1 local two-client shared-city presence]]
 - [[Development/Reports/Phase 1D2 Replicated Appearance and Starter Clothing|Phase 1D.2 replicated appearance and starter clothing]]
 - [[Development/Reports/Phase 1D3 Cold Reconnect Visible State Restore|Phase 1D.3 cold reconnect visible-state restore]]
+- [[Development/Reports/Phase 1D4 Local Concurrency Ladder|Phase 1D.4 local concurrency ladder]]
 - [[Visual Maps/Project Tool Map|Master project tool map]]
 - [[Visual Maps/Beta Game Scope|Complete beta game scope map]]
 - [[Visual Maps/Beta Delivery Roadmap|Beta delivery roadmap map]]
@@ -105,7 +106,7 @@ tags:
 
 ## Current focus
 
-Phase 1A, Phase 1B, and the Phase 1C city-graybox exit are complete. The owner selected **Concept B — Daymark / Sundale**; its `800 m` packaged route is measured and traversable. Phase 1D.1 proves two local clients can share Sundale, Phase 1D.2 synchronizes their visible presets and starter outfits, and Phase 1D.3 proves a cold client reconnect restores that exact visible tuple from the existing local save. Phase 1D.4 must measure a small local concurrency ladder before any capacity decision. Final art, external hosting, accounts, a capacity ceiling, Odds Bucks, wagering, deployment, and retraining remain inactive.
+Phase 1A, Phase 1B, the Phase 1C city-graybox exit, and the Phase 1D local shared-city exit are complete. The owner selected **Concept B — Daymark / Sundale**; its `800 m` packaged route is measured and traversable. Shared-city evidence now covers synchronized visible clothing, cold reconnect, and one packaged `2/3/4`-client local ladder. The next gate is the Phase 1E owner decision for apartment instancing/visits and the minimal Studio layout/decorating approach. Final art, external hosting, accounts, a capacity ceiling, Odds Bucks, wagering, deployment, and retraining remain inactive.
 
 ## Current state
 

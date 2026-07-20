@@ -722,6 +722,15 @@ Build the one-city scope defined in [[Design/Decisions/DEC-002 First Playable Sc
 - **Boundary:** no permanent identity, account, server profile, external hosting, matchmaking, chat, moderation, capacity conclusion, item ownership, trading, store, Odds Bucks, wagering, final art, model, training, or retraining behavior was added.
 - **Next gate:** Phase 1D.4 measures a small local concurrency ladder before any beta instance ceiling is selected.
 
+### Phase 1D.4 Local Concurrency Ladder status
+
+- **Status:** Complete on `agent/phase-0d`; Phase 1D local-prototype exit evidence is closed.
+- **Implementation:** the existing shared-city QA accepts an opt-in, clamped `2–4` target. Every packaged client reports the complete named, valid, owner-submitted visible set; the listen server passes only after every remote player moves at least `300 cm` from the full-rung start. No load-test framework or service was added.
+- **Packaged proof:** the same fresh package passed `2`, `3`, and `4` total-client rungs. Remote movers were `1/1`, `2/2`, and `3/3`; minimum server distances were `302.7`, `301.3`, and `300.5 cm`. All processes exited `0`. Peak combined launcher/game working set was `685.6`, `1,030.1`, and `1,373.9 MB`; these are NullRHI localhost samples, not a beta ceiling.
+- **Validation:** editor/game builds and BuildCookRun passed; native character automation passed `5/5`; all `65/65` frozen regressions passed in `138.007s`; Brain Admin self-check, Python compilation, accepted-log audit, diff hygiene, and zero-process cleanup passed. Cost was `$0.00`. See [[Development/Reports/Phase 1D4 Local Concurrency Ladder]].
+- **Boundary:** no capacity ceiling, external hosting, account, matchmaking, communication, moderation, apartment, item ownership, economy, wagering, final art, deployment, model, training, or retraining system was added or claimed.
+- **Next gate:** Phase 1E Studio and apartment progression is blocked on owner decisions for beta apartment instancing/visits and the minimal layout/decorating approach.
+
 ## Future shared simulation layer
 
 Athlete Life Brain v4 is the default for newly generated train, rest, recover, and socialize decisions. It adds only one bounded, one-decision, same-season recent-scoring response above v3's routine behavior. V1-v4 history remains immutable. Expand into longer memory, traits, relationships, nightlife, media, discipline, career decisions, and other sports only after each smaller input passes its own engineering evaluation.

@@ -43,6 +43,8 @@ constexpr float CapsuleRadius = 42.0f;
 constexpr float CapsuleHalfHeight = 96.0f;
 constexpr float SharedCitySpawnSpacing = 200.0f;
 constexpr float SharedCityQaMovementDistance = 300.0f;
+constexpr int32 SharedCityCapacityMinClients = 2;
+constexpr int32 SharedCityCapacityMaxClients = 4;
 constexpr ECollisionResponse SharedCityPlayerCollision = ECR_Ignore;
 constexpr bool AllowCrouch = false;
 constexpr bool AllowFlight = false;
@@ -64,6 +66,13 @@ bool MatchesSharedCityReconnectAppearance(
 		&& Expected.PresetId == Actual.PresetId
 		&& Expected.TopItemId == Actual.TopItemId
 		&& Expected.BottomItemId == Actual.BottomItemId;
+}
+
+int32 GetSharedCityQaTargetClients()
+{
+	int32 TargetClients = SharedCityCapacityMinClients;
+	FParse::Value(FCommandLine::Get(), TEXT("SharedCityQaClients="), TargetClients);
+	return FMath::Clamp(TargetClients, SharedCityCapacityMinClients, SharedCityCapacityMaxClients);
 }
 
 const TArray<FVector>& GetSundaleRouteWaypoints()
@@ -263,6 +272,8 @@ void AOddsWellPlaceholderCharacter::BeginPlay()
 	bSundaleRouteQa = FParse::Param(FCommandLine::Get(), TEXT("SundaleRouteQa"));
 	bSundaleRouteRun = FParse::Param(FCommandLine::Get(), TEXT("SundaleRouteRun"));
 	bSharedCityQa = FParse::Param(FCommandLine::Get(), TEXT("SharedCityQa"));
+	bSharedCityCapacityQa = FParse::Param(FCommandLine::Get(), TEXT("SharedCityCapacityQa"));
+	SharedCityQaTargetClients = GetSharedCityQaTargetClients();
 	UMaterialInterface* BasicShapeMaterial = LoadObject<UMaterialInterface>(nullptr, TEXT("/Engine/BasicShapes/BasicShapeMaterial.BasicShapeMaterial"));
 	if (!BasicShapeMaterial)
 	{
@@ -452,6 +463,7 @@ void AOddsWellPlaceholderCharacter::RunSharedCityQa(const float DeltaSeconds)
 	}
 	SharedCityQaElapsed += DeltaSeconds;
 	int32 VisiblePlayers = 0;
+	int32 SubmittedAppearances = 0;
 	int32 OtherPlayerNumber = 0;
 	AOddsWellPlaceholderCharacter* OtherPlayer = nullptr;
 	for (TActorIterator<AOddsWellPlaceholderCharacter> It(GetWorld()); It; ++It)
@@ -459,11 +471,34 @@ void AOddsWellPlaceholderCharacter::RunSharedCityQa(const float DeltaSeconds)
 		if (It->SharedCityPlayerNumber > 0 && It->SharedCityNameplate && It->SharedCityNameplate->IsVisible())
 		{
 			++VisiblePlayers;
+			if (It->HasValidSharedCityAppearance() && It->HasSubmittedSharedCityAppearance())
+			{
+				++SubmittedAppearances;
+			}
 			if (*It != this)
 			{
 				OtherPlayerNumber = It->SharedCityPlayerNumber;
 				OtherPlayer = *It;
 			}
+		}
+	}
+	if (bSharedCityCapacityQa
+		&& !bSharedCityCapacityLogged
+		&& VisiblePlayers >= SharedCityQaTargetClients
+		&& SubmittedAppearances >= SharedCityQaTargetClients)
+	{
+		bSharedCityCapacityLogged = true;
+		UE_LOG(
+			LogOddsWellLocomotion,
+			Display,
+			TEXT("ODDSWELL_SHARED_CITY_CAPACITY_VISIBLE|local=Player_%d|clients=%d|visible=%d|submitted_appearances=%d|names=true|pawn_collision=ignore"),
+			SharedCityPlayerNumber,
+			SharedCityQaTargetClients,
+			VisiblePlayers,
+			SubmittedAppearances);
+		if (GetNetMode() == NM_Client && FParse::Param(FCommandLine::Get(), TEXT("SharedCityCapacityAutoExit")))
+		{
+			SharedCityQaExitAt = FPlatformTime::Seconds() + 3.0;
 		}
 	}
 	if (!bSharedCityQaVisibleLogged && VisiblePlayers >= 2 && OtherPlayerNumber > 0)
@@ -1112,6 +1147,8 @@ AOddsWellLocomotionGameMode::AOddsWellLocomotionGameMode()
 	DefaultPawnClass = AOddsWellPlaceholderCharacter::StaticClass();
 	bSharedCityQa = FParse::Param(FCommandLine::Get(), TEXT("SharedCityQa"));
 	bSharedCityReconnectQa = FParse::Param(FCommandLine::Get(), TEXT("SharedCityReconnectQa"));
+	bSharedCityCapacityQa = FParse::Param(FCommandLine::Get(), TEXT("SharedCityCapacityQa"));
+	SharedCityQaTargetClients = GetSharedCityQaTargetClients();
 }
 
 void AOddsWellLocomotionGameMode::PostLogin(APlayerController* NewPlayer)
@@ -1159,7 +1196,7 @@ void AOddsWellLocomotionGameMode::Tick(const float DeltaSeconds)
 	}
 	if (!bSharedCityQa
 		|| bSharedCityReconnectPassed
-		|| (bSharedCityQaPassed && !bSharedCityReconnectQa))
+		|| (bSharedCityQaPassed && !bSharedCityReconnectQa && !bSharedCityCapacityQa))
 	{
 		return;
 	}
@@ -1171,7 +1208,7 @@ void AOddsWellLocomotionGameMode::Tick(const float DeltaSeconds)
 			Players.Add(*It);
 		}
 	}
-	if (Players.Num() < 2)
+	if (Players.Num() < SharedCityQaTargetClients)
 	{
 		return;
 	}
@@ -1190,6 +1227,41 @@ void AOddsWellLocomotionGameMode::Tick(const float DeltaSeconds)
 		{
 			return !Player->HasValidSharedCityAppearance() || !Player->HasSubmittedSharedCityAppearance();
 		});
+	if (bSharedCityCapacityQa && !bSharedCityQaPassed && bAppearancesReady)
+	{
+		int32 RemoteMovers = 0;
+		float MinimumRemoteDistance = TNumericLimits<float>::Max();
+		for (const AOddsWellPlaceholderCharacter* Player : Players)
+		{
+			if (Player->GetSharedCityPlayerNumber() <= 1)
+			{
+				continue;
+			}
+			const FVector* Start = SharedCityQaStartLocations.Find(Player->GetSharedCityPlayerNumber());
+			const float Distance = Start ? FVector::Dist2D(*Start, Player->GetActorLocation()) : 0.0f;
+			MinimumRemoteDistance = FMath::Min(MinimumRemoteDistance, Distance);
+			if (Distance >= SharedCityQaMovementDistance)
+			{
+				++RemoteMovers;
+			}
+		}
+		if (RemoteMovers >= SharedCityQaTargetClients - 1)
+		{
+			bSharedCityQaPassed = true;
+			UE_LOG(
+				LogOddsWellLocomotion,
+				Display,
+				TEXT("ODDSWELL_SHARED_CITY_CAPACITY_PASS|clients=%d|remote_movers=%d|min_server_distance=%.1f|appearance_synced=true|starter_clothing_synced=true|names=true|pawn_collision=ignore"),
+				SharedCityQaTargetClients,
+				RemoteMovers,
+				MinimumRemoteDistance);
+			if (FParse::Param(FCommandLine::Get(), TEXT("SharedCityCapacityAutoExit")))
+			{
+				SharedCityQaExitAt = FPlatformTime::Seconds() + 5.0;
+			}
+		}
+		return;
+	}
 	if (bSharedCityReconnectQa
 		&& !bSharedCityReconnectLeaveObserved
 		&& !SharedCityReconnectExpectedAppearance.bOwnerSubmitted)
@@ -1298,6 +1370,8 @@ bool FOddsWellLocomotionDefaultsTest::RunTest(const FString& Parameters)
 	TestTrue(TEXT("Camera yaw is bounded"), CameraYawMin == -180.0f && CameraYawMax == 180.0f);
 	TestTrue(TEXT("Two-player proof uses separated spawn points"), SharedCitySpawnSpacing > CapsuleRadius * 2.0f);
 	TestTrue(TEXT("Shared-city QA requires measurable movement"), SharedCityQaMovementDistance > SharedCitySpawnSpacing);
+	TestEqual(TEXT("Local capacity ladder starts at two clients"), SharedCityCapacityMinClients, 2);
+	TestEqual(TEXT("Local capacity ladder stops at four clients"), SharedCityCapacityMaxClients, 4);
 	TestTrue(TEXT("Players pass through one another"), SharedCityPlayerCollision == ECR_Ignore);
 	FOddsWellSharedCityAppearance ReconnectBefore;
 	ReconnectBefore.PresetId = TEXT("feminine_tone_4");

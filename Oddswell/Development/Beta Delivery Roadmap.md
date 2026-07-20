@@ -51,7 +51,9 @@ The roadmap is intentionally made of measurable product gates, not hundreds of s
 - Phase 1D.1 local two-client shared-city presence: **COMPLETE**; see [[Development/Reports/Phase 1D1 Local Two-Client Shared City Presence]].
 - Phase 1D.2 replicated appearance and starter clothing: **COMPLETE**; see [[Development/Reports/Phase 1D2 Replicated Appearance and Starter Clothing]].
 - Phase 1D.3 cold reconnect and visible-state restore: **COMPLETE**; see [[Development/Reports/Phase 1D3 Cold Reconnect Visible State Restore]].
-- Next gate: **PHASE 1D.4 LOCAL CONCURRENCY LADDER**. Sundale remains a working name.
+- Phase 1D.4 local concurrency ladder: **COMPLETE**; see [[Development/Reports/Phase 1D4 Local Concurrency Ladder]].
+- Phase 1D exit: **PASSED FOR THE LOCAL PROTOTYPE**. No beta instance ceiling or external-host readiness is claimed.
+- Next gate: **PHASE 1E APARTMENT OWNER DECISIONS**. Sundale remains a working name.
 - Current prerequisite note: UE 5.8, the aligned x64 runtime and .NET Framework 4.8 SDK, portable project, reproducible local Windows package, empty-map launch, LFS, generated-file ignores, primitive block/court iteration, collision, cold-process reopen, direct recorded-replay rendering, deterministic packaged traces, and local resource sampling are verified. UE 5.8 is now the approved beta client engine.
 
 No later roadmap phase is authorized merely because it appears below.
@@ -63,8 +65,8 @@ No later roadmap phase is authorized merely because it appears below.
 | 1 | 1A — Engine and packaged-build proof | A real 3D client can build and run | COMPLETE |
 | 2 | 1B — Character selection and movement | Choose a default avatar and enter the world | COMPLETE |
 | 3 | 1C — First-city identity and graybox | Walk between every required beta location | COMPLETE |
-| 4 | 1D — Shared-city presence | Players see one another and equipped clothing | ACTIVE |
-| 5 | 1E — Studio and apartment progression | Enter a persistent home and see the six-tier goal | PENDING |
+| 4 | 1D — Shared-city presence | Players see one another and equipped clothing | COMPLETE |
+| 5 | 1E — Studio and apartment progression | Enter a persistent home and see the six-tier goal | OWNER GATE |
 | 6 | 1F — League, stadium, and match viewing | Research and watch authoritative basketball | PENDING |
 | 7 | 1G — Odds Bucks and work recovery | Earn, persist, audit, and recover virtual currency | PENDING |
 | 8 | 1H — Wager locking and settlement | Place approved wagers and receive exact outcomes | PENDING |
@@ -164,18 +166,18 @@ The owner selected Concept B — Daymark / Sundale on July 20, 2026. The theme, 
 1. **1D.1 COMPLETE:** two local playable clients join the packaged Sundale instance, receive replicated temporary identities, pass through one another, and produce server-observed movement evidence; see [[Development/Reports/Phase 1D1 Local Two-Client Shared City Presence]].
 2. **1D.2 COMPLETE:** the server validates and replicates each selected preset plus equipped starter top/bottom; both packaged clients agree on both distinct players' visible state; see [[Development/Reports/Phase 1D2 Replicated Appearance and Starter Clothing]].
 3. **1D.3 COMPLETE:** a cold local client process rejoins the same server from the existing validated appearance SaveGame and restores the exact server-visible preset/top/bottom tuple; see [[Development/Reports/Phase 1D3 Cold Reconnect Visible State Restore]].
-4. **1D.4 NEXT:** measure a small local concurrency ladder before choosing a beta instance ceiling.
+4. **1D.4 COMPLETE:** one packaged build passed local `2`, `3`, and `4` total-client rungs; every process saw all submitted visible states and the server measured every remote mover; see [[Development/Reports/Phase 1D4 Local Concurrency Ladder]].
 
 ### Owner gates
 
 - **RESOLVED FOR LOCAL PROOF:** two clients first, `$0.00`, and no region/hosting choice before evidence.
 - **RESOLVED:** players pass through one another and use temporary visible `Player 1` / `Player 2` proof labels.
-- **DEFERRED:** choose a capacity ceiling only after reconnect and a measured local ladder.
+- **STILL OPEN:** reconnect and local ladder evidence now exist, but they do not justify inventing a beta instance ceiling.
 - **REQUIRED BEFORE EXTERNAL BETA:** minimum blocking/reporting surface and explicit external hosting/service approval.
 
 ### Exit evidence
 
-At least two measured clients can walk together and see the same approved clothing state without item ownership transfer, chat, or invented social systems.
+**PASSED FOR THE LOCAL PROTOTYPE:** the packaged ladder measured `2`, `3`, and `4` total clients. Every client saw all approved owner-submitted appearances and the server measured every remote client moving at least `300 cm`. This does not prove an external beta capacity ceiling.
 
 ## Phase 1E — Studio and apartment progression
 

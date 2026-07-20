@@ -169,7 +169,10 @@ private:
 	bool bSundaleRouteFinished = false;
 	float SharedCityQaElapsed = 0.0f;
 	double SharedCityQaExitAt = 0.0;
+	int32 SharedCityQaTargetClients = 2;
 	bool bSharedCityQa = false;
+	bool bSharedCityCapacityQa = false;
+	bool bSharedCityCapacityLogged = false;
 	bool bSharedCityQaVisibleLogged = false;
 	bool bSharedCityQaAppearanceLogged = false;
 	bool bSharedCityAppearanceSubmitted = false;
@@ -192,6 +195,7 @@ private:
 	FOddsWellSharedCityAppearance SharedCityReconnectExpectedAppearance;
 	double SharedCityQaExitAt = 0.0;
 	int32 NextSharedCityPlayerNumber = 1;
+	int32 SharedCityQaTargetClients = 2;
 	int32 SharedCityReconnectExpectedPlayerNumber = 0;
 	bool bSharedCityQa = false;
 	bool bSharedCityQaStarted = false;
@@ -199,4 +203,5 @@ private:
 	bool bSharedCityReconnectQa = false;
 	bool bSharedCityReconnectLeaveObserved = false;
 	bool bSharedCityReconnectPassed = false;
+	bool bSharedCityCapacityQa = false;
 };
