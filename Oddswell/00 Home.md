@@ -20,6 +20,7 @@ tags:
 - [[Design/Decisions/DEC-005 Game Admin Console|Game Admin Console direction]]
 - [[Design/Decisions/DEC-008 Beta First City Direction|Beta first-city direction]]
 - [[Design/Decisions/DEC-009 City-Origin Clothing and Furniture|City-origin clothing and furniture]]
+- [[Design/Decisions/DEC-010 Phase 1D Shared City Defaults|Phase 1D shared-city defaults]]
 - [[Art/Visual Consistency|Visual consistency]]
 - [[Development/Current Plan|Current plan]]
 - [[Development/Beta Delivery Roadmap|Beta delivery roadmap]]
@@ -89,6 +90,7 @@ tags:
 - [[Development/Reports/Phase 1C0 Noncanonical First City Concept Packages|Phase 1C.0 noncanonical first-city concept packages]]
 - [[Development/Reports/Phase 1C1 Sundale Art Direction and Core Loop Freeze|Phase 1C.1 Sundale art and loop freeze]]
 - [[Development/Reports/Phase 1C2 Primitive Sundale Graybox and Packaged Route Measurement|Phase 1C.2 primitive Sundale graybox and packaged route measurement]]
+- [[Development/Reports/Phase 1D1 Local Two-Client Shared City Presence|Phase 1D.1 local two-client shared-city presence]]
 - [[Visual Maps/Project Tool Map|Master project tool map]]
 - [[Visual Maps/Beta Game Scope|Complete beta game scope map]]
 - [[Visual Maps/Beta Delivery Roadmap|Beta delivery roadmap map]]
@@ -101,7 +103,7 @@ tags:
 
 ## Current focus
 
-Phase 1A and Phase 1B are complete. The owner selected **Concept B — Daymark / Sundale**, and Phase 1C.1 now freezes its minimal art direction, `340 m × 280 m` graybox ceiling, and `800 m` projected commons-ring route in [[Design/Sundale Art Direction and Core Loop]] and [[Visual Maps/Sundale Core Loop]]. Sundale remains a working name. Phase 1C.2 must build and package a primitive separate-map graybox, then replace the walk/run projections with measured route evidence. Final art, multiplayer, Odds Bucks, wagering, deployment, and retraining remain inactive.
+Phase 1A, Phase 1B, and the Phase 1C city-graybox exit are complete. The owner selected **Concept B — Daymark / Sundale**; its `800 m` packaged route is measured and traversable. Phase 1D.1 now proves two local packaged clients can share Sundale, see temporary player labels, pass through one another, and replicate movement to the authoritative listen server. Phase 1D.2 must synchronize each selected placeholder appearance and equipped starter outfit before reconnect work. Final art, external hosting, accounts, capacity, Odds Bucks, wagering, deployment, and retraining remain inactive.
 
 ## Current state
 

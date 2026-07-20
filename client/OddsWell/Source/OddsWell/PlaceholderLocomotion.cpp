@@ -8,8 +8,10 @@
 #include "Components/InputComponent.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Components/StaticMeshComponent.h"
+#include "Components/TextRenderComponent.h"
 #include "Engine/StaticMesh.h"
 #include "Engine/World.h"
+#include "EngineUtils.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/PlayerController.h"
 #include "GameFramework/SpringArmComponent.h"
@@ -19,6 +21,7 @@
 #include "Materials/MaterialInterface.h"
 #include "Misc/CommandLine.h"
 #include "Misc/Parse.h"
+#include "Net/UnrealNetwork.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
 #include "Misc/AutomationTest.h"
@@ -38,6 +41,9 @@ constexpr float CameraYawMin = -180.0f;
 constexpr float CameraYawMax = 180.0f;
 constexpr float CapsuleRadius = 42.0f;
 constexpr float CapsuleHalfHeight = 96.0f;
+constexpr float SharedCitySpawnSpacing = 200.0f;
+constexpr float SharedCityQaMovementDistance = 300.0f;
+constexpr ECollisionResponse SharedCityPlayerCollision = ECR_Ignore;
 constexpr bool AllowCrouch = false;
 constexpr bool AllowFlight = false;
 constexpr bool AllowSwimming = false;
@@ -154,7 +160,10 @@ FName FOddsWellStarterOutfitState::GetEquipped(const EOddsWellStarterEquipmentSl
 AOddsWellPlaceholderCharacter::AOddsWellPlaceholderCharacter()
 {
 	PrimaryActorTick.bCanEverTick = true;
+	bReplicates = true;
+	SetReplicateMovement(true);
 	GetCapsuleComponent()->InitCapsuleSize(CapsuleRadius, CapsuleHalfHeight);
+	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_Pawn, SharedCityPlayerCollision);
 	GetMesh()->SetHiddenInGame(true);
 	GetMesh()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
@@ -202,6 +211,15 @@ AOddsWellPlaceholderCharacter::AOddsWellPlaceholderCharacter()
 	FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName);
 	FollowCamera->bUsePawnControlRotation = false;
 
+	SharedCityNameplate = CreateDefaultSubobject<UTextRenderComponent>(TEXT("SharedCityNameplate"));
+	SharedCityNameplate->SetupAttachment(GetCapsuleComponent());
+	SharedCityNameplate->SetRelativeLocation(FVector(0.0, 0.0, 135.0));
+	SharedCityNameplate->SetHorizontalAlignment(EHTA_Center);
+	SharedCityNameplate->SetTextRenderColor(FColor::White);
+	SharedCityNameplate->SetWorldSize(24.0f);
+	SharedCityNameplate->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	SharedCityNameplate->SetVisibility(false);
+
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationYaw = false;
 	bUseControllerRotationRoll = false;
@@ -227,6 +245,7 @@ void AOddsWellPlaceholderCharacter::BeginPlay()
 	bAppearanceQaCleanup = FParse::Param(FCommandLine::Get(), TEXT("AppearanceQaCleanup"));
 	bSundaleRouteQa = FParse::Param(FCommandLine::Get(), TEXT("SundaleRouteQa"));
 	bSundaleRouteRun = FParse::Param(FCommandLine::Get(), TEXT("SundaleRouteRun"));
+	bSharedCityQa = FParse::Param(FCommandLine::Get(), TEXT("SharedCityQa"));
 	UMaterialInterface* BasicShapeMaterial = LoadObject<UMaterialInterface>(nullptr, TEXT("/Engine/BasicShapes/BasicShapeMaterial.BasicShapeMaterial"));
 	if (!BasicShapeMaterial)
 	{
@@ -255,7 +274,40 @@ void AOddsWellPlaceholderCharacter::BeginPlay()
 	{
 		bOutfitQaEnabled = false;
 	}
+	SyncSharedCityNameplate();
 	UE_LOG(LogOddsWellLocomotion, Display, TEXT("ODDSWELL_LOCOMOTION_READY|spawn=%s|walk=%.0f|run=%.0f|jump=%.0f"), *SafeSpawnLocation.ToCompactString(), WalkSpeed, RunSpeed, JumpVelocity);
+}
+
+void AOddsWellPlaceholderCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+	DOREPLIFETIME(AOddsWellPlaceholderCharacter, SharedCityPlayerNumber);
+}
+
+void AOddsWellPlaceholderCharacter::AssignSharedCityPlayerNumber(const int32 PlayerNumber)
+{
+	if (!HasAuthority() || PlayerNumber < 1)
+	{
+		return;
+	}
+	SharedCityPlayerNumber = PlayerNumber;
+	SyncSharedCityNameplate();
+	ForceNetUpdate();
+}
+
+void AOddsWellPlaceholderCharacter::OnRep_SharedCityPlayerNumber()
+{
+	SyncSharedCityNameplate();
+}
+
+void AOddsWellPlaceholderCharacter::SyncSharedCityNameplate()
+{
+	if (!SharedCityNameplate)
+	{
+		return;
+	}
+	SharedCityNameplate->SetText(FText::FromString(FString::Printf(TEXT("Player %d"), SharedCityPlayerNumber)));
+	SharedCityNameplate->SetVisibility(SharedCityPlayerNumber > 0, true);
 }
 
 void AOddsWellPlaceholderCharacter::PossessedBy(AController* NewController)
@@ -310,9 +362,59 @@ void AOddsWellPlaceholderCharacter::Tick(const float DeltaSeconds)
 	{
 		RunSundaleRouteQa(DeltaSeconds);
 	}
+	if (bSharedCityQa)
+	{
+		RunSharedCityQa(DeltaSeconds);
+	}
 	if (QaExitAt > 0.0 && FPlatformTime::Seconds() >= QaExitAt)
 	{
 		QaExitAt = 0.0;
+		FPlatformMisc::RequestExit(false);
+	}
+}
+
+void AOddsWellPlaceholderCharacter::RunSharedCityQa(const float DeltaSeconds)
+{
+	if (!IsLocallyControlled() || SharedCityPlayerNumber < 1)
+	{
+		return;
+	}
+	SharedCityQaElapsed += DeltaSeconds;
+	int32 VisiblePlayers = 0;
+	int32 OtherPlayerNumber = 0;
+	for (TActorIterator<AOddsWellPlaceholderCharacter> It(GetWorld()); It; ++It)
+	{
+		if (It->SharedCityPlayerNumber > 0 && It->SharedCityNameplate && It->SharedCityNameplate->IsVisible())
+		{
+			++VisiblePlayers;
+			if (*It != this)
+			{
+				OtherPlayerNumber = It->SharedCityPlayerNumber;
+			}
+		}
+	}
+	if (!bSharedCityQaVisibleLogged && VisiblePlayers >= 2 && OtherPlayerNumber > 0)
+	{
+		bSharedCityQaVisibleLogged = true;
+		UE_LOG(
+			LogOddsWellLocomotion,
+			Display,
+			TEXT("ODDSWELL_SHARED_CITY_VISIBLE|local=Player_%d|other=Player_%d|actors=%d|names=true|pawn_collision=ignore"),
+			SharedCityPlayerNumber,
+			OtherPlayerNumber,
+			VisiblePlayers);
+		if (GetNetMode() == NM_Client && FParse::Param(FCommandLine::Get(), TEXT("SharedCityAutoExit")))
+		{
+			SharedCityQaExitAt = FPlatformTime::Seconds() + 3.0;
+		}
+	}
+	if (GetNetMode() == NM_Client && bSharedCityQaVisibleLogged)
+	{
+		AddMovementInput(FVector::ForwardVector, 1.0f);
+	}
+	if (SharedCityQaExitAt > 0.0 && FPlatformTime::Seconds() >= SharedCityQaExitAt)
+	{
+		SharedCityQaExitAt = 0.0;
 		FPlatformMisc::RequestExit(false);
 	}
 }
@@ -752,7 +854,85 @@ void AOddsWellPlaceholderCharacter::FinishSundaleRouteQa(const bool bPassed)
 
 AOddsWellLocomotionGameMode::AOddsWellLocomotionGameMode()
 {
+	PrimaryActorTick.bCanEverTick = true;
 	DefaultPawnClass = AOddsWellPlaceholderCharacter::StaticClass();
+	bSharedCityQa = FParse::Param(FCommandLine::Get(), TEXT("SharedCityQa"));
+}
+
+void AOddsWellLocomotionGameMode::PostLogin(APlayerController* NewPlayer)
+{
+	Super::PostLogin(NewPlayer);
+	if (GetNetMode() != NM_Standalone)
+	{
+		UE_LOG(LogOddsWellLocomotion, Display, TEXT("ODDSWELL_SHARED_CITY_JOIN|clients=%d|boundary=local_listen_server"), GetNumPlayers());
+	}
+}
+
+void AOddsWellLocomotionGameMode::Logout(AController* Exiting)
+{
+	Super::Logout(Exiting);
+	if (GetNetMode() != NM_Standalone)
+	{
+		UE_LOG(LogOddsWellLocomotion, Display, TEXT("ODDSWELL_SHARED_CITY_LEAVE|clients=%d"), GetNumPlayers());
+	}
+}
+
+void AOddsWellLocomotionGameMode::Tick(const float DeltaSeconds)
+{
+	Super::Tick(DeltaSeconds);
+	if (SharedCityQaExitAt > 0.0 && FPlatformTime::Seconds() >= SharedCityQaExitAt)
+	{
+		SharedCityQaExitAt = 0.0;
+		FPlatformMisc::RequestExit(false);
+		return;
+	}
+	if (!bSharedCityQa || bSharedCityQaPassed)
+	{
+		return;
+	}
+	TArray<AOddsWellPlaceholderCharacter*> Players;
+	for (TActorIterator<AOddsWellPlaceholderCharacter> It(GetWorld()); It; ++It)
+	{
+		if (It->GetSharedCityPlayerNumber() > 0)
+		{
+			Players.Add(*It);
+		}
+	}
+	if (Players.Num() < 2)
+	{
+		return;
+	}
+	if (!bSharedCityQaStarted)
+	{
+		for (const AOddsWellPlaceholderCharacter* Player : Players)
+		{
+			SharedCityQaStartLocations.Add(Player->GetSharedCityPlayerNumber(), Player->GetActorLocation());
+		}
+		bSharedCityQaStarted = true;
+		UE_LOG(LogOddsWellLocomotion, Display, TEXT("ODDSWELL_SHARED_CITY_READY|clients=%d|map=%s|spawn_spacing=%.0f"), Players.Num(), *GetWorld()->GetMapName(), SharedCitySpawnSpacing);
+		return;
+	}
+	for (const AOddsWellPlaceholderCharacter* Player : Players)
+	{
+		const FVector* Start = SharedCityQaStartLocations.Find(Player->GetSharedCityPlayerNumber());
+		const float Distance = Start ? FVector::Dist2D(*Start, Player->GetActorLocation()) : 0.0f;
+		if (Player->GetSharedCityPlayerNumber() > 1 && Distance >= SharedCityQaMovementDistance)
+		{
+			bSharedCityQaPassed = true;
+			UE_LOG(
+				LogOddsWellLocomotion,
+				Display,
+				TEXT("ODDSWELL_SHARED_CITY_PASS|clients=%d|moving_player=Player_%d|server_distance=%.1f|replicated_movement=true|names=true|pawn_collision=ignore"),
+				Players.Num(),
+				Player->GetSharedCityPlayerNumber(),
+				Distance);
+			if (FParse::Param(FCommandLine::Get(), TEXT("SharedCityAutoExit")))
+			{
+				SharedCityQaExitAt = FPlatformTime::Seconds() + 5.0;
+			}
+			break;
+		}
+	}
 }
 
 APawn* AOddsWellLocomotionGameMode::SpawnDefaultPawnAtTransform_Implementation(AController* NewPlayer, const FTransform&)
@@ -761,7 +941,14 @@ APawn* AOddsWellLocomotionGameMode::SpawnDefaultPawnAtTransform_Implementation(A
 	Parameters.Owner = NewPlayer;
 	Parameters.ObjectFlags |= RF_Transient;
 	Parameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
-	return GetWorld()->SpawnActor<AOddsWellPlaceholderCharacter>(SafeSpawnLocation, FRotator::ZeroRotator, Parameters);
+	const int32 PlayerNumber = NextSharedCityPlayerNumber++;
+	const FVector SpawnLocation = SafeSpawnLocation + FVector(0.0, SharedCitySpawnSpacing * (PlayerNumber - 1), 0.0);
+	AOddsWellPlaceholderCharacter* Character = GetWorld()->SpawnActor<AOddsWellPlaceholderCharacter>(SpawnLocation, FRotator::ZeroRotator, Parameters);
+	if (Character && GetNetMode() != NM_Standalone)
+	{
+		Character->AssignSharedCityPlayerNumber(PlayerNumber);
+	}
+	return Character;
 }
 
 #if WITH_DEV_AUTOMATION_TESTS
@@ -780,6 +967,9 @@ bool FOddsWellLocomotionDefaultsTest::RunTest(const FString& Parameters)
 	TestTrue(TEXT("Safe spawn starts above the capsule"), SafeSpawnLocation.Z > CapsuleHalfHeight && CapsuleRadius > 0.0f);
 	TestTrue(TEXT("Camera pitch is bounded"), CameraPitchMin > -90.0f && CameraPitchMax < 90.0f && CameraPitchMin < CameraPitchMax);
 	TestTrue(TEXT("Camera yaw is bounded"), CameraYawMin == -180.0f && CameraYawMax == 180.0f);
+	TestTrue(TEXT("Two-player proof uses separated spawn points"), SharedCitySpawnSpacing > CapsuleRadius * 2.0f);
+	TestTrue(TEXT("Shared-city QA requires measurable movement"), SharedCityQaMovementDistance > SharedCitySpawnSpacing);
+	TestTrue(TEXT("Players pass through one another"), SharedCityPlayerCollision == ECR_Ignore);
 
 	const TArray<FKey> KeyboardMoveKeys = {KeyForward, KeyBackward, KeyLeft, KeyRight};
 	const TArray<FKey> MouseLookKeys = {KeyMouseYaw, KeyMousePitch};

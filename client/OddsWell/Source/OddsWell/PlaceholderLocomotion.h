@@ -12,6 +12,7 @@ class UCameraComponent;
 class UMaterialInstanceDynamic;
 class USpringArmComponent;
 class UStaticMeshComponent;
+class UTextRenderComponent;
 
 class FOddsWellStarterOutfitState
 {
@@ -36,6 +37,9 @@ public:
 	virtual void Tick(float DeltaSeconds) override;
 	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
 	virtual void PossessedBy(AController* NewController) override;
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+	void AssignSharedCityPlayerNumber(int32 PlayerNumber);
+	int32 GetSharedCityPlayerNumber() const { return SharedCityPlayerNumber; }
 
 protected:
 	virtual void BeginPlay() override;
@@ -55,11 +59,16 @@ private:
 	void FinishQa(bool bPassed);
 	void RunSundaleRouteQa(float DeltaSeconds);
 	void FinishSundaleRouteQa(bool bPassed);
+	void RunSharedCityQa(float DeltaSeconds);
 	bool ApplySavedOrFallbackAppearance();
 	void SyncOutfitComponents();
+	void SyncSharedCityNameplate();
 	void RunOutfitQa(float DeltaSeconds);
 	void ReportOutfitError(const FString& Error) const;
 	void ReportAppearanceError(const FString& Error) const;
+
+	UFUNCTION()
+	void OnRep_SharedCityPlayerNumber();
 
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UStaticMeshComponent> PrimitiveBody;
@@ -84,6 +93,12 @@ private:
 
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UCameraComponent> FollowCamera;
+
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<UTextRenderComponent> SharedCityNameplate;
+
+	UPROPERTY(ReplicatedUsing=OnRep_SharedCityPlayerNumber)
+	int32 SharedCityPlayerNumber = 0;
 
 	FOddsWellStarterOutfitState StarterOutfitState;
 	FVector QaStartLocation = FVector::ZeroVector;
@@ -115,6 +130,10 @@ private:
 	bool bSundaleRouteRun = false;
 	bool bSundaleRouteStarted = false;
 	bool bSundaleRouteFinished = false;
+	float SharedCityQaElapsed = 0.0f;
+	double SharedCityQaExitAt = 0.0;
+	bool bSharedCityQa = false;
+	bool bSharedCityQaVisibleLogged = false;
 };
 
 UCLASS()
@@ -124,5 +143,16 @@ class ODDSWELL_API AOddsWellLocomotionGameMode final : public AGameModeBase
 
 public:
 	AOddsWellLocomotionGameMode();
+	virtual void Tick(float DeltaSeconds) override;
+	virtual void PostLogin(APlayerController* NewPlayer) override;
+	virtual void Logout(AController* Exiting) override;
 	virtual APawn* SpawnDefaultPawnAtTransform_Implementation(AController* NewPlayer, const FTransform&) override;
+
+private:
+	TMap<int32, FVector> SharedCityQaStartLocations;
+	double SharedCityQaExitAt = 0.0;
+	int32 NextSharedCityPlayerNumber = 1;
+	bool bSharedCityQa = false;
+	bool bSharedCityQaStarted = false;
+	bool bSharedCityQaPassed = false;
 };

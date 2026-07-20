@@ -692,6 +692,16 @@ Build the one-city scope defined in [[Design/Decisions/DEC-002 First Playable Sc
 - **Boundary:** no final asset, interior, multiplayer, backend, account, store catalog, item ownership, apartment system, Odds Bucks, wager, deployment, model, training, or retraining behavior was added.
 - **Next gate:** Phase 1D shared-city presence. Before implementation, freeze the smallest local two-client proof defaults for provisional capacity direction, player collision, visible names, and the no-external-hosting boundary.
 
+### Phase 1D.1 Local Two-Client Shared City Presence status
+
+- **Status:** Complete on `agent/phase-0d`; smallest local listen-server presence proof only.
+- **Owner direction:** [[Design/Decisions/DEC-010 Phase 1D Shared City Defaults]] freezes two local clients first, `$0.00`, no external service, players passing through one another, temporary visible proof labels, reconnect before capacity measurement, and blocking/reporting before external beta access.
+- **Implementation:** the existing native placeholder character explicitly replicates movement and one server-assigned temporary player number. A built-in text component displays `Player 1` / `Player 2`; player capsules ignore only the Pawn channel; and two networked spawns begin `200 cm` apart. The existing Unreal character movement, camera, city map, and local appearance record remain otherwise unchanged.
+- **Packaged proof:** one hidden local listen server bound only to `127.0.0.1:7787`; one joining local client was welcomed into `SundaleGraybox`. Both processes observed two labeled players. The joining client moved through normal character input, and the server measured `300.2 cm` of authoritative movement. Both processes exited `0` without manual termination.
+- **Validation:** final editor/game builds passed; native character automation passed `5/5`; Windows BuildCookRun passed in `53.07s`; the archive contains `53` files totaling `1,041,716,034` bytes; all `65/65` frozen regressions passed in `159.452s`; Brain Admin self-check and Python compilation passed; server/client/native logs contain zero fatal or ensure matches. Cost was `$0.00`. See [[Development/Reports/Phase 1D1 Local Two-Client Shared City Presence]].
+- **Boundary:** this does not prove synchronized appearance/clothing, reconnect, capacity, accounts, matchmaking, invitations, friends, chat, voice, moderation, blocking/reporting, external hosting, deployment, ownership transfer, economy, wagering, final art, or production multiplayer readiness.
+- **Next gate:** Phase 1D.2 synchronizes the selected placeholder appearance and equipped starter top/bottom between the same two local clients. Reconnect remains Phase 1D.3.
+
 ## Future shared simulation layer
 
 Athlete Life Brain v4 is the default for newly generated train, rest, recover, and socialize decisions. It adds only one bounded, one-decision, same-season recent-scoring response above v3's routine behavior. V1-v4 history remains immutable. Expand into longer memory, traits, relationships, nightlife, media, discipline, career decisions, and other sports only after each smaller input passes its own engineering evaluation.
