@@ -1,18 +1,18 @@
 {
 	"nodes":[
-		{"id":"fcc-title","type":"text","text":"# FIRST CITY CONCEPTS — NONCANONICAL\nThree grounded modern-day directions. Nothing becomes canon until the owner chooses.","x":0,"y":-220,"width":2040,"height":130,"color":"6"},
+		{"id":"fcc-title","type":"text","text":"# FIRST CITY CONCEPTS — B SELECTED\nSundale's modern civic-commons direction is canonical planning intent; its name remains working.","x":0,"y":-220,"width":2040,"height":130,"color":"2"},
 		{"id":"fcc-file","type":"file","file":"Design/First City Concept Packages.md","x":0,"y":-60,"width":1320,"height":100,"color":"6"},
-		{"id":"fcc-gate","type":"text","text":"## OWNER GATE\nChoose A, B, C, or an explicit hybrid","x":1360,"y":-60,"width":680,"height":100,"color":"6"},
+		{"id":"fcc-gate","type":"file","file":"Design/Decisions/DEC-008 Beta First City Direction.md","x":1360,"y":-60,"width":680,"height":100,"color":"2"},
 		{"id":"fcc-a-group","type":"group","label":"A — ROOKWELL","x":0,"y":90,"width":640,"height":900,"color":"1"},
 		{"id":"fcc-a-image","type":"file","file":"90 Assets/City Concepts/Phase 1C0/rookwell-concept.png","x":20,"y":140,"width":600,"height":340},
 		{"id":"fcc-a-text","type":"text","text":"## A 🧱 MAINLINE / ROOKWELL\n**Working-city renewal**\n\n🏠 Studio → 💼 Job → 🏀 Court → 👕 Clothing → 🪑 Furniture → 🏟️ Arena / Sportsbook → Home\n\n**Geography:** flat four-block loop\n**Planning target:** 6–8 minutes\n**Look:** brick, steel, teal, amber, wet evening\n**Best at:** grounded identity + simplest graybox\n**Watch:** can become too dark or generically industrial","x":20,"y":510,"width":600,"height":440,"color":"1"},
-		{"id":"fcc-b-group","type":"group","label":"B — SUNDALE","x":700,"y":90,"width":640,"height":900,"color":"2"},
+		{"id":"fcc-b-group","type":"group","label":"B — SUNDALE ✅ SELECTED","x":700,"y":90,"width":640,"height":900,"color":"2"},
 		{"id":"fcc-b-image","type":"file","file":"90 Assets/City Concepts/Phase 1C0/sundale-concept.png","x":720,"y":140,"width":600,"height":340},
 		{"id":"fcc-b-text","type":"text","text":"## B ☀️ DAYMARK / SUNDALE\n**Sunlit civic commons**\n\n🏠 Studio ↻ 💼 Job ↻ 👕 Clothing ↻ 🏀 Commons Court ↻ 🪑 Furniture ↻ 🏟️ Arena / Sportsbook\n\n**Geography:** flat ring around one commons\n**Planning target:** 5–7 minutes\n**Look:** limestone, terracotta, sage, warm daylight\n**Best at:** social clarity + friendly first hour\n**Watch:** can feel like generic mixed-use development","x":720,"y":510,"width":600,"height":440,"color":"2"},
 		{"id":"fcc-c-group","type":"group","label":"C — ALDERPOINT","x":1400,"y":90,"width":640,"height":900,"color":"3"},
 		{"id":"fcc-c-image","type":"file","file":"90 Assets/City Concepts/Phase 1C0/alderpoint-concept.png","x":1420,"y":140,"width":600,"height":340},
 		{"id":"fcc-c-text","type":"text","text":"## C 🌲 NORTHREACH / ALDERPOINT\n**Green urban rise**\n\nLOWER: 🏠 Studio + 💼 Job → RAMP → MIDDLE: 👕 Shops + 🏀 Court → RAMP → UPPER: 🏟️ Arena / Sportsbook → return path\n\n**Geography:** two accessible terraces\n**Planning target:** 7–9 minutes\n**Look:** slate, dark brick, moss, amber blue hour\n**Best at:** memorable skyline + progression metaphor\n**Watch:** slope, navigation, collision, and camera work","x":1420,"y":510,"width":600,"height":440,"color":"3"},
-		{"id":"fcc-footer","type":"text","text":"## SHARED BETA BOUNDARY\nOne city • modern day • same required locations • same player loop • concept art only • no production assets • no water city or Tartaria city in beta\n\n**Next:** owner selects one direction, an explicit hybrid, or one bounded revision before Phase 1C.1.","x":0,"y":1040,"width":2040,"height":180,"color":"6"}
+		{"id":"fcc-footer","type":"text","text":"## SELECTED BETA BOUNDARY\nOne modern-day Sundale-direction city • same required locations • compact commons ring • concept art only • no production assets • no water city or Tartaria city in beta\n\n**Next:** Phase 1C.1 freezes the minimal art-direction sheet and measurable walking loop. The name remains working.","x":0,"y":1040,"width":2040,"height":180,"color":"2"}
 	],
 	"edges":[]
 }

@@ -43,7 +43,8 @@ The roadmap is intentionally made of measurable product gates, not hundreds of s
 - Phase 1B.5 local appearance persistence and first-playable handoff: **COMPLETE**; see [[Development/Reports/Phase 1B5 Local Character Appearance Persistence and First-Playable Handoff]].
 - Phase 1B character onboarding exit review: **COMPLETE**; see [[Development/Reports/Phase 1B Exit Review Character Onboarding Evidence Closure]].
 - Phase 1C.0 noncanonical first-city concept packages: **COMPLETE**; see [[Development/Reports/Phase 1C0 Noncanonical First City Concept Packages]].
-- Next gate: **Phase 1C OWNER SELECTION**. Three visual comparison packages are ready in [[Design/First City Concept Packages]], but city implementation remains stopped until the owner selects one direction or explicitly approves a hybrid.
+- Phase 1C owner selection: **COMPLETE**. The owner selected Concept B — Daymark / Sundale on July 20, 2026; see [[Design/Decisions/DEC-008 Beta First City Direction]].
+- Next gate: **Phase 1C.1 MINIMAL ART-DIRECTION AND LOOP FREEZE**. Sundale is a working name; no city graybox or final art is complete.
 - Current prerequisite note: UE 5.8, the aligned x64 runtime and .NET Framework 4.8 SDK, portable project, reproducible local Windows package, empty-map launch, LFS, generated-file ignores, primitive block/court iteration, collision, cold-process reopen, direct recorded-replay rendering, deterministic packaged traces, and local resource sampling are verified. UE 5.8 is now the approved beta client engine.
 
 No later roadmap phase is authorized merely because it appears below.
@@ -127,11 +128,11 @@ A fresh player can choose a preset, enter a packaged placeholder world, move, cl
 - Required beta locations.
 - Art, music, and storytelling.
 
-### Owner gate
+### Owner gate — complete
 
-Approve the world/city name, theme, geography, visual language, and a minimal art-direction sheet. Agents may research or present options, but may not canonize one.
+The owner selected Concept B — Daymark / Sundale on July 20, 2026. The theme, mostly flat commons-ring geography, visual language, and atmosphere are approved under [[Design/Decisions/DEC-008 Beta First City Direction]]. Sundale remains a working name.
 
-**Phase 1C.0 planning evidence:** three noncanonical grounded modern-day alternatives are complete in [[Design/First City Concept Packages]] and [[Visual Maps/First City Concepts]]. The owner must select Rookwell, Sundale, Alderpoint, an explicit hybrid, or one bounded revision before any city identity or layout becomes canonical.
+**Phase 1C.0 planning evidence:** three grounded modern-day alternatives are complete in [[Design/First City Concept Packages]] and [[Visual Maps/First City Concepts]]. Concept B is selected. Phase 1C.1 may now freeze the minimal Sundale art-direction sheet and measurable compact walking loop before grayboxing.
 
 ### Smallest delivery path
 
@@ -379,7 +380,7 @@ A Beta Exit Report states **READY**, **BLOCKED WITH MEASURED CAUSE**, or **NOT R
 
 1. **RESOLVED:** Unreal Engine 5.8 beta adoption; see [[Design/Decisions/DEC-006 Unreal Engine 5.8 Beta Adoption]].
 2. **RESOLVED FOR PHASE 1B:** camera, movement, and minimum placeholder presets; see [[Design/Decisions/DEC-007 Phase 1B Character Defaults]]. Final art remains later.
-3. **CONCEPTS READY — OWNER SELECTION PENDING:** choose Rookwell, Sundale, Alderpoint, an explicit hybrid, or one bounded revision for the world/city name, theme, geography, visual language, and core layout; see [[Design/First City Concept Packages]].
+3. **CONCEPT B SELECTED:** Daymark / Sundale supplies the approved modern civic-commons direction; freeze its minimal art-direction sheet and compact walking loop in Phase 1C.1 before grayboxing. Sundale remains a working name; see [[Design/Decisions/DEC-008 Beta First City Direction]].
 4. Shared-city instance capacity, regions, collision, names, and minimal safety surface.
 5. Apartment instancing, layouts, visits, and decorating controls.
 6. 82-game schedule variety, team count, calendar, and presentation cadence.

@@ -18,6 +18,7 @@ tags:
 - [[Design/Decisions/DEC-003 Multi-Brain AI Architecture|Multi-brain AI architecture]]
 - [[Design/Decisions/DEC-004 AI Retraining Budget|AI retraining budget]]
 - [[Design/Decisions/DEC-005 Game Admin Console|Game Admin Console direction]]
+- [[Design/Decisions/DEC-008 Beta First City Direction|Beta first-city direction]]
 - [[Art/Visual Consistency|Visual consistency]]
 - [[Development/Current Plan|Current plan]]
 - [[Development/Beta Delivery Roadmap|Beta delivery roadmap]]
@@ -96,7 +97,7 @@ tags:
 
 ## Current focus
 
-Phase 1A is complete and Unreal Engine 5.8 is the approved beta client engine. Phase 1B character onboarding is complete with committed packaged evidence. Phase 1C.0 now offers three noncanonical grounded modern-day first-city packages—Rookwell, Sundale, and Alderpoint—in [[Design/First City Concept Packages]] and [[Visual Maps/First City Concepts]]. The owner must select one, approve an explicit hybrid, or request one bounded revision before Phase 1C.1 can freeze the art direction and walking loop. No city identity is canon; final art, multiplayer, Odds Bucks, wagering, deployment, and retraining remain inactive.
+Phase 1A is complete and Unreal Engine 5.8 is the approved beta client engine. Phase 1B character onboarding is complete with committed packaged evidence. The owner selected **Concept B — Daymark / Sundale** as the canonical beta first-city direction; see [[Design/Decisions/DEC-008 Beta First City Direction]], [[Design/First City Concept Packages]], and [[Visual Maps/First City Concepts]]. Sundale remains a working name. Phase 1C.1 must now freeze the minimal art direction and measurable commons-ring walking loop before grayboxing. Final art, multiplayer, Odds Bucks, wagering, deployment, and retraining remain inactive.
 
 ## Current state
 

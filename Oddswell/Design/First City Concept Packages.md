@@ -1,8 +1,8 @@
 # First City Concept Packages
 
-Status: **NONCANONICAL COMPARISON — OWNER SELECTION REQUIRED**
+Status: **CONCEPT B SELECTED — SUNDALE DIRECTION CANONICAL; NAME STILL WORKING**
 
-These three Phase 1C.0 packages answer the owner's request for a first city that feels modern and distinctive without becoming plain, futuristic, luxurious, or highly fantastical. They are alternatives for comparison only. No name, layout, palette, architecture, weather, lore, or image in this document is canon until the owner explicitly selects it or approves named parts of a hybrid.
+These three Phase 1C.0 packages answer the owner's request for a first city that feels modern and distinctive without becoming plain, futuristic, luxurious, or highly fantastical. On July 20, 2026, the owner selected **Package B — Daymark / Sundale** as the beta first-city direction. Its theme, geography, visual language, atmosphere, and compact-loop intent are now canonical planning constraints under [[Design/Decisions/DEC-008 Beta First City Direction]]. **Sundale remains a working name**, and the image remains concept evidence rather than final art.
 
 Future cities may explore much more dramatic identities, including a water-focused city and a Tartaria-inspired monumental city. Those ideas are parked after the beta first city and do not authorize current design or implementation.
 
@@ -43,7 +43,7 @@ Every package preserves the same player-facing beta scope:
 
 **Primary risk:** it could become too dark or generically industrial. Counter with generous tree cover, warm windows, an active court, and a clean arena promenade.
 
-## Package B — Daymark / Sundale
+## Package B — Daymark / Sundale ✅ SELECTED
 
 ![[90 Assets/City Concepts/Phase 1C0/sundale-concept.png]]
 
@@ -101,12 +101,6 @@ Every package preserves the same player-facing beta scope:
 | Social atmosphere | Evening street energy | Bright and immediately communal | Calm, layered, aspirational |
 | Main design risk | Too gritty or dark | Too generic or resort-like | Navigation and slope complexity |
 
-## Owner decision gate
+## Owner decision outcome
 
-The next truthful step is one of:
-
-1. Select Rookwell, Sundale, or Alderpoint as the first-city direction.
-2. Approve a specific hybrid by naming which package supplies the city name, geography, architecture, palette, lighting, and atmosphere.
-3. Request one bounded revision to the three concepts before choosing.
-
-Only after that decision may a separate Phase 1C.1 freeze the canonical minimal art-direction sheet and compact graybox loop.
+The owner selected Package B on July 20, 2026. Phase 1C.1 may now freeze Sundale's minimal art-direction sheet and compact commons-ring graybox loop. The working city name may still be changed without reopening the selected city direction.
