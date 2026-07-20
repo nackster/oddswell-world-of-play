@@ -2,6 +2,7 @@
 
 #include "Camera/CameraComponent.h"
 #include "Camera/PlayerCameraManager.h"
+#include "CharacterAppearanceSave.h"
 #include "CharacterPresetCatalog.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/InputComponent.h"
@@ -60,52 +61,12 @@ const FKey KeyControllerLookX = EKeys::Gamepad_RightX;
 const FKey KeyControllerLookY = EKeys::Gamepad_RightY;
 const FKey KeyControllerRun = EKeys::Gamepad_LeftThumbstick;
 const FKey KeyControllerJump = EKeys::Gamepad_FaceButton_Bottom;
-
-bool GetStarterEquipmentIds(FName& OutTop, FName& OutBottom, FString& OutError)
-{
-	if (!ValidateOddsWellCharacterPresets(OutError))
-	{
-		return false;
-	}
-	const TArray<FOddsWellCharacterPreset>& Presets = GetOddsWellCharacterPresets();
-	if (Presets.IsEmpty() || Presets[0].EquippedItemIds.Num() != 2)
-	{
-		OutError = TEXT("The safe preset must contain one starter top and one starter bottom.");
-		return false;
-	}
-	OutTop = Presets[0].EquippedItemIds[0];
-	OutBottom = Presets[0].EquippedItemIds[1];
-	OutError.Reset();
-	return true;
-}
-
-bool ResolveStarterEquipmentSlot(const FName ItemId, EOddsWellStarterEquipmentSlot& OutSlot, FString& OutError)
-{
-	FName TopId;
-	FName BottomId;
-	if (!GetStarterEquipmentIds(TopId, BottomId, OutError))
-	{
-		return false;
-	}
-	if (ItemId == TopId)
-	{
-		OutSlot = EOddsWellStarterEquipmentSlot::Top;
-		return true;
-	}
-	if (ItemId == BottomId)
-	{
-		OutSlot = EOddsWellStarterEquipmentSlot::Bottom;
-		return true;
-	}
-	OutError = FString::Printf(TEXT("Unsupported starter equipment ID: %s"), *ItemId.ToString());
-	return false;
-}
 }
 
 bool FOddsWellStarterOutfitState::Equip(const FName ItemId, const EOddsWellStarterEquipmentSlot Slot, FString& OutError)
 {
 	EOddsWellStarterEquipmentSlot ResolvedSlot = EOddsWellStarterEquipmentSlot::Top;
-	if (!ResolveStarterEquipmentSlot(ItemId, ResolvedSlot, OutError))
+	if (!ResolveOddsWellStarterEquipmentSlot(ItemId, ResolvedSlot, OutError))
 	{
 		return false;
 	}
@@ -142,7 +103,7 @@ bool FOddsWellStarterOutfitState::ValidateComplete(FString& OutError) const
 {
 	FName TopId;
 	FName BottomId;
-	if (!GetStarterEquipmentIds(TopId, BottomId, OutError))
+	if (!GetOddsWellStarterEquipmentIds(TopId, BottomId, OutError))
 	{
 		return false;
 	}
@@ -232,6 +193,8 @@ void AOddsWellPlaceholderCharacter::BeginPlay()
 	bQaEnabled = FParse::Param(FCommandLine::Get(), TEXT("LocomotionQa"));
 	bQaAutoExit = FParse::Param(FCommandLine::Get(), TEXT("LocomotionAutoExit"));
 	bOutfitQaEnabled = FParse::Param(FCommandLine::Get(), TEXT("OutfitQa"));
+	bAppearanceQa = UseOddsWellAppearanceQaSlot();
+	bAppearanceQaCleanup = FParse::Param(FCommandLine::Get(), TEXT("AppearanceQaCleanup"));
 	UMaterialInterface* BasicShapeMaterial = LoadObject<UMaterialInterface>(nullptr, TEXT("/Engine/BasicShapes/BasicShapeMaterial.BasicShapeMaterial"));
 	if (!BasicShapeMaterial)
 	{
@@ -241,9 +204,10 @@ void AOddsWellPlaceholderCharacter::BeginPlay()
 	else
 	{
 		StarterOutfitMaterial = UMaterialInstanceDynamic::Create(BasicShapeMaterial, this);
-		if (!StarterOutfitMaterial)
+		PrimitiveSkinMaterial = UMaterialInstanceDynamic::Create(BasicShapeMaterial, this);
+		if (!StarterOutfitMaterial || !PrimitiveSkinMaterial)
 		{
-			ReportOutfitError(TEXT("The native starter outfit material instance could not be created."));
+			ReportAppearanceError(TEXT("The native placeholder material instances could not be created."));
 			bOutfitQaEnabled = false;
 		}
 		else
@@ -251,9 +215,11 @@ void AOddsWellPlaceholderCharacter::BeginPlay()
 			StarterOutfitMaterial->SetVectorParameterValue(TEXT("Color"), StarterOffWhite);
 			StarterOutfitTop->SetMaterial(0, StarterOutfitMaterial);
 			StarterOutfitBottom->SetMaterial(0, StarterOutfitMaterial);
+			PrimitiveBody->SetMaterial(0, PrimitiveSkinMaterial);
+			PrimitiveHead->SetMaterial(0, PrimitiveSkinMaterial);
 		}
 	}
-	if (!ApplySafeStarterOutfit())
+	if (!ApplySavedOrFallbackAppearance())
 	{
 		bOutfitQaEnabled = false;
 	}
@@ -279,10 +245,6 @@ void AOddsWellPlaceholderCharacter::PossessedBy(AController* NewController)
 void AOddsWellPlaceholderCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
-	PlayerInputComponent->BindAxisKey(KeyForward, this, &AOddsWellPlaceholderCharacter::MoveForward);
-	PlayerInputComponent->BindAxisKey(KeyBackward, this, &AOddsWellPlaceholderCharacter::MoveBackward);
-	PlayerInputComponent->BindAxisKey(KeyRight, this, &AOddsWellPlaceholderCharacter::MoveRight);
-	PlayerInputComponent->BindAxisKey(KeyLeft, this, &AOddsWellPlaceholderCharacter::MoveLeft);
 	PlayerInputComponent->BindAxisKey(KeyMouseYaw, this, &AOddsWellPlaceholderCharacter::LookYaw);
 	PlayerInputComponent->BindAxisKey(KeyMousePitch, this, &AOddsWellPlaceholderCharacter::LookPitchMouse);
 	PlayerInputComponent->BindKey(KeyRun, IE_Pressed, this, &AOddsWellPlaceholderCharacter::StartRun);
@@ -303,6 +265,7 @@ void AOddsWellPlaceholderCharacter::SetupPlayerInputComponent(UInputComponent* P
 void AOddsWellPlaceholderCharacter::Tick(const float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
+	PollKeyboardMovement();
 	if (bQaEnabled)
 	{
 		RunQa(DeltaSeconds);
@@ -318,6 +281,17 @@ void AOddsWellPlaceholderCharacter::Tick(const float DeltaSeconds)
 	}
 }
 
+void AOddsWellPlaceholderCharacter::PollKeyboardMovement()
+{
+	const APlayerController* PlayerController = Cast<APlayerController>(Controller);
+	if (!PlayerController)
+	{
+		return;
+	}
+	MoveForward((PlayerController->IsInputKeyDown(KeyForward) ? 1.0f : 0.0f) - (PlayerController->IsInputKeyDown(KeyBackward) ? 1.0f : 0.0f));
+	MoveRight((PlayerController->IsInputKeyDown(KeyRight) ? 1.0f : 0.0f) - (PlayerController->IsInputKeyDown(KeyLeft) ? 1.0f : 0.0f));
+}
+
 void AOddsWellPlaceholderCharacter::MoveForward(const float Value)
 {
 	if (Controller && !FMath::IsNearlyZero(Value))
@@ -326,8 +300,6 @@ void AOddsWellPlaceholderCharacter::MoveForward(const float Value)
 		AddMovementInput(FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X), Value);
 	}
 }
-
-void AOddsWellPlaceholderCharacter::MoveBackward(const float Value) { MoveForward(-Value); }
 
 void AOddsWellPlaceholderCharacter::MoveRight(const float Value)
 {
@@ -338,7 +310,6 @@ void AOddsWellPlaceholderCharacter::MoveRight(const float Value)
 	}
 }
 
-void AOddsWellPlaceholderCharacter::MoveLeft(const float Value) { MoveRight(-Value); }
 void AOddsWellPlaceholderCharacter::LookYaw(const float Value) { AddControllerYawInput(Value); }
 void AOddsWellPlaceholderCharacter::LookPitchMouse(const float Value) { AddControllerPitchInput(-Value); }
 void AOddsWellPlaceholderCharacter::LookPitchController(const float Value) { AddControllerPitchInput(Value); }
@@ -347,29 +318,51 @@ void AOddsWellPlaceholderCharacter::StopRun() { GetCharacterMovement()->MaxWalkS
 void AOddsWellPlaceholderCharacter::StartJump() { Jump(); }
 void AOddsWellPlaceholderCharacter::StopJump() { StopJumping(); }
 
-bool AOddsWellPlaceholderCharacter::ApplySafeStarterOutfit()
+bool AOddsWellPlaceholderCharacter::ApplySavedOrFallbackAppearance()
 {
+	FOddsWellResolvedCharacterAppearance Appearance;
+	FString Source;
 	FString Error;
-	const TArray<FOddsWellCharacterPreset>& Presets = GetOddsWellCharacterPresets();
-	if (!ValidateOddsWellCharacterPresets(Error) || Presets.IsEmpty() || Presets[0].EquippedItemIds.Num() != 2)
+	if (!LoadOddsWellCharacterAppearance(bAppearanceQa, Appearance, Source, Error) || !Appearance.Preset)
 	{
-		ReportOutfitError(Error.IsEmpty() ? TEXT("No valid safe starter outfit is available.") : Error);
+		ReportAppearanceError(Error.IsEmpty() ? TEXT("No valid local or fallback appearance is available.") : Error);
 		return false;
 	}
-	if (!StarterOutfitState.Equip(Presets[0].EquippedItemIds[0], EOddsWellStarterEquipmentSlot::Top, Error)
-		|| !StarterOutfitState.Equip(Presets[0].EquippedItemIds[1], EOddsWellStarterEquipmentSlot::Bottom, Error)
+	if (!Error.IsEmpty())
+	{
+		UE_LOG(LogOddsWellLocomotion, Warning, TEXT("ODDSWELL_APPEARANCE_FALLBACK|source=%s|reason=%s|record_preserved=true"), *Source, *Error);
+	}
+	if (!PrimitiveSkinMaterial)
+	{
+		ReportAppearanceError(TEXT("The primitive skin material is unavailable."));
+		return false;
+	}
+	if (!StarterOutfitState.Equip(Appearance.TopItemId, EOddsWellStarterEquipmentSlot::Top, Error)
+		|| !StarterOutfitState.Equip(Appearance.BottomItemId, EOddsWellStarterEquipmentSlot::Bottom, Error)
 		|| !StarterOutfitState.ValidateComplete(Error))
 	{
 		ReportOutfitError(Error);
 		return false;
 	}
+	PrimitiveSkinMaterial->SetVectorParameterValue(TEXT("Color"), FLinearColor::FromSRGBColor(Appearance.Preset->SkinTone));
 	SyncOutfitComponents();
 	UE_LOG(
 		LogOddsWellLocomotion,
 		Display,
-		TEXT("ODDSWELL_OUTFIT_READY|top=%s|slot=top|bottom=%s|slot=bottom|replaceable=true"),
+		TEXT("ODDSWELL_APPEARANCE_READY|schema=1|preset=%s|top=%s|bottom=%s|source=%s|skin=%s|presentation=%s|slot=%s"),
+		*Appearance.Preset->Id.ToString(),
 		*StarterOutfitState.GetEquipped(EOddsWellStarterEquipmentSlot::Top).ToString(),
-		*StarterOutfitState.GetEquipped(EOddsWellStarterEquipmentSlot::Bottom).ToString());
+		*StarterOutfitState.GetEquipped(EOddsWellStarterEquipmentSlot::Bottom).ToString(),
+		*Source,
+		*Appearance.Preset->SkinTone.ToHex(),
+		Appearance.Preset->Presentation == EOddsWellCharacterPresentation::Masculine ? TEXT("masculine") : TEXT("feminine"),
+		bAppearanceQa ? TEXT("qa") : TEXT("production"));
+	UE_LOG(
+		LogOddsWellLocomotion,
+		Display,
+		TEXT("ODDSWELL_OUTFIT_READY|top=%s|slot=top|bottom=%s|slot=bottom|replaceable=true"),
+		*Appearance.TopItemId.ToString(),
+		*Appearance.BottomItemId.ToString());
 	return true;
 }
 
@@ -399,7 +392,7 @@ void AOddsWellPlaceholderCharacter::RunOutfitQa(const float DeltaSeconds)
 	{
 		FName TopId;
 		FName BottomId;
-		if (!GetStarterEquipmentIds(TopId, BottomId, Error)
+		if (!GetOddsWellStarterEquipmentIds(TopId, BottomId, Error)
 			|| !StarterOutfitState.Equip(TopId, EOddsWellStarterEquipmentSlot::Top, Error)
 			|| !StarterOutfitState.ValidateComplete(Error))
 		{
@@ -443,6 +436,11 @@ void AOddsWellPlaceholderCharacter::RunOutfitQa(const float DeltaSeconds)
 void AOddsWellPlaceholderCharacter::ReportOutfitError(const FString& Error) const
 {
 	UE_LOG(LogOddsWellLocomotion, Error, TEXT("ODDSWELL_OUTFIT_ERROR|%s"), *Error);
+}
+
+void AOddsWellPlaceholderCharacter::ReportAppearanceError(const FString& Error) const
+{
+	UE_LOG(LogOddsWellLocomotion, Error, TEXT("ODDSWELL_APPEARANCE_ERROR|%s"), *Error);
 }
 
 void AOddsWellPlaceholderCharacter::RunQa(const float DeltaSeconds)
@@ -560,6 +558,20 @@ void AOddsWellPlaceholderCharacter::FinishQa(const bool bPassed)
 	{
 		UE_LOG(LogOddsWellLocomotion, Error, TEXT("%s"), *Evidence);
 	}
+	if (bAppearanceQaCleanup)
+	{
+		FString Error;
+		const bool bClean = bAppearanceQa && DeleteOddsWellQaAppearanceAndVerify(Error);
+		if (bClean)
+		{
+			UE_LOG(LogOddsWellLocomotion, Display, TEXT("ODDSWELL_APPEARANCE_QA_CLEANUP|result=PASS|slot=qa|exists=false"));
+		}
+		else
+		{
+			UE_LOG(LogOddsWellLocomotion, Error, TEXT("ODDSWELL_APPEARANCE_QA_CLEANUP|result=FAIL|slot=%s|reason=%s"), bAppearanceQa ? TEXT("qa") : TEXT("production"), *Error);
+		}
+		bAppearanceQaCleanup = false;
+	}
 	if (bQaAutoExit)
 	{
 		QaExitAt = FPlatformTime::Seconds() + 12.0;
@@ -597,13 +609,24 @@ bool FOddsWellLocomotionDefaultsTest::RunTest(const FString& Parameters)
 	TestTrue(TEXT("Camera pitch is bounded"), CameraPitchMin > -90.0f && CameraPitchMax < 90.0f && CameraPitchMin < CameraPitchMax);
 	TestTrue(TEXT("Camera yaw is bounded"), CameraYawMin == -180.0f && CameraYawMax == 180.0f);
 
-	const TArray<FKey> KeyboardMoveLookKeys = {KeyForward, KeyBackward, KeyLeft, KeyRight, KeyMouseYaw, KeyMousePitch};
+	const TArray<FKey> KeyboardMoveKeys = {KeyForward, KeyBackward, KeyLeft, KeyRight};
+	const TArray<FKey> MouseLookKeys = {KeyMouseYaw, KeyMousePitch};
 	const TArray<FKey> ControllerMoveLookKeys = {KeyControllerMoveX, KeyControllerMoveY, KeyControllerLookX, KeyControllerLookY};
-	TestEqual(TEXT("Keyboard and mouse movement/look routes are complete"), KeyboardMoveLookKeys.Num(), 6);
+	TestEqual(TEXT("Keyboard movement polling routes are complete"), KeyboardMoveKeys.Num(), 4);
+	TestEqual(TEXT("Mouse look axis routes are complete"), MouseLookKeys.Num(), 2);
 	TestEqual(TEXT("Controller movement/look routes are complete"), ControllerMoveLookKeys.Num(), 4);
+	for (const FKey& Key : KeyboardMoveKeys)
+	{
+		TestFalse(FString::Printf(TEXT("Digital keyboard key %s is not bound as an axis"), *Key.ToString()), Key.IsAxis1D());
+	}
+	for (const FKey& Key : MouseLookKeys)
+	{
+		TestTrue(FString::Printf(TEXT("Mouse look key %s is a one-dimensional axis"), *Key.ToString()), Key.IsAxis1D());
+	}
 	for (const FKey& Key : ControllerMoveLookKeys)
 	{
 		TestTrue(FString::Printf(TEXT("Controller axis %s is a gamepad route"), *Key.ToString()), Key.IsGamepadKey());
+		TestTrue(FString::Printf(TEXT("Controller axis %s is one-dimensional"), *Key.ToString()), Key.IsAxis1D());
 	}
 	TestFalse(TEXT("Keyboard run route is not a gamepad key"), KeyRun.IsGamepadKey());
 	TestFalse(TEXT("Keyboard jump route is not a gamepad key"), KeyJump.IsGamepadKey());
@@ -642,8 +665,8 @@ bool FOddsWellStarterOutfitTest::RunTest(const FString& Parameters)
 		TestEqual(TEXT("Every preset bottom uses the exact approved ID"), Preset.EquippedItemIds[1], FName(TEXT("starter_offwhite_bottom")));
 		EOddsWellStarterEquipmentSlot TopSlot = EOddsWellStarterEquipmentSlot::Bottom;
 		EOddsWellStarterEquipmentSlot BottomSlot = EOddsWellStarterEquipmentSlot::Top;
-		TestTrue(TEXT("Catalog top resolves"), ResolveStarterEquipmentSlot(Preset.EquippedItemIds[0], TopSlot, Error));
-		TestTrue(TEXT("Catalog bottom resolves"), ResolveStarterEquipmentSlot(Preset.EquippedItemIds[1], BottomSlot, Error));
+		TestTrue(TEXT("Catalog top resolves"), ResolveOddsWellStarterEquipmentSlot(Preset.EquippedItemIds[0], TopSlot, Error));
+		TestTrue(TEXT("Catalog bottom resolves"), ResolveOddsWellStarterEquipmentSlot(Preset.EquippedItemIds[1], BottomSlot, Error));
 		TestTrue(TEXT("Top maps only to Top"), TopSlot == EOddsWellStarterEquipmentSlot::Top);
 		TestTrue(TEXT("Bottom maps only to Bottom"), BottomSlot == EOddsWellStarterEquipmentSlot::Bottom);
 	}

@@ -8,6 +8,12 @@ enum class EOddsWellCharacterPresentation : uint8
 	Feminine
 };
 
+enum class EOddsWellStarterEquipmentSlot : uint8
+{
+	Top,
+	Bottom
+};
+
 struct FOddsWellCharacterPreset
 {
 	FName Id;
@@ -18,3 +24,6 @@ struct FOddsWellCharacterPreset
 
 ODDSWELL_API const TArray<FOddsWellCharacterPreset>& GetOddsWellCharacterPresets();
 ODDSWELL_API bool ValidateOddsWellCharacterPresets(FString& OutError);
+ODDSWELL_API const FOddsWellCharacterPreset* FindOddsWellCharacterPreset(FName PresetId);
+ODDSWELL_API bool GetOddsWellStarterEquipmentIds(FName& OutTop, FName& OutBottom, FString& OutError);
+ODDSWELL_API bool ResolveOddsWellStarterEquipmentSlot(FName ItemId, EOddsWellStarterEquipmentSlot& OutSlot, FString& OutError);

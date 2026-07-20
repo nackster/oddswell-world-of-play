@@ -47,6 +47,7 @@ private:
 	void DrawCard(const FOddsWellCharacterPreset& Preset, int32 Index, float X, float Y, float Width, float Height);
 
 	FOddsWellCharacterSelectionState State;
+	FString HandoffError;
 	double AutoExitAt = 0.0;
 };
 

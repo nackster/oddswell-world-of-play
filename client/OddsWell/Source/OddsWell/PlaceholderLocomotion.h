@@ -1,20 +1,17 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "CharacterPresetCatalog.h"
 #include "GameFramework/Character.h"
 #include "GameFramework/GameModeBase.h"
 #include "PlaceholderLocomotion.generated.h"
+
+struct FOddsWellResolvedCharacterAppearance;
 
 class UCameraComponent;
 class UMaterialInstanceDynamic;
 class USpringArmComponent;
 class UStaticMeshComponent;
-
-enum class EOddsWellStarterEquipmentSlot : uint8
-{
-	Top,
-	Bottom
-};
 
 class FOddsWellStarterOutfitState
 {
@@ -45,9 +42,8 @@ protected:
 
 private:
 	void MoveForward(float Value);
-	void MoveBackward(float Value);
 	void MoveRight(float Value);
-	void MoveLeft(float Value);
+	void PollKeyboardMovement();
 	void LookYaw(float Value);
 	void LookPitchMouse(float Value);
 	void LookPitchController(float Value);
@@ -57,10 +53,11 @@ private:
 	void StopJump();
 	void RunQa(float DeltaSeconds);
 	void FinishQa(bool bPassed);
-	bool ApplySafeStarterOutfit();
+	bool ApplySavedOrFallbackAppearance();
 	void SyncOutfitComponents();
 	void RunOutfitQa(float DeltaSeconds);
 	void ReportOutfitError(const FString& Error) const;
+	void ReportAppearanceError(const FString& Error) const;
 
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UStaticMeshComponent> PrimitiveBody;
@@ -76,6 +73,9 @@ private:
 
 	UPROPERTY(Transient)
 	TObjectPtr<UMaterialInstanceDynamic> StarterOutfitMaterial;
+
+	UPROPERTY(Transient)
+	TObjectPtr<UMaterialInstanceDynamic> PrimitiveSkinMaterial;
 
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<USpringArmComponent> CameraBoom;
@@ -99,6 +99,8 @@ private:
 	float OutfitQaElapsed = 0.0f;
 	int32 OutfitQaStage = 0;
 	bool bOutfitQaEnabled = false;
+	bool bAppearanceQa = false;
+	bool bAppearanceQaCleanup = false;
 };
 
 UCLASS()

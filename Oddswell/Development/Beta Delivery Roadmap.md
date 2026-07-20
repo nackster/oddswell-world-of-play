@@ -40,7 +40,8 @@ The roadmap is intentionally made of measurable product gates, not hundreds of s
 - Phase 1B.2 fast local character-selection screen with a safe default: **COMPLETE**; see [[Development/Reports/Phase 1B2 Fast Local Character Selection Screen]].
 - Phase 1B.3 controllable primitive placeholder and approved locomotion: **COMPLETE**; see [[Development/Reports/Phase 1B3 Controllable Placeholder Avatar and Approved Locomotion]].
 - Phase 1B.4 separate replaceable starter outfit: **COMPLETE**; see [[Development/Reports/Phase 1B4 Replaceable Starter Outfit]].
-- Next smallest gate: **Phase 1B.5 locally save and reload the chosen preset plus equipped starter outfit**.
+- Phase 1B.5 local appearance persistence and first-playable handoff: **COMPLETE**; see [[Development/Reports/Phase 1B5 Local Character Appearance Persistence and First-Playable Handoff]].
+- Next smallest gate: **Phase 1B exit review**. Phase 1C remains blocked by its first-city owner gate.
 - Current prerequisite note: UE 5.8, the aligned x64 runtime and .NET Framework 4.8 SDK, portable project, reproducible local Windows package, empty-map launch, LFS, generated-file ignores, primitive block/court iteration, collision, cold-process reopen, direct recorded-replay rendering, deterministic packaged traces, and local resource sampling are verified. UE 5.8 is now the approved beta client engine.
 
 No later roadmap phase is authorized merely because it appears below.
@@ -103,7 +104,7 @@ No later roadmap phase is authorized merely because it appears below.
 2. **1B.2 COMPLETE:** fast local selection screen with a safe default; see [[Development/Reports/Phase 1B2 Fast Local Character Selection Screen]].
 3. **1B.3 COMPLETE:** one controllable primitive placeholder with the approved camera and input direction; see [[Development/Reports/Phase 1B3 Controllable Placeholder Avatar and Approved Locomotion]].
 4. **1B.4 COMPLETE:** worn off-white starter top and bottom are separate replaceable primitive equipment; see [[Development/Reports/Phase 1B4 Replaceable Starter Outfit]].
-5. **NEXT — 1B.5:** save/reload the selected preset and equipped starter outfit locally before multiplayer persistence.
+5. **1B.5 COMPLETE:** the selected preset and equipped starter outfit save locally, enter the packaged placeholder world, and recover exactly after a cold process restart; see [[Development/Reports/Phase 1B5 Local Character Appearance Persistence and First-Playable Handoff]].
 
 ### Owner gates
 

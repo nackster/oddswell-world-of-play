@@ -82,6 +82,52 @@ bool ValidateOddsWellCharacterPresets(FString& OutError)
 	return true;
 }
 
+const FOddsWellCharacterPreset* FindOddsWellCharacterPreset(const FName PresetId)
+{
+	return GetOddsWellCharacterPresets().FindByPredicate(
+		[PresetId](const FOddsWellCharacterPreset& Preset) { return Preset.Id == PresetId; });
+}
+
+bool GetOddsWellStarterEquipmentIds(FName& OutTop, FName& OutBottom, FString& OutError)
+{
+	if (!ValidateOddsWellCharacterPresets(OutError))
+	{
+		return false;
+	}
+	const TArray<FOddsWellCharacterPreset>& Presets = GetOddsWellCharacterPresets();
+	if (Presets.IsEmpty() || Presets[0].EquippedItemIds.Num() != 2)
+	{
+		OutError = TEXT("The safe preset must contain one starter top and one starter bottom.");
+		return false;
+	}
+	OutTop = Presets[0].EquippedItemIds[0];
+	OutBottom = Presets[0].EquippedItemIds[1];
+	OutError.Reset();
+	return true;
+}
+
+bool ResolveOddsWellStarterEquipmentSlot(const FName ItemId, EOddsWellStarterEquipmentSlot& OutSlot, FString& OutError)
+{
+	FName TopId;
+	FName BottomId;
+	if (!GetOddsWellStarterEquipmentIds(TopId, BottomId, OutError))
+	{
+		return false;
+	}
+	if (ItemId == TopId)
+	{
+		OutSlot = EOddsWellStarterEquipmentSlot::Top;
+		return true;
+	}
+	if (ItemId == BottomId)
+	{
+		OutSlot = EOddsWellStarterEquipmentSlot::Bottom;
+		return true;
+	}
+	OutError = FString::Printf(TEXT("Unsupported starter equipment ID: %s"), *ItemId.ToString());
+	return false;
+}
+
 #if WITH_DEV_AUTOMATION_TESTS
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
 	FOddsWellCharacterPresetCatalogTest,

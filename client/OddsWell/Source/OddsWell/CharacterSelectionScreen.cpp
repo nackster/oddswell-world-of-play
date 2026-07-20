@@ -1,5 +1,6 @@
 #include "CharacterSelectionScreen.h"
 
+#include "CharacterAppearanceSave.h"
 #include "CharacterPresetCatalog.h"
 #include "Components/InputComponent.h"
 #include "Engine/Canvas.h"
@@ -7,6 +8,7 @@
 #include "GameFramework/PlayerController.h"
 #include "HAL/PlatformMisc.h"
 #include "InputCoreTypes.h"
+#include "Kismet/GameplayStatics.h"
 #include "Misc/CommandLine.h"
 #include "Misc/Parse.h"
 
@@ -135,7 +137,7 @@ void AOddsWellCharacterSelectionHUD::DrawHUD()
 
 	DrawRect(FLinearColor(0.025f, 0.035f, 0.055f), 0.0f, 0.0f, Canvas->ClipX, Canvas->ClipY);
 	DrawText(TEXT("CHOOSE YOUR PLACEHOLDER"), FLinearColor::White, 64.0f, 28.0f, GEngine->GetLargeFont(), 1.15f);
-	DrawText(TEXT("8 GAMEPLAY-IDENTICAL OPTIONS  |  NONCANONICAL ART  |  SESSION ONLY"), FLinearColor(0.65f, 0.78f, 0.92f), 64.0f, 72.0f);
+	DrawText(TEXT("8 GAMEPLAY-IDENTICAL OPTIONS  |  NONCANONICAL ART  |  LOCAL APPEARANCE SAVE"), FLinearColor(0.65f, 0.78f, 0.92f), 64.0f, 72.0f);
 
 	if (!State.IsValid())
 	{
@@ -155,10 +157,12 @@ void AOddsWellCharacterSelectionHUD::DrawHUD()
 		DrawCard(Presets[Index], Index, 64.0f + Column * (CardWidth + Gap), 112.0f + Row * (CardHeight + Gap), CardWidth, CardHeight);
 	}
 
-	const FString Help = State.IsConfirmed()
-		? FString::Printf(TEXT("CONFIRMED FOR THIS SESSION: %s"), *State.GetConfirmedPresetId().ToString())
+	const FString Help = !HandoffError.IsEmpty()
+		? FString::Printf(TEXT("LOCAL SAVE ERROR - NOT ENTERING WORLD: %s"), *HandoffError)
+		: State.IsConfirmed()
+		? FString::Printf(TEXT("SAVED LOCALLY: %s  |  ENTERING PLACEHOLDER WORLD"), *State.GetConfirmedPresetId().ToString())
 		: TEXT("ARROWS / WASD / CONTROLLER D-PAD TO NAVIGATE     ENTER / SPACE / CONTROLLER A TO CONFIRM");
-	DrawText(Help, State.IsConfirmed() ? FLinearColor(0.45f, 1.0f, 0.55f) : FLinearColor::White, 64.0f, Canvas->ClipY - 54.0f, GEngine->GetMediumFont());
+	DrawText(Help, !HandoffError.IsEmpty() ? FLinearColor::Red : State.IsConfirmed() ? FLinearColor(0.45f, 1.0f, 0.55f) : FLinearColor::White, 64.0f, Canvas->ClipY - 54.0f, GEngine->GetMediumFont());
 }
 
 void AOddsWellCharacterSelectionHUD::Tick(const float DeltaSeconds)
@@ -178,10 +182,37 @@ void AOddsWellCharacterSelectionHUD::MoveDown() { State.Navigate(4); }
 
 void AOddsWellCharacterSelectionHUD::ConfirmSelection()
 {
-	if (State.Confirm())
+	const FOddsWellCharacterPreset* Preset = State.GetSelectedPreset();
+	if (!Preset || State.IsConfirmed())
 	{
-		UE_LOG(LogOddsWellCharacterSelection, Display, TEXT("ConfirmedPreset=%s SessionLocal=true"), *State.GetConfirmedPresetId().ToString());
+		return;
 	}
+	HandoffError.Reset();
+	const bool bQaSlot = UseOddsWellAppearanceQaSlot();
+	if (!SaveOddsWellCharacterAppearance(Preset->Id, bQaSlot, HandoffError))
+	{
+		UE_LOG(LogOddsWellCharacterSelection, Error, TEXT("ODDSWELL_APPEARANCE_SAVE|result=FAIL|preset=%s|slot=%s|reason=%s"), *Preset->Id.ToString(), bQaSlot ? TEXT("qa") : TEXT("production"), *HandoffError);
+		return;
+	}
+	if (!State.Confirm())
+	{
+		HandoffError = TEXT("Selection confirmation failed after the appearance save completed.");
+		UE_LOG(LogOddsWellCharacterSelection, Error, TEXT("ODDSWELL_APPEARANCE_SAVE|result=FAIL|preset=%s|slot=%s|reason=%s"), *Preset->Id.ToString(), bQaSlot ? TEXT("qa") : TEXT("production"), *HandoffError);
+		return;
+	}
+	UE_LOG(
+		LogOddsWellCharacterSelection,
+		Display,
+		TEXT("ODDSWELL_APPEARANCE_SAVE|result=PASS|schema=1|preset=%s|top=%s|bottom=%s|slot=%s|confirmed_once=true"),
+		*Preset->Id.ToString(),
+		*Preset->EquippedItemIds[0].ToString(),
+		*Preset->EquippedItemIds[1].ToString(),
+		bQaSlot ? TEXT("qa") : TEXT("production"));
+	UGameplayStatics::OpenLevel(
+		this,
+		FName(TEXT("/Game/Maps/BlockCourtBenchmark")),
+		true,
+		TEXT("game=/Script/OddsWell.OddsWellLocomotionGameMode"));
 }
 
 void AOddsWellCharacterSelectionHUD::DrawCard(const FOddsWellCharacterPreset& Preset, const int32 Index, const float X, const float Y, const float Width, const float Height)
