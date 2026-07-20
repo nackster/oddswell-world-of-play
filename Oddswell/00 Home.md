@@ -84,9 +84,11 @@ tags:
 - [[Development/Reports/Phase 1B4 Replaceable Starter Outfit|Phase 1B.4 replaceable starter outfit]]
 - [[Development/Reports/Phase 1B5 Local Character Appearance Persistence and First-Playable Handoff|Phase 1B.5 local character appearance persistence and first-playable handoff]]
 - [[Development/Reports/Phase 1B Exit Review Character Onboarding Evidence Closure|Phase 1B character onboarding exit review]]
+- [[Development/Reports/Phase 1C0 Noncanonical First City Concept Packages|Phase 1C.0 noncanonical first-city concept packages]]
 - [[Visual Maps/Project Tool Map|Master project tool map]]
 - [[Visual Maps/Beta Game Scope|Complete beta game scope map]]
 - [[Visual Maps/Beta Delivery Roadmap|Beta delivery roadmap map]]
+- [[Visual Maps/First City Concepts|First-city visual comparison]]
 - [[Visual Maps/3D Asset Toolchain|3D asset toolchain canvas]]
 - [[Visual Maps/Multi-Brain Architecture|Multi-brain architecture canvas]]
 - [[Visual Maps/Phase 0 Simulation Roadmap|Phase 0 simulation roadmap]]
@@ -94,7 +96,7 @@ tags:
 
 ## Current focus
 
-Phase 1A is complete and Unreal Engine 5.8 is the approved beta client engine. Phase 1B character onboarding is complete: choose, enter, move, close/reopen, and exact appearance recovery all have committed packaged evidence with no demographic gameplay effect. Phase 1C is now stopped at the owner gate for the world/city name, theme, geography and core walking-loop direction, visual language, and minimal art-direction sheet. No city identity has been canonized; final art, multiplayer, Odds Bucks, wagering, deployment, and retraining remain inactive.
+Phase 1A is complete and Unreal Engine 5.8 is the approved beta client engine. Phase 1B character onboarding is complete with committed packaged evidence. Phase 1C.0 now offers three noncanonical grounded modern-day first-city packages—Rookwell, Sundale, and Alderpoint—in [[Design/First City Concept Packages]] and [[Visual Maps/First City Concepts]]. The owner must select one, approve an explicit hybrid, or request one bounded revision before Phase 1C.1 can freeze the art direction and walking loop. No city identity is canon; final art, multiplayer, Odds Bucks, wagering, deployment, and retraining remain inactive.
 
 ## Current state
 

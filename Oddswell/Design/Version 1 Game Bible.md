@@ -164,6 +164,7 @@ No agent may create a marketplace, transfer endpoint, trade UI, item valuation, 
 - **V1 REQUIRED:** approved source, license, version, and production status for every shipped asset.
 - **V1 REQUIRED:** consistent character, clothing, furniture, city, team, UI, lighting, and audio language.
 - **OPEN:** city/world name, theme, architecture, palette, weather, music direction, team identities, final character style, and final asset-production ownership.
+- **POST-BETA DIRECTION:** later cities may explore substantially more elaborate identities, including a water-focused city and a Tartaria-inspired monumental city. These are future concept directions only; they do not authorize beta scope, a multi-city system, production assets, or historical claims.
 
 ## Persistence, multiplayer, and operations
 
@@ -276,4 +277,3 @@ After beta exit approval, it must:
 - Version 1 has not begun.
 - This document records inheritance, release-quality requirements, open decisions, and future exclusions.
 - Player item trading is remembered but not authorized.
-

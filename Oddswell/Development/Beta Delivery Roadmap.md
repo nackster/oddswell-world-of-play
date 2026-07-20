@@ -42,7 +42,8 @@ The roadmap is intentionally made of measurable product gates, not hundreds of s
 - Phase 1B.4 separate replaceable starter outfit: **COMPLETE**; see [[Development/Reports/Phase 1B4 Replaceable Starter Outfit]].
 - Phase 1B.5 local appearance persistence and first-playable handoff: **COMPLETE**; see [[Development/Reports/Phase 1B5 Local Character Appearance Persistence and First-Playable Handoff]].
 - Phase 1B character onboarding exit review: **COMPLETE**; see [[Development/Reports/Phase 1B Exit Review Character Onboarding Evidence Closure]].
-- Next gate: **Phase 1C OWNER GATE**. City implementation remains stopped until the owner approves the required first-city direction.
+- Phase 1C.0 noncanonical first-city concept packages: **COMPLETE**; see [[Development/Reports/Phase 1C0 Noncanonical First City Concept Packages]].
+- Next gate: **Phase 1C OWNER SELECTION**. Three visual comparison packages are ready in [[Design/First City Concept Packages]], but city implementation remains stopped until the owner selects one direction or explicitly approves a hybrid.
 - Current prerequisite note: UE 5.8, the aligned x64 runtime and .NET Framework 4.8 SDK, portable project, reproducible local Windows package, empty-map launch, LFS, generated-file ignores, primitive block/court iteration, collision, cold-process reopen, direct recorded-replay rendering, deterministic packaged traces, and local resource sampling are verified. UE 5.8 is now the approved beta client engine.
 
 No later roadmap phase is authorized merely because it appears below.
@@ -53,7 +54,7 @@ No later roadmap phase is authorized merely because it appears below.
 | --- | --- | --- | --- |
 | 1 | 1A — Engine and packaged-build proof | A real 3D client can build and run | COMPLETE |
 | 2 | 1B — Character selection and movement | Choose a default avatar and enter the world | COMPLETE |
-| 3 | 1C — First-city identity and graybox | Walk between every required beta location | OWNER GATE |
+| 3 | 1C — First-city identity and graybox | Walk between every required beta location | OWNER GATE — 3 CONCEPTS READY |
 | 4 | 1D — Shared-city presence | Players see one another and equipped clothing | PENDING |
 | 5 | 1E — Studio and apartment progression | Enter a persistent home and see the six-tier goal | PENDING |
 | 6 | 1F — League, stadium, and match viewing | Research and watch authoritative basketball | PENDING |
@@ -129,6 +130,8 @@ A fresh player can choose a preset, enter a packaged placeholder world, move, cl
 ### Owner gate
 
 Approve the world/city name, theme, geography, visual language, and a minimal art-direction sheet. Agents may research or present options, but may not canonize one.
+
+**Phase 1C.0 planning evidence:** three noncanonical grounded modern-day alternatives are complete in [[Design/First City Concept Packages]] and [[Visual Maps/First City Concepts]]. The owner must select Rookwell, Sundale, Alderpoint, an explicit hybrid, or one bounded revision before any city identity or layout becomes canonical.
 
 ### Smallest delivery path
 
@@ -376,7 +379,7 @@ A Beta Exit Report states **READY**, **BLOCKED WITH MEASURED CAUSE**, or **NOT R
 
 1. **RESOLVED:** Unreal Engine 5.8 beta adoption; see [[Design/Decisions/DEC-006 Unreal Engine 5.8 Beta Adoption]].
 2. **RESOLVED FOR PHASE 1B:** camera, movement, and minimum placeholder presets; see [[Design/Decisions/DEC-007 Phase 1B Character Defaults]]. Final art remains later.
-3. World/city name, theme, geography, visual language, and core layout.
+3. **CONCEPTS READY — OWNER SELECTION PENDING:** choose Rookwell, Sundale, Alderpoint, an explicit hybrid, or one bounded revision for the world/city name, theme, geography, visual language, and core layout; see [[Design/First City Concept Packages]].
 4. Shared-city instance capacity, regions, collision, names, and minimal safety surface.
 5. Apartment instancing, layouts, visits, and decorating controls.
 6. 82-game schedule variety, team count, calendar, and presentation cadence.

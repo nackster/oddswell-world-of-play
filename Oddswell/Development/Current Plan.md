@@ -662,6 +662,15 @@ Build the one-city scope defined in [[Design/Decisions/DEC-002 First Playable Sc
 - **Boundary:** no runtime, source, map, config, save, gameplay, art, city, backend, multiplayer, economy, wagering, paid service, deployment, model, training, retraining, Phase 0, or replay behavior changed. See [[Development/Reports/Phase 1B Exit Review Character Onboarding Evidence Closure]].
 - **Next gate:** Phase 1C is stopped at an owner decision. The owner must approve the world/city name, theme, geography and core walking-loop direction, visual language, and minimal art-direction sheet before city implementation begins.
 
+### Phase 1C.0 Noncanonical First City Concept Packages status
+
+- **Status:** Complete on `agent/phase-0d`; planning and owner-comparison artifacts only.
+- **Owner direction captured:** the beta first city should feel modern-day and distinctive without being plain, futuristic, luxurious, or highly fantastical. More elaborate later-city ideas, including water-focused and Tartaria-inspired directions, remain parked after the beta first city.
+- **Packages:** Mainline/Rookwell uses a flat brick-and-steel renewal loop; Daymark/Sundale uses a flat sunlit commons ring; Northreach/Alderpoint uses two green accessible terraces. Each package covers a proposed name, theme, required-location loop, skyline/architecture, palette, lighting, materials, wayfinding, music handoff, strengths, and risks.
+- **Visual evidence:** three project-local concept images plus [[Visual Maps/First City Concepts|a clean comparison canvas]] and [[Design/First City Concept Packages|the complete package document]]. The images are concepts only, not production-ready or license-approved assets.
+- **Boundary:** no concept is canon and no Unreal map, source, configuration, runtime, graybox, production art, 3D asset, multiplayer, apartment, Odds Bucks, wagering, brain, deployment, or retraining behavior changed. See [[Development/Reports/Phase 1C0 Noncanonical First City Concept Packages]].
+- **Next gate:** the owner must select Rookwell, Sundale, Alderpoint, approve an explicit hybrid, or request one bounded revision. Only then may Phase 1C.1 freeze the minimal art-direction sheet and compact walking-loop layout.
+
 ## Future shared simulation layer
 
 Athlete Life Brain v4 is the default for newly generated train, rest, recover, and socialize decisions. It adds only one bounded, one-decision, same-season recent-scoring response above v3's routine behavior. V1-v4 history remains immutable. Expand into longer memory, traits, relationships, nightlife, media, discipline, career decisions, and other sports only after each smaller input passes its own engineering evaluation.
@@ -673,7 +682,7 @@ The shared life, world, memory, and learning layers will support every sport. Ea
 ## Next unresolved decisions
 
 - Final character art and post-start customization after the approved Phase 1B placeholder direction.
-- First city identity.
+- First city selection from the three Phase 1C.0 packages, an explicit hybrid, or one bounded revision.
 - First two team identities.
 - Minimal athlete attributes.
 - Initial live LLM provider/model and separate inference budget.

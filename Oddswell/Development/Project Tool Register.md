@@ -39,6 +39,7 @@ This register is the searchable source of truth for which tools OddsWell uses, w
 | Build automation | GitHub Actions | Pending tests | Run automated tests and builds; consider a private self-hosted runner on project servers after the repository is secured. |
 | Agent orchestration | Ruflo | Deferred | Revisit after the Phase 0 simulator exists and parallel automation would provide measurable value. |
 | Visual references | Higgsfield | Active subscription | Controlled character and item references, turnarounds, storyboards, and cinematic exploration. |
+| Concept visualization | Codex built-in image generation | Phase 1C.0 concept-only use | Produced three project-local noncanonical first-city mood boards at no project spend. Outputs remain exploratory until owner selection, source/license review, and production validation. |
 | 3D production | Blender 4.5.5 LTS | Primary; installed and verified | Final geometry, topology, UVs, materials, optimization, LODs, collision, rigs, and exports. |
 | Image to 3D | Meshy | Pilot | First-pass props and environment objects before Blender cleanup. |
 | Character rigging | Rigify | Primary | Controllable production rigs for main characters. |
