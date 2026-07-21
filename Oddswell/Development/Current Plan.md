@@ -816,7 +816,16 @@ Build the one-city scope defined in [[Design/Decisions/DEC-002 First Playable Sc
 - **Packaged proof:** full watch rendered `421` frames, direct skip `1`, late arrival `211`, cold reconnect `211`, and mid-watch player skip `212`. Every accepted path ended at frame `421`, Harbor City `101` to Mesa Vista `104`, the exact replay seal, and `resimulated=false`; a forged reconnect rendered `0` frames.
 - **Validation:** final UE editor/game build and BuildCookRun passed; native automation passed `10/10`; all `65/65` frozen regressions passed in `163.106s`; Brain Admin self-check, deterministic exporters, Python compilation, offscreen visual inspection, fail-closed boundary checks, and zero-process cleanup passed. Cost was `$0.00`. See [[Development/Reports/Phase 1F5 Replay View Result Invariance]].
 - **Boundary:** no backend/session reconnect, account, cursor-delivery service, wager, odds, settlement, Odds Bucks, job, purchase, hosting, final art, model, training, or retraining behavior was added.
-- **Next gate:** Phase 1G.1 may add only the empty append-only, idempotent virtual Odds Bucks ledger. Job fantasy and all balance/payout/cadence/price/limit amounts remain owner gates.
+- **Closed by Phase 1G.1:** the empty append-only, idempotent virtual Odds Bucks ledger is complete below. Job fantasy and all balance/payout/cadence/price/limit amounts remain owner gates.
+
+### Phase 1G.1 Empty Server-Authoritative Odds Bucks Ledger status
+
+- **Status:** Complete on `agent/phase-0d`; smallest empty authority only.
+- **Implementation:** one append-only in-memory ledger is owned by Sundale's existing server-only Unreal `GameMode`. Exact command retries are idempotent; conflicting command reuse, invalid inputs, overflow, and overspend fail without appending.
+- **Packaged proof:** the final 53-file Windows package started the Sundale authority at exactly `0` entries and `0` balance with client commands, real money, and wagering disabled.
+- **Validation:** editor/game builds and BuildCookRun passed; focused automation passed `1/1`; full native automation passed `11/11`; all `65/65` frozen regressions passed in `121.038s`; Brain Admin self-check, deterministic exporters, Python compilation, runtime-log audit, diff hygiene, and process cleanup passed. Cost was `$0.00`. See [[Development/Reports/Phase 1G1 Empty Server Authoritative Odds Bucks Ledger]].
+- **Boundary:** no player/account identity, persistence, restart/reconnect restore, job, earning, starting balance, payout, allowance, recovery floor, price, purchase, wager, settlement, Admin ledger, deployment, real-money connection, or second currency was added.
+- **Next owner gate:** Phase 1G.2 needs one job fantasy and interaction. Smallest recommendation: reuse Sundale's existing `Job` location and press `E` to complete one labeled placeholder shift; credit remains disabled until payout and recovery rules are separately frozen.
 
 ## Future shared simulation layer
 

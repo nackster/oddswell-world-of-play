@@ -66,7 +66,8 @@ The roadmap is intentionally made of measurable product gates, not hundreds of s
 - Phase 1F.4 readable three-minute fixed-camera presentation: **COMPLETE**; see [[Development/Reports/Phase 1F4 Readable Three Minute Stadium Presentation]] and [[Design/Decisions/DEC-013 Phase 1F4 Presentation Defaults]].
 - Phase 1F.5 replay-view result invariance: **COMPLETE**; see [[Development/Reports/Phase 1F5 Replay View Result Invariance]].
 - Phase 1F exit: **PASSED FOR THE CURRENT ARCHIVED-GAME SLICE**. The 82-game/two-team variety decision remains open and no backend reconnect is claimed.
-- Next gate: **PHASE 1G.1 EMPTY ODDS BUCKS LEDGER**. Add only append-only, idempotent virtual-currency authority; do not invent starting balance, payout, cadence, price, or limit amounts. Sundale remains a working name.
+- Phase 1G.1 empty server-authoritative Odds Bucks ledger: **COMPLETE**; see [[Development/Reports/Phase 1G1 Empty Server Authoritative Odds Bucks Ledger]].
+- Next gate: **PHASE 1G.2 OWNER DECISION**. Freeze one placeholder job fantasy and interaction. Starting balance, payout, allowance cadence, recovery floor, prices, and limits remain open. Sundale remains a working name.
 - Current prerequisite note: UE 5.8, the aligned x64 runtime and .NET Framework 4.8 SDK, portable project, reproducible local Windows package, empty-map launch, LFS, generated-file ignores, primitive block/court iteration, collision, cold-process reopen, direct recorded-replay rendering, deterministic packaged traces, and local resource sampling are verified. UE 5.8 is now the approved beta client engine.
 
 No later roadmap phase is authorized merely because it appears below.
@@ -81,7 +82,7 @@ No later roadmap phase is authorized merely because it appears below.
 | 4 | 1D — Shared-city presence | Players see one another and equipped clothing | COMPLETE |
 | 5 | 1E — Studio and apartment progression | Enter a persistent home and see the six-tier goal | FOUNDATION COMPLETE / FURNITURE IN 1I |
 | 6 | 1F — League, stadium, and match viewing | Research and watch authoritative basketball | COMPLETE FOR CURRENT ARCHIVED GAME |
-| 7 | 1G — Odds Bucks and work recovery | Earn, persist, audit, and recover virtual currency | PENDING |
+| 7 | 1G — Odds Bucks and work recovery | Earn, persist, audit, and recover virtual currency | ACTIVE — 1G.1 COMPLETE / JOB OWNER GATE |
 | 8 | 1H — Wager locking and settlement | Place approved wagers and receive exact outcomes | PENDING |
 | 9 | 1I — Stores and lifestyle upgrades | Buy, equip, display, and place basic items | PENDING |
 | 10 | 1J — Athlete life and league storytelling | Understand athletes, availability, and consequences | PENDING |
@@ -257,8 +258,8 @@ The player can research a scheduled game, go to the venue, watch or skip the sam
 
 ### Smallest delivery path
 
-1. Add the server-authoritative virtual Odds Bucks ledger with append-only entries and idempotent commands.
-2. Create one placeholder job/recovery action.
+1. **COMPLETE:** add the server-authoritative virtual Odds Bucks ledger with append-only entries and idempotent commands. See [[Development/Reports/Phase 1G1 Empty Server Authoritative Odds Bucks Ledger]].
+2. **OWNER GATE:** create one placeholder job/recovery action after the job fantasy and interaction are frozen.
 3. Credit one verified job payout and restore it across restart/reconnect.
 4. Add starting balance and zero-balance recovery only after owner amounts are frozen.
 5. Expose truthful reconciliation in Admin.

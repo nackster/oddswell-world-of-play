@@ -1787,6 +1787,17 @@ AOddsWellLocomotionGameMode::AOddsWellLocomotionGameMode()
 	SharedCityQaTargetClients = GetSharedCityQaTargetClients();
 }
 
+void AOddsWellLocomotionGameMode::BeginPlay()
+{
+	Super::BeginPlay();
+	UE_LOG(
+		LogOddsWellLocomotion,
+		Display,
+		TEXT("ODDSWELL_ODDS_BUCKS_LEDGER|schema=oddswell-odds-bucks-ledger-v1|authority=server|currency=odds_bucks|entries=%d|balance=%lld|append_only=true|idempotent=true|client_commands=false|real_money=false|wagering=false"),
+		OddsBucksLedger.GetEntries().Num(),
+		OddsBucksLedger.GetBalance());
+}
+
 void AOddsWellLocomotionGameMode::PostLogin(APlayerController* NewPlayer)
 {
 	Super::PostLogin(NewPlayer);

@@ -4,6 +4,7 @@
 #include "CharacterPresetCatalog.h"
 #include "GameFramework/Character.h"
 #include "GameFramework/GameModeBase.h"
+#include "OddsBucksLedger.h"
 #include "PublicLeagueView.h"
 #include "PlaceholderLocomotion.generated.h"
 
@@ -222,12 +223,14 @@ class ODDSWELL_API AOddsWellLocomotionGameMode final : public AGameModeBase
 
 public:
 	AOddsWellLocomotionGameMode();
+	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaSeconds) override;
 	virtual void PostLogin(APlayerController* NewPlayer) override;
 	virtual void Logout(AController* Exiting) override;
 	virtual APawn* SpawnDefaultPawnAtTransform_Implementation(AController* NewPlayer, const FTransform&) override;
 
 private:
+	FOddsWellOddsBucksLedger OddsBucksLedger;
 	TMap<int32, FVector> SharedCityQaStartLocations;
 	FOddsWellSharedCityAppearance SharedCityReconnectExpectedAppearance;
 	double SharedCityQaExitAt = 0.0;
