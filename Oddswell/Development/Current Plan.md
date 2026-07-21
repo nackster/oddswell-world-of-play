@@ -769,7 +769,16 @@ Build the one-city scope defined in [[Design/Decisions/DEC-002 First Playable Sc
 - **Validation:** editor/game builds and clean BuildCookRun passed in `101.79s`; native character automation passed `7/7`; all `65/65` frozen regressions passed in `132.470s`; Brain Admin self-check, Python compilation, accepted-log audit, QA cleanup, diff hygiene, and zero-process cleanup passed. Cost was `$0.00`. See [[Development/Reports/Phase 1E4 Player-Visible Locked Housing Goals]].
 - **Boundary:** no final housing menu, price, requirement, upgrade action, Odds Bucks, purchase, larger interior, furniture, placement point, inventory, visit, account, trade, modern art, hosting, or deployment was added.
 - **Dependency handoff:** Phase 1E's standalone foundation is complete. Furniture activation waits for Phase 1I's legitimate purchase and ownership path.
-- **Next gate:** Phase 1F.1 shows existing public teams, athletes, schedule, standings, availability, and history in the player client.
+- **Closed by Phase 1F.1:** existing public teams, athletes, schedule, standings, availability, and history now appear in the player client.
+
+### Phase 1F.1 Player League View status
+
+- **Status:** Complete on `agent/phase-0d`; smallest read-only player-client league slice only.
+- **Implementation:** one deterministic exporter reuses the existing Brain Admin public-only league payload and stages it as `oddswell-public-league-v1`. Unreal validates that frozen snapshot and exposes seven pages: standings, both six-athlete rosters with final availability, and four five-game schedule/history pages covering all 20 completed games. `L` toggles the view; `,` and `.` change pages.
+- **Truth boundary:** the player client reads a build-time public snapshot. It does not run or resimulate basketball, mutate league state, expose seeds/hidden fatigue/recovery/RNG data, or claim live backend synchronization.
+- **Packaged evidence:** the accepted Windows package reported `2` teams, `12` athletes, `2` standings rows, `20` completed games, `1` unavailable athlete, and `7` readable pages. Rendered Page 7 showed Games 16-20, scores, winners, and replay-seal prefixes over Sundale. The first archive attempt omitted the required cooked containers and was rejected; only the corrected `-pak -iostore` archive is accepted.
+- **Validation:** editor/game builds passed; native character automation passed `8/8`; BuildCookRun passed in `50.25s`; all `65/65` frozen regressions passed in `135.279s`; Brain Admin self-check, exporter determinism, Python compilation, log audit, diff hygiene, and zero-process cleanup passed. Cost was `$0.00`. See [[Development/Reports/Phase 1F1 Player League View]].
+- **Next gate:** Phase 1F.2 grayboxes the stadium and its physical public viewing location. Wager interaction, odds, settlement, match-presentation choices, and the 82-game/two-team owner gate remain inactive.
 
 ## Future shared simulation layer
 

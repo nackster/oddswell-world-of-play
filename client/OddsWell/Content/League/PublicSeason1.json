@@ -1,0 +1,1036 @@
+{
+  "boundary": "Public-only read model. Hidden fatigue, recovery timers, injury-risk internals, random seeds, economy data, and admin mutations are excluded.",
+  "games": [
+    {
+      "availability": {
+        "Andre North": true,
+        "Cal Brooks": true,
+        "Dorian Pike": true,
+        "Eli Mercer": true,
+        "Jalen Cross": true,
+        "Kellan Shore": true,
+        "Malik Frost": true,
+        "Mateo Cruz": true,
+        "Micah Vale": true,
+        "Nico Reyes": true,
+        "Roman Voss": true,
+        "Tariq Stone": true
+      },
+      "away": "Mesa Vista Sol",
+      "away_score": 104,
+      "home": "Harbor City Waves",
+      "home_score": 101,
+      "minutes": {
+        "Andre North": 43.4,
+        "Cal Brooks": 43.4,
+        "Dorian Pike": 43.1,
+        "Eli Mercer": 43.1,
+        "Jalen Cross": 43.1,
+        "Kellan Shore": 43.1,
+        "Malik Frost": 24.2,
+        "Mateo Cruz": 24.2,
+        "Micah Vale": 43.1,
+        "Nico Reyes": 43.1,
+        "Roman Voss": 43.1,
+        "Tariq Stone": 43.1
+      },
+      "number": 1,
+      "prediction_commitment_sha256": "898e89ef142f884fe2514bc55a65b91c80a5bf25d068467b2ddbfe25569ea98f",
+      "predictions": {
+        "coin": 0.5,
+        "public_elo": 0.57849675,
+        "public_elo_rotation": 0.57586693
+      },
+      "replay_sha256": "00e4f82c2bb4da5d9ad53d75bf76ece7b97ed9b05ca2f7a8a2628d396c779b75",
+      "winner": "Mesa Vista Sol"
+    },
+    {
+      "availability": {
+        "Andre North": true,
+        "Cal Brooks": true,
+        "Dorian Pike": true,
+        "Eli Mercer": true,
+        "Jalen Cross": true,
+        "Kellan Shore": true,
+        "Malik Frost": true,
+        "Mateo Cruz": true,
+        "Micah Vale": true,
+        "Nico Reyes": true,
+        "Roman Voss": true,
+        "Tariq Stone": true
+      },
+      "away": "Harbor City Waves",
+      "away_score": 88,
+      "home": "Mesa Vista Sol",
+      "home_score": 104,
+      "minutes": {
+        "Andre North": 43.4,
+        "Cal Brooks": 43.4,
+        "Dorian Pike": 43.1,
+        "Eli Mercer": 43.1,
+        "Jalen Cross": 43.1,
+        "Kellan Shore": 43.1,
+        "Malik Frost": 24.2,
+        "Mateo Cruz": 24.2,
+        "Micah Vale": 43.1,
+        "Nico Reyes": 43.1,
+        "Roman Voss": 43.1,
+        "Tariq Stone": 43.1
+      },
+      "number": 2,
+      "prediction_commitment_sha256": "907c7e59df1c3720fa05b71012fb5fea72ff1ff2f272bc7248cf60d196bdde2e",
+      "predictions": {
+        "coin": 0.5,
+        "public_elo": 0.61059388,
+        "public_elo_rotation": 0.61315303
+      },
+      "replay_sha256": "e9faba4866684f1b88ff407f2e0c27b6e65a278b780e895934530562a4de62c6",
+      "winner": "Mesa Vista Sol"
+    },
+    {
+      "availability": {
+        "Andre North": true,
+        "Cal Brooks": true,
+        "Dorian Pike": true,
+        "Eli Mercer": true,
+        "Jalen Cross": true,
+        "Kellan Shore": true,
+        "Malik Frost": true,
+        "Mateo Cruz": true,
+        "Micah Vale": true,
+        "Nico Reyes": true,
+        "Roman Voss": true,
+        "Tariq Stone": true
+      },
+      "away": "Mesa Vista Sol",
+      "away_score": 107,
+      "home": "Harbor City Waves",
+      "home_score": 112,
+      "minutes": {
+        "Andre North": 48.4,
+        "Cal Brooks": 48.4,
+        "Dorian Pike": 48.1,
+        "Eli Mercer": 48.1,
+        "Jalen Cross": 48.1,
+        "Kellan Shore": 48.1,
+        "Malik Frost": 24.2,
+        "Mateo Cruz": 24.2,
+        "Micah Vale": 48.1,
+        "Nico Reyes": 48.1,
+        "Roman Voss": 48.1,
+        "Tariq Stone": 48.1
+      },
+      "number": 3,
+      "prediction_commitment_sha256": "a24a34f25a8f0d38dd4f82b7a75f55e849eb1a58006dacc21c50acc3ff25da1c",
+      "predictions": {
+        "coin": 0.5,
+        "public_elo": 0.52341725,
+        "public_elo_rotation": 0.52072848
+      },
+      "replay_sha256": "76c89d537de21269b5b4a94bdd2b989eaaf32e9af13707991be0e5048fce23f2",
+      "winner": "Harbor City Waves"
+    },
+    {
+      "availability": {
+        "Andre North": false,
+        "Cal Brooks": false,
+        "Dorian Pike": true,
+        "Eli Mercer": true,
+        "Jalen Cross": true,
+        "Kellan Shore": true,
+        "Malik Frost": true,
+        "Mateo Cruz": true,
+        "Micah Vale": true,
+        "Nico Reyes": true,
+        "Roman Voss": true,
+        "Tariq Stone": true
+      },
+      "away": "Harbor City Waves",
+      "away_score": 96,
+      "home": "Mesa Vista Sol",
+      "home_score": 103,
+      "minutes": {
+        "Andre North": 0.0,
+        "Cal Brooks": 0.0,
+        "Dorian Pike": 48.0,
+        "Eli Mercer": 48.0,
+        "Jalen Cross": 48.0,
+        "Kellan Shore": 48.0,
+        "Malik Frost": 48.0,
+        "Mateo Cruz": 48.0,
+        "Micah Vale": 48.0,
+        "Nico Reyes": 48.0,
+        "Roman Voss": 48.0,
+        "Tariq Stone": 48.0
+      },
+      "number": 4,
+      "prediction_commitment_sha256": "b3b698ea7e63e96b8cb6662a41253f640affb7d36a6585334151651fe9307a49",
+      "predictions": {
+        "coin": 0.5,
+        "public_elo": 0.60581065,
+        "public_elo_rotation": 0.6084469
+      },
+      "replay_sha256": "e5c1b4b3c38ed50579f563508272af6433d78f12e89be688d0be049c66e22372",
+      "winner": "Mesa Vista Sol"
+    },
+    {
+      "availability": {
+        "Andre North": true,
+        "Cal Brooks": true,
+        "Dorian Pike": true,
+        "Eli Mercer": true,
+        "Jalen Cross": true,
+        "Kellan Shore": true,
+        "Malik Frost": true,
+        "Mateo Cruz": true,
+        "Micah Vale": true,
+        "Nico Reyes": true,
+        "Roman Voss": true,
+        "Tariq Stone": true
+      },
+      "away": "Mesa Vista Sol",
+      "away_score": 95,
+      "home": "Harbor City Waves",
+      "home_score": 93,
+      "minutes": {
+        "Andre North": 43.4,
+        "Cal Brooks": 43.4,
+        "Dorian Pike": 43.1,
+        "Eli Mercer": 43.1,
+        "Jalen Cross": 43.1,
+        "Kellan Shore": 43.1,
+        "Malik Frost": 24.2,
+        "Mateo Cruz": 24.2,
+        "Micah Vale": 43.1,
+        "Nico Reyes": 43.1,
+        "Roman Voss": 43.1,
+        "Tariq Stone": 43.1
+      },
+      "number": 5,
+      "prediction_commitment_sha256": "f23ddcfd65e73de760c91cc1914025068fbd35d71d1bf3c3219391995159a6b9",
+      "predictions": {
+        "coin": 0.5,
+        "public_elo": 0.52814755,
+        "public_elo_rotation": 0.52546127
+      },
+      "replay_sha256": "f8279ce45bf918bd218bdf11e7f76c971df21d2b3298a7681765e027e6c1b3f8",
+      "winner": "Mesa Vista Sol"
+    },
+    {
+      "availability": {
+        "Andre North": true,
+        "Cal Brooks": true,
+        "Dorian Pike": true,
+        "Eli Mercer": true,
+        "Jalen Cross": true,
+        "Kellan Shore": true,
+        "Malik Frost": true,
+        "Mateo Cruz": true,
+        "Micah Vale": true,
+        "Nico Reyes": true,
+        "Roman Voss": true,
+        "Tariq Stone": true
+      },
+      "away": "Harbor City Waves",
+      "away_score": 99,
+      "home": "Mesa Vista Sol",
+      "home_score": 96,
+      "minutes": {
+        "Andre North": 43.4,
+        "Cal Brooks": 43.4,
+        "Dorian Pike": 43.1,
+        "Eli Mercer": 43.1,
+        "Jalen Cross": 43.1,
+        "Kellan Shore": 43.1,
+        "Malik Frost": 24.2,
+        "Mateo Cruz": 24.2,
+        "Micah Vale": 43.1,
+        "Nico Reyes": 43.1,
+        "Roman Voss": 43.1,
+        "Tariq Stone": 43.1
+      },
+      "number": 6,
+      "prediction_commitment_sha256": "c557b953a53248ce93ca2db3712888149e2e403e2e237113a1b1104eeb31e6b0",
+      "predictions": {
+        "coin": 0.5,
+        "public_elo": 0.65523073,
+        "public_elo_rotation": 0.657661
+      },
+      "replay_sha256": "834e0427e8c558eed9a74c2befd71ebfcb7c4d079c8b1827b416b0a1c6b2370f",
+      "winner": "Harbor City Waves"
+    },
+    {
+      "availability": {
+        "Andre North": true,
+        "Cal Brooks": true,
+        "Dorian Pike": true,
+        "Eli Mercer": true,
+        "Jalen Cross": true,
+        "Kellan Shore": true,
+        "Malik Frost": true,
+        "Mateo Cruz": true,
+        "Micah Vale": true,
+        "Nico Reyes": true,
+        "Roman Voss": true,
+        "Tariq Stone": true
+      },
+      "away": "Mesa Vista Sol",
+      "away_score": 98,
+      "home": "Harbor City Waves",
+      "home_score": 91,
+      "minutes": {
+        "Andre North": 43.4,
+        "Cal Brooks": 43.4,
+        "Dorian Pike": 43.1,
+        "Eli Mercer": 43.1,
+        "Jalen Cross": 43.1,
+        "Kellan Shore": 43.1,
+        "Malik Frost": 24.2,
+        "Mateo Cruz": 24.2,
+        "Micah Vale": 43.1,
+        "Nico Reyes": 43.1,
+        "Roman Voss": 43.1,
+        "Tariq Stone": 43.1
+      },
+      "number": 7,
+      "prediction_commitment_sha256": "29883f0b8697361929046576e45c7690f04beef8ccde3b98b16178e5eea9c18d",
+      "predictions": {
+        "coin": 0.5,
+        "public_elo": 0.53543334,
+        "public_elo_rotation": 0.53275185
+      },
+      "replay_sha256": "0ab9a91a9bf4e7bfcdca53ae0aadfe74cee6d5eaef0e382f1b835883f0c3f842",
+      "winner": "Mesa Vista Sol"
+    },
+    {
+      "availability": {
+        "Andre North": true,
+        "Cal Brooks": true,
+        "Dorian Pike": true,
+        "Eli Mercer": true,
+        "Jalen Cross": true,
+        "Kellan Shore": true,
+        "Malik Frost": true,
+        "Mateo Cruz": true,
+        "Micah Vale": true,
+        "Nico Reyes": true,
+        "Roman Voss": true,
+        "Tariq Stone": true
+      },
+      "away": "Harbor City Waves",
+      "away_score": 98,
+      "home": "Mesa Vista Sol",
+      "home_score": 99,
+      "minutes": {
+        "Andre North": 43.4,
+        "Cal Brooks": 43.4,
+        "Dorian Pike": 43.1,
+        "Eli Mercer": 43.1,
+        "Jalen Cross": 43.1,
+        "Kellan Shore": 43.1,
+        "Malik Frost": 24.2,
+        "Mateo Cruz": 24.2,
+        "Micah Vale": 43.1,
+        "Nico Reyes": 43.1,
+        "Roman Voss": 43.1,
+        "Tariq Stone": 43.1
+      },
+      "number": 8,
+      "prediction_commitment_sha256": "99b819dc87a5a2f779ba58931a56bd0b42bda8ea2a907ab14b750075d55286cf",
+      "predictions": {
+        "coin": 0.5,
+        "public_elo": 0.64897292,
+        "public_elo_rotation": 0.65142384
+      },
+      "replay_sha256": "ebad9152dd87dd02887ffe707ede399cc6915819f8ab5b1d257cbb0e2d6d12c4",
+      "winner": "Mesa Vista Sol"
+    },
+    {
+      "availability": {
+        "Andre North": true,
+        "Cal Brooks": true,
+        "Dorian Pike": true,
+        "Eli Mercer": true,
+        "Jalen Cross": true,
+        "Kellan Shore": true,
+        "Malik Frost": true,
+        "Mateo Cruz": true,
+        "Micah Vale": true,
+        "Nico Reyes": true,
+        "Roman Voss": true,
+        "Tariq Stone": true
+      },
+      "away": "Mesa Vista Sol",
+      "away_score": 85,
+      "home": "Harbor City Waves",
+      "home_score": 80,
+      "minutes": {
+        "Andre North": 43.4,
+        "Cal Brooks": 43.4,
+        "Dorian Pike": 43.1,
+        "Eli Mercer": 43.1,
+        "Jalen Cross": 43.1,
+        "Kellan Shore": 43.1,
+        "Malik Frost": 24.2,
+        "Mateo Cruz": 24.2,
+        "Micah Vale": 43.1,
+        "Nico Reyes": 43.1,
+        "Roman Voss": 43.1,
+        "Tariq Stone": 43.1
+      },
+      "number": 9,
+      "prediction_commitment_sha256": "f0842c6daad74d0268bbf9f446bb3e1472a5e72c354445063dc6d3046564950a",
+      "predictions": {
+        "coin": 0.5,
+        "public_elo": 0.48446907,
+        "public_elo_rotation": 0.48177812
+      },
+      "replay_sha256": "7e8d9c0ea13df15e3b1f7dae26469f22057212917f086eeff8f158f455e592b3",
+      "winner": "Mesa Vista Sol"
+    },
+    {
+      "availability": {
+        "Andre North": true,
+        "Cal Brooks": true,
+        "Dorian Pike": true,
+        "Eli Mercer": true,
+        "Jalen Cross": true,
+        "Kellan Shore": true,
+        "Malik Frost": true,
+        "Mateo Cruz": true,
+        "Micah Vale": true,
+        "Nico Reyes": true,
+        "Roman Voss": true,
+        "Tariq Stone": true
+      },
+      "away": "Harbor City Waves",
+      "away_score": 120,
+      "home": "Mesa Vista Sol",
+      "home_score": 96,
+      "minutes": {
+        "Andre North": 43.4,
+        "Cal Brooks": 43.4,
+        "Dorian Pike": 43.1,
+        "Eli Mercer": 43.1,
+        "Jalen Cross": 43.1,
+        "Kellan Shore": 43.1,
+        "Malik Frost": 24.2,
+        "Mateo Cruz": 24.2,
+        "Micah Vale": 43.1,
+        "Nico Reyes": 43.1,
+        "Roman Voss": 43.1,
+        "Tariq Stone": 43.1
+      },
+      "number": 10,
+      "prediction_commitment_sha256": "398cc00b6c0a0b38d2c169f64425c7fba3d6a9d44e5afbdbd430996c7ad2c8fe",
+      "predictions": {
+        "coin": 0.5,
+        "public_elo": 0.69145017,
+        "public_elo_rotation": 0.69374446
+      },
+      "replay_sha256": "f30071b6e2d21df669348674ab38e697f4d887e78c056dee8b5af33cc75f98e9",
+      "winner": "Harbor City Waves"
+    },
+    {
+      "availability": {
+        "Andre North": true,
+        "Cal Brooks": true,
+        "Dorian Pike": true,
+        "Eli Mercer": true,
+        "Jalen Cross": true,
+        "Kellan Shore": true,
+        "Malik Frost": true,
+        "Mateo Cruz": true,
+        "Micah Vale": true,
+        "Nico Reyes": true,
+        "Roman Voss": true,
+        "Tariq Stone": true
+      },
+      "away": "Mesa Vista Sol",
+      "away_score": 91,
+      "home": "Harbor City Waves",
+      "home_score": 110,
+      "minutes": {
+        "Andre North": 43.4,
+        "Cal Brooks": 43.4,
+        "Dorian Pike": 43.1,
+        "Eli Mercer": 43.1,
+        "Jalen Cross": 43.1,
+        "Kellan Shore": 43.1,
+        "Malik Frost": 24.2,
+        "Mateo Cruz": 24.2,
+        "Micah Vale": 43.1,
+        "Nico Reyes": 43.1,
+        "Roman Voss": 43.1,
+        "Tariq Stone": 43.1
+      },
+      "number": 11,
+      "prediction_commitment_sha256": "125ca2965e3e256ee410d99a215a339c6595877dd3b30bc43cdb37ebc2fe2bbe",
+      "predictions": {
+        "coin": 0.5,
+        "public_elo": 0.49637893,
+        "public_elo_rotation": 0.49368517
+      },
+      "replay_sha256": "0debb5b453e514e825caa85ecb6313353160bc284eea2cbc6b6765bbae8ce7ac",
+      "winner": "Harbor City Waves"
+    },
+    {
+      "availability": {
+        "Andre North": true,
+        "Cal Brooks": true,
+        "Dorian Pike": true,
+        "Eli Mercer": true,
+        "Jalen Cross": true,
+        "Kellan Shore": true,
+        "Malik Frost": true,
+        "Mateo Cruz": true,
+        "Micah Vale": true,
+        "Nico Reyes": true,
+        "Roman Voss": true,
+        "Tariq Stone": true
+      },
+      "away": "Harbor City Waves",
+      "away_score": 97,
+      "home": "Mesa Vista Sol",
+      "home_score": 86,
+      "minutes": {
+        "Andre North": 43.4,
+        "Cal Brooks": 43.4,
+        "Dorian Pike": 43.1,
+        "Eli Mercer": 43.1,
+        "Jalen Cross": 43.1,
+        "Kellan Shore": 43.1,
+        "Malik Frost": 24.2,
+        "Mateo Cruz": 24.2,
+        "Micah Vale": 43.1,
+        "Nico Reyes": 43.1,
+        "Roman Voss": 43.1,
+        "Tariq Stone": 43.1
+      },
+      "number": 12,
+      "prediction_commitment_sha256": "a2ac97a421cd19ff7dbf9b297d64fa8505699860044e12c79823f486ca47b6ab",
+      "predictions": {
+        "coin": 0.5,
+        "public_elo": 0.62988708,
+        "public_elo_rotation": 0.63239577
+      },
+      "replay_sha256": "96cb5b527f60356b6cbdc91390bc7c9e33ab148ccf60775cbe48f9782ab05f2f",
+      "winner": "Harbor City Waves"
+    },
+    {
+      "availability": {
+        "Andre North": true,
+        "Cal Brooks": true,
+        "Dorian Pike": true,
+        "Eli Mercer": true,
+        "Jalen Cross": true,
+        "Kellan Shore": true,
+        "Malik Frost": true,
+        "Mateo Cruz": true,
+        "Micah Vale": true,
+        "Nico Reyes": true,
+        "Roman Voss": true,
+        "Tariq Stone": true
+      },
+      "away": "Mesa Vista Sol",
+      "away_score": 100,
+      "home": "Harbor City Waves",
+      "home_score": 90,
+      "minutes": {
+        "Andre North": 43.4,
+        "Cal Brooks": 43.4,
+        "Dorian Pike": 43.1,
+        "Eli Mercer": 43.1,
+        "Jalen Cross": 43.1,
+        "Kellan Shore": 43.1,
+        "Malik Frost": 24.2,
+        "Mateo Cruz": 24.2,
+        "Micah Vale": 43.1,
+        "Nico Reyes": 43.1,
+        "Roman Voss": 43.1,
+        "Tariq Stone": 43.1
+      },
+      "number": 13,
+      "prediction_commitment_sha256": "325953755305f2d141d19518b08d49f95d8afd13d56d15d00bab62f1a1c6043c",
+      "predictions": {
+        "coin": 0.5,
+        "public_elo": 0.56131862,
+        "public_elo_rotation": 0.55866339
+      },
+      "replay_sha256": "7b526be061198d43b53181a214e9fb70dc138977b43ceb27310acf001e7e5726",
+      "winner": "Mesa Vista Sol"
+    },
+    {
+      "availability": {
+        "Andre North": true,
+        "Cal Brooks": true,
+        "Dorian Pike": true,
+        "Eli Mercer": true,
+        "Jalen Cross": true,
+        "Kellan Shore": true,
+        "Malik Frost": true,
+        "Mateo Cruz": true,
+        "Micah Vale": true,
+        "Nico Reyes": true,
+        "Roman Voss": true,
+        "Tariq Stone": true
+      },
+      "away": "Harbor City Waves",
+      "away_score": 91,
+      "home": "Mesa Vista Sol",
+      "home_score": 79,
+      "minutes": {
+        "Andre North": 43.4,
+        "Cal Brooks": 43.4,
+        "Dorian Pike": 43.1,
+        "Eli Mercer": 43.1,
+        "Jalen Cross": 43.1,
+        "Kellan Shore": 43.1,
+        "Malik Frost": 24.2,
+        "Mateo Cruz": 24.2,
+        "Micah Vale": 43.1,
+        "Nico Reyes": 43.1,
+        "Roman Voss": 43.1,
+        "Tariq Stone": 43.1
+      },
+      "number": 14,
+      "prediction_commitment_sha256": "2f4dbcbaa4b7b465eb7756d677bc4b8c5f4c42515ff76cba14e138f4735a85c3",
+      "predictions": {
+        "coin": 0.5,
+        "public_elo": 0.62619884,
+        "public_elo_rotation": 0.62871779
+      },
+      "replay_sha256": "7308ee011742d0896903a1f5352d02b0aa80a610239c8cf73497c8d0431d201a",
+      "winner": "Harbor City Waves"
+    },
+    {
+      "availability": {
+        "Andre North": true,
+        "Cal Brooks": true,
+        "Dorian Pike": true,
+        "Eli Mercer": true,
+        "Jalen Cross": true,
+        "Kellan Shore": true,
+        "Malik Frost": true,
+        "Mateo Cruz": true,
+        "Micah Vale": true,
+        "Nico Reyes": true,
+        "Roman Voss": true,
+        "Tariq Stone": true
+      },
+      "away": "Mesa Vista Sol",
+      "away_score": 91,
+      "home": "Harbor City Waves",
+      "home_score": 97,
+      "minutes": {
+        "Andre North": 43.4,
+        "Cal Brooks": 43.4,
+        "Dorian Pike": 43.1,
+        "Eli Mercer": 43.1,
+        "Jalen Cross": 43.1,
+        "Kellan Shore": 43.1,
+        "Malik Frost": 24.2,
+        "Mateo Cruz": 24.2,
+        "Micah Vale": 43.1,
+        "Nico Reyes": 43.1,
+        "Roman Voss": 43.1,
+        "Tariq Stone": 43.1
+      },
+      "number": 15,
+      "prediction_commitment_sha256": "ad4d6416ff369debf303e24ddf4796a0938a11230befeec731bb6777e288c099",
+      "predictions": {
+        "coin": 0.5,
+        "public_elo": 0.56499382,
+        "public_elo_rotation": 0.56234349
+      },
+      "replay_sha256": "52ad6af27069b8374ed91b434ae3074424887e02eaa78067654c3f65dde95266",
+      "winner": "Harbor City Waves"
+    },
+    {
+      "availability": {
+        "Andre North": true,
+        "Cal Brooks": true,
+        "Dorian Pike": true,
+        "Eli Mercer": true,
+        "Jalen Cross": true,
+        "Kellan Shore": true,
+        "Malik Frost": true,
+        "Mateo Cruz": true,
+        "Micah Vale": true,
+        "Nico Reyes": true,
+        "Roman Voss": true,
+        "Tariq Stone": true
+      },
+      "away": "Harbor City Waves",
+      "away_score": 95,
+      "home": "Mesa Vista Sol",
+      "home_score": 91,
+      "minutes": {
+        "Andre North": 43.4,
+        "Cal Brooks": 43.4,
+        "Dorian Pike": 43.1,
+        "Eli Mercer": 43.1,
+        "Jalen Cross": 43.1,
+        "Kellan Shore": 43.1,
+        "Malik Frost": 24.2,
+        "Mateo Cruz": 24.2,
+        "Micah Vale": 43.1,
+        "Nico Reyes": 43.1,
+        "Roman Voss": 43.1,
+        "Tariq Stone": 43.1
+      },
+      "number": 16,
+      "prediction_commitment_sha256": "bfa349e3cc51fa1f8204d5d1211825492ce95f969de80917458ffc5764662910",
+      "predictions": {
+        "coin": 0.5,
+        "public_elo": 0.56748381,
+        "public_elo_rotation": 0.57012681
+      },
+      "replay_sha256": "7fbd4c18c292ccdbdb4cc1acc0d8e210f3715fb5c5d717c6efde36b29b75bc0d",
+      "winner": "Harbor City Waves"
+    },
+    {
+      "availability": {
+        "Andre North": true,
+        "Cal Brooks": true,
+        "Dorian Pike": true,
+        "Eli Mercer": true,
+        "Jalen Cross": true,
+        "Kellan Shore": true,
+        "Malik Frost": true,
+        "Mateo Cruz": true,
+        "Micah Vale": true,
+        "Nico Reyes": true,
+        "Roman Voss": true,
+        "Tariq Stone": true
+      },
+      "away": "Mesa Vista Sol",
+      "away_score": 85,
+      "home": "Harbor City Waves",
+      "home_score": 92,
+      "minutes": {
+        "Andre North": 43.4,
+        "Cal Brooks": 43.4,
+        "Dorian Pike": 43.1,
+        "Eli Mercer": 43.1,
+        "Jalen Cross": 43.1,
+        "Kellan Shore": 43.1,
+        "Malik Frost": 24.2,
+        "Mateo Cruz": 24.2,
+        "Micah Vale": 43.1,
+        "Nico Reyes": 43.1,
+        "Roman Voss": 43.1,
+        "Tariq Stone": 43.1
+      },
+      "number": 17,
+      "prediction_commitment_sha256": "73edb3819f6c3b4387f4e9dafea7658963ce72756464c3f134674c15c3f31b97",
+      "predictions": {
+        "coin": 0.5,
+        "public_elo": 0.62064491,
+        "public_elo_rotation": 0.61810445
+      },
+      "replay_sha256": "ffc6085e25fbb94317af64b73ef04ac679ae02cb0542391dbc8ddb4c0af9732c",
+      "winner": "Harbor City Waves"
+    },
+    {
+      "availability": {
+        "Andre North": true,
+        "Cal Brooks": false,
+        "Dorian Pike": true,
+        "Eli Mercer": true,
+        "Jalen Cross": true,
+        "Kellan Shore": true,
+        "Malik Frost": true,
+        "Mateo Cruz": true,
+        "Micah Vale": true,
+        "Nico Reyes": true,
+        "Roman Voss": true,
+        "Tariq Stone": true
+      },
+      "away": "Harbor City Waves",
+      "away_score": 79,
+      "home": "Mesa Vista Sol",
+      "home_score": 107,
+      "minutes": {
+        "Andre North": 43.4,
+        "Cal Brooks": 0.0,
+        "Dorian Pike": 43.1,
+        "Eli Mercer": 48.0,
+        "Jalen Cross": 43.1,
+        "Kellan Shore": 43.1,
+        "Malik Frost": 24.2,
+        "Mateo Cruz": 48.0,
+        "Micah Vale": 43.1,
+        "Nico Reyes": 48.0,
+        "Roman Voss": 48.0,
+        "Tariq Stone": 48.0
+      },
+      "number": 18,
+      "prediction_commitment_sha256": "c4e3cc425bab3726a5585b4213e2eb9cd970e97bd616ccb1c85e78d40482f1bd",
+      "predictions": {
+        "coin": 0.5,
+        "public_elo": 0.51339048,
+        "public_elo_rotation": 0.51411525
+      },
+      "replay_sha256": "3ecb16571849dd03ef1f7bc79c755774b1931324475957e0c8e56057eb80ca82",
+      "winner": "Mesa Vista Sol"
+    },
+    {
+      "availability": {
+        "Andre North": true,
+        "Cal Brooks": false,
+        "Dorian Pike": true,
+        "Eli Mercer": true,
+        "Jalen Cross": true,
+        "Kellan Shore": true,
+        "Malik Frost": true,
+        "Mateo Cruz": true,
+        "Micah Vale": true,
+        "Nico Reyes": true,
+        "Roman Voss": true,
+        "Tariq Stone": true
+      },
+      "away": "Mesa Vista Sol",
+      "away_score": 93,
+      "home": "Harbor City Waves",
+      "home_score": 97,
+      "minutes": {
+        "Andre North": 43.4,
+        "Cal Brooks": 0.0,
+        "Dorian Pike": 43.1,
+        "Eli Mercer": 48.0,
+        "Jalen Cross": 43.1,
+        "Kellan Shore": 43.1,
+        "Malik Frost": 24.2,
+        "Mateo Cruz": 48.0,
+        "Micah Vale": 43.1,
+        "Nico Reyes": 48.0,
+        "Roman Voss": 48.0,
+        "Tariq Stone": 48.0
+      },
+      "number": 19,
+      "prediction_commitment_sha256": "45033a114bc745a4f751d30e61228945cb4cde3fd5229b86901f7ac984c2507d",
+      "predictions": {
+        "coin": 0.5,
+        "public_elo": 0.61481322,
+        "public_elo_rotation": 0.61412593
+      },
+      "replay_sha256": "ca09bf9c5917c96b944164c7a1965272a6339355c3de82d06c6e747e5947a450",
+      "winner": "Harbor City Waves"
+    },
+    {
+      "availability": {
+        "Andre North": true,
+        "Cal Brooks": false,
+        "Dorian Pike": true,
+        "Eli Mercer": true,
+        "Jalen Cross": true,
+        "Kellan Shore": true,
+        "Malik Frost": true,
+        "Mateo Cruz": true,
+        "Micah Vale": true,
+        "Nico Reyes": true,
+        "Roman Voss": true,
+        "Tariq Stone": true
+      },
+      "away": "Harbor City Waves",
+      "away_score": 88,
+      "home": "Mesa Vista Sol",
+      "home_score": 72,
+      "minutes": {
+        "Andre North": 43.4,
+        "Cal Brooks": 0.0,
+        "Dorian Pike": 43.1,
+        "Eli Mercer": 48.0,
+        "Jalen Cross": 43.1,
+        "Kellan Shore": 43.1,
+        "Malik Frost": 24.2,
+        "Mateo Cruz": 48.0,
+        "Micah Vale": 43.1,
+        "Nico Reyes": 48.0,
+        "Roman Voss": 48.0,
+        "Tariq Stone": 48.0
+      },
+      "number": 20,
+      "prediction_commitment_sha256": "5bd29991918212c8c6b6823c1181d7519234ba6a9f486730e2a7f3df52357354",
+      "predictions": {
+        "coin": 0.5,
+        "public_elo": 0.51922257,
+        "public_elo_rotation": 0.51994677
+      },
+      "replay_sha256": "8797e9f68d9b61a4fca3d54fbe8db4485586cedb3d924112245052d749685f58",
+      "winner": "Harbor City Waves"
+    }
+  ],
+  "public_only": true,
+  "schema": "oddswell-public-league-v1",
+  "season": {
+    "games": 20,
+    "label": "Phase 0.5B archived development season",
+    "number": 1,
+    "status": "COMPLETE"
+  },
+  "standings": [
+    {
+      "games": 20,
+      "losses": 9,
+      "point_difference": 32,
+      "points_against": 1882,
+      "points_for": 1914,
+      "team": "Harbor City Waves",
+      "win_rate": 0.55,
+      "wins": 11
+    },
+    {
+      "games": 20,
+      "losses": 11,
+      "point_difference": -32,
+      "points_against": 1914,
+      "points_for": 1882,
+      "team": "Mesa Vista Sol",
+      "win_rate": 0.45,
+      "wins": 9
+    }
+  ],
+  "teams": [
+    {
+      "name": "Harbor City Waves",
+      "players": [
+        {
+          "available": true,
+          "defense": 72,
+          "name": "Jalen Cross",
+          "overall": 76,
+          "passing": 78,
+          "rebounding": 58,
+          "shooting": 84,
+          "stamina": 86
+        },
+        {
+          "available": true,
+          "defense": 75,
+          "name": "Micah Vale",
+          "overall": 76,
+          "passing": 86,
+          "rebounding": 55,
+          "shooting": 76,
+          "stamina": 88
+        },
+        {
+          "available": true,
+          "defense": 82,
+          "name": "Dorian Pike",
+          "overall": 77,
+          "passing": 71,
+          "rebounding": 70,
+          "shooting": 79,
+          "stamina": 84
+        },
+        {
+          "available": true,
+          "defense": 78,
+          "name": "Kellan Shore",
+          "overall": 77,
+          "passing": 69,
+          "rebounding": 84,
+          "shooting": 72,
+          "stamina": 80
+        },
+        {
+          "available": true,
+          "defense": 80,
+          "name": "Andre North",
+          "overall": 76,
+          "passing": 65,
+          "rebounding": 88,
+          "shooting": 68,
+          "stamina": 78
+        },
+        {
+          "available": true,
+          "defense": 74,
+          "name": "Malik Frost",
+          "overall": 73,
+          "passing": 72,
+          "rebounding": 63,
+          "shooting": 74,
+          "stamina": 82
+        }
+      ]
+    },
+    {
+      "name": "Mesa Vista Sol",
+      "players": [
+        {
+          "available": true,
+          "defense": 70,
+          "name": "Nico Reyes",
+          "overall": 75,
+          "passing": 80,
+          "rebounding": 56,
+          "shooting": 82,
+          "stamina": 87
+        },
+        {
+          "available": true,
+          "defense": 83,
+          "name": "Tariq Stone",
+          "overall": 78,
+          "passing": 75,
+          "rebounding": 68,
+          "shooting": 78,
+          "stamina": 85
+        },
+        {
+          "available": true,
+          "defense": 74,
+          "name": "Eli Mercer",
+          "overall": 76,
+          "passing": 84,
+          "rebounding": 60,
+          "shooting": 75,
+          "stamina": 89
+        },
+        {
+          "available": true,
+          "defense": 79,
+          "name": "Roman Voss",
+          "overall": 77,
+          "passing": 67,
+          "rebounding": 86,
+          "shooting": 73,
+          "stamina": 81
+        },
+        {
+          "available": false,
+          "defense": 81,
+          "name": "Cal Brooks",
+          "overall": 76,
+          "passing": 64,
+          "rebounding": 89,
+          "shooting": 70,
+          "stamina": 77
+        },
+        {
+          "available": true,
+          "defense": 73,
+          "name": "Mateo Cruz",
+          "overall": 74,
+          "passing": 73,
+          "rebounding": 65,
+          "shooting": 74,
+          "stamina": 83
+        }
+      ]
+    }
+  ],
+  "versions": {
+    "brain": "baseline-v2",
+    "consistency": "athlete-consistency-v2",
+    "engine": "phase05h-v1",
+    "league": "phase06l-v1",
+    "life_brain": "athlete-life-v4",
+    "offensive_involvement": "offensive-involvement-v1",
+    "prediction": "phase0d4-v1"
+  }
+}

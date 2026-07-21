@@ -28,7 +28,9 @@
 #include "Misc/CommandLine.h"
 #include "Misc/Parse.h"
 #include "Net/UnrealNetwork.h"
+#include "PublicLeagueView.h"
 #include "StudioHomeSave.h"
+#include "UnrealClient.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
 #include "Misc/AutomationTest.h"
@@ -141,6 +143,9 @@ const FKey KeyMousePitch = EKeys::MouseY;
 const FKey KeyRun = EKeys::LeftShift;
 const FKey KeyJump = EKeys::SpaceBar;
 const FKey KeyInteract = EKeys::E;
+const FKey KeyLeagueView = EKeys::L;
+const FKey KeyLeaguePrevious = EKeys::Comma;
+const FKey KeyLeagueNext = EKeys::Period;
 const FKey KeyControllerMoveX = EKeys::Gamepad_LeftX;
 const FKey KeyControllerMoveY = EKeys::Gamepad_LeftY;
 const FKey KeyControllerLookX = EKeys::Gamepad_RightX;
@@ -307,6 +312,7 @@ void AOddsWellPlaceholderCharacter::BeginPlay()
 	bStudioPersistenceQaVerify = FParse::Param(FCommandLine::Get(), TEXT("StudioPersistenceQaVerify"));
 	bStudioQa = FParse::Param(FCommandLine::Get(), TEXT("StudioQa")) || bStudioPersistenceQa || bStudioPersistenceQaVerify;
 	bCameraOrbitQa = FParse::Param(FCommandLine::Get(), TEXT("CameraOrbitQa"));
+	bPublicLeagueQa = FParse::Param(FCommandLine::Get(), TEXT("PublicLeagueQa"));
 	SharedCityQaTargetClients = GetSharedCityQaTargetClients();
 	if (GetNetMode() == NM_Standalone && GetWorld()->GetAuthGameMode<AOddsWellStudioGameMode>())
 	{
@@ -367,6 +373,40 @@ void AOddsWellPlaceholderCharacter::BeginPlay()
 		bOutfitQaEnabled = false;
 	}
 	SyncSharedCityNameplate();
+	if (IsLocallyControlled())
+	{
+		PublicLeagueSnapshot = MakeUnique<FOddsWellPublicLeagueSnapshot>();
+		FString Error;
+		if (!LoadOddsWellPublicLeagueSnapshot(*PublicLeagueSnapshot, Error))
+		{
+			UE_LOG(LogOddsWellLocomotion, Error, TEXT("ODDSWELL_PUBLIC_LEAGUE|result=FAIL|reason=%s"), *Error);
+			PublicLeagueSnapshot.Reset();
+		}
+		else
+		{
+			int32 AthleteCount = 0;
+			int32 UnavailableCount = 0;
+			for (const FOddsWellPublicTeam& Team : PublicLeagueSnapshot->Teams)
+			{
+				AthleteCount += Team.Athletes.Num();
+				for (const FOddsWellPublicAthlete& Athlete : Team.Athletes)
+				{
+					UnavailableCount += Athlete.bAvailable ? 0 : 1;
+				}
+			}
+			UE_LOG(LogOddsWellLocomotion, Display, TEXT("ODDSWELL_PUBLIC_LEAGUE|result=PASS|public_only=true|teams=%d|athletes=%d|standings=%d|games=%d|unavailable=%d|pages=%d"), PublicLeagueSnapshot->Teams.Num(), AthleteCount, PublicLeagueSnapshot->Standings.Num(), PublicLeagueSnapshot->Games.Num(), UnavailableCount, GetOddsWellPublicLeaguePageCount(*PublicLeagueSnapshot));
+			if (bPublicLeagueQa)
+			{
+				bPublicLeagueVisible = true;
+				PublicLeaguePage = GetOddsWellPublicLeaguePageCount(*PublicLeagueSnapshot) - 1;
+				ShowLeaguePage();
+				if (FParse::Param(FCommandLine::Get(), TEXT("PublicLeagueAutoExit")))
+				{
+					QaExitAt = FPlatformTime::Seconds() + 2.0;
+				}
+			}
+		}
+	}
 	UE_LOG(LogOddsWellLocomotion, Display, TEXT("ODDSWELL_LOCOMOTION_READY|spawn=%s|walk=%.0f|run=%.0f|jump=%.0f"), *SafeSpawnLocation.ToCompactString(), WalkSpeed, RunSpeed, JumpVelocity);
 }
 
@@ -455,6 +495,9 @@ void AOddsWellPlaceholderCharacter::SetupPlayerInputComponent(UInputComponent* P
 	PlayerInputComponent->BindKey(KeyRun, IE_Released, this, &AOddsWellPlaceholderCharacter::StopRun);
 	PlayerInputComponent->BindKey(KeyJump, IE_Pressed, this, &AOddsWellPlaceholderCharacter::StartJump);
 	PlayerInputComponent->BindKey(KeyJump, IE_Released, this, &AOddsWellPlaceholderCharacter::StopJump);
+	PlayerInputComponent->BindKey(KeyLeagueView, IE_Pressed, this, &AOddsWellPlaceholderCharacter::ToggleLeagueView);
+	PlayerInputComponent->BindKey(KeyLeaguePrevious, IE_Pressed, this, &AOddsWellPlaceholderCharacter::PreviousLeaguePage);
+	PlayerInputComponent->BindKey(KeyLeagueNext, IE_Pressed, this, &AOddsWellPlaceholderCharacter::NextLeaguePage);
 
 	PlayerInputComponent->BindAxisKey(KeyControllerMoveY, this, &AOddsWellPlaceholderCharacter::MoveForward);
 	PlayerInputComponent->BindAxisKey(KeyControllerMoveX, this, &AOddsWellPlaceholderCharacter::MoveRight);
@@ -466,11 +509,59 @@ void AOddsWellPlaceholderCharacter::SetupPlayerInputComponent(UInputComponent* P
 	PlayerInputComponent->BindKey(KeyControllerJump, IE_Released, this, &AOddsWellPlaceholderCharacter::StopJump);
 }
 
+void AOddsWellPlaceholderCharacter::ToggleLeagueView()
+{
+	if (!IsLocallyControlled() || !PublicLeagueSnapshot)
+	{
+		return;
+	}
+	bPublicLeagueVisible = !bPublicLeagueVisible;
+	ShowLeaguePage();
+}
+
+void AOddsWellPlaceholderCharacter::PreviousLeaguePage()
+{
+	if (!bPublicLeagueVisible || !PublicLeagueSnapshot)
+	{
+		return;
+	}
+	const int32 PageCount = GetOddsWellPublicLeaguePageCount(*PublicLeagueSnapshot);
+	PublicLeaguePage = (PublicLeaguePage - 1 + PageCount) % PageCount;
+	ShowLeaguePage();
+}
+
+void AOddsWellPlaceholderCharacter::NextLeaguePage()
+{
+	if (!bPublicLeagueVisible || !PublicLeagueSnapshot)
+	{
+		return;
+	}
+	PublicLeaguePage = (PublicLeaguePage + 1) % GetOddsWellPublicLeaguePageCount(*PublicLeagueSnapshot);
+	ShowLeaguePage();
+}
+
+void AOddsWellPlaceholderCharacter::ShowLeaguePage()
+{
+	if (!GEngine)
+	{
+		return;
+	}
+	GEngine->RemoveOnScreenDebugMessage(912013);
+	if (bPublicLeagueVisible && PublicLeagueSnapshot)
+	{
+		GEngine->AddOnScreenDebugMessage(912013, 3600.0f, FColor::White, BuildOddsWellPublicLeaguePage(*PublicLeagueSnapshot, PublicLeaguePage));
+	}
+}
+
 void AOddsWellPlaceholderCharacter::Tick(const float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 	PollKeyboardMovement();
 	PollStudioInteraction();
+	if (GEngine && IsLocallyControlled() && PublicLeagueSnapshot && !bPublicLeagueVisible)
+	{
+		GEngine->AddOnScreenDebugMessage(912014, 0.0f, FColor::Cyan, TEXT("Press L to open the public basketball league"));
+	}
 	if (bQaEnabled)
 	{
 		RunQa(DeltaSeconds);
@@ -494,6 +585,12 @@ void AOddsWellPlaceholderCharacter::Tick(const float DeltaSeconds)
 	if (bCameraOrbitQa)
 	{
 		RunCameraOrbitQa(DeltaSeconds);
+	}
+	if (bPublicLeagueQa && !bPublicLeagueQaCaptured && (PublicLeagueQaElapsed += DeltaSeconds) >= 1.0f)
+	{
+		bPublicLeagueQaCaptured = true;
+		FScreenshotRequest::RequestScreenshot(TEXT("Phase1F1_PublicLeague.png"), true, false);
+		UE_LOG(LogOddsWellLocomotion, Display, TEXT("ODDSWELL_PUBLIC_LEAGUE_CAPTURE|result=PASS|page=%d"), PublicLeaguePage + 1);
 	}
 	if (QaExitAt > 0.0 && FPlatformTime::Seconds() >= QaExitAt)
 	{

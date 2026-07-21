@@ -4,6 +4,7 @@
 #include "CharacterPresetCatalog.h"
 #include "GameFramework/Character.h"
 #include "GameFramework/GameModeBase.h"
+#include "PublicLeagueView.h"
 #include "PlaceholderLocomotion.generated.h"
 
 struct FOddsWellResolvedCharacterAppearance;
@@ -84,6 +85,10 @@ private:
 	void FinishSundaleRouteQa(bool bPassed);
 	void RunSharedCityQa(float DeltaSeconds);
 	void PollStudioInteraction();
+	void ToggleLeagueView();
+	void PreviousLeaguePage();
+	void NextLeaguePage();
+	void ShowLeaguePage();
 	void RunStudioQa(float DeltaSeconds);
 	void RunCameraOrbitQa(float DeltaSeconds);
 	bool ApplySavedOrFallbackAppearance();
@@ -188,6 +193,12 @@ private:
 	bool bStudioPersistenceQaVerify = false;
 	bool bOwnsStudio = false;
 	bool bHousingGoalsLogged = false;
+	TUniquePtr<FOddsWellPublicLeagueSnapshot> PublicLeagueSnapshot;
+	int32 PublicLeaguePage = 0;
+	bool bPublicLeagueVisible = false;
+	bool bPublicLeagueQa = false;
+	bool bPublicLeagueQaCaptured = false;
+	float PublicLeagueQaElapsed = 0.0f;
 	FVector CameraOrbitQaStartLocation = FVector::ZeroVector;
 	float CameraOrbitQaElapsed = 0.0f;
 	float CameraOrbitQaPreviousYaw = 0.0f;
