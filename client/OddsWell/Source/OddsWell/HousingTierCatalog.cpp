@@ -58,6 +58,22 @@ const FOddsWellHousingTier* FindOddsWellHousingTier(const FName TierId)
 		[TierId](const FOddsWellHousingTier& Tier) { return Tier.Id == TierId; });
 }
 
+FString BuildOddsWellHousingProgressionText(const bool bOwnsStudio)
+{
+	FString Text(TEXT("HOME PROGRESSION"));
+	for (const FOddsWellHousingTier& Tier : GetOddsWellHousingTiers())
+	{
+		Text += FString::Printf(
+			TEXT("\n%s - %s"),
+			*Tier.DisplayName,
+			Tier.bInteriorAvailable
+				? (bOwnsStudio ? TEXT("OWNED / AVAILABLE") : TEXT("AVAILABLE / NOT OWNED"))
+				: TEXT("LOCKED / INTERIOR NOT BUILT"));
+	}
+	Text += TEXT("\nPrices and requirements are not set");
+	return Text;
+}
+
 #if WITH_DEV_AUTOMATION_TESTS
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
 	FOddsWellHousingTierCatalogTest,
@@ -85,6 +101,16 @@ bool FOddsWellHousingTierCatalogTest::RunTest(const FString& Parameters)
 	TestTrue(TEXT("Studio is available"), Studio && Studio->bInteriorAvailable);
 	TestTrue(TEXT("Penthouse exists but remains unavailable"), Penthouse && !Penthouse->bInteriorAvailable);
 	TestNull(TEXT("Unknown housing tiers are not invented"), FindOddsWellHousingTier(TEXT("mansion")));
+	const FString ProgressionText = BuildOddsWellHousingProgressionText(true);
+	TestTrue(TEXT("Progression text shows the owned Studio"), ProgressionText.Contains(TEXT("Studio - OWNED / AVAILABLE")));
+	for (int32 Index = 1; Index < ExpectedNames.Num(); ++Index)
+	{
+		TestTrue(
+			FString::Printf(TEXT("%s is visibly locked and unbuilt"), *ExpectedNames[Index]),
+			ProgressionText.Contains(ExpectedNames[Index] + TEXT(" - LOCKED / INTERIOR NOT BUILT")));
+	}
+	TestTrue(TEXT("Unknown prices and requirements are disclosed"), ProgressionText.Contains(TEXT("Prices and requirements are not set")));
+	TestFalse(TEXT("Progression text invents no Odds Bucks amount"), ProgressionText.Contains(TEXT("Odds Bucks")));
 	return !HasAnyErrors();
 }
 #endif

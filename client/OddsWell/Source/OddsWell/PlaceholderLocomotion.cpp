@@ -308,6 +308,12 @@ void AOddsWellPlaceholderCharacter::BeginPlay()
 	bStudioQa = FParse::Param(FCommandLine::Get(), TEXT("StudioQa")) || bStudioPersistenceQa || bStudioPersistenceQaVerify;
 	bCameraOrbitQa = FParse::Param(FCommandLine::Get(), TEXT("CameraOrbitQa"));
 	SharedCityQaTargetClients = GetSharedCityQaTargetClients();
+	if (GetNetMode() == NM_Standalone && GetWorld()->GetAuthGameMode<AOddsWellStudioGameMode>())
+	{
+		FOddsWellStudioHomeState Home;
+		FString Error;
+		bOwnsStudio = LoadOwnedOddsWellStudio(UseOddsWellStudioHomeQaSlot(), Home, Error) && Home.bOwnsStudio;
+	}
 	UMaterialInterface* BasicShapeMaterial = LoadObject<UMaterialInterface>(nullptr, TEXT("/Engine/BasicShapes/BasicShapeMaterial.BasicShapeMaterial"));
 	if (!BasicShapeMaterial)
 	{
@@ -498,7 +504,7 @@ void AOddsWellPlaceholderCharacter::Tick(const float DeltaSeconds)
 
 void AOddsWellPlaceholderCharacter::PollStudioInteraction()
 {
-	if (!IsLocallyControlled() || GetNetMode() != NM_Standalone || bStudioQa)
+	if (!IsLocallyControlled() || GetNetMode() != NM_Standalone)
 	{
 		return;
 	}
@@ -506,11 +512,6 @@ void AOddsWellPlaceholderCharacter::PollStudioInteraction()
 	if (!PlayerController)
 	{
 		return;
-	}
-	const bool bPressed = PlayerController->IsInputKeyDown(KeyInteract);
-	if (!bPressed)
-	{
-		bStudioInteractionArmed = true;
 	}
 	const bool bInStudio = GetWorld()->GetAuthGameMode<AOddsWellStudioGameMode>() != nullptr;
 	const bool bAtStudioDoor = GetWorld()->GetMapName().Contains(TEXT("SundaleGraybox"))
@@ -522,6 +523,24 @@ void AOddsWellPlaceholderCharacter::PollStudioInteraction()
 			0.0f,
 			FColor::White,
 			bInStudio ? TEXT("Press E to leave your empty Studio") : TEXT("Press E to enter your empty Studio"));
+	}
+	if (GEngine && bInStudio && bOwnsStudio)
+	{
+		GEngine->AddOnScreenDebugMessage(912012, 0.0f, FColor::Cyan, BuildOddsWellHousingProgressionText(true));
+		if (!bHousingGoalsLogged)
+		{
+			bHousingGoalsLogged = true;
+			UE_LOG(LogOddsWellLocomotion, Display, TEXT("ODDSWELL_HOUSING_GOALS|result=PASS|player_visible=true|studio=owned_available|locked=5|unbuilt=5|prices=false|requirements=false|text_statuses=true"));
+		}
+	}
+	if (bStudioQa)
+	{
+		return;
+	}
+	const bool bPressed = PlayerController->IsInputKeyDown(KeyInteract);
+	if (!bPressed)
+	{
+		bStudioInteractionArmed = true;
 	}
 	if (!bPressed || !bStudioInteractionArmed || (!bInStudio && !bAtStudioDoor))
 	{

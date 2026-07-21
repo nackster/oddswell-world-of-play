@@ -186,6 +186,8 @@ private:
 	bool bStudioQaInteriorStarted = false;
 	bool bStudioPersistenceQa = false;
 	bool bStudioPersistenceQaVerify = false;
+	bool bOwnsStudio = false;
+	bool bHousingGoalsLogged = false;
 	FVector CameraOrbitQaStartLocation = FVector::ZeroVector;
 	float CameraOrbitQaElapsed = 0.0f;
 	float CameraOrbitQaPreviousYaw = 0.0f;

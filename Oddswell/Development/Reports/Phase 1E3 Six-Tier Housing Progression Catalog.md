@@ -39,3 +39,7 @@ The normal-order regression attempts exposed environmental timing sensitivity in
 The five larger tiers are catalog goals, not built apartments. This phase adds no upgrade screen, price, Odds Bucks, purchase, account, larger layout, furniture, inventory, visit, trading, final art, hosting, or deployment.
 
 The next roadmap step is **Phase 1E.4 — show the six catalog tiers as clear locked upgrade goals while keeping only Studio available**.
+
+## Phase 1E.4 follow-up
+
+[[Development/Reports/Phase 1E4 Player-Visible Locked Housing Goals]] now displays those exact catalog states inside the owned Studio using explicit text labels. Phase 1E's remaining furniture activation stays blocked until Phase 1I supplies a legitimate purchase and ownership record.

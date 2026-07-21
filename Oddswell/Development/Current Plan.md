@@ -761,6 +761,16 @@ Build the one-city scope defined in [[Design/Decisions/DEC-002 First Playable Sc
 - **Boundary:** no upgrade screen, price, Odds Bucks, purchase, larger interior, furniture, inventory, account, visit, trade, final art, hosting, or deployment was added.
 - **Next gate:** Phase 1E.4 shows the six tiers as clear locked upgrade goals while keeping only Studio available.
 
+### Phase 1E.4 Player-Visible Locked Housing Goals status
+
+- **Outcome:** complete and committed locally after final validation. The owned Studio now shows one text-based Home Progression overlay: Studio is `OWNED / AVAILABLE`; the five larger approved tiers are `LOCKED / INTERIOR NOT BUILT`; prices and requirements are explicitly not set.
+- **Implementation:** the validated catalog builds the text and the existing Unreal keyed-message path displays it only after local Studio ownership loads. Status is written in text rather than conveyed by color alone. No widget framework or speculative upgrade logic was added.
+- **Packaged proof:** the runtime reported `player_visible=true`, `studio=owned_available`, `locked=5`, `unbuilt=5`, `prices=false`, `requirements=false`, and `text_statuses=true`. The same run preserved the empty room and exact return; a second cold process restored ownership/location and removed the QA save.
+- **Validation:** editor/game builds and clean BuildCookRun passed in `101.79s`; native character automation passed `7/7`; all `65/65` frozen regressions passed in `132.470s`; Brain Admin self-check, Python compilation, accepted-log audit, QA cleanup, diff hygiene, and zero-process cleanup passed. Cost was `$0.00`. See [[Development/Reports/Phase 1E4 Player-Visible Locked Housing Goals]].
+- **Boundary:** no final housing menu, price, requirement, upgrade action, Odds Bucks, purchase, larger interior, furniture, placement point, inventory, visit, account, trade, modern art, hosting, or deployment was added.
+- **Dependency handoff:** Phase 1E's standalone foundation is complete. Furniture activation waits for Phase 1I's legitimate purchase and ownership path.
+- **Next gate:** Phase 1F.1 shows existing public teams, athletes, schedule, standings, availability, and history in the player client.
+
 ## Future shared simulation layer
 
 Athlete Life Brain v4 is the default for newly generated train, rest, recover, and socialize decisions. It adds only one bounded, one-decision, same-season recent-scoring response above v3's routine behavior. V1-v4 history remains immutable. Expand into longer memory, traits, relationships, nightlife, media, discipline, career decisions, and other sports only after each smaller input passes its own engineering evaluation.

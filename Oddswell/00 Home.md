@@ -100,6 +100,7 @@ tags:
 - [[Development/Reports/Phase 1E1a Continuous Mouse Camera Orbit Correction|Phase 1E.1a continuous mouse camera orbit correction]]
 - [[Development/Reports/Phase 1E2 Studio Ownership and Return Persistence|Phase 1E.2 Studio ownership and return persistence]]
 - [[Development/Reports/Phase 1E3 Six-Tier Housing Progression Catalog|Phase 1E.3 six-tier housing progression catalog]]
+- [[Development/Reports/Phase 1E4 Player-Visible Locked Housing Goals|Phase 1E.4 player-visible locked housing goals]]
 - [[Visual Maps/Project Tool Map|Master project tool map]]
 - [[Visual Maps/Beta Game Scope|Complete beta game scope map]]
 - [[Visual Maps/Beta Delivery Roadmap|Beta delivery roadmap map]]
@@ -112,7 +113,7 @@ tags:
 
 ## Current focus
 
-Phase 1A, Phase 1B, the Phase 1C city-graybox exit, and the Phase 1D local shared-city exit are complete. The owner selected **Concept B — Daymark / Sundale**; its `800 m` packaged route is measured and traversable. Phase 1E.1 proves a private, completely empty Studio can be entered, walked, exited, and viewed with a continuous mouse orbit. Phase 1E.2 persists ownership and the exact Sundale return point across a cold restart. Phase 1E.3 now defines all six housing tiers while keeping only Studio available. Phase 1E.4 must show the five larger tiers as clearly locked upgrade goals without pretending their interiors exist. Final art, external hosting, accounts, a capacity ceiling, Odds Bucks, wagering, deployment, and retraining remain inactive.
+Phase 1A, Phase 1B, the Phase 1C city-graybox exit, the Phase 1D local shared-city exit, and the standalone Phase 1E housing foundation are complete. The owner selected **Concept B — Daymark / Sundale**; its `800 m` packaged route is measured and traversable. The owned empty Studio now persists its exact return point and visibly identifies Studio as available while 1BR through Penthouse remain locked and unbuilt. Furniture waits for Phase 1I's legitimate purchase path. Phase 1F.1 is next: bring the existing public league information into the player client. Final art, external hosting, accounts, a capacity ceiling, Odds Bucks, wagering, deployment, and retraining remain inactive.
 
 ## Current state
 
