@@ -780,6 +780,16 @@ Build the one-city scope defined in [[Design/Decisions/DEC-002 First Playable Sc
 - **Validation:** editor/game builds passed; native character automation passed `8/8`; BuildCookRun passed in `50.25s`; all `65/65` frozen regressions passed in `135.279s`; Brain Admin self-check, exporter determinism, Python compilation, log audit, diff hygiene, and zero-process cleanup passed. Cost was `$0.00`. See [[Development/Reports/Phase 1F1 Player League View]].
 - **Next gate:** Phase 1F.2 grayboxes the stadium and its physical public viewing location. Wager interaction, odds, settlement, match-presentation choices, and the 82-game/two-team owner gate remain inactive.
 
+### Phase 1F.2 Stadium and Public Viewing Graybox status
+
+- **Status:** Complete on `agent/phase-0d`; smallest reversible stadium and public-viewing shell only.
+- **Implementation:** a URL-selected native stadium game mode reuses `Bootstrap` and creates eight built-in primitive structural surfaces plus five labeled zones: entry/concourse, court floor, public viewing, future match presentation, and exit. At Sundale's existing Arena threshold, `E` enters the venue; inside, `E` returns to the exact safe city position recorded on entry.
+- **Packaged proof:** the final 55-file Windows package entered from the Arena, traversed all five zones, reached the reserved presentation marker, exited, and restored Sundale with `0.0 cm` horizontal error. The visual run captured the future match-presentation wall from inside the venue. The public league overlay remains available.
+- **Corrective evidence:** rejected runs exposed a `42.1 cm` collision adjustment where the city marker lies on a blocking line. The accepted implementation records the player's actual walkable entry position instead of pretending the marker center is a safe spawn.
+- **Validation:** final editor/game builds and BuildCookRun passed; native character automation passed `9/9`; all `65/65` frozen regressions passed in `129.803s`; Brain Admin self-check, deterministic league export, Python compilation, packaged log audit, diff hygiene, and zero-process cleanup passed. Cost was `$0.00`. See [[Development/Reports/Phase 1F2 Stadium and Public Viewing Graybox]].
+- **Boundary:** no replay is shown in the stadium yet. No wager interaction, odds, settlement, simulator, resimulation, crowd, commentary, team branding, final art, backend, service, purchase, or deployment behavior was added.
+- **Next gate:** Phase 1F.3 directly consumes one already verified archived replay inside the stadium without resimulating basketball. Presentation duration, cameras, commentary, skip rules, and the 82-game/two-team variety decision remain later owner gates.
+
 ## Future shared simulation layer
 
 Athlete Life Brain v4 is the default for newly generated train, rest, recover, and socialize decisions. It adds only one bounded, one-decision, same-season recent-scoring response above v3's routine behavior. V1-v4 history remains immutable. Expand into longer memory, traits, relationships, nightlife, media, discipline, career decisions, and other sports only after each smaller input passes its own engineering evaluation.

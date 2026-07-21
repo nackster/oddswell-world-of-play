@@ -85,11 +85,13 @@ private:
 	void FinishSundaleRouteQa(bool bPassed);
 	void RunSharedCityQa(float DeltaSeconds);
 	void PollStudioInteraction();
+	void PollStadiumInteraction();
 	void ToggleLeagueView();
 	void PreviousLeaguePage();
 	void NextLeaguePage();
 	void ShowLeaguePage();
 	void RunStudioQa(float DeltaSeconds);
+	void RunStadiumQa(float DeltaSeconds);
 	void RunCameraOrbitQa(float DeltaSeconds);
 	bool ApplySavedOrFallbackAppearance();
 	bool ResolveLocalAppearance(FOddsWellResolvedCharacterAppearance& OutAppearance, FString& OutSource, FString& OutError) const;
@@ -193,6 +195,12 @@ private:
 	bool bStudioPersistenceQaVerify = false;
 	bool bOwnsStudio = false;
 	bool bHousingGoalsLogged = false;
+	float StadiumQaElapsed = 0.0f;
+	int32 StadiumQaWaypointIndex = 0;
+	bool bStadiumInteractionArmed = false;
+	bool bStadiumQa = false;
+	bool bStadiumQaInteriorStarted = false;
+	bool bStadiumQaMarkerReached = false;
 	TUniquePtr<FOddsWellPublicLeagueSnapshot> PublicLeagueSnapshot;
 	int32 PublicLeaguePage = 0;
 	bool bPublicLeagueVisible = false;
@@ -242,6 +250,17 @@ class ODDSWELL_API AOddsWellStudioGameMode final : public AGameModeBase
 
 public:
 	AOddsWellStudioGameMode();
+	virtual void BeginPlay() override;
+	virtual APawn* SpawnDefaultPawnAtTransform_Implementation(AController* NewPlayer, const FTransform&) override;
+};
+
+UCLASS()
+class ODDSWELL_API AOddsWellStadiumGameMode final : public AGameModeBase
+{
+	GENERATED_BODY()
+
+public:
+	AOddsWellStadiumGameMode();
 	virtual void BeginPlay() override;
 	virtual APawn* SpawnDefaultPawnAtTransform_Implementation(AController* NewPlayer, const FTransform&) override;
 };

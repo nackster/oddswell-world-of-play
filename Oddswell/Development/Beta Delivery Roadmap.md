@@ -61,7 +61,8 @@ The roadmap is intentionally made of measurable product gates, not hundreds of s
 - Phase 1E.4 player-visible locked housing goals: **COMPLETE**; see [[Development/Reports/Phase 1E4 Player-Visible Locked Housing Goals]].
 - Phase 1E standalone foundation: **COMPLETE THROUGH CURRENT DEPENDENCIES**. Furniture activation remains blocked until Phase 1I supplies a legitimate purchase and ownership record.
 - Phase 1F.1 player league view: **COMPLETE**; see [[Development/Reports/Phase 1F1 Player League View]].
-- Next gate: **PHASE 1F.2 STADIUM AND VIEWING-LOCATION GRAYBOX**. Sundale remains a working name.
+- Phase 1F.2 stadium and public viewing-location graybox: **COMPLETE**; see [[Development/Reports/Phase 1F2 Stadium and Public Viewing Graybox]].
+- Next gate: **PHASE 1F.3 DIRECT ARCHIVED REPLAY CONSUMPTION IN THE STADIUM**. Sundale remains a working name.
 - Current prerequisite note: UE 5.8, the aligned x64 runtime and .NET Framework 4.8 SDK, portable project, reproducible local Windows package, empty-map launch, LFS, generated-file ignores, primitive block/court iteration, collision, cold-process reopen, direct recorded-replay rendering, deterministic packaged traces, and local resource sampling are verified. UE 5.8 is now the approved beta client engine.
 
 No later roadmap phase is authorized merely because it appears below.
@@ -226,7 +227,7 @@ The player can return to the same owned, empty Studio; all six tiers exist as tr
 ### Smallest delivery path
 
 1. **COMPLETE:** show the existing public teams, athletes, schedule, standings, availability, and history in the player client. See [[Development/Reports/Phase 1F1 Player League View]].
-2. Graybox the stadium and physical wagering/viewing location.
+2. **COMPLETE:** graybox the stadium and public viewing location, with the future presentation area reserved and wagering kept inactive. See [[Development/Reports/Phase 1F2 Stadium and Public Viewing Graybox]].
 3. Consume one verified archived replay directly.
 4. Produce a readable two-to-five-minute presentation with score, clock, actors, key events, overtime, and final seal.
 5. Prove that watch, skip, late arrival, and reconnect never change the recorded result.

@@ -11,6 +11,7 @@
 #include "Components/TextRenderComponent.h"
 #include "Engine/StaticMesh.h"
 #include "Engine/StaticMeshActor.h"
+#include "Engine/TextRenderActor.h"
 #include "Engine/World.h"
 #include "EngineUtils.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -65,9 +66,17 @@ constexpr float SundaleRouteDistance = 80000.0f;
 constexpr float SundaleWaypointTolerance = 75.0f;
 constexpr float StudioEntryRadius = 350.0f;
 constexpr float StudioQaWalkDistance = 200.0f;
+constexpr float StadiumEntryRadius = 350.0f;
+constexpr float StadiumQaWaypointTolerance = 75.0f;
 const FName StudioStructureTag(TEXT("OddsWellStudioStructure"));
 const FName StudioFurnitureTag(TEXT("OddsWellStudioFurniture"));
+const FName StadiumStructureTag(TEXT("OddsWellStadiumStructure"));
+const FName StadiumZoneTag(TEXT("OddsWellStadiumZone"));
+const FVector StadiumEntranceThreshold(7000.0, 18000.0, 0.0);
+FVector StadiumCityReturnLocation = StadiumEntranceThreshold + FVector(0.0, -100.0, SafeSpawnLocation.Z);
+const FVector StadiumInteriorSpawn(-1600.0, 0.0, 220.0);
 int32 StudioQaProcessStage = 0;
+int32 StadiumQaProcessStage = 0;
 
 struct FStudioSurfaceSpec
 {
@@ -86,6 +95,59 @@ const TArray<FStudioSurfaceSpec>& GetEmptyStudioSurfaces()
 		{FVector(0.0, 300.0, 145.0), FVector(8.0, 0.2, 2.9)},
 	};
 	return Surfaces;
+}
+
+struct FStadiumSurfaceSpec
+{
+	FName Id;
+	FVector Location;
+	FVector Scale;
+};
+
+const TArray<FStadiumSurfaceSpec>& GetStadiumSurfaces()
+{
+	static const TArray<FStadiumSurfaceSpec> Surfaces = {
+		{TEXT("base_floor"), FVector(0.0, 0.0, -10.0), FVector(40.0, 24.0, 0.2)},
+		{TEXT("court_floor"), FVector(350.0, 0.0, 1.0), FVector(14.0, 8.0, 0.02)},
+		{TEXT("viewing_deck"), FVector(350.0, 900.0, 20.0), FVector(14.0, 2.0, 0.4)},
+		{TEXT("viewing_row"), FVector(350.0, 1050.0, 55.0), FVector(14.0, 1.0, 0.7)},
+		{TEXT("west_wall"), FVector(-2000.0, 0.0, 300.0), FVector(0.2, 24.0, 6.0)},
+		{TEXT("east_wall"), FVector(2000.0, 0.0, 300.0), FVector(0.2, 24.0, 6.0)},
+		{TEXT("north_wall"), FVector(0.0, 1200.0, 300.0), FVector(40.0, 0.2, 6.0)},
+		{TEXT("south_wall"), FVector(0.0, -1200.0, 300.0), FVector(40.0, 0.2, 6.0)},
+	};
+	return Surfaces;
+}
+
+struct FStadiumZoneSpec
+{
+	FName Id;
+	FString Label;
+	FVector Location;
+};
+
+const TArray<FStadiumZoneSpec>& GetStadiumZones()
+{
+	static const TArray<FStadiumZoneSpec> Zones = {
+		{TEXT("entry_concourse"), TEXT("ENTRY / CONCOURSE"), FVector(-1450.0, -400.0, 180.0)},
+		{TEXT("court_floor"), TEXT("COURT FLOOR"), FVector(350.0, -250.0, 180.0)},
+		{TEXT("public_viewing"), TEXT("PUBLIC VIEWING"), FVector(350.0, 650.0, 220.0)},
+		{TEXT("future_presentation"), TEXT("FUTURE MATCH PRESENTATION"), FVector(1150.0, 0.0, 220.0)},
+		{TEXT("exit"), TEXT("EXIT TO SUNDALE"), FVector(-1550.0, 400.0, 180.0)},
+	};
+	return Zones;
+}
+
+const TArray<FVector>& GetStadiumQaWaypoints()
+{
+	static const TArray<FVector> Waypoints = {
+		FVector(-1000.0, 0.0, 0.0),
+		FVector(350.0, 0.0, 0.0),
+		FVector(350.0, 600.0, 0.0),
+		FVector(1150.0, 0.0, 0.0),
+		FVector(-1500.0, 0.0, 0.0),
+	};
+	return Waypoints;
 }
 
 bool MatchesSharedCityReconnectAppearance(
@@ -113,7 +175,7 @@ const TArray<FVector>& GetSundaleRouteWaypoints()
 		FVector(12500.0, 0.0, 0.0),
 		FVector(12500.0, 9000.0, 0.0),
 		FVector(12500.0, 18000.0, 0.0),
-		FVector(7000.0, 18000.0, 0.0),
+		StadiumEntranceThreshold,
 		FVector(1000.0, 18000.0, 0.0),
 		FVector(-9500.0, 18000.0, 0.0),
 		FVector(-9500.0, 16000.0, 0.0),
@@ -313,6 +375,7 @@ void AOddsWellPlaceholderCharacter::BeginPlay()
 	bStudioQa = FParse::Param(FCommandLine::Get(), TEXT("StudioQa")) || bStudioPersistenceQa || bStudioPersistenceQaVerify;
 	bCameraOrbitQa = FParse::Param(FCommandLine::Get(), TEXT("CameraOrbitQa"));
 	bPublicLeagueQa = FParse::Param(FCommandLine::Get(), TEXT("PublicLeagueQa"));
+	bStadiumQa = FParse::Param(FCommandLine::Get(), TEXT("StadiumQa"));
 	SharedCityQaTargetClients = GetSharedCityQaTargetClients();
 	if (GetNetMode() == NM_Standalone && GetWorld()->GetAuthGameMode<AOddsWellStudioGameMode>())
 	{
@@ -558,6 +621,7 @@ void AOddsWellPlaceholderCharacter::Tick(const float DeltaSeconds)
 	Super::Tick(DeltaSeconds);
 	PollKeyboardMovement();
 	PollStudioInteraction();
+	PollStadiumInteraction();
 	if (GEngine && IsLocallyControlled() && PublicLeagueSnapshot && !bPublicLeagueVisible)
 	{
 		GEngine->AddOnScreenDebugMessage(912014, 0.0f, FColor::Cyan, TEXT("Press L to open the public basketball league"));
@@ -581,6 +645,10 @@ void AOddsWellPlaceholderCharacter::Tick(const float DeltaSeconds)
 	if (bStudioQa)
 	{
 		RunStudioQa(DeltaSeconds);
+	}
+	if (bStadiumQa)
+	{
+		RunStadiumQa(DeltaSeconds);
 	}
 	if (bCameraOrbitQa)
 	{
@@ -661,6 +729,61 @@ void AOddsWellPlaceholderCharacter::PollStudioInteraction()
 		bInStudio
 			? TEXT("game=/Script/OddsWell.OddsWellLocomotionGameMode")
 			: TEXT("game=/Script/OddsWell.OddsWellStudioGameMode"));
+}
+
+void AOddsWellPlaceholderCharacter::PollStadiumInteraction()
+{
+	if (!IsLocallyControlled() || GetNetMode() != NM_Standalone)
+	{
+		return;
+	}
+	const APlayerController* PlayerController = Cast<APlayerController>(Controller);
+	if (!PlayerController)
+	{
+		return;
+	}
+	const bool bInStadium = GetWorld()->GetAuthGameMode<AOddsWellStadiumGameMode>() != nullptr;
+	const bool bAtStadiumEntrance = GetWorld()->GetMapName().Contains(TEXT("SundaleGraybox"))
+		&& FVector::Dist2D(GetActorLocation(), StadiumEntranceThreshold) <= StadiumEntryRadius;
+	if (GEngine && (bInStadium || bAtStadiumEntrance))
+	{
+		GEngine->AddOnScreenDebugMessage(
+			912015,
+			0.0f,
+			FColor::Yellow,
+			bInStadium ? TEXT("Press E to exit the public viewing graybox") : TEXT("Press E to enter the public viewing graybox"));
+	}
+	if (bStadiumQa)
+	{
+		return;
+	}
+	const bool bPressed = PlayerController->IsInputKeyDown(KeyInteract);
+	if (!bPressed)
+	{
+		bStadiumInteractionArmed = true;
+	}
+	if (!bPressed || !bStadiumInteractionArmed || (!bInStadium && !bAtStadiumEntrance))
+	{
+		return;
+	}
+	bStadiumInteractionArmed = false;
+	if (!bInStadium)
+	{
+		StadiumCityReturnLocation = GetActorLocation();
+	}
+	UE_LOG(
+		LogOddsWellLocomotion,
+		Display,
+		TEXT("ODDSWELL_STADIUM_TRANSITION|direction=%s|threshold=%s|sportsbook=separate|replay=false"),
+		bInStadium ? TEXT("to_city") : TEXT("to_stadium"),
+		*StadiumEntranceThreshold.ToCompactString());
+	UGameplayStatics::OpenLevel(
+		this,
+		FName(bInStadium ? TEXT("/Game/Maps/SundaleGraybox") : TEXT("/Game/Maps/Bootstrap")),
+		true,
+		bInStadium
+			? TEXT("game=/Script/OddsWell.OddsWellLocomotionGameMode?StadiumReturn=1")
+			: TEXT("game=/Script/OddsWell.OddsWellStadiumGameMode"));
 }
 
 void AOddsWellPlaceholderCharacter::RunStudioQa(const float DeltaSeconds)
@@ -794,6 +917,121 @@ void AOddsWellPlaceholderCharacter::RunStudioQa(const float DeltaSeconds)
 	if (StudioQaElapsed > 15.0f)
 	{
 		UE_LOG(LogOddsWellLocomotion, Error, TEXT("ODDSWELL_STUDIO_QA|result=FAIL|reason=transition_timeout|stage=%d|map=%s"), StudioQaProcessStage, *GetWorld()->GetMapName());
+		FPlatformMisc::RequestExit(false);
+	}
+}
+
+void AOddsWellPlaceholderCharacter::RunStadiumQa(const float DeltaSeconds)
+{
+	if (!IsLocallyControlled() || GetNetMode() != NM_Standalone)
+	{
+		return;
+	}
+	StadiumQaElapsed += DeltaSeconds;
+	const bool bInSundale = GetWorld()->GetMapName().Contains(TEXT("SundaleGraybox"));
+	const bool bInStadium = GetWorld()->GetAuthGameMode<AOddsWellStadiumGameMode>() != nullptr;
+	if (StadiumQaProcessStage == 0 && bInSundale && GetCharacterMovement()->IsMovingOnGround())
+	{
+		StadiumQaProcessStage = 1;
+		SetActorLocation(StadiumEntranceThreshold + FVector(0.0, -100.0, SafeSpawnLocation.Z));
+		StadiumCityReturnLocation = GetActorLocation();
+		UE_LOG(LogOddsWellLocomotion, Display, TEXT("ODDSWELL_STADIUM_QA_ENTER|from=SundaleGraybox|threshold=%s|sportsbook=separate"), *StadiumEntranceThreshold.ToCompactString());
+		UGameplayStatics::OpenLevel(this, FName(TEXT("/Game/Maps/Bootstrap")), true, TEXT("game=/Script/OddsWell.OddsWellStadiumGameMode"));
+		return;
+	}
+	if (StadiumQaProcessStage == 1 && bInStadium)
+	{
+		if (!bStadiumQaInteriorStarted && GetCharacterMovement()->IsMovingOnGround())
+		{
+			int32 StructuralSurfaces = 0;
+			int32 BlockingSurfaces = 0;
+			int32 ZoneMarkers = 0;
+			for (TActorIterator<AStaticMeshActor> It(GetWorld()); It; ++It)
+			{
+				if (It->ActorHasTag(StadiumStructureTag))
+				{
+					++StructuralSurfaces;
+					BlockingSurfaces += It->GetStaticMeshComponent()->GetCollisionResponseToChannel(ECC_Pawn) == ECR_Block ? 1 : 0;
+				}
+			}
+			for (TActorIterator<ATextRenderActor> It(GetWorld()); It; ++It)
+			{
+				ZoneMarkers += It->ActorHasTag(StadiumZoneTag) ? 1 : 0;
+			}
+			if (StructuralSurfaces != GetStadiumSurfaces().Num()
+				|| BlockingSurfaces != StructuralSurfaces
+				|| ZoneMarkers != GetStadiumZones().Num())
+			{
+				UE_LOG(LogOddsWellLocomotion, Error, TEXT("ODDSWELL_STADIUM_QA|result=FAIL|reason=construction|surfaces=%d|blocking=%d|zones=%d"), StructuralSurfaces, BlockingSurfaces, ZoneMarkers);
+				FPlatformMisc::RequestExit(false);
+				return;
+			}
+			bStadiumQaInteriorStarted = true;
+			UE_LOG(LogOddsWellLocomotion, Display, TEXT("ODDSWELL_STADIUM_READY|result=PASS|surfaces=%d|zones=%d|collision=blocking|unbranded=true|team_neutral=true|crowd=0|replay=false"), StructuralSurfaces, ZoneMarkers);
+		}
+		if (!bStadiumQaInteriorStarted)
+		{
+			return;
+		}
+		const TArray<FVector>& Waypoints = GetStadiumQaWaypoints();
+		if (!Waypoints.IsValidIndex(StadiumQaWaypointIndex))
+		{
+			return;
+		}
+		FVector Direction = Waypoints[StadiumQaWaypointIndex] - GetActorLocation();
+		Direction.Z = 0.0f;
+		if (Direction.Size2D() <= StadiumQaWaypointTolerance)
+		{
+			++StadiumQaWaypointIndex;
+			UE_LOG(LogOddsWellLocomotion, Display, TEXT("ODDSWELL_STADIUM_QA_ZONE|result=PASS|point=%d/%d|location=%s"), StadiumQaWaypointIndex, Waypoints.Num(), *GetActorLocation().ToCompactString());
+			if (StadiumQaWaypointIndex == 4)
+			{
+				bStadiumQaMarkerReached = true;
+				UE_LOG(LogOddsWellLocomotion, Display, TEXT("ODDSWELL_STADIUM_VIEWING_MARKER|result=PASS|label=FUTURE_MATCH_PRESENTATION|replay=false"));
+				if (FParse::Param(FCommandLine::Get(), TEXT("StadiumQaCapture")))
+				{
+					FScreenshotRequest::RequestScreenshot(TEXT("Phase1F2_StadiumGraybox.png"), true, false);
+				}
+			}
+			if (StadiumQaWaypointIndex == Waypoints.Num())
+			{
+				if (!bStadiumQaMarkerReached)
+				{
+					UE_LOG(LogOddsWellLocomotion, Error, TEXT("ODDSWELL_STADIUM_QA|result=FAIL|reason=marker_not_reached"));
+					FPlatformMisc::RequestExit(false);
+					return;
+				}
+				StadiumQaProcessStage = 2;
+				UGameplayStatics::OpenLevel(this, FName(TEXT("/Game/Maps/SundaleGraybox")), true, TEXT("game=/Script/OddsWell.OddsWellLocomotionGameMode?StadiumReturn=1"));
+				return;
+			}
+		}
+		else
+		{
+			AddMovementInput(Direction.GetSafeNormal(), 1.0f);
+		}
+	}
+	else if (StadiumQaProcessStage == 2 && bInSundale && GetCharacterMovement()->IsMovingOnGround())
+	{
+		const float ReturnDistance = FVector::Dist2D(GetActorLocation(), StadiumCityReturnLocation);
+		StadiumQaProcessStage = 3;
+		bStadiumQa = false;
+		if (ReturnDistance > 5.0f)
+		{
+			UE_LOG(LogOddsWellLocomotion, Error, TEXT("ODDSWELL_STADIUM_QA|result=FAIL|reason=return_threshold|distance=%.1f"), ReturnDistance);
+			FPlatformMisc::RequestExit(false);
+			return;
+		}
+		UE_LOG(LogOddsWellLocomotion, Display, TEXT("ODDSWELL_STADIUM_QA|result=PASS|entered=true|walked_to_marker=true|exited=true|return_distance=%.1f|zones=5|sportsbook=separate|replay=false|wagering=false"), ReturnDistance);
+		if (FParse::Param(FCommandLine::Get(), TEXT("StadiumAutoExit")))
+		{
+			QaExitAt = FPlatformTime::Seconds() + 2.0;
+		}
+		return;
+	}
+	if (StadiumQaElapsed > 45.0f)
+	{
+		UE_LOG(LogOddsWellLocomotion, Error, TEXT("ODDSWELL_STADIUM_QA|result=FAIL|reason=transition_timeout|stage=%d|map=%s"), StadiumQaProcessStage, *GetWorld()->GetMapName());
 		FPlatformMisc::RequestExit(false);
 	}
 }
@@ -1748,6 +1986,12 @@ APawn* AOddsWellLocomotionGameMode::SpawnDefaultPawnAtTransform_Implementation(A
 			SpawnLocation = Home.SundaleReturnLocation;
 			UE_LOG(LogOddsWellLocomotion, Display, TEXT("ODDSWELL_STUDIO_RETURN_RESTORED|ownership=true|location=%s"), *SpawnLocation.ToCompactString());
 		}
+		if (UGameplayStatics::HasOption(OptionsString, TEXT("StadiumReturn")))
+		{
+			SpawnLocation = StadiumCityReturnLocation;
+			Parameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+			UE_LOG(LogOddsWellLocomotion, Display, TEXT("ODDSWELL_STADIUM_RETURN_RESTORED|location=%s|exact_xy=true"), *StadiumCityReturnLocation.ToCompactString());
+		}
 	}
 	AOddsWellPlaceholderCharacter* Character = GetWorld()->SpawnActor<AOddsWellPlaceholderCharacter>(SpawnLocation, FRotator::ZeroRotator, Parameters);
 	if (Character && GetNetMode() != NM_Standalone)
@@ -1819,7 +2063,104 @@ APawn* AOddsWellStudioGameMode::SpawnDefaultPawnAtTransform_Implementation(ACont
 	return GetWorld()->SpawnActor<AOddsWellPlaceholderCharacter>(SafeSpawnLocation, FRotator::ZeroRotator, Parameters);
 }
 
+AOddsWellStadiumGameMode::AOddsWellStadiumGameMode()
+{
+	DefaultPawnClass = AOddsWellPlaceholderCharacter::StaticClass();
+}
+
+void AOddsWellStadiumGameMode::BeginPlay()
+{
+	Super::BeginPlay();
+	UStaticMesh* Cube = LoadObject<UStaticMesh>(nullptr, TEXT("/Engine/BasicShapes/Cube.Cube"));
+	if (!Cube)
+	{
+		UE_LOG(LogOddsWellLocomotion, Error, TEXT("ODDSWELL_STADIUM_CONSTRUCTED|result=FAIL|reason=missing_cube"));
+		return;
+	}
+	FActorSpawnParameters Parameters;
+	Parameters.ObjectFlags |= RF_Transient;
+	for (const FStadiumSurfaceSpec& Surface : GetStadiumSurfaces())
+	{
+		AStaticMeshActor* Actor = GetWorld()->SpawnActor<AStaticMeshActor>(AStaticMeshActor::StaticClass(), FTransform(FRotator::ZeroRotator, Surface.Location, Surface.Scale), Parameters);
+		if (Actor)
+		{
+			Actor->GetStaticMeshComponent()->SetStaticMesh(Cube);
+			Actor->GetStaticMeshComponent()->SetCollisionProfileName(TEXT("BlockAll"));
+			Actor->Tags.Add(StadiumStructureTag);
+			Actor->Tags.Add(Surface.Id);
+		}
+	}
+	for (const FStadiumZoneSpec& Zone : GetStadiumZones())
+	{
+		ATextRenderActor* Label = GetWorld()->SpawnActor<ATextRenderActor>(Zone.Location, FRotator(0.0, 180.0, 0.0), Parameters);
+		if (Label)
+		{
+			Label->Tags.Add(StadiumZoneTag);
+			Label->Tags.Add(Zone.Id);
+			Label->GetTextRender()->SetText(FText::FromString(Zone.Label));
+			Label->GetTextRender()->SetHorizontalAlignment(EHTA_Center);
+			Label->GetTextRender()->SetTextRenderColor(Zone.Id == TEXT("future_presentation") ? FColor::Yellow : FColor::White);
+			Label->GetTextRender()->SetWorldSize(44.0f);
+		}
+	}
+	if (APointLight* Light = GetWorld()->SpawnActor<APointLight>(FVector(0.0, 0.0, 500.0), FRotator::ZeroRotator, Parameters))
+	{
+		Light->PointLightComponent->SetIntensity(9000.0f);
+		Light->PointLightComponent->SetAttenuationRadius(3500.0f);
+	}
+	UE_LOG(LogOddsWellLocomotion, Display, TEXT("ODDSWELL_STADIUM_CONSTRUCTED|result=PASS|surfaces=%d|zones=%d|entry=true|concourse=true|court=true|public_viewing=true|future_marker=true|exit=true|unbranded=true|team_neutral=true"), GetStadiumSurfaces().Num(), GetStadiumZones().Num());
+}
+
+APawn* AOddsWellStadiumGameMode::SpawnDefaultPawnAtTransform_Implementation(AController* NewPlayer, const FTransform&)
+{
+	FActorSpawnParameters Parameters;
+	Parameters.Owner = NewPlayer;
+	Parameters.ObjectFlags |= RF_Transient;
+	Parameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
+	return GetWorld()->SpawnActor<AOddsWellPlaceholderCharacter>(StadiumInteriorSpawn, FRotator::ZeroRotator, Parameters);
+}
+
 #if WITH_DEV_AUTOMATION_TESTS
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(
+	FOddsWellStadiumGrayboxTest,
+	"OddsWell.Character.StadiumGraybox",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+
+bool FOddsWellStadiumGrayboxTest::RunTest(const FString& Parameters)
+{
+	const TArray<FStadiumSurfaceSpec>& Surfaces = GetStadiumSurfaces();
+	const TArray<FStadiumZoneSpec>& Zones = GetStadiumZones();
+	const TArray<FVector>& Waypoints = GetStadiumQaWaypoints();
+	TestEqual(TEXT("Stadium uses the minimum eight primitive surfaces"), Surfaces.Num(), 8);
+	TestEqual(TEXT("Stadium exposes exactly five required zones"), Zones.Num(), 5);
+	TestEqual(TEXT("Stadium QA visits five zone points"), Waypoints.Num(), 5);
+	TSet<FName> SurfaceIds;
+	for (const FStadiumSurfaceSpec& Surface : Surfaces)
+	{
+		SurfaceIds.Add(Surface.Id);
+		TestTrue(FString::Printf(TEXT("Surface %s has positive primitive scale"), *Surface.Id.ToString()), Surface.Scale.GetMin() > 0.0);
+	}
+	TestEqual(TEXT("Every stadium surface has a unique role"), SurfaceIds.Num(), Surfaces.Num());
+	TestTrue(TEXT("Court floor is a distinct primitive"), SurfaceIds.Contains(TEXT("court_floor")));
+	TestTrue(TEXT("Public viewing deck is a distinct primitive"), SurfaceIds.Contains(TEXT("viewing_deck")));
+	TSet<FName> ZoneIds;
+	for (const FStadiumZoneSpec& Zone : Zones)
+	{
+		ZoneIds.Add(Zone.Id);
+		TestTrue(FString::Printf(TEXT("Zone %s remains inside the primitive room"), *Zone.Id.ToString()), FMath::Abs(Zone.Location.X) < 2000.0 && FMath::Abs(Zone.Location.Y) < 1200.0);
+	}
+	TestEqual(TEXT("Every required zone ID is unique"), ZoneIds.Num(), Zones.Num());
+	TestTrue(TEXT("Entry/concourse is labeled"), ZoneIds.Contains(TEXT("entry_concourse")));
+	TestTrue(TEXT("Court floor is labeled"), ZoneIds.Contains(TEXT("court_floor")));
+	TestTrue(TEXT("Public viewing area is labeled"), ZoneIds.Contains(TEXT("public_viewing")));
+	TestTrue(TEXT("Future presentation marker is labeled"), ZoneIds.Contains(TEXT("future_presentation")));
+	TestTrue(TEXT("Exit is labeled"), ZoneIds.Contains(TEXT("exit")));
+	TestTrue(TEXT("Stadium entrance reuses the existing Arena waypoint"), GetSundaleRouteWaypoints()[4].Equals(StadiumEntranceThreshold));
+	TestTrue(TEXT("Sportsbook remains a separate city threshold"), FVector::Dist2D(GetSundaleRouteWaypoints()[5], StadiumEntranceThreshold) > StadiumEntryRadius * 2.0f);
+	TestTrue(TEXT("Stadium entry radius exceeds the player capsule"), StadiumEntryRadius > CapsuleRadius);
+	return !HasAnyErrors();
+}
+
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
 	FOddsWellLocomotionDefaultsTest,
 	"OddsWell.Character.LocomotionDefaults",
