@@ -11,9 +11,10 @@
 
 namespace
 {
-constexpr int32 OddsBucksSchemaVersion = 1;
+constexpr int32 OddsBucksSchemaVersion = 2;
 constexpr int32 OddsBucksUserIndex = 0;
 constexpr int64 FirstJobPayout = 100;
+constexpr int64 JobPayoutIntervalSeconds = 24 * 60 * 60;
 const FString OddsBucksSlot(TEXT("OddsWellOddsBucks"));
 const FString OddsBucksQaSlot(TEXT("OddsWellOddsBucksQA"));
 const FString FirstJobCommandId(TEXT("job:placeholder_shift:first_payout:v1"));
@@ -24,7 +25,19 @@ const FString& GetOddsBucksSlot(const bool bQaSlot)
 	return bQaSlot ? OddsBucksQaSlot : OddsBucksSlot;
 }
 
-bool ValidateOddsBucksSave(const UObject* SaveObject, FOddsWellOddsBucksLedger& OutLedger, FString& OutError)
+bool HasJobPayout(const FOddsWellOddsBucksLedger& Ledger)
+{
+	for (const FOddsWellOddsBucksEntry& Entry : Ledger.GetEntries())
+	{
+		if (Entry.Reason == FirstJobReason)
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
+bool ValidateOddsBucksSave(const UObject* SaveObject, FOddsWellOddsBucksLedger& OutLedger, int64& OutNextJobPayoutUnixSeconds, bool& bOutNeedsMigration, FString& OutError)
 {
 	const UOddsWellOddsBucksSaveGame* Record = Cast<UOddsWellOddsBucksSaveGame>(SaveObject);
 	if (!Record)
@@ -32,12 +45,28 @@ bool ValidateOddsBucksSave(const UObject* SaveObject, FOddsWellOddsBucksLedger& 
 		OutError = TEXT("The Odds Bucks save is not the expected object type.");
 		return false;
 	}
-	if (Record->SchemaVersion != OddsBucksSchemaVersion)
+	if (Record->SchemaVersion != 1 && Record->SchemaVersion != OddsBucksSchemaVersion)
 	{
 		OutError = FString::Printf(TEXT("Unsupported Odds Bucks schema version: %d"), Record->SchemaVersion);
 		return false;
 	}
-	return OutLedger.Restore(Record->Entries, OutError);
+	if (!OutLedger.Restore(Record->Entries, OutError))
+	{
+		return false;
+	}
+	bOutNeedsMigration = Record->SchemaVersion == 1;
+	OutNextJobPayoutUnixSeconds = bOutNeedsMigration && HasJobPayout(OutLedger)
+		? FDateTime::UtcNow().ToUnixTimestamp() + JobPayoutIntervalSeconds
+		: Record->NextJobPayoutUnixSeconds;
+	if (OutNextJobPayoutUnixSeconds < 0
+		|| (HasJobPayout(OutLedger) && OutNextJobPayoutUnixSeconds == 0)
+		|| (!HasJobPayout(OutLedger) && OutNextJobPayoutUnixSeconds != 0))
+	{
+		OutError = TEXT("The Odds Bucks job payout schedule is inconsistent with its ledger.");
+		return false;
+	}
+	OutError.Reset();
+	return true;
 }
 }
 
@@ -97,6 +126,11 @@ int64 GetOddsWellFirstJobPayout()
 	return FirstJobPayout;
 }
 
+int64 GetOddsWellJobPayoutIntervalSeconds()
+{
+	return JobPayoutIntervalSeconds;
+}
+
 const FString& GetOddsWellFirstJobCommandId()
 {
 	return FirstJobCommandId;
@@ -111,10 +145,12 @@ bool UseOddsWellOddsBucksQaSlot()
 {
 	return FParse::Param(FCommandLine::Get(), TEXT("JobQa"))
 		|| FParse::Param(FCommandLine::Get(), TEXT("JobPayoutQa"))
-		|| FParse::Param(FCommandLine::Get(), TEXT("JobPayoutQaVerify"));
+		|| FParse::Param(FCommandLine::Get(), TEXT("JobPayoutQaVerify"))
+		|| FParse::Param(FCommandLine::Get(), TEXT("JobRecoveryQa"))
+		|| FParse::Param(FCommandLine::Get(), TEXT("JobRecoveryQaVerify"));
 }
 
-bool SaveOddsWellOddsBucksLedger(const FOddsWellOddsBucksLedger& Ledger, const bool bQaSlot, FString& OutError)
+bool SaveOddsWellOddsBucksLedger(const FOddsWellOddsBucksLedger& Ledger, const int64 NextJobPayoutUnixSeconds, const bool bQaSlot, FString& OutError)
 {
 	UOddsWellOddsBucksSaveGame* Record = Cast<UOddsWellOddsBucksSaveGame>(
 		UGameplayStatics::CreateSaveGameObject(UOddsWellOddsBucksSaveGame::StaticClass()));
@@ -125,8 +161,11 @@ bool SaveOddsWellOddsBucksLedger(const FOddsWellOddsBucksLedger& Ledger, const b
 	}
 	Record->SchemaVersion = OddsBucksSchemaVersion;
 	Record->Entries = Ledger.GetEntries();
+	Record->NextJobPayoutUnixSeconds = NextJobPayoutUnixSeconds;
 	FOddsWellOddsBucksLedger Validated;
-	if (!ValidateOddsBucksSave(Record, Validated, OutError))
+	int64 ValidatedNextJobPayout = 0;
+	bool bNeedsMigration = false;
+	if (!ValidateOddsBucksSave(Record, Validated, ValidatedNextJobPayout, bNeedsMigration, OutError))
 	{
 		return false;
 	}
@@ -139,17 +178,23 @@ bool SaveOddsWellOddsBucksLedger(const FOddsWellOddsBucksLedger& Ledger, const b
 	return true;
 }
 
-bool LoadOddsWellOddsBucksLedger(const bool bQaSlot, FOddsWellOddsBucksLedger& OutLedger, bool& bOutFound, FString& OutError)
+bool LoadOddsWellOddsBucksLedger(const bool bQaSlot, FOddsWellOddsBucksLedger& OutLedger, int64& OutNextJobPayoutUnixSeconds, bool& bOutFound, FString& OutError)
 {
 	const FString& Slot = GetOddsBucksSlot(bQaSlot);
 	bOutFound = UGameplayStatics::DoesSaveGameExist(Slot, OddsBucksUserIndex);
 	if (!bOutFound)
 	{
 		OutLedger = FOddsWellOddsBucksLedger();
+		OutNextJobPayoutUnixSeconds = 0;
 		OutError.Reset();
 		return true;
 	}
-	return ValidateOddsBucksSave(UGameplayStatics::LoadGameFromSlot(Slot, OddsBucksUserIndex), OutLedger, OutError);
+	bool bNeedsMigration = false;
+	if (!ValidateOddsBucksSave(UGameplayStatics::LoadGameFromSlot(Slot, OddsBucksUserIndex), OutLedger, OutNextJobPayoutUnixSeconds, bNeedsMigration, OutError))
+	{
+		return false;
+	}
+	return !bNeedsMigration || SaveOddsWellOddsBucksLedger(OutLedger, OutNextJobPayoutUnixSeconds, bQaSlot, OutError);
 }
 
 bool ResetOddsWellQaOddsBucksAndVerify(FString& OutError)
@@ -218,27 +263,47 @@ bool FOddsWellOddsBucksLedgerTest::RunTest(const FString& Parameters)
 	UOddsWellOddsBucksSaveGame* Record = NewObject<UOddsWellOddsBucksSaveGame>();
 	Record->SchemaVersion = OddsBucksSchemaVersion;
 	Record->Entries = Ledger.GetEntries();
+	Record->NextJobPayoutUnixSeconds = 0;
 	TArray<uint8> Bytes;
 	TestTrue(TEXT("Odds Bucks entries serialize"), UGameplayStatics::SaveGameToMemory(Record, Bytes));
 	FOddsWellOddsBucksLedger MemoryLedger;
-	TestTrue(TEXT("Odds Bucks entries validate after a memory round trip"), ValidateOddsBucksSave(UGameplayStatics::LoadGameFromMemory(Bytes), MemoryLedger, Error));
+	int64 MemoryNextJobPayout = 0;
+	bool bNeedsMigration = false;
+	TestTrue(TEXT("Odds Bucks entries validate after a memory round trip"), ValidateOddsBucksSave(UGameplayStatics::LoadGameFromMemory(Bytes), MemoryLedger, MemoryNextJobPayout, bNeedsMigration, Error));
 	TestEqual(TEXT("Memory round trip preserves balance"), MemoryLedger.GetBalance(), int64{15});
 	Record->SchemaVersion++;
-	TestFalse(TEXT("An unsupported Odds Bucks schema is rejected"), ValidateOddsBucksSave(Record, MemoryLedger, Error));
-	TestFalse(TEXT("A wrong save type is rejected"), ValidateOddsBucksSave(NewObject<UStaticMesh>(), MemoryLedger, Error));
+	TestFalse(TEXT("An unsupported Odds Bucks schema is rejected"), ValidateOddsBucksSave(Record, MemoryLedger, MemoryNextJobPayout, bNeedsMigration, Error));
+	TestFalse(TEXT("A wrong save type is rejected"), ValidateOddsBucksSave(NewObject<UStaticMesh>(), MemoryLedger, MemoryNextJobPayout, bNeedsMigration, Error));
 
 	ResetOddsWellQaOddsBucksAndVerify(Error);
 	FOddsWellOddsBucksLedger JobLedger;
 	TestEqual(TEXT("Provisional first job payout applies"), JobLedger.Append(GetOddsWellFirstJobCommandId(), GetOddsWellFirstJobPayout(), GetOddsWellFirstJobReason()), EOddsWellOddsBucksAppendResult::Applied);
-	TestTrue(TEXT("Provisional job payout saves to the bounded QA slot"), SaveOddsWellOddsBucksLedger(JobLedger, true, Error));
+	const int64 ExpectedNextJobPayout = 2000000000 + GetOddsWellJobPayoutIntervalSeconds();
+	TestTrue(TEXT("Provisional job payout saves to the bounded QA slot"), SaveOddsWellOddsBucksLedger(JobLedger, ExpectedNextJobPayout, true, Error));
 	FOddsWellOddsBucksLedger DiskLedger;
+	int64 DiskNextJobPayout = 0;
 	bool bFound = false;
-	TestTrue(TEXT("Provisional job payout reloads from the QA slot"), LoadOddsWellOddsBucksLedger(true, DiskLedger, bFound, Error));
+	TestTrue(TEXT("Provisional job payout reloads from the QA slot"), LoadOddsWellOddsBucksLedger(true, DiskLedger, DiskNextJobPayout, bFound, Error));
 	TestTrue(TEXT("QA payout save was found"), bFound);
 	TestEqual(TEXT("Disk round trip preserves one command"), DiskLedger.GetEntries().Num(), 1);
 	TestEqual(TEXT("Disk round trip preserves 100 balance"), DiskLedger.GetBalance(), int64{100});
+	TestEqual(TEXT("Disk round trip preserves the next payout time"), DiskNextJobPayout, ExpectedNextJobPayout);
 	TestEqual(TEXT("Restored retry stays idempotent"), DiskLedger.Append(GetOddsWellFirstJobCommandId(), GetOddsWellFirstJobPayout(), GetOddsWellFirstJobReason()), EOddsWellOddsBucksAppendResult::Duplicate);
 	TestTrue(TEXT("QA Odds Bucks cleanup succeeds"), ResetOddsWellQaOddsBucksAndVerify(Error));
+
+	UOddsWellOddsBucksSaveGame* LegacyRecord = NewObject<UOddsWellOddsBucksSaveGame>();
+	LegacyRecord->SchemaVersion = 1;
+	LegacyRecord->Entries = JobLedger.GetEntries();
+	TestTrue(TEXT("Legacy first-payout save writes to the QA slot"), UGameplayStatics::SaveGameToSlot(LegacyRecord, OddsBucksQaSlot, OddsBucksUserIndex));
+	const int64 MigrationStartedAt = FDateTime::UtcNow().ToUnixTimestamp();
+	FOddsWellOddsBucksLedger MigratedLedger;
+	int64 MigratedNextJobPayout = 0;
+	TestTrue(TEXT("Legacy first-payout save migrates"), LoadOddsWellOddsBucksLedger(true, MigratedLedger, MigratedNextJobPayout, bFound, Error));
+	TestEqual(TEXT("Migration preserves the first payout"), MigratedLedger.GetBalance(), int64{100});
+	TestTrue(TEXT("Migration starts a fresh 24-hour wait"), MigratedNextJobPayout >= MigrationStartedAt + GetOddsWellJobPayoutIntervalSeconds());
+	const UOddsWellOddsBucksSaveGame* MigratedRecord = Cast<UOddsWellOddsBucksSaveGame>(UGameplayStatics::LoadGameFromSlot(OddsBucksQaSlot, OddsBucksUserIndex));
+	TestTrue(TEXT("Migration rewrites schema v2"), MigratedRecord && MigratedRecord->SchemaVersion == OddsBucksSchemaVersion);
+	TestTrue(TEXT("Migrated QA cleanup succeeds"), ResetOddsWellQaOddsBucksAndVerify(Error));
 	return !HasAnyErrors();
 }
 

@@ -121,7 +121,7 @@ private:
 	void ServerCompletePlaceholderJob();
 
 	UFUNCTION(Client, Reliable)
-	void ClientConfirmPlaceholderJob(bool bCompleted, bool bCredited, bool bPayoutReady, int64 Balance);
+	void ClientConfirmPlaceholderJob(bool bCompleted, bool bCredited, bool bPayoutReady, int64 Balance, int64 RetryAfterSeconds);
 
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UStaticMeshComponent> PrimitiveBody;
@@ -211,6 +211,10 @@ private:
 	bool bJobQaRejectionProven = false;
 	bool bJobQaFirstCreditProven = false;
 	bool bJobPayoutQaVerify = false;
+	bool bJobRecoveryQa = false;
+	bool bJobRecoveryQaVerify = false;
+	bool bJobRecoveryCooldownProven = false;
+	int32 JobRecoveryQaStage = 0;
 	float StadiumQaElapsed = 0.0f;
 	int32 StadiumQaWaypointIndex = 0;
 	bool bStadiumInteractionArmed = false;
@@ -243,9 +247,12 @@ public:
 	virtual void PostLogin(APlayerController* NewPlayer) override;
 	virtual void Logout(AController* Exiting) override;
 	virtual APawn* SpawnDefaultPawnAtTransform_Implementation(AController* NewPlayer, const FTransform&) override;
-	bool TryCreditFirstPlaceholderJob(bool& bOutCredited, int64& OutBalance, FString& OutError);
+	bool TryCreditPlaceholderJob(bool& bOutCredited, int64& OutBalance, int64& OutRetryAfterSeconds, FString& OutCommandId, FString& OutError);
+	bool AdvanceOddsBucksQaClock(int64 Seconds);
 	int32 GetOddsBucksEntryCount() const { return OddsBucksLedger.GetEntries().Num(); }
 	int64 GetOddsBucksBalance() const { return OddsBucksLedger.GetBalance(); }
+	int64 GetNextJobPayoutUnixSeconds() const { return NextJobPayoutUnixSeconds; }
+	int64 GetOddsBucksNowUnixSeconds() const;
 	bool WasOddsBucksLoadedFromDisk() const { return bOddsBucksLoadedFromDisk; }
 
 private:
@@ -266,6 +273,8 @@ private:
 	bool bOddsBucksReady = false;
 	bool bOddsBucksQaSlot = false;
 	bool bOddsBucksLoadedFromDisk = false;
+	int64 NextJobPayoutUnixSeconds = 0;
+	int64 OddsBucksQaNowUnixSeconds = 0;
 };
 
 UCLASS()

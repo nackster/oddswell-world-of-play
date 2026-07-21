@@ -39,10 +39,13 @@ class ODDSWELL_API UOddsWellOddsBucksSaveGame final : public USaveGame
 
 public:
 	UPROPERTY(SaveGame)
-	int32 SchemaVersion = 1;
+	int32 SchemaVersion = 2;
 
 	UPROPERTY(SaveGame)
 	TArray<FOddsWellOddsBucksEntry> Entries;
+
+	UPROPERTY(SaveGame)
+	int64 NextJobPayoutUnixSeconds = 0;
 };
 
 class FOddsWellOddsBucksLedger
@@ -50,6 +53,7 @@ class FOddsWellOddsBucksLedger
 public:
 	EOddsWellOddsBucksAppendResult Append(const FString& CommandId, int64 Delta, FName Reason);
 	bool Restore(const TArray<FOddsWellOddsBucksEntry>& SavedEntries, FString& OutError);
+	bool HasCommand(const FString& CommandId) const { return CommandIndexes.Contains(CommandId); }
 	int64 GetBalance() const { return Balance; }
 	const TArray<FOddsWellOddsBucksEntry>& GetEntries() const { return Entries; }
 
@@ -60,9 +64,10 @@ private:
 };
 
 ODDSWELL_API int64 GetOddsWellFirstJobPayout();
+ODDSWELL_API int64 GetOddsWellJobPayoutIntervalSeconds();
 ODDSWELL_API const FString& GetOddsWellFirstJobCommandId();
 ODDSWELL_API FName GetOddsWellFirstJobReason();
 ODDSWELL_API bool UseOddsWellOddsBucksQaSlot();
-ODDSWELL_API bool SaveOddsWellOddsBucksLedger(const FOddsWellOddsBucksLedger& Ledger, bool bQaSlot, FString& OutError);
-ODDSWELL_API bool LoadOddsWellOddsBucksLedger(bool bQaSlot, FOddsWellOddsBucksLedger& OutLedger, bool& bOutFound, FString& OutError);
+ODDSWELL_API bool SaveOddsWellOddsBucksLedger(const FOddsWellOddsBucksLedger& Ledger, int64 NextJobPayoutUnixSeconds, bool bQaSlot, FString& OutError);
+ODDSWELL_API bool LoadOddsWellOddsBucksLedger(bool bQaSlot, FOddsWellOddsBucksLedger& OutLedger, int64& OutNextJobPayoutUnixSeconds, bool& bOutFound, FString& OutError);
 ODDSWELL_API bool ResetOddsWellQaOddsBucksAndVerify(FString& OutError);

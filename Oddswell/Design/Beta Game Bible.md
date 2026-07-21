@@ -84,7 +84,7 @@ The presets must not attach ability, wealth, intelligence, behavior, or athlete 
 - **LOCKED:** the city contains a visible place where the player earns Odds Bucks through a job.
 - **LOCKED:** the city contains a basketball stadium and a physical location where the player can wager.
 - **BETA TARGET:** the player can discover both places by exploring the city.
-- **RESOLVED FOR THE CURRENT PLACEHOLDER:** Sundale's existing `Job` marker uses a server-validated `E` interaction. Its first successful completion credits a provisional `100` Odds Bucks once per local saved profile under [[Design/Decisions/DEC-014 Phase 1G3 Provisional First Job Payout]]. Final job fiction, tutorial guidance, map markers, repeat income, allowance timing, and whether wagering occurs in the stadium, an attached sportsbook, or both remain open.
+- **RESOLVED FOR THE CURRENT PLACEHOLDER:** Sundale's existing `Job` marker uses a server-validated `E` interaction. A local saved profile starts at `0` Odds Bucks, earns `100` on its first successful shift, and can earn another `100` after each rolling `24`-hour cooldown under [[Design/Decisions/DEC-015 Phase 1G4 Rolling Job Recovery Defaults]]. The first shift counts as period one, unused Odds Bucks accumulate, and there is no separate allowance. Final job fiction, tutorial guidance, map markers, prices, and whether wagering occurs in the stadium, an attached sportsbook, or both remain open.
 
 ### 5. Place and watch the first wager
 
@@ -98,7 +98,7 @@ The presets must not attach ability, wealth, intelligence, behavior, or athlete 
 - **LOCKED:** a winning wager adds Odds Bucks and a losing wager removes them.
 - **LOCKED:** Odds Bucks can be saved or spent on apartment upgrades, furniture, and clothing.
 - **BETA TARGET:** a player who runs out waits for or completes the next job/allowance opportunity instead of being permanently locked out.
-- **PARTIALLY RESOLVED:** the first placeholder job payout is provisionally `100` Odds Bucks once per local saved profile. Daily grant amount, repeat-job amount and cadence, minimum balance, prices, wager limits, and anti-inflation rules remain open.
+- **RESOLVED FOR LOCAL BETA RECOVERY:** the player starts at `0`, earns `100` per successful placeholder shift, and becomes eligible again on a rolling `24`-hour cooldown. The first payout counts as the first period, balances accumulate, and no separate allowance or catch-up payout exists. Prices, wager limits, production account authority, clock integrity, and anti-inflation rules remain open.
 
 ## World and city scope
 
@@ -201,7 +201,7 @@ Each market must be introduced separately behind exact locking, settlement, repl
 - **LOCKED:** Odds Bucks may be saved or spent on permitted clothing, furniture, and apartment upgrades.
 - **LOCKED FOR BETA:** real-money Odds Bucks purchases are not part of the beta.
 - **LATER:** real-money purchases may be considered only after legal, platform, payment, age-rating, regional, economy, fraud, and audit gates are satisfied.
-- **PARTIALLY RESOLVED:** the first placeholder job credit is provisionally `100` Odds Bucks once per local saved profile under [[Design/Decisions/DEC-014 Phase 1G3 Provisional First Job Payout]]. Starting balance, repeat or daily income, prices, wager sizes, broader payout limits, recovery rules, sinks, and inflation targets remain open.
+- **RESOLVED FOR THE LOCAL BETA PLACEHOLDER:** starting balance is `0`; a successful placeholder shift pays `100`; the next shift becomes eligible after a rolling `24` hours; the first payout counts as period one; balances accumulate; and there is no separate allowance or missed-period catch-up under [[Design/Decisions/DEC-015 Phase 1G4 Rolling Job Recovery Defaults]]. Prices, wager sizes, broader payout limits, production account and time authority, sinks, and inflation targets remain open.
 
 ## Athletes and brains
 
@@ -311,7 +311,7 @@ The Scope Director must stop and ask when a phase depends on one of these:
 2. **RESOLVED:** beta camera and movement style under [[Design/Decisions/DEC-007 Phase 1B Character Defaults|DEC-007]].
 3. **PARTIALLY RESOLVED:** eight-placeholder minimum range under [[Design/Decisions/DEC-007 Phase 1B Character Defaults|DEC-007]]; final character art and post-start customization remain open.
 4. Apartment upgrade layouts and decorating interaction.
-5. **PARTIALLY RESOLVED:** first placeholder payout is `100` once per local saved profile; final job fiction, starting balance, repeat income, allowance, and zero-balance recovery remain open.
+5. **RESOLVED FOR LOCAL BETA RECOVERY:** start at `0`, earn `100` per successful placeholder shift on a rolling `24`-hour cooldown, accumulate the balance, and provide no separate allowance or catch-up payout. Final job fiction and production account/time authority remain open.
 6. How an 82-game season stays varied with the initial two-team scope.
 7. **PARTIALLY RESOLVED:** current beta placeholder fidelity, camera, commentary, duration, and result-invariant player skip under [[Design/Decisions/DEC-013 Phase 1F4 Presentation Defaults]] and [[Development/Reports/Phase 1F5 Replay View Result Invariance]]; final art, crowd, replay cuts, condensed mode, and special-game duration remain open.
 8. Order, rules, limits, and payout formulas for the four beta wager markets.
@@ -344,4 +344,4 @@ Before proposing a phase, the Scope Director must:
 - Phase 1D passed for the local shared-city prototype. External hosting and a beta capacity ceiling are not proven.
 - Phase 1E's standalone Studio foundation is complete through ownership, cold return, and six visible housing tiers. Furniture activation remains dependent on a legitimate Phase 1I purchase and ownership path.
 - Phase 1F passed for the current archived-game slice: watch, player skip, late arrival, and seal-validated cold reconstruction converge on the same result without client resimulation. Backend reconnect and full-season presentation variety are not proven.
-- Phase 1G.1 provides the server-authoritative append-only Odds Bucks ledger, Phase 1G.2 adds the server-validated `Job` interaction, and Phase 1G.3 proves one provisional `100`-Odds-Bucks credit, exact retry idempotency, local SaveGame persistence, and cold-process restore; see [[Development/Reports/Phase 1G3 Persistent First Job Payout]]. No online account identity, backend reconnect, repeat income, starting balance, allowance, zero-balance recovery, price, purchase, wager, settlement, Admin reconciliation, real-money path, or second currency is proven.
+- Phase 1G.1 provides the server-authoritative append-only Odds Bucks ledger, Phase 1G.2 adds the server-validated `Job` interaction, Phase 1G.3 proves the first persistent `100`-Odds-Bucks credit, and Phase 1G.4 proves a rolling `24`-hour repeat recovery schedule across a cold packaged-process restart; see [[Development/Reports/Phase 1G4 Rolling 24 Hour Job Recovery]]. The local profile starts at `0`, balances accumulate, and there is no allowance or catch-up payout. No online account identity, trusted backend clock, backend reconnect, multi-device recovery, price, purchase, wager, settlement, Admin reconciliation, real-money path, or second currency is proven.

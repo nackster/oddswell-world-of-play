@@ -80,6 +80,7 @@ FVector StadiumCityReturnLocation = StadiumEntranceThreshold + FVector(0.0, -100
 const FVector StadiumInteriorSpawn(-1600.0, 0.0, 220.0);
 const FVector StadiumReplayOrigin(350.0, 0.0, 0.0);
 constexpr float StadiumReplayScale = 0.15f;
+constexpr int64 JobRecoveryQaStartUnixSeconds = 2000000000;
 int32 StudioQaProcessStage = 0;
 int32 StadiumQaProcessStage = 0;
 
@@ -382,9 +383,13 @@ void AOddsWellPlaceholderCharacter::BeginPlay()
 	bPublicLeagueQa = FParse::Param(FCommandLine::Get(), TEXT("PublicLeagueQa"));
 	bStadiumQa = FParse::Param(FCommandLine::Get(), TEXT("StadiumQa"));
 	bJobPayoutQaVerify = FParse::Param(FCommandLine::Get(), TEXT("JobPayoutQaVerify"));
+	bJobRecoveryQa = FParse::Param(FCommandLine::Get(), TEXT("JobRecoveryQa"));
+	bJobRecoveryQaVerify = FParse::Param(FCommandLine::Get(), TEXT("JobRecoveryQaVerify"));
 	bJobQa = FParse::Param(FCommandLine::Get(), TEXT("JobQa"))
 		|| FParse::Param(FCommandLine::Get(), TEXT("JobPayoutQa"))
-		|| bJobPayoutQaVerify;
+		|| bJobPayoutQaVerify
+		|| bJobRecoveryQa
+		|| bJobRecoveryQaVerify;
 	SharedCityQaTargetClients = GetSharedCityQaTargetClients();
 	if (GetNetMode() == NM_Standalone && GetWorld()->GetAuthGameMode<AOddsWellStudioGameMode>())
 	{
@@ -694,7 +699,7 @@ void AOddsWellPlaceholderCharacter::PollJobInteraction()
 	}
 	if (GEngine)
 	{
-		GEngine->AddOnScreenDebugMessage(912015, 0.0f, FColor::Green, TEXT("Press E to complete a placeholder shift (first payout: 100 Odds Bucks)"));
+		GEngine->AddOnScreenDebugMessage(912015, 0.0f, FColor::Green, TEXT("Press E to complete a shift (100 Odds Bucks once every 24 hours)"));
 	}
 	const bool bPressed = PlayerController->IsInputKeyDown(KeyInteract);
 	if (!bPressed)
@@ -717,41 +722,45 @@ void AOddsWellPlaceholderCharacter::ServerCompletePlaceholderJob_Implementation(
 	if (!bAtApprovedJob)
 	{
 		UE_LOG(LogOddsWellLocomotion, Warning, TEXT("ODDSWELL_JOB_SHIFT|result=REJECTED|reason=outside_job_location|server_validated=true|odds_bucks_awarded=0|ledger_command=false"));
-		ClientConfirmPlaceholderJob(false, false, true, GameMode ? GameMode->GetOddsBucksBalance() : 0);
+		ClientConfirmPlaceholderJob(false, false, true, GameMode ? GameMode->GetOddsBucksBalance() : 0, 0);
 		return;
 	}
 	bool bCredited = false;
 	int64 Balance = GameMode->GetOddsBucksBalance();
+	int64 RetryAfterSeconds = 0;
+	FString CommandId;
 	FString Error;
-	if (!GameMode->TryCreditFirstPlaceholderJob(bCredited, Balance, Error))
+	if (!GameMode->TryCreditPlaceholderJob(bCredited, Balance, RetryAfterSeconds, CommandId, Error))
 	{
 		UE_LOG(LogOddsWellLocomotion, Error, TEXT("ODDSWELL_JOB_SHIFT|result=FAIL|reason=payout_unavailable|detail=%s|server_validated=true|odds_bucks_awarded=0|ledger_entries=%d|ledger_balance=%lld"), *Error, GameMode->GetOddsBucksEntryCount(), GameMode->GetOddsBucksBalance());
-		ClientConfirmPlaceholderJob(false, false, false, GameMode->GetOddsBucksBalance());
+		ClientConfirmPlaceholderJob(false, false, false, GameMode->GetOddsBucksBalance(), 0);
 		return;
 	}
 	bPlaceholderShiftCompleted = true;
 	UE_LOG(
 		LogOddsWellLocomotion,
 		Display,
-		TEXT("ODDSWELL_JOB_SHIFT|result=PASS|job=placeholder_shift|interaction=press_e|completed=true|server_validated=true|odds_bucks_awarded=%lld|ledger_entries=%d|ledger_balance=%lld|ledger_command=%s|command_id=%s|persistent_local_profile=true|repeat_payout=false"),
+		TEXT("ODDSWELL_JOB_SHIFT|result=PASS|job=placeholder_shift|interaction=press_e|completed=true|server_validated=true|odds_bucks_awarded=%lld|ledger_entries=%d|ledger_balance=%lld|ledger_command=%s|command_id=%s|retry_after_seconds=%lld|rolling_24h=true|accumulation=true|allowance=false|persistent_local_profile=true"),
 		bCredited ? GetOddsWellFirstJobPayout() : int64{0},
 		GameMode->GetOddsBucksEntryCount(),
 		GameMode->GetOddsBucksBalance(),
-		bCredited ? TEXT("applied") : TEXT("duplicate"),
-		*GetOddsWellFirstJobCommandId());
-	ClientConfirmPlaceholderJob(true, bCredited, true, Balance);
+		bCredited ? TEXT("applied") : TEXT("cooldown"),
+		CommandId.IsEmpty() ? TEXT("none") : *CommandId,
+		RetryAfterSeconds);
+	ClientConfirmPlaceholderJob(true, bCredited, true, Balance, RetryAfterSeconds);
 }
 
-void AOddsWellPlaceholderCharacter::ClientConfirmPlaceholderJob_Implementation(const bool bCompleted, const bool bCredited, const bool bPayoutReady, const int64 Balance)
+void AOddsWellPlaceholderCharacter::ClientConfirmPlaceholderJob_Implementation(const bool bCompleted, const bool bCredited, const bool bPayoutReady, const int64 Balance, const int64 RetryAfterSeconds)
 {
+	const int64 RetryHours = FMath::Max<int64>(1, (RetryAfterSeconds + 3599) / 3600);
 	const FString Message = !bPayoutReady
 		? TEXT("Shift payout unavailable - balance unchanged")
 		: !bCompleted
 			? TEXT("Shift rejected - return to the marked Job location")
 			: bCredited
 				? FString::Printf(TEXT("Shift complete: +100 Odds Bucks | Balance: %lld"), Balance)
-				: FString::Printf(TEXT("Shift complete: first payout already claimed | Balance: %lld"), Balance);
-	UE_LOG(LogOddsWellLocomotion, Display, TEXT("ODDSWELL_JOB_FEEDBACK|completed=%s|credited=%s|payout_ready=%s|balance=%lld|client_visible=true"), bCompleted ? TEXT("true") : TEXT("false"), bCredited ? TEXT("true") : TEXT("false"), bPayoutReady ? TEXT("true") : TEXT("false"), Balance);
+				: FString::Printf(TEXT("Shift complete: next payout in about %lld hour(s) | Balance: %lld"), RetryHours, Balance);
+	UE_LOG(LogOddsWellLocomotion, Display, TEXT("ODDSWELL_JOB_FEEDBACK|completed=%s|credited=%s|payout_ready=%s|balance=%lld|retry_after_seconds=%lld|client_visible=true"), bCompleted ? TEXT("true") : TEXT("false"), bCredited ? TEXT("true") : TEXT("false"), bPayoutReady ? TEXT("true") : TEXT("false"), Balance, RetryAfterSeconds);
 	if (GEngine)
 	{
 		GEngine->AddOnScreenDebugMessage(912016, 5.0f, bCompleted ? FColor::Green : FColor::Red, Message);
@@ -775,6 +784,117 @@ void AOddsWellPlaceholderCharacter::RunJobQa(const float DeltaSeconds)
 	if (GetCharacterMovement()->IsMovingOnGround())
 	{
 		AOddsWellLocomotionGameMode* GameMode = GetWorld()->GetAuthGameMode<AOddsWellLocomotionGameMode>();
+		if (bJobRecoveryQaVerify)
+		{
+			const bool bRestored = GameMode
+				&& GameMode->WasOddsBucksLoadedFromDisk()
+				&& GameMode->GetOddsBucksEntryCount() == 2
+				&& GameMode->GetOddsBucksBalance() == 200
+				&& GameMode->GetNextJobPayoutUnixSeconds() - GameMode->GetOddsBucksNowUnixSeconds() == 1;
+			SetActorLocation(FVector(JobInteractionLocation.X, JobInteractionLocation.Y, GetActorLocation().Z), false, nullptr, ETeleportType::TeleportPhysics);
+			ServerCompletePlaceholderJob();
+			const bool bRestoredCooldown = bPlaceholderShiftCompleted
+				&& GameMode
+				&& GameMode->GetOddsBucksEntryCount() == 2
+				&& GameMode->GetOddsBucksBalance() == 200;
+			const bool bAdvanced = GameMode && GameMode->AdvanceOddsBucksQaClock(1);
+			ServerCompletePlaceholderJob();
+			const bool bThirdPayout = bAdvanced
+				&& GameMode
+				&& GameMode->GetOddsBucksEntryCount() == 3
+				&& GameMode->GetOddsBucksBalance() == 300
+				&& GameMode->GetNextJobPayoutUnixSeconds() - GameMode->GetOddsBucksNowUnixSeconds() == GetOddsWellJobPayoutIntervalSeconds();
+			FString CleanupError;
+			const bool bCleanup = ResetOddsWellQaOddsBucksAndVerify(CleanupError);
+			const bool bPassed = bRestored && bRestoredCooldown && bThirdPayout && bCleanup;
+			const FString Evidence = FString::Printf(TEXT("ODDSWELL_JOB_RECOVERY_RESTORE_QA|result=%s|source=local_saved_profile|cold_process_restore=%s|restored_entries=2|restored_balance=200|cooldown_survived_restart=%s|next_eligible_credit=true|entries_after_credit=%d|balance_after_credit=%lld|accumulation=true|qa_clock=true|qa_save_cleanup=%s|account_reconnect=false|backend=false"), bPassed ? TEXT("PASS") : TEXT("FAIL"), bRestored ? TEXT("true") : TEXT("false"), bRestoredCooldown ? TEXT("true") : TEXT("false"), GameMode ? GameMode->GetOddsBucksEntryCount() : -1, GameMode ? GameMode->GetOddsBucksBalance() : int64{-1}, bCleanup ? TEXT("true") : TEXT("false"));
+			if (bPassed)
+			{
+				UE_LOG(LogOddsWellLocomotion, Display, TEXT("%s"), *Evidence);
+			}
+			else
+			{
+				UE_LOG(LogOddsWellLocomotion, Error, TEXT("%s"), *Evidence);
+			}
+			if (!bCleanup)
+			{
+				UE_LOG(LogOddsWellLocomotion, Error, TEXT("ODDSWELL_JOB_RECOVERY_RESTORE_QA_CLEANUP|detail=%s"), *CleanupError);
+			}
+			bJobQa = false;
+			QaExitAt = FPlatformTime::Seconds() + 2.0;
+			return;
+		}
+		if (bJobRecoveryQa)
+		{
+			if (JobRecoveryQaStage == 0)
+			{
+				SetActorLocation(SafeSpawnLocation, false, nullptr, ETeleportType::TeleportPhysics);
+				ServerCompletePlaceholderJob();
+				bJobQaRejectionProven = !bPlaceholderShiftCompleted;
+				++JobRecoveryQaStage;
+				return;
+			}
+			SetActorLocation(FVector(JobInteractionLocation.X, JobInteractionLocation.Y, GetActorLocation().Z), false, nullptr, ETeleportType::TeleportPhysics);
+			if (JobRecoveryQaStage == 1)
+			{
+				ServerCompletePlaceholderJob();
+				bJobQaFirstCreditProven = bPlaceholderShiftCompleted
+					&& GameMode
+					&& !GameMode->WasOddsBucksLoadedFromDisk()
+					&& GameMode->GetOddsBucksEntryCount() == 1
+					&& GameMode->GetOddsBucksBalance() == 100
+					&& GameMode->GetNextJobPayoutUnixSeconds() - GameMode->GetOddsBucksNowUnixSeconds() == GetOddsWellJobPayoutIntervalSeconds();
+				++JobRecoveryQaStage;
+				return;
+			}
+			if (JobRecoveryQaStage == 2)
+			{
+				ServerCompletePlaceholderJob();
+				bJobRecoveryCooldownProven = GameMode
+					&& GameMode->GetOddsBucksEntryCount() == 1
+					&& GameMode->GetOddsBucksBalance() == 100
+					&& GameMode->GetNextJobPayoutUnixSeconds() - GameMode->GetOddsBucksNowUnixSeconds() == GetOddsWellJobPayoutIntervalSeconds();
+				if (!GameMode || !GameMode->AdvanceOddsBucksQaClock(GetOddsWellJobPayoutIntervalSeconds()))
+				{
+					UE_LOG(LogOddsWellLocomotion, Error, TEXT("ODDSWELL_JOB_RECOVERY_QA|result=FAIL|reason=qa_clock_advance"));
+					bJobQa = false;
+					QaExitAt = FPlatformTime::Seconds() + 1.0;
+					return;
+				}
+				++JobRecoveryQaStage;
+				return;
+			}
+			if (JobRecoveryQaStage == 3)
+			{
+				ServerCompletePlaceholderJob();
+				const bool bSecondPayout = GameMode
+					&& GameMode->GetOddsBucksEntryCount() == 2
+					&& GameMode->GetOddsBucksBalance() == 200
+					&& GameMode->GetNextJobPayoutUnixSeconds() - GameMode->GetOddsBucksNowUnixSeconds() == GetOddsWellJobPayoutIntervalSeconds();
+				bJobQaFirstCreditProven = bJobQaFirstCreditProven && bSecondPayout;
+				++JobRecoveryQaStage;
+				return;
+			}
+			ServerCompletePlaceholderJob();
+			const bool bPassed = bJobQaRejectionProven
+				&& bJobQaFirstCreditProven
+				&& bJobRecoveryCooldownProven
+				&& GameMode
+				&& GameMode->GetOddsBucksEntryCount() == 2
+				&& GameMode->GetOddsBucksBalance() == 200;
+			const FString Evidence = FString::Printf(TEXT("ODDSWELL_JOB_RECOVERY_QA|result=%s|outside_request_rejected=%s|starting_balance=0|payout=100|interval_seconds=%lld|first_payout=true|immediate_retry_blocked=%s|second_payout_after_interval=true|entries=2|balance=200|accumulation=true|allowance=false|qa_clock=true|local_save_written=true"), bPassed ? TEXT("PASS") : TEXT("FAIL"), bJobQaRejectionProven ? TEXT("true") : TEXT("false"), GetOddsWellJobPayoutIntervalSeconds(), bJobRecoveryCooldownProven ? TEXT("true") : TEXT("false"));
+			if (bPassed)
+			{
+				UE_LOG(LogOddsWellLocomotion, Display, TEXT("%s"), *Evidence);
+			}
+			else
+			{
+				UE_LOG(LogOddsWellLocomotion, Error, TEXT("%s"), *Evidence);
+			}
+			bJobQa = false;
+			QaExitAt = FPlatformTime::Seconds() + 2.0;
+			return;
+		}
 		if (bJobPayoutQaVerify)
 		{
 			const bool bRestored = GameMode
@@ -791,7 +911,7 @@ void AOddsWellPlaceholderCharacter::RunJobQa(const float DeltaSeconds)
 				&& GameMode->GetOddsBucksEntryCount() == 1
 				&& GameMode->GetOddsBucksBalance() == GetOddsWellFirstJobPayout()
 				&& bCleanup;
-			const FString Evidence = FString::Printf(TEXT("ODDSWELL_JOB_PAYOUT_RESTORE_QA|result=%s|source=local_saved_profile|cold_process_restore=%s|restored_entries=%d|restored_balance=%lld|retry_duplicate=true|entries_after_retry=%d|balance_after_retry=%lld|qa_save_cleanup=%s|account_reconnect=false|backend=false"), bPassed ? TEXT("PASS") : TEXT("FAIL"), bRestored ? TEXT("true") : TEXT("false"), bRestored ? 1 : -1, bRestored ? GetOddsWellFirstJobPayout() : int64{-1}, GameMode ? GameMode->GetOddsBucksEntryCount() : -1, GameMode ? GameMode->GetOddsBucksBalance() : int64{-1}, bCleanup ? TEXT("true") : TEXT("false"));
+			const FString Evidence = FString::Printf(TEXT("ODDSWELL_JOB_PAYOUT_RESTORE_QA|result=%s|source=local_saved_profile|cold_process_restore=%s|restored_entries=%d|restored_balance=%lld|retry_blocked_by_cooldown=true|entries_after_retry=%d|balance_after_retry=%lld|qa_save_cleanup=%s|account_reconnect=false|backend=false"), bPassed ? TEXT("PASS") : TEXT("FAIL"), bRestored ? TEXT("true") : TEXT("false"), bRestored ? 1 : -1, bRestored ? GetOddsWellFirstJobPayout() : int64{-1}, GameMode ? GameMode->GetOddsBucksEntryCount() : -1, GameMode ? GameMode->GetOddsBucksBalance() : int64{-1}, bCleanup ? TEXT("true") : TEXT("false"));
 			if (bPassed)
 			{
 				UE_LOG(LogOddsWellLocomotion, Display, TEXT("%s"), *Evidence);
@@ -835,7 +955,7 @@ void AOddsWellPlaceholderCharacter::RunJobQa(const float DeltaSeconds)
 			&& GameMode->GetOddsBucksEntryCount() == 1
 			&& GameMode->GetOddsBucksBalance() == GetOddsWellFirstJobPayout();
 		const FString Evidence = FString::Printf(
-			TEXT("ODDSWELL_JOB_PAYOUT_QA|result=%s|location=Job|interaction=press_e|outside_request_rejected=%s|server_validated=true|completed=%s|first_credit_proven=%s|odds_bucks_awarded=100|ledger_entries=%d|ledger_balance=%lld|exact_retry_duplicate=true|local_save_written=true|repeat_payout=false"),
+			TEXT("ODDSWELL_JOB_PAYOUT_QA|result=%s|location=Job|interaction=press_e|outside_request_rejected=%s|server_validated=true|completed=%s|first_credit_proven=%s|odds_bucks_awarded=100|ledger_entries=%d|ledger_balance=%lld|immediate_retry_blocked=true|local_save_written=true|rolling_24h=true"),
 			bPassed ? TEXT("PASS") : TEXT("FAIL"),
 			bJobQaRejectionProven ? TEXT("true") : TEXT("false"),
 			bPlaceholderShiftCompleted ? TEXT("true") : TEXT("false"),
@@ -1983,54 +2103,108 @@ void AOddsWellLocomotionGameMode::BeginPlay()
 {
 	Super::BeginPlay();
 	bOddsBucksQaSlot = UseOddsWellOddsBucksQaSlot();
+	const bool bFreshJobQa = FParse::Param(FCommandLine::Get(), TEXT("JobQa"))
+		|| FParse::Param(FCommandLine::Get(), TEXT("JobPayoutQa"))
+		|| FParse::Param(FCommandLine::Get(), TEXT("JobRecoveryQa"));
+	const bool bJobRecoveryQa = FParse::Param(FCommandLine::Get(), TEXT("JobRecoveryQa"));
+	const bool bJobRecoveryQaVerify = FParse::Param(FCommandLine::Get(), TEXT("JobRecoveryQaVerify"));
+	if (bJobRecoveryQa || bJobRecoveryQaVerify)
+	{
+		OddsBucksQaNowUnixSeconds = JobRecoveryQaStartUnixSeconds;
+	}
 	FString Error;
-	if ((FParse::Param(FCommandLine::Get(), TEXT("JobQa")) || FParse::Param(FCommandLine::Get(), TEXT("JobPayoutQa")))
-		&& !ResetOddsWellQaOddsBucksAndVerify(Error))
+	if (bFreshJobQa && !ResetOddsWellQaOddsBucksAndVerify(Error))
 	{
 		UE_LOG(LogOddsWellLocomotion, Error, TEXT("ODDSWELL_ODDS_BUCKS_LEDGER|result=FAIL|reason=qa_slot_reset_failed|detail=%s"), *Error);
 		return;
 	}
-	if (!LoadOddsWellOddsBucksLedger(bOddsBucksQaSlot, OddsBucksLedger, bOddsBucksLoadedFromDisk, Error))
+	if (!LoadOddsWellOddsBucksLedger(bOddsBucksQaSlot, OddsBucksLedger, NextJobPayoutUnixSeconds, bOddsBucksLoadedFromDisk, Error))
 	{
 		UE_LOG(LogOddsWellLocomotion, Error, TEXT("ODDSWELL_ODDS_BUCKS_LEDGER|result=FAIL|reason=load_failed|detail=%s|payouts_enabled=false"), *Error);
 		return;
+	}
+	if (bJobRecoveryQaVerify && bOddsBucksLoadedFromDisk)
+	{
+		OddsBucksQaNowUnixSeconds = FMath::Max<int64>(1, NextJobPayoutUnixSeconds - 1);
 	}
 	bOddsBucksReady = true;
 	UE_LOG(
 		LogOddsWellLocomotion,
 		Display,
-		TEXT("ODDSWELL_ODDS_BUCKS_LEDGER|result=PASS|schema=oddswell-odds-bucks-ledger-v1|authority=server|currency=odds_bucks|source=%s|entries=%d|balance=%lld|append_only=true|idempotent=true|persistent_local_profile=true|client_commands=false|real_money=false|wagering=false"),
+		TEXT("ODDSWELL_ODDS_BUCKS_LEDGER|result=PASS|schema=oddswell-odds-bucks-ledger-v2|authority=server|currency=odds_bucks|source=%s|entries=%d|balance=%lld|starting_balance=0|job_payout=100|payout_interval_seconds=%lld|next_job_payout_unix=%lld|accumulation=true|allowance=false|append_only=true|idempotent=true|persistent_local_profile=true|client_commands=false|real_money=false|wagering=false"),
 		bOddsBucksLoadedFromDisk ? TEXT("disk") : TEXT("empty"),
 		OddsBucksLedger.GetEntries().Num(),
-		OddsBucksLedger.GetBalance());
+		OddsBucksLedger.GetBalance(),
+		GetOddsWellJobPayoutIntervalSeconds(),
+		NextJobPayoutUnixSeconds);
 }
 
-bool AOddsWellLocomotionGameMode::TryCreditFirstPlaceholderJob(bool& bOutCredited, int64& OutBalance, FString& OutError)
+int64 AOddsWellLocomotionGameMode::GetOddsBucksNowUnixSeconds() const
+{
+	return OddsBucksQaNowUnixSeconds > 0 ? OddsBucksQaNowUnixSeconds : FDateTime::UtcNow().ToUnixTimestamp();
+}
+
+bool AOddsWellLocomotionGameMode::AdvanceOddsBucksQaClock(const int64 Seconds)
+{
+	if (!bOddsBucksQaSlot || OddsBucksQaNowUnixSeconds <= 0 || Seconds < 0
+		|| OddsBucksQaNowUnixSeconds > TNumericLimits<int64>::Max() - Seconds)
+	{
+		return false;
+	}
+	OddsBucksQaNowUnixSeconds += Seconds;
+	return true;
+}
+
+bool AOddsWellLocomotionGameMode::TryCreditPlaceholderJob(bool& bOutCredited, int64& OutBalance, int64& OutRetryAfterSeconds, FString& OutCommandId, FString& OutError)
 {
 	bOutCredited = false;
 	OutBalance = OddsBucksLedger.GetBalance();
+	OutRetryAfterSeconds = 0;
+	OutCommandId.Reset();
 	if (!bOddsBucksReady)
 	{
 		OutError = TEXT("The authoritative Odds Bucks ledger is not ready.");
 		return false;
 	}
-	FOddsWellOddsBucksLedger Candidate = OddsBucksLedger;
-	const EOddsWellOddsBucksAppendResult Result = Candidate.Append(GetOddsWellFirstJobCommandId(), GetOddsWellFirstJobPayout(), GetOddsWellFirstJobReason());
-	if (Result == EOddsWellOddsBucksAppendResult::Duplicate)
+	const int64 NowUnixSeconds = GetOddsBucksNowUnixSeconds();
+	if (OddsBucksLedger.HasCommand(GetOddsWellFirstJobCommandId()))
 	{
-		OutError.Reset();
-		return true;
+		if (NextJobPayoutUnixSeconds <= 0)
+		{
+			OutError = TEXT("The job payout schedule is missing.");
+			return false;
+		}
+		if (NowUnixSeconds < NextJobPayoutUnixSeconds)
+		{
+			OutRetryAfterSeconds = NextJobPayoutUnixSeconds - NowUnixSeconds;
+			OutError.Reset();
+			return true;
+		}
+		OutCommandId = FString::Printf(TEXT("job:placeholder_shift:scheduled_payout:%lld"), NextJobPayoutUnixSeconds);
 	}
+	else
+	{
+		OutCommandId = GetOddsWellFirstJobCommandId();
+	}
+	FOddsWellOddsBucksLedger Candidate = OddsBucksLedger;
+	const EOddsWellOddsBucksAppendResult Result = Candidate.Append(OutCommandId, GetOddsWellFirstJobPayout(), GetOddsWellFirstJobReason());
 	if (Result != EOddsWellOddsBucksAppendResult::Applied)
 	{
-		OutError = TEXT("The first job payout command was rejected.");
+		OutError = TEXT("The scheduled job payout command was rejected.");
 		return false;
 	}
-	if (!SaveOddsWellOddsBucksLedger(Candidate, bOddsBucksQaSlot, OutError))
+	if (NowUnixSeconds > TNumericLimits<int64>::Max() - GetOddsWellJobPayoutIntervalSeconds())
+	{
+		OutError = TEXT("The job payout schedule exceeds the supported clock range.");
+		return false;
+	}
+	const int64 CandidateNextJobPayout = NowUnixSeconds + GetOddsWellJobPayoutIntervalSeconds();
+	if (!SaveOddsWellOddsBucksLedger(Candidate, CandidateNextJobPayout, bOddsBucksQaSlot, OutError))
 	{
 		return false;
 	}
 	OddsBucksLedger = MoveTemp(Candidate);
+	NextJobPayoutUnixSeconds = CandidateNextJobPayout;
 	bOutCredited = true;
 	OutBalance = OddsBucksLedger.GetBalance();
 	return true;

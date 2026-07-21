@@ -69,7 +69,8 @@ The roadmap is intentionally made of measurable product gates, not hundreds of s
 - Phase 1G.1 empty server-authoritative Odds Bucks ledger: **COMPLETE**; see [[Development/Reports/Phase 1G1 Empty Server Authoritative Odds Bucks Ledger]].
 - Phase 1G.2 server-validated placeholder Job interaction: **COMPLETE**; see [[Development/Reports/Phase 1G2 Server Validated Placeholder Job Interaction]].
 - Phase 1G.3 persistent first job payout: **COMPLETE FOR ONE LOCAL SAVED PROFILE**; see [[Development/Reports/Phase 1G3 Persistent First Job Payout]] and [[Design/Decisions/DEC-014 Phase 1G3 Provisional First Job Payout]].
-- Next gate: **PHASE 1G.4 OWNER DECISION**. Freeze starting balance plus the smallest repeat or daily zero-balance recovery amount, cadence, and eligibility. Prices, wagers, and broader limits remain open. Sundale remains a working name.
+- Phase 1G.4 rolling job recovery: **COMPLETE FOR ONE LOCAL SAVED PROFILE**; start at `0`, earn `100` per successful shift on a rolling `24`-hour cooldown, accumulate balances, and provide no separate allowance or catch-up payout. See [[Development/Reports/Phase 1G4 Rolling 24 Hour Job Recovery]] and [[Design/Decisions/DEC-015 Phase 1G4 Rolling Job Recovery Defaults]].
+- Next gate: **PHASE 1G.5 ADMIN RECONCILIATION**. Expose the existing local authoritative ledger and next-job eligibility as truthful read-only operator evidence. Prices, wagers, production account/time authority, and broader limits remain open. Sundale remains a working name.
 - Current prerequisite note: UE 5.8, the aligned x64 runtime and .NET Framework 4.8 SDK, portable project, reproducible local Windows package, empty-map launch, LFS, generated-file ignores, primitive block/court iteration, collision, cold-process reopen, direct recorded-replay rendering, deterministic packaged traces, and local resource sampling are verified. UE 5.8 is now the approved beta client engine.
 
 No later roadmap phase is authorized merely because it appears below.
@@ -84,7 +85,7 @@ No later roadmap phase is authorized merely because it appears below.
 | 4 | 1D — Shared-city presence | Players see one another and equipped clothing | COMPLETE |
 | 5 | 1E — Studio and apartment progression | Enter a persistent home and see the six-tier goal | FOUNDATION COMPLETE / FURNITURE IN 1I |
 | 6 | 1F — League, stadium, and match viewing | Research and watch authoritative basketball | COMPLETE FOR CURRENT ARCHIVED GAME |
-| 7 | 1G — Odds Bucks and work recovery | Earn, persist, audit, and recover virtual currency | ACTIVE — COMPLETE THROUGH 1G.3 / RECOVERY OWNER GATE |
+| 7 | 1G — Odds Bucks and work recovery | Earn, persist, audit, and recover virtual currency | ACTIVE — COMPLETE THROUGH 1G.4 / ADMIN RECONCILIATION NEXT |
 | 8 | 1H — Wager locking and settlement | Place approved wagers and receive exact outcomes | PENDING |
 | 9 | 1I — Stores and lifestyle upgrades | Buy, equip, display, and place basic items | PENDING |
 | 10 | 1J — Athlete life and league storytelling | Understand athletes, availability, and consequences | PENDING |
@@ -263,13 +264,13 @@ The player can research a scheduled game, go to the venue, watch or skip the sam
 1. **COMPLETE:** add the server-authoritative virtual Odds Bucks ledger with append-only entries and idempotent commands. See [[Development/Reports/Phase 1G1 Empty Server Authoritative Odds Bucks Ledger]].
 2. **COMPLETE:** create one server-validated placeholder action at Sundale's existing `Job` marker. See [[Development/Reports/Phase 1G2 Server Validated Placeholder Job Interaction]].
 3. **COMPLETE FOR ONE LOCAL SAVED PROFILE:** credit one verified `100` Odds Bucks first-job payout, reject exact retries, and restore the one-entry ledger across a cold packaged-process restart. No online account or backend reconnect is claimed. See [[Development/Reports/Phase 1G3 Persistent First Job Payout]].
-4. **OWNER GATE:** add starting balance and the smallest zero-balance recovery path only after the owner freezes amount, cadence, and eligibility.
-5. Expose truthful reconciliation in Admin.
+4. **COMPLETE FOR ONE LOCAL SAVED PROFILE:** start at `0`, credit `100` per successful shift on a rolling `24`-hour cooldown, count the first payout as period one, accumulate balances, and provide no separate allowance or missed-period catch-up. The next eligible timestamp and ledger survive a cold packaged-process restart. No online account, trusted backend clock, or backend reconnect is claimed. See [[Development/Reports/Phase 1G4 Rolling 24 Hour Job Recovery]].
+5. **NEXT:** expose truthful read-only reconciliation in Admin.
 
 ### Owner gates
 
-- **PARTIALLY RESOLVED:** the placeholder job interaction and its first `100`-Odds-Bucks, once-per-local-profile payout. Final job fiction and repeat behavior remain open.
-- Starting balance, repeat income, allowance cadence, recovery floor, prices, and broader limits.
+- **RESOLVED FOR LOCAL BETA RECOVERY:** placeholder interaction; starting balance `0`; `100` per successful shift; rolling `24`-hour eligibility; first payout as period one; accumulated balances; no separate allowance; no missed-period catch-up.
+- Final job fiction, production account/time authority, recovery floor behavior after wagering, prices, and broader limits remain open.
 
 ### Exit evidence
 
@@ -417,7 +418,7 @@ A Beta Exit Report states **READY**, **BLOCKED WITH MEASURED CAUSE**, or **NOT R
 5. Apartment instancing, layouts, visits, and decorating controls.
 6. 82-game schedule variety, team count, calendar, and presentation cadence.
 7. **PARTIALLY RESOLVED:** current placeholder fidelity, fixed camera, text-only callouts, three-minute full-watch duration, and result-invariant player skip; see [[Design/Decisions/DEC-013 Phase 1F4 Presentation Defaults]] and [[Development/Reports/Phase 1F5 Replay View Result Invariance]]. Final content treatment remains later.
-8. **PARTIALLY RESOLVED:** placeholder first-job payout is `100` once per local saved profile. Starting Odds Bucks, repeat income, allowance, recovery, prices, and broader limits remain open.
+8. **RESOLVED FOR LOCAL BETA RECOVERY:** start at `0`, earn `100` from the placeholder job on a rolling `24`-hour cooldown, accumulate balances, and use no separate allowance or catch-up payout. Production account/time authority, post-wager recovery-floor behavior, prices, and broader limits remain open.
 9. Wager markets, odds, payouts, lock, limits, correction, and cancellation.
 10. Clothing/furniture catalog, pricing, equipment, placement, and refunds. City-origin identity is resolved under [[Design/Decisions/DEC-009 City-Origin Clothing and Furniture]].
 11. Minimum PC, accessibility, beta audience, regions, and release channel.
