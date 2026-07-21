@@ -97,6 +97,7 @@ tags:
 - [[Development/Reports/Phase 1D3 Cold Reconnect Visible State Restore|Phase 1D.3 cold reconnect visible-state restore]]
 - [[Development/Reports/Phase 1D4 Local Concurrency Ladder|Phase 1D.4 local concurrency ladder]]
 - [[Development/Reports/Phase 1E1 Private Empty Studio Enter and Exit|Phase 1E.1 private empty Studio enter and exit]]
+- [[Development/Reports/Phase 1E1a Continuous Mouse Camera Orbit Correction|Phase 1E.1a continuous mouse camera orbit correction]]
 - [[Visual Maps/Project Tool Map|Master project tool map]]
 - [[Visual Maps/Beta Game Scope|Complete beta game scope map]]
 - [[Visual Maps/Beta Delivery Roadmap|Beta delivery roadmap map]]

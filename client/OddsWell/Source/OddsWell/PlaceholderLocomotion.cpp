@@ -42,8 +42,6 @@ constexpr float JumpVelocity = 520.0f;
 constexpr float CameraDistance = 420.0f;
 constexpr float CameraPitchMin = -65.0f;
 constexpr float CameraPitchMax = 65.0f;
-constexpr float CameraYawMin = -180.0f;
-constexpr float CameraYawMax = 180.0f;
 constexpr float CapsuleRadius = 42.0f;
 constexpr float CapsuleHalfHeight = 96.0f;
 constexpr float SharedCitySpawnSpacing = 200.0f;
@@ -304,6 +302,7 @@ void AOddsWellPlaceholderCharacter::BeginPlay()
 	bSharedCityQa = FParse::Param(FCommandLine::Get(), TEXT("SharedCityQa"));
 	bSharedCityCapacityQa = FParse::Param(FCommandLine::Get(), TEXT("SharedCityCapacityQa"));
 	bStudioQa = FParse::Param(FCommandLine::Get(), TEXT("StudioQa"));
+	bCameraOrbitQa = FParse::Param(FCommandLine::Get(), TEXT("CameraOrbitQa"));
 	SharedCityQaTargetClients = GetSharedCityQaTargetClients();
 	UMaterialInterface* BasicShapeMaterial = LoadObject<UMaterialInterface>(nullptr, TEXT("/Engine/BasicShapes/BasicShapeMaterial.BasicShapeMaterial"));
 	if (!BasicShapeMaterial)
@@ -424,8 +423,6 @@ void AOddsWellPlaceholderCharacter::PossessedBy(AController* NewController)
 		{
 			PlayerController->PlayerCameraManager->ViewPitchMin = CameraPitchMin;
 			PlayerController->PlayerCameraManager->ViewPitchMax = CameraPitchMax;
-			PlayerController->PlayerCameraManager->ViewYawMin = CameraYawMin;
-			PlayerController->PlayerCameraManager->ViewYawMax = CameraYawMax;
 		}
 	}
 }
@@ -483,6 +480,10 @@ void AOddsWellPlaceholderCharacter::Tick(const float DeltaSeconds)
 	if (bStudioQa)
 	{
 		RunStudioQa(DeltaSeconds);
+	}
+	if (bCameraOrbitQa)
+	{
+		RunCameraOrbitQa(DeltaSeconds);
 	}
 	if (QaExitAt > 0.0 && FPlatformTime::Seconds() >= QaExitAt)
 	{
@@ -596,6 +597,58 @@ void AOddsWellPlaceholderCharacter::RunStudioQa(const float DeltaSeconds)
 	if (StudioQaElapsed > 15.0f)
 	{
 		UE_LOG(LogOddsWellLocomotion, Error, TEXT("ODDSWELL_STUDIO_QA|result=FAIL|reason=transition_timeout|stage=%d|map=%s"), StudioQaProcessStage, *GetWorld()->GetMapName());
+		FPlatformMisc::RequestExit(false);
+	}
+}
+
+void AOddsWellPlaceholderCharacter::RunCameraOrbitQa(const float DeltaSeconds)
+{
+	if (!IsLocallyControlled() || !Controller)
+	{
+		return;
+	}
+	CameraOrbitQaElapsed += DeltaSeconds;
+	const float CurrentYaw = Controller->GetControlRotation().Yaw;
+	if (!bCameraOrbitQaStarted)
+	{
+		bCameraOrbitQaStarted = true;
+		CameraOrbitQaPreviousYaw = CurrentYaw;
+		CameraOrbitQaStartLocation = GetActorLocation();
+	}
+	else
+	{
+		CameraOrbitQaSweep += FMath::Abs(FMath::FindDeltaAngleDegrees(CameraOrbitQaPreviousYaw, CurrentYaw));
+		CameraOrbitQaPreviousYaw = CurrentYaw;
+	}
+	LookYaw(4.0f);
+	if (CameraOrbitQaSweep >= 370.0f)
+	{
+		const float Drift = FVector::Dist2D(CameraOrbitQaStartLocation, GetActorLocation());
+		const bool bPassed = Drift <= 5.0f;
+		const FString Evidence = FString::Printf(
+			TEXT("ODDSWELL_CAMERA_ORBIT_QA|result=%s|sweep=%.1f|full_orbit=true|player_drift=%.1f|mouse_axis=true|map=%s"),
+			bPassed ? TEXT("PASS") : TEXT("FAIL"),
+			CameraOrbitQaSweep,
+			Drift,
+			*GetWorld()->GetMapName());
+		if (bPassed)
+		{
+			UE_LOG(LogOddsWellLocomotion, Display, TEXT("%s"), *Evidence);
+		}
+		else
+		{
+			UE_LOG(LogOddsWellLocomotion, Error, TEXT("%s"), *Evidence);
+		}
+		bCameraOrbitQa = false;
+		if (FParse::Param(FCommandLine::Get(), TEXT("CameraOrbitAutoExit")))
+		{
+			QaExitAt = FPlatformTime::Seconds() + 2.0;
+		}
+		return;
+	}
+	if (CameraOrbitQaElapsed > 5.0f)
+	{
+		UE_LOG(LogOddsWellLocomotion, Error, TEXT("ODDSWELL_CAMERA_ORBIT_QA|result=FAIL|reason=timeout|sweep=%.1f|map=%s"), CameraOrbitQaSweep, *GetWorld()->GetMapName());
 		FPlatformMisc::RequestExit(false);
 	}
 }
@@ -1555,7 +1608,6 @@ bool FOddsWellLocomotionDefaultsTest::RunTest(const FString& Parameters)
 	TestTrue(TEXT("Spring arm collision remains enabled"), UseCameraCollision);
 	TestTrue(TEXT("Safe spawn starts above the capsule"), SafeSpawnLocation.Z > CapsuleHalfHeight && CapsuleRadius > 0.0f);
 	TestTrue(TEXT("Camera pitch is bounded"), CameraPitchMin > -90.0f && CameraPitchMax < 90.0f && CameraPitchMin < CameraPitchMax);
-	TestTrue(TEXT("Camera yaw is bounded"), CameraYawMin == -180.0f && CameraYawMax == 180.0f);
 	TestTrue(TEXT("Two-player proof uses separated spawn points"), SharedCitySpawnSpacing > CapsuleRadius * 2.0f);
 	TestTrue(TEXT("Shared-city QA requires measurable movement"), SharedCityQaMovementDistance > SharedCitySpawnSpacing);
 	TestEqual(TEXT("Local capacity ladder starts at two clients"), SharedCityCapacityMinClients, 2);

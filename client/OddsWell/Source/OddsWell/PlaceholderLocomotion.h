@@ -85,6 +85,7 @@ private:
 	void RunSharedCityQa(float DeltaSeconds);
 	void PollStudioInteraction();
 	void RunStudioQa(float DeltaSeconds);
+	void RunCameraOrbitQa(float DeltaSeconds);
 	bool ApplySavedOrFallbackAppearance();
 	bool ResolveLocalAppearance(FOddsWellResolvedCharacterAppearance& OutAppearance, FString& OutSource, FString& OutError) const;
 	bool ApplyResolvedAppearance(const FOddsWellResolvedCharacterAppearance& Appearance, const FString& Source);
@@ -183,6 +184,12 @@ private:
 	bool bStudioInteractionArmed = false;
 	bool bStudioQa = false;
 	bool bStudioQaInteriorStarted = false;
+	FVector CameraOrbitQaStartLocation = FVector::ZeroVector;
+	float CameraOrbitQaElapsed = 0.0f;
+	float CameraOrbitQaPreviousYaw = 0.0f;
+	float CameraOrbitQaSweep = 0.0f;
+	bool bCameraOrbitQa = false;
+	bool bCameraOrbitQaStarted = false;
 };
 
 UCLASS()

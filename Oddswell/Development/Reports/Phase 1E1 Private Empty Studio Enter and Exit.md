@@ -36,3 +36,7 @@ The opt-in acceptance path uses the same level transitions. It passes only after
 This is a standalone local private-interior proof. It does not yet persist Studio ownership or a return location, preserve a multiplayer session during travel, create larger apartment interiors, activate snap points, add furniture, grant inventory, buy an item, use Odds Bucks, allow visits, or prove external hosting. Those claims remain inactive.
 
 The next roadmap step is **Phase 1E.2 — Studio ownership and return persistence**.
+
+## Post-completion camera correction
+
+After the owner opened the packaged Studio, they correctly reported that the mouse view could not swivel continuously. [[Development/Reports/Phase 1E1a Continuous Mouse Camera Orbit Correction]] removes the zero-width explicit yaw clamp and proves a `370°` packaged orbit inside the Studio. The Phase 1E.1 room, empty-content rule, and next gate are unchanged.
