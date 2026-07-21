@@ -729,7 +729,8 @@ Build the one-city scope defined in [[Design/Decisions/DEC-002 First Playable Sc
 - **Packaged proof:** the same fresh package passed `2`, `3`, and `4` total-client rungs. Remote movers were `1/1`, `2/2`, and `3/3`; minimum server distances were `302.7`, `301.3`, and `300.5 cm`. All processes exited `0`. Peak combined launcher/game working set was `685.6`, `1,030.1`, and `1,373.9 MB`; these are NullRHI localhost samples, not a beta ceiling.
 - **Validation:** editor/game builds and BuildCookRun passed; native character automation passed `5/5`; all `65/65` frozen regressions passed in `138.007s`; Brain Admin self-check, Python compilation, accepted-log audit, diff hygiene, and zero-process cleanup passed. Cost was `$0.00`. See [[Development/Reports/Phase 1D4 Local Concurrency Ladder]].
 - **Boundary:** no capacity ceiling, external hosting, account, matchmaking, communication, moderation, apartment, item ownership, economy, wagering, final art, deployment, model, training, or retraining system was added or claimed.
-- **Next gate:** Phase 1E Studio and apartment progression is blocked on owner decisions for beta apartment instancing/visits and the minimal layout/decorating approach.
+- **Owner direction:** [[Design/Decisions/DEC-011 Empty Starter Studio]] locks a completely unfurnished, undecorated starting Studio. Only the structural shell, entry/exit, necessary lighting, and collision may be present before the player buys furnishings in later authorized phases.
+- **Next gate:** Phase 1E Studio and apartment progression still needs owner decisions for beta apartment instancing/visits and the minimal layout/decorating approach. The empty start is resolved.
 
 ## Future shared simulation layer
 

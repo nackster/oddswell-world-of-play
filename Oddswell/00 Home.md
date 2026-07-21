@@ -21,6 +21,7 @@ tags:
 - [[Design/Decisions/DEC-008 Beta First City Direction|Beta first-city direction]]
 - [[Design/Decisions/DEC-009 City-Origin Clothing and Furniture|City-origin clothing and furniture]]
 - [[Design/Decisions/DEC-010 Phase 1D Shared City Defaults|Phase 1D shared-city defaults]]
+- [[Design/Decisions/DEC-011 Empty Starter Studio|Empty starter Studio]]
 - [[Art/Visual Consistency|Visual consistency]]
 - [[Development/Current Plan|Current plan]]
 - [[Development/Beta Delivery Roadmap|Beta delivery roadmap]]

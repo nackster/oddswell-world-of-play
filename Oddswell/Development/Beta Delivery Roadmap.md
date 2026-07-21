@@ -196,6 +196,7 @@ The owner selected Concept B — Daymark / Sundale on July 20, 2026. The theme, 
 
 ### Owner gates
 
+- **RESOLVED:** the starting Studio contains no free furniture or decoration; see [[Design/Decisions/DEC-011 Empty Starter Studio]].
 - Apartment instancing and visit rules.
 - Layout strategy, decorating controls, and whether tiers use separate interiors.
 

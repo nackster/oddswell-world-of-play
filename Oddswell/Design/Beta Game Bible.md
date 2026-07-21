@@ -151,6 +151,7 @@ The presets must not attach ability, wealth, intelligence, behavior, or athlete 
 
 ### Furniture
 
+- **LOCKED:** the starting Studio is completely empty of furniture and decoration; every placeable furnishing must be purchased later. Structural surfaces, the entry/exit, necessary lighting, and collision are not furniture. See [[Design/Decisions/DEC-011 Empty Starter Studio]].
 - **LOCKED:** a very basic furniture store sells items for Odds Bucks.
 - **LOCKED:** purchasable furniture has durable city origin and is sold through its origin city's catalog; beta furniture merchandise is Sundale-specific under [[Design/Decisions/DEC-009 City-Origin Clothing and Furniture]].
 - **LOCKED:** furniture is associated with the player's apartment progression.
