@@ -56,7 +56,8 @@ The roadmap is intentionally made of measurable product gates, not hundreds of s
 - Phase 1E owner defaults: **RESOLVED FOR THE FIRST STUDIO**; see [[Design/Decisions/DEC-011 Empty Starter Studio]] and [[Design/Decisions/DEC-012 Phase 1E Apartment Defaults]].
 - Phase 1E.1 private empty Studio enter/exit: **COMPLETE**; see [[Development/Reports/Phase 1E1 Private Empty Studio Enter and Exit]].
 - Phase 1E.1a continuous mouse camera orbit correction: **COMPLETE**; see [[Development/Reports/Phase 1E1a Continuous Mouse Camera Orbit Correction]].
-- Next gate: **PHASE 1E.2 STUDIO OWNERSHIP AND RETURN PERSISTENCE**. Sundale remains a working name.
+- Phase 1E.2 Studio ownership and return persistence: **COMPLETE**; see [[Development/Reports/Phase 1E2 Studio Ownership and Return Persistence]].
+- Next gate: **PHASE 1E.3 SIX-TIER PROGRESSION DATA**. Sundale remains a working name.
 - Current prerequisite note: UE 5.8, the aligned x64 runtime and .NET Framework 4.8 SDK, portable project, reproducible local Windows package, empty-map launch, LFS, generated-file ignores, primitive block/court iteration, collision, cold-process reopen, direct recorded-replay rendering, deterministic packaged traces, and local resource sampling are verified. UE 5.8 is now the approved beta client engine.
 
 No later roadmap phase is authorized merely because it appears below.
@@ -192,7 +193,7 @@ The owner selected Concept B — Daymark / Sundale on July 20, 2026. The theme, 
 ### Smallest delivery path
 
 1. **1E.1 COMPLETE:** enter, walk and orbit the camera inside, then leave one private, completely empty placeholder Studio; see [[Development/Reports/Phase 1E1 Private Empty Studio Enter and Exit]] and [[Development/Reports/Phase 1E1a Continuous Mouse Camera Orbit Correction]].
-2. Persist Studio ownership and player return location.
+2. **1E.2 COMPLETE:** persist Studio ownership and the player's exact Sundale return location across a cold process restart; see [[Development/Reports/Phase 1E2 Studio Ownership and Return Persistence]].
 3. Represent the six locked tiers in data: Studio, 1BR, 2BR, 3BR, 4BR, Penthouse.
 4. Show locked upgrade goals without building six final interiors at once.
 5. Activate predefined furniture snap points only after Phase 1I supplies a legitimate purchase and ownership record; never grant free demonstration furniture.

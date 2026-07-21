@@ -27,6 +27,7 @@
 #include "Misc/CommandLine.h"
 #include "Misc/Parse.h"
 #include "Net/UnrealNetwork.h"
+#include "StudioHomeSave.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
 #include "Misc/AutomationTest.h"
@@ -301,7 +302,9 @@ void AOddsWellPlaceholderCharacter::BeginPlay()
 	bSundaleRouteRun = FParse::Param(FCommandLine::Get(), TEXT("SundaleRouteRun"));
 	bSharedCityQa = FParse::Param(FCommandLine::Get(), TEXT("SharedCityQa"));
 	bSharedCityCapacityQa = FParse::Param(FCommandLine::Get(), TEXT("SharedCityCapacityQa"));
-	bStudioQa = FParse::Param(FCommandLine::Get(), TEXT("StudioQa"));
+	bStudioPersistenceQa = FParse::Param(FCommandLine::Get(), TEXT("StudioPersistenceQa"));
+	bStudioPersistenceQaVerify = FParse::Param(FCommandLine::Get(), TEXT("StudioPersistenceQaVerify"));
+	bStudioQa = FParse::Param(FCommandLine::Get(), TEXT("StudioQa")) || bStudioPersistenceQa || bStudioPersistenceQaVerify;
 	bCameraOrbitQa = FParse::Param(FCommandLine::Get(), TEXT("CameraOrbitQa"));
 	SharedCityQaTargetClients = GetSharedCityQaTargetClients();
 	UMaterialInterface* BasicShapeMaterial = LoadObject<UMaterialInterface>(nullptr, TEXT("/Engine/BasicShapes/BasicShapeMaterial.BasicShapeMaterial"));
@@ -524,6 +527,15 @@ void AOddsWellPlaceholderCharacter::PollStudioInteraction()
 		return;
 	}
 	bStudioInteractionArmed = false;
+	const bool bQaSlot = UseOddsWellStudioHomeQaSlot();
+	FOddsWellStudioHomeState Home;
+	FString Error;
+	if ((!bInStudio && !SaveOwnedOddsWellStudio(GetActorLocation(), bQaSlot, Error))
+		|| (bInStudio && !LoadOwnedOddsWellStudio(bQaSlot, Home, Error)))
+	{
+		UE_LOG(LogOddsWellLocomotion, Error, TEXT("ODDSWELL_STUDIO_TRANSITION|result=FAIL|reason=%s"), *Error);
+		return;
+	}
 	UE_LOG(LogOddsWellLocomotion, Display, TEXT("ODDSWELL_STUDIO_TRANSITION|direction=%s|private=true|visits=false"), bInStudio ? TEXT("to_city") : TEXT("to_studio"));
 	UGameplayStatics::OpenLevel(
 		this,
@@ -543,8 +555,47 @@ void AOddsWellPlaceholderCharacter::RunStudioQa(const float DeltaSeconds)
 	StudioQaElapsed += DeltaSeconds;
 	const bool bInSundale = GetWorld()->GetMapName().Contains(TEXT("SundaleGraybox"));
 	const bool bInStudio = GetWorld()->GetAuthGameMode<AOddsWellStudioGameMode>() != nullptr;
+	if (bStudioPersistenceQaVerify)
+	{
+		if (bInSundale && GetCharacterMovement()->IsMovingOnGround())
+		{
+			FOddsWellStudioHomeState Home;
+			FString Error;
+			const float ReturnDistance = LoadOwnedOddsWellStudio(true, Home, Error)
+				? FVector::Dist2D(GetActorLocation(), Home.SundaleReturnLocation)
+				: TNumericLimits<float>::Max();
+			if (!Home.bOwnsStudio || ReturnDistance > 5.0f || !DeleteOddsWellQaStudioHomeAndVerify(Error))
+			{
+				UE_LOG(LogOddsWellLocomotion, Error, TEXT("ODDSWELL_STUDIO_PERSISTENCE_COLD_QA|result=FAIL|reason=%s|return_distance=%.1f"), *Error, ReturnDistance);
+				FPlatformMisc::RequestExit(false);
+				return;
+			}
+			bStudioQa = false;
+			UE_LOG(LogOddsWellLocomotion, Display, TEXT("ODDSWELL_STUDIO_PERSISTENCE_COLD_QA|result=PASS|ownership=true|cold_restore=true|return_distance=%.1f|qa_cleanup=true"), ReturnDistance);
+			QaExitAt = FPlatformTime::Seconds() + 2.0;
+			return;
+		}
+		if (StudioQaElapsed > 10.0f)
+		{
+			UE_LOG(LogOddsWellLocomotion, Error, TEXT("ODDSWELL_STUDIO_PERSISTENCE_COLD_QA|result=FAIL|reason=spawn_timeout"));
+			FPlatformMisc::RequestExit(false);
+		}
+		return;
+	}
 	if (StudioQaProcessStage == 0 && bInSundale && GetCharacterMovement()->IsMovingOnGround())
 	{
+		if (bStudioPersistenceQa)
+		{
+			SetActorLocation(GetActorLocation() + FVector(125.0, 75.0, 0.0));
+			FString Error;
+			if (!SaveOwnedOddsWellStudio(GetActorLocation(), true, Error))
+			{
+				UE_LOG(LogOddsWellLocomotion, Error, TEXT("ODDSWELL_STUDIO_PERSISTENCE_QA|result=FAIL|reason=%s"), *Error);
+				FPlatformMisc::RequestExit(false);
+				return;
+			}
+			UE_LOG(LogOddsWellLocomotion, Display, TEXT("ODDSWELL_STUDIO_PERSISTENCE_SAVED|ownership=true|return=%s"), *GetActorLocation().ToCompactString());
+		}
 		StudioQaProcessStage = 1;
 		UE_LOG(LogOddsWellLocomotion, Display, TEXT("ODDSWELL_STUDIO_QA_ENTER|from=SundaleGraybox|private=true|visits=false"));
 		UGameplayStatics::OpenLevel(this, FName(TEXT("/Game/Maps/Bootstrap")), true, TEXT("game=/Script/OddsWell.OddsWellStudioGameMode"));
@@ -554,6 +605,17 @@ void AOddsWellPlaceholderCharacter::RunStudioQa(const float DeltaSeconds)
 	{
 		if (!bStudioQaInteriorStarted && GetCharacterMovement()->IsMovingOnGround())
 		{
+			if (bStudioPersistenceQa)
+			{
+				FOddsWellStudioHomeState Home;
+				FString Error;
+				if (!LoadOwnedOddsWellStudio(true, Home, Error) || !Home.bOwnsStudio)
+				{
+					UE_LOG(LogOddsWellLocomotion, Error, TEXT("ODDSWELL_STUDIO_PERSISTENCE_QA|result=FAIL|reason=%s"), *Error);
+					FPlatformMisc::RequestExit(false);
+					return;
+				}
+			}
 			int32 StructuralSurfaces = 0;
 			int32 FurnitureActors = 0;
 			for (TActorIterator<AActor> It(GetWorld()); It; ++It)
@@ -585,9 +647,27 @@ void AOddsWellPlaceholderCharacter::RunStudioQa(const float DeltaSeconds)
 	}
 	if (StudioQaProcessStage == 2 && bInSundale && GetCharacterMovement()->IsMovingOnGround())
 	{
+		FOddsWellStudioHomeState Home;
+		FString Error;
+		const float ReturnDistance = bStudioPersistenceQa && LoadOwnedOddsWellStudio(true, Home, Error)
+			? FVector::Dist2D(GetActorLocation(), Home.SundaleReturnLocation)
+			: 0.0f;
+		if (bStudioPersistenceQa && (!Home.bOwnsStudio || ReturnDistance > 5.0f))
+		{
+			UE_LOG(LogOddsWellLocomotion, Error, TEXT("ODDSWELL_STUDIO_PERSISTENCE_QA|result=FAIL|reason=%s|return_distance=%.1f"), *Error, ReturnDistance);
+			FPlatformMisc::RequestExit(false);
+			return;
+		}
 		StudioQaProcessStage = 3;
 		bStudioQa = false;
-		UE_LOG(LogOddsWellLocomotion, Display, TEXT("ODDSWELL_STUDIO_QA|result=PASS|entered=true|empty=true|walkable=true|exited=true|returned=SundaleGraybox|private=true|visits=false"));
+		if (bStudioPersistenceQa)
+		{
+			UE_LOG(LogOddsWellLocomotion, Display, TEXT("ODDSWELL_STUDIO_PERSISTENCE_QA|result=PASS|ownership=true|entered=true|empty=true|exited=true|return_distance=%.1f|disk_record=true|private=true|visits=false"), ReturnDistance);
+		}
+		else
+		{
+			UE_LOG(LogOddsWellLocomotion, Display, TEXT("ODDSWELL_STUDIO_QA|result=PASS|entered=true|empty=true|walkable=true|exited=true|returned=SundaleGraybox|private=true|visits=false"));
+		}
 		if (FParse::Param(FCommandLine::Get(), TEXT("StudioAutoExit")))
 		{
 			QaExitAt = FPlatformTime::Seconds() + 2.0;
@@ -1541,7 +1621,17 @@ APawn* AOddsWellLocomotionGameMode::SpawnDefaultPawnAtTransform_Implementation(A
 	Parameters.ObjectFlags |= RF_Transient;
 	Parameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
 	const int32 PlayerNumber = NextSharedCityPlayerNumber++;
-	const FVector SpawnLocation = SafeSpawnLocation + FVector(0.0, SharedCitySpawnSpacing * (PlayerNumber - 1), 0.0);
+	FVector SpawnLocation = SafeSpawnLocation + FVector(0.0, SharedCitySpawnSpacing * (PlayerNumber - 1), 0.0);
+	if (GetNetMode() == NM_Standalone)
+	{
+		FOddsWellStudioHomeState Home;
+		FString Error;
+		if (LoadOwnedOddsWellStudio(UseOddsWellStudioHomeQaSlot(), Home, Error))
+		{
+			SpawnLocation = Home.SundaleReturnLocation;
+			UE_LOG(LogOddsWellLocomotion, Display, TEXT("ODDSWELL_STUDIO_RETURN_RESTORED|ownership=true|location=%s"), *SpawnLocation.ToCompactString());
+		}
+	}
 	AOddsWellPlaceholderCharacter* Character = GetWorld()->SpawnActor<AOddsWellPlaceholderCharacter>(SpawnLocation, FRotator::ZeroRotator, Parameters);
 	if (Character && GetNetMode() != NM_Standalone)
 	{

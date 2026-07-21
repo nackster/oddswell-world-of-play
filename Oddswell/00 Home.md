@@ -98,6 +98,7 @@ tags:
 - [[Development/Reports/Phase 1D4 Local Concurrency Ladder|Phase 1D.4 local concurrency ladder]]
 - [[Development/Reports/Phase 1E1 Private Empty Studio Enter and Exit|Phase 1E.1 private empty Studio enter and exit]]
 - [[Development/Reports/Phase 1E1a Continuous Mouse Camera Orbit Correction|Phase 1E.1a continuous mouse camera orbit correction]]
+- [[Development/Reports/Phase 1E2 Studio Ownership and Return Persistence|Phase 1E.2 Studio ownership and return persistence]]
 - [[Visual Maps/Project Tool Map|Master project tool map]]
 - [[Visual Maps/Beta Game Scope|Complete beta game scope map]]
 - [[Visual Maps/Beta Delivery Roadmap|Beta delivery roadmap map]]
@@ -110,7 +111,7 @@ tags:
 
 ## Current focus
 
-Phase 1A, Phase 1B, the Phase 1C city-graybox exit, and the Phase 1D local shared-city exit are complete. The owner selected **Concept B — Daymark / Sundale**; its `800 m` packaged route is measured and traversable. Phase 1E.1 now proves a private, completely empty Studio can be entered, walked, exited, and returned from in the packaged build. Phase 1E.2 must persist Studio ownership and return location without granting furniture. Final art, external hosting, accounts, a capacity ceiling, Odds Bucks, wagering, deployment, and retraining remain inactive.
+Phase 1A, Phase 1B, the Phase 1C city-graybox exit, and the Phase 1D local shared-city exit are complete. The owner selected **Concept B — Daymark / Sundale**; its `800 m` packaged route is measured and traversable. Phase 1E.1 proves a private, completely empty Studio can be entered, walked, exited, and viewed with a continuous mouse orbit. Phase 1E.2 now persists ownership and the exact Sundale return point across a cold restart. Phase 1E.3 must represent all six housing tiers truthfully while only the Studio is available. Final art, external hosting, accounts, a capacity ceiling, Odds Bucks, wagering, deployment, and retraining remain inactive.
 
 ## Current state
 

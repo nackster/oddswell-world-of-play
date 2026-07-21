@@ -184,6 +184,8 @@ private:
 	bool bStudioInteractionArmed = false;
 	bool bStudioQa = false;
 	bool bStudioQaInteriorStarted = false;
+	bool bStudioPersistenceQa = false;
+	bool bStudioPersistenceQaVerify = false;
 	FVector CameraOrbitQaStartLocation = FVector::ZeroVector;
 	float CameraOrbitQaElapsed = 0.0f;
 	float CameraOrbitQaPreviousYaw = 0.0f;

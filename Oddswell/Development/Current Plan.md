@@ -743,6 +743,15 @@ Build the one-city scope defined in [[Design/Decisions/DEC-002 First Playable Sc
 - **Post-completion correction:** the owner's packaged walkthrough exposed a zero-width yaw clamp caused by explicit `-180°`/`180°` limits. Those overrides are removed; editor and packaged Studio runs each proved a continuous `370.0°` orbit with `0.0 cm` player drift. Native tests passed `5/5`, frozen regressions passed `65/65`, and Admin/Python/log/hygiene checks passed. See [[Development/Reports/Phase 1E1a Continuous Mouse Camera Orbit Correction]].
 - **Next gate:** Phase 1E.2 adds the smallest durable Studio ownership and return-location record without adding furniture or economy behavior.
 
+### Phase 1E.2 Studio Ownership and Return Persistence status
+
+- **Outcome:** complete and committed locally after final validation. The first valid Studio entry grants the default Studio, saves the exact Sundale doorway position, and restores that position after Studio exit and a cold process restart.
+- **Implementation:** one native schema-v1 Unreal `SaveGame` record contains only an owned-Studio flag and Sundale return vector. Invalid type, schema, ownership, or coordinates are rejected. Save/load failure blocks the transition rather than risking an unowned or lost return.
+- **Packaged proof:** a fresh two-map package entered the still-empty Studio and returned with `0.0 cm` error. A separate cold packaged process restored the same record and position with `0.0 cm` error, then deleted the isolated QA save.
+- **Validation:** editor/game builds and clean BuildCookRun passed in `111.07s`; native character automation passed `6/6`; all `65/65` frozen regressions passed in `132.3s`; Brain Admin self-check, Python compilation, accepted-log audit, QA cleanup, diff hygiene, and zero-process cleanup passed. Cost was `$0.00`. See [[Development/Reports/Phase 1E2 Studio Ownership and Return Persistence]].
+- **Boundary:** no account, backend, multiplayer interior handoff, visit, larger interior, furniture, decoration, active snap point, inventory, catalog, Odds Bucks, purchase, trade, final art, hosting, or deployment was added.
+- **Next gate:** Phase 1E.3 represents the six locked housing tiers as truthful data while keeping only the Studio available.
+
 ## Future shared simulation layer
 
 Athlete Life Brain v4 is the default for newly generated train, rest, recover, and socialize decisions. It adds only one bounded, one-decision, same-season recent-scoring response above v3's routine behavior. V1-v4 history remains immutable. Expand into longer memory, traits, relationships, nightlife, media, discipline, career decisions, and other sports only after each smaller input passes its own engineering evaluation.
