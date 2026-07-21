@@ -752,6 +752,15 @@ Build the one-city scope defined in [[Design/Decisions/DEC-002 First Playable Sc
 - **Boundary:** no account, backend, multiplayer interior handoff, visit, larger interior, furniture, decoration, active snap point, inventory, catalog, Odds Bucks, purchase, trade, final art, hosting, or deployment was added.
 - **Next gate:** Phase 1E.3 represents the six locked housing tiers as truthful data while keeping only the Studio available.
 
+### Phase 1E.3 Six-Tier Housing Progression Catalog status
+
+- **Outcome:** complete and committed locally after final validation. One ordered catalog now contains exactly Studio, One-bedroom, Two-bedroom, Three-bedroom, Four-bedroom, and Penthouse.
+- **Truth boundary:** only Studio is marked available. Every larger tier is explicitly locked and unbuilt; no price, dimensions, layout, requirement, or upgrade action was invented.
+- **Packaged proof:** the runtime reported `tiers=6`, `available=studio`, all five approved larger IDs as locked, `larger_interiors=false`, and `upgrade_ui=false`; the existing room remained six structural surfaces with zero furniture, decorations, or snap points.
+- **Validation:** editor/game builds and clean BuildCookRun passed in `138.80s`; native character automation passed `7/7`; the final reordered full regression run passed `65/65` in `296.515s`; Brain Admin self-check, Python compilation, accepted-log audit, diff hygiene, and zero-process cleanup passed. The unchanged time-sensitive regression was evaluated first after normal-order machine load caused two timing-only misses; no frozen code or threshold changed. Cost was `$0.00`. See [[Development/Reports/Phase 1E3 Six-Tier Housing Progression Catalog]].
+- **Boundary:** no upgrade screen, price, Odds Bucks, purchase, larger interior, furniture, inventory, account, visit, trade, final art, hosting, or deployment was added.
+- **Next gate:** Phase 1E.4 shows the six tiers as clear locked upgrade goals while keeping only Studio available.
+
 ## Future shared simulation layer
 
 Athlete Life Brain v4 is the default for newly generated train, rest, recover, and socialize decisions. It adds only one bounded, one-decision, same-season recent-scoring response above v3's routine behavior. V1-v4 history remains immutable. Expand into longer memory, traits, relationships, nightlife, media, discipline, career decisions, and other sports only after each smaller input passes its own engineering evaluation.

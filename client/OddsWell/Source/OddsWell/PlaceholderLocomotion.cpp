@@ -17,6 +17,7 @@
 #include "GameFramework/PlayerController.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "HAL/PlatformMisc.h"
+#include "HousingTierCatalog.h"
 #include "InputCoreTypes.h"
 #include "Kismet/GameplayStatics.h"
 #include "Engine/Engine.h"
@@ -1648,6 +1649,25 @@ AOddsWellStudioGameMode::AOddsWellStudioGameMode()
 void AOddsWellStudioGameMode::BeginPlay()
 {
 	Super::BeginPlay();
+	FString CatalogError;
+	if (!ValidateOddsWellHousingTiers(CatalogError))
+	{
+		UE_LOG(LogOddsWellLocomotion, Error, TEXT("ODDSWELL_HOUSING_TIERS|result=FAIL|reason=%s"), *CatalogError);
+		return;
+	}
+	TArray<FString> LockedTierIds;
+	for (const FOddsWellHousingTier& Tier : GetOddsWellHousingTiers())
+	{
+		if (!Tier.bInteriorAvailable)
+		{
+			LockedTierIds.Add(Tier.Id.ToString());
+		}
+	}
+	UE_LOG(
+		LogOddsWellLocomotion,
+		Display,
+		TEXT("ODDSWELL_HOUSING_TIERS|result=PASS|tiers=6|available=studio|locked=%s|larger_interiors=false|upgrade_ui=false"),
+		*FString::Join(LockedTierIds, TEXT(",")));
 	UStaticMesh* Cube = LoadObject<UStaticMesh>(nullptr, TEXT("/Engine/BasicShapes/Cube.Cube"));
 	if (!Cube)
 	{

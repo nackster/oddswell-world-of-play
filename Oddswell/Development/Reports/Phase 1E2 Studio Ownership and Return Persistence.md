@@ -36,3 +36,7 @@ The existing `E` interaction writes the record before entering. Entry stops if t
 This is local standalone persistence. It does not add accounts, external hosting, multiplayer interior handoff, visits, larger interiors, furniture, decoration, snap points, inventory, a catalog, Odds Bucks, purchases, trading, final art, or deployment.
 
 The next roadmap step is **Phase 1E.3 — represent Studio, 1BR, 2BR, 3BR, 4BR, and Penthouse as truthful progression data while only the Studio is available**.
+
+## Phase 1E.3 follow-up
+
+[[Development/Reports/Phase 1E3 Six-Tier Housing Progression Catalog]] now defines those six ordered tiers and keeps every larger interior explicitly locked and unbuilt. The Phase 1E.2 ownership and return evidence remains unchanged.
