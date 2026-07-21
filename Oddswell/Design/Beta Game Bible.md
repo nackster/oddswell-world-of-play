@@ -91,7 +91,7 @@ The presets must not attach ability, wealth, intelligence, behavior, or athlete 
 - **LOCKED:** basketball is the first sport.
 - **LOCKED:** the player can wager Odds Bucks and see the result through a visual game presentation.
 - **BETA TARGET:** a complete game presentation should initially aim for roughly two to five minutes.
-- **RESOLVED FOR PHASE 1F.4:** the current beta placeholder uses symbolic 3D athletes, one fixed broadcast camera, text callouts without voice commentary, an approximately three-minute duration, and no skip until Phase 1F.5 proves result invariance; see [[Design/Decisions/DEC-013 Phase 1F4 Presentation Defaults]]. Whether important games later receive a longer presentation remains open.
+- **RESOLVED FOR THE CURRENT BETA PLACEHOLDER:** symbolic 3D athletes, one fixed broadcast camera, text callouts without voice commentary, an approximately three-minute full watch, and `S` to skip to the same sealed final result. Phase 1F.5 also proves late-arrival and seal-validated cold-reconnect reconstruction; see [[Design/Decisions/DEC-013 Phase 1F4 Presentation Defaults]] and [[Development/Reports/Phase 1F5 Replay View Result Invariance]]. Whether important games later receive a longer presentation remains open.
 
 ### 6. Experience the consequence
 
@@ -242,7 +242,7 @@ The Basketball Brain chooses legal intents. The authoritative rules engine resol
 - **LOCKED:** the player sees what is happening rather than receiving only a final number.
 - **BETA TARGET:** a readable, dramatic two-to-five-minute presentation using the authoritative event log.
 - **BETA TARGET:** recognizable teams and athletes, score, game clock, key actions, overtime, and wager-relevant events.
-- **RESOLVED FOR PHASE 1F.4:** symbolic 3D placeholders, one fixed broadcast camera, text callouts without voice commentary, approximately three minutes, and no skip until the result-invariance phase; see [[Design/Decisions/DEC-013 Phase 1F4 Presentation Defaults]].
+- **RESOLVED FOR THE CURRENT BETA PLACEHOLDER:** symbolic 3D placeholders, one fixed broadcast camera, text callouts without voice commentary, approximately three minutes for a full watch, and `S` to skip to the same sealed final result. Late arrival and seal-validated cold reconnect resume only from the immutable archive; see [[Design/Decisions/DEC-013 Phase 1F4 Presentation Defaults]] and [[Development/Reports/Phase 1F5 Replay View Result Invariance]].
 - **OPEN AFTER PHASE 1F.4:** final athlete and team art, crowd size, replay cuts, condensed mode, and whether important games receive longer presentations.
 - **GUARDRAIL:** visual animation may interpolate movement but may not change the recorded score, clock, actors, events, or settlement.
 
@@ -313,7 +313,7 @@ The Scope Director must stop and ask when a phase depends on one of these:
 4. Apartment upgrade layouts and decorating interaction.
 5. Exact job, payout, allowance, and recovery cadence.
 6. How an 82-game season stays varied with the initial two-team scope.
-7. **PARTIALLY RESOLVED:** current beta placeholder fidelity, camera, commentary, duration, and pre-invariance skip rule under [[Design/Decisions/DEC-013 Phase 1F4 Presentation Defaults]]; final art, crowd, replay cuts, condensed mode, and special-game duration remain open.
+7. **PARTIALLY RESOLVED:** current beta placeholder fidelity, camera, commentary, duration, and result-invariant player skip under [[Design/Decisions/DEC-013 Phase 1F4 Presentation Defaults]] and [[Development/Reports/Phase 1F5 Replay View Result Invariance]]; final art, crowd, replay cuts, condensed mode, and special-game duration remain open.
 8. Order, rules, limits, and payout formulas for the four beta wager markets.
 9. Initial clothing and furniture catalog sizes.
 10. Shared-city capacity, instancing, regions, communication, blocking, reporting, and moderation.

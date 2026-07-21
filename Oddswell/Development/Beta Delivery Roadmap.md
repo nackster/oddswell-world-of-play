@@ -64,7 +64,9 @@ The roadmap is intentionally made of measurable product gates, not hundreds of s
 - Phase 1F.2 stadium and public viewing-location graybox: **COMPLETE**; see [[Development/Reports/Phase 1F2 Stadium and Public Viewing Graybox]].
 - Phase 1F.3 direct archived replay consumption in the stadium: **COMPLETE**; see [[Development/Reports/Phase 1F3 Direct Archived Replay Consumption in Stadium]].
 - Phase 1F.4 readable three-minute fixed-camera presentation: **COMPLETE**; see [[Development/Reports/Phase 1F4 Readable Three Minute Stadium Presentation]] and [[Design/Decisions/DEC-013 Phase 1F4 Presentation Defaults]].
-- Next gate: **PHASE 1F.5 RESULT INVARIANCE**. Prove that watch, skip, late arrival, and reconnect cannot alter the archived result. Sundale remains a working name.
+- Phase 1F.5 replay-view result invariance: **COMPLETE**; see [[Development/Reports/Phase 1F5 Replay View Result Invariance]].
+- Phase 1F exit: **PASSED FOR THE CURRENT ARCHIVED-GAME SLICE**. The 82-game/two-team variety decision remains open and no backend reconnect is claimed.
+- Next gate: **PHASE 1G.1 EMPTY ODDS BUCKS LEDGER**. Add only append-only, idempotent virtual-currency authority; do not invent starting balance, payout, cadence, price, or limit amounts. Sundale remains a working name.
 - Current prerequisite note: UE 5.8, the aligned x64 runtime and .NET Framework 4.8 SDK, portable project, reproducible local Windows package, empty-map launch, LFS, generated-file ignores, primitive block/court iteration, collision, cold-process reopen, direct recorded-replay rendering, deterministic packaged traces, and local resource sampling are verified. UE 5.8 is now the approved beta client engine.
 
 No later roadmap phase is authorized merely because it appears below.
@@ -78,7 +80,7 @@ No later roadmap phase is authorized merely because it appears below.
 | 3 | 1C — First-city identity and graybox | Walk between every required beta location | COMPLETE |
 | 4 | 1D — Shared-city presence | Players see one another and equipped clothing | COMPLETE |
 | 5 | 1E — Studio and apartment progression | Enter a persistent home and see the six-tier goal | FOUNDATION COMPLETE / FURNITURE IN 1I |
-| 6 | 1F — League, stadium, and match viewing | Research and watch authoritative basketball | ACTIVE |
+| 6 | 1F — League, stadium, and match viewing | Research and watch authoritative basketball | COMPLETE FOR CURRENT ARCHIVED GAME |
 | 7 | 1G — Odds Bucks and work recovery | Earn, persist, audit, and recover virtual currency | PENDING |
 | 8 | 1H — Wager locking and settlement | Place approved wagers and receive exact outcomes | PENDING |
 | 9 | 1I — Stores and lifestyle upgrades | Buy, equip, display, and place basic items | PENDING |
@@ -232,16 +234,18 @@ The player can return to the same owned, empty Studio; all six tiers exist as tr
 2. **COMPLETE:** graybox the stadium and public viewing location, with the future presentation area reserved and wagering kept inactive. See [[Development/Reports/Phase 1F2 Stadium and Public Viewing Graybox]].
 3. **COMPLETE:** consume one verified archived replay directly inside the stadium without resimulation. See [[Development/Reports/Phase 1F3 Direct Archived Replay Consumption in Stadium]].
 4. **COMPLETE:** owner-approved symbolic 3D placeholders, one fixed broadcast camera, text callouts without voice commentary, and a rendered three-minute presentation show score, clock, actors, key events, regulation/overtime status, and final seal. See [[Design/Decisions/DEC-013 Phase 1F4 Presentation Defaults]] and [[Development/Reports/Phase 1F4 Readable Three Minute Stadium Presentation]].
-5. **NEXT:** prove that watch, skip, late arrival, and reconnect never change the recorded result.
+5. **COMPLETE:** full watch, direct skip, mid-watch player skip, late arrival, and seal-validated cold reconnect all terminate at the identical frame `421`, score `101-104`, and authoritative seal without resimulation. Forged reconnect evidence renders zero frames. See [[Development/Reports/Phase 1F5 Replay View Result Invariance]].
 
 ### Owner gates
 
-- **RESOLVED FOR PHASE 1F.4:** placeholder fidelity, one fixed camera, text-only callouts, three-minute duration, and no skip before invariance; see [[Design/Decisions/DEC-013 Phase 1F4 Presentation Defaults]]. Final art, crowd, replay cuts, condensed mode, and special-game duration remain later decisions.
+- **RESOLVED THROUGH PHASE 1F.5:** placeholder fidelity, one fixed camera, text-only callouts, three-minute full-watch duration, and result-invariant `S` skip; see [[Design/Decisions/DEC-013 Phase 1F4 Presentation Defaults]] and [[Development/Reports/Phase 1F5 Replay View Result Invariance]]. Final art, crowd, replay cuts, condensed mode, and special-game duration remain later decisions.
 - How an 82-game season remains varied with the initial two-team scope.
 
 ### Exit evidence
 
 The player can research a scheduled game, go to the venue, watch or skip the same authoritative result, and inspect the immutable history. The client never resimulates basketball.
+
+**EXIT PASSED FOR THE CURRENT ARCHIVED-GAME SLICE:** the packaged player path can watch or press `S` to skip to the same sealed result; QA evidence proves late-arrival and seal-validated cold-reconnect reconstruction. Production backend/session reconnect and 82-game variety remain unbuilt or open.
 
 ## Phase 1G — Odds Bucks and work recovery
 
@@ -409,7 +413,7 @@ A Beta Exit Report states **READY**, **BLOCKED WITH MEASURED CAUSE**, or **NOT R
 4. **CURRENT OWNER GATE:** shared-city instance capacity, regions, collision, names, and minimal safety surface.
 5. Apartment instancing, layouts, visits, and decorating controls.
 6. 82-game schedule variety, team count, calendar, and presentation cadence.
-7. **PARTIALLY RESOLVED:** Phase 1F.4 placeholder fidelity, fixed camera, text-only callouts, three-minute duration, and pre-invariance skip rule; see [[Design/Decisions/DEC-013 Phase 1F4 Presentation Defaults]]. Final content treatment remains later.
+7. **PARTIALLY RESOLVED:** current placeholder fidelity, fixed camera, text-only callouts, three-minute full-watch duration, and result-invariant player skip; see [[Design/Decisions/DEC-013 Phase 1F4 Presentation Defaults]] and [[Development/Reports/Phase 1F5 Replay View Result Invariance]]. Final content treatment remains later.
 8. Job, starting Odds Bucks, income, allowance, recovery, prices, and limits.
 9. Wager markets, odds, payouts, lock, limits, correction, and cancellation.
 10. Clothing/furniture catalog, pricing, equipment, placement, and refunds. City-origin identity is resolved under [[Design/Decisions/DEC-009 City-Origin Clothing and Furniture]].

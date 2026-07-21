@@ -807,7 +807,16 @@ Build the one-city scope defined in [[Design/Decisions/DEC-002 First Playable Sc
 - **Rendered packaged proof:** the accepted Windows package displayed all `421` frames over `180.016s` wall time, ended Harbor City `101` to Mesa Vista `104`, reproduced canonical trace SHA-256 `12fb61d032a93e667451c364f77907e68e53b934c46f765b6f32eefe9316dbbe`, and showed the exact replay seal with zero replay errors.
 - **Validation:** final UE editor/game build and BuildCookRun passed; native automation passed `10/10`; all `65/65` frozen regressions passed in `166.190s`; Brain Admin self-check, deterministic exporters, Python compilation, visual inspection, and zero-process cleanup passed. Cost was `$0.00`. See [[Development/Reports/Phase 1F4 Readable Three Minute Stadium Presentation]] and [[Design/Decisions/DEC-013 Phase 1F4 Presentation Defaults]].
 - **Boundary:** no skip, late-arrival/reconnect reconstruction, voice commentary, camera cuts, crowd, final art, wager interaction, odds, settlement, backend, hosting, purchase, deployment, model, training, or retraining behavior was added.
-- **Next gate:** Phase 1F.5 proves that full watch, skip, late arrival, and reconnect paths cannot change the recorded result or seal.
+- **Follow-up:** Phase 1F.5 completed that result-invariance proof below and enabled the player `S` skip control.
+
+### Phase 1F.5 Replay-View Result Invariance status
+
+- **Status:** Complete on `agent/phase-0d`; Phase 1F exits for the current archived-game slice.
+- **Implementation:** the existing replay actor resolves `watch`, QA `skip`, `late`, and seal-validated `reconnect` to bounded public frame cursors. The player can press `S` during a full watch to invoke the same skip-to-final function. Forged seals, invalid cursors, unknown modes, and invalid QA skip requests fail closed.
+- **Packaged proof:** full watch rendered `421` frames, direct skip `1`, late arrival `211`, cold reconnect `211`, and mid-watch player skip `212`. Every accepted path ended at frame `421`, Harbor City `101` to Mesa Vista `104`, the exact replay seal, and `resimulated=false`; a forged reconnect rendered `0` frames.
+- **Validation:** final UE editor/game build and BuildCookRun passed; native automation passed `10/10`; all `65/65` frozen regressions passed in `163.106s`; Brain Admin self-check, deterministic exporters, Python compilation, offscreen visual inspection, fail-closed boundary checks, and zero-process cleanup passed. Cost was `$0.00`. See [[Development/Reports/Phase 1F5 Replay View Result Invariance]].
+- **Boundary:** no backend/session reconnect, account, cursor-delivery service, wager, odds, settlement, Odds Bucks, job, purchase, hosting, final art, model, training, or retraining behavior was added.
+- **Next gate:** Phase 1G.1 may add only the empty append-only, idempotent virtual Odds Bucks ledger. Job fantasy and all balance/payout/cadence/price/limit amounts remain owner gates.
 
 ## Future shared simulation layer
 

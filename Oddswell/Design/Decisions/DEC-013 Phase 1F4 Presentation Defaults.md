@@ -31,3 +31,7 @@ The accepted Season 1 Game 1 archive is a regulation game, so the current presen
 ## Boundary
 
 This decision does not approve voice commentary, camera cuts, replay cuts, a crowd, condensed mode, final athlete or team art, wager interaction, odds, settlement, a backend, hosting, deployment, or a general skip feature. The final presentation treatment and whether important games run longer remain later content decisions.
+
+## Phase 1F.5 follow-up
+
+Phase 1F.5 proved that full watch, direct skip, mid-watch player skip, late arrival, and seal-validated cold reconnect all reach the identical recorded final frame. The player may now press `S` during the presentation to jump to that sealed result. This is a local replay-view control, not a network session or backend reconnect system.

@@ -35,6 +35,8 @@ protected:
 
 private:
 	bool LoadFixture();
+	bool ConfigureViewMode();
+	void SkipToFinal();
 	void CreateMarkers();
 	void DisplayFrame(int32 FrameIndex);
 	void SetMarkerState(const FString& PlayerName, float Scale, float HeightOffset);
@@ -62,11 +64,16 @@ private:
 	FString HomeTeam;
 	FString AwayTeam;
 	FString ReplaySha256;
+	FString ViewMode = TEXT("watch");
 	float ReplayInterval = 0.1f;
 	float Accumulator = 0.0f;
 	float PresentationElapsed = 0.0f;
 	float ExitDelay = 0.0f;
 	int32 NextFrame = 0;
+	int32 StartFrame = 1;
+	int32 RenderedFrameCount = 0;
+	int32 QASkipAfterFrame = 0;
+	int32 SkipFromFrame = 0;
 	bool bAutoExit = false;
 	bool bCaptureProof = false;
 	bool bIntervalOverridden = false;

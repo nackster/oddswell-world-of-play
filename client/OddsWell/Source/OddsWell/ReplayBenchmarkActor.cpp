@@ -8,6 +8,7 @@
 #include "Engine/StaticMesh.h"
 #include "GameFramework/PlayerController.h"
 #include "HAL/PlatformMisc.h"
+#include "InputCoreTypes.h"
 #include "Misc/CommandLine.h"
 #include "Misc/FileHelper.h"
 #include "Misc/Paths.h"
@@ -28,10 +29,35 @@ constexpr float ApprovedReplayInterval = ApprovedPresentationSeconds / ExpectedF
 constexpr float MarkerScaleXY = 0.5f;
 constexpr float MarkerScaleZ = 1.4f;
 constexpr bool bApprovedVoiceCommentary = false;
-constexpr bool bApprovedSkip = false;
+constexpr bool bPlayerSkipEnabled = true;
 constexpr bool bExpectedReplayWentOvertime = false;
 const TCHAR* ExpectedReplaySha = TEXT("00e4f82c2bb4da5d9ad53d75bf76ece7b97ed9b05ca2f7a8a2628d396c779b75");
 const TCHAR* ExpectedFixtureSha1 = TEXT("a3b56bf84557babcd58c96acd40f94198b6c8c81");
+
+bool ResolveReplayStartFrame(const FString& Mode, int32 ResumeFrame, const FString& ResumeSeal, int32& OutStartFrame)
+{
+	if (Mode == TEXT("watch"))
+	{
+		OutStartFrame = 1;
+		return true;
+	}
+	if (Mode == TEXT("skip"))
+	{
+		OutStartFrame = ExpectedFrameCount;
+		return true;
+	}
+	if (Mode == TEXT("late"))
+	{
+		OutStartFrame = 211;
+		return true;
+	}
+	if (Mode == TEXT("reconnect") && ResumeFrame >= 1 && ResumeFrame <= ExpectedFrameCount && ResumeSeal == ExpectedReplaySha)
+	{
+		OutStartFrame = ResumeFrame;
+		return true;
+	}
+	return false;
+}
 }
 
 AReplayBenchmarkActor::AReplayBenchmarkActor()
@@ -75,14 +101,35 @@ void AReplayBenchmarkActor::BeginPlay()
 		SetActorTickEnabled(false);
 		return;
 	}
+	if (!ConfigureViewMode())
+	{
+		bComplete = true;
+		return;
+	}
 
 	CreateMarkers();
+	if (APlayerController* Controller = GetWorld()->GetFirstPlayerController())
+	{
+		EnableInput(Controller);
+		if (InputComponent)
+		{
+			InputComponent->BindKey(EKeys::S, IE_Pressed, this, &AReplayBenchmarkActor::SkipToFinal);
+		}
+	}
 	UE_LOG(LogTemp, Display, TEXT("ODDSWELL_REPLAY_READY|%d|%s|%.3f"), Frames.Num(), *ReplaySha256, ReplayInterval);
 	UE_LOG(
 		LogTemp,
 		Display,
-		TEXT("ODDSWELL_REPLAY_PRESENTATION|mode=fixed_broadcast|target_seconds=180|symbolic_3d=true|text_callouts=true|voice_commentary=false|skip=false|overtime=false|qa_interval_override=%s"),
+		TEXT("ODDSWELL_REPLAY_PRESENTATION|mode=fixed_broadcast|target_seconds=180|symbolic_3d=true|text_callouts=true|voice_commentary=false|skip=true|overtime=false|qa_interval_override=%s"),
 		bIntervalOverridden ? TEXT("true") : TEXT("false"));
+	UE_LOG(
+		LogTemp,
+		Display,
+		TEXT("ODDSWELL_REPLAY_VIEW_MODE|mode=%s|start_frame=%d|remaining_frames=%d|resume_seal_verified=%s|resimulated=false"),
+		*ViewMode,
+		StartFrame,
+		ExpectedFrameCount - StartFrame + 1,
+		ViewMode == TEXT("reconnect") ? TEXT("true") : TEXT("not_required"));
 }
 
 void AReplayBenchmarkActor::Tick(float DeltaSeconds)
@@ -217,6 +264,44 @@ bool AReplayBenchmarkActor::LoadFixture()
 		&& FinalFrame.AwayScore == 104;
 }
 
+bool AReplayBenchmarkActor::ConfigureViewMode()
+{
+	FParse::Value(FCommandLine::Get(), TEXT("ReplayViewMode="), ViewMode);
+	ViewMode = ViewMode.ToLower();
+	int32 ResumeFrame = 0;
+	FString ResumeSeal;
+	FParse::Value(FCommandLine::Get(), TEXT("ReplayResumeFrame="), ResumeFrame);
+	FParse::Value(FCommandLine::Get(), TEXT("ReplayResumeSeal="), ResumeSeal);
+	const bool bHasQASkip = FParse::Value(FCommandLine::Get(), TEXT("ReplayQASkipAfterFrame="), QASkipAfterFrame);
+	if (!ResolveReplayStartFrame(ViewMode, ResumeFrame, ResumeSeal, StartFrame))
+	{
+		UE_LOG(LogTemp, Error, TEXT("ODDSWELL_REPLAY_ERROR|invalid_view_mode|%s|%d"), *ViewMode, ResumeFrame);
+		StatusText->SetText(FText::FromString(TEXT("Replay view request rejected")));
+		return false;
+	}
+	if (bHasQASkip && (ViewMode != TEXT("watch") || QASkipAfterFrame < 1 || QASkipAfterFrame >= ExpectedFrameCount))
+	{
+		UE_LOG(LogTemp, Error, TEXT("ODDSWELL_REPLAY_ERROR|invalid_qa_skip|%s|%d"), *ViewMode, QASkipAfterFrame);
+		StatusText->SetText(FText::FromString(TEXT("Replay QA skip request rejected")));
+		return false;
+	}
+	NextFrame = StartFrame - 1;
+	return true;
+}
+
+void AReplayBenchmarkActor::SkipToFinal()
+{
+	if (bComplete || Frames.Num() != ExpectedFrameCount || NextFrame >= ExpectedFrameCount)
+	{
+		return;
+	}
+	SkipFromFrame = FMath::Max(NextFrame, 1);
+	ViewMode = TEXT("skip");
+	NextFrame = ExpectedFrameCount - 1;
+	Accumulator = ReplayInterval;
+	UE_LOG(LogTemp, Display, TEXT("ODDSWELL_REPLAY_SKIP_INPUT|from_frame=%d|to_frame=421|resimulated=false"), SkipFromFrame);
+}
+
 void AReplayBenchmarkActor::CreateMarkers()
 {
 	UStaticMesh* Cylinder = LoadObject<UStaticMesh>(nullptr, TEXT("/Engine/BasicShapes/Cylinder.Cylinder"));
@@ -278,6 +363,7 @@ void AReplayBenchmarkActor::SetMarkerState(const FString& PlayerName, float Scal
 
 void AReplayBenchmarkActor::DisplayFrame(int32 FrameIndex)
 {
+	++RenderedFrameCount;
 	for (int32 Index = 0; Index < Markers.Num(); ++Index)
 	{
 		Markers[Index]->SetRelativeScale3D(FVector(MarkerScaleXY, MarkerScaleXY, MarkerScaleZ));
@@ -289,7 +375,7 @@ void AReplayBenchmarkActor::DisplayFrame(int32 FrameIndex)
 	SetMarkerState(Frame.Target, 1.25f, 35.0f);
 	const FString Clock = FString::Printf(TEXT("%02d:%02d"), Frame.ClockSeconds / 60, Frame.ClockSeconds % 60);
 	FString Status = FString::Printf(
-		TEXT("AUTHORITATIVE RECORDED REPLAY - ILLUSTRATIVE POSITIONS\nFrame %d/%d | %s | Harbor %d - %d Mesa\n%s | %s\nOffense: %s | Actor: %s | Target: %s\nOvertime: NO | Voice commentary: OFF"),
+		TEXT("AUTHORITATIVE RECORDED REPLAY - ILLUSTRATIVE POSITIONS\nFrame %d/%d | %s | Harbor %d - %d Mesa\n%s | %s\nOffense: %s | Actor: %s | Target: %s\nView: %s from frame %d | Overtime: NO | Voice commentary: OFF\nPress S to skip to the sealed final result"),
 		FrameIndex + 1,
 		Frames.Num(),
 		*Clock,
@@ -299,7 +385,9 @@ void AReplayBenchmarkActor::DisplayFrame(int32 FrameIndex)
 		*Frame.Label,
 		*Frame.Offense,
 		*Frame.Actor,
-		*Frame.Target);
+		*Frame.Target,
+		*ViewMode,
+		StartFrame);
 
 	if (Frame.Kind == TEXT("final"))
 	{
@@ -327,9 +415,23 @@ void AReplayBenchmarkActor::DisplayFrame(int32 FrameIndex)
 	{
 		FScreenshotRequest::RequestScreenshot(TEXT("Phase1A2b_Mid.png"), true, false);
 	}
+	if (QASkipAfterFrame == FrameIndex + 1)
+	{
+		QASkipAfterFrame = 0;
+		SkipToFinal();
+	}
 	if (FrameIndex + 1 == Frames.Num())
 	{
 		UE_LOG(LogTemp, Display, TEXT("ODDSWELL_REPLAY_COMPLETE|421|101|104|%s"), *ReplaySha256);
+		UE_LOG(
+			LogTemp,
+			Display,
+			TEXT("ODDSWELL_REPLAY_VIEW_COMPLETE|mode=%s|start_frame=%d|skip_from_frame=%d|rendered_frames=%d|final_frame=421|home=101|away=104|seal=%s|resimulated=false"),
+			*ViewMode,
+			StartFrame,
+			SkipFromFrame,
+			RenderedFrameCount,
+			*ReplaySha256);
 		UE_LOG(
 			LogTemp,
 			Display,
@@ -356,8 +458,16 @@ bool FOddsWellReplayPresentationDefaultsTest::RunTest(const FString& Parameters)
 	TestTrue(TEXT("Default replay presentation is exactly three minutes"), FMath::IsNearlyEqual(TotalSeconds, 180.0f));
 	TestTrue(TEXT("Default replay presentation stays inside the approved two-to-five-minute window"), TotalSeconds >= 120.0f && TotalSeconds <= 300.0f);
 	TestFalse(TEXT("Voice commentary remains disabled"), bApprovedVoiceCommentary);
-	TestFalse(TEXT("Skip remains disabled until the invariance phase"), bApprovedSkip);
+	TestTrue(TEXT("Player skip is enabled after result invariance"), bPlayerSkipEnabled);
 	TestFalse(TEXT("The accepted archived game did not enter overtime"), bExpectedReplayWentOvertime);
+	int32 StartFrame = 0;
+	TestTrue(TEXT("Full watch starts at frame one"), ResolveReplayStartFrame(TEXT("watch"), 0, TEXT(""), StartFrame) && StartFrame == 1);
+	TestTrue(TEXT("QA skip shows only the sealed final frame"), ResolveReplayStartFrame(TEXT("skip"), 0, TEXT(""), StartFrame) && StartFrame == 421);
+	TestTrue(TEXT("Late arrival begins at the fixed public midpoint"), ResolveReplayStartFrame(TEXT("late"), 0, TEXT(""), StartFrame) && StartFrame == 211);
+	TestTrue(TEXT("Cold reconnect accepts an exact seal and cursor"), ResolveReplayStartFrame(TEXT("reconnect"), 211, ExpectedReplaySha, StartFrame) && StartFrame == 211);
+	TestFalse(TEXT("Cold reconnect rejects a forged seal"), ResolveReplayStartFrame(TEXT("reconnect"), 211, TEXT("forged"), StartFrame));
+	TestFalse(TEXT("Cold reconnect rejects an out-of-range cursor"), ResolveReplayStartFrame(TEXT("reconnect"), 422, ExpectedReplaySha, StartFrame));
+	TestFalse(TEXT("Unknown view modes fail closed"), ResolveReplayStartFrame(TEXT("unknown"), 0, TEXT(""), StartFrame));
 	return true;
 }
 #endif
