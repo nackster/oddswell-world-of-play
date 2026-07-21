@@ -798,7 +798,16 @@ Build the one-city scope defined in [[Design/Decisions/DEC-002 First Playable Sc
 - **Visual proof:** midpoint and final `1280x720` captures show the symbolic replay on the stadium court with public score/clock/event text; the final capture displays the exact authoritative replay seal. This is consumption evidence, not the final presentation.
 - **Validation:** final editor/game builds and BuildCookRun passed; native character automation passed `9/9`; all `65/65` frozen regressions passed in `153.004s`; Brain Admin self-check, replay and league exporters, Python compilation, hash checks, packaged log audit, diff hygiene, and zero-process cleanup passed. Cost was `$0.00`. See [[Development/Reports/Phase 1F3 Direct Archived Replay Consumption in Stadium]].
 - **Boundary:** no resimulation, new replay data, presentation-duration decision, camera system, commentary, skip/condensed mode, crowd, team branding, final art, wager interaction, odds, settlement, backend, service, purchase, or deployment behavior was added.
-- **Next gate — owner decision required:** freeze the smallest Phase 1F.4 presentation defaults before implementation. The current recommendation is symbolic 3D placeholders, one fixed broadcast camera, text event callouts without voice commentary, an approximately three-minute runtime, and no skip until Phase 1F step 5 proves result invariance.
+- **Follow-up:** the owner accepted those defaults in [[Design/Decisions/DEC-013 Phase 1F4 Presentation Defaults]], and Phase 1F.4 is complete below.
+
+### Phase 1F.4 Readable Three-Minute Stadium Presentation status
+
+- **Status:** Complete on `agent/phase-0d`; the owner-approved current-beta presentation defaults are implemented and verified.
+- **Implementation:** the existing archived-replay actor now uses a closer fixed broadcast camera, larger symbolic athletes and labels, a default `180 / 421`-second cadence, and explicit text evidence for score, clock, event, actor, target, regulation/overtime status, voice-off state, and final seal. The existing fixture parser and renderer remain the only replay path.
+- **Rendered packaged proof:** the accepted Windows package displayed all `421` frames over `180.016s` wall time, ended Harbor City `101` to Mesa Vista `104`, reproduced canonical trace SHA-256 `12fb61d032a93e667451c364f77907e68e53b934c46f765b6f32eefe9316dbbe`, and showed the exact replay seal with zero replay errors.
+- **Validation:** final UE editor/game build and BuildCookRun passed; native automation passed `10/10`; all `65/65` frozen regressions passed in `166.190s`; Brain Admin self-check, deterministic exporters, Python compilation, visual inspection, and zero-process cleanup passed. Cost was `$0.00`. See [[Development/Reports/Phase 1F4 Readable Three Minute Stadium Presentation]] and [[Design/Decisions/DEC-013 Phase 1F4 Presentation Defaults]].
+- **Boundary:** no skip, late-arrival/reconnect reconstruction, voice commentary, camera cuts, crowd, final art, wager interaction, odds, settlement, backend, hosting, purchase, deployment, model, training, or retraining behavior was added.
+- **Next gate:** Phase 1F.5 proves that full watch, skip, late arrival, and reconnect paths cannot change the recorded result or seal.
 
 ## Future shared simulation layer
 

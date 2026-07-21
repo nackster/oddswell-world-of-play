@@ -64,9 +64,11 @@ private:
 	FString ReplaySha256;
 	float ReplayInterval = 0.1f;
 	float Accumulator = 0.0f;
+	float PresentationElapsed = 0.0f;
 	float ExitDelay = 0.0f;
 	int32 NextFrame = 0;
 	bool bAutoExit = false;
 	bool bCaptureProof = false;
+	bool bIntervalOverridden = false;
 	bool bComplete = false;
 };

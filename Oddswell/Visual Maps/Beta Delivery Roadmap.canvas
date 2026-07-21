@@ -2,7 +2,7 @@
 	"nodes":[
 		{"id":"bdr-title","type":"text","text":"# ODDSWELL BETA DELIVERY ROADMAP\nFollow the numbers. Each phase proves one player-facing dependency before the next begins.","x":0,"y":-260,"width":2040,"height":130,"color":"6"},
 		{"id":"bdr-file","type":"file","file":"Development/Beta Delivery Roadmap.md","x":0,"y":-100,"width":1320,"height":100,"color":"6"},
-		{"id":"bdr-now","type":"text","text":"## ❓ PHASE 1F.4 — OWNER GATE\nChoose fidelity • camera • commentary • duration • skip rule before presentation work","x":1360,"y":-100,"width":680,"height":100,"color":"3"},
+		{"id":"bdr-now","type":"text","text":"## PHASE 1F.5 - NEXT GATE\nProve watch / skip / late arrival / reconnect all preserve the same result and seal","x":1360,"y":-100,"width":680,"height":100,"color":"3"},
 		{"id":"bdr-foundation-group","type":"group","x":0,"y":80,"width":2040,"height":340,"color":"5","label":"FOUNDATION — PROVE THE 3D WORLD"},
 		{"id":"bdr-core-group","type":"group","x":0,"y":500,"width":2040,"height":340,"color":"3","label":"CORE LOOP — HOME, SPORT, MONEY, WAGERS"},
 		{"id":"bdr-experience-group","type":"group","x":0,"y":920,"width":2040,"height":340,"color":"4","label":"PLAYER EXPERIENCE — PROGRESSION + UNDERSTANDING"},
@@ -12,7 +12,7 @@
 		{"id":"bdr-1c","type":"text","text":"## 1C 🏙️ CITY GRAYBOX\n✅ COMPLETE — EXIT PASSED\n800 m packaged loop • walk 5:07 • run 2:35 • 11/11 • collision stable","x":1040,"y":145,"width":450,"height":220,"color":"3"},
 		{"id":"bdr-1d","type":"text","text":"## 1D 👥 SHARED CITY\n✅ COMPLETE — LOCAL EXIT PASSED\n2/3/4 clients ✓ • movement ✓ • appearance ✓ • clothing ✓ • reconnect ✓\nCapacity ceiling remains open","x":1540,"y":145,"width":450,"height":220,"color":"3"},
 		{"id":"bdr-1e","type":"text","text":"## 1E 🏠 APARTMENTS\n✅ FOUNDATION COMPLETE\nEmpty Studio ✓ • ownership ✓ • cold return ✓ • six visible tiers ✓\nFurniture activation waits for Phase 1I","x":40,"y":565,"width":450,"height":220,"color":"3"},
-		{"id":"bdr-1f","type":"text","text":"## 1F 🏀 LEAGUE + WATCH\n▶ ACTIVE — 1F.1 ✅ • 1F.2 ✅ • 1F.3 ✅\n421 archived frames • sealed 101–104 • no resimulation ✅\nNEXT: owner freezes the readable presentation defaults","x":540,"y":565,"width":450,"height":220,"color":"2"},
+		{"id":"bdr-1f","type":"text","text":"## 1F BASKETBALL - LEAGUE + WATCH\nACTIVE - 1F.1 through 1F.4 COMPLETE\n3-minute fixed broadcast | 421 frames | sealed 101-104\nNEXT: result invariance across every viewing path","x":540,"y":565,"width":450,"height":220,"color":"2"},
 		{"id":"bdr-1g","type":"text","text":"## 1G 💵 ODDS BUCKS + JOB\nAuthoritative ledger • one job/recovery path • persistence • Admin reconciliation","x":1040,"y":565,"width":450,"height":220,"color":"3"},
 		{"id":"bdr-1h","type":"text","text":"## 1H 🎟️ WAGERS\nWinner → margin → overtime → player points\nLock, settle, replay, and audit one market at a time","x":1540,"y":565,"width":450,"height":220,"color":"3"},
 		{"id":"bdr-1i","type":"text","text":"## 1I 🛍️ STORES + UPGRADES\nSundale-origin catalogs • buy/equip/show clothing • buy/place furniture • one upgrade path","x":40,"y":985,"width":450,"height":220,"color":"4"},

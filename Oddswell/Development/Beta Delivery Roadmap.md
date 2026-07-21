@@ -63,7 +63,8 @@ The roadmap is intentionally made of measurable product gates, not hundreds of s
 - Phase 1F.1 player league view: **COMPLETE**; see [[Development/Reports/Phase 1F1 Player League View]].
 - Phase 1F.2 stadium and public viewing-location graybox: **COMPLETE**; see [[Development/Reports/Phase 1F2 Stadium and Public Viewing Graybox]].
 - Phase 1F.3 direct archived replay consumption in the stadium: **COMPLETE**; see [[Development/Reports/Phase 1F3 Direct Archived Replay Consumption in Stadium]].
-- Next gate: **PHASE 1F.4 PRESENTATION DEFAULTS — OWNER GATE**. Fidelity, camera, commentary, duration, and skip/condensed behavior must not be invented. Sundale remains a working name.
+- Phase 1F.4 readable three-minute fixed-camera presentation: **COMPLETE**; see [[Development/Reports/Phase 1F4 Readable Three Minute Stadium Presentation]] and [[Design/Decisions/DEC-013 Phase 1F4 Presentation Defaults]].
+- Next gate: **PHASE 1F.5 RESULT INVARIANCE**. Prove that watch, skip, late arrival, and reconnect cannot alter the archived result. Sundale remains a working name.
 - Current prerequisite note: UE 5.8, the aligned x64 runtime and .NET Framework 4.8 SDK, portable project, reproducible local Windows package, empty-map launch, LFS, generated-file ignores, primitive block/court iteration, collision, cold-process reopen, direct recorded-replay rendering, deterministic packaged traces, and local resource sampling are verified. UE 5.8 is now the approved beta client engine.
 
 No later roadmap phase is authorized merely because it appears below.
@@ -230,12 +231,12 @@ The player can return to the same owned, empty Studio; all six tiers exist as tr
 1. **COMPLETE:** show the existing public teams, athletes, schedule, standings, availability, and history in the player client. See [[Development/Reports/Phase 1F1 Player League View]].
 2. **COMPLETE:** graybox the stadium and public viewing location, with the future presentation area reserved and wagering kept inactive. See [[Development/Reports/Phase 1F2 Stadium and Public Viewing Graybox]].
 3. **COMPLETE:** consume one verified archived replay directly inside the stadium without resimulation. See [[Development/Reports/Phase 1F3 Direct Archived Replay Consumption in Stadium]].
-4. **OWNER GATE:** freeze presentation defaults, then produce a readable two-to-five-minute presentation with score, clock, actors, key events, overtime, and final seal.
-5. Prove that watch, skip, late arrival, and reconnect never change the recorded result.
+4. **COMPLETE:** owner-approved symbolic 3D placeholders, one fixed broadcast camera, text callouts without voice commentary, and a rendered three-minute presentation show score, clock, actors, key events, regulation/overtime status, and final seal. See [[Design/Decisions/DEC-013 Phase 1F4 Presentation Defaults]] and [[Development/Reports/Phase 1F4 Readable Three Minute Stadium Presentation]].
+5. **NEXT:** prove that watch, skip, late arrival, and reconnect never change the recorded result.
 
 ### Owner gates
 
-- Match fidelity, cameras, commentary, skip/condensed rules, and duration.
+- **RESOLVED FOR PHASE 1F.4:** placeholder fidelity, one fixed camera, text-only callouts, three-minute duration, and no skip before invariance; see [[Design/Decisions/DEC-013 Phase 1F4 Presentation Defaults]]. Final art, crowd, replay cuts, condensed mode, and special-game duration remain later decisions.
 - How an 82-game season remains varied with the initial two-team scope.
 
 ### Exit evidence
@@ -408,7 +409,7 @@ A Beta Exit Report states **READY**, **BLOCKED WITH MEASURED CAUSE**, or **NOT R
 4. **CURRENT OWNER GATE:** shared-city instance capacity, regions, collision, names, and minimal safety surface.
 5. Apartment instancing, layouts, visits, and decorating controls.
 6. 82-game schedule variety, team count, calendar, and presentation cadence.
-7. Match presentation fidelity, duration, skipping, and commentary.
+7. **PARTIALLY RESOLVED:** Phase 1F.4 placeholder fidelity, fixed camera, text-only callouts, three-minute duration, and pre-invariance skip rule; see [[Design/Decisions/DEC-013 Phase 1F4 Presentation Defaults]]. Final content treatment remains later.
 8. Job, starting Odds Bucks, income, allowance, recovery, prices, and limits.
 9. Wager markets, odds, payouts, lock, limits, correction, and cancellation.
 10. Clothing/furniture catalog, pricing, equipment, placement, and refunds. City-origin identity is resolved under [[Design/Decisions/DEC-009 City-Origin Clothing and Furniture]].

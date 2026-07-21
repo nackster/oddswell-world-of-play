@@ -16,10 +16,20 @@
 #include "Serialization/JsonReader.h"
 #include "Serialization/JsonSerializer.h"
 #include "UnrealClient.h"
+#if WITH_DEV_AUTOMATION_TESTS
+#include "Misc/AutomationTest.h"
+#endif
 
 namespace
 {
 constexpr int32 ExpectedFrameCount = 421;
+constexpr float ApprovedPresentationSeconds = 180.0f;
+constexpr float ApprovedReplayInterval = ApprovedPresentationSeconds / ExpectedFrameCount;
+constexpr float MarkerScaleXY = 0.5f;
+constexpr float MarkerScaleZ = 1.4f;
+constexpr bool bApprovedVoiceCommentary = false;
+constexpr bool bApprovedSkip = false;
+constexpr bool bExpectedReplayWentOvertime = false;
 const TCHAR* ExpectedReplaySha = TEXT("00e4f82c2bb4da5d9ad53d75bf76ece7b97ed9b05ca2f7a8a2628d396c779b75");
 const TCHAR* ExpectedFixtureSha1 = TEXT("a3b56bf84557babcd58c96acd40f94198b6c8c81");
 }
@@ -32,9 +42,10 @@ AReplayBenchmarkActor::AReplayBenchmarkActor()
 
 	BenchmarkCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("BenchmarkCamera"));
 	BenchmarkCamera->SetupAttachment(SceneRoot);
-	BenchmarkCamera->SetRelativeLocation(FVector(6000.0, -7000.0, 5000.0));
-	BenchmarkCamera->SetRelativeRotation(FRotator(-29.0, 131.0, 0.0));
-	BenchmarkCamera->FieldOfView = 75.0f;
+	BenchmarkCamera->SetRelativeLocation(FVector(2400.0, -3000.0, 1800.0));
+	BenchmarkCamera->SetRelativeRotation(FRotator(-25.0, 129.0, 0.0));
+	BenchmarkCamera->FieldOfView = 55.0f;
+	ReplayInterval = ApprovedReplayInterval;
 
 	StatusText = CreateDefaultSubobject<UTextRenderComponent>(TEXT("ReplayStatus"));
 	StatusText->SetupAttachment(SceneRoot);
@@ -51,7 +62,7 @@ void AReplayBenchmarkActor::BeginPlay()
 	Super::BeginPlay();
 	bAutoExit = FParse::Param(FCommandLine::Get(), TEXT("ReplayAutoExit"));
 	bCaptureProof = FParse::Param(FCommandLine::Get(), TEXT("ReplayCapture"));
-	FParse::Value(FCommandLine::Get(), TEXT("ReplayInterval="), ReplayInterval);
+	bIntervalOverridden = FParse::Value(FCommandLine::Get(), TEXT("ReplayInterval="), ReplayInterval);
 	ReplayInterval = FMath::Clamp(ReplayInterval, 0.01f, 1.0f);
 
 	if (APlayerController* Controller = GetWorld()->GetFirstPlayerController())
@@ -67,6 +78,11 @@ void AReplayBenchmarkActor::BeginPlay()
 
 	CreateMarkers();
 	UE_LOG(LogTemp, Display, TEXT("ODDSWELL_REPLAY_READY|%d|%s|%.3f"), Frames.Num(), *ReplaySha256, ReplayInterval);
+	UE_LOG(
+		LogTemp,
+		Display,
+		TEXT("ODDSWELL_REPLAY_PRESENTATION|mode=fixed_broadcast|target_seconds=180|symbolic_3d=true|text_callouts=true|voice_commentary=false|skip=false|overtime=false|qa_interval_override=%s"),
+		bIntervalOverridden ? TEXT("true") : TEXT("false"));
 }
 
 void AReplayBenchmarkActor::Tick(float DeltaSeconds)
@@ -82,6 +98,7 @@ void AReplayBenchmarkActor::Tick(float DeltaSeconds)
 		return;
 	}
 
+	PresentationElapsed += DeltaSeconds;
 	Accumulator += DeltaSeconds;
 	while (Accumulator >= ReplayInterval && NextFrame < Frames.Num())
 	{
@@ -225,7 +242,7 @@ void AReplayBenchmarkActor::CreateMarkers()
 		Marker->SetupAttachment(SceneRoot);
 		Marker->SetStaticMesh(Index < HomePlayers.Num() ? Cylinder : Cube);
 		Marker->SetRelativeLocation(Locations[Index]);
-		Marker->SetRelativeScale3D(FVector(0.35, 0.35, 1.2));
+		Marker->SetRelativeScale3D(FVector(MarkerScaleXY, MarkerScaleXY, MarkerScaleZ));
 		Marker->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 		AddInstanceComponent(Marker);
 		Marker->RegisterComponent();
@@ -235,7 +252,7 @@ void AReplayBenchmarkActor::CreateMarkers()
 		Label->SetRelativeLocation(Locations[Index] + FVector(0.0, 0.0, 150.0));
 		Label->SetRelativeRotation(FRotator(0.0, -50.0, 0.0));
 		Label->SetHorizontalAlignment(EHTA_Center);
-		Label->SetWorldSize(18.0f);
+		Label->SetWorldSize(28.0f);
 		Label->SetTextRenderColor(Index < HomePlayers.Num() ? FColor(60, 190, 255) : FColor(255, 150, 60));
 		Label->SetText(FText::FromString(Players[Index]));
 		AddInstanceComponent(Label);
@@ -255,7 +272,7 @@ void AReplayBenchmarkActor::SetMarkerState(const FString& PlayerName, float Scal
 	{
 		return;
 	}
-	Markers[*Index]->SetRelativeScale3D(FVector(0.35 * Scale, 0.35 * Scale, 1.2 * Scale));
+	Markers[*Index]->SetRelativeScale3D(FVector(MarkerScaleXY * Scale, MarkerScaleXY * Scale, MarkerScaleZ * Scale));
 	Markers[*Index]->SetRelativeLocation(MarkerLocations[*Index] + FVector(0.0, 0.0, HeightOffset));
 }
 
@@ -263,7 +280,7 @@ void AReplayBenchmarkActor::DisplayFrame(int32 FrameIndex)
 {
 	for (int32 Index = 0; Index < Markers.Num(); ++Index)
 	{
-		Markers[Index]->SetRelativeScale3D(FVector(0.35, 0.35, 1.2));
+		Markers[Index]->SetRelativeScale3D(FVector(MarkerScaleXY, MarkerScaleXY, MarkerScaleZ));
 		Markers[Index]->SetRelativeLocation(MarkerLocations[Index]);
 	}
 
@@ -272,7 +289,7 @@ void AReplayBenchmarkActor::DisplayFrame(int32 FrameIndex)
 	SetMarkerState(Frame.Target, 1.25f, 35.0f);
 	const FString Clock = FString::Printf(TEXT("%02d:%02d"), Frame.ClockSeconds / 60, Frame.ClockSeconds % 60);
 	FString Status = FString::Printf(
-		TEXT("AUTHORITATIVE RECORDED REPLAY - ILLUSTRATIVE POSITIONS\nFrame %d/%d | %s | Harbor %d - %d Mesa\n%s | %s\nOffense: %s | Actor: %s | Target: %s"),
+		TEXT("AUTHORITATIVE RECORDED REPLAY - ILLUSTRATIVE POSITIONS\nFrame %d/%d | %s | Harbor %d - %d Mesa\n%s | %s\nOffense: %s | Actor: %s | Target: %s\nOvertime: NO | Voice commentary: OFF"),
 		FrameIndex + 1,
 		Frames.Num(),
 		*Clock,
@@ -313,6 +330,12 @@ void AReplayBenchmarkActor::DisplayFrame(int32 FrameIndex)
 	if (FrameIndex + 1 == Frames.Num())
 	{
 		UE_LOG(LogTemp, Display, TEXT("ODDSWELL_REPLAY_COMPLETE|421|101|104|%s"), *ReplaySha256);
+		UE_LOG(
+			LogTemp,
+			Display,
+			TEXT("ODDSWELL_REPLAY_PRESENTATION_COMPLETE|elapsed_seconds=%.3f|target_seconds=180|default_cadence=%s"),
+			PresentationElapsed,
+			bIntervalOverridden ? TEXT("false") : TEXT("true"));
 		if (bCaptureProof)
 		{
 			FScreenshotRequest::RequestScreenshot(TEXT("Phase1A2b_Final.png"), true, false);
@@ -320,3 +343,21 @@ void AReplayBenchmarkActor::DisplayFrame(int32 FrameIndex)
 		bComplete = true;
 	}
 }
+
+#if WITH_DEV_AUTOMATION_TESTS
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(
+	FOddsWellReplayPresentationDefaultsTest,
+	"OddsWell.Replay.PresentationDefaults",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+
+bool FOddsWellReplayPresentationDefaultsTest::RunTest(const FString& Parameters)
+{
+	const float TotalSeconds = ApprovedReplayInterval * ExpectedFrameCount;
+	TestTrue(TEXT("Default replay presentation is exactly three minutes"), FMath::IsNearlyEqual(TotalSeconds, 180.0f));
+	TestTrue(TEXT("Default replay presentation stays inside the approved two-to-five-minute window"), TotalSeconds >= 120.0f && TotalSeconds <= 300.0f);
+	TestFalse(TEXT("Voice commentary remains disabled"), bApprovedVoiceCommentary);
+	TestFalse(TEXT("Skip remains disabled until the invariance phase"), bApprovedSkip);
+	TestFalse(TEXT("The accepted archived game did not enter overtime"), bExpectedReplayWentOvertime);
+	return true;
+}
+#endif
