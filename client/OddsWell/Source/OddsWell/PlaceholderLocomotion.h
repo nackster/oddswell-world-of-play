@@ -83,6 +83,8 @@ private:
 	void RunSundaleRouteQa(float DeltaSeconds);
 	void FinishSundaleRouteQa(bool bPassed);
 	void RunSharedCityQa(float DeltaSeconds);
+	void PollStudioInteraction();
+	void RunStudioQa(float DeltaSeconds);
 	bool ApplySavedOrFallbackAppearance();
 	bool ResolveLocalAppearance(FOddsWellResolvedCharacterAppearance& OutAppearance, FString& OutSource, FString& OutError) const;
 	bool ApplyResolvedAppearance(const FOddsWellResolvedCharacterAppearance& Appearance, const FString& Source);
@@ -176,6 +178,11 @@ private:
 	bool bSharedCityQaVisibleLogged = false;
 	bool bSharedCityQaAppearanceLogged = false;
 	bool bSharedCityAppearanceSubmitted = false;
+	FVector StudioQaStartLocation = FVector::ZeroVector;
+	float StudioQaElapsed = 0.0f;
+	bool bStudioInteractionArmed = false;
+	bool bStudioQa = false;
+	bool bStudioQaInteriorStarted = false;
 };
 
 UCLASS()
@@ -204,4 +211,15 @@ private:
 	bool bSharedCityReconnectLeaveObserved = false;
 	bool bSharedCityReconnectPassed = false;
 	bool bSharedCityCapacityQa = false;
+};
+
+UCLASS()
+class ODDSWELL_API AOddsWellStudioGameMode final : public AGameModeBase
+{
+	GENERATED_BODY()
+
+public:
+	AOddsWellStudioGameMode();
+	virtual void BeginPlay() override;
+	virtual APawn* SpawnDefaultPawnAtTransform_Implementation(AController* NewPlayer, const FTransform&) override;
 };

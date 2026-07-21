@@ -125,8 +125,9 @@ The presets must not attach ability, wealth, intelligence, behavior, or athlete 
 
 - **LOCKED:** the beta city is multiplayer rather than a private city with only shared league results.
 - **LOCKED:** clothing is a visible form of earned status and self-expression around other players.
+- **LOCKED FOR BETA:** apartment interiors are private to their owning player and other-player apartment visits are not part of the beta. See [[Design/Decisions/DEC-012 Phase 1E Apartment Defaults]].
 - **BETA TARGET:** player movement, appearance, and equipped clothing replicate reliably within a bounded city instance.
-- **OPEN:** instance capacity, regions, player collision, names, emotes, friends, parties, apartment visits, text chat, voice chat, blocking, reporting, and moderation.
+- **OPEN:** instance capacity, regions, player collision, names, emotes, friends, parties, text chat, voice chat, blocking, reporting, and moderation.
 - **LATER:** player-to-player exchange or trading of clothing and furniture. The future direction is preserved in [[Design/Version 1 Game Bible|Version 1 Game Bible]], but it is not beta authorization.
 
 ## Avatar and clothing
@@ -152,11 +153,12 @@ The presets must not attach ability, wealth, intelligence, behavior, or athlete 
 ### Furniture
 
 - **LOCKED:** the starting Studio is completely empty of furniture and decoration; every placeable furnishing must be purchased later. Structural surfaces, the entry/exit, necessary lighting, and collision are not furniture. See [[Design/Decisions/DEC-011 Empty Starter Studio]].
+- **LOCKED FOR BETA:** the first furniture-placement interaction uses predefined snap points after a valid purchase and ownership record exists. See [[Design/Decisions/DEC-012 Phase 1E Apartment Defaults]].
 - **LOCKED:** a very basic furniture store sells items for Odds Bucks.
 - **LOCKED:** purchasable furniture has durable city origin and is sold through its origin city's catalog; beta furniture merchandise is Sundale-specific under [[Design/Decisions/DEC-009 City-Origin Clothing and Furniture]].
 - **LOCKED:** furniture is associated with the player's apartment progression.
 - **BETA TARGET:** the player can acquire and see at least a small approved set of furniture in the owned apartment.
-- **OPEN:** exact catalog, placement controls, rotation, storage, collision rules, room restrictions, refunds, and whether apartment layouts are separate interiors or upgrades of one interior.
+- **OPEN:** exact catalog, snap-point count and locations, rotation, storage, collision rules, room restrictions, refunds, and whether apartment layouts are separate interiors or upgrades of one interior.
 
 ## Basketball and wagering
 

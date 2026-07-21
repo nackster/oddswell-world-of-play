@@ -22,6 +22,7 @@ tags:
 - [[Design/Decisions/DEC-009 City-Origin Clothing and Furniture|City-origin clothing and furniture]]
 - [[Design/Decisions/DEC-010 Phase 1D Shared City Defaults|Phase 1D shared-city defaults]]
 - [[Design/Decisions/DEC-011 Empty Starter Studio|Empty starter Studio]]
+- [[Design/Decisions/DEC-012 Phase 1E Apartment Defaults|Phase 1E apartment defaults]]
 - [[Art/Visual Consistency|Visual consistency]]
 - [[Development/Current Plan|Current plan]]
 - [[Development/Beta Delivery Roadmap|Beta delivery roadmap]]
@@ -95,6 +96,7 @@ tags:
 - [[Development/Reports/Phase 1D2 Replicated Appearance and Starter Clothing|Phase 1D.2 replicated appearance and starter clothing]]
 - [[Development/Reports/Phase 1D3 Cold Reconnect Visible State Restore|Phase 1D.3 cold reconnect visible-state restore]]
 - [[Development/Reports/Phase 1D4 Local Concurrency Ladder|Phase 1D.4 local concurrency ladder]]
+- [[Development/Reports/Phase 1E1 Private Empty Studio Enter and Exit|Phase 1E.1 private empty Studio enter and exit]]
 - [[Visual Maps/Project Tool Map|Master project tool map]]
 - [[Visual Maps/Beta Game Scope|Complete beta game scope map]]
 - [[Visual Maps/Beta Delivery Roadmap|Beta delivery roadmap map]]
@@ -107,7 +109,7 @@ tags:
 
 ## Current focus
 
-Phase 1A, Phase 1B, the Phase 1C city-graybox exit, and the Phase 1D local shared-city exit are complete. The owner selected **Concept B — Daymark / Sundale**; its `800 m` packaged route is measured and traversable. Shared-city evidence now covers synchronized visible clothing, cold reconnect, and one packaged `2/3/4`-client local ladder. The next gate is the Phase 1E owner decision for apartment instancing/visits and the minimal Studio layout/decorating approach. Final art, external hosting, accounts, a capacity ceiling, Odds Bucks, wagering, deployment, and retraining remain inactive.
+Phase 1A, Phase 1B, the Phase 1C city-graybox exit, and the Phase 1D local shared-city exit are complete. The owner selected **Concept B — Daymark / Sundale**; its `800 m` packaged route is measured and traversable. Phase 1E.1 now proves a private, completely empty Studio can be entered, walked, exited, and returned from in the packaged build. Phase 1E.2 must persist Studio ownership and return location without granting furniture. Final art, external hosting, accounts, a capacity ceiling, Odds Bucks, wagering, deployment, and retraining remain inactive.
 
 ## Current state
 

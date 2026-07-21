@@ -13,7 +13,7 @@
 		{"id":"bgs-hour-3","type":"text","text":"## 🔎 DISCOVER\nFind the job • stadium/sportsbook • clothing store • furniture store","x":40,"y":435,"width":540,"height":115,"color":"5"},
 		{"id":"bgs-hour-4","type":"text","text":"## 🎯 COMPLETE THE LOOP\nEarn → wager → watch → settle → save or buy an upgrade","x":40,"y":575,"width":540,"height":55,"color":"5"},
 		{"id":"bgs-city-1","type":"text","text":"## 🏙️ ONE SHARED CITY\nSundale graybox: warm modern civic commons • 800 m packaged loop passed • working name • final art later","x":750,"y":145,"width":540,"height":145,"color":"4"},
-		{"id":"bgs-city-2","type":"text","text":"## 🏠 SIX APARTMENT TIERS\nStudio → 1BR → 2BR → 3BR → 4BR → Penthouse\nHouses and mansions come later.","x":750,"y":320,"width":540,"height":135,"color":"4"},
+		{"id":"bgs-city-2","type":"text","text":"## 🏠 SIX APARTMENT TIERS\nStudio → 1BR → 2BR → 3BR → 4BR → Penthouse\nStart with an empty private Studio • buy every furnishing\nHouses and mansions come later.","x":750,"y":320,"width":540,"height":145,"color":"4"},
 		{"id":"bgs-city-3","type":"text","text":"## 🛍️ CITY-SPECIFIC STORES\nSmall Sundale clothing + furniture catalogs. Items keep their origin city and visibly improve the avatar or apartment.","x":750,"y":485,"width":540,"height":125,"color":"4"},
 		{"id":"bgs-sport-1","type":"text","text":"## 🏀 FIRST SPORT\nTwo fictional teams • persistent athletes • 82-game season target • shared authoritative games • short visual presentation","x":1460,"y":145,"width":540,"height":135,"color":"2"},
 		{"id":"bgs-sport-2","type":"text","text":"## 🎟️ BETA MARKET TARGETS\n1. Winner  2. Margin  3. Overtime  4. Player points\nIntroduce and validate one market at a time.","x":1460,"y":310,"width":540,"height":145,"color":"2"},

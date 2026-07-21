@@ -10,6 +10,7 @@
 #include "Components/StaticMeshComponent.h"
 #include "Components/TextRenderComponent.h"
 #include "Engine/StaticMesh.h"
+#include "Engine/StaticMeshActor.h"
 #include "Engine/World.h"
 #include "EngineUtils.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -17,6 +18,10 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "HAL/PlatformMisc.h"
 #include "InputCoreTypes.h"
+#include "Kismet/GameplayStatics.h"
+#include "Engine/Engine.h"
+#include "Engine/PointLight.h"
+#include "Components/PointLightComponent.h"
 #include "Materials/MaterialInstanceDynamic.h"
 #include "Materials/MaterialInterface.h"
 #include "Misc/CommandLine.h"
@@ -56,6 +61,30 @@ const FName TopComponentName(TEXT("StarterOutfitTop"));
 const FName BottomComponentName(TEXT("StarterOutfitBottom"));
 constexpr float SundaleRouteDistance = 80000.0f;
 constexpr float SundaleWaypointTolerance = 75.0f;
+constexpr float StudioEntryRadius = 350.0f;
+constexpr float StudioQaWalkDistance = 200.0f;
+const FName StudioStructureTag(TEXT("OddsWellStudioStructure"));
+const FName StudioFurnitureTag(TEXT("OddsWellStudioFurniture"));
+int32 StudioQaProcessStage = 0;
+
+struct FStudioSurfaceSpec
+{
+	FVector Location;
+	FVector Scale;
+};
+
+const TArray<FStudioSurfaceSpec>& GetEmptyStudioSurfaces()
+{
+	static const TArray<FStudioSurfaceSpec> Surfaces = {
+		{FVector(0.0, 0.0, -10.0), FVector(8.0, 6.0, 0.2)},
+		{FVector(0.0, 0.0, 300.0), FVector(8.0, 6.0, 0.2)},
+		{FVector(-400.0, 0.0, 145.0), FVector(0.2, 6.0, 2.9)},
+		{FVector(400.0, 0.0, 145.0), FVector(0.2, 6.0, 2.9)},
+		{FVector(0.0, -300.0, 145.0), FVector(8.0, 0.2, 2.9)},
+		{FVector(0.0, 300.0, 145.0), FVector(8.0, 0.2, 2.9)},
+	};
+	return Surfaces;
+}
 
 bool MatchesSharedCityReconnectAppearance(
 	const FOddsWellSharedCityAppearance& Expected,
@@ -111,6 +140,7 @@ const FKey KeyMouseYaw = EKeys::MouseX;
 const FKey KeyMousePitch = EKeys::MouseY;
 const FKey KeyRun = EKeys::LeftShift;
 const FKey KeyJump = EKeys::SpaceBar;
+const FKey KeyInteract = EKeys::E;
 const FKey KeyControllerMoveX = EKeys::Gamepad_LeftX;
 const FKey KeyControllerMoveY = EKeys::Gamepad_LeftY;
 const FKey KeyControllerLookX = EKeys::Gamepad_RightX;
@@ -273,6 +303,7 @@ void AOddsWellPlaceholderCharacter::BeginPlay()
 	bSundaleRouteRun = FParse::Param(FCommandLine::Get(), TEXT("SundaleRouteRun"));
 	bSharedCityQa = FParse::Param(FCommandLine::Get(), TEXT("SharedCityQa"));
 	bSharedCityCapacityQa = FParse::Param(FCommandLine::Get(), TEXT("SharedCityCapacityQa"));
+	bStudioQa = FParse::Param(FCommandLine::Get(), TEXT("StudioQa"));
 	SharedCityQaTargetClients = GetSharedCityQaTargetClients();
 	UMaterialInterface* BasicShapeMaterial = LoadObject<UMaterialInterface>(nullptr, TEXT("/Engine/BasicShapes/BasicShapeMaterial.BasicShapeMaterial"));
 	if (!BasicShapeMaterial)
@@ -432,6 +463,7 @@ void AOddsWellPlaceholderCharacter::Tick(const float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 	PollKeyboardMovement();
+	PollStudioInteraction();
 	if (bQaEnabled)
 	{
 		RunQa(DeltaSeconds);
@@ -448,9 +480,122 @@ void AOddsWellPlaceholderCharacter::Tick(const float DeltaSeconds)
 	{
 		RunSharedCityQa(DeltaSeconds);
 	}
+	if (bStudioQa)
+	{
+		RunStudioQa(DeltaSeconds);
+	}
 	if (QaExitAt > 0.0 && FPlatformTime::Seconds() >= QaExitAt)
 	{
 		QaExitAt = 0.0;
+		FPlatformMisc::RequestExit(false);
+	}
+}
+
+void AOddsWellPlaceholderCharacter::PollStudioInteraction()
+{
+	if (!IsLocallyControlled() || GetNetMode() != NM_Standalone || bStudioQa)
+	{
+		return;
+	}
+	const APlayerController* PlayerController = Cast<APlayerController>(Controller);
+	if (!PlayerController)
+	{
+		return;
+	}
+	const bool bPressed = PlayerController->IsInputKeyDown(KeyInteract);
+	if (!bPressed)
+	{
+		bStudioInteractionArmed = true;
+	}
+	const bool bInStudio = GetWorld()->GetAuthGameMode<AOddsWellStudioGameMode>() != nullptr;
+	const bool bAtStudioDoor = GetWorld()->GetMapName().Contains(TEXT("SundaleGraybox"))
+		&& FVector::Dist2D(GetActorLocation(), SafeSpawnLocation) <= StudioEntryRadius;
+	if (GEngine && (bInStudio || bAtStudioDoor))
+	{
+		GEngine->AddOnScreenDebugMessage(
+			912011,
+			0.0f,
+			FColor::White,
+			bInStudio ? TEXT("Press E to leave your empty Studio") : TEXT("Press E to enter your empty Studio"));
+	}
+	if (!bPressed || !bStudioInteractionArmed || (!bInStudio && !bAtStudioDoor))
+	{
+		return;
+	}
+	bStudioInteractionArmed = false;
+	UE_LOG(LogOddsWellLocomotion, Display, TEXT("ODDSWELL_STUDIO_TRANSITION|direction=%s|private=true|visits=false"), bInStudio ? TEXT("to_city") : TEXT("to_studio"));
+	UGameplayStatics::OpenLevel(
+		this,
+		FName(bInStudio ? TEXT("/Game/Maps/SundaleGraybox") : TEXT("/Game/Maps/Bootstrap")),
+		true,
+		bInStudio
+			? TEXT("game=/Script/OddsWell.OddsWellLocomotionGameMode")
+			: TEXT("game=/Script/OddsWell.OddsWellStudioGameMode"));
+}
+
+void AOddsWellPlaceholderCharacter::RunStudioQa(const float DeltaSeconds)
+{
+	if (!IsLocallyControlled() || GetNetMode() != NM_Standalone)
+	{
+		return;
+	}
+	StudioQaElapsed += DeltaSeconds;
+	const bool bInSundale = GetWorld()->GetMapName().Contains(TEXT("SundaleGraybox"));
+	const bool bInStudio = GetWorld()->GetAuthGameMode<AOddsWellStudioGameMode>() != nullptr;
+	if (StudioQaProcessStage == 0 && bInSundale && GetCharacterMovement()->IsMovingOnGround())
+	{
+		StudioQaProcessStage = 1;
+		UE_LOG(LogOddsWellLocomotion, Display, TEXT("ODDSWELL_STUDIO_QA_ENTER|from=SundaleGraybox|private=true|visits=false"));
+		UGameplayStatics::OpenLevel(this, FName(TEXT("/Game/Maps/Bootstrap")), true, TEXT("game=/Script/OddsWell.OddsWellStudioGameMode"));
+		return;
+	}
+	if (StudioQaProcessStage == 1 && bInStudio)
+	{
+		if (!bStudioQaInteriorStarted && GetCharacterMovement()->IsMovingOnGround())
+		{
+			int32 StructuralSurfaces = 0;
+			int32 FurnitureActors = 0;
+			for (TActorIterator<AActor> It(GetWorld()); It; ++It)
+			{
+				StructuralSurfaces += It->ActorHasTag(StudioStructureTag) ? 1 : 0;
+				FurnitureActors += It->ActorHasTag(StudioFurnitureTag) ? 1 : 0;
+			}
+			if (StructuralSurfaces != GetEmptyStudioSurfaces().Num() || FurnitureActors != 0)
+			{
+				UE_LOG(LogOddsWellLocomotion, Error, TEXT("ODDSWELL_STUDIO_QA|result=FAIL|reason=interior_contents|structure=%d|furniture=%d"), StructuralSurfaces, FurnitureActors);
+				FPlatformMisc::RequestExit(false);
+				return;
+			}
+			bStudioQaInteriorStarted = true;
+			StudioQaStartLocation = GetActorLocation();
+			UE_LOG(LogOddsWellLocomotion, Display, TEXT("ODDSWELL_STUDIO_QA_INSIDE|structure=%d|furniture=0|decorations=0|snap_points=0|empty_start=true"), StructuralSurfaces);
+		}
+		if (bStudioQaInteriorStarted)
+		{
+			AddMovementInput(FVector::ForwardVector, 1.0f);
+			if (FVector::Dist2D(StudioQaStartLocation, GetActorLocation()) >= StudioQaWalkDistance)
+			{
+				StudioQaProcessStage = 2;
+				UE_LOG(LogOddsWellLocomotion, Display, TEXT("ODDSWELL_STUDIO_QA_EXIT|walked=%.1f|to=SundaleGraybox"), FVector::Dist2D(StudioQaStartLocation, GetActorLocation()));
+				UGameplayStatics::OpenLevel(this, FName(TEXT("/Game/Maps/SundaleGraybox")), true, TEXT("game=/Script/OddsWell.OddsWellLocomotionGameMode"));
+			}
+		}
+		return;
+	}
+	if (StudioQaProcessStage == 2 && bInSundale && GetCharacterMovement()->IsMovingOnGround())
+	{
+		StudioQaProcessStage = 3;
+		bStudioQa = false;
+		UE_LOG(LogOddsWellLocomotion, Display, TEXT("ODDSWELL_STUDIO_QA|result=PASS|entered=true|empty=true|walkable=true|exited=true|returned=SundaleGraybox|private=true|visits=false"));
+		if (FParse::Param(FCommandLine::Get(), TEXT("StudioAutoExit")))
+		{
+			QaExitAt = FPlatformTime::Seconds() + 2.0;
+		}
+		return;
+	}
+	if (StudioQaElapsed > 15.0f)
+	{
+		UE_LOG(LogOddsWellLocomotion, Error, TEXT("ODDSWELL_STUDIO_QA|result=FAIL|reason=transition_timeout|stage=%d|map=%s"), StudioQaProcessStage, *GetWorld()->GetMapName());
 		FPlatformMisc::RequestExit(false);
 	}
 }
@@ -1352,6 +1497,49 @@ APawn* AOddsWellLocomotionGameMode::SpawnDefaultPawnAtTransform_Implementation(A
 	return Character;
 }
 
+AOddsWellStudioGameMode::AOddsWellStudioGameMode()
+{
+	DefaultPawnClass = AOddsWellPlaceholderCharacter::StaticClass();
+}
+
+void AOddsWellStudioGameMode::BeginPlay()
+{
+	Super::BeginPlay();
+	UStaticMesh* Cube = LoadObject<UStaticMesh>(nullptr, TEXT("/Engine/BasicShapes/Cube.Cube"));
+	if (!Cube)
+	{
+		UE_LOG(LogOddsWellLocomotion, Error, TEXT("ODDSWELL_STUDIO_READY|result=FAIL|reason=missing_cube"));
+		return;
+	}
+	FActorSpawnParameters Parameters;
+	Parameters.ObjectFlags |= RF_Transient;
+	for (const FStudioSurfaceSpec& Surface : GetEmptyStudioSurfaces())
+	{
+		AStaticMeshActor* Actor = GetWorld()->SpawnActor<AStaticMeshActor>(AStaticMeshActor::StaticClass(), FTransform(FRotator::ZeroRotator, Surface.Location, Surface.Scale), Parameters);
+		if (Actor)
+		{
+			Actor->GetStaticMeshComponent()->SetStaticMesh(Cube);
+			Actor->GetStaticMeshComponent()->SetCollisionProfileName(TEXT("BlockAll"));
+			Actor->Tags.Add(StudioStructureTag);
+		}
+	}
+	if (APointLight* Light = GetWorld()->SpawnActor<APointLight>(FVector(0.0, 0.0, 240.0), FRotator::ZeroRotator, Parameters))
+	{
+		Light->PointLightComponent->SetIntensity(5000.0f);
+		Light->PointLightComponent->SetAttenuationRadius(1000.0f);
+	}
+	UE_LOG(LogOddsWellLocomotion, Display, TEXT("ODDSWELL_STUDIO_READY|result=PASS|private=true|visits=false|structure=%d|furniture=0|decorations=0|snap_points=0"), GetEmptyStudioSurfaces().Num());
+}
+
+APawn* AOddsWellStudioGameMode::SpawnDefaultPawnAtTransform_Implementation(AController* NewPlayer, const FTransform&)
+{
+	FActorSpawnParameters Parameters;
+	Parameters.Owner = NewPlayer;
+	Parameters.ObjectFlags |= RF_Transient;
+	Parameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
+	return GetWorld()->SpawnActor<AOddsWellPlaceholderCharacter>(SafeSpawnLocation, FRotator::ZeroRotator, Parameters);
+}
+
 #if WITH_DEV_AUTOMATION_TESTS
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
 	FOddsWellLocomotionDefaultsTest,
@@ -1372,6 +1560,9 @@ bool FOddsWellLocomotionDefaultsTest::RunTest(const FString& Parameters)
 	TestTrue(TEXT("Shared-city QA requires measurable movement"), SharedCityQaMovementDistance > SharedCitySpawnSpacing);
 	TestEqual(TEXT("Local capacity ladder starts at two clients"), SharedCityCapacityMinClients, 2);
 	TestEqual(TEXT("Local capacity ladder stops at four clients"), SharedCityCapacityMaxClients, 4);
+	TestEqual(TEXT("Empty Studio contains only six structural surfaces"), GetEmptyStudioSurfaces().Num(), 6);
+	TestTrue(TEXT("Studio entry is local to the city start"), StudioEntryRadius > CapsuleRadius);
+	TestTrue(TEXT("Studio QA proves walkable floor space"), StudioQaWalkDistance > CapsuleRadius * 2.0f);
 	TestTrue(TEXT("Players pass through one another"), SharedCityPlayerCollision == ECR_Ignore);
 	FOddsWellSharedCityAppearance ReconnectBefore;
 	ReconnectBefore.PresetId = TEXT("feminine_tone_4");

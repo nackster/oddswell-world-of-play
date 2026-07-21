@@ -730,7 +730,17 @@ Build the one-city scope defined in [[Design/Decisions/DEC-002 First Playable Sc
 - **Validation:** editor/game builds and BuildCookRun passed; native character automation passed `5/5`; all `65/65` frozen regressions passed in `138.007s`; Brain Admin self-check, Python compilation, accepted-log audit, diff hygiene, and zero-process cleanup passed. Cost was `$0.00`. See [[Development/Reports/Phase 1D4 Local Concurrency Ladder]].
 - **Boundary:** no capacity ceiling, external hosting, account, matchmaking, communication, moderation, apartment, item ownership, economy, wagering, final art, deployment, model, training, or retraining system was added or claimed.
 - **Owner direction:** [[Design/Decisions/DEC-011 Empty Starter Studio]] locks a completely unfurnished, undecorated starting Studio. Only the structural shell, entry/exit, necessary lighting, and collision may be present before the player buys furnishings in later authorized phases.
-- **Next gate:** Phase 1E Studio and apartment progression still needs owner decisions for beta apartment instancing/visits and the minimal layout/decorating approach. The empty start is resolved.
+- **Owner direction:** [[Design/Decisions/DEC-012 Phase 1E Apartment Defaults]] locks private interiors, no other-player apartment visits in beta, and predefined snap points only after a legitimate furniture purchase and ownership record.
+- **Next gate:** completed as Phase 1E.1; the private empty Studio now has a packaged enter/walk/exit proof.
+
+### Phase 1E.1 Private Empty Studio Enter and Exit status
+
+- **Status:** Complete on `agent/phase-0d`; smallest reversible empty-interior proof only.
+- **Implementation:** an explicit native Studio game mode reuses the existing Bootstrap map and creates only six built-in structural surfaces plus necessary light. A standalone player near the Sundale Studio threshold can press `E` to enter; inside, `E` returns to Sundale after a release-to-arm guard.
+- **Packaged proof:** the avatar entered the private Studio, verified `structure=6`, `furniture=0`, `decorations=0`, and `snap_points=0`, walked `200.0 cm`, exited, returned to Sundale, and closed with exit code `0` in `5.50s`.
+- **Validation:** editor and game builds passed; native character automation passed `5/5`; two-map BuildCookRun passed in `64.89s`; all `65/65` frozen regressions passed in `133.495s`; Brain Admin self-check, Python compilation, accepted-log audit, diff hygiene, and zero-process cleanup passed. Cost was `$0.00`. See [[Development/Reports/Phase 1E1 Private Empty Studio Enter and Exit]].
+- **Boundary:** no ownership/return persistence, multiplayer-session handoff, larger interior, furniture, decoration, active snap point, inventory, catalog, Odds Bucks, purchase, price, visit, trading, final art, hosting, or deployment was added.
+- **Next gate:** Phase 1E.2 adds the smallest durable Studio ownership and return-location record without adding furniture or economy behavior.
 
 ## Future shared simulation layer
 

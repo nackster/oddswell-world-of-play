@@ -53,7 +53,9 @@ The roadmap is intentionally made of measurable product gates, not hundreds of s
 - Phase 1D.3 cold reconnect and visible-state restore: **COMPLETE**; see [[Development/Reports/Phase 1D3 Cold Reconnect Visible State Restore]].
 - Phase 1D.4 local concurrency ladder: **COMPLETE**; see [[Development/Reports/Phase 1D4 Local Concurrency Ladder]].
 - Phase 1D exit: **PASSED FOR THE LOCAL PROTOTYPE**. No beta instance ceiling or external-host readiness is claimed.
-- Next gate: **PHASE 1E APARTMENT OWNER DECISIONS**. Sundale remains a working name.
+- Phase 1E owner defaults: **RESOLVED FOR THE FIRST STUDIO**; see [[Design/Decisions/DEC-011 Empty Starter Studio]] and [[Design/Decisions/DEC-012 Phase 1E Apartment Defaults]].
+- Phase 1E.1 private empty Studio enter/exit: **COMPLETE**; see [[Development/Reports/Phase 1E1 Private Empty Studio Enter and Exit]].
+- Next gate: **PHASE 1E.2 STUDIO OWNERSHIP AND RETURN PERSISTENCE**. Sundale remains a working name.
 - Current prerequisite note: UE 5.8, the aligned x64 runtime and .NET Framework 4.8 SDK, portable project, reproducible local Windows package, empty-map launch, LFS, generated-file ignores, primitive block/court iteration, collision, cold-process reopen, direct recorded-replay rendering, deterministic packaged traces, and local resource sampling are verified. UE 5.8 is now the approved beta client engine.
 
 No later roadmap phase is authorized merely because it appears below.
@@ -66,7 +68,7 @@ No later roadmap phase is authorized merely because it appears below.
 | 2 | 1B — Character selection and movement | Choose a default avatar and enter the world | COMPLETE |
 | 3 | 1C — First-city identity and graybox | Walk between every required beta location | COMPLETE |
 | 4 | 1D — Shared-city presence | Players see one another and equipped clothing | COMPLETE |
-| 5 | 1E — Studio and apartment progression | Enter a persistent home and see the six-tier goal | OWNER GATE |
+| 5 | 1E — Studio and apartment progression | Enter a persistent home and see the six-tier goal | ACTIVE |
 | 6 | 1F — League, stadium, and match viewing | Research and watch authoritative basketball | PENDING |
 | 7 | 1G — Odds Bucks and work recovery | Earn, persist, audit, and recover virtual currency | PENDING |
 | 8 | 1H — Wager locking and settlement | Place approved wagers and receive exact outcomes | PENDING |
@@ -188,21 +190,22 @@ The owner selected Concept B — Daymark / Sundale on July 20, 2026. The theme, 
 
 ### Smallest delivery path
 
-1. Enter and leave one placeholder Studio interior.
+1. **1E.1 COMPLETE:** enter, walk inside, and leave one private, completely empty placeholder Studio; see [[Development/Reports/Phase 1E1 Private Empty Studio Enter and Exit]].
 2. Persist Studio ownership and player return location.
 3. Represent the six locked tiers in data: Studio, 1BR, 2BR, 3BR, 4BR, Penthouse.
-4. Prove one visible furniture ownership/placement path in the Studio.
-5. Show locked upgrade goals without building six final interiors at once.
+4. Show locked upgrade goals without building six final interiors at once.
+5. Activate predefined furniture snap points only after Phase 1I supplies a legitimate purchase and ownership record; never grant free demonstration furniture.
 
 ### Owner gates
 
 - **RESOLVED:** the starting Studio contains no free furniture or decoration; see [[Design/Decisions/DEC-011 Empty Starter Studio]].
-- Apartment instancing and visit rules.
-- Layout strategy, decorating controls, and whether tiers use separate interiors.
+- **RESOLVED FOR BETA:** interiors are private and other-player apartment visits are excluded; see [[Design/Decisions/DEC-012 Phase 1E Apartment Defaults]].
+- **RESOLVED FOR FIRST PLACEMENT:** use predefined snap points after purchase; their exact count and locations remain later content work.
+- **OPEN BEFORE BUILDING LARGER INTERIORS:** whether tiers use separate interiors or upgrades of one interior.
 
 ### Exit evidence
 
-The player can return to the same Studio and see one persisted item; all six tiers exist as truthful progression data, while unbuilt interiors are clearly unavailable.
+The player can return to the same owned, empty Studio; all six tiers exist as truthful progression data while unbuilt interiors are clearly unavailable. The first furniture appears only after a legitimate Phase 1I purchase, never as a free Phase 1E prop.
 
 ## Phase 1F — League, stadium, and match viewing
 
