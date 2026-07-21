@@ -790,6 +790,16 @@ Build the one-city scope defined in [[Design/Decisions/DEC-002 First Playable Sc
 - **Boundary:** no replay is shown in the stadium yet. No wager interaction, odds, settlement, simulator, resimulation, crowd, commentary, team branding, final art, backend, service, purchase, or deployment behavior was added.
 - **Next gate:** Phase 1F.3 directly consumes one already verified archived replay inside the stadium without resimulating basketball. Presentation duration, cameras, commentary, skip rules, and the 82-game/two-team variety decision remain later owner gates.
 
+### Phase 1F.3 Direct Archived Replay Consumption in Stadium status
+
+- **Status:** Complete on `agent/phase-0d`; smallest direct stadium-consumption slice only.
+- **Implementation:** the stadium game mode spawns one compact instance of the already validated `AReplayBenchmarkActor` on the primitive court. The renderer, fixture parser, hash locks, 421-frame event sequence, symbolic markers, and final-seal behavior are reused unchanged. No second replay system was created.
+- **Packaged proof:** a fresh Windows package entered the stadium from Sundale, consumed all `421` archived frames, finished Harbor City `101` to Mesa Vista `104`, reproduced canonical trace SHA-256 `12fb61d032a93e667451c364f77907e68e53b934c46f765b6f32eefe9316dbbe`, exited, and restored the city position with `0.0 cm` error. The packaged replay fixture remained byte-identical to the tracked `256,442`-byte source.
+- **Visual proof:** midpoint and final `1280x720` captures show the symbolic replay on the stadium court with public score/clock/event text; the final capture displays the exact authoritative replay seal. This is consumption evidence, not the final presentation.
+- **Validation:** final editor/game builds and BuildCookRun passed; native character automation passed `9/9`; all `65/65` frozen regressions passed in `153.004s`; Brain Admin self-check, replay and league exporters, Python compilation, hash checks, packaged log audit, diff hygiene, and zero-process cleanup passed. Cost was `$0.00`. See [[Development/Reports/Phase 1F3 Direct Archived Replay Consumption in Stadium]].
+- **Boundary:** no resimulation, new replay data, presentation-duration decision, camera system, commentary, skip/condensed mode, crowd, team branding, final art, wager interaction, odds, settlement, backend, service, purchase, or deployment behavior was added.
+- **Next gate — owner decision required:** freeze the smallest Phase 1F.4 presentation defaults before implementation. The current recommendation is symbolic 3D placeholders, one fixed broadcast camera, text event callouts without voice commentary, an approximately three-minute runtime, and no skip until Phase 1F step 5 proves result invariance.
+
 ## Future shared simulation layer
 
 Athlete Life Brain v4 is the default for newly generated train, rest, recover, and socialize decisions. It adds only one bounded, one-decision, same-season recent-scoring response above v3's routine behavior. V1-v4 history remains immutable. Expand into longer memory, traits, relationships, nightlife, media, discipline, career decisions, and other sports only after each smaller input passes its own engineering evaluation.

@@ -30,6 +30,7 @@
 #include "Misc/Parse.h"
 #include "Net/UnrealNetwork.h"
 #include "PublicLeagueView.h"
+#include "ReplayBenchmarkActor.h"
 #include "StudioHomeSave.h"
 #include "UnrealClient.h"
 
@@ -75,6 +76,8 @@ const FName StadiumZoneTag(TEXT("OddsWellStadiumZone"));
 const FVector StadiumEntranceThreshold(7000.0, 18000.0, 0.0);
 FVector StadiumCityReturnLocation = StadiumEntranceThreshold + FVector(0.0, -100.0, SafeSpawnLocation.Z);
 const FVector StadiumInteriorSpawn(-1600.0, 0.0, 220.0);
+const FVector StadiumReplayOrigin(350.0, 0.0, 0.0);
+constexpr float StadiumReplayScale = 0.15f;
 int32 StudioQaProcessStage = 0;
 int32 StadiumQaProcessStage = 0;
 
@@ -132,7 +135,7 @@ const TArray<FStadiumZoneSpec>& GetStadiumZones()
 		{TEXT("entry_concourse"), TEXT("ENTRY / CONCOURSE"), FVector(-1450.0, -400.0, 180.0)},
 		{TEXT("court_floor"), TEXT("COURT FLOOR"), FVector(350.0, -250.0, 180.0)},
 		{TEXT("public_viewing"), TEXT("PUBLIC VIEWING"), FVector(350.0, 650.0, 220.0)},
-		{TEXT("future_presentation"), TEXT("FUTURE MATCH PRESENTATION"), FVector(1150.0, 0.0, 220.0)},
+		{TEXT("future_presentation"), TEXT("ARCHIVED MATCH PRESENTATION"), FVector(1150.0, 0.0, 220.0)},
 		{TEXT("exit"), TEXT("EXIT TO SUNDALE"), FVector(-1550.0, 400.0, 180.0)},
 	};
 	return Zones;
@@ -967,7 +970,7 @@ void AOddsWellPlaceholderCharacter::RunStadiumQa(const float DeltaSeconds)
 				return;
 			}
 			bStadiumQaInteriorStarted = true;
-			UE_LOG(LogOddsWellLocomotion, Display, TEXT("ODDSWELL_STADIUM_READY|result=PASS|surfaces=%d|zones=%d|collision=blocking|unbranded=true|team_neutral=true|crowd=0|replay=false"), StructuralSurfaces, ZoneMarkers);
+			UE_LOG(LogOddsWellLocomotion, Display, TEXT("ODDSWELL_STADIUM_READY|result=PASS|surfaces=%d|zones=%d|collision=blocking|unbranded=true|team_neutral=true|crowd=0|replay=archived|resimulated=false"), StructuralSurfaces, ZoneMarkers);
 		}
 		if (!bStadiumQaInteriorStarted)
 		{
@@ -987,7 +990,7 @@ void AOddsWellPlaceholderCharacter::RunStadiumQa(const float DeltaSeconds)
 			if (StadiumQaWaypointIndex == 4)
 			{
 				bStadiumQaMarkerReached = true;
-				UE_LOG(LogOddsWellLocomotion, Display, TEXT("ODDSWELL_STADIUM_VIEWING_MARKER|result=PASS|label=FUTURE_MATCH_PRESENTATION|replay=false"));
+				UE_LOG(LogOddsWellLocomotion, Display, TEXT("ODDSWELL_STADIUM_VIEWING_MARKER|result=PASS|label=ARCHIVED_MATCH_PRESENTATION|replay=archived|resimulated=false"));
 				if (FParse::Param(FCommandLine::Get(), TEXT("StadiumQaCapture")))
 				{
 					FScreenshotRequest::RequestScreenshot(TEXT("Phase1F2_StadiumGraybox.png"), true, false);
@@ -1022,7 +1025,7 @@ void AOddsWellPlaceholderCharacter::RunStadiumQa(const float DeltaSeconds)
 			FPlatformMisc::RequestExit(false);
 			return;
 		}
-		UE_LOG(LogOddsWellLocomotion, Display, TEXT("ODDSWELL_STADIUM_QA|result=PASS|entered=true|walked_to_marker=true|exited=true|return_distance=%.1f|zones=5|sportsbook=separate|replay=false|wagering=false"), ReturnDistance);
+		UE_LOG(LogOddsWellLocomotion, Display, TEXT("ODDSWELL_STADIUM_QA|result=PASS|entered=true|walked_to_marker=true|exited=true|return_distance=%.1f|zones=5|sportsbook=separate|replay=archived|resimulated=false|wagering=false"), ReturnDistance);
 		if (FParse::Param(FCommandLine::Get(), TEXT("StadiumAutoExit")))
 		{
 			QaExitAt = FPlatformTime::Seconds() + 2.0;
@@ -2109,6 +2112,16 @@ void AOddsWellStadiumGameMode::BeginPlay()
 		Light->PointLightComponent->SetAttenuationRadius(3500.0f);
 	}
 	UE_LOG(LogOddsWellLocomotion, Display, TEXT("ODDSWELL_STADIUM_CONSTRUCTED|result=PASS|surfaces=%d|zones=%d|entry=true|concourse=true|court=true|public_viewing=true|future_marker=true|exit=true|unbranded=true|team_neutral=true"), GetStadiumSurfaces().Num(), GetStadiumZones().Num());
+	const FTransform ReplayTransform(FRotator::ZeroRotator, StadiumReplayOrigin, FVector(StadiumReplayScale));
+	const AReplayBenchmarkActor* Replay = GetWorld()->SpawnActor<AReplayBenchmarkActor>(AReplayBenchmarkActor::StaticClass(), ReplayTransform, Parameters);
+	if (Replay)
+	{
+		UE_LOG(LogOddsWellLocomotion, Display, TEXT("ODDSWELL_STADIUM_REPLAY_CONSUMER|spawned=true|source=Season1Game1|mode=authoritative_archived|resimulated=false|scale=%.2f"), StadiumReplayScale);
+	}
+	else
+	{
+		UE_LOG(LogOddsWellLocomotion, Error, TEXT("ODDSWELL_STADIUM_REPLAY_CONSUMER|spawned=false"));
+	}
 }
 
 APawn* AOddsWellStadiumGameMode::SpawnDefaultPawnAtTransform_Implementation(AController* NewPlayer, const FTransform&)
@@ -2158,6 +2171,8 @@ bool FOddsWellStadiumGrayboxTest::RunTest(const FString& Parameters)
 	TestTrue(TEXT("Stadium entrance reuses the existing Arena waypoint"), GetSundaleRouteWaypoints()[4].Equals(StadiumEntranceThreshold));
 	TestTrue(TEXT("Sportsbook remains a separate city threshold"), FVector::Dist2D(GetSundaleRouteWaypoints()[5], StadiumEntranceThreshold) > StadiumEntryRadius * 2.0f);
 	TestTrue(TEXT("Stadium entry radius exceeds the player capsule"), StadiumEntryRadius > CapsuleRadius);
+	TestTrue(TEXT("Archived replay consumer stays compact inside the stadium"), StadiumReplayScale > 0.0f && StadiumReplayScale <= 0.25f);
+	TestTrue(TEXT("Archived replay consumer is anchored on the court"), StadiumReplayOrigin.Equals(FVector(350.0, 0.0, 0.0)));
 	return !HasAnyErrors();
 }
 
