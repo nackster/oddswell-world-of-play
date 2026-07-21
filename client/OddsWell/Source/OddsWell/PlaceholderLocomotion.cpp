@@ -65,6 +65,7 @@ const FName TopComponentName(TEXT("StarterOutfitTop"));
 const FName BottomComponentName(TEXT("StarterOutfitBottom"));
 constexpr float SundaleRouteDistance = 80000.0f;
 constexpr float SundaleWaypointTolerance = 75.0f;
+constexpr float JobInteractionRadius = 350.0f;
 constexpr float StudioEntryRadius = 350.0f;
 constexpr float StudioQaWalkDistance = 200.0f;
 constexpr float StadiumEntryRadius = 350.0f;
@@ -73,6 +74,7 @@ const FName StudioStructureTag(TEXT("OddsWellStudioStructure"));
 const FName StudioFurnitureTag(TEXT("OddsWellStudioFurniture"));
 const FName StadiumStructureTag(TEXT("OddsWellStadiumStructure"));
 const FName StadiumZoneTag(TEXT("OddsWellStadiumZone"));
+const FVector JobInteractionLocation(9500.0, 0.0, 0.0);
 const FVector StadiumEntranceThreshold(7000.0, 18000.0, 0.0);
 FVector StadiumCityReturnLocation = StadiumEntranceThreshold + FVector(0.0, -100.0, SafeSpawnLocation.Z);
 const FVector StadiumInteriorSpawn(-1600.0, 0.0, 220.0);
@@ -174,7 +176,7 @@ int32 GetSharedCityQaTargetClients()
 const TArray<FVector>& GetSundaleRouteWaypoints()
 {
 	static const TArray<FVector> Waypoints = {
-		FVector(9500.0, 0.0, 0.0),
+		JobInteractionLocation,
 		FVector(12500.0, 0.0, 0.0),
 		FVector(12500.0, 9000.0, 0.0),
 		FVector(12500.0, 18000.0, 0.0),
@@ -379,6 +381,7 @@ void AOddsWellPlaceholderCharacter::BeginPlay()
 	bCameraOrbitQa = FParse::Param(FCommandLine::Get(), TEXT("CameraOrbitQa"));
 	bPublicLeagueQa = FParse::Param(FCommandLine::Get(), TEXT("PublicLeagueQa"));
 	bStadiumQa = FParse::Param(FCommandLine::Get(), TEXT("StadiumQa"));
+	bJobQa = FParse::Param(FCommandLine::Get(), TEXT("JobQa"));
 	SharedCityQaTargetClients = GetSharedCityQaTargetClients();
 	if (GetNetMode() == NM_Standalone && GetWorld()->GetAuthGameMode<AOddsWellStudioGameMode>())
 	{
@@ -623,6 +626,7 @@ void AOddsWellPlaceholderCharacter::Tick(const float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 	PollKeyboardMovement();
+	PollJobInteraction();
 	PollStudioInteraction();
 	PollStadiumInteraction();
 	if (GEngine && IsLocallyControlled() && PublicLeagueSnapshot && !bPublicLeagueVisible)
@@ -653,6 +657,10 @@ void AOddsWellPlaceholderCharacter::Tick(const float DeltaSeconds)
 	{
 		RunStadiumQa(DeltaSeconds);
 	}
+	if (bJobQa)
+	{
+		RunJobQa(DeltaSeconds);
+	}
 	if (bCameraOrbitQa)
 	{
 		RunCameraOrbitQa(DeltaSeconds);
@@ -667,6 +675,125 @@ void AOddsWellPlaceholderCharacter::Tick(const float DeltaSeconds)
 	{
 		QaExitAt = 0.0;
 		FPlatformMisc::RequestExit(false);
+	}
+}
+
+void AOddsWellPlaceholderCharacter::PollJobInteraction()
+{
+	if (!IsLocallyControlled() || bJobQa || !GetWorld()->GetMapName().Contains(TEXT("SundaleGraybox")))
+	{
+		return;
+	}
+	const APlayerController* PlayerController = Cast<APlayerController>(Controller);
+	if (!PlayerController || FVector::Dist2D(GetActorLocation(), JobInteractionLocation) > JobInteractionRadius)
+	{
+		return;
+	}
+	if (GEngine)
+	{
+		GEngine->AddOnScreenDebugMessage(912015, 0.0f, FColor::Green, TEXT("Press E to complete a placeholder shift (payout not set)"));
+	}
+	const bool bPressed = PlayerController->IsInputKeyDown(KeyInteract);
+	if (!bPressed)
+	{
+		bJobInteractionArmed = true;
+	}
+	if (bPressed && bJobInteractionArmed)
+	{
+		bJobInteractionArmed = false;
+		ServerCompletePlaceholderJob();
+	}
+}
+
+void AOddsWellPlaceholderCharacter::ServerCompletePlaceholderJob_Implementation()
+{
+	const AOddsWellLocomotionGameMode* GameMode = GetWorld()->GetAuthGameMode<AOddsWellLocomotionGameMode>();
+	const bool bAtApprovedJob = GameMode
+		&& GetWorld()->GetMapName().Contains(TEXT("SundaleGraybox"))
+		&& FVector::Dist2D(GetActorLocation(), JobInteractionLocation) <= JobInteractionRadius;
+	if (!bAtApprovedJob)
+	{
+		UE_LOG(LogOddsWellLocomotion, Warning, TEXT("ODDSWELL_JOB_SHIFT|result=REJECTED|reason=outside_job_location|server_validated=true|odds_bucks_awarded=0|ledger_command=false"));
+		ClientConfirmPlaceholderJob(false);
+		return;
+	}
+	bPlaceholderShiftCompleted = true;
+	UE_LOG(
+		LogOddsWellLocomotion,
+		Display,
+		TEXT("ODDSWELL_JOB_SHIFT|result=PASS|job=placeholder_shift|interaction=press_e|completed=true|server_validated=true|odds_bucks_awarded=0|ledger_entries=%d|ledger_balance=%lld|ledger_command=false|payout_rules=false"),
+		GameMode->GetOddsBucksEntryCount(),
+		GameMode->GetOddsBucksBalance());
+	ClientConfirmPlaceholderJob(true);
+}
+
+void AOddsWellPlaceholderCharacter::ClientConfirmPlaceholderJob_Implementation(const bool bCompleted)
+{
+	const FString Message = bCompleted
+		? TEXT("Placeholder shift complete - 0 Odds Bucks awarded (payout not set)")
+		: TEXT("Shift rejected - return to the marked Job location");
+	UE_LOG(LogOddsWellLocomotion, Display, TEXT("ODDSWELL_JOB_FEEDBACK|completed=%s|client_visible=true|payout_not_set=true"), bCompleted ? TEXT("true") : TEXT("false"));
+	if (GEngine)
+	{
+		GEngine->AddOnScreenDebugMessage(912016, 5.0f, bCompleted ? FColor::Green : FColor::Red, Message);
+	}
+}
+
+void AOddsWellPlaceholderCharacter::RunJobQa(const float DeltaSeconds)
+{
+	if (!IsLocallyControlled() || !HasAuthority())
+	{
+		return;
+	}
+	JobQaElapsed += DeltaSeconds;
+	if (!GetWorld()->GetMapName().Contains(TEXT("SundaleGraybox")))
+	{
+		UE_LOG(LogOddsWellLocomotion, Error, TEXT("ODDSWELL_JOB_QA|result=FAIL|reason=wrong_map"));
+		bJobQa = false;
+		QaExitAt = FPlatformTime::Seconds() + 1.0;
+		return;
+	}
+	if (GetCharacterMovement()->IsMovingOnGround())
+	{
+		if (!bJobQaRejectionProven)
+		{
+			SetActorLocation(SafeSpawnLocation, false, nullptr, ETeleportType::TeleportPhysics);
+			ServerCompletePlaceholderJob();
+			bJobQaRejectionProven = !bPlaceholderShiftCompleted;
+			return;
+		}
+		SetActorLocation(FVector(JobInteractionLocation.X, JobInteractionLocation.Y, GetActorLocation().Z), false, nullptr, ETeleportType::TeleportPhysics);
+		ServerCompletePlaceholderJob();
+		const AOddsWellLocomotionGameMode* GameMode = GetWorld()->GetAuthGameMode<AOddsWellLocomotionGameMode>();
+		const bool bPassed = bJobQaRejectionProven
+			&& bPlaceholderShiftCompleted
+			&& GameMode
+			&& GameMode->GetOddsBucksEntryCount() == 0
+			&& GameMode->GetOddsBucksBalance() == 0;
+		const FString Evidence = FString::Printf(
+			TEXT("ODDSWELL_JOB_QA|result=%s|location=Job|interaction=press_e|outside_request_rejected=%s|server_validated=true|completed=%s|odds_bucks_awarded=0|ledger_entries=%d|ledger_balance=%lld|payout_rules=false"),
+			bPassed ? TEXT("PASS") : TEXT("FAIL"),
+			bJobQaRejectionProven ? TEXT("true") : TEXT("false"),
+			bPlaceholderShiftCompleted ? TEXT("true") : TEXT("false"),
+			GameMode ? GameMode->GetOddsBucksEntryCount() : -1,
+			GameMode ? GameMode->GetOddsBucksBalance() : int64{-1});
+		if (bPassed)
+		{
+			UE_LOG(LogOddsWellLocomotion, Display, TEXT("%s"), *Evidence);
+		}
+		else
+		{
+			UE_LOG(LogOddsWellLocomotion, Error, TEXT("%s"), *Evidence);
+		}
+		bJobQa = false;
+		QaExitAt = FPlatformTime::Seconds() + 2.0;
+		return;
+	}
+	if (JobQaElapsed > 10.0f)
+	{
+		UE_LOG(LogOddsWellLocomotion, Error, TEXT("ODDSWELL_JOB_QA|result=FAIL|reason=spawn_timeout"));
+		bJobQa = false;
+		QaExitAt = FPlatformTime::Seconds() + 1.0;
 	}
 }
 
@@ -2260,6 +2387,9 @@ bool FOddsWellLocomotionDefaultsTest::RunTest(const FString& Parameters)
 	}
 	TestTrue(TEXT("Sundale route remains exactly 800 meters"), FMath::IsNearlyEqual(SundaleDistance, SundaleRouteDistance));
 	TestEqual(TEXT("Sundale route labels match waypoints"), GetSundaleRouteWaypointLabels().Num(), SundaleWaypoints.Num());
+	TestTrue(TEXT("Approved Job interaction reuses the first route waypoint"), JobInteractionLocation.Equals(SundaleWaypoints[0]));
+	TestEqual(TEXT("First route waypoint remains labeled Job"), GetSundaleRouteWaypointLabels()[0], FString(TEXT("Job")));
+	TestTrue(TEXT("Job interaction radius exceeds the player capsule"), JobInteractionRadius > CapsuleRadius);
 	return !HasAnyErrors();
 }
 

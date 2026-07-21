@@ -825,7 +825,16 @@ Build the one-city scope defined in [[Design/Decisions/DEC-002 First Playable Sc
 - **Packaged proof:** the final 53-file Windows package started the Sundale authority at exactly `0` entries and `0` balance with client commands, real money, and wagering disabled.
 - **Validation:** editor/game builds and BuildCookRun passed; focused automation passed `1/1`; full native automation passed `11/11`; all `65/65` frozen regressions passed in `121.038s`; Brain Admin self-check, deterministic exporters, Python compilation, runtime-log audit, diff hygiene, and process cleanup passed. Cost was `$0.00`. See [[Development/Reports/Phase 1G1 Empty Server Authoritative Odds Bucks Ledger]].
 - **Boundary:** no player/account identity, persistence, restart/reconnect restore, job, earning, starting balance, payout, allowance, recovery floor, price, purchase, wager, settlement, Admin ledger, deployment, real-money connection, or second currency was added.
-- **Next owner gate:** Phase 1G.2 needs one job fantasy and interaction. Smallest recommendation: reuse Sundale's existing `Job` location and press `E` to complete one labeled placeholder shift; credit remains disabled until payout and recovery rules are separately frozen.
+- **Closed by Phase 1G.2:** the owner-approved server-validated placeholder shift is complete below; payout and recovery rules remain owner gates.
+
+### Phase 1G.2 Server-Validated Placeholder Job Interaction status
+
+- **Status:** Complete on `agent/phase-0d`; interaction-only slice with no payout.
+- **Implementation:** the existing Sundale `Job` route marker shows an `E` prompt. The owning server accepts completion only when its authoritative player position is within the marker radius, then sends visible success or rejection feedback to that player.
+- **Packaged proof:** an outside-location request was rejected; an at-location request completed; both paths left the ledger at `0` entries and `0` balance with no command and no payout rules.
+- **Validation:** editor/game builds and final BuildCookRun passed in `58.11s`; focused automation passed `1/1`; full native automation passed `11/11`; all `65/65` frozen regressions passed in `119.209s`; Brain Admin self-check, deterministic exporters, Python compilation, runtime-log audit, diff hygiene, and process cleanup passed. Cost was `$0.00`. See [[Development/Reports/Phase 1G2 Server Validated Placeholder Job Interaction]].
+- **Boundary:** no durable job history, payout, command ID, account, persistence, restart/reconnect restore, eligibility, cooldown, cadence, allowance, recovery floor, starting balance, price, purchase, wager, settlement, final job fiction, animation, final art, deployment, real-money connection, or second currency was added.
+- **Next owner gate:** Phase 1G.3 needs a provisional payout and limit. Smallest recommendation: `100` Odds Bucks once per local saved profile for one idempotent credit-and-cold-restore proof; repeat and daily recovery remain disabled until Phase 1G.4.
 
 ## Future shared simulation layer
 

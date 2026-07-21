@@ -2,7 +2,7 @@
 	"nodes":[
 		{"id":"bdr-title","type":"text","text":"# ODDSWELL BETA DELIVERY ROADMAP\nFollow the numbers. Each phase proves one player-facing dependency before the next begins.","x":0,"y":-260,"width":2040,"height":130,"color":"6"},
 		{"id":"bdr-file","type":"file","file":"Development/Beta Delivery Roadmap.md","x":0,"y":-100,"width":1320,"height":100,"color":"6"},
-		{"id":"bdr-now","type":"text","text":"## PHASE 1G.2 - OWNER GATE\nChoose one job fantasy + interaction. Payout and recovery amounts stay open.","x":1360,"y":-100,"width":680,"height":100,"color":"3"},
+		{"id":"bdr-now","type":"text","text":"## PHASE 1G.3 - OWNER GATE\nChoose first payout + payment limit. Recommendation: 100 once per saved profile.","x":1360,"y":-100,"width":680,"height":100,"color":"3"},
 		{"id":"bdr-foundation-group","type":"group","x":0,"y":80,"width":2040,"height":340,"color":"5","label":"FOUNDATION — PROVE THE 3D WORLD"},
 		{"id":"bdr-core-group","type":"group","x":0,"y":500,"width":2040,"height":340,"color":"3","label":"CORE LOOP — HOME, SPORT, MONEY, WAGERS"},
 		{"id":"bdr-experience-group","type":"group","x":0,"y":920,"width":2040,"height":340,"color":"4","label":"PLAYER EXPERIENCE — PROGRESSION + UNDERSTANDING"},
@@ -13,7 +13,7 @@
 		{"id":"bdr-1d","type":"text","text":"## 1D 👥 SHARED CITY\n✅ COMPLETE — LOCAL EXIT PASSED\n2/3/4 clients ✓ • movement ✓ • appearance ✓ • clothing ✓ • reconnect ✓\nCapacity ceiling remains open","x":1540,"y":145,"width":450,"height":220,"color":"3"},
 		{"id":"bdr-1e","type":"text","text":"## 1E 🏠 APARTMENTS\n✅ FOUNDATION COMPLETE\nEmpty Studio ✓ • ownership ✓ • cold return ✓ • six visible tiers ✓\nFurniture activation waits for Phase 1I","x":40,"y":565,"width":450,"height":220,"color":"3"},
 		{"id":"bdr-1f","type":"text","text":"## 1F BASKETBALL - LEAGUE + WATCH\nCOMPLETE FOR CURRENT ARCHIVED GAME\nWatch / S skip / late / sealed reconnect -> same 101-104 result\nNo client resimulation","x":540,"y":565,"width":450,"height":220,"color":"3"},
-		{"id":"bdr-1g","type":"text","text":"## 1G 💵 ODDS BUCKS + JOB\nACTIVE - 1G.1 LEDGER COMPLETE\n0 entries / 0 balance / server owned / idempotent\nNEXT: owner chooses job interaction; no payout yet","x":1040,"y":565,"width":450,"height":220,"color":"2"},
+		{"id":"bdr-1g","type":"text","text":"## 1G 💵 ODDS BUCKS + JOB\nACTIVE - COMPLETE THROUGH 1G.2\nServer ledger ✓ • Job marker + E ✓ • outside request rejected ✓\nNEXT: owner chooses first payout; no credit yet","x":1040,"y":565,"width":450,"height":220,"color":"2"},
 		{"id":"bdr-1h","type":"text","text":"## 1H 🎟️ WAGERS\nWinner → margin → overtime → player points\nLock, settle, replay, and audit one market at a time","x":1540,"y":565,"width":450,"height":220,"color":"3"},
 		{"id":"bdr-1i","type":"text","text":"## 1I 🛍️ STORES + UPGRADES\nSundale-origin catalogs • buy/equip/show clothing • buy/place furniture • one upgrade path","x":40,"y":985,"width":450,"height":220,"color":"4"},
 		{"id":"bdr-1j","type":"text","text":"## 1J 🧠 ATHLETE STORIES\nShow talent, specialties, health, form, and life consequences from authoritative evidence","x":540,"y":985,"width":450,"height":220,"color":"4"},

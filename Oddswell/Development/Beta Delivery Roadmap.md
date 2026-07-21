@@ -67,7 +67,8 @@ The roadmap is intentionally made of measurable product gates, not hundreds of s
 - Phase 1F.5 replay-view result invariance: **COMPLETE**; see [[Development/Reports/Phase 1F5 Replay View Result Invariance]].
 - Phase 1F exit: **PASSED FOR THE CURRENT ARCHIVED-GAME SLICE**. The 82-game/two-team variety decision remains open and no backend reconnect is claimed.
 - Phase 1G.1 empty server-authoritative Odds Bucks ledger: **COMPLETE**; see [[Development/Reports/Phase 1G1 Empty Server Authoritative Odds Bucks Ledger]].
-- Next gate: **PHASE 1G.2 OWNER DECISION**. Freeze one placeholder job fantasy and interaction. Starting balance, payout, allowance cadence, recovery floor, prices, and limits remain open. Sundale remains a working name.
+- Phase 1G.2 server-validated placeholder Job interaction: **COMPLETE**; see [[Development/Reports/Phase 1G2 Server Validated Placeholder Job Interaction]].
+- Next gate: **PHASE 1G.3 OWNER DECISION**. Freeze one provisional job payout and payment limit for the first persistent credit proof. Starting balance, allowance cadence, recovery floor, prices, and broader limits remain open. Sundale remains a working name.
 - Current prerequisite note: UE 5.8, the aligned x64 runtime and .NET Framework 4.8 SDK, portable project, reproducible local Windows package, empty-map launch, LFS, generated-file ignores, primitive block/court iteration, collision, cold-process reopen, direct recorded-replay rendering, deterministic packaged traces, and local resource sampling are verified. UE 5.8 is now the approved beta client engine.
 
 No later roadmap phase is authorized merely because it appears below.
@@ -259,8 +260,8 @@ The player can research a scheduled game, go to the venue, watch or skip the sam
 ### Smallest delivery path
 
 1. **COMPLETE:** add the server-authoritative virtual Odds Bucks ledger with append-only entries and idempotent commands. See [[Development/Reports/Phase 1G1 Empty Server Authoritative Odds Bucks Ledger]].
-2. **OWNER GATE:** create one placeholder job/recovery action after the job fantasy and interaction are frozen.
-3. Credit one verified job payout and restore it across restart/reconnect.
+2. **COMPLETE:** create one server-validated placeholder action at Sundale's existing `Job` marker. See [[Development/Reports/Phase 1G2 Server Validated Placeholder Job Interaction]].
+3. **OWNER GATE:** credit one verified job payout and restore it across restart/reconnect after the provisional payout and limit are frozen.
 4. Add starting balance and zero-balance recovery only after owner amounts are frozen.
 5. Expose truthful reconciliation in Admin.
 

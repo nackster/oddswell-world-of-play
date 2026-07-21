@@ -85,6 +85,7 @@ private:
 	void RunSundaleRouteQa(float DeltaSeconds);
 	void FinishSundaleRouteQa(bool bPassed);
 	void RunSharedCityQa(float DeltaSeconds);
+	void PollJobInteraction();
 	void PollStudioInteraction();
 	void PollStadiumInteraction();
 	void ToggleLeagueView();
@@ -93,6 +94,7 @@ private:
 	void ShowLeaguePage();
 	void RunStudioQa(float DeltaSeconds);
 	void RunStadiumQa(float DeltaSeconds);
+	void RunJobQa(float DeltaSeconds);
 	void RunCameraOrbitQa(float DeltaSeconds);
 	bool ApplySavedOrFallbackAppearance();
 	bool ResolveLocalAppearance(FOddsWellResolvedCharacterAppearance& OutAppearance, FString& OutSource, FString& OutError) const;
@@ -114,6 +116,12 @@ private:
 
 	UFUNCTION(Server, Reliable)
 	void ServerSetSharedCityAppearance(FName PresetId, FName TopItemId, FName BottomItemId);
+
+	UFUNCTION(Server, Reliable)
+	void ServerCompletePlaceholderJob();
+
+	UFUNCTION(Client, Reliable)
+	void ClientConfirmPlaceholderJob(bool bCompleted);
 
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UStaticMeshComponent> PrimitiveBody;
@@ -196,6 +204,11 @@ private:
 	bool bStudioPersistenceQaVerify = false;
 	bool bOwnsStudio = false;
 	bool bHousingGoalsLogged = false;
+	float JobQaElapsed = 0.0f;
+	bool bPlaceholderShiftCompleted = false;
+	bool bJobInteractionArmed = false;
+	bool bJobQa = false;
+	bool bJobQaRejectionProven = false;
 	float StadiumQaElapsed = 0.0f;
 	int32 StadiumQaWaypointIndex = 0;
 	bool bStadiumInteractionArmed = false;
@@ -228,6 +241,8 @@ public:
 	virtual void PostLogin(APlayerController* NewPlayer) override;
 	virtual void Logout(AController* Exiting) override;
 	virtual APawn* SpawnDefaultPawnAtTransform_Implementation(AController* NewPlayer, const FTransform&) override;
+	int32 GetOddsBucksEntryCount() const { return OddsBucksLedger.GetEntries().Num(); }
+	int64 GetOddsBucksBalance() const { return OddsBucksLedger.GetBalance(); }
 
 private:
 	FOddsWellOddsBucksLedger OddsBucksLedger;
