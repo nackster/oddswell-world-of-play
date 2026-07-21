@@ -121,7 +121,7 @@ private:
 	void ServerCompletePlaceholderJob();
 
 	UFUNCTION(Client, Reliable)
-	void ClientConfirmPlaceholderJob(bool bCompleted);
+	void ClientConfirmPlaceholderJob(bool bCompleted, bool bCredited, bool bPayoutReady, int64 Balance);
 
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UStaticMeshComponent> PrimitiveBody;
@@ -209,6 +209,8 @@ private:
 	bool bJobInteractionArmed = false;
 	bool bJobQa = false;
 	bool bJobQaRejectionProven = false;
+	bool bJobQaFirstCreditProven = false;
+	bool bJobPayoutQaVerify = false;
 	float StadiumQaElapsed = 0.0f;
 	int32 StadiumQaWaypointIndex = 0;
 	bool bStadiumInteractionArmed = false;
@@ -241,8 +243,10 @@ public:
 	virtual void PostLogin(APlayerController* NewPlayer) override;
 	virtual void Logout(AController* Exiting) override;
 	virtual APawn* SpawnDefaultPawnAtTransform_Implementation(AController* NewPlayer, const FTransform&) override;
+	bool TryCreditFirstPlaceholderJob(bool& bOutCredited, int64& OutBalance, FString& OutError);
 	int32 GetOddsBucksEntryCount() const { return OddsBucksLedger.GetEntries().Num(); }
 	int64 GetOddsBucksBalance() const { return OddsBucksLedger.GetBalance(); }
+	bool WasOddsBucksLoadedFromDisk() const { return bOddsBucksLoadedFromDisk; }
 
 private:
 	FOddsWellOddsBucksLedger OddsBucksLedger;
@@ -259,6 +263,9 @@ private:
 	bool bSharedCityReconnectLeaveObserved = false;
 	bool bSharedCityReconnectPassed = false;
 	bool bSharedCityCapacityQa = false;
+	bool bOddsBucksReady = false;
+	bool bOddsBucksQaSlot = false;
+	bool bOddsBucksLoadedFromDisk = false;
 };
 
 UCLASS()

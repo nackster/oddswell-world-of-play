@@ -836,6 +836,15 @@ Build the one-city scope defined in [[Design/Decisions/DEC-002 First Playable Sc
 - **Boundary:** no durable job history, payout, command ID, account, persistence, restart/reconnect restore, eligibility, cooldown, cadence, allowance, recovery floor, starting balance, price, purchase, wager, settlement, final job fiction, animation, final art, deployment, real-money connection, or second currency was added.
 - **Next owner gate:** Phase 1G.3 needs a provisional payout and limit. Smallest recommendation: `100` Odds Bucks once per local saved profile for one idempotent credit-and-cold-restore proof; repeat and daily recovery remain disabled until Phase 1G.4.
 
+### Phase 1G.3 Persistent First Job Payout status
+
+- **Status:** Complete on `agent/phase-0d`; owner-approved provisional local-profile slice only.
+- **Implementation:** the server issues one stable `+100` Odds Bucks command after the existing validated shift. Unreal SaveGame persists the validated append-only entries, and the candidate is saved before the authoritative in-memory ledger changes. Exact retries remain duplicates.
+- **Packaged proof:** process one rejected an outside request, applied one `+100` credit, and kept a same-process retry at `1` entry and balance `100`. Process two restored exactly `1` entry and balance `100`, kept the post-restart retry unchanged, and removed the isolated QA save.
+- **Validation:** editor/game builds and the final `48.65s` BuildCookRun passed; focused persistence automation passed `1/1`; full native automation passed `11/11`; all `65/65` frozen regressions passed in `141.263s`; Brain Admin self-check, deterministic exporters, Python compilation, runtime-log audit, and QA-save cleanup passed. Cost was `$0.00`. See [[Development/Reports/Phase 1G3 Persistent First Job Payout]] and [[Design/Decisions/DEC-014 Phase 1G3 Provisional First Job Payout]].
+- **Boundary:** local saved profile only. No online account/backend reconnect, repeat income, daily allowance, recovery floor, starting balance, price, purchase, wager, settlement, Admin reconciliation, deployment, real-money connection, or second currency was added.
+- **Next owner gate:** Phase 1G.4 must freeze starting balance plus the smallest repeat/daily zero-balance recovery amount, cadence, and eligibility before another credit path is implemented.
+
 ## Future shared simulation layer
 
 Athlete Life Brain v4 is the default for newly generated train, rest, recover, and socialize decisions. It adds only one bounded, one-decision, same-season recent-scoring response above v3's routine behavior. V1-v4 history remains immutable. Expand into longer memory, traits, relationships, nightlife, media, discipline, career decisions, and other sports only after each smaller input passes its own engineering evaluation.

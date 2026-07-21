@@ -84,7 +84,7 @@ The presets must not attach ability, wealth, intelligence, behavior, or athlete 
 - **LOCKED:** the city contains a visible place where the player earns Odds Bucks through a job.
 - **LOCKED:** the city contains a basketball stadium and a physical location where the player can wager.
 - **BETA TARGET:** the player can discover both places by exploring the city.
-- **OPEN:** job type, job interaction, tutorial guidance, map markers, allowance timing, and whether wagering occurs in the stadium, an attached sportsbook, or both.
+- **RESOLVED FOR THE CURRENT PLACEHOLDER:** Sundale's existing `Job` marker uses a server-validated `E` interaction. Its first successful completion credits a provisional `100` Odds Bucks once per local saved profile under [[Design/Decisions/DEC-014 Phase 1G3 Provisional First Job Payout]]. Final job fiction, tutorial guidance, map markers, repeat income, allowance timing, and whether wagering occurs in the stadium, an attached sportsbook, or both remain open.
 
 ### 5. Place and watch the first wager
 
@@ -98,7 +98,7 @@ The presets must not attach ability, wealth, intelligence, behavior, or athlete 
 - **LOCKED:** a winning wager adds Odds Bucks and a losing wager removes them.
 - **LOCKED:** Odds Bucks can be saved or spent on apartment upgrades, furniture, and clothing.
 - **BETA TARGET:** a player who runs out waits for or completes the next job/allowance opportunity instead of being permanently locked out.
-- **OPEN:** daily grant amount, job payout, cadence, minimum balance, prices, wager limits, and anti-inflation rules.
+- **PARTIALLY RESOLVED:** the first placeholder job payout is provisionally `100` Odds Bucks once per local saved profile. Daily grant amount, repeat-job amount and cadence, minimum balance, prices, wager limits, and anti-inflation rules remain open.
 
 ## World and city scope
 
@@ -201,7 +201,7 @@ Each market must be introduced separately behind exact locking, settlement, repl
 - **LOCKED:** Odds Bucks may be saved or spent on permitted clothing, furniture, and apartment upgrades.
 - **LOCKED FOR BETA:** real-money Odds Bucks purchases are not part of the beta.
 - **LATER:** real-money purchases may be considered only after legal, platform, payment, age-rating, regional, economy, fraud, and audit gates are satisfied.
-- **OPEN:** starting balance, daily allowance, job income, prices, wager sizes, payout limits, recovery rules, sinks, and inflation targets.
+- **PARTIALLY RESOLVED:** the first placeholder job credit is provisionally `100` Odds Bucks once per local saved profile under [[Design/Decisions/DEC-014 Phase 1G3 Provisional First Job Payout]]. Starting balance, repeat or daily income, prices, wager sizes, broader payout limits, recovery rules, sinks, and inflation targets remain open.
 
 ## Athletes and brains
 
@@ -311,7 +311,7 @@ The Scope Director must stop and ask when a phase depends on one of these:
 2. **RESOLVED:** beta camera and movement style under [[Design/Decisions/DEC-007 Phase 1B Character Defaults|DEC-007]].
 3. **PARTIALLY RESOLVED:** eight-placeholder minimum range under [[Design/Decisions/DEC-007 Phase 1B Character Defaults|DEC-007]]; final character art and post-start customization remain open.
 4. Apartment upgrade layouts and decorating interaction.
-5. Exact job, payout, allowance, and recovery cadence.
+5. **PARTIALLY RESOLVED:** first placeholder payout is `100` once per local saved profile; final job fiction, starting balance, repeat income, allowance, and zero-balance recovery remain open.
 6. How an 82-game season stays varied with the initial two-team scope.
 7. **PARTIALLY RESOLVED:** current beta placeholder fidelity, camera, commentary, duration, and result-invariant player skip under [[Design/Decisions/DEC-013 Phase 1F4 Presentation Defaults]] and [[Development/Reports/Phase 1F5 Replay View Result Invariance]]; final art, crowd, replay cuts, condensed mode, and special-game duration remain open.
 8. Order, rules, limits, and payout formulas for the four beta wager markets.
@@ -344,4 +344,4 @@ Before proposing a phase, the Scope Director must:
 - Phase 1D passed for the local shared-city prototype. External hosting and a beta capacity ceiling are not proven.
 - Phase 1E's standalone Studio foundation is complete through ownership, cold return, and six visible housing tiers. Furniture activation remains dependent on a legitimate Phase 1I purchase and ownership path.
 - Phase 1F passed for the current archived-game slice: watch, player skip, late arrival, and seal-validated cold reconstruction converge on the same result without client resimulation. Backend reconnect and full-season presentation variety are not proven.
-- Phase 1G.1 provides an empty in-memory server-authoritative Odds Bucks ledger with append-only entries and idempotent commands. Phase 1G.2 adds the owner-approved server-validated `E` interaction at Sundale's existing `Job` marker with visible feedback; see [[Development/Reports/Phase 1G1 Empty Server Authoritative Odds Bucks Ledger]] and [[Development/Reports/Phase 1G2 Server Validated Placeholder Job Interaction]]. No payout, durable job history, player identity, persistence, earning amount, purchase, wager, settlement, or real-money path is proven.
+- Phase 1G.1 provides the server-authoritative append-only Odds Bucks ledger, Phase 1G.2 adds the server-validated `Job` interaction, and Phase 1G.3 proves one provisional `100`-Odds-Bucks credit, exact retry idempotency, local SaveGame persistence, and cold-process restore; see [[Development/Reports/Phase 1G3 Persistent First Job Payout]]. No online account identity, backend reconnect, repeat income, starting balance, allowance, zero-balance recovery, price, purchase, wager, settlement, Admin reconciliation, real-money path, or second currency is proven.
