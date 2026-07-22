@@ -78,7 +78,8 @@ The roadmap is intentionally made of measurable product gates, not hundreds of s
 - Phase 1H.3 idempotent Match Winner request and stake debit: **COMPLETE AS A MACHINE-LOCAL PERSISTENCE PRIMITIVE**; see [[Development/Reports/Phase 1H3 Idempotent Match Winner Stake Debit]]. No player-facing route, lock transition, or settlement exists.
 - Phase 1H.4 idempotent Match Winner game-start lock: **COMPLETE AS A MACHINE-LOCAL PERSISTENCE PRIMITIVE**; see [[Development/Reports/Phase 1H4 Idempotent Match Winner Game Start Lock]]. No result consumption or settlement exists.
 - Phase 1H.5 immutable sealed Match Winner result linkage: **COMPLETE FOR THE EXACT SEASON 1, GAME 1 ARCHIVE ONLY**; see [[Development/Reports/Phase 1H5 Immutable Sealed Match Winner Result Linkage]]. No wager win/loss decision, settlement, return, payout, loss finalization, refund, void, correction, ledger mutation, UI, Admin wager view, props, backend, or brain change exists.
-- Next candidate gate: **SCOPE DIRECTOR REVIEW OF A DETERMINISTIC SETTLEMENT-DECISION GATE WITH NO LEDGER MUTATION**. This is a candidate only and does not authorize settlement. Player props remain later gates. Sundale remains a working name.
+- Phase 1H.6 immutable deterministic Match Winner settlement decision: **COMPLETE FOR THE EXACT HARBOR-SELECTED LOSS ONLY**; see [[Development/Reports/Phase 1H6 Immutable Deterministic Match Winner Settlement Decision]]. The record is `lost`, gross return due `0`, and `decided_pending_apply`; no application, settled status, or ledger change exists.
+- Next candidate gate: **SCOPE DIRECTOR REVIEW OF IDEMPOTENT LOSS-DECISION APPLICATION/FINALIZATION WITH NO LEDGER ENTRY OR BALANCE CHANGE**. This is a candidate only and does not authorize application or settlement. Player props remain later gates. Sundale remains a working name.
 - Current prerequisite note: UE 5.8, the aligned x64 runtime and .NET Framework 4.8 SDK, portable project, reproducible local Windows package, empty-map launch, LFS, generated-file ignores, primitive block/court iteration, collision, cold-process reopen, direct recorded-replay rendering, deterministic packaged traces, and local resource sampling are verified. UE 5.8 is now the approved beta client engine.
 
 No later roadmap phase is authorized merely because it appears below.
@@ -94,7 +95,7 @@ No later roadmap phase is authorized merely because it appears below.
 | 5 | 1E — Studio and apartment progression | Enter a persistent home and see the six-tier goal | FOUNDATION COMPLETE / FURNITURE IN 1I |
 | 6 | 1F — League, stadium, and match viewing | Research and watch authoritative basketball | COMPLETE FOR CURRENT ARCHIVED GAME |
 | 7 | 1G — Odds Bucks and work recovery | Earn, persist, audit, and recover virtual currency | COMPLETE FOR CURRENT LOCAL PROFILE |
-| 8 | 1H — Wager locking and settlement | Place approved wagers and receive exact outcomes | ACTIVE — EXACT GAME 1 RESULT LINK COMPLETE / NO DECISION OR SETTLEMENT |
+| 8 | 1H — Wager locking and settlement | Place approved wagers and receive exact outcomes | ACTIVE — EXACT LOSS DECIDED PENDING APPLY / NO SETTLEMENT OR LEDGER CHANGE |
 | 9 | 1I — Stores and lifestyle upgrades | Buy, equip, display, and place basic items | PENDING |
 | 10 | 1J — Athlete life and league storytelling | Understand athletes, availability, and consequences | PENDING |
 | 11 | 1K — First-hour integration | Complete the entire beta promise in one session | PENDING |
@@ -311,7 +312,8 @@ Each market is its own evidence gate. A later market does not begin until the pr
 - **1H.3 COMPLETE — LOCAL REQUEST + STAKE DEBIT ONLY:** verify one exact pre-lock offer and persist one idempotent `accepted_pending_lock` request with one linked Odds Bucks debit. See [[Development/Reports/Phase 1H3 Idempotent Match Winner Stake Debit]].
 - **1H.4 COMPLETE — LOCAL GAME-START LOCK ONLY:** persist one separate immutable lock decision linked to the exact accepted request without touching its evidence or the Odds Bucks ledger. See [[Development/Reports/Phase 1H4 Idempotent Match Winner Game Start Lock]].
 - **1H.5 COMPLETE — EXACT SEALED RESULT LINK ONLY:** persist one separate immutable link from the accepted request and lock to the exact Season 1, Game 1 teams, `101`-`104` score, score-derived winner, and replay seal without touching the ledger. See [[Development/Reports/Phase 1H5 Immutable Sealed Match Winner Result Linkage]].
-- **NEXT CANDIDATE FOR SCOPE DIRECTOR REVIEW ONLY:** evaluate a deterministic settlement-decision gate with no ledger mutation. This roadmap update does not authorize a wager win/loss decision, settlement, return, payout, loss finalization, refund, void, or correction.
+- **1H.6 COMPLETE — EXACT LOSS DECISION ONLY:** consume the exact request, lock, and result-link IDs and derive Harbor selected versus Mesa winner as `lost`, gross return due `0`, status `decided_pending_apply`, without changing the ledger. See [[Development/Reports/Phase 1H6 Immutable Deterministic Match Winner Settlement Decision]].
+- **NEXT CANDIDATE FOR SCOPE DIRECTOR REVIEW ONLY:** evaluate idempotent application/finalization of this exact loss with no ledger entry or balance change. This roadmap update does not authorize application, settled status, settlement, payout, refund, void, or correction.
 
 ### Owner gates
 

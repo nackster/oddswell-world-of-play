@@ -912,7 +912,16 @@ Build the one-city scope defined in [[Design/Decisions/DEC-002 First Playable Sc
 - **Invariance:** linking adds no ledger entry and preserves the two-entry ledger, balance `60`, job cooldown, `accepted_pending_lock` request, `locked` decision, Basketball Brain, replay, public prediction, and league outputs exactly.
 - **Validation:** native automation passed `11/11`, including focused economy automation `1/1`; focused odds tests passed `3/3` in `0.052s`; all `65/65` frozen regressions passed in `143.403s`; Brain Admin self-check, unchanged `421`-frame replay with exact seal, unchanged `2`-team/`12`-athlete/`20`-game league export, Python compilation, migration, rejection invariants, and diff hygiene passed. Cost was `$0.00`. See [[Development/Reports/Phase 1H5 Immutable Sealed Match Winner Result Linkage]].
 - **Boundary:** no wager win/loss decision, settlement status, gross return, payout, lost-stake finalization, refund, void, correction, new ledger entry, player route/UI, Admin wager view, props, backend, brain change, payment, real-money connection, or second currency was added.
-- **Next candidate gate:** Scope Director review of a deterministic settlement-decision gate with no ledger mutation. This is a candidate only and does not authorize settlement.
+- **Closed by Phase 1H.6:** the exact deterministic losing decision is complete below without application or settlement.
+
+### Phase 1H.6 Immutable Deterministic Match Winner Settlement Decision status
+
+- **Status:** Complete on `agent/phase-0d`; one machine-local decision record for the exact archived losing selection only.
+- **Implementation:** one decision command consumes the exact accepted request, game-start lock, and sealed-result link IDs, then derives Harbor City Waves selected versus Mesa Vista Sol winner as `lost`, `GrossReturnDue = 0`, status `decided_pending_apply`. Exact retries return the same record; missing or mismatched chains, conflicting command reuse, a second decision, and malformed saved decisions fail without mutation. Schema v1-v5 saves migrate to v6 with zero fabricated decisions.
+- **Invariance:** deciding adds no ledger entry and preserves the two-entry ledger, balance `60`, job cooldown, accepted request, lock, result link, exact replay seal, Basketball Brain, public prediction, and league outputs.
+- **Validation:** native automation passed `11/11`, including focused economy automation `1/1`; focused odds tests passed `3/3` in `0.051s`; all `65/65` frozen regressions passed in `143.773s`; Brain Admin self-check, unchanged `421`-frame replay and exact seal, unchanged `2`-team/`12`-athlete/`20`-game league export, Python compilation, migration, rejection invariants, and diff hygiene passed. Cost was `$0.00`. See [[Development/Reports/Phase 1H6 Immutable Deterministic Match Winner Settlement Decision]].
+- **Boundary:** `decided_pending_apply` is not applied, finalized, or settled. No settled status, payout, refund, void, correction, new ledger entry, balance change, player route/UI, Admin wager view, props, backend, brain change, payment, real-money connection, or second currency was added.
+- **Next candidate gate:** Scope Director review of idempotent application/finalization for this exact loss decision with no ledger entry or balance change. This is a candidate only and does not authorize application or settlement.
 
 ## Future shared simulation layer
 
