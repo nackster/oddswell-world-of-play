@@ -968,6 +968,15 @@ Build the one-city scope defined in [[Design/Decisions/DEC-002 First Playable Sc
 - **Boundary:** no player wager route/history UI, refund, void, correction, alternate wager, prop, account, trusted clock, backend, deployment, payment, real-money connection, or brain change was added.
 - **Next candidate gate:** Scope Director review of the smallest remaining Phase 1H Match Winner evidence requirement. Void/refund, correction, and player-facing history/UI remain separate unproved gates.
 
+### Phase 1H.12 Immutable Authoritative Canceled-Game Evidence Link status
+
+- **Status:** COMPLETE on `agent/phase-0d`; one explicitly noncanonical machine-local QA disposition only.
+- **Implementation:** a separate schema-v1 canceled-game record binds the exact accepted request and game-start lock for QA Season 99, Game 1 to one server cancellation command ID, one evidence ID, authoritative cancellation time, neutral reason `game_canceled`, and status `closed_canceled`. Exact retry is idempotent; unknown, mismatched, conflicting, malformed, already-resolved, or second dispositions fail closed. SaveGame schema v8 migrates to v9 with zero invented cancellations.
+- **Invariance:** the sealed Season 1, Game 1 Harbor `101` to Mesa `104` result cannot be relabeled. Cancellation adds no ledger entry or credit, creates no settlement or finalization, publishes no Admin projection, and preserves the exact loss at `2/60` and exact win at `3/160`.
+- **Validation:** editor build, focused economy automation `1/1`, full native automation `11/11`, focused odds tests `3/3` in `0.055s`, canonical Python 3.12 timing guard `1/1` in `59.431s`, all `65/65` frozen tests in `145.685s` with the timing-sensitive test first and both processes verified at High priority, Brain Admin self-check, unchanged replay/league exporters, Python compilation, cold load, migration-without-invention, tamper rejection, old loss/win preservation, and diff hygiene passed. Two Unreal Python 3.11 timing runs were rejected as wrong-interpreter evidence; no frozen code or setting changed. Cost was `$0.00`. See [[Development/Reports/Phase 1H12 Immutable Authoritative Canceled Game Evidence Link]].
+- **Boundary:** this is canceled-game evidence, not a refund. No void/refund amount due, ledger restoration, application, finalization, reconciliation, Admin/player UI, generalized cancellation service, correction, later market, backend, deployment, real-money connection, or brain change was added.
+- **Next candidate gate:** Scope Director review. Void/refund due, application/finalization, correction, and player-facing history/UI remain separate unproved gates.
+
 ## Future shared simulation layer
 
 Athlete Life Brain v4 is the default for newly generated train, rest, recover, and socialize decisions. It adds only one bounded, one-decision, same-season recent-scoring response above v3's routine behavior. V1-v4 history remains immutable. Expand into longer memory, traits, relationships, nightlife, media, discipline, career decisions, and other sports only after each smaller input passes its own engineering evaluation.
