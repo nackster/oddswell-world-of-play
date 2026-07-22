@@ -198,10 +198,123 @@ def economy_payload(path: Path | None = None) -> dict[str, object]:
     }
 
 
+def validated_match_winner_void_reconciliation(data: dict[str, object]) -> dict[str, object]:
+    expected = {
+        "schema": "oddswell-match-winner-reconciliation-v1",
+        "authority": "server",
+        "profile_scope": "machine_local",
+        "read_only_projection": True,
+        "qa": True,
+        "market": "match_winner",
+        "offer_id": "76a5990ca1faea558f71dfe649676c786eca358b054751cd40fbef3c2d44bc7a",
+        "offer_schema": "oddswell-basketball-odds-offer-v1",
+        "offer_version": "basketball-match-winner-odds-v1",
+        "request_command_id": "wager:match_winner:canceled:request:test-1",
+        "selected_team": "QA Canceled Home",
+        "stake": 40,
+        "request_accepted_unix": 2_099_999_940,
+        "request_lock_unix": 2_100_000_000,
+        "request_status": "accepted_pending_lock",
+        "stake_ledger_command_id": "wager:match_winner:canceled:request:test-1",
+        "stake_sequence": 2,
+        "stake_delta": -40,
+        "stake_reason": "match_winner_stake",
+        "stake_balance_after": 60,
+        "lock_command_id": "wager:match_winner:canceled:lock:test-1",
+        "lock_request_command_id": "wager:match_winner:canceled:request:test-1",
+        "season_number": 99,
+        "game_number": 1,
+        "game_start_unix": 2_100_000_000,
+        "lock_unix": 2_100_000_000,
+        "lock_decision": "locked",
+        "cancellation_command_id": "wager:match_winner:canceled:disposition:test-1",
+        "cancellation_evidence_id": "server:cancellation:evidence:test-1",
+        "cancellation_request_command_id": "wager:match_winner:canceled:request:test-1",
+        "cancellation_lock_command_id": "wager:match_winner:canceled:lock:test-1",
+        "cancellation_schema": "oddswell-match-winner-canceled-game-v1",
+        "cancellation_version": "match-winner-canceled-game-v1",
+        "cancellation_unix": 2_100_000_300,
+        "cancellation_reason": "game_canceled",
+        "cancellation_status": "closed_canceled",
+        "decision_command_id": "wager:match_winner:canceled:void-decision:test-1",
+        "decision_cancellation_command_id": "wager:match_winner:canceled:disposition:test-1",
+        "decision_cancellation_evidence_id": "server:cancellation:evidence:test-1",
+        "decision_request_command_id": "wager:match_winner:canceled:request:test-1",
+        "decision_lock_command_id": "wager:match_winner:canceled:lock:test-1",
+        "decision_schema": "oddswell-match-winner-void-decision-v1",
+        "decision_version": "match-winner-void-decision-v1",
+        "decision_offer_id": "76a5990ca1faea558f71dfe649676c786eca358b054751cd40fbef3c2d44bc7a",
+        "decision_offer_schema": "oddswell-basketball-odds-offer-v1",
+        "decision_offer_version": "basketball-match-winner-odds-v1",
+        "decision_status": "decided_void_pending_refund",
+        "outcome": "voided",
+        "refund_due": 40,
+        "refund_ledger_command_id": "wager:match_winner:canceled:void-finalization:test-1",
+        "refund_sequence": 3,
+        "refund_delta": 40,
+        "refund_reason": "match_winner_refund",
+        "refund_balance_after": 100,
+        "finalization_command_id": "wager:match_winner:canceled:void-finalization:test-1",
+        "finalization_decision_command_id": "wager:match_winner:canceled:void-decision:test-1",
+        "finalization_cancellation_command_id": "wager:match_winner:canceled:disposition:test-1",
+        "finalization_cancellation_evidence_id": "server:cancellation:evidence:test-1",
+        "finalization_request_command_id": "wager:match_winner:canceled:request:test-1",
+        "finalization_lock_command_id": "wager:match_winner:canceled:lock:test-1",
+        "finalization_schema": "oddswell-match-winner-void-finalization-v1",
+        "finalization_version": "match-winner-void-finalization-v1",
+        "finalization_offer_id": "76a5990ca1faea558f71dfe649676c786eca358b054751cd40fbef3c2d44bc7a",
+        "finalization_offer_schema": "oddswell-basketball-odds-offer-v1",
+        "finalization_offer_version": "basketball-match-winner-odds-v1",
+        "finalization_status": "settled_void",
+        "refund_applied": 40,
+        "ledger_entry_count": 3,
+        "final_balance": 100,
+        "net": 0,
+    }
+    integer_fields = (
+        "stake", "request_accepted_unix", "request_lock_unix", "stake_sequence", "stake_delta",
+        "stake_balance_after", "season_number", "game_number", "game_start_unix", "lock_unix",
+        "cancellation_unix", "refund_due", "refund_sequence", "refund_delta", "refund_balance_after",
+        "refund_applied", "ledger_entry_count", "final_balance", "net",
+    )
+    for field in integer_fields:
+        data[field] = exact_integer(data.get(field), field)
+    for field, expected_value in expected.items():
+        if data.get(field) != expected_value:
+            raise ValueError(f"invalid {field}")
+    forbidden = {
+        "result_command_id", "result_request_command_id", "result_lock_command_id", "result_schema",
+        "result_version", "home_team", "away_team", "home_score", "away_score", "winner",
+        "replay_seal_sha256", "payout_ledger_command_id", "payout_sequence", "payout_delta",
+        "payout_reason", "payout_balance_after", "gross_return_due", "gross_return_applied",
+    }
+    if forbidden.intersection(data):
+        raise ValueError("void projection contains invented normal-result evidence")
+    generated_at = data.get("generated_at_utc")
+    if not isinstance(generated_at, str):
+        raise ValueError("generated_at_utc must be text")
+    datetime.fromisoformat(generated_at.replace("Z", "+00:00"))
+    if data["stake_ledger_command_id"] != data["request_command_id"]:
+        raise ValueError("stake debit does not link to request")
+    if data["lock_request_command_id"] != data["request_command_id"] or data["game_start_unix"] != data["lock_unix"]:
+        raise ValueError("lock does not link to request and game start")
+    if (data["cancellation_request_command_id"], data["cancellation_lock_command_id"]) != (data["request_command_id"], data["lock_command_id"]):
+        raise ValueError("cancellation chain does not link")
+    if (data["decision_cancellation_command_id"], data["decision_cancellation_evidence_id"], data["decision_request_command_id"], data["decision_lock_command_id"]) != (data["cancellation_command_id"], data["cancellation_evidence_id"], data["request_command_id"], data["lock_command_id"]):
+        raise ValueError("void decision chain does not link")
+    if (data["finalization_decision_command_id"], data["finalization_cancellation_command_id"], data["finalization_cancellation_evidence_id"], data["finalization_request_command_id"], data["finalization_lock_command_id"]) != (data["decision_command_id"], data["cancellation_command_id"], data["cancellation_evidence_id"], data["request_command_id"], data["lock_command_id"]):
+        raise ValueError("void finalization chain does not link")
+    if data["refund_ledger_command_id"] != data["finalization_command_id"]:
+        raise ValueError("refund does not link to void finalization")
+    return data
+
+
 def validated_match_winner_reconciliation(path: Path) -> dict[str, object]:
     data = json.loads(path.read_text(encoding="utf-8"))
     if not isinstance(data, dict):
         raise ValueError("projection must be a JSON object")
+    if data.get("outcome") == "voided":
+        return validated_match_winner_void_reconciliation(data)
     expected = {
         "schema": "oddswell-match-winner-reconciliation-v1",
         "authority": "server",
@@ -336,6 +449,36 @@ def match_winner_reconciliation_payload(path: Path | None = None) -> dict[str, o
             "status": "INVALID FINALIZED WAGER PROJECTION",
             "read_only": True,
             "boundary": f"The exact wager projection was rejected: {error}. No partial wager evidence is shown.",
+        }
+    if data["outcome"] == "voided":
+        return {
+            "available": True,
+            "status": "VALIDATED QA FINALIZED VOID",
+            "read_only": True,
+            "generated_at_utc": data["generated_at_utc"],
+            "outcome": "voided",
+            "selected_team": data["selected_team"],
+            "stake": data["stake"],
+            "return": data["refund_applied"],
+            "refund_due": data["refund_due"],
+            "net": data["net"],
+            "balance": data["final_balance"],
+            "ledger_entry_count": data["ledger_entry_count"],
+            "finalization_status": data["finalization_status"],
+            "cancellation_evidence_id": data["cancellation_evidence_id"],
+            "cancellation_unix": data["cancellation_unix"],
+            "cancellation_reason": data["cancellation_reason"],
+            "cancellation_status": data["cancellation_status"],
+            "decision_status": data["decision_status"],
+            "command_linkage": " -> ".join((
+                data["request_command_id"], data["lock_command_id"], data["cancellation_command_id"],
+                data["decision_command_id"], data["finalization_command_id"],
+            )),
+            "ledger_linkage": " | ".join((
+                f'{data["stake_sequence"]}:{data["stake_ledger_command_id"]}:{data["stake_reason"]}:{data["stake_delta"]}->{data["stake_balance_after"]}',
+                f'{data["refund_sequence"]}:{data["refund_ledger_command_id"]}:{data["refund_reason"]}:+{data["refund_delta"]}->{data["refund_balance_after"]}',
+            )),
+            "boundary": "Immutable read-only server evidence. The void decision remains decided_void_pending_refund; one exact refund entry and a separate settled_void finalization expose no mutation control.",
         }
     payload = {
         "available": True,
@@ -1610,6 +1753,79 @@ def self_check() -> None:
             "final_balance": 160,
             "net": 60,
         }
+        void_projection = {
+            "schema": "oddswell-match-winner-reconciliation-v1",
+            "generated_at_utc": "2033-05-18T03:33:20Z",
+            "authority": "server",
+            "profile_scope": "machine_local",
+            "read_only_projection": True,
+            "qa": True,
+            "market": "match_winner",
+            "offer_id": "76a5990ca1faea558f71dfe649676c786eca358b054751cd40fbef3c2d44bc7a",
+            "offer_schema": "oddswell-basketball-odds-offer-v1",
+            "offer_version": "basketball-match-winner-odds-v1",
+            "request_command_id": "wager:match_winner:canceled:request:test-1",
+            "selected_team": "QA Canceled Home",
+            "stake": 40,
+            "request_accepted_unix": 2_099_999_940,
+            "request_lock_unix": 2_100_000_000,
+            "request_status": "accepted_pending_lock",
+            "stake_ledger_command_id": "wager:match_winner:canceled:request:test-1",
+            "stake_sequence": 2,
+            "stake_delta": -40,
+            "stake_reason": "match_winner_stake",
+            "stake_balance_after": 60,
+            "lock_command_id": "wager:match_winner:canceled:lock:test-1",
+            "lock_request_command_id": "wager:match_winner:canceled:request:test-1",
+            "season_number": 99,
+            "game_number": 1,
+            "game_start_unix": 2_100_000_000,
+            "lock_unix": 2_100_000_000,
+            "lock_decision": "locked",
+            "cancellation_command_id": "wager:match_winner:canceled:disposition:test-1",
+            "cancellation_evidence_id": "server:cancellation:evidence:test-1",
+            "cancellation_request_command_id": "wager:match_winner:canceled:request:test-1",
+            "cancellation_lock_command_id": "wager:match_winner:canceled:lock:test-1",
+            "cancellation_schema": "oddswell-match-winner-canceled-game-v1",
+            "cancellation_version": "match-winner-canceled-game-v1",
+            "cancellation_unix": 2_100_000_300,
+            "cancellation_reason": "game_canceled",
+            "cancellation_status": "closed_canceled",
+            "decision_command_id": "wager:match_winner:canceled:void-decision:test-1",
+            "decision_cancellation_command_id": "wager:match_winner:canceled:disposition:test-1",
+            "decision_cancellation_evidence_id": "server:cancellation:evidence:test-1",
+            "decision_request_command_id": "wager:match_winner:canceled:request:test-1",
+            "decision_lock_command_id": "wager:match_winner:canceled:lock:test-1",
+            "decision_schema": "oddswell-match-winner-void-decision-v1",
+            "decision_version": "match-winner-void-decision-v1",
+            "decision_offer_id": "76a5990ca1faea558f71dfe649676c786eca358b054751cd40fbef3c2d44bc7a",
+            "decision_offer_schema": "oddswell-basketball-odds-offer-v1",
+            "decision_offer_version": "basketball-match-winner-odds-v1",
+            "decision_status": "decided_void_pending_refund",
+            "outcome": "voided",
+            "refund_due": 40,
+            "refund_ledger_command_id": "wager:match_winner:canceled:void-finalization:test-1",
+            "refund_sequence": 3,
+            "refund_delta": 40,
+            "refund_reason": "match_winner_refund",
+            "refund_balance_after": 100,
+            "finalization_command_id": "wager:match_winner:canceled:void-finalization:test-1",
+            "finalization_decision_command_id": "wager:match_winner:canceled:void-decision:test-1",
+            "finalization_cancellation_command_id": "wager:match_winner:canceled:disposition:test-1",
+            "finalization_cancellation_evidence_id": "server:cancellation:evidence:test-1",
+            "finalization_request_command_id": "wager:match_winner:canceled:request:test-1",
+            "finalization_lock_command_id": "wager:match_winner:canceled:lock:test-1",
+            "finalization_schema": "oddswell-match-winner-void-finalization-v1",
+            "finalization_version": "match-winner-void-finalization-v1",
+            "finalization_offer_id": "76a5990ca1faea558f71dfe649676c786eca358b054751cd40fbef3c2d44bc7a",
+            "finalization_offer_schema": "oddswell-basketball-odds-offer-v1",
+            "finalization_offer_version": "basketball-match-winner-odds-v1",
+            "finalization_status": "settled_void",
+            "refund_applied": 40,
+            "ledger_entry_count": 3,
+            "final_balance": 100,
+            "net": 0,
+        }
         wager_path.write_text(json.dumps(wager_projection), encoding="utf-8")
         wager = match_winner_reconciliation_payload(wager_path)
         assert wager == {
@@ -1671,6 +1887,59 @@ def self_check() -> None:
             invalid_win = match_winner_reconciliation_payload(wager_path)
             assert invalid_win["available"] is False and "balance" not in invalid_win
             win_projection[field] = exact_value
+        wager_path.write_text(json.dumps(void_projection), encoding="utf-8")
+        void_wager = match_winner_reconciliation_payload(wager_path)
+        assert void_wager == {
+            "available": True,
+            "status": "VALIDATED QA FINALIZED VOID",
+            "read_only": True,
+            "generated_at_utc": "2033-05-18T03:33:20Z",
+            "outcome": "voided",
+            "selected_team": "QA Canceled Home",
+            "stake": 40,
+            "return": 40,
+            "refund_due": 40,
+            "net": 0,
+            "balance": 100,
+            "ledger_entry_count": 3,
+            "finalization_status": "settled_void",
+            "cancellation_evidence_id": "server:cancellation:evidence:test-1",
+            "cancellation_unix": 2_100_000_300,
+            "cancellation_reason": "game_canceled",
+            "cancellation_status": "closed_canceled",
+            "decision_status": "decided_void_pending_refund",
+            "command_linkage": " -> ".join((
+                void_projection["request_command_id"], void_projection["lock_command_id"],
+                void_projection["cancellation_command_id"], void_projection["decision_command_id"],
+                void_projection["finalization_command_id"],
+            )),
+            "ledger_linkage": "2:wager:match_winner:canceled:request:test-1:match_winner_stake:-40->60 | 3:wager:match_winner:canceled:void-finalization:test-1:match_winner_refund:+40->100",
+            "boundary": "Immutable read-only server evidence. The void decision remains decided_void_pending_refund; one exact refund entry and a separate settled_void finalization expose no mutation control.",
+        }
+        assert "winner" not in void_wager and "replay_seal_sha256" not in void_wager
+        for field, invalid_value in (
+            ("qa", False),
+            ("offer_id", "0" * 64),
+            ("cancellation_evidence_id", "server:cancellation:evidence:wrong"),
+            ("decision_cancellation_command_id", "wager:match_winner:canceled:disposition:wrong"),
+            ("finalization_decision_command_id", "wager:match_winner:canceled:void-decision:wrong"),
+            ("refund_reason", "match_winner_payout"),
+            ("refund_balance_after", 99),
+        ):
+            exact_value = void_projection[field]
+            void_projection[field] = invalid_value
+            wager_path.write_text(json.dumps(void_projection), encoding="utf-8")
+            invalid_void = match_winner_reconciliation_payload(wager_path)
+            assert invalid_void["available"] is False and "balance" not in invalid_void
+            void_projection[field] = exact_value
+        void_projection["result_command_id"] = "wager:match_winner:canceled:invented-result"
+        wager_path.write_text(json.dumps(void_projection), encoding="utf-8")
+        invalid_void = match_winner_reconciliation_payload(wager_path)
+        assert invalid_void["available"] is False and "winner" not in invalid_void
+        del void_projection["result_command_id"]
+        wager_path.write_text("{}", encoding="utf-8")
+        partial_void = match_winner_reconciliation_payload(wager_path)
+        assert partial_void["available"] is False and "selected_team" not in partial_void
     server = LocalHTTPServer(("127.0.0.1", 0), Handler)
     try:
         try:

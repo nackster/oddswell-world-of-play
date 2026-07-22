@@ -1231,7 +1231,9 @@
         if (!response.ok) throw new Error(data.error || 'exact wager reconciliation unavailable');
         $('match-winner-status').textContent = data.status;
         $('match-winner-detail').textContent = data.available
-          ? (data.outcome === 'won'
+          ? (data.outcome === 'voided'
+            ? `${data.selected_team} selected | ${data.cancellation_reason} / ${data.cancellation_status} | evidence ${data.cancellation_evidence_id} at ${data.cancellation_unix} | stake ${data.stake} | refund due ${data.refund_due} | refund ${data.return} | net ${data.net} | ${data.ledger_entry_count} entries | balance ${data.balance} | ${data.decision_status} → ${data.finalization_status}`
+            : data.outcome === 'won'
             ? `${data.selected_team} selected | probability ${data.probability_e8} | ${data.payout_formula} | sealed score ${data.score} | stake ${data.stake} | return ${data.return} | net +${data.net} | ${data.ledger_entry_count} entries | balance ${data.balance} | ${data.finalization_status} | replay ${data.replay_seal_sha256}`
             : `${data.selected_team} selected · ${data.winner} won · stake ${data.stake} · return ${data.return} · net ${data.net} · balance ${data.balance} · ${data.finalization_status} · replay ${data.replay_seal_sha256}`)
           : data.boundary;

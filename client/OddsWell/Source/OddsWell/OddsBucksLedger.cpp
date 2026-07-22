@@ -1244,6 +1244,210 @@ bool WriteOddsWellOddsBucksReconciliation(const FOddsWellOddsBucksLedger& Ledger
 
 namespace
 {
+bool WriteMatchWinnerVoidReconciliationFromValidatedState(
+	const FOddsWellOddsBucksLedger& Ledger,
+	const TArray<FOddsWellMatchWinnerRequestRecord>& Requests,
+	const TArray<FOddsWellMatchWinnerLockRecord>& Locks,
+	const TArray<FOddsWellMatchWinnerCanceledGameRecord>& CanceledGames,
+	const TArray<FOddsWellMatchWinnerVoidDecisionRecord>& VoidDecisions,
+	const TArray<FOddsWellMatchWinnerVoidFinalizationRecord>& VoidFinalizations,
+	const bool bQaProjection,
+	FString& OutError)
+{
+	if (Requests.Num() != 1
+		|| Locks.Num() != 1
+		|| CanceledGames.Num() != 1
+		|| VoidDecisions.Num() != 1
+		|| VoidFinalizations.Num() != 1)
+	{
+		OutError = TEXT("The Match Winner void reconciliation requires one complete exact finalized chain.");
+		return false;
+	}
+	const FOddsWellMatchWinnerRequestRecord& Request = Requests[0];
+	const FOddsWellMatchWinnerLockRecord& Lock = Locks[0];
+	const FOddsWellMatchWinnerCanceledGameRecord& Canceled = CanceledGames[0];
+	const FOddsWellMatchWinnerVoidDecisionRecord& Decision = VoidDecisions[0];
+	const FOddsWellMatchWinnerVoidFinalizationRecord& Finalization = VoidFinalizations[0];
+	const FOddsWellOddsBucksEntry* StakeEntry = Ledger.GetEntries().FindByPredicate(
+		[&Request](const FOddsWellOddsBucksEntry& Entry)
+		{
+			return Entry.CommandId == Request.StakeLedgerCommandId;
+		});
+	const FOddsWellOddsBucksEntry* RefundEntry = Ledger.GetEntries().FindByPredicate(
+		[&Finalization](const FOddsWellOddsBucksEntry& Entry)
+		{
+			return Entry.CommandId == Finalization.RefundLedgerCommandId;
+		});
+	if (!bQaProjection
+		|| !StakeEntry
+		|| !RefundEntry
+		|| Request.Stake != 40
+		|| Request.Status != AcceptedPendingLockStatus
+		|| Request.AcceptedUnixSeconds <= 0
+		|| Request.AcceptedUnixSeconds >= Request.LockUnixSeconds
+		|| Request.LockUnixSeconds != Lock.LockUnixSeconds
+		|| StakeEntry->Sequence != 2
+		|| StakeEntry->Delta != -40
+		|| StakeEntry->Reason != MatchWinnerStakeReason
+		|| StakeEntry->BalanceAfter != 60
+		|| Lock.RequestCommandId != Request.RequestCommandId
+		|| Lock.SeasonNumber != CanceledQaSeasonNumber
+		|| Lock.GameNumber != CanceledQaGameNumber
+		|| Lock.AuthoritativeGameStartUnixSeconds != Lock.LockUnixSeconds
+		|| Lock.Decision != MatchWinnerLockedDecision
+		|| Canceled.RequestCommandId != Request.RequestCommandId
+		|| Canceled.LockCommandId != Lock.LockCommandId
+		|| Canceled.SeasonNumber != Lock.SeasonNumber
+		|| Canceled.GameNumber != Lock.GameNumber
+		|| Canceled.DispositionSchema != MatchWinnerCanceledGameSchema
+		|| Canceled.DispositionVersion != MatchWinnerCanceledGameVersion
+		|| Canceled.AuthoritativeCancellationUnixSeconds < Lock.AuthoritativeGameStartUnixSeconds
+		|| Canceled.ReasonCode != MatchWinnerCanceledGameReason
+		|| Canceled.Status != MatchWinnerClosedCanceledStatus
+		|| Decision.CancellationCommandId != Canceled.CancellationCommandId
+		|| Decision.CancellationEvidenceId != Canceled.CancellationEvidenceId
+		|| Decision.RequestCommandId != Request.RequestCommandId
+		|| Decision.LockCommandId != Lock.LockCommandId
+		|| Decision.SeasonNumber != Lock.SeasonNumber
+		|| Decision.GameNumber != Lock.GameNumber
+		|| Decision.DecisionSchema != MatchWinnerVoidDecisionSchema
+		|| Decision.DecisionVersion != MatchWinnerVoidDecisionVersion
+		|| Decision.OfferId != Request.OfferId
+		|| Decision.OfferSchema != MatchWinnerOfferSchema
+		|| Decision.OfferVersion != Request.OfferVersion
+		|| Decision.SelectedTeam != Request.OfferedTeam
+		|| Decision.Stake != Request.Stake
+		|| Decision.CancellationReason != Canceled.ReasonCode
+		|| Decision.Outcome != MatchWinnerVoidedOutcome
+		|| Decision.RefundDue != 40
+		|| Decision.Status != MatchWinnerDecidedVoidPendingRefundStatus
+		|| Finalization.VoidDecisionCommandId != Decision.VoidDecisionCommandId
+		|| Finalization.CancellationCommandId != Canceled.CancellationCommandId
+		|| Finalization.CancellationEvidenceId != Canceled.CancellationEvidenceId
+		|| Finalization.RequestCommandId != Request.RequestCommandId
+		|| Finalization.LockCommandId != Lock.LockCommandId
+		|| Finalization.SeasonNumber != Lock.SeasonNumber
+		|| Finalization.GameNumber != Lock.GameNumber
+		|| Finalization.FinalizationSchema != MatchWinnerVoidFinalizationSchema
+		|| Finalization.FinalizationVersion != MatchWinnerVoidFinalizationVersion
+		|| Finalization.OfferId != Request.OfferId
+		|| Finalization.OfferSchema != MatchWinnerOfferSchema
+		|| Finalization.OfferVersion != Request.OfferVersion
+		|| Finalization.SelectedTeam != Request.OfferedTeam
+		|| Finalization.Stake != Request.Stake
+		|| Finalization.CancellationReason != Canceled.ReasonCode
+		|| Finalization.Outcome != Decision.Outcome
+		|| Finalization.RefundDue != Decision.RefundDue
+		|| Finalization.RefundLedgerCommandId != Finalization.FinalizationCommandId
+		|| Finalization.Status != MatchWinnerSettledVoidStatus
+		|| Finalization.RefundApplied != 40
+		|| Finalization.ObservedLedgerEntryCount != 3
+		|| Finalization.ObservedFinalBalance != 100
+		|| RefundEntry->Sequence != 3
+		|| RefundEntry->Delta != 40
+		|| RefundEntry->Reason != MatchWinnerRefundReason
+		|| RefundEntry->BalanceAfter != 100
+		|| Ledger.GetEntries().Num() != 3
+		|| Ledger.GetBalance() != 100)
+	{
+		OutError = TEXT("The Match Winner void reconciliation does not match the exact finalized chain.");
+		return false;
+	}
+
+	const TSharedRef<FJsonObject> Root = MakeShared<FJsonObject>();
+	Root->SetStringField(TEXT("schema"), MatchWinnerReconciliationSchema);
+	Root->SetStringField(TEXT("generated_at_utc"), FDateTime::UtcNow().ToIso8601());
+	Root->SetStringField(TEXT("authority"), TEXT("server"));
+	Root->SetStringField(TEXT("profile_scope"), TEXT("machine_local"));
+	Root->SetBoolField(TEXT("read_only_projection"), true);
+	Root->SetBoolField(TEXT("qa"), bQaProjection);
+	Root->SetStringField(TEXT("market"), MatchWinnerMarket);
+	Root->SetStringField(TEXT("offer_id"), Request.OfferId);
+	Root->SetStringField(TEXT("offer_schema"), Decision.OfferSchema);
+	Root->SetStringField(TEXT("offer_version"), Request.OfferVersion);
+	Root->SetStringField(TEXT("request_command_id"), Request.RequestCommandId);
+	Root->SetStringField(TEXT("selected_team"), Request.OfferedTeam);
+	Root->SetNumberField(TEXT("stake"), static_cast<double>(Request.Stake));
+	Root->SetNumberField(TEXT("request_accepted_unix"), static_cast<double>(Request.AcceptedUnixSeconds));
+	Root->SetNumberField(TEXT("request_lock_unix"), static_cast<double>(Request.LockUnixSeconds));
+	Root->SetStringField(TEXT("request_status"), Request.Status.ToString());
+	Root->SetStringField(TEXT("stake_ledger_command_id"), StakeEntry->CommandId);
+	Root->SetNumberField(TEXT("stake_sequence"), static_cast<double>(StakeEntry->Sequence));
+	Root->SetNumberField(TEXT("stake_delta"), static_cast<double>(StakeEntry->Delta));
+	Root->SetStringField(TEXT("stake_reason"), StakeEntry->Reason.ToString());
+	Root->SetNumberField(TEXT("stake_balance_after"), static_cast<double>(StakeEntry->BalanceAfter));
+	Root->SetStringField(TEXT("lock_command_id"), Lock.LockCommandId);
+	Root->SetStringField(TEXT("lock_request_command_id"), Lock.RequestCommandId);
+	Root->SetNumberField(TEXT("season_number"), Lock.SeasonNumber);
+	Root->SetNumberField(TEXT("game_number"), Lock.GameNumber);
+	Root->SetNumberField(TEXT("game_start_unix"), static_cast<double>(Lock.AuthoritativeGameStartUnixSeconds));
+	Root->SetNumberField(TEXT("lock_unix"), static_cast<double>(Lock.LockUnixSeconds));
+	Root->SetStringField(TEXT("lock_decision"), Lock.Decision.ToString());
+	Root->SetStringField(TEXT("cancellation_command_id"), Canceled.CancellationCommandId);
+	Root->SetStringField(TEXT("cancellation_evidence_id"), Canceled.CancellationEvidenceId);
+	Root->SetStringField(TEXT("cancellation_request_command_id"), Canceled.RequestCommandId);
+	Root->SetStringField(TEXT("cancellation_lock_command_id"), Canceled.LockCommandId);
+	Root->SetStringField(TEXT("cancellation_schema"), Canceled.DispositionSchema);
+	Root->SetStringField(TEXT("cancellation_version"), Canceled.DispositionVersion);
+	Root->SetNumberField(TEXT("cancellation_unix"), static_cast<double>(Canceled.AuthoritativeCancellationUnixSeconds));
+	Root->SetStringField(TEXT("cancellation_reason"), Canceled.ReasonCode.ToString());
+	Root->SetStringField(TEXT("cancellation_status"), Canceled.Status.ToString());
+	Root->SetStringField(TEXT("decision_command_id"), Decision.VoidDecisionCommandId);
+	Root->SetStringField(TEXT("decision_cancellation_command_id"), Decision.CancellationCommandId);
+	Root->SetStringField(TEXT("decision_cancellation_evidence_id"), Decision.CancellationEvidenceId);
+	Root->SetStringField(TEXT("decision_request_command_id"), Decision.RequestCommandId);
+	Root->SetStringField(TEXT("decision_lock_command_id"), Decision.LockCommandId);
+	Root->SetStringField(TEXT("decision_schema"), Decision.DecisionSchema);
+	Root->SetStringField(TEXT("decision_version"), Decision.DecisionVersion);
+	Root->SetStringField(TEXT("decision_offer_id"), Decision.OfferId);
+	Root->SetStringField(TEXT("decision_offer_schema"), Decision.OfferSchema);
+	Root->SetStringField(TEXT("decision_offer_version"), Decision.OfferVersion);
+	Root->SetStringField(TEXT("decision_status"), Decision.Status.ToString());
+	Root->SetStringField(TEXT("outcome"), Decision.Outcome.ToString());
+	Root->SetNumberField(TEXT("refund_due"), static_cast<double>(Decision.RefundDue));
+	Root->SetStringField(TEXT("refund_ledger_command_id"), RefundEntry->CommandId);
+	Root->SetNumberField(TEXT("refund_sequence"), static_cast<double>(RefundEntry->Sequence));
+	Root->SetNumberField(TEXT("refund_delta"), static_cast<double>(RefundEntry->Delta));
+	Root->SetStringField(TEXT("refund_reason"), RefundEntry->Reason.ToString());
+	Root->SetNumberField(TEXT("refund_balance_after"), static_cast<double>(RefundEntry->BalanceAfter));
+	Root->SetStringField(TEXT("finalization_command_id"), Finalization.FinalizationCommandId);
+	Root->SetStringField(TEXT("finalization_decision_command_id"), Finalization.VoidDecisionCommandId);
+	Root->SetStringField(TEXT("finalization_cancellation_command_id"), Finalization.CancellationCommandId);
+	Root->SetStringField(TEXT("finalization_cancellation_evidence_id"), Finalization.CancellationEvidenceId);
+	Root->SetStringField(TEXT("finalization_request_command_id"), Finalization.RequestCommandId);
+	Root->SetStringField(TEXT("finalization_lock_command_id"), Finalization.LockCommandId);
+	Root->SetStringField(TEXT("finalization_schema"), Finalization.FinalizationSchema);
+	Root->SetStringField(TEXT("finalization_version"), Finalization.FinalizationVersion);
+	Root->SetStringField(TEXT("finalization_offer_id"), Finalization.OfferId);
+	Root->SetStringField(TEXT("finalization_offer_schema"), Finalization.OfferSchema);
+	Root->SetStringField(TEXT("finalization_offer_version"), Finalization.OfferVersion);
+	Root->SetStringField(TEXT("finalization_status"), Finalization.Status.ToString());
+	Root->SetNumberField(TEXT("refund_applied"), static_cast<double>(Finalization.RefundApplied));
+	Root->SetNumberField(TEXT("ledger_entry_count"), Ledger.GetEntries().Num());
+	Root->SetNumberField(TEXT("final_balance"), static_cast<double>(Ledger.GetBalance()));
+	Root->SetNumberField(TEXT("net"), static_cast<double>(StakeEntry->Delta + RefundEntry->Delta));
+
+	FString Json;
+	const TSharedRef<TJsonWriter<>> Writer = TJsonWriterFactory<>::Create(&Json);
+	if (!FJsonSerializer::Serialize(Root, Writer))
+	{
+		OutError = TEXT("The Match Winner void reconciliation projection could not be serialized.");
+		return false;
+	}
+	const FString Path = GetMatchWinnerReconciliationPath(bQaProjection);
+	IFileManager::Get().MakeDirectory(*FPaths::GetPath(Path), true);
+	const FString TemporaryPath = Path + TEXT(".tmp");
+	if (!FFileHelper::SaveStringToFile(Json, *TemporaryPath)
+		|| !IFileManager::Get().Move(*Path, *TemporaryPath, true, true, false, true))
+	{
+		IFileManager::Get().Delete(*TemporaryPath, false, true, true);
+		OutError = TEXT("The Match Winner void reconciliation projection could not be written atomically.");
+		return false;
+	}
+	OutError.Reset();
+	return true;
+}
+
 bool WriteMatchWinnerReconciliationFromValidatedState(
 	const FOddsWellOddsBucksLedger& Ledger,
 	const TArray<FOddsWellMatchWinnerRequestRecord>& Requests,
@@ -1252,9 +1456,32 @@ bool WriteMatchWinnerReconciliationFromValidatedState(
 	const TArray<FOddsWellMatchWinnerSettlementDecisionRecord>& Decisions,
 	const TArray<FOddsWellMatchWinnerLossFinalizationRecord>& LossFinalizations,
 	const TArray<FOddsWellMatchWinnerWinFinalizationRecord>& WinFinalizations,
+	const TArray<FOddsWellMatchWinnerCanceledGameRecord>& CanceledGames,
+	const TArray<FOddsWellMatchWinnerVoidDecisionRecord>& VoidDecisions,
+	const TArray<FOddsWellMatchWinnerVoidFinalizationRecord>& VoidFinalizations,
 	const bool bQaProjection,
 	FString& OutError)
 {
+	if (!CanceledGames.IsEmpty() || !VoidDecisions.IsEmpty() || !VoidFinalizations.IsEmpty())
+	{
+		if (!Results.IsEmpty()
+			|| !Decisions.IsEmpty()
+			|| !LossFinalizations.IsEmpty()
+			|| !WinFinalizations.IsEmpty())
+		{
+			OutError = TEXT("The Match Winner reconciliation cannot mix void and normal outcome evidence.");
+			return false;
+		}
+		return WriteMatchWinnerVoidReconciliationFromValidatedState(
+			Ledger,
+			Requests,
+			Locks,
+			CanceledGames,
+			VoidDecisions,
+			VoidFinalizations,
+			bQaProjection,
+			OutError);
+	}
 	if (Requests.Num() != 1
 		|| Locks.Num() != 1
 		|| Results.Num() != 1
@@ -1618,6 +1845,7 @@ bool LoadOddsWellOddsBucksWagerFinalizationState(
 	const FString ProjectionPath = GetMatchWinnerReconciliationPath(bQaSlot);
 	TArray<FOddsWellMatchWinnerCanceledGameRecord> CanceledGames;
 	TArray<FOddsWellMatchWinnerVoidDecisionRecord> VoidDecisions;
+	TArray<FOddsWellMatchWinnerVoidFinalizationRecord> VoidFinalizations;
 	bool bNeedsMigration = false;
 	if (!LoadOddsWellOddsBucksStateRaw(
 		bQaSlot,
@@ -1655,7 +1883,12 @@ bool LoadOddsWellOddsBucksWagerFinalizationState(
 		IFileManager::Get().Delete(*ProjectionPath, false, true, true);
 		return false;
 	}
-	if (!bOutFound || (OutMatchWinnerLossFinalizations.IsEmpty() && OutMatchWinnerWinFinalizations.IsEmpty()))
+	if (bOutFound && !LoadOddsWellMatchWinnerVoidFinalizations(bQaSlot, VoidFinalizations, bOutFound, OutError))
+	{
+		IFileManager::Get().Delete(*ProjectionPath, false, true, true);
+		return false;
+	}
+	if (!bOutFound || (OutMatchWinnerLossFinalizations.IsEmpty() && OutMatchWinnerWinFinalizations.IsEmpty() && VoidFinalizations.IsEmpty()))
 	{
 		if (IFileManager::Get().FileExists(*ProjectionPath)
 			&& !IFileManager::Get().Delete(*ProjectionPath, false, true, true))
@@ -1674,6 +1907,9 @@ bool LoadOddsWellOddsBucksWagerFinalizationState(
 		OutMatchWinnerSettlementDecisions,
 		OutMatchWinnerLossFinalizations,
 		OutMatchWinnerWinFinalizations,
+		CanceledGames,
+		VoidDecisions,
+		VoidFinalizations,
 		bQaSlot,
 		OutError))
 	{
@@ -2872,6 +3108,33 @@ EOddsWellMatchWinnerVoidFinalizationResult FinalizeOddsWellMatchWinnerVoidRefund
 		&CandidateFinalizations))
 	{
 		return EOddsWellMatchWinnerVoidFinalizationResult::Rejected;
+	}
+	FOddsWellOddsBucksLedger PublishedLedger;
+	int64 PublishedNextJobPayout = 0;
+	TArray<FOddsWellMatchWinnerRequestRecord> PublishedRequests;
+	TArray<FOddsWellMatchWinnerLockRecord> PublishedLocks;
+	TArray<FOddsWellMatchWinnerResultLinkRecord> PublishedResults;
+	TArray<FOddsWellMatchWinnerSettlementDecisionRecord> PublishedDecisions;
+	TArray<FOddsWellMatchWinnerLossFinalizationRecord> PublishedLossFinalizations;
+	TArray<FOddsWellMatchWinnerWinFinalizationRecord> PublishedWinFinalizations;
+	bool bPublishedFound = false;
+	FString ProjectionError;
+	if (!LoadOddsWellOddsBucksWagerFinalizationState(
+		bQaSlot,
+		PublishedLedger,
+		PublishedNextJobPayout,
+		PublishedRequests,
+		PublishedLocks,
+		PublishedResults,
+		PublishedDecisions,
+		PublishedLossFinalizations,
+		PublishedWinFinalizations,
+		bPublishedFound,
+		ProjectionError))
+	{
+		OutRecord = MoveTemp(Candidate);
+		OutError = FString::Printf(TEXT("The void refund was finalized and applied, but its read-only reconciliation is unavailable: %s"), *ProjectionError);
+		return EOddsWellMatchWinnerVoidFinalizationResult::Finalized;
 	}
 	OutRecord = MoveTemp(Candidate);
 	OutError.Reset();
@@ -4677,7 +4940,75 @@ bool FOddsWellOddsBucksLedgerTest::RunTest(const FString& Parameters)
 	TestEqual(TEXT("Void refund creates no win finalization"), WagerWinFinalizations.Num(), 0);
 	TestTrue(TEXT("Void decision remains cold-readable after finalization"), LoadOddsWellMatchWinnerVoidDecisions(true, VoidDecisions, bFound, Error));
 	TestEqual(TEXT("Void decision remains pending after finalization"), VoidDecisions[0].Status, MatchWinnerDecidedVoidPendingRefundStatus);
-	TestFalse(TEXT("Void refund publishes no Admin reconciliation"), IFileManager::Get().FileExists(*MatchWinnerProjectionPath));
+	TestTrue(TEXT("Void finalization publishes exact read-only reconciliation"), IFileManager::Get().FileExists(*MatchWinnerProjectionPath));
+	FString MatchWinnerVoidProjectionJson;
+	TSharedPtr<FJsonObject> MatchWinnerVoidProjection;
+	TestTrue(TEXT("Exact void reconciliation reads"), FFileHelper::LoadFileToString(MatchWinnerVoidProjectionJson, *MatchWinnerProjectionPath));
+	const TSharedRef<TJsonReader<>> MatchWinnerVoidProjectionReader = TJsonReaderFactory<>::Create(MatchWinnerVoidProjectionJson);
+	TestTrue(TEXT("Exact void reconciliation parses"), FJsonSerializer::Deserialize(MatchWinnerVoidProjectionReader, MatchWinnerVoidProjection) && MatchWinnerVoidProjection.IsValid());
+	FString NormalizedMatchWinnerVoidProjectionJson;
+	if (MatchWinnerVoidProjection.IsValid())
+	{
+		TestEqual(TEXT("Void reconciliation keeps v1 schema"), MatchWinnerVoidProjection->GetStringField(TEXT("schema")), MatchWinnerReconciliationSchema);
+		TestEqual(TEXT("Void reconciliation binds exact noncanonical offer"), MatchWinnerVoidProjection->GetStringField(TEXT("offer_id")), CanceledOffer.OfferId);
+		TestEqual(TEXT("Void reconciliation binds request"), MatchWinnerVoidProjection->GetStringField(TEXT("request_command_id")), CanceledRequestCommandId);
+		TestEqual(TEXT("Void reconciliation binds stake debit command"), MatchWinnerVoidProjection->GetStringField(TEXT("stake_ledger_command_id")), CanceledRequestCommandId);
+		TestEqual(TEXT("Void reconciliation binds stake sequence two"), static_cast<int32>(MatchWinnerVoidProjection->GetNumberField(TEXT("stake_sequence"))), 2);
+		TestEqual(TEXT("Void reconciliation binds stake minus 40"), static_cast<int64>(MatchWinnerVoidProjection->GetNumberField(TEXT("stake_delta"))), int64{-40});
+		TestEqual(TEXT("Void reconciliation binds stake balance 60"), static_cast<int64>(MatchWinnerVoidProjection->GetNumberField(TEXT("stake_balance_after"))), int64{60});
+		TestEqual(TEXT("Void reconciliation binds lock"), MatchWinnerVoidProjection->GetStringField(TEXT("lock_command_id")), CanceledLockCommandId);
+		TestEqual(TEXT("Void reconciliation binds Season 99"), static_cast<int32>(MatchWinnerVoidProjection->GetNumberField(TEXT("season_number"))), 99);
+		TestEqual(TEXT("Void reconciliation binds Game 1"), static_cast<int32>(MatchWinnerVoidProjection->GetNumberField(TEXT("game_number"))), 1);
+		TestEqual(TEXT("Void reconciliation binds cancellation command"), MatchWinnerVoidProjection->GetStringField(TEXT("cancellation_command_id")), CancellationCommandId);
+		TestEqual(TEXT("Void reconciliation binds cancellation evidence"), MatchWinnerVoidProjection->GetStringField(TEXT("cancellation_evidence_id")), CancellationEvidenceId);
+		TestEqual(TEXT("Void reconciliation binds cancellation schema"), MatchWinnerVoidProjection->GetStringField(TEXT("cancellation_schema")), MatchWinnerCanceledGameSchema);
+		TestEqual(TEXT("Void reconciliation binds cancellation version"), MatchWinnerVoidProjection->GetStringField(TEXT("cancellation_version")), MatchWinnerCanceledGameVersion);
+		TestEqual(TEXT("Void reconciliation binds cancellation time"), static_cast<int64>(MatchWinnerVoidProjection->GetNumberField(TEXT("cancellation_unix"))), CancellationUnixSeconds);
+		TestEqual(TEXT("Void reconciliation binds game canceled"), MatchWinnerVoidProjection->GetStringField(TEXT("cancellation_reason")), MatchWinnerCanceledGameReason.ToString());
+		TestEqual(TEXT("Void reconciliation binds closed canceled"), MatchWinnerVoidProjection->GetStringField(TEXT("cancellation_status")), MatchWinnerClosedCanceledStatus.ToString());
+		TestEqual(TEXT("Void reconciliation binds decision"), MatchWinnerVoidProjection->GetStringField(TEXT("decision_command_id")), VoidDecisionCommandId);
+		TestEqual(TEXT("Void reconciliation binds voided outcome"), MatchWinnerVoidProjection->GetStringField(TEXT("outcome")), MatchWinnerVoidedOutcome.ToString());
+		TestEqual(TEXT("Void reconciliation binds refund due 40"), static_cast<int64>(MatchWinnerVoidProjection->GetNumberField(TEXT("refund_due"))), int64{40});
+		TestEqual(TEXT("Void reconciliation keeps H13 pending"), MatchWinnerVoidProjection->GetStringField(TEXT("decision_status")), MatchWinnerDecidedVoidPendingRefundStatus.ToString());
+		TestEqual(TEXT("Void reconciliation binds refund ledger command"), MatchWinnerVoidProjection->GetStringField(TEXT("refund_ledger_command_id")), VoidFinalizationCommandId);
+		TestEqual(TEXT("Void reconciliation binds refund sequence three"), static_cast<int32>(MatchWinnerVoidProjection->GetNumberField(TEXT("refund_sequence"))), 3);
+		TestEqual(TEXT("Void reconciliation binds refund plus 40"), static_cast<int64>(MatchWinnerVoidProjection->GetNumberField(TEXT("refund_delta"))), int64{40});
+		TestEqual(TEXT("Void reconciliation binds refund reason"), MatchWinnerVoidProjection->GetStringField(TEXT("refund_reason")), MatchWinnerRefundReason.ToString());
+		TestEqual(TEXT("Void reconciliation binds refund balance 100"), static_cast<int64>(MatchWinnerVoidProjection->GetNumberField(TEXT("refund_balance_after"))), int64{100});
+		TestEqual(TEXT("Void reconciliation binds finalization"), MatchWinnerVoidProjection->GetStringField(TEXT("finalization_command_id")), VoidFinalizationCommandId);
+		TestEqual(TEXT("Void reconciliation binds settled void"), MatchWinnerVoidProjection->GetStringField(TEXT("finalization_status")), MatchWinnerSettledVoidStatus.ToString());
+		TestEqual(TEXT("Void reconciliation binds applied refund 40"), static_cast<int64>(MatchWinnerVoidProjection->GetNumberField(TEXT("refund_applied"))), int64{40});
+		TestEqual(TEXT("Void reconciliation reports count three"), static_cast<int32>(MatchWinnerVoidProjection->GetNumberField(TEXT("ledger_entry_count"))), 3);
+		TestEqual(TEXT("Void reconciliation reports balance 100"), static_cast<int64>(MatchWinnerVoidProjection->GetNumberField(TEXT("final_balance"))), int64{100});
+		TestEqual(TEXT("Void reconciliation reports net zero"), static_cast<int64>(MatchWinnerVoidProjection->GetNumberField(TEXT("net"))), int64{0});
+		TestFalse(TEXT("Void reconciliation invents no result command"), MatchWinnerVoidProjection->HasField(TEXT("result_command_id")));
+		TestFalse(TEXT("Void reconciliation invents no winner"), MatchWinnerVoidProjection->HasField(TEXT("winner")));
+		TestFalse(TEXT("Void reconciliation invents no score"), MatchWinnerVoidProjection->HasField(TEXT("home_score")) || MatchWinnerVoidProjection->HasField(TEXT("away_score")));
+		TestFalse(TEXT("Void reconciliation invents no replay"), MatchWinnerVoidProjection->HasField(TEXT("replay_seal_sha256")));
+		TestFalse(TEXT("Void reconciliation invents no payout ledger"), MatchWinnerVoidProjection->HasField(TEXT("payout_ledger_command_id")));
+		TestFalse(TEXT("Void reconciliation invents no gross return due"), MatchWinnerVoidProjection->HasField(TEXT("gross_return_due")));
+		TestFalse(TEXT("Void reconciliation invents no gross return applied"), MatchWinnerVoidProjection->HasField(TEXT("gross_return_applied")));
+		MatchWinnerVoidProjection->RemoveField(TEXT("generated_at_utc"));
+		const TSharedRef<TJsonWriter<>> NormalizedMatchWinnerVoidProjectionWriter = TJsonWriterFactory<>::Create(&NormalizedMatchWinnerVoidProjectionJson);
+		TestTrue(TEXT("Exact void reconciliation normalizes"), FJsonSerializer::Serialize(MatchWinnerVoidProjection.ToSharedRef(), NormalizedMatchWinnerVoidProjectionWriter));
+	}
+	TestTrue(TEXT("QA can remove finalized-void projection for cold-load proof"), IFileManager::Get().Delete(*MatchWinnerProjectionPath, false, true, true));
+	TestFalse(TEXT("Finalized-void projection is absent before cold load"), IFileManager::Get().FileExists(*MatchWinnerProjectionPath));
+	TestTrue(TEXT("Exact void finalization cold-restores reconciliation"), LoadOddsWellOddsBucksWagerFinalizationState(true, WagerLedger, WagerNextJobPayout, WagerRequests, WagerLocks, WagerResultLinks, WagerDecisions, WagerFinalizations, WagerWinFinalizations, bFound, Error));
+	TestTrue(TEXT("Validated cold load regenerates finalized-void reconciliation"), IFileManager::Get().FileExists(*MatchWinnerProjectionPath));
+	FString RegeneratedVoidProjectionJson;
+	TSharedPtr<FJsonObject> RegeneratedVoidProjection;
+	TestTrue(TEXT("Regenerated exact void reconciliation reads"), FFileHelper::LoadFileToString(RegeneratedVoidProjectionJson, *MatchWinnerProjectionPath));
+	const TSharedRef<TJsonReader<>> RegeneratedVoidProjectionReader = TJsonReaderFactory<>::Create(RegeneratedVoidProjectionJson);
+	TestTrue(TEXT("Regenerated exact void reconciliation parses"), FJsonSerializer::Deserialize(RegeneratedVoidProjectionReader, RegeneratedVoidProjection) && RegeneratedVoidProjection.IsValid());
+	if (RegeneratedVoidProjection.IsValid())
+	{
+		RegeneratedVoidProjection->RemoveField(TEXT("generated_at_utc"));
+		FString NormalizedRegeneratedVoidProjectionJson;
+		const TSharedRef<TJsonWriter<>> NormalizedRegeneratedVoidProjectionWriter = TJsonWriterFactory<>::Create(&NormalizedRegeneratedVoidProjectionJson);
+		TestTrue(TEXT("Regenerated exact void reconciliation normalizes"), FJsonSerializer::Serialize(RegeneratedVoidProjection.ToSharedRef(), NormalizedRegeneratedVoidProjectionWriter));
+		TestEqual(TEXT("Cold load regenerates identical void reconciliation data"), NormalizedRegeneratedVoidProjectionJson, NormalizedMatchWinnerVoidProjectionJson);
+	}
 
 	FOddsWellMatchWinnerVoidFinalizationRecord RetryVoidFinalization;
 	TestEqual(TEXT("Exact void finalization retry is idempotent"), FinalizeOddsWellMatchWinnerVoidRefund(VoidFinalizationCommandId, VoidDecisionCommandId, true, RetryVoidFinalization, Error), EOddsWellMatchWinnerVoidFinalizationResult::Duplicate);
@@ -4699,6 +5030,7 @@ bool FOddsWellOddsBucksLedgerTest::RunTest(const FString& Parameters)
 		TestFalse(TEXT("Wrong persisted refund-applied value is rejected in memory"), ValidateOddsBucksSave(MalformedVoidFinalization, MemoryLedger, MemoryNextJobPayout, MemoryRequests, MemoryLocks, MemoryResultLinks, MemoryDecisions, MemoryFinalizations, MemoryWinFinalizations, MemoryCanceledGames, MemoryVoidDecisions, bNeedsMigration, Error));
 		TestTrue(TEXT("Malformed void finalization writes for no-mutation QA"), UGameplayStatics::SaveGameToSlot(MalformedVoidFinalization, OddsBucksQaSlot, OddsBucksUserIndex));
 		TestEqual(TEXT("Malformed persisted void finalization fails closed"), FinalizeOddsWellMatchWinnerVoidRefund(VoidFinalizationCommandId, VoidDecisionCommandId, true, RetryVoidFinalization, Error), EOddsWellMatchWinnerVoidFinalizationResult::Rejected);
+		TestFalse(TEXT("Malformed void finalization removes stale reconciliation"), IFileManager::Get().FileExists(*MatchWinnerProjectionPath));
 		const UOddsWellOddsBucksSaveGame* PersistedMalformedVoidFinalization = Cast<UOddsWellOddsBucksSaveGame>(UGameplayStatics::LoadGameFromSlot(OddsBucksQaSlot, OddsBucksUserIndex));
 		TestTrue(TEXT("Rejected retry does not rewrite malformed void finalization"), PersistedMalformedVoidFinalization
 			&& PersistedMalformedVoidFinalization->MatchWinnerVoidFinalizations.Num() == 1
@@ -4712,6 +5044,7 @@ bool FOddsWellOddsBucksLedgerTest::RunTest(const FString& Parameters)
 		MalformedVoidLedger->Entries[2].Reason = TEXT("match_winner_payout");
 		TestTrue(TEXT("Malformed void refund reason writes for fail-closed QA"), UGameplayStatics::SaveGameToSlot(MalformedVoidLedger, OddsBucksQaSlot, OddsBucksUserIndex));
 		TestFalse(TEXT("Malformed void refund reason fails cold load"), LoadOddsWellMatchWinnerVoidFinalizations(true, VoidFinalizations, bFound, Error));
+		TestFalse(TEXT("Malformed void refund reason removes stale reconciliation"), IFileManager::Get().FileExists(*MatchWinnerProjectionPath));
 		TestTrue(TEXT("Exact finalized void restores after ledger anomaly QA"), UGameplayStatics::SaveGameToSlot(UGameplayStatics::LoadGameFromMemory(ExactVoidFinalizedBytes), OddsBucksQaSlot, OddsBucksUserIndex));
 	}
 	UOddsWellOddsBucksSaveGame* MalformedVoidStatus = Cast<UOddsWellOddsBucksSaveGame>(UGameplayStatics::LoadGameFromSlot(OddsBucksQaSlot, OddsBucksUserIndex));
@@ -4721,6 +5054,7 @@ bool FOddsWellOddsBucksLedgerTest::RunTest(const FString& Parameters)
 		MalformedVoidStatus->MatchWinnerVoidFinalizations[0].Status = TEXT("open");
 		TestTrue(TEXT("Malformed void-finalization status writes for fail-closed QA"), UGameplayStatics::SaveGameToSlot(MalformedVoidStatus, OddsBucksQaSlot, OddsBucksUserIndex));
 		TestFalse(TEXT("Malformed void-finalization status fails cold load"), LoadOddsWellMatchWinnerVoidFinalizations(true, VoidFinalizations, bFound, Error));
+		TestFalse(TEXT("Malformed void-finalization status removes stale reconciliation"), IFileManager::Get().FileExists(*MatchWinnerProjectionPath));
 		TestTrue(TEXT("Exact finalized void restores after status QA"), UGameplayStatics::SaveGameToSlot(UGameplayStatics::LoadGameFromMemory(ExactVoidFinalizedBytes), OddsBucksQaSlot, OddsBucksUserIndex));
 	}
 	UOddsWellOddsBucksSaveGame* ExtraVoidMutation = Cast<UOddsWellOddsBucksSaveGame>(UGameplayStatics::LoadGameFromSlot(OddsBucksQaSlot, OddsBucksUserIndex));
@@ -4736,6 +5070,7 @@ bool FOddsWellOddsBucksLedgerTest::RunTest(const FString& Parameters)
 		ExtraVoidMutation->Entries.Add(ExtraEntry);
 		TestTrue(TEXT("Unexpected void extra mutation writes for fail-closed QA"), UGameplayStatics::SaveGameToSlot(ExtraVoidMutation, OddsBucksQaSlot, OddsBucksUserIndex));
 		TestEqual(TEXT("Unexpected void extra mutation rejects retry"), FinalizeOddsWellMatchWinnerVoidRefund(VoidFinalizationCommandId, VoidDecisionCommandId, true, RetryVoidFinalization, Error), EOddsWellMatchWinnerVoidFinalizationResult::Rejected);
+		TestFalse(TEXT("Unexpected void extra mutation removes stale reconciliation"), IFileManager::Get().FileExists(*MatchWinnerProjectionPath));
 		const UOddsWellOddsBucksSaveGame* PersistedExtraVoidMutation = Cast<UOddsWellOddsBucksSaveGame>(UGameplayStatics::LoadGameFromSlot(OddsBucksQaSlot, OddsBucksUserIndex));
 		TestTrue(TEXT("Rejected retry does not rewrite unexpected void mutation"), PersistedExtraVoidMutation && PersistedExtraVoidMutation->Entries.Num() == 4);
 		TestTrue(TEXT("Exact finalized void restores after extra-mutation QA"), UGameplayStatics::SaveGameToSlot(UGameplayStatics::LoadGameFromMemory(ExactVoidFinalizedBytes), OddsBucksQaSlot, OddsBucksUserIndex));
@@ -4746,10 +5081,36 @@ bool FOddsWellOddsBucksLedgerTest::RunTest(const FString& Parameters)
 
 	TestTrue(TEXT("Exact loss profile restores after canceled-game QA"), UGameplayStatics::SaveGameToSlot(UGameplayStatics::LoadGameFromMemory(ExactLossProfileBytes), OddsBucksQaSlot, OddsBucksUserIndex));
 	TestTrue(TEXT("Exact loss remains valid after schema v11"), LoadOddsWellOddsBucksWagerFinalizationState(true, WagerLedger, WagerNextJobPayout, WagerRequests, WagerLocks, WagerResultLinks, WagerDecisions, WagerFinalizations, WagerWinFinalizations, bFound, Error));
+	FString H15LossProjectionJson;
+	TSharedPtr<FJsonObject> H15LossProjection;
+	TestTrue(TEXT("H15 restored exact loss reconciliation reads"), FFileHelper::LoadFileToString(H15LossProjectionJson, *MatchWinnerProjectionPath));
+	const TSharedRef<TJsonReader<>> H15LossProjectionReader = TJsonReaderFactory<>::Create(H15LossProjectionJson);
+	TestTrue(TEXT("H15 restored exact loss reconciliation parses"), FJsonSerializer::Deserialize(H15LossProjectionReader, H15LossProjection) && H15LossProjection.IsValid());
+	if (H15LossProjection.IsValid())
+	{
+		H15LossProjection->RemoveField(TEXT("generated_at_utc"));
+		FString NormalizedH15LossProjectionJson;
+		const TSharedRef<TJsonWriter<>> NormalizedH15LossProjectionWriter = TJsonWriterFactory<>::Create(&NormalizedH15LossProjectionJson);
+		TestTrue(TEXT("H15 restored exact loss reconciliation normalizes"), FJsonSerializer::Serialize(H15LossProjection.ToSharedRef(), NormalizedH15LossProjectionWriter));
+		TestEqual(TEXT("H15 leaves exact loss reconciliation unchanged"), NormalizedH15LossProjectionJson, NormalizedMatchWinnerProjectionJson);
+	}
 	TestEqual(TEXT("Exact loss remains two ledger entries"), WagerLedger.GetEntries().Num(), 2);
 	TestEqual(TEXT("Exact loss balance remains 60"), WagerLedger.GetBalance(), int64{60});
 	TestTrue(TEXT("Exact win profile restores after canceled-game QA"), UGameplayStatics::SaveGameToSlot(UGameplayStatics::LoadGameFromMemory(ExactWinFinalizedBytes), OddsBucksQaSlot, OddsBucksUserIndex));
 	TestTrue(TEXT("Exact win remains valid after schema v11"), LoadOddsWellOddsBucksWagerFinalizationState(true, WinLedger, WinNextJobPayout, WinRequests, WinLocks, WinResults, WinDecisions, WinLossFinalizations, WinFinalizations, bFound, Error));
+	FString H15WinProjectionJson;
+	TSharedPtr<FJsonObject> H15WinProjection;
+	TestTrue(TEXT("H15 restored exact win reconciliation reads"), FFileHelper::LoadFileToString(H15WinProjectionJson, *MatchWinnerProjectionPath));
+	const TSharedRef<TJsonReader<>> H15WinProjectionReader = TJsonReaderFactory<>::Create(H15WinProjectionJson);
+	TestTrue(TEXT("H15 restored exact win reconciliation parses"), FJsonSerializer::Deserialize(H15WinProjectionReader, H15WinProjection) && H15WinProjection.IsValid());
+	if (H15WinProjection.IsValid())
+	{
+		H15WinProjection->RemoveField(TEXT("generated_at_utc"));
+		FString NormalizedH15WinProjectionJson;
+		const TSharedRef<TJsonWriter<>> NormalizedH15WinProjectionWriter = TJsonWriterFactory<>::Create(&NormalizedH15WinProjectionJson);
+		TestTrue(TEXT("H15 restored exact win reconciliation normalizes"), FJsonSerializer::Serialize(H15WinProjection.ToSharedRef(), NormalizedH15WinProjectionWriter));
+		TestEqual(TEXT("H15 leaves exact win reconciliation unchanged"), NormalizedH15WinProjectionJson, NormalizedMatchWinnerWinProjectionJson);
+	}
 	TestEqual(TEXT("Exact win remains three ledger entries"), WinLedger.GetEntries().Num(), 3);
 	TestEqual(TEXT("Exact win balance remains 160"), WinLedger.GetBalance(), int64{160});
 	TestTrue(TEXT("Final wager QA cleanup succeeds"), ResetOddsWellQaOddsBucksAndVerify(Error));
