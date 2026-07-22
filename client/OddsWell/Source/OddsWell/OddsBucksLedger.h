@@ -46,6 +46,13 @@ enum class EOddsWellMatchWinnerVoidDecisionResult : uint8
 	Rejected
 };
 
+enum class EOddsWellMatchWinnerVoidFinalizationResult : uint8
+{
+	Finalized,
+	Duplicate,
+	Rejected
+};
+
 enum class EOddsWellMatchWinnerSettlementDecisionResult : uint8
 {
 	Decided,
@@ -342,6 +349,81 @@ struct FOddsWellMatchWinnerVoidDecisionRecord
 };
 
 USTRUCT()
+struct FOddsWellMatchWinnerVoidFinalizationRecord
+{
+	GENERATED_BODY()
+
+	UPROPERTY(SaveGame)
+	FString FinalizationCommandId;
+
+	UPROPERTY(SaveGame)
+	FString VoidDecisionCommandId;
+
+	UPROPERTY(SaveGame)
+	FString CancellationCommandId;
+
+	UPROPERTY(SaveGame)
+	FString CancellationEvidenceId;
+
+	UPROPERTY(SaveGame)
+	FString RequestCommandId;
+
+	UPROPERTY(SaveGame)
+	FString LockCommandId;
+
+	UPROPERTY(SaveGame)
+	FString FinalizationSchema;
+
+	UPROPERTY(SaveGame)
+	FString FinalizationVersion;
+
+	UPROPERTY(SaveGame)
+	FString OfferId;
+
+	UPROPERTY(SaveGame)
+	FString OfferSchema;
+
+	UPROPERTY(SaveGame)
+	FString OfferVersion;
+
+	UPROPERTY(SaveGame)
+	int32 SeasonNumber = 0;
+
+	UPROPERTY(SaveGame)
+	int32 GameNumber = 0;
+
+	UPROPERTY(SaveGame)
+	FString SelectedTeam;
+
+	UPROPERTY(SaveGame)
+	int64 Stake = 0;
+
+	UPROPERTY(SaveGame)
+	FName CancellationReason;
+
+	UPROPERTY(SaveGame)
+	FName Outcome;
+
+	UPROPERTY(SaveGame)
+	int64 RefundDue = 0;
+
+	UPROPERTY(SaveGame)
+	int64 RefundApplied = 0;
+
+	UPROPERTY(SaveGame)
+	FString RefundLedgerCommandId;
+
+	UPROPERTY(SaveGame)
+	FName Status;
+
+	UPROPERTY(SaveGame)
+	int64 ObservedFinalBalance = 0;
+
+	UPROPERTY(SaveGame)
+	int32 ObservedLedgerEntryCount = 0;
+};
+
+USTRUCT()
 struct FOddsWellMatchWinnerSettlementDecisionRecord
 {
 	GENERATED_BODY()
@@ -519,7 +601,7 @@ class ODDSWELL_API UOddsWellOddsBucksSaveGame final : public USaveGame
 
 public:
 	UPROPERTY(SaveGame)
-	int32 SchemaVersion = 10;
+	int32 SchemaVersion = 11;
 
 	UPROPERTY(SaveGame)
 	TArray<FOddsWellOddsBucksEntry> Entries;
@@ -550,6 +632,9 @@ public:
 
 	UPROPERTY(SaveGame)
 	TArray<FOddsWellMatchWinnerVoidDecisionRecord> MatchWinnerVoidDecisions;
+
+	UPROPERTY(SaveGame)
+	TArray<FOddsWellMatchWinnerVoidFinalizationRecord> MatchWinnerVoidFinalizations;
 };
 
 class FOddsWellOddsBucksLedger
@@ -582,11 +667,13 @@ ODDSWELL_API bool LoadOddsWellOddsBucksWagerDecisionState(bool bQaSlot, FOddsWel
 ODDSWELL_API bool LoadOddsWellOddsBucksWagerFinalizationState(bool bQaSlot, FOddsWellOddsBucksLedger& OutLedger, int64& OutNextJobPayoutUnixSeconds, TArray<FOddsWellMatchWinnerRequestRecord>& OutMatchWinnerRequests, TArray<FOddsWellMatchWinnerLockRecord>& OutMatchWinnerLocks, TArray<FOddsWellMatchWinnerResultLinkRecord>& OutMatchWinnerResultLinks, TArray<FOddsWellMatchWinnerSettlementDecisionRecord>& OutMatchWinnerSettlementDecisions, TArray<FOddsWellMatchWinnerLossFinalizationRecord>& OutMatchWinnerLossFinalizations, TArray<FOddsWellMatchWinnerWinFinalizationRecord>& OutMatchWinnerWinFinalizations, bool& bOutFound, FString& OutError);
 ODDSWELL_API bool LoadOddsWellMatchWinnerCanceledGames(bool bQaSlot, TArray<FOddsWellMatchWinnerCanceledGameRecord>& OutCanceledGames, bool& bOutFound, FString& OutError);
 ODDSWELL_API bool LoadOddsWellMatchWinnerVoidDecisions(bool bQaSlot, TArray<FOddsWellMatchWinnerVoidDecisionRecord>& OutVoidDecisions, bool& bOutFound, FString& OutError);
+ODDSWELL_API bool LoadOddsWellMatchWinnerVoidFinalizations(bool bQaSlot, TArray<FOddsWellMatchWinnerVoidFinalizationRecord>& OutVoidFinalizations, bool& bOutFound, FString& OutError);
 ODDSWELL_API EOddsWellMatchWinnerRequestResult AcceptOddsWellMatchWinnerRequest(const FOddsWellMatchWinnerOffer& Offer, const FString& RequestCommandId, const FString& OfferedTeam, int64 Stake, int64 AcceptedUnixSeconds, bool bQaSlot, FOddsWellMatchWinnerRequestRecord& OutRecord, int64& OutBalance, FString& OutError);
 ODDSWELL_API EOddsWellMatchWinnerLockResult LockOddsWellMatchWinnerRequest(const FString& RequestCommandId, const FString& LockCommandId, int32 SeasonNumber, int32 GameNumber, int64 AuthoritativeGameStartUnixSeconds, bool bQaSlot, FOddsWellMatchWinnerLockRecord& OutRecord, FString& OutError);
 ODDSWELL_API EOddsWellMatchWinnerResultLinkResult LinkOddsWellMatchWinnerResult(const FString& ResultCommandId, const FString& RequestCommandId, const FString& LockCommandId, const FString& ResultSchema, const FString& ResultVersion, int32 SeasonNumber, int32 GameNumber, const FString& HomeTeam, const FString& AwayTeam, int32 HomeScore, int32 AwayScore, const FString& Winner, const FString& ReplaySealSha256, bool bQaSlot, FOddsWellMatchWinnerResultLinkRecord& OutRecord, FString& OutError);
 ODDSWELL_API EOddsWellMatchWinnerCanceledGameResult RecordOddsWellMatchWinnerCanceledGame(const FString& CancellationCommandId, const FString& CancellationEvidenceId, const FString& RequestCommandId, const FString& LockCommandId, const FString& DispositionSchema, const FString& DispositionVersion, int32 SeasonNumber, int32 GameNumber, int64 AuthoritativeCancellationUnixSeconds, FName ReasonCode, bool bQaSlot, FOddsWellMatchWinnerCanceledGameRecord& OutRecord, FString& OutError);
 ODDSWELL_API EOddsWellMatchWinnerVoidDecisionResult DecideOddsWellMatchWinnerVoidRefundDue(const FString& VoidDecisionCommandId, const FString& CancellationCommandId, const FString& CancellationEvidenceId, bool bQaSlot, FOddsWellMatchWinnerVoidDecisionRecord& OutRecord, FString& OutError);
+ODDSWELL_API EOddsWellMatchWinnerVoidFinalizationResult FinalizeOddsWellMatchWinnerVoidRefund(const FString& FinalizationCommandId, const FString& VoidDecisionCommandId, bool bQaSlot, FOddsWellMatchWinnerVoidFinalizationRecord& OutRecord, FString& OutError);
 ODDSWELL_API EOddsWellMatchWinnerSettlementDecisionResult DecideOddsWellMatchWinnerSettlement(const FString& DecisionCommandId, const FString& RequestCommandId, const FString& LockCommandId, const FString& ResultCommandId, bool bQaSlot, FOddsWellMatchWinnerSettlementDecisionRecord& OutRecord, FString& OutError);
 ODDSWELL_API EOddsWellMatchWinnerSettlementDecisionResult DecideOddsWellMatchWinnerSettlement(const FOddsWellMatchWinnerOffer& ExactOffer, const FString& DecisionCommandId, const FString& RequestCommandId, const FString& LockCommandId, const FString& ResultCommandId, bool bQaSlot, FOddsWellMatchWinnerSettlementDecisionRecord& OutRecord, FString& OutError);
 ODDSWELL_API EOddsWellMatchWinnerLossFinalizationResult FinalizeOddsWellMatchWinnerLoss(const FString& FinalizationCommandId, const FString& DecisionCommandId, bool bQaSlot, FOddsWellMatchWinnerLossFinalizationRecord& OutRecord, FString& OutError);
