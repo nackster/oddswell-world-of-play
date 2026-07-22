@@ -262,7 +262,7 @@ The local Brain Observatory grows into the game Admin Console only as real syste
 - Brain versions and evaluation evidence.
 - Teams, athletes, schedule, games, replay, and league state.
 - Clothing, furniture, and apartment-content availability.
-- Odds Bucks ledger and wager settlement only after those systems are authorized.
+- **CURRENT LOCAL EVIDENCE:** the validated machine-local Odds Bucks ledger, balance, and next-job eligibility are visible as an output-only read-only projection under [[Development/Reports/Phase 1G5 Read Only Odds Bucks Admin Reconciliation]]. Wager settlement remains unavailable until separately authorized and proven.
 - Audit history for consequential changes.
 
 Admin features do not become beta player features. The server remains authoritative, and financial or live operations require authentication, least privilege, confirmations, and audit records.
@@ -274,7 +274,7 @@ Admin features do not become beta player features. The server remains authoritat
 | Character | Fast preset selection, varied appearances, minimal worn starter outfit | LOCKED / details OPEN |
 | World | One walkable original 3D city | LOCKED / SUNDALE DIRECTION APPROVED / NAME OPEN |
 | Home | Studio, 1BR, 2BR, 3BR, 4BR, and Penthouse progression | LOCKED / layouts OPEN |
-| Work | One physical job location and repeatable Odds Bucks recovery | LOCKED / mechanic OPEN |
+| Work | One physical job location and repeatable Odds Bucks recovery | LOCKED / LOCAL RECOVERY PROVEN |
 | Basketball | Two fictional teams, persistent league, watchable authoritative games | LOCKED |
 | Wagers | Winner, margin, overtime, and player-points targets, introduced one at a time | BETA TARGET |
 | Currency | Odds Bucks only; earn, wager, save, and spend | LOCKED |
@@ -344,4 +344,4 @@ Before proposing a phase, the Scope Director must:
 - Phase 1D passed for the local shared-city prototype. External hosting and a beta capacity ceiling are not proven.
 - Phase 1E's standalone Studio foundation is complete through ownership, cold return, and six visible housing tiers. Furniture activation remains dependent on a legitimate Phase 1I purchase and ownership path.
 - Phase 1F passed for the current archived-game slice: watch, player skip, late arrival, and seal-validated cold reconstruction converge on the same result without client resimulation. Backend reconnect and full-season presentation variety are not proven.
-- Phase 1G.1 provides the server-authoritative append-only Odds Bucks ledger, Phase 1G.2 adds the server-validated `Job` interaction, Phase 1G.3 proves the first persistent `100`-Odds-Bucks credit, and Phase 1G.4 proves a rolling `24`-hour repeat recovery schedule across a cold packaged-process restart; see [[Development/Reports/Phase 1G4 Rolling 24 Hour Job Recovery]]. The local profile starts at `0`, balances accumulate, and there is no allowance or catch-up payout. No online account identity, trusted backend clock, backend reconnect, multi-device recovery, price, purchase, wager, settlement, Admin reconciliation, real-money path, or second currency is proven.
+- Phase 1G.1 provides the server-authoritative append-only Odds Bucks ledger, Phase 1G.2 adds the server-validated `Job` interaction, Phase 1G.3 proves the first persistent `100`-Odds-Bucks credit, Phase 1G.4 proves rolling `24`-hour repeat recovery across a cold packaged-process restart, and Phase 1G.5 exposes a validated output-only projection in Brain Admin; see [[Development/Reports/Phase 1G5 Read Only Odds Bucks Admin Reconciliation]]. The local profile starts at `0`, balances accumulate, and there is no allowance or catch-up payout. No online account identity, trusted backend clock, backend reconnect, multi-device recovery, Admin mutation authority, price, purchase, wager, settlement, real-money path, or second currency is proven.

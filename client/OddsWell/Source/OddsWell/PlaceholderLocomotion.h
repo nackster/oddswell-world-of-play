@@ -256,6 +256,7 @@ public:
 	bool WasOddsBucksLoadedFromDisk() const { return bOddsBucksLoadedFromDisk; }
 
 private:
+	void PublishOddsBucksReconciliation();
 	FOddsWellOddsBucksLedger OddsBucksLedger;
 	TMap<int32, FVector> SharedCityQaStartLocations;
 	FOddsWellSharedCityAppearance SharedCityReconnectExpectedAppearance;

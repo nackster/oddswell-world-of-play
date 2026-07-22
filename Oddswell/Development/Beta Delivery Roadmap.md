@@ -70,7 +70,9 @@ The roadmap is intentionally made of measurable product gates, not hundreds of s
 - Phase 1G.2 server-validated placeholder Job interaction: **COMPLETE**; see [[Development/Reports/Phase 1G2 Server Validated Placeholder Job Interaction]].
 - Phase 1G.3 persistent first job payout: **COMPLETE FOR ONE LOCAL SAVED PROFILE**; see [[Development/Reports/Phase 1G3 Persistent First Job Payout]] and [[Design/Decisions/DEC-014 Phase 1G3 Provisional First Job Payout]].
 - Phase 1G.4 rolling job recovery: **COMPLETE FOR ONE LOCAL SAVED PROFILE**; start at `0`, earn `100` per successful shift on a rolling `24`-hour cooldown, accumulate balances, and provide no separate allowance or catch-up payout. See [[Development/Reports/Phase 1G4 Rolling 24 Hour Job Recovery]] and [[Design/Decisions/DEC-015 Phase 1G4 Rolling Job Recovery Defaults]].
-- Next gate: **PHASE 1G.5 ADMIN RECONCILIATION**. Expose the existing local authoritative ledger and next-job eligibility as truthful read-only operator evidence. Prices, wagers, production account/time authority, and broader limits remain open. Sundale remains a working name.
+- Phase 1G.5 read-only Admin reconciliation: **COMPLETE FOR ONE LOCAL SAVED PROFILE**; Unreal publishes a validated output-only ledger projection, and Brain Admin independently validates and displays the balance, entries, and next-job eligibility without economy commands. See [[Development/Reports/Phase 1G5 Read Only Odds Bucks Admin Reconciliation]].
+- Phase 1G exit: **PASSED FOR THE CURRENT LOCAL-PROFILE DEPENDENCY**. No online account, trusted backend clock, production authorization, price, purchase, wager, settlement, payment, or second currency is claimed.
+- Next gate: **PHASE 1H.1 MATCH WINNER OWNER DECISION**. Confirm Match Winner as the first market and freeze its odds/payout formula, stake limits, lock time, cancellation/correction policy, and equal-public-information boundary before implementation. Sundale remains a working name.
 - Current prerequisite note: UE 5.8, the aligned x64 runtime and .NET Framework 4.8 SDK, portable project, reproducible local Windows package, empty-map launch, LFS, generated-file ignores, primitive block/court iteration, collision, cold-process reopen, direct recorded-replay rendering, deterministic packaged traces, and local resource sampling are verified. UE 5.8 is now the approved beta client engine.
 
 No later roadmap phase is authorized merely because it appears below.
@@ -85,8 +87,8 @@ No later roadmap phase is authorized merely because it appears below.
 | 4 | 1D — Shared-city presence | Players see one another and equipped clothing | COMPLETE |
 | 5 | 1E — Studio and apartment progression | Enter a persistent home and see the six-tier goal | FOUNDATION COMPLETE / FURNITURE IN 1I |
 | 6 | 1F — League, stadium, and match viewing | Research and watch authoritative basketball | COMPLETE FOR CURRENT ARCHIVED GAME |
-| 7 | 1G — Odds Bucks and work recovery | Earn, persist, audit, and recover virtual currency | ACTIVE — COMPLETE THROUGH 1G.4 / ADMIN RECONCILIATION NEXT |
-| 8 | 1H — Wager locking and settlement | Place approved wagers and receive exact outcomes | PENDING |
+| 7 | 1G — Odds Bucks and work recovery | Earn, persist, audit, and recover virtual currency | COMPLETE FOR CURRENT LOCAL PROFILE |
+| 8 | 1H — Wager locking and settlement | Place approved wagers and receive exact outcomes | OWNER DECISION NEXT |
 | 9 | 1I — Stores and lifestyle upgrades | Buy, equip, display, and place basic items | PENDING |
 | 10 | 1J — Athlete life and league storytelling | Understand athletes, availability, and consequences | PENDING |
 | 11 | 1K — First-hour integration | Complete the entire beta promise in one session | PENDING |
@@ -265,7 +267,7 @@ The player can research a scheduled game, go to the venue, watch or skip the sam
 2. **COMPLETE:** create one server-validated placeholder action at Sundale's existing `Job` marker. See [[Development/Reports/Phase 1G2 Server Validated Placeholder Job Interaction]].
 3. **COMPLETE FOR ONE LOCAL SAVED PROFILE:** credit one verified `100` Odds Bucks first-job payout, reject exact retries, and restore the one-entry ledger across a cold packaged-process restart. No online account or backend reconnect is claimed. See [[Development/Reports/Phase 1G3 Persistent First Job Payout]].
 4. **COMPLETE FOR ONE LOCAL SAVED PROFILE:** start at `0`, credit `100` per successful shift on a rolling `24`-hour cooldown, count the first payout as period one, accumulate balances, and provide no separate allowance or missed-period catch-up. The next eligible timestamp and ledger survive a cold packaged-process restart. No online account, trusted backend clock, or backend reconnect is claimed. See [[Development/Reports/Phase 1G4 Rolling 24 Hour Job Recovery]].
-5. **NEXT:** expose truthful read-only reconciliation in Admin.
+5. **COMPLETE FOR ONE LOCAL SAVED PROFILE:** publish a validated output-only projection from Unreal and independently validate and display its balance, entries, and next-job eligibility in Brain Admin without mutation controls. See [[Development/Reports/Phase 1G5 Read Only Odds Bucks Admin Reconciliation]].
 
 ### Owner gates
 
@@ -274,7 +276,7 @@ The player can research a scheduled game, go to the venue, watch or skip the sam
 
 ### Exit evidence
 
-The player can earn, retain, and audit virtual Odds Bucks through one non-paid path. No wager, real-money purchase, trade, or second currency is added in this phase.
+**EXIT PASSED FOR THE CURRENT LOCAL-PROFILE DEPENDENCY:** the player can earn, retain, cold-restore, and locally audit virtual Odds Bucks through one non-paid path. No online account, trusted backend clock, production authorization, wager, real-money purchase, trade, or second currency is added in this phase.
 
 ## Phase 1H — Wager locking and settlement
 

@@ -2128,6 +2128,7 @@ void AOddsWellLocomotionGameMode::BeginPlay()
 		OddsBucksQaNowUnixSeconds = FMath::Max<int64>(1, NextJobPayoutUnixSeconds - 1);
 	}
 	bOddsBucksReady = true;
+	PublishOddsBucksReconciliation();
 	UE_LOG(
 		LogOddsWellLocomotion,
 		Display,
@@ -2137,6 +2138,18 @@ void AOddsWellLocomotionGameMode::BeginPlay()
 		OddsBucksLedger.GetBalance(),
 		GetOddsWellJobPayoutIntervalSeconds(),
 		NextJobPayoutUnixSeconds);
+}
+
+void AOddsWellLocomotionGameMode::PublishOddsBucksReconciliation()
+{
+	FString Path;
+	FString Error;
+	if (!WriteOddsWellOddsBucksReconciliation(OddsBucksLedger, NextJobPayoutUnixSeconds, GetOddsBucksNowUnixSeconds(), bOddsBucksQaSlot, Path, Error))
+	{
+		UE_LOG(LogOddsWellLocomotion, Warning, TEXT("ODDSWELL_ODDS_BUCKS_RECONCILIATION|result=STALE|read_only=true|detail=%s"), *Error);
+		return;
+	}
+	UE_LOG(LogOddsWellLocomotion, Display, TEXT("ODDSWELL_ODDS_BUCKS_RECONCILIATION|result=PASS|read_only=true|qa=%s|entries=%d|balance=%lld|next_job_payout_unix=%lld|path=%s|backend=false|account=false"), bOddsBucksQaSlot ? TEXT("true") : TEXT("false"), OddsBucksLedger.GetEntries().Num(), OddsBucksLedger.GetBalance(), NextJobPayoutUnixSeconds, *Path);
 }
 
 int64 AOddsWellLocomotionGameMode::GetOddsBucksNowUnixSeconds() const
@@ -2205,6 +2218,7 @@ bool AOddsWellLocomotionGameMode::TryCreditPlaceholderJob(bool& bOutCredited, in
 	}
 	OddsBucksLedger = MoveTemp(Candidate);
 	NextJobPayoutUnixSeconds = CandidateNextJobPayout;
+	PublishOddsBucksReconciliation();
 	bOutCredited = true;
 	OutBalance = OddsBucksLedger.GetBalance();
 	return true;

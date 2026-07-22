@@ -68,6 +68,7 @@ ODDSWELL_API int64 GetOddsWellJobPayoutIntervalSeconds();
 ODDSWELL_API const FString& GetOddsWellFirstJobCommandId();
 ODDSWELL_API FName GetOddsWellFirstJobReason();
 ODDSWELL_API bool UseOddsWellOddsBucksQaSlot();
+ODDSWELL_API bool WriteOddsWellOddsBucksReconciliation(const FOddsWellOddsBucksLedger& Ledger, int64 NextJobPayoutUnixSeconds, int64 ObservedNowUnixSeconds, bool bQaProjection, FString& OutPath, FString& OutError);
 ODDSWELL_API bool SaveOddsWellOddsBucksLedger(const FOddsWellOddsBucksLedger& Ledger, int64 NextJobPayoutUnixSeconds, bool bQaSlot, FString& OutError);
 ODDSWELL_API bool LoadOddsWellOddsBucksLedger(bool bQaSlot, FOddsWellOddsBucksLedger& OutLedger, int64& OutNextJobPayoutUnixSeconds, bool& bOutFound, FString& OutError);
 ODDSWELL_API bool ResetOddsWellQaOddsBucksAndVerify(FString& OutError);

@@ -5,6 +5,7 @@ from collections import Counter, defaultdict
 from datetime import datetime, timezone
 from functools import lru_cache
 import json
+import os
 import socket
 import sys
 import tempfile
@@ -71,6 +72,124 @@ LEAGUE_VIEW_START_SEED = 15_000
 CAREER_SEASONS = 4
 
 
+def economy_projection_candidates() -> list[Path]:
+    candidates = [ROOT / "client" / "OddsWell" / "Saved" / "Admin" / "OddsBucksReconciliation.json"]
+    candidates.extend(ROOT.glob("client/OddsWell/Builds/*/Windows/OddsWell/Saved/Admin/OddsBucksReconciliation.json"))
+    if local_app_data := os.environ.get("LOCALAPPDATA"):
+        candidates.append(Path(local_app_data) / "OddsWell" / "Saved" / "Admin" / "OddsBucksReconciliation.json")
+    return candidates
+
+
+def exact_integer(value: object, name: str) -> int:
+    if isinstance(value, bool) or not isinstance(value, (int, float)) or int(value) != value:
+        raise ValueError(f"{name} must be a whole number")
+    return int(value)
+
+
+def validated_economy_projection(path: Path) -> dict[str, object]:
+    data = json.loads(path.read_text(encoding="utf-8"))
+    if not isinstance(data, dict):
+        raise ValueError("projection must be a JSON object")
+    expected = {
+        "schema": "oddswell-odds-bucks-reconciliation-v1",
+        "authority": "server",
+        "currency": "odds_bucks",
+        "profile_scope": "machine_local",
+        "time_authority": "local_machine_utc",
+        "read_only_projection": True,
+        "job_payout": 100,
+        "payout_interval_seconds": 86_400,
+        "accumulation": True,
+        "allowance": False,
+    }
+    for field, expected_value in expected.items():
+        if data.get(field) != expected_value:
+            raise ValueError(f"invalid {field}")
+    if not isinstance(data.get("qa"), bool):
+        raise ValueError("qa must be true or false")
+    generated_at = data.get("generated_at_utc")
+    if not isinstance(generated_at, str):
+        raise ValueError("generated_at_utc must be text")
+    datetime.fromisoformat(generated_at.replace("Z", "+00:00"))
+    for field in ("observed_now_unix", "balance", "entry_count", "next_job_payout_unix"):
+        data[field] = exact_integer(data.get(field), field)
+    entries = data.get("entries")
+    if not isinstance(entries, list) or len(entries) != data["entry_count"]:
+        raise ValueError("entry_count does not match entries")
+    balance = 0
+    commands: set[str] = set()
+    has_job_payout = False
+    for sequence, entry in enumerate(entries, 1):
+        if not isinstance(entry, dict):
+            raise ValueError(f"entry {sequence} must be an object")
+        entry["sequence"] = exact_integer(entry.get("sequence"), f"entry {sequence} sequence")
+        entry["delta"] = exact_integer(entry.get("delta"), f"entry {sequence} delta")
+        entry["balance_after"] = exact_integer(entry.get("balance_after"), f"entry {sequence} balance_after")
+        command = entry.get("command_id")
+        reason = entry.get("reason")
+        if entry["sequence"] != sequence or not isinstance(command, str) or not command.strip() or command in commands:
+            raise ValueError(f"entry {sequence} has invalid identity")
+        if not isinstance(reason, str) or not reason or entry["delta"] == 0:
+            raise ValueError(f"entry {sequence} has invalid reason or delta")
+        balance += entry["delta"]
+        if balance < 0 or entry["balance_after"] != balance:
+            raise ValueError(f"entry {sequence} has invalid running balance")
+        commands.add(command)
+        has_job_payout |= reason == "placeholder_job_payout"
+    if balance != data["balance"]:
+        raise ValueError("projection balance does not match its ledger")
+    if (has_job_payout and data["next_job_payout_unix"] <= 0) or (not has_job_payout and data["next_job_payout_unix"] != 0):
+        raise ValueError("job eligibility does not match its ledger")
+    return data
+
+
+def economy_payload(path: Path | None = None) -> dict[str, object]:
+    if path is None:
+        existing = [candidate for candidate in economy_projection_candidates() if candidate.is_file()]
+        path = max(existing, key=lambda candidate: candidate.stat().st_mtime, default=None)
+    if path is None:
+        return {
+            "available": False,
+            "status": "NO LOCAL PROJECTION",
+            "read_only": True,
+            "entries": [],
+            "boundary": "Launch the OddsWell client once to publish a local read-only ledger projection. No economy commands are available here.",
+        }
+    try:
+        data = validated_economy_projection(path)
+    except (OSError, ValueError, OverflowError, TypeError, UnicodeDecodeError, json.JSONDecodeError) as error:
+        return {
+            "available": False,
+            "status": "INVALID LOCAL PROJECTION",
+            "read_only": True,
+            "entries": [],
+            "boundary": f"The local projection was rejected: {error}. No balance is shown and no command is available.",
+        }
+    now = data["observed_now_unix"] if data["qa"] else int(datetime.now(timezone.utc).timestamp())
+    next_payout = data["next_job_payout_unix"]
+    seconds_remaining = max(0, next_payout - now) if next_payout else 0
+    return {
+        "available": True,
+        "status": "VALIDATED QA PROJECTION" if data["qa"] else "VALIDATED LOCAL PROJECTION",
+        "read_only": True,
+        "authority": data["authority"],
+        "profile_scope": data["profile_scope"],
+        "time_authority": data["time_authority"],
+        "generated_at_utc": data["generated_at_utc"],
+        "balance": data["balance"],
+        "entry_count": data["entry_count"],
+        "eligible_now": seconds_remaining == 0,
+        "seconds_until_eligible": seconds_remaining,
+        "next_job_payout_utc": datetime.fromtimestamp(next_payout, timezone.utc).isoformat().replace("+00:00", "Z") if next_payout else None,
+        "job_payout": data["job_payout"],
+        "payout_interval_seconds": data["payout_interval_seconds"],
+        "accumulation": data["accumulation"],
+        "allowance": data["allowance"],
+        "entries": data["entries"],
+        "boundary": "Read-only machine-local projection from the validated Unreal ledger. The local clock is not trusted production time; no account, backend, payment, wager, or mutation control is connected.",
+    }
+
+
 def overall_rating(player: Player) -> int:
     return round(
         (player.shooting + player.passing + player.defense + player.rebounding + player.stamina)
@@ -128,7 +247,7 @@ def status_payload() -> dict[str, object]:
             {"id": "simulation", "name": "Simulation", "state": "ACTIVE", "detail": "Runs the seeded authoritative simulator and opens its recorded Game Theater replay."},
             {"id": "content", "name": "Content", "state": "LOCKED", "detail": "Clothing and item systems are not implemented."},
             {"id": "world", "name": "World / League", "state": "READ ONLY", "detail": "League and public prediction evidence are visible; admin mutations are not implemented."},
-            {"id": "operations", "name": "Operations", "state": "LOCKED", "detail": "Economy, moderation, releases, and support are not implemented."},
+            {"id": "operations", "name": "Operations", "state": "READ ONLY", "detail": "Local Odds Bucks reconciliation is visible without economy commands; moderation, releases, and support remain locked."},
             {"id": "audit", "name": "Audit", "state": "ACTIVE", "detail": "Persistent local record of console actions."},
         ],
         "training": {
@@ -949,6 +1068,8 @@ class Handler(BaseHTTPRequestHandler):
             self.send_json(league_payload())
         elif path == "/api/athletes":
             self.send_json(athlete_profiles_payload())
+        elif path == "/api/economy":
+            self.send_json(economy_payload())
         elif path.startswith("/api/career/replay/"):
             try:
                 values = path.removeprefix("/api/career/replay/").split("/")
@@ -1026,6 +1147,7 @@ def self_check() -> None:
     assert [module["id"] for module in status["admin_modules"]] == [
         "overview", "brains", "athletes", "simulation", "content", "world", "operations", "audit"
     ]
+    assert next(module for module in status["admin_modules"] if module["id"] == "operations")["state"] == "READ ONLY"
     assert game["summary"]["home_score"] != game["summary"]["away_score"]
     assert game["summary"]["consistency_version"] == DEFAULT_CONSISTENCY_VERSION
     assert (
@@ -1175,6 +1297,36 @@ def self_check() -> None:
         record_audit("self-check", "admin-console", {"seed": 42}, path)
         entries = audit_payload(path=path)["entries"]
         assert len(entries) == 1 and entries[0]["details"] == {"seed": 42}
+        projection_path = Path(temporary_directory) / "economy.json"
+        projection_path.write_text(json.dumps({
+            "schema": "oddswell-odds-bucks-reconciliation-v1",
+            "generated_at_utc": "2033-05-18T03:33:20Z",
+            "authority": "server",
+            "currency": "odds_bucks",
+            "profile_scope": "machine_local",
+            "time_authority": "local_machine_utc",
+            "read_only_projection": True,
+            "qa": True,
+            "observed_now_unix": 2_000_086_400,
+            "balance": 200,
+            "entry_count": 2,
+            "next_job_payout_unix": 2_000_172_800,
+            "job_payout": 100,
+            "payout_interval_seconds": 86_400,
+            "accumulation": True,
+            "allowance": False,
+            "entries": [
+                {"sequence": 1, "command_id": "job:placeholder_shift:first_payout:v1", "delta": 100, "reason": "placeholder_job_payout", "balance_after": 100},
+                {"sequence": 2, "command_id": "job:placeholder_shift:scheduled_payout:2000086400", "delta": 100, "reason": "placeholder_job_payout", "balance_after": 200},
+            ],
+        }), encoding="utf-8")
+        economy = economy_payload(projection_path)
+        assert economy["available"] is True
+        assert economy["status"] == "VALIDATED QA PROJECTION"
+        assert economy["balance"] == 200 and economy["entry_count"] == 2
+        assert economy["eligible_now"] is False and economy["seconds_until_eligible"] == 86_400
+        projection_path.write_text("{}", encoding="utf-8")
+        assert economy_payload(projection_path)["status"] == "INVALID LOCAL PROJECTION"
     server = LocalHTTPServer(("127.0.0.1", 0), Handler)
     try:
         try:

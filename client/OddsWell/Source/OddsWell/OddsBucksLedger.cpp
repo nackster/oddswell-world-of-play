@@ -1,9 +1,15 @@
 #include "OddsBucksLedger.h"
 
+#include "Dom/JsonObject.h"
+#include "HAL/FileManager.h"
 #include "Kismet/GameplayStatics.h"
+#include "Misc/FileHelper.h"
 #include "Misc/CommandLine.h"
 #include "Misc/Parse.h"
 #include "Misc/AutomationTest.h"
+#include "Misc/Paths.h"
+#include "Serialization/JsonSerializer.h"
+#include "Serialization/JsonWriter.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
 #include "Engine/StaticMesh.h"
@@ -17,12 +23,19 @@ constexpr int64 FirstJobPayout = 100;
 constexpr int64 JobPayoutIntervalSeconds = 24 * 60 * 60;
 const FString OddsBucksSlot(TEXT("OddsWellOddsBucks"));
 const FString OddsBucksQaSlot(TEXT("OddsWellOddsBucksQA"));
+const FString OddsBucksReconciliationFile(TEXT("OddsBucksReconciliation.json"));
+const FString OddsBucksQaReconciliationFile(TEXT("OddsBucksReconciliationQA.json"));
 const FString FirstJobCommandId(TEXT("job:placeholder_shift:first_payout:v1"));
 const FName FirstJobReason(TEXT("placeholder_job_payout"));
 
 const FString& GetOddsBucksSlot(const bool bQaSlot)
 {
 	return bQaSlot ? OddsBucksQaSlot : OddsBucksSlot;
+}
+
+FString GetOddsBucksReconciliationPath(const bool bQaProjection)
+{
+	return FPaths::Combine(FPaths::ProjectSavedDir(), TEXT("Admin"), bQaProjection ? OddsBucksQaReconciliationFile : OddsBucksReconciliationFile);
 }
 
 bool HasJobPayout(const FOddsWellOddsBucksLedger& Ledger)
@@ -150,6 +163,74 @@ bool UseOddsWellOddsBucksQaSlot()
 		|| FParse::Param(FCommandLine::Get(), TEXT("JobRecoveryQaVerify"));
 }
 
+bool WriteOddsWellOddsBucksReconciliation(const FOddsWellOddsBucksLedger& Ledger, const int64 NextJobPayoutUnixSeconds, const int64 ObservedNowUnixSeconds, const bool bQaProjection, FString& OutPath, FString& OutError)
+{
+	FOddsWellOddsBucksLedger Validated;
+	if (!Validated.Restore(Ledger.GetEntries(), OutError)
+		|| ObservedNowUnixSeconds <= 0
+		|| NextJobPayoutUnixSeconds < 0
+		|| (HasJobPayout(Validated) && NextJobPayoutUnixSeconds == 0)
+		|| (!HasJobPayout(Validated) && NextJobPayoutUnixSeconds != 0))
+	{
+		if (OutError.IsEmpty())
+		{
+			OutError = TEXT("The Odds Bucks reconciliation inputs are inconsistent.");
+		}
+		return false;
+	}
+
+	const TSharedRef<FJsonObject> Root = MakeShared<FJsonObject>();
+	Root->SetStringField(TEXT("schema"), TEXT("oddswell-odds-bucks-reconciliation-v1"));
+	Root->SetStringField(TEXT("generated_at_utc"), FDateTime::UtcNow().ToIso8601());
+	Root->SetStringField(TEXT("authority"), TEXT("server"));
+	Root->SetStringField(TEXT("currency"), TEXT("odds_bucks"));
+	Root->SetStringField(TEXT("profile_scope"), TEXT("machine_local"));
+	Root->SetStringField(TEXT("time_authority"), TEXT("local_machine_utc"));
+	Root->SetBoolField(TEXT("read_only_projection"), true);
+	Root->SetBoolField(TEXT("qa"), bQaProjection);
+	Root->SetNumberField(TEXT("observed_now_unix"), static_cast<double>(ObservedNowUnixSeconds));
+	Root->SetNumberField(TEXT("balance"), static_cast<double>(Validated.GetBalance()));
+	Root->SetNumberField(TEXT("entry_count"), Validated.GetEntries().Num());
+	Root->SetNumberField(TEXT("next_job_payout_unix"), static_cast<double>(NextJobPayoutUnixSeconds));
+	Root->SetNumberField(TEXT("job_payout"), static_cast<double>(FirstJobPayout));
+	Root->SetNumberField(TEXT("payout_interval_seconds"), static_cast<double>(JobPayoutIntervalSeconds));
+	Root->SetBoolField(TEXT("accumulation"), true);
+	Root->SetBoolField(TEXT("allowance"), false);
+
+	TArray<TSharedPtr<FJsonValue>> EntryValues;
+	for (const FOddsWellOddsBucksEntry& Entry : Validated.GetEntries())
+	{
+		const TSharedRef<FJsonObject> EntryObject = MakeShared<FJsonObject>();
+		EntryObject->SetNumberField(TEXT("sequence"), static_cast<double>(Entry.Sequence));
+		EntryObject->SetStringField(TEXT("command_id"), Entry.CommandId);
+		EntryObject->SetNumberField(TEXT("delta"), static_cast<double>(Entry.Delta));
+		EntryObject->SetStringField(TEXT("reason"), Entry.Reason.ToString());
+		EntryObject->SetNumberField(TEXT("balance_after"), static_cast<double>(Entry.BalanceAfter));
+		EntryValues.Add(MakeShared<FJsonValueObject>(EntryObject));
+	}
+	Root->SetArrayField(TEXT("entries"), EntryValues);
+
+	FString Json;
+	const TSharedRef<TJsonWriter<>> Writer = TJsonWriterFactory<>::Create(&Json);
+	if (!FJsonSerializer::Serialize(Root, Writer))
+	{
+		OutError = TEXT("The Odds Bucks reconciliation projection could not be serialized.");
+		return false;
+	}
+	OutPath = GetOddsBucksReconciliationPath(bQaProjection);
+	IFileManager::Get().MakeDirectory(*FPaths::GetPath(OutPath), true);
+	const FString TemporaryPath = OutPath + TEXT(".tmp");
+	if (!FFileHelper::SaveStringToFile(Json, *TemporaryPath)
+		|| !IFileManager::Get().Move(*OutPath, *TemporaryPath, true, true, false, true))
+	{
+		IFileManager::Get().Delete(*TemporaryPath, false, true, true);
+		OutError = TEXT("The Odds Bucks reconciliation projection could not be written atomically.");
+		return false;
+	}
+	OutError.Reset();
+	return true;
+}
+
 bool SaveOddsWellOddsBucksLedger(const FOddsWellOddsBucksLedger& Ledger, const int64 NextJobPayoutUnixSeconds, const bool bQaSlot, FString& OutError)
 {
 	UOddsWellOddsBucksSaveGame* Record = Cast<UOddsWellOddsBucksSaveGame>(
@@ -208,6 +289,13 @@ bool ResetOddsWellQaOddsBucksAndVerify(FString& OutError)
 	if (UGameplayStatics::DoesSaveGameExist(OddsBucksQaSlot, OddsBucksUserIndex))
 	{
 		OutError = TEXT("The QA Odds Bucks save still exists after cleanup.");
+		return false;
+	}
+	const FString QaProjection = GetOddsBucksReconciliationPath(true);
+	if (IFileManager::Get().FileExists(*QaProjection)
+		&& !IFileManager::Get().Delete(*QaProjection, false, true, true))
+	{
+		OutError = TEXT("The QA Odds Bucks reconciliation projection could not be deleted.");
 		return false;
 	}
 	OutError.Reset();
@@ -280,6 +368,9 @@ bool FOddsWellOddsBucksLedgerTest::RunTest(const FString& Parameters)
 	TestEqual(TEXT("Provisional first job payout applies"), JobLedger.Append(GetOddsWellFirstJobCommandId(), GetOddsWellFirstJobPayout(), GetOddsWellFirstJobReason()), EOddsWellOddsBucksAppendResult::Applied);
 	const int64 ExpectedNextJobPayout = 2000000000 + GetOddsWellJobPayoutIntervalSeconds();
 	TestTrue(TEXT("Provisional job payout saves to the bounded QA slot"), SaveOddsWellOddsBucksLedger(JobLedger, ExpectedNextJobPayout, true, Error));
+	FString ReconciliationPath;
+	TestTrue(TEXT("Read-only Odds Bucks reconciliation projection writes"), WriteOddsWellOddsBucksReconciliation(JobLedger, ExpectedNextJobPayout, 2000000000, true, ReconciliationPath, Error));
+	TestTrue(TEXT("Read-only Odds Bucks reconciliation projection exists"), IFileManager::Get().FileExists(*ReconciliationPath));
 	FOddsWellOddsBucksLedger DiskLedger;
 	int64 DiskNextJobPayout = 0;
 	bool bFound = false;

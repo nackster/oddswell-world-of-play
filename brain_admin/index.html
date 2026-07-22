@@ -469,6 +469,7 @@
     .career-ledger .career-metric { background: linear-gradient(145deg, rgba(92,236,255,.055), rgba(173,124,255,.035)); }
     .career-ledger .career-metric strong { font-size: .78rem; white-space: normal; }
     .career-ledger { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .economy-metrics { grid-template-columns: repeat(4, minmax(0, 1fr)); }
     .career-season-tabs { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 8px; }
     .career-season-button { display: grid; grid-template-columns: auto 1fr auto; gap: 10px; align-items: center; padding: 11px 12px; border: 1px solid var(--line); border-radius: 11px; background: rgba(255,255,255,.02); color: var(--ink); cursor: pointer; text-align: left; }
     .career-season-button:hover, .career-season-button.selected { border-color: rgba(92,236,255,.4); background: rgba(92,236,255,.07); }
@@ -570,7 +571,7 @@
         <button class="nav-button" type="button" data-page="simulation">Simulation <span class="nav-state">LIVE</span></button>
         <button class="nav-button" type="button" data-page="content">Content <span class="nav-state">LOCKED</span></button>
         <button class="nav-button" type="button" data-page="world">World / League <span class="nav-state">READ</span></button>
-        <button class="nav-button" type="button" data-page="operations">Operations <span class="nav-state">LOCKED</span></button>
+        <button class="nav-button" type="button" data-page="operations">Operations <span class="nav-state">READ</span></button>
         <button class="nav-button" type="button" data-page="audit">Audit <span class="nav-state">LIVE</span></button>
       </nav>
       <p class="rail-note">Local development surface. Authentication and role-based access are not implemented.</p>
@@ -815,12 +816,25 @@
           </section>
 
           <section class="page" data-page-view="operations" hidden>
-            <div class="page-head"><div><h2>Operations</h2><p>High-impact areas remain unavailable until their authoritative services and approvals exist.</p></div></div>
+            <div class="page-head"><div><h2>Operations</h2><p>Reconcile the local Odds Bucks projection without exposing economy commands.</p></div><button class="control" id="refresh-economy" type="button">Reload projection</button></div>
             <div class="module-grid">
-              <div class="module-card"><span class="state locked">Not implemented</span><h3>Economy</h3><p>No economy administration or payment controls are connected.</p></div>
+              <div class="module-card"><span class="state read-only" id="economy-status">Loading</span><h3>Odds Bucks reconciliation</h3><p id="economy-detail">Looking for the latest validated local projection.</p></div>
               <div class="module-card"><span class="state locked">Not implemented</span><h3>Moderation</h3><p>No player moderation or support system is connected.</p></div>
               <div class="module-card"><span class="state locked">Not implemented</span><h3>Releases</h3><p>No deployment, maintenance, or announcement service is connected.</p></div>
             </div>
+            <section class="league-viewer" aria-label="Read-only Odds Bucks reconciliation">
+              <div class="career-boundary" id="economy-boundary">No economy commands are available from this console.</div>
+              <div class="career-metrics economy-metrics">
+                <div class="career-metric"><span>Current balance</span><strong id="economy-balance">--</strong></div>
+                <div class="career-metric"><span>Ledger entries</span><strong id="economy-entry-count">--</strong></div>
+                <div class="career-metric"><span>Job eligibility</span><strong id="economy-eligibility">--</strong></div>
+                <div class="career-metric"><span>Next eligible UTC</span><strong id="economy-next">--</strong></div>
+              </div>
+              <section class="league-panel">
+                <div class="league-panel-head"><h3>Append-only ledger projection</h3><span>Read only · no mutation controls</span></div>
+                <div class="audit-list" id="economy-ledger"><div class="empty">No local projection loaded.</div></div>
+              </section>
+            </section>
           </section>
 
           <section class="page" data-page-view="audit" hidden>
@@ -885,6 +899,7 @@
       if (page === 'audit') loadAudit();
       if (page === 'world') loadLeague();
       if (page === 'athletes') loadAthletes();
+      if (page === 'operations') loadEconomy();
       if (page === 'brains') requestAnimationFrame(() => resizeCanvas());
     }
 
@@ -1154,6 +1169,55 @@
         }
       } catch (error) {
         list.textContent = `Audit error: ${error.message}`;
+      }
+    }
+
+    async function loadEconomy() {
+      const list = $('economy-ledger');
+      try {
+        const response = await fetch('/api/economy');
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error || 'economy projection unavailable');
+        $('economy-status').textContent = data.status;
+        $('economy-detail').textContent = data.available
+          ? `Server-owned ${data.profile_scope.replace('_', ' ')} projection · generated ${data.generated_at_utc}`
+          : 'No validated balance is available.';
+        $('economy-boundary').textContent = data.boundary;
+        $('economy-balance').textContent = data.available ? `${data.balance} Odds Bucks` : '--';
+        $('economy-entry-count').textContent = data.available ? data.entry_count : '--';
+        $('economy-eligibility').textContent = !data.available ? '--' : data.eligible_now
+          ? 'ELIGIBLE NOW'
+          : `COOLDOWN · ~${Math.max(1, Math.ceil(data.seconds_until_eligible / 3600))}h`;
+        $('economy-next').textContent = !data.available ? '--' : data.next_job_payout_utc || 'First shift available';
+        list.replaceChildren();
+        if (!data.entries.length) {
+          const empty = document.createElement('div');
+          empty.className = 'empty';
+          empty.textContent = data.available ? 'Validated empty ledger · starting balance is 0.' : 'Launch the OddsWell client to publish the local projection.';
+          list.append(empty);
+          return;
+        }
+        for (const entry of data.entries) {
+          const row = document.createElement('div');
+          row.className = 'audit-entry';
+          const sequence = document.createElement('span');
+          sequence.className = 'audit-time';
+          sequence.textContent = `#${entry.sequence}`;
+          const reason = document.createElement('strong');
+          reason.textContent = entry.reason;
+          const command = document.createElement('span');
+          command.className = 'audit-target';
+          command.textContent = entry.command_id;
+          const outcome = document.createElement('span');
+          outcome.className = 'state';
+          outcome.textContent = `${entry.delta > 0 ? '+' : ''}${entry.delta} → ${entry.balance_after}`;
+          row.append(sequence, reason, command, outcome);
+          list.append(row);
+        }
+      } catch (error) {
+        $('economy-status').textContent = 'PROJECTION ERROR';
+        $('economy-detail').textContent = error.message;
+        list.textContent = `Economy reconciliation error: ${error.message}`;
       }
     }
 
@@ -1779,6 +1843,7 @@
     $('watch-league-game').addEventListener('click', watchLeagueGame);
     $('refresh-status').addEventListener('click', refreshStatus);
     $('refresh-audit').addEventListener('click', loadAudit);
+    $('refresh-economy').addEventListener('click', loadEconomy);
     $('preview').addEventListener('click', previewTraining);
     $('fullscreen').addEventListener('click', () => {
       if (document.fullscreenElement) document.exitFullscreen();
