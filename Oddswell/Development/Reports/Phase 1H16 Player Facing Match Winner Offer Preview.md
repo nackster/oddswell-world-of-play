@@ -16,7 +16,7 @@ date: 2026-07-22
 
 Phase 1H.16 gives the separate Sundale Sportsbook frontage one player-facing, read-only Match Winner preview. At that location only, `E` opens the exact verified Season 1, Game 1 `basketball-match-winner-odds-v1` offer. Leaving the frontage closes it, and the same action is unavailable elsewhere.
 
-The preview names Harbor City Waves and Mesa Vista Sol, exact probabilities `57586693` and `42413307`, display odds `1.7365x` and `2.3577x`, the `10`–`100` Odds Bucks rule in increments of `10`, game-start lock, full offer/source identities, and exact gross-return examples: stake `10` returns `17` or `23`; stake `100` returns `173` or `235`.
+The preview names Harbor City Waves and Mesa Vista Sol, exact probabilities `57586693` and `42413307`, display odds `1.7365x` and `2.3577x`, the `10`–`100` Odds Bucks rule in increments of `10`, game-start lock, offer ID, source versions, commitment, and exact gross-return examples: stake `10` returns `17` or `23`; stake `100` returns `173` or `235`.
 
 Ponytail reused the existing public league exporter, `PublicSeason1.json`, Sportsbook route waypoint, `E` polling pattern, and native on-screen reader. No new framework, dependency, service, account path, or generalized market UI was added.
 
@@ -40,7 +40,7 @@ The league fixture is now `30,288` bytes with SHA-256 `e08e4d44ef99c45689621351e
 | Final editor/game builds | Passed with four-way bounded compilation after the redundant clean packaging build was stopped at repeated machine-memory retries |
 | Windows BuildCookRun | Passed in `86.52s`; Bootstrap and Sundale only; pak, IoStore, compression, package, and archive succeeded |
 | Packaged player proof | Rendered Sundale launch passed and exited cleanly; QA first rejected the interaction away from the frontage, then opened it at Sportsbook |
-| Read-only invariant | Ledger entries remained `0` to `0`; balance remained `0` to `0`; submission and controls were both absent |
+| Read-only invariant | Ledger entries remained `0` to `0`; balance remained `0` to `0`; no wager-submission, team-selection, or stake controls were present; `E` only opens or closes the preview |
 | Visual proof | `Phase1H16_SportsbookOfferPreview.png`, `1,784,719` bytes, visibly contains teams, probabilities, odds, return examples, stake rule, lock, full offer ID, source versions, commitment, and read-only warning |
 | Package | `55` files totaling `1,046,488,974` bytes |
 | Replay exporter | Unchanged at `421` frames, seal `00e4f82c2bb4da5d9ad53d75bf76ece7b97ed9b05ca2f7a8a2628d396c779b75`, `256,442` bytes, SHA-256 `35d03b7b472901ab3f498c8cd389cea4b9cd1ed9309bafe85cbbd3af1160719f` |
