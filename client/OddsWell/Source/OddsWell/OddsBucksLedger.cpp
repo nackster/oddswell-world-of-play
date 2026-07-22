@@ -24,7 +24,7 @@
 
 namespace
 {
-constexpr int32 OddsBucksSchemaVersion = 9;
+constexpr int32 OddsBucksSchemaVersion = 10;
 constexpr int32 OddsBucksUserIndex = 0;
 constexpr int64 FirstJobPayout = 100;
 constexpr int64 JobPayoutIntervalSeconds = 24 * 60 * 60;
@@ -59,6 +59,12 @@ const FString MatchWinnerCanceledGameSchema(TEXT("oddswell-match-winner-canceled
 const FString MatchWinnerCanceledGameVersion(TEXT("match-winner-canceled-game-v1"));
 const FName MatchWinnerCanceledGameReason(TEXT("game_canceled"));
 const FName MatchWinnerClosedCanceledStatus(TEXT("closed_canceled"));
+const FString MatchWinnerVoidDecisionSchema(TEXT("oddswell-match-winner-void-decision-v1"));
+const FString MatchWinnerVoidDecisionVersion(TEXT("match-winner-void-decision-v1"));
+const FName MatchWinnerVoidedOutcome(TEXT("voided"));
+const FName MatchWinnerDecidedVoidPendingRefundStatus(TEXT("decided_void_pending_refund"));
+constexpr int32 CanceledQaSeasonNumber = 99;
+constexpr int32 CanceledQaGameNumber = 1;
 constexpr int32 SealedResultSeasonNumber = 1;
 constexpr int32 SealedResultGameNumber = 1;
 const FString SealedResultHomeTeam(TEXT("Harbor City Waves"));
@@ -483,6 +489,105 @@ bool ValidateMatchWinnerCanceledGames(
 	return true;
 }
 
+bool ValidateMatchWinnerVoidDecisions(
+	const TArray<FOddsWellMatchWinnerRequestRecord>& Requests,
+	const TArray<FOddsWellMatchWinnerLockRecord>& Locks,
+	const TArray<FOddsWellMatchWinnerResultLinkRecord>& Results,
+	const TArray<FOddsWellMatchWinnerSettlementDecisionRecord>& Decisions,
+	const TArray<FOddsWellMatchWinnerLossFinalizationRecord>& LossFinalizations,
+	const TArray<FOddsWellMatchWinnerWinFinalizationRecord>& WinFinalizations,
+	const TArray<FOddsWellMatchWinnerCanceledGameRecord>& CanceledGames,
+	const TArray<FOddsWellMatchWinnerVoidDecisionRecord>& VoidDecisions,
+	FString& OutError)
+{
+	if (VoidDecisions.Num() > 1)
+	{
+		OutError = TEXT("Only one Match Winner void-decision QA record is supported.");
+		return false;
+	}
+	for (int32 Index = 0; Index < VoidDecisions.Num(); ++Index)
+	{
+		const FOddsWellMatchWinnerVoidDecisionRecord& Decision = VoidDecisions[Index];
+		const FOddsWellMatchWinnerCanceledGameRecord* Canceled = CanceledGames.FindByPredicate(
+			[&Decision](const FOddsWellMatchWinnerCanceledGameRecord& Candidate)
+			{
+				return Candidate.CancellationCommandId == Decision.CancellationCommandId
+					&& Candidate.CancellationEvidenceId == Decision.CancellationEvidenceId;
+			});
+		const FOddsWellMatchWinnerRequestRecord* Request = Requests.FindByPredicate(
+			[&Decision](const FOddsWellMatchWinnerRequestRecord& Candidate)
+			{
+				return Candidate.RequestCommandId == Decision.RequestCommandId;
+			});
+		const FOddsWellMatchWinnerLockRecord* Lock = Locks.FindByPredicate(
+			[&Decision](const FOddsWellMatchWinnerLockRecord& Candidate)
+			{
+				return Candidate.LockCommandId == Decision.LockCommandId;
+			});
+		const bool bHasResult = Results.ContainsByPredicate(
+			[&Decision](const FOddsWellMatchWinnerResultLinkRecord& Result)
+			{
+				return Result.RequestCommandId == Decision.RequestCommandId;
+			});
+		const bool bHasNormalDecision = Decisions.ContainsByPredicate(
+			[&Decision](const FOddsWellMatchWinnerSettlementDecisionRecord& Candidate)
+			{
+				return Candidate.RequestCommandId == Decision.RequestCommandId;
+			});
+		const bool bHasFinalization = LossFinalizations.ContainsByPredicate(
+			[&Decision](const FOddsWellMatchWinnerLossFinalizationRecord& Finalization)
+			{
+				return Finalization.RequestCommandId == Decision.RequestCommandId;
+			})
+			|| WinFinalizations.ContainsByPredicate(
+				[&Decision](const FOddsWellMatchWinnerWinFinalizationRecord& Finalization)
+				{
+					return Finalization.RequestCommandId == Decision.RequestCommandId;
+				});
+		if (Decision.VoidDecisionCommandId.TrimStartAndEnd().IsEmpty()
+			|| Decision.CancellationCommandId.TrimStartAndEnd().IsEmpty()
+			|| Decision.CancellationEvidenceId.TrimStartAndEnd().IsEmpty()
+			|| Decision.VoidDecisionCommandId == Decision.CancellationCommandId
+			|| Decision.VoidDecisionCommandId == Decision.CancellationEvidenceId
+			|| Decision.VoidDecisionCommandId == Decision.RequestCommandId
+			|| Decision.VoidDecisionCommandId == Decision.LockCommandId
+			|| !Canceled
+			|| !Request
+			|| !Lock
+			|| Canceled->RequestCommandId != Decision.RequestCommandId
+			|| Canceled->LockCommandId != Decision.LockCommandId
+			|| Lock->RequestCommandId != Decision.RequestCommandId
+			|| Canceled->SeasonNumber != CanceledQaSeasonNumber
+			|| Canceled->GameNumber != CanceledQaGameNumber
+			|| Canceled->ReasonCode != MatchWinnerCanceledGameReason
+			|| Canceled->Status != MatchWinnerClosedCanceledStatus
+			|| Decision.DecisionSchema != MatchWinnerVoidDecisionSchema
+			|| Decision.DecisionVersion != MatchWinnerVoidDecisionVersion
+			|| Decision.OfferId != Request->OfferId
+			|| Decision.OfferSchema != MatchWinnerOfferSchema
+			|| Decision.OfferVersion != Request->OfferVersion
+			|| Decision.SeasonNumber != Canceled->SeasonNumber
+			|| Decision.GameNumber != Canceled->GameNumber
+			|| Decision.SelectedTeam != Request->OfferedTeam
+			|| Decision.Stake != Request->Stake
+			|| Decision.Stake != 40
+			|| Decision.CancellationReason != Canceled->ReasonCode
+			|| Decision.Outcome != MatchWinnerVoidedOutcome
+			|| Decision.RefundDue != Decision.Stake
+			|| Decision.RefundDue != 40
+			|| Decision.Status != MatchWinnerDecidedVoidPendingRefundStatus
+			|| bHasResult
+			|| bHasNormalDecision
+			|| bHasFinalization)
+		{
+			OutError = FString::Printf(TEXT("Invalid Match Winner void decision at index %d."), Index);
+			return false;
+		}
+	}
+	OutError.Reset();
+	return true;
+}
+
 bool ValidateMatchWinnerSettlementDecisions(
 	const TArray<FOddsWellMatchWinnerRequestRecord>& Requests,
 	const TArray<FOddsWellMatchWinnerLockRecord>& Locks,
@@ -751,6 +856,7 @@ bool ValidateOddsBucksSave(
 	TArray<FOddsWellMatchWinnerLossFinalizationRecord>& OutMatchWinnerLossFinalizations,
 	TArray<FOddsWellMatchWinnerWinFinalizationRecord>& OutMatchWinnerWinFinalizations,
 	TArray<FOddsWellMatchWinnerCanceledGameRecord>& OutMatchWinnerCanceledGames,
+	TArray<FOddsWellMatchWinnerVoidDecisionRecord>& OutMatchWinnerVoidDecisions,
 	bool& bOutNeedsMigration,
 	FString& OutError)
 {
@@ -794,6 +900,9 @@ bool ValidateOddsBucksSave(
 	OutMatchWinnerCanceledGames = Record->SchemaVersion >= 9
 		? Record->MatchWinnerCanceledGames
 		: TArray<FOddsWellMatchWinnerCanceledGameRecord>();
+	OutMatchWinnerVoidDecisions = Record->SchemaVersion >= 10
+		? Record->MatchWinnerVoidDecisions
+		: TArray<FOddsWellMatchWinnerVoidDecisionRecord>();
 	if (OutNextJobPayoutUnixSeconds < 0
 		|| (HasJobPayout(OutLedger) && OutNextJobPayoutUnixSeconds == 0)
 		|| (!HasJobPayout(OutLedger) && OutNextJobPayoutUnixSeconds != 0))
@@ -826,6 +935,10 @@ bool ValidateOddsBucksSave(
 		return false;
 	}
 	if (!ValidateMatchWinnerCanceledGames(OutMatchWinnerRequests, OutMatchWinnerLocks, OutMatchWinnerResultLinks, OutMatchWinnerSettlementDecisions, OutMatchWinnerLossFinalizations, OutMatchWinnerWinFinalizations, OutMatchWinnerCanceledGames, OutError))
+	{
+		return false;
+	}
+	if (!ValidateMatchWinnerVoidDecisions(OutMatchWinnerRequests, OutMatchWinnerLocks, OutMatchWinnerResultLinks, OutMatchWinnerSettlementDecisions, OutMatchWinnerLossFinalizations, OutMatchWinnerWinFinalizations, OutMatchWinnerCanceledGames, OutMatchWinnerVoidDecisions, OutError))
 	{
 		return false;
 	}
@@ -1204,6 +1317,7 @@ bool SaveOddsWellOddsBucksState(
 	const TArray<FOddsWellMatchWinnerLossFinalizationRecord>& MatchWinnerLossFinalizations,
 	const TArray<FOddsWellMatchWinnerWinFinalizationRecord>& MatchWinnerWinFinalizations,
 	const TArray<FOddsWellMatchWinnerCanceledGameRecord>& MatchWinnerCanceledGames,
+	const TArray<FOddsWellMatchWinnerVoidDecisionRecord>& MatchWinnerVoidDecisions,
 	const bool bQaSlot,
 	FString& OutError)
 {
@@ -1224,6 +1338,7 @@ bool SaveOddsWellOddsBucksState(
 	Record->MatchWinnerLossFinalizations = MatchWinnerLossFinalizations;
 	Record->MatchWinnerWinFinalizations = MatchWinnerWinFinalizations;
 	Record->MatchWinnerCanceledGames = MatchWinnerCanceledGames;
+	Record->MatchWinnerVoidDecisions = MatchWinnerVoidDecisions;
 	FOddsWellOddsBucksLedger Validated;
 	int64 ValidatedNextJobPayout = 0;
 	TArray<FOddsWellMatchWinnerRequestRecord> ValidatedRequests;
@@ -1233,8 +1348,9 @@ bool SaveOddsWellOddsBucksState(
 	TArray<FOddsWellMatchWinnerLossFinalizationRecord> ValidatedFinalizations;
 	TArray<FOddsWellMatchWinnerWinFinalizationRecord> ValidatedWinFinalizations;
 	TArray<FOddsWellMatchWinnerCanceledGameRecord> ValidatedCanceledGames;
+	TArray<FOddsWellMatchWinnerVoidDecisionRecord> ValidatedVoidDecisions;
 	bool bNeedsMigration = false;
-	if (!ValidateOddsBucksSave(Record, Validated, ValidatedNextJobPayout, ValidatedRequests, ValidatedLocks, ValidatedResultLinks, ValidatedDecisions, ValidatedFinalizations, ValidatedWinFinalizations, ValidatedCanceledGames, bNeedsMigration, OutError))
+	if (!ValidateOddsBucksSave(Record, Validated, ValidatedNextJobPayout, ValidatedRequests, ValidatedLocks, ValidatedResultLinks, ValidatedDecisions, ValidatedFinalizations, ValidatedWinFinalizations, ValidatedCanceledGames, ValidatedVoidDecisions, bNeedsMigration, OutError))
 	{
 		return false;
 	}
@@ -1258,6 +1374,7 @@ bool LoadOddsWellOddsBucksStateRaw(
 	TArray<FOddsWellMatchWinnerLossFinalizationRecord>& OutMatchWinnerLossFinalizations,
 	TArray<FOddsWellMatchWinnerWinFinalizationRecord>& OutMatchWinnerWinFinalizations,
 	TArray<FOddsWellMatchWinnerCanceledGameRecord>& OutMatchWinnerCanceledGames,
+	TArray<FOddsWellMatchWinnerVoidDecisionRecord>& OutMatchWinnerVoidDecisions,
 	bool& bOutFound,
 	bool& bOutNeedsMigration,
 	FString& OutError)
@@ -1275,6 +1392,7 @@ bool LoadOddsWellOddsBucksStateRaw(
 		OutMatchWinnerLossFinalizations.Reset();
 		OutMatchWinnerWinFinalizations.Reset();
 		OutMatchWinnerCanceledGames.Reset();
+		OutMatchWinnerVoidDecisions.Reset();
 		bOutNeedsMigration = false;
 		OutError.Reset();
 		return true;
@@ -1290,6 +1408,7 @@ bool LoadOddsWellOddsBucksStateRaw(
 		OutMatchWinnerLossFinalizations,
 		OutMatchWinnerWinFinalizations,
 		OutMatchWinnerCanceledGames,
+		OutMatchWinnerVoidDecisions,
 		bOutNeedsMigration,
 		OutError);
 	if (!bValid)
@@ -1309,18 +1428,19 @@ bool SaveOddsWellOddsBucksLedger(const FOddsWellOddsBucksLedger& Ledger, const i
 	TArray<FOddsWellMatchWinnerLossFinalizationRecord> ExistingFinalizations;
 	TArray<FOddsWellMatchWinnerWinFinalizationRecord> ExistingWinFinalizations;
 	TArray<FOddsWellMatchWinnerCanceledGameRecord> ExistingCanceledGames;
+	TArray<FOddsWellMatchWinnerVoidDecisionRecord> ExistingVoidDecisions;
 	if (UGameplayStatics::DoesSaveGameExist(GetOddsBucksSlot(bQaSlot), OddsBucksUserIndex))
 	{
 		FOddsWellOddsBucksLedger ExistingLedger;
 		int64 ExistingNextJobPayout = 0;
 		bool bFound = false;
 		bool bNeedsMigration = false;
-		if (!LoadOddsWellOddsBucksStateRaw(bQaSlot, ExistingLedger, ExistingNextJobPayout, ExistingRequests, ExistingLocks, ExistingResultLinks, ExistingDecisions, ExistingFinalizations, ExistingWinFinalizations, ExistingCanceledGames, bFound, bNeedsMigration, OutError))
+		if (!LoadOddsWellOddsBucksStateRaw(bQaSlot, ExistingLedger, ExistingNextJobPayout, ExistingRequests, ExistingLocks, ExistingResultLinks, ExistingDecisions, ExistingFinalizations, ExistingWinFinalizations, ExistingCanceledGames, ExistingVoidDecisions, bFound, bNeedsMigration, OutError))
 		{
 			return false;
 		}
 	}
-	return SaveOddsWellOddsBucksState(Ledger, NextJobPayoutUnixSeconds, ExistingRequests, ExistingLocks, ExistingResultLinks, ExistingDecisions, ExistingFinalizations, ExistingWinFinalizations, ExistingCanceledGames, bQaSlot, OutError);
+	return SaveOddsWellOddsBucksState(Ledger, NextJobPayoutUnixSeconds, ExistingRequests, ExistingLocks, ExistingResultLinks, ExistingDecisions, ExistingFinalizations, ExistingWinFinalizations, ExistingCanceledGames, ExistingVoidDecisions, bQaSlot, OutError);
 }
 
 bool LoadOddsWellOddsBucksWagerFinalizationState(
@@ -1338,6 +1458,7 @@ bool LoadOddsWellOddsBucksWagerFinalizationState(
 {
 	const FString ProjectionPath = GetMatchWinnerReconciliationPath(bQaSlot);
 	TArray<FOddsWellMatchWinnerCanceledGameRecord> CanceledGames;
+	TArray<FOddsWellMatchWinnerVoidDecisionRecord> VoidDecisions;
 	bool bNeedsMigration = false;
 	if (!LoadOddsWellOddsBucksStateRaw(
 		bQaSlot,
@@ -1350,6 +1471,7 @@ bool LoadOddsWellOddsBucksWagerFinalizationState(
 		OutMatchWinnerLossFinalizations,
 		OutMatchWinnerWinFinalizations,
 		CanceledGames,
+		VoidDecisions,
 		bOutFound,
 		bNeedsMigration,
 		OutError))
@@ -1367,6 +1489,7 @@ bool LoadOddsWellOddsBucksWagerFinalizationState(
 		OutMatchWinnerLossFinalizations,
 		OutMatchWinnerWinFinalizations,
 		CanceledGames,
+		VoidDecisions,
 		bQaSlot,
 		OutError))
 	{
@@ -1415,6 +1538,7 @@ bool LoadOddsWellMatchWinnerCanceledGames(
 	TArray<FOddsWellMatchWinnerSettlementDecisionRecord> Decisions;
 	TArray<FOddsWellMatchWinnerLossFinalizationRecord> LossFinalizations;
 	TArray<FOddsWellMatchWinnerWinFinalizationRecord> WinFinalizations;
+	TArray<FOddsWellMatchWinnerVoidDecisionRecord> VoidDecisions;
 	bool bNeedsMigration = false;
 	if (!LoadOddsWellOddsBucksStateRaw(
 		bQaSlot,
@@ -1427,6 +1551,7 @@ bool LoadOddsWellMatchWinnerCanceledGames(
 		LossFinalizations,
 		WinFinalizations,
 		OutCanceledGames,
+		VoidDecisions,
 		bOutFound,
 		bNeedsMigration,
 		OutError))
@@ -1443,6 +1568,56 @@ bool LoadOddsWellMatchWinnerCanceledGames(
 		LossFinalizations,
 		WinFinalizations,
 		OutCanceledGames,
+		VoidDecisions,
+		bQaSlot,
+		OutError);
+}
+
+bool LoadOddsWellMatchWinnerVoidDecisions(
+	const bool bQaSlot,
+	TArray<FOddsWellMatchWinnerVoidDecisionRecord>& OutVoidDecisions,
+	bool& bOutFound,
+	FString& OutError)
+{
+	FOddsWellOddsBucksLedger Ledger;
+	int64 NextJobPayoutUnixSeconds = 0;
+	TArray<FOddsWellMatchWinnerRequestRecord> Requests;
+	TArray<FOddsWellMatchWinnerLockRecord> Locks;
+	TArray<FOddsWellMatchWinnerResultLinkRecord> Results;
+	TArray<FOddsWellMatchWinnerSettlementDecisionRecord> Decisions;
+	TArray<FOddsWellMatchWinnerLossFinalizationRecord> LossFinalizations;
+	TArray<FOddsWellMatchWinnerWinFinalizationRecord> WinFinalizations;
+	TArray<FOddsWellMatchWinnerCanceledGameRecord> CanceledGames;
+	bool bNeedsMigration = false;
+	if (!LoadOddsWellOddsBucksStateRaw(
+		bQaSlot,
+		Ledger,
+		NextJobPayoutUnixSeconds,
+		Requests,
+		Locks,
+		Results,
+		Decisions,
+		LossFinalizations,
+		WinFinalizations,
+		CanceledGames,
+		OutVoidDecisions,
+		bOutFound,
+		bNeedsMigration,
+		OutError))
+	{
+		return false;
+	}
+	return !bNeedsMigration || SaveOddsWellOddsBucksState(
+		Ledger,
+		NextJobPayoutUnixSeconds,
+		Requests,
+		Locks,
+		Results,
+		Decisions,
+		LossFinalizations,
+		WinFinalizations,
+		CanceledGames,
+		OutVoidDecisions,
 		bQaSlot,
 		OutError);
 }
@@ -1580,6 +1755,7 @@ EOddsWellMatchWinnerRequestResult AcceptOddsWellMatchWinnerRequest(
 	TArray<FOddsWellMatchWinnerLossFinalizationRecord> Finalizations;
 	TArray<FOddsWellMatchWinnerWinFinalizationRecord> WinFinalizations;
 	TArray<FOddsWellMatchWinnerCanceledGameRecord> CanceledGames;
+	TArray<FOddsWellMatchWinnerVoidDecisionRecord> VoidDecisions;
 	bool bFound = false;
 	bool bNeedsMigration = false;
 	if (!LoadOddsWellOddsBucksStateRaw(
@@ -1593,6 +1769,7 @@ EOddsWellMatchWinnerRequestResult AcceptOddsWellMatchWinnerRequest(
 		Finalizations,
 		WinFinalizations,
 		CanceledGames,
+		VoidDecisions,
 		bFound,
 		bNeedsMigration,
 		OutError))
@@ -1664,6 +1841,7 @@ EOddsWellMatchWinnerRequestResult AcceptOddsWellMatchWinnerRequest(
 		Finalizations,
 		WinFinalizations,
 		CanceledGames,
+		VoidDecisions,
 		bQaSlot,
 		OutError))
 	{
@@ -1706,6 +1884,7 @@ EOddsWellMatchWinnerLockResult LockOddsWellMatchWinnerRequest(
 	TArray<FOddsWellMatchWinnerLossFinalizationRecord> Finalizations;
 	TArray<FOddsWellMatchWinnerWinFinalizationRecord> WinFinalizations;
 	TArray<FOddsWellMatchWinnerCanceledGameRecord> CanceledGames;
+	TArray<FOddsWellMatchWinnerVoidDecisionRecord> VoidDecisions;
 	bool bFound = false;
 	bool bNeedsMigration = false;
 	if (!LoadOddsWellOddsBucksStateRaw(
@@ -1719,6 +1898,7 @@ EOddsWellMatchWinnerLockResult LockOddsWellMatchWinnerRequest(
 		Finalizations,
 		WinFinalizations,
 		CanceledGames,
+		VoidDecisions,
 		bFound,
 		bNeedsMigration,
 		OutError))
@@ -1793,6 +1973,7 @@ EOddsWellMatchWinnerLockResult LockOddsWellMatchWinnerRequest(
 		Finalizations,
 		WinFinalizations,
 		CanceledGames,
+		VoidDecisions,
 		bQaSlot,
 		OutError))
 	{
@@ -1841,6 +2022,7 @@ EOddsWellMatchWinnerResultLinkResult LinkOddsWellMatchWinnerResult(
 	TArray<FOddsWellMatchWinnerLossFinalizationRecord> Finalizations;
 	TArray<FOddsWellMatchWinnerWinFinalizationRecord> WinFinalizations;
 	TArray<FOddsWellMatchWinnerCanceledGameRecord> CanceledGames;
+	TArray<FOddsWellMatchWinnerVoidDecisionRecord> VoidDecisions;
 	bool bFound = false;
 	bool bNeedsMigration = false;
 	if (!LoadOddsWellOddsBucksStateRaw(
@@ -1854,6 +2036,7 @@ EOddsWellMatchWinnerResultLinkResult LinkOddsWellMatchWinnerResult(
 		Finalizations,
 		WinFinalizations,
 		CanceledGames,
+		VoidDecisions,
 		bFound,
 		bNeedsMigration,
 		OutError))
@@ -1948,6 +2131,7 @@ EOddsWellMatchWinnerResultLinkResult LinkOddsWellMatchWinnerResult(
 		Finalizations,
 		WinFinalizations,
 		CanceledGames,
+		VoidDecisions,
 		bQaSlot,
 		OutError))
 	{
@@ -2003,6 +2187,7 @@ EOddsWellMatchWinnerCanceledGameResult RecordOddsWellMatchWinnerCanceledGame(
 	TArray<FOddsWellMatchWinnerLossFinalizationRecord> LossFinalizations;
 	TArray<FOddsWellMatchWinnerWinFinalizationRecord> WinFinalizations;
 	TArray<FOddsWellMatchWinnerCanceledGameRecord> CanceledGames;
+	TArray<FOddsWellMatchWinnerVoidDecisionRecord> VoidDecisions;
 	bool bFound = false;
 	bool bNeedsMigration = false;
 	if (!LoadOddsWellOddsBucksStateRaw(
@@ -2016,6 +2201,7 @@ EOddsWellMatchWinnerCanceledGameResult RecordOddsWellMatchWinnerCanceledGame(
 		LossFinalizations,
 		WinFinalizations,
 		CanceledGames,
+		VoidDecisions,
 		bFound,
 		bNeedsMigration,
 		OutError))
@@ -2125,6 +2311,7 @@ EOddsWellMatchWinnerCanceledGameResult RecordOddsWellMatchWinnerCanceledGame(
 		LossFinalizations,
 		WinFinalizations,
 		CandidateCanceledGames,
+		VoidDecisions,
 		bQaSlot,
 		OutError))
 	{
@@ -2133,6 +2320,181 @@ EOddsWellMatchWinnerCanceledGameResult RecordOddsWellMatchWinnerCanceledGame(
 	OutRecord = MoveTemp(Candidate);
 	OutError.Reset();
 	return EOddsWellMatchWinnerCanceledGameResult::Recorded;
+}
+
+EOddsWellMatchWinnerVoidDecisionResult DecideOddsWellMatchWinnerVoidRefundDue(
+	const FString& VoidDecisionCommandId,
+	const FString& CancellationCommandId,
+	const FString& CancellationEvidenceId,
+	const bool bQaSlot,
+	FOddsWellMatchWinnerVoidDecisionRecord& OutRecord,
+	FString& OutError)
+{
+	OutRecord = FOddsWellMatchWinnerVoidDecisionRecord();
+	if (!bQaSlot
+		|| VoidDecisionCommandId.TrimStartAndEnd().IsEmpty()
+		|| CancellationCommandId.TrimStartAndEnd().IsEmpty()
+		|| CancellationEvidenceId.TrimStartAndEnd().IsEmpty()
+		|| VoidDecisionCommandId == CancellationCommandId
+		|| VoidDecisionCommandId == CancellationEvidenceId)
+	{
+		OutError = TEXT("The Match Winner void decision requires one valid noncanonical QA cancellation identity.");
+		return EOddsWellMatchWinnerVoidDecisionResult::Rejected;
+	}
+
+	FOddsWellOddsBucksLedger Ledger;
+	int64 NextJobPayoutUnixSeconds = 0;
+	TArray<FOddsWellMatchWinnerRequestRecord> Requests;
+	TArray<FOddsWellMatchWinnerLockRecord> Locks;
+	TArray<FOddsWellMatchWinnerResultLinkRecord> Results;
+	TArray<FOddsWellMatchWinnerSettlementDecisionRecord> Decisions;
+	TArray<FOddsWellMatchWinnerLossFinalizationRecord> LossFinalizations;
+	TArray<FOddsWellMatchWinnerWinFinalizationRecord> WinFinalizations;
+	TArray<FOddsWellMatchWinnerCanceledGameRecord> CanceledGames;
+	TArray<FOddsWellMatchWinnerVoidDecisionRecord> VoidDecisions;
+	bool bFound = false;
+	bool bNeedsMigration = false;
+	if (!LoadOddsWellOddsBucksStateRaw(
+		bQaSlot,
+		Ledger,
+		NextJobPayoutUnixSeconds,
+		Requests,
+		Locks,
+		Results,
+		Decisions,
+		LossFinalizations,
+		WinFinalizations,
+		CanceledGames,
+		VoidDecisions,
+		bFound,
+		bNeedsMigration,
+		OutError))
+	{
+		return EOddsWellMatchWinnerVoidDecisionResult::Rejected;
+	}
+	if (const FOddsWellMatchWinnerVoidDecisionRecord* Existing = VoidDecisions.FindByPredicate(
+		[&VoidDecisionCommandId](const FOddsWellMatchWinnerVoidDecisionRecord& Decision)
+		{
+			return Decision.VoidDecisionCommandId == VoidDecisionCommandId;
+		}))
+	{
+		if (Existing->CancellationCommandId != CancellationCommandId
+			|| Existing->CancellationEvidenceId != CancellationEvidenceId)
+		{
+			OutError = TEXT("The Match Winner void-decision command was already used with different cancellation evidence.");
+			return EOddsWellMatchWinnerVoidDecisionResult::Rejected;
+		}
+		OutRecord = *Existing;
+		OutError.Reset();
+		return EOddsWellMatchWinnerVoidDecisionResult::Duplicate;
+	}
+	if (!VoidDecisions.IsEmpty())
+	{
+		OutError = TEXT("The isolated Match Winner QA profile already has a different void decision.");
+		return EOddsWellMatchWinnerVoidDecisionResult::Rejected;
+	}
+	const FOddsWellMatchWinnerCanceledGameRecord* Canceled = CanceledGames.FindByPredicate(
+		[&CancellationCommandId, &CancellationEvidenceId](const FOddsWellMatchWinnerCanceledGameRecord& Candidate)
+		{
+			return Candidate.CancellationCommandId == CancellationCommandId
+				&& Candidate.CancellationEvidenceId == CancellationEvidenceId;
+		});
+	const FOddsWellMatchWinnerRequestRecord* Request = Canceled
+		? Requests.FindByPredicate(
+			[Canceled](const FOddsWellMatchWinnerRequestRecord& Candidate)
+			{
+				return Candidate.RequestCommandId == Canceled->RequestCommandId;
+			})
+		: nullptr;
+	const FOddsWellMatchWinnerLockRecord* Lock = Canceled
+		? Locks.FindByPredicate(
+			[Canceled](const FOddsWellMatchWinnerLockRecord& Candidate)
+			{
+				return Candidate.LockCommandId == Canceled->LockCommandId;
+			})
+		: nullptr;
+	const bool bHasResult = Canceled && Results.ContainsByPredicate(
+		[Canceled](const FOddsWellMatchWinnerResultLinkRecord& Result)
+		{
+			return Result.RequestCommandId == Canceled->RequestCommandId;
+		});
+	const bool bHasNormalDecision = Canceled && Decisions.ContainsByPredicate(
+		[Canceled](const FOddsWellMatchWinnerSettlementDecisionRecord& Decision)
+		{
+			return Decision.RequestCommandId == Canceled->RequestCommandId;
+		});
+	const bool bHasFinalization = Canceled && (
+		LossFinalizations.ContainsByPredicate(
+			[Canceled](const FOddsWellMatchWinnerLossFinalizationRecord& Finalization)
+			{
+				return Finalization.RequestCommandId == Canceled->RequestCommandId;
+			})
+		|| WinFinalizations.ContainsByPredicate(
+			[Canceled](const FOddsWellMatchWinnerWinFinalizationRecord& Finalization)
+			{
+				return Finalization.RequestCommandId == Canceled->RequestCommandId;
+			}));
+	if (!Canceled
+		|| !Request
+		|| !Lock
+		|| VoidDecisionCommandId == Request->RequestCommandId
+		|| VoidDecisionCommandId == Lock->LockCommandId
+		|| Canceled->SeasonNumber != CanceledQaSeasonNumber
+		|| Canceled->GameNumber != CanceledQaGameNumber
+		|| Canceled->ReasonCode != MatchWinnerCanceledGameReason
+		|| Canceled->Status != MatchWinnerClosedCanceledStatus
+		|| Request->Status != AcceptedPendingLockStatus
+		|| Request->Stake != 40
+		|| Lock->RequestCommandId != Request->RequestCommandId
+		|| Lock->Decision != MatchWinnerLockedDecision
+		|| bHasResult
+		|| bHasNormalDecision
+		|| bHasFinalization)
+	{
+		OutError = TEXT("The Match Winner void decision requires the exact closed canceled-wager chain only.");
+		return EOddsWellMatchWinnerVoidDecisionResult::Rejected;
+	}
+
+	FOddsWellMatchWinnerVoidDecisionRecord Candidate;
+	Candidate.VoidDecisionCommandId = VoidDecisionCommandId;
+	Candidate.CancellationCommandId = Canceled->CancellationCommandId;
+	Candidate.CancellationEvidenceId = Canceled->CancellationEvidenceId;
+	Candidate.RequestCommandId = Request->RequestCommandId;
+	Candidate.LockCommandId = Lock->LockCommandId;
+	Candidate.DecisionSchema = MatchWinnerVoidDecisionSchema;
+	Candidate.DecisionVersion = MatchWinnerVoidDecisionVersion;
+	Candidate.OfferId = Request->OfferId;
+	Candidate.OfferSchema = MatchWinnerOfferSchema;
+	Candidate.OfferVersion = Request->OfferVersion;
+	Candidate.SeasonNumber = Canceled->SeasonNumber;
+	Candidate.GameNumber = Canceled->GameNumber;
+	Candidate.SelectedTeam = Request->OfferedTeam;
+	Candidate.Stake = Request->Stake;
+	Candidate.CancellationReason = Canceled->ReasonCode;
+	Candidate.Outcome = MatchWinnerVoidedOutcome;
+	Candidate.RefundDue = Request->Stake;
+	Candidate.Status = MatchWinnerDecidedVoidPendingRefundStatus;
+	TArray<FOddsWellMatchWinnerVoidDecisionRecord> CandidateVoidDecisions;
+	CandidateVoidDecisions.Add(Candidate);
+	if (!SaveOddsWellOddsBucksState(
+		Ledger,
+		NextJobPayoutUnixSeconds,
+		Requests,
+		Locks,
+		Results,
+		Decisions,
+		LossFinalizations,
+		WinFinalizations,
+		CanceledGames,
+		CandidateVoidDecisions,
+		bQaSlot,
+		OutError))
+	{
+		return EOddsWellMatchWinnerVoidDecisionResult::Rejected;
+	}
+	OutRecord = MoveTemp(Candidate);
+	OutError.Reset();
+	return EOddsWellMatchWinnerVoidDecisionResult::Decided;
 }
 
 namespace
@@ -2169,6 +2531,7 @@ EOddsWellMatchWinnerSettlementDecisionResult DecideOddsWellMatchWinnerSettlement
 	TArray<FOddsWellMatchWinnerLossFinalizationRecord> Finalizations;
 	TArray<FOddsWellMatchWinnerWinFinalizationRecord> WinFinalizations;
 	TArray<FOddsWellMatchWinnerCanceledGameRecord> CanceledGames;
+	TArray<FOddsWellMatchWinnerVoidDecisionRecord> VoidDecisions;
 	bool bFound = false;
 	bool bNeedsMigration = false;
 	if (!LoadOddsWellOddsBucksStateRaw(
@@ -2182,6 +2545,7 @@ EOddsWellMatchWinnerSettlementDecisionResult DecideOddsWellMatchWinnerSettlement
 		Finalizations,
 		WinFinalizations,
 		CanceledGames,
+		VoidDecisions,
 		bFound,
 		bNeedsMigration,
 		OutError))
@@ -2319,6 +2683,7 @@ EOddsWellMatchWinnerSettlementDecisionResult DecideOddsWellMatchWinnerSettlement
 		Finalizations,
 		WinFinalizations,
 		CanceledGames,
+		VoidDecisions,
 		bQaSlot,
 		OutError))
 	{
@@ -2380,6 +2745,7 @@ EOddsWellMatchWinnerLossFinalizationResult FinalizeOddsWellMatchWinnerLoss(
 	TArray<FOddsWellMatchWinnerLossFinalizationRecord> Finalizations;
 	TArray<FOddsWellMatchWinnerWinFinalizationRecord> WinFinalizations;
 	TArray<FOddsWellMatchWinnerCanceledGameRecord> CanceledGames;
+	TArray<FOddsWellMatchWinnerVoidDecisionRecord> VoidDecisions;
 	bool bFound = false;
 	bool bNeedsMigration = false;
 	if (!LoadOddsWellOddsBucksStateRaw(
@@ -2393,6 +2759,7 @@ EOddsWellMatchWinnerLossFinalizationResult FinalizeOddsWellMatchWinnerLoss(
 		Finalizations,
 		WinFinalizations,
 		CanceledGames,
+		VoidDecisions,
 		bFound,
 		bNeedsMigration,
 		OutError))
@@ -2496,6 +2863,7 @@ EOddsWellMatchWinnerLossFinalizationResult FinalizeOddsWellMatchWinnerLoss(
 		CandidateFinalizations,
 		WinFinalizations,
 		CanceledGames,
+		VoidDecisions,
 		bQaSlot,
 		OutError))
 	{
@@ -2558,6 +2926,7 @@ EOddsWellMatchWinnerWinFinalizationResult FinalizeOddsWellMatchWinnerWin(
 	TArray<FOddsWellMatchWinnerLossFinalizationRecord> LossFinalizations;
 	TArray<FOddsWellMatchWinnerWinFinalizationRecord> WinFinalizations;
 	TArray<FOddsWellMatchWinnerCanceledGameRecord> CanceledGames;
+	TArray<FOddsWellMatchWinnerVoidDecisionRecord> VoidDecisions;
 	bool bFound = false;
 	bool bNeedsMigration = false;
 	if (!LoadOddsWellOddsBucksStateRaw(
@@ -2571,6 +2940,7 @@ EOddsWellMatchWinnerWinFinalizationResult FinalizeOddsWellMatchWinnerWin(
 		LossFinalizations,
 		WinFinalizations,
 		CanceledGames,
+		VoidDecisions,
 		bFound,
 		bNeedsMigration,
 		OutError))
@@ -2699,6 +3069,7 @@ EOddsWellMatchWinnerWinFinalizationResult FinalizeOddsWellMatchWinnerWin(
 		LossFinalizations,
 		CandidateWinFinalizations,
 		CanceledGames,
+		VoidDecisions,
 		bQaSlot,
 		OutError))
 	{
@@ -2864,12 +3235,13 @@ bool FOddsWellOddsBucksLedgerTest::RunTest(const FString& Parameters)
 	TArray<FOddsWellMatchWinnerLossFinalizationRecord> MemoryFinalizations;
 	TArray<FOddsWellMatchWinnerWinFinalizationRecord> MemoryWinFinalizations;
 	TArray<FOddsWellMatchWinnerCanceledGameRecord> MemoryCanceledGames;
+	TArray<FOddsWellMatchWinnerVoidDecisionRecord> MemoryVoidDecisions;
 	bool bNeedsMigration = false;
-	TestTrue(TEXT("Odds Bucks entries validate after a memory round trip"), ValidateOddsBucksSave(UGameplayStatics::LoadGameFromMemory(Bytes), MemoryLedger, MemoryNextJobPayout, MemoryRequests, MemoryLocks, MemoryResultLinks, MemoryDecisions, MemoryFinalizations, MemoryWinFinalizations, MemoryCanceledGames, bNeedsMigration, Error));
+	TestTrue(TEXT("Odds Bucks entries validate after a memory round trip"), ValidateOddsBucksSave(UGameplayStatics::LoadGameFromMemory(Bytes), MemoryLedger, MemoryNextJobPayout, MemoryRequests, MemoryLocks, MemoryResultLinks, MemoryDecisions, MemoryFinalizations, MemoryWinFinalizations, MemoryCanceledGames, MemoryVoidDecisions, bNeedsMigration, Error));
 	TestEqual(TEXT("Memory round trip preserves balance"), MemoryLedger.GetBalance(), int64{15});
 	Record->SchemaVersion++;
-	TestFalse(TEXT("An unsupported Odds Bucks schema is rejected"), ValidateOddsBucksSave(Record, MemoryLedger, MemoryNextJobPayout, MemoryRequests, MemoryLocks, MemoryResultLinks, MemoryDecisions, MemoryFinalizations, MemoryWinFinalizations, MemoryCanceledGames, bNeedsMigration, Error));
-	TestFalse(TEXT("A wrong save type is rejected"), ValidateOddsBucksSave(NewObject<UStaticMesh>(), MemoryLedger, MemoryNextJobPayout, MemoryRequests, MemoryLocks, MemoryResultLinks, MemoryDecisions, MemoryFinalizations, MemoryWinFinalizations, MemoryCanceledGames, bNeedsMigration, Error));
+	TestFalse(TEXT("An unsupported Odds Bucks schema is rejected"), ValidateOddsBucksSave(Record, MemoryLedger, MemoryNextJobPayout, MemoryRequests, MemoryLocks, MemoryResultLinks, MemoryDecisions, MemoryFinalizations, MemoryWinFinalizations, MemoryCanceledGames, MemoryVoidDecisions, bNeedsMigration, Error));
+	TestFalse(TEXT("A wrong save type is rejected"), ValidateOddsBucksSave(NewObject<UStaticMesh>(), MemoryLedger, MemoryNextJobPayout, MemoryRequests, MemoryLocks, MemoryResultLinks, MemoryDecisions, MemoryFinalizations, MemoryWinFinalizations, MemoryCanceledGames, MemoryVoidDecisions, bNeedsMigration, Error));
 
 	ResetOddsWellQaOddsBucksAndVerify(Error);
 	FOddsWellOddsBucksLedger JobLedger;
@@ -2901,7 +3273,7 @@ bool FOddsWellOddsBucksLedgerTest::RunTest(const FString& Parameters)
 	TestEqual(TEXT("Migration preserves the first payout"), MigratedLedger.GetBalance(), int64{100});
 	TestTrue(TEXT("Migration starts a fresh 24-hour wait"), MigratedNextJobPayout >= MigrationStartedAt + GetOddsWellJobPayoutIntervalSeconds());
 	const UOddsWellOddsBucksSaveGame* MigratedRecord = Cast<UOddsWellOddsBucksSaveGame>(UGameplayStatics::LoadGameFromSlot(OddsBucksQaSlot, OddsBucksUserIndex));
-	TestTrue(TEXT("Migration rewrites schema v9"), MigratedRecord && MigratedRecord->SchemaVersion == OddsBucksSchemaVersion);
+	TestTrue(TEXT("Migration rewrites schema v10"), MigratedRecord && MigratedRecord->SchemaVersion == OddsBucksSchemaVersion);
 	TestTrue(TEXT("Migrated QA cleanup succeeds"), ResetOddsWellQaOddsBucksAndVerify(Error));
 
 	UOddsWellOddsBucksSaveGame* VersionTwoRecord = NewObject<UOddsWellOddsBucksSaveGame>();
@@ -2915,7 +3287,7 @@ bool FOddsWellOddsBucksLedgerTest::RunTest(const FString& Parameters)
 	TestEqual(TEXT("Schema v2 migration preserves job cooldown"), MigratedNextJobPayout, ExpectedNextJobPayout);
 	TestEqual(TEXT("Schema v2 migration invents no wager"), MigratedRequests.Num(), 0);
 	MigratedRecord = Cast<UOddsWellOddsBucksSaveGame>(UGameplayStatics::LoadGameFromSlot(OddsBucksQaSlot, OddsBucksUserIndex));
-	TestTrue(TEXT("Schema v2 migration rewrites schema v9"), MigratedRecord && MigratedRecord->SchemaVersion == OddsBucksSchemaVersion);
+	TestTrue(TEXT("Schema v2 migration rewrites schema v10"), MigratedRecord && MigratedRecord->SchemaVersion == OddsBucksSchemaVersion);
 	TestTrue(TEXT("Migrated schema v2 cleanup succeeds"), ResetOddsWellQaOddsBucksAndVerify(Error));
 
 	TestEqual(TEXT("Existing valid job path funds wager QA"), JobLedger.GetBalance(), int64{100});
@@ -2980,7 +3352,7 @@ bool FOddsWellOddsBucksLedgerTest::RunTest(const FString& Parameters)
 	TestEqual(TEXT("Schema v3 migration preserves pending request evidence"), WagerRequests[0].Status, AcceptedPendingLockStatus);
 	TestEqual(TEXT("Schema v3 migration invents no lock"), WagerLocks.Num(), 0);
 	MigratedRecord = Cast<UOddsWellOddsBucksSaveGame>(UGameplayStatics::LoadGameFromSlot(OddsBucksQaSlot, OddsBucksUserIndex));
-	TestTrue(TEXT("Schema v3 migration rewrites schema v9"), MigratedRecord && MigratedRecord->SchemaVersion == OddsBucksSchemaVersion);
+	TestTrue(TEXT("Schema v3 migration rewrites schema v10"), MigratedRecord && MigratedRecord->SchemaVersion == OddsBucksSchemaVersion);
 
 	FOddsWellMatchWinnerLockRecord LockRecord;
 	const FString RequestCommandId(TEXT("wager:match_winner:test-1"));
@@ -3066,7 +3438,7 @@ bool FOddsWellOddsBucksLedgerTest::RunTest(const FString& Parameters)
 	TestEqual(TEXT("Schema v4 migration preserves one lock"), WagerLocks.Num(), 1);
 	TestEqual(TEXT("Schema v4 migration invents no result link"), WagerResultLinks.Num(), 0);
 	MigratedRecord = Cast<UOddsWellOddsBucksSaveGame>(UGameplayStatics::LoadGameFromSlot(OddsBucksQaSlot, OddsBucksUserIndex));
-	TestTrue(TEXT("Schema v4 migration rewrites schema v9"), MigratedRecord && MigratedRecord->SchemaVersion == OddsBucksSchemaVersion);
+	TestTrue(TEXT("Schema v4 migration rewrites schema v10"), MigratedRecord && MigratedRecord->SchemaVersion == OddsBucksSchemaVersion);
 
 	FOddsWellMatchWinnerResultLinkRecord TamperedResult = ExactResultInput;
 	TamperedResult.RequestCommandId = TEXT("wager:match_winner:unknown");
@@ -3150,7 +3522,7 @@ bool FOddsWellOddsBucksLedgerTest::RunTest(const FString& Parameters)
 	TestEqual(TEXT("Schema v5 migration preserves one result link"), WagerResultLinks.Num(), 1);
 	TestEqual(TEXT("Schema v5 migration invents no settlement decision"), WagerDecisions.Num(), 0);
 	MigratedRecord = Cast<UOddsWellOddsBucksSaveGame>(UGameplayStatics::LoadGameFromSlot(OddsBucksQaSlot, OddsBucksUserIndex));
-	TestTrue(TEXT("Schema v5 migration rewrites schema v9"), MigratedRecord && MigratedRecord->SchemaVersion == OddsBucksSchemaVersion);
+	TestTrue(TEXT("Schema v5 migration rewrites schema v10"), MigratedRecord && MigratedRecord->SchemaVersion == OddsBucksSchemaVersion);
 
 	const FString DecisionCommandId(TEXT("wager:match_winner:decision:test-1"));
 	FOddsWellMatchWinnerSettlementDecisionRecord DecisionRecord;
@@ -3213,7 +3585,7 @@ bool FOddsWellOddsBucksLedgerTest::RunTest(const FString& Parameters)
 	TestEqual(TEXT("Schema v6 migration invents no win finalization"), WagerWinFinalizations.Num(), 0);
 	TestFalse(TEXT("Pending decision publishes no finalized-loss reconciliation"), IFileManager::Get().FileExists(*GetMatchWinnerReconciliationPath(true)));
 	MigratedRecord = Cast<UOddsWellOddsBucksSaveGame>(UGameplayStatics::LoadGameFromSlot(OddsBucksQaSlot, OddsBucksUserIndex));
-	TestTrue(TEXT("Schema v6 migration rewrites schema v9"), MigratedRecord && MigratedRecord->SchemaVersion == OddsBucksSchemaVersion);
+	TestTrue(TEXT("Schema v6 migration rewrites schema v10"), MigratedRecord && MigratedRecord->SchemaVersion == OddsBucksSchemaVersion);
 
 	const FString FinalizationCommandId(TEXT("wager:match_winner:finalization:test-1"));
 	FOddsWellMatchWinnerLossFinalizationRecord FinalizationRecord;
@@ -3321,7 +3693,7 @@ bool FOddsWellOddsBucksLedgerTest::RunTest(const FString& Parameters)
 	if (MalformedFinalizationRecord && MalformedFinalizationRecord->MatchWinnerLossFinalizations.Num() == 1)
 	{
 		MalformedFinalizationRecord->MatchWinnerLossFinalizations[0].ObservedFinalBalance = 61;
-		TestFalse(TEXT("Malformed persisted finalization is rejected in memory"), ValidateOddsBucksSave(MalformedFinalizationRecord, MemoryLedger, MemoryNextJobPayout, MemoryRequests, MemoryLocks, MemoryResultLinks, MemoryDecisions, MemoryFinalizations, MemoryWinFinalizations, MemoryCanceledGames, bNeedsMigration, Error));
+		TestFalse(TEXT("Malformed persisted finalization is rejected in memory"), ValidateOddsBucksSave(MalformedFinalizationRecord, MemoryLedger, MemoryNextJobPayout, MemoryRequests, MemoryLocks, MemoryResultLinks, MemoryDecisions, MemoryFinalizations, MemoryWinFinalizations, MemoryCanceledGames, MemoryVoidDecisions, bNeedsMigration, Error));
 		TestTrue(TEXT("Malformed persisted finalization writes for no-mutation QA"), UGameplayStatics::SaveGameToSlot(MalformedFinalizationRecord, OddsBucksQaSlot, OddsBucksUserIndex));
 		TestEqual(TEXT("Malformed persisted finalization rejects finalization command"), FinalizeOddsWellMatchWinnerLoss(FinalizationCommandId, DecisionCommandId, true, RetryFinalizationRecord, Error), EOddsWellMatchWinnerLossFinalizationResult::Rejected);
 		const UOddsWellOddsBucksSaveGame* PersistedMalformedFinalization = Cast<UOddsWellOddsBucksSaveGame>(UGameplayStatics::LoadGameFromSlot(OddsBucksQaSlot, OddsBucksUserIndex));
@@ -3338,7 +3710,7 @@ bool FOddsWellOddsBucksLedgerTest::RunTest(const FString& Parameters)
 	if (MalformedDecisionRecord && MalformedDecisionRecord->MatchWinnerSettlementDecisions.Num() == 1)
 	{
 		MalformedDecisionRecord->MatchWinnerSettlementDecisions[0].GrossReturnDue = 1;
-		TestFalse(TEXT("Malformed persisted decision is rejected in memory"), ValidateOddsBucksSave(MalformedDecisionRecord, MemoryLedger, MemoryNextJobPayout, MemoryRequests, MemoryLocks, MemoryResultLinks, MemoryDecisions, MemoryFinalizations, MemoryWinFinalizations, MemoryCanceledGames, bNeedsMigration, Error));
+		TestFalse(TEXT("Malformed persisted decision is rejected in memory"), ValidateOddsBucksSave(MalformedDecisionRecord, MemoryLedger, MemoryNextJobPayout, MemoryRequests, MemoryLocks, MemoryResultLinks, MemoryDecisions, MemoryFinalizations, MemoryWinFinalizations, MemoryCanceledGames, MemoryVoidDecisions, bNeedsMigration, Error));
 		TestTrue(TEXT("Malformed persisted decision writes for no-mutation QA"), UGameplayStatics::SaveGameToSlot(MalformedDecisionRecord, OddsBucksQaSlot, OddsBucksUserIndex));
 		TestEqual(TEXT("Malformed persisted decision rejects a decision command"), DecideOddsWellMatchWinnerSettlement(DecisionCommandId, RequestCommandId, LockCommandId, ResultCommandId, true, RetryDecisionRecord, Error), EOddsWellMatchWinnerSettlementDecisionResult::Rejected);
 		TestEqual(TEXT("Nonzero-return decision rejects loss finalization"), FinalizeOddsWellMatchWinnerLoss(FinalizationCommandId, DecisionCommandId, true, RetryFinalizationRecord, Error), EOddsWellMatchWinnerLossFinalizationResult::Rejected);
@@ -3351,7 +3723,7 @@ bool FOddsWellOddsBucksLedgerTest::RunTest(const FString& Parameters)
 		TestTrue(TEXT("Restored decision evidence validates"), LoadOddsWellOddsBucksWagerDecisionState(true, WagerLedger, WagerNextJobPayout, WagerRequests, WagerLocks, WagerResultLinks, WagerDecisions, bFound, Error));
 
 		MalformedDecisionRecord->MatchWinnerSettlementDecisions[0].Outcome = MatchWinnerWonOutcome;
-		TestFalse(TEXT("Nonloss persisted decision is rejected in memory"), ValidateOddsBucksSave(MalformedDecisionRecord, MemoryLedger, MemoryNextJobPayout, MemoryRequests, MemoryLocks, MemoryResultLinks, MemoryDecisions, MemoryFinalizations, MemoryWinFinalizations, MemoryCanceledGames, bNeedsMigration, Error));
+		TestFalse(TEXT("Nonloss persisted decision is rejected in memory"), ValidateOddsBucksSave(MalformedDecisionRecord, MemoryLedger, MemoryNextJobPayout, MemoryRequests, MemoryLocks, MemoryResultLinks, MemoryDecisions, MemoryFinalizations, MemoryWinFinalizations, MemoryCanceledGames, MemoryVoidDecisions, bNeedsMigration, Error));
 		TestTrue(TEXT("Nonloss persisted decision writes for no-mutation QA"), UGameplayStatics::SaveGameToSlot(MalformedDecisionRecord, OddsBucksQaSlot, OddsBucksUserIndex));
 		TestEqual(TEXT("Nonloss decision rejects loss finalization"), FinalizeOddsWellMatchWinnerLoss(FinalizationCommandId, DecisionCommandId, true, RetryFinalizationRecord, Error), EOddsWellMatchWinnerLossFinalizationResult::Rejected);
 		const UOddsWellOddsBucksSaveGame* PersistedNonlossDecision = Cast<UOddsWellOddsBucksSaveGame>(UGameplayStatics::LoadGameFromSlot(OddsBucksQaSlot, OddsBucksUserIndex));
@@ -3368,7 +3740,7 @@ bool FOddsWellOddsBucksLedgerTest::RunTest(const FString& Parameters)
 	if (MalformedLockRecord && MalformedLockRecord->MatchWinnerLocks.Num() == 1)
 	{
 		MalformedLockRecord->MatchWinnerLocks[0].GameNumber++;
-		TestFalse(TEXT("Malformed persisted lock is rejected"), ValidateOddsBucksSave(MalformedLockRecord, MemoryLedger, MemoryNextJobPayout, MemoryRequests, MemoryLocks, MemoryResultLinks, MemoryDecisions, MemoryFinalizations, MemoryWinFinalizations, MemoryCanceledGames, bNeedsMigration, Error));
+		TestFalse(TEXT("Malformed persisted lock is rejected"), ValidateOddsBucksSave(MalformedLockRecord, MemoryLedger, MemoryNextJobPayout, MemoryRequests, MemoryLocks, MemoryResultLinks, MemoryDecisions, MemoryFinalizations, MemoryWinFinalizations, MemoryCanceledGames, MemoryVoidDecisions, bNeedsMigration, Error));
 	}
 	UOddsWellOddsBucksSaveGame* MalformedResultRecord = Cast<UOddsWellOddsBucksSaveGame>(UGameplayStatics::LoadGameFromSlot(OddsBucksQaSlot, OddsBucksUserIndex));
 	TestTrue(TEXT("Saved result link is available for corruption test"), MalformedResultRecord && MalformedResultRecord->MatchWinnerResultLinks.Num() == 1);
@@ -3376,7 +3748,7 @@ bool FOddsWellOddsBucksLedgerTest::RunTest(const FString& Parameters)
 	{
 		const FString MalformedSeal(TEXT("bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"));
 		MalformedResultRecord->MatchWinnerResultLinks[0].ReplaySealSha256 = MalformedSeal;
-		TestFalse(TEXT("Malformed persisted result link is rejected in memory"), ValidateOddsBucksSave(MalformedResultRecord, MemoryLedger, MemoryNextJobPayout, MemoryRequests, MemoryLocks, MemoryResultLinks, MemoryDecisions, MemoryFinalizations, MemoryWinFinalizations, MemoryCanceledGames, bNeedsMigration, Error));
+		TestFalse(TEXT("Malformed persisted result link is rejected in memory"), ValidateOddsBucksSave(MalformedResultRecord, MemoryLedger, MemoryNextJobPayout, MemoryRequests, MemoryLocks, MemoryResultLinks, MemoryDecisions, MemoryFinalizations, MemoryWinFinalizations, MemoryCanceledGames, MemoryVoidDecisions, bNeedsMigration, Error));
 		TestTrue(TEXT("Malformed persisted result link writes for no-mutation QA"), UGameplayStatics::SaveGameToSlot(MalformedResultRecord, OddsBucksQaSlot, OddsBucksUserIndex));
 		TestEqual(TEXT("Malformed persisted result link rejects a link command"), LinkResult(ExactResultInput, RetryResultRecord), EOddsWellMatchWinnerResultLinkResult::Rejected);
 		const UOddsWellOddsBucksSaveGame* PersistedMalformedResult = Cast<UOddsWellOddsBucksSaveGame>(UGameplayStatics::LoadGameFromSlot(OddsBucksQaSlot, OddsBucksUserIndex));
@@ -3477,7 +3849,7 @@ bool FOddsWellOddsBucksLedgerTest::RunTest(const FString& Parameters)
 	TestTrue(TEXT("Schema v7 pending win migrates without invention"), LoadOddsWellOddsBucksWagerFinalizationState(true, WinLedger, WinNextJobPayout, WinRequests, WinLocks, WinResults, WinDecisions, WinLossFinalizations, WinFinalizations, bFound, Error));
 	TestEqual(TEXT("Schema v7 migration invents no win finalization"), WinFinalizations.Num(), 0);
 	MigratedRecord = Cast<UOddsWellOddsBucksSaveGame>(UGameplayStatics::LoadGameFromSlot(OddsBucksQaSlot, OddsBucksUserIndex));
-	TestTrue(TEXT("Schema v7 migration rewrites schema v9"), MigratedRecord && MigratedRecord->SchemaVersion == OddsBucksSchemaVersion);
+	TestTrue(TEXT("Schema v7 migration rewrites schema v10"), MigratedRecord && MigratedRecord->SchemaVersion == OddsBucksSchemaVersion);
 
 	FOddsWellMatchWinnerSettlementDecisionRecord RetryWinDecision;
 	TestEqual(TEXT("Exact winning decision retry is idempotent"), DecideOddsWellMatchWinnerSettlement(Offer, WinDecisionCommandId, WinRequestCommandId, WinLockCommandId, WinResultCommandId, true, RetryWinDecision, Error), EOddsWellMatchWinnerSettlementDecisionResult::Duplicate);
@@ -3496,7 +3868,7 @@ bool FOddsWellOddsBucksLedgerTest::RunTest(const FString& Parameters)
 	if (MalformedWinDecision && MalformedWinDecision->MatchWinnerSettlementDecisions.Num() == 1)
 	{
 		MalformedWinDecision->MatchWinnerSettlementDecisions[0].GrossReturnDue = 99;
-		TestFalse(TEXT("Tampered winning return is rejected in memory"), ValidateOddsBucksSave(MalformedWinDecision, MemoryLedger, MemoryNextJobPayout, MemoryRequests, MemoryLocks, MemoryResultLinks, MemoryDecisions, MemoryFinalizations, MemoryWinFinalizations, MemoryCanceledGames, bNeedsMigration, Error));
+		TestFalse(TEXT("Tampered winning return is rejected in memory"), ValidateOddsBucksSave(MalformedWinDecision, MemoryLedger, MemoryNextJobPayout, MemoryRequests, MemoryLocks, MemoryResultLinks, MemoryDecisions, MemoryFinalizations, MemoryWinFinalizations, MemoryCanceledGames, MemoryVoidDecisions, bNeedsMigration, Error));
 		TestTrue(TEXT("Tampered winning decision writes for no-mutation QA"), UGameplayStatics::SaveGameToSlot(MalformedWinDecision, OddsBucksQaSlot, OddsBucksUserIndex));
 		TestEqual(TEXT("Tampered persisted winning decision fails closed"), DecideOddsWellMatchWinnerSettlement(Offer, WinDecisionCommandId, WinRequestCommandId, WinLockCommandId, WinResultCommandId, true, RetryWinDecision, Error), EOddsWellMatchWinnerSettlementDecisionResult::Rejected);
 		const UOddsWellOddsBucksSaveGame* PersistedMalformedWin = Cast<UOddsWellOddsBucksSaveGame>(UGameplayStatics::LoadGameFromSlot(OddsBucksQaSlot, OddsBucksUserIndex));
@@ -3631,7 +4003,7 @@ bool FOddsWellOddsBucksLedgerTest::RunTest(const FString& Parameters)
 	if (MalformedWinFinalization && MalformedWinFinalization->MatchWinnerWinFinalizations.Num() == 1)
 	{
 		MalformedWinFinalization->MatchWinnerWinFinalizations[0].GrossReturnApplied = 99;
-		TestFalse(TEXT("Malformed win finalization is rejected in memory"), ValidateOddsBucksSave(MalformedWinFinalization, MemoryLedger, MemoryNextJobPayout, MemoryRequests, MemoryLocks, MemoryResultLinks, MemoryDecisions, MemoryFinalizations, MemoryWinFinalizations, MemoryCanceledGames, bNeedsMigration, Error));
+		TestFalse(TEXT("Malformed win finalization is rejected in memory"), ValidateOddsBucksSave(MalformedWinFinalization, MemoryLedger, MemoryNextJobPayout, MemoryRequests, MemoryLocks, MemoryResultLinks, MemoryDecisions, MemoryFinalizations, MemoryWinFinalizations, MemoryCanceledGames, MemoryVoidDecisions, bNeedsMigration, Error));
 		TestTrue(TEXT("Malformed win finalization writes for no-mutation QA"), UGameplayStatics::SaveGameToSlot(MalformedWinFinalization, OddsBucksQaSlot, OddsBucksUserIndex));
 		TestEqual(TEXT("Malformed persisted win finalization fails closed"), FinalizeOddsWellMatchWinnerWin(WinFinalizationCommandId, WinDecisionCommandId, true, RetryWinFinalization, Error), EOddsWellMatchWinnerWinFinalizationResult::Rejected);
 		TestFalse(TEXT("Malformed persisted win finalization publishes no reconciliation"), IFileManager::Get().FileExists(*MatchWinnerProjectionPath));
@@ -3737,10 +4109,11 @@ bool FOddsWellOddsBucksLedgerTest::RunTest(const FString& Parameters)
 		TestTrue(TEXT("Schema v8 canceled-game base writes"), UGameplayStatics::SaveGameToSlot(VersionEightCanceledBase, OddsBucksQaSlot, OddsBucksUserIndex));
 	}
 	TArray<FOddsWellMatchWinnerCanceledGameRecord> CanceledGames;
+	TArray<FOddsWellMatchWinnerVoidDecisionRecord> VoidDecisions;
 	TestTrue(TEXT("Schema v8 canceled-game base migrates"), LoadOddsWellMatchWinnerCanceledGames(true, CanceledGames, bFound, Error));
 	TestEqual(TEXT("Schema v8 migration invents no canceled game"), CanceledGames.Num(), 0);
 	MigratedRecord = Cast<UOddsWellOddsBucksSaveGame>(UGameplayStatics::LoadGameFromSlot(OddsBucksQaSlot, OddsBucksUserIndex));
-	TestTrue(TEXT("Schema v8 migration rewrites schema v9"), MigratedRecord && MigratedRecord->SchemaVersion == OddsBucksSchemaVersion);
+	TestTrue(TEXT("Schema v8 migration rewrites schema v10"), MigratedRecord && MigratedRecord->SchemaVersion == OddsBucksSchemaVersion);
 
 	TestEqual(TEXT("Canceled game requires the QA profile"), RecordOddsWellMatchWinnerCanceledGame(CancellationCommandId, CancellationEvidenceId, CanceledRequestCommandId, CanceledLockCommandId, MatchWinnerCanceledGameSchema, MatchWinnerCanceledGameVersion, CanceledOffer.SeasonNumber, CanceledOffer.GameNumber, CancellationUnixSeconds, MatchWinnerCanceledGameReason, false, CanceledGame, Error), EOddsWellMatchWinnerCanceledGameResult::Rejected);
 	TestEqual(TEXT("Unknown request cannot record a canceled game"), RecordOddsWellMatchWinnerCanceledGame(CancellationCommandId, CancellationEvidenceId, TEXT("wager:match_winner:canceled:request:unknown"), CanceledLockCommandId, MatchWinnerCanceledGameSchema, MatchWinnerCanceledGameVersion, CanceledOffer.SeasonNumber, CanceledOffer.GameNumber, CancellationUnixSeconds, MatchWinnerCanceledGameReason, true, CanceledGame, Error), EOddsWellMatchWinnerCanceledGameResult::Rejected);
@@ -3784,14 +4157,95 @@ bool FOddsWellOddsBucksLedgerTest::RunTest(const FString& Parameters)
 	}
 	TestTrue(TEXT("Restored canceled-game profile validates"), LoadOddsWellMatchWinnerCanceledGames(true, CanceledGames, bFound, Error));
 	TestEqual(TEXT("Restored canceled-game profile remains exact"), CanceledGames.Num(), 1);
+
+	UOddsWellOddsBucksSaveGame* VersionNineVoidBase = Cast<UOddsWellOddsBucksSaveGame>(UGameplayStatics::LoadGameFromSlot(OddsBucksQaSlot, OddsBucksUserIndex));
+	TestTrue(TEXT("Schema v9 canceled-game base is available"), VersionNineVoidBase != nullptr);
+	if (VersionNineVoidBase)
+	{
+		VersionNineVoidBase->SchemaVersion = 9;
+		TestTrue(TEXT("Schema v9 canceled-game base writes"), UGameplayStatics::SaveGameToSlot(VersionNineVoidBase, OddsBucksQaSlot, OddsBucksUserIndex));
+	}
+	TestTrue(TEXT("Schema v9 canceled-game base migrates for void decisions"), LoadOddsWellMatchWinnerVoidDecisions(true, VoidDecisions, bFound, Error));
+	TestEqual(TEXT("Schema v9 migration invents no void decision"), VoidDecisions.Num(), 0);
+	TestTrue(TEXT("Schema v9 migration preserves canceled-game evidence"), LoadOddsWellMatchWinnerCanceledGames(true, CanceledGames, bFound, Error));
+	TestEqual(TEXT("Schema v9 migration preserves one canceled game"), CanceledGames.Num(), 1);
+	MigratedRecord = Cast<UOddsWellOddsBucksSaveGame>(UGameplayStatics::LoadGameFromSlot(OddsBucksQaSlot, OddsBucksUserIndex));
+	TestTrue(TEXT("Schema v9 migration rewrites schema v10"), MigratedRecord && MigratedRecord->SchemaVersion == OddsBucksSchemaVersion);
+
+	const FString VoidDecisionCommandId(TEXT("wager:match_winner:canceled:void-decision:test-1"));
+	FOddsWellMatchWinnerVoidDecisionRecord VoidDecision;
+	TestEqual(TEXT("Void decision requires the QA profile"), DecideOddsWellMatchWinnerVoidRefundDue(VoidDecisionCommandId, CancellationCommandId, CancellationEvidenceId, false, VoidDecision, Error), EOddsWellMatchWinnerVoidDecisionResult::Rejected);
+	TestEqual(TEXT("Unknown cancellation cannot create a void decision"), DecideOddsWellMatchWinnerVoidRefundDue(VoidDecisionCommandId, TEXT("wager:match_winner:canceled:disposition:unknown"), CancellationEvidenceId, true, VoidDecision, Error), EOddsWellMatchWinnerVoidDecisionResult::Rejected);
+	TestEqual(TEXT("Mismatched cancellation evidence cannot create a void decision"), DecideOddsWellMatchWinnerVoidRefundDue(VoidDecisionCommandId, CancellationCommandId, TEXT("server:cancellation:evidence:mismatch"), true, VoidDecision, Error), EOddsWellMatchWinnerVoidDecisionResult::Rejected);
+	TestEqual(TEXT("Empty void-decision command is rejected"), DecideOddsWellMatchWinnerVoidRefundDue(FString(), CancellationCommandId, CancellationEvidenceId, true, VoidDecision, Error), EOddsWellMatchWinnerVoidDecisionResult::Rejected);
+	FOddsWellMatchWinnerResultLinkRecord RejectedCanceledResult;
+	TestEqual(TEXT("Canceled chain cannot receive a normal result link"), LinkOddsWellMatchWinnerResult(TEXT("wager:match_winner:canceled:result:invalid"), CanceledRequestCommandId, CanceledLockCommandId, MatchWinnerResultSchema, MatchWinnerResultVersion, CanceledOffer.SeasonNumber, CanceledOffer.GameNumber, CanceledOffer.HomeTeam, CanceledOffer.AwayTeam, 90, 89, CanceledOffer.HomeTeam, TEXT("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"), true, RejectedCanceledResult, Error), EOddsWellMatchWinnerResultLinkResult::Rejected);
+	FOddsWellMatchWinnerSettlementDecisionRecord RejectedCanceledSettlement;
+	TestEqual(TEXT("Canceled chain cannot receive a normal settlement decision"), DecideOddsWellMatchWinnerSettlement(TEXT("wager:match_winner:canceled:settlement:invalid"), CanceledRequestCommandId, CanceledLockCommandId, TEXT("wager:match_winner:canceled:result:invalid"), true, RejectedCanceledSettlement, Error), EOddsWellMatchWinnerSettlementDecisionResult::Rejected);
+
+	TestEqual(TEXT("Exact canceled wager receives one refund-due decision"), DecideOddsWellMatchWinnerVoidRefundDue(VoidDecisionCommandId, CancellationCommandId, CancellationEvidenceId, true, VoidDecision, Error), EOddsWellMatchWinnerVoidDecisionResult::Decided);
+	TestEqual(TEXT("Void decision binds cancellation command"), VoidDecision.CancellationCommandId, CancellationCommandId);
+	TestEqual(TEXT("Void decision binds cancellation evidence"), VoidDecision.CancellationEvidenceId, CancellationEvidenceId);
+	TestEqual(TEXT("Void decision binds request"), VoidDecision.RequestCommandId, CanceledRequestCommandId);
+	TestEqual(TEXT("Void decision binds lock"), VoidDecision.LockCommandId, CanceledLockCommandId);
+	TestEqual(TEXT("Void decision binds exact offer"), VoidDecision.OfferId, CanceledOffer.OfferId);
+	TestEqual(TEXT("Void decision binds offer schema"), VoidDecision.OfferSchema, MatchWinnerOfferSchema);
+	TestEqual(TEXT("Void decision binds offer version"), VoidDecision.OfferVersion, CanceledOffer.OfferVersion);
+	TestEqual(TEXT("Void decision binds selected team"), VoidDecision.SelectedTeam, CanceledOffer.HomeTeam);
+	TestEqual(TEXT("Void decision binds stake 40"), VoidDecision.Stake, int64{40});
+	TestEqual(TEXT("Void decision binds neutral cancellation reason"), VoidDecision.CancellationReason, MatchWinnerCanceledGameReason);
+	TestEqual(TEXT("Void decision stores voided outcome"), VoidDecision.Outcome, MatchWinnerVoidedOutcome);
+	TestEqual(TEXT("Void decision records refund due 40"), VoidDecision.RefundDue, int64{40});
+	TestEqual(TEXT("Void decision remains pending refund"), VoidDecision.Status, MatchWinnerDecidedVoidPendingRefundStatus);
+	TestTrue(TEXT("Void decision cold-loads"), LoadOddsWellMatchWinnerVoidDecisions(true, VoidDecisions, bFound, Error));
+	TestEqual(TEXT("Cold load preserves exactly one void decision"), VoidDecisions.Num(), 1);
+	TestEqual(TEXT("Exact void-decision retry is idempotent"), DecideOddsWellMatchWinnerVoidRefundDue(VoidDecisionCommandId, CancellationCommandId, CancellationEvidenceId, true, VoidDecision, Error), EOddsWellMatchWinnerVoidDecisionResult::Duplicate);
+	TestEqual(TEXT("Conflicting void-decision command reuse is rejected"), DecideOddsWellMatchWinnerVoidRefundDue(VoidDecisionCommandId, TEXT("wager:match_winner:canceled:disposition:conflict"), CancellationEvidenceId, true, VoidDecision, Error), EOddsWellMatchWinnerVoidDecisionResult::Rejected);
+	TestEqual(TEXT("Second void decision is rejected"), DecideOddsWellMatchWinnerVoidRefundDue(TEXT("wager:match_winner:canceled:void-decision:test-2"), CancellationCommandId, CancellationEvidenceId, true, VoidDecision, Error), EOddsWellMatchWinnerVoidDecisionResult::Rejected);
+	TestTrue(TEXT("Void decision leaves wager state readable"), LoadOddsWellOddsBucksWagerFinalizationState(true, WagerLedger, WagerNextJobPayout, WagerRequests, WagerLocks, WagerResultLinks, WagerDecisions, WagerFinalizations, WagerWinFinalizations, bFound, Error));
+	TestEqual(TEXT("Void decision adds no ledger entry"), WagerLedger.GetEntries().Num(), 2);
+	TestEqual(TEXT("Void decision applies no refund"), WagerLedger.GetBalance(), int64{60});
+	TestEqual(TEXT("Void decision creates no sealed result"), WagerResultLinks.Num(), 0);
+	TestEqual(TEXT("Void decision creates no normal settlement"), WagerDecisions.Num(), 0);
+	TestEqual(TEXT("Void decision creates no loss finalization"), WagerFinalizations.Num(), 0);
+	TestEqual(TEXT("Void decision creates no win finalization"), WagerWinFinalizations.Num(), 0);
+	TestEqual(TEXT("Void decision cannot use normal loss finalization"), FinalizeOddsWellMatchWinnerLoss(TEXT("wager:match_winner:canceled:loss-finalization:invalid"), VoidDecisionCommandId, true, RetryFinalizationRecord, Error), EOddsWellMatchWinnerLossFinalizationResult::Rejected);
+	TestEqual(TEXT("Void decision cannot use normal win finalization"), FinalizeOddsWellMatchWinnerWin(TEXT("wager:match_winner:canceled:win-finalization:invalid"), VoidDecisionCommandId, true, RetryWinFinalization, Error), EOddsWellMatchWinnerWinFinalizationResult::Rejected);
+	TestFalse(TEXT("Void decision publishes no Admin reconciliation"), IFileManager::Get().FileExists(*MatchWinnerProjectionPath));
+
+	TArray<uint8> ExactVoidDecisionBytes;
+	TestTrue(TEXT("Exact void-decision profile is preserved before tamper QA"), UGameplayStatics::SaveGameToMemory(UGameplayStatics::LoadGameFromSlot(OddsBucksQaSlot, OddsBucksUserIndex), ExactVoidDecisionBytes));
+	UOddsWellOddsBucksSaveGame* MalformedVoidDecision = Cast<UOddsWellOddsBucksSaveGame>(UGameplayStatics::LoadGameFromSlot(OddsBucksQaSlot, OddsBucksUserIndex));
+	TestTrue(TEXT("Saved void decision is available for value tamper QA"), MalformedVoidDecision && MalformedVoidDecision->MatchWinnerVoidDecisions.Num() == 1);
+	if (MalformedVoidDecision && MalformedVoidDecision->MatchWinnerVoidDecisions.Num() == 1)
+	{
+		MalformedVoidDecision->MatchWinnerVoidDecisions[0].RefundDue = 41;
+		TestFalse(TEXT("Wrong persisted refund-due value is rejected in memory"), ValidateOddsBucksSave(MalformedVoidDecision, MemoryLedger, MemoryNextJobPayout, MemoryRequests, MemoryLocks, MemoryResultLinks, MemoryDecisions, MemoryFinalizations, MemoryWinFinalizations, MemoryCanceledGames, MemoryVoidDecisions, bNeedsMigration, Error));
+		MalformedVoidDecision->MatchWinnerVoidDecisions[0].RefundDue = 40;
+		MalformedVoidDecision->MatchWinnerVoidDecisions[0].Status = TEXT("settled_void");
+		TestTrue(TEXT("Malformed void-decision status writes for fail-closed QA"), UGameplayStatics::SaveGameToSlot(MalformedVoidDecision, OddsBucksQaSlot, OddsBucksUserIndex));
+		TestFalse(TEXT("Malformed void-decision status fails cold load"), LoadOddsWellMatchWinnerVoidDecisions(true, VoidDecisions, bFound, Error));
+		TestTrue(TEXT("Exact void-decision profile restores after malformed QA"), UGameplayStatics::SaveGameToSlot(UGameplayStatics::LoadGameFromMemory(ExactVoidDecisionBytes), OddsBucksQaSlot, OddsBucksUserIndex));
+	}
+	UOddsWellOddsBucksSaveGame* NonclosedCanceledDecision = Cast<UOddsWellOddsBucksSaveGame>(UGameplayStatics::LoadGameFromSlot(OddsBucksQaSlot, OddsBucksUserIndex));
+	TestTrue(TEXT("Canceled evidence is available for nonclosed decision QA"), NonclosedCanceledDecision && NonclosedCanceledDecision->MatchWinnerCanceledGames.Num() == 1);
+	if (NonclosedCanceledDecision && NonclosedCanceledDecision->MatchWinnerCanceledGames.Num() == 1)
+	{
+		NonclosedCanceledDecision->MatchWinnerCanceledGames[0].Status = TEXT("open");
+		TestTrue(TEXT("Nonclosed canceled evidence writes for fail-closed QA"), UGameplayStatics::SaveGameToSlot(NonclosedCanceledDecision, OddsBucksQaSlot, OddsBucksUserIndex));
+		TestFalse(TEXT("Void decision rejects nonclosed cancellation on cold load"), LoadOddsWellMatchWinnerVoidDecisions(true, VoidDecisions, bFound, Error));
+		TestTrue(TEXT("Exact void-decision profile restores after nonclosed QA"), UGameplayStatics::SaveGameToSlot(UGameplayStatics::LoadGameFromMemory(ExactVoidDecisionBytes), OddsBucksQaSlot, OddsBucksUserIndex));
+	}
+	TestTrue(TEXT("Restored void-decision profile validates"), LoadOddsWellMatchWinnerVoidDecisions(true, VoidDecisions, bFound, Error));
+	TestEqual(TEXT("Restored void-decision profile remains exact"), VoidDecisions.Num(), 1);
 	TestTrue(TEXT("Canceled-game QA cleanup succeeds"), ResetOddsWellQaOddsBucksAndVerify(Error));
 
 	TestTrue(TEXT("Exact loss profile restores after canceled-game QA"), UGameplayStatics::SaveGameToSlot(UGameplayStatics::LoadGameFromMemory(ExactLossProfileBytes), OddsBucksQaSlot, OddsBucksUserIndex));
-	TestTrue(TEXT("Exact loss remains valid after schema v9"), LoadOddsWellOddsBucksWagerFinalizationState(true, WagerLedger, WagerNextJobPayout, WagerRequests, WagerLocks, WagerResultLinks, WagerDecisions, WagerFinalizations, WagerWinFinalizations, bFound, Error));
+	TestTrue(TEXT("Exact loss remains valid after schema v10"), LoadOddsWellOddsBucksWagerFinalizationState(true, WagerLedger, WagerNextJobPayout, WagerRequests, WagerLocks, WagerResultLinks, WagerDecisions, WagerFinalizations, WagerWinFinalizations, bFound, Error));
 	TestEqual(TEXT("Exact loss remains two ledger entries"), WagerLedger.GetEntries().Num(), 2);
 	TestEqual(TEXT("Exact loss balance remains 60"), WagerLedger.GetBalance(), int64{60});
 	TestTrue(TEXT("Exact win profile restores after canceled-game QA"), UGameplayStatics::SaveGameToSlot(UGameplayStatics::LoadGameFromMemory(ExactWinFinalizedBytes), OddsBucksQaSlot, OddsBucksUserIndex));
-	TestTrue(TEXT("Exact win remains valid after schema v9"), LoadOddsWellOddsBucksWagerFinalizationState(true, WinLedger, WinNextJobPayout, WinRequests, WinLocks, WinResults, WinDecisions, WinLossFinalizations, WinFinalizations, bFound, Error));
+	TestTrue(TEXT("Exact win remains valid after schema v10"), LoadOddsWellOddsBucksWagerFinalizationState(true, WinLedger, WinNextJobPayout, WinRequests, WinLocks, WinResults, WinDecisions, WinLossFinalizations, WinFinalizations, bFound, Error));
 	TestEqual(TEXT("Exact win remains three ledger entries"), WinLedger.GetEntries().Num(), 3);
 	TestEqual(TEXT("Exact win balance remains 160"), WinLedger.GetBalance(), int64{160});
 	TestTrue(TEXT("Final wager QA cleanup succeeds"), ResetOddsWellQaOddsBucksAndVerify(Error));
