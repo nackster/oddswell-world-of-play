@@ -864,6 +864,14 @@ Build the one-city scope defined in [[Design/Decisions/DEC-002 First Playable Sc
 - **Boundary:** this is a read-only local projection, not a source of truth, authenticated console, or anti-cheat control. No online account, trusted backend clock, cloud/multi-device recovery, economy command, price, purchase, wager, settlement, payment, deployment, real-money connection, or second currency was added.
 - **Next owner gate:** Phase 1H.1 requires confirmation that Match Winner is first and approval of its odds/payout formula, minimum and maximum stake, lock time, correction/cancellation behavior, and equal-public-information boundary before any wager implementation.
 
+### Phase 1H.0 Basketball Odds and Wager Isolation status
+
+- **Status:** Architecture approved by the owner on 2026-07-21; design-only gate complete.
+- **Decision:** keep the Basketball Brain, Basketball Rules and Outcome Engine, Basketball Odds Brain, deterministic Wager and Settlement Engine, and read-only Admin reconciliation as separate roles with one-way evidence flow. See [[Design/Decisions/DEC-016 Basketball Odds and Wager Isolation]].
+- **Integrity boundary:** the Odds Brain may use only one frozen public pregame snapshot. Wagers, stakes, balances, purchases, and displayed odds cannot influence athlete decisions or the sealed result. Settlement consumes that result exactly once and never resimulates basketball.
+- **Implementation boundary:** no odds offer, payout formula, stake debit, wager request, lock, settlement, cancellation, correction, or wager Admin view was added. The existing public prediction evidence is not automatically promoted into betting odds.
+- **Next owner gate:** Phase 1H.1 freezes Match Winner rules: odds/payout formula, minimum and maximum stake, lock time, cancellation/correction behavior, and equal-public-information snapshot.
+
 ## Future shared simulation layer
 
 Athlete Life Brain v4 is the default for newly generated train, rest, recover, and socialize decisions. It adds only one bounded, one-decision, same-season recent-scoring response above v3's routine behavior. V1-v4 history remains immutable. Expand into longer memory, traits, relationships, nightlife, media, discipline, career decisions, and other sports only after each smaller input passes its own engineering evaluation.

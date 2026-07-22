@@ -72,6 +72,7 @@ The roadmap is intentionally made of measurable product gates, not hundreds of s
 - Phase 1G.4 rolling job recovery: **COMPLETE FOR ONE LOCAL SAVED PROFILE**; start at `0`, earn `100` per successful shift on a rolling `24`-hour cooldown, accumulate balances, and provide no separate allowance or catch-up payout. See [[Development/Reports/Phase 1G4 Rolling 24 Hour Job Recovery]] and [[Design/Decisions/DEC-015 Phase 1G4 Rolling Job Recovery Defaults]].
 - Phase 1G.5 read-only Admin reconciliation: **COMPLETE FOR ONE LOCAL SAVED PROFILE**; Unreal publishes a validated output-only ledger projection, and Brain Admin independently validates and displays the balance, entries, and next-job eligibility without economy commands. See [[Development/Reports/Phase 1G5 Read Only Odds Bucks Admin Reconciliation]].
 - Phase 1G exit: **PASSED FOR THE CURRENT LOCAL-PROFILE DEPENDENCY**. No online account, trusted backend clock, production authorization, price, purchase, wager, settlement, payment, or second currency is claimed.
+- Phase 1H.0 basketball/odds/wager isolation: **ARCHITECTURE APPROVED** under [[Design/Decisions/DEC-016 Basketball Odds and Wager Isolation]]. This adds no wager behavior.
 - Next gate: **PHASE 1H.1 MATCH WINNER OWNER DECISION**. Confirm Match Winner as the first market and freeze its odds/payout formula, stake limits, lock time, cancellation/correction policy, and equal-public-information boundary before implementation. Sundale remains a working name.
 - Current prerequisite note: UE 5.8, the aligned x64 runtime and .NET Framework 4.8 SDK, portable project, reproducible local Windows package, empty-map launch, LFS, generated-file ignores, primitive block/court iteration, collision, cold-process reopen, direct recorded-replay rendering, deterministic packaged traces, and local resource sampling are verified. UE 5.8 is now the approved beta client engine.
 
@@ -88,7 +89,7 @@ No later roadmap phase is authorized merely because it appears below.
 | 5 | 1E — Studio and apartment progression | Enter a persistent home and see the six-tier goal | FOUNDATION COMPLETE / FURNITURE IN 1I |
 | 6 | 1F — League, stadium, and match viewing | Research and watch authoritative basketball | COMPLETE FOR CURRENT ARCHIVED GAME |
 | 7 | 1G — Odds Bucks and work recovery | Earn, persist, audit, and recover virtual currency | COMPLETE FOR CURRENT LOCAL PROFILE |
-| 8 | 1H — Wager locking and settlement | Place approved wagers and receive exact outcomes | OWNER DECISION NEXT |
+| 8 | 1H — Wager locking and settlement | Place approved wagers and receive exact outcomes | ARCHITECTURE APPROVED / RULE OWNER GATE |
 | 9 | 1I — Stores and lifestyle upgrades | Buy, equip, display, and place basic items | PENDING |
 | 10 | 1J — Athlete life and league storytelling | Understand athletes, availability, and consequences | PENDING |
 | 11 | 1K — First-hour integration | Complete the entire beta promise in one session | PENDING |
@@ -295,9 +296,14 @@ The player can research a scheduled game, go to the venue, watch or skip the sam
 
 Each market is its own evidence gate. A later market does not begin until the previous active market proves exact lock, settlement, rollback, replay/history linkage, and Admin reconciliation.
 
+### Architecture gate
+
+- **1H.0 COMPLETE — DESIGN ONLY:** isolate the Basketball Brain, Basketball Rules and Outcome Engine, Basketball Odds Brain, Wager and Settlement Engine, and read-only Admin reconciliation. Evidence flows one way; wagers and balances cannot influence basketball. See [[Design/Decisions/DEC-016 Basketball Odds and Wager Isolation]].
+- **NEXT — 1H.1 OWNER DECISION:** freeze the Match Winner operating rules before implementation.
+
 ### Owner gates
 
-- Market rules and order confirmation.
+- **PARTIALLY RESOLVED:** Match Winner remains the recommended first market and the system boundary is approved; final order confirmation and operating rules remain open.
 - Odds and payout formula, limits, lock time, correction/cancellation policy, and equal public information.
 - Legal, platform, age-rating, and regional review before any external beta involving wagering mechanics.
 

@@ -1,17 +1,23 @@
 {
 	"nodes":[
-		{"id":"mba-title","type":"text","text":"# OddsWell multi-brain architecture\nAI chooses an intention. The rules engine decides what is legal and what actually happens.\n[[Design/Decisions/DEC-003 Multi-Brain AI Architecture|Open the full architecture decision]]","x":-700,"y":-750,"width":1400,"height":150,"color":"6"},
+		{"id":"mba-title","type":"text","text":"# OddsWell multi-brain architecture\nBrains propose or estimate. Authoritative engines validate, resolve, lock, and settle.\n[[Design/Decisions/DEC-003 Multi-Brain AI Architecture|Core architecture]] • [[Design/Decisions/DEC-016 Basketball Odds and Wager Isolation|Basketball wager firewall]]","x":-700,"y":-770,"width":1400,"height":170,"color":"6"},
 		{"id":"mba-context","type":"text","text":"## 🧠 1. Shared context\n**Project brain:** approved design and policy\n**Athlete Life:** stress, discipline, recovery, relationships\n**World + League:** schedules, teams, careers, history","x":-650,"y":-570,"width":570,"height":240,"color":"5"},
 		{"id":"mba-sport-ai","type":"text","text":"## 🏀 2. Basketball AI\nReceives a sports-only snapshot.\n\nChooses one action from a legal list. Invalid or unavailable output uses a deterministic fallback.","x":80,"y":-570,"width":570,"height":240,"color":"4"},
 		{"id":"mba-engine","type":"text","text":"## ⚙️ 3. Authority engine\nValidates actions, applies ratings + state, and resolves the seeded result.\n\n**Active:** v2 shooting consistency + v1 baseline opportunity\n**Scope:** OPPORTUNITY ONLY\n**Firewall:** credits, purchases, and wagers never influence outcomes.","x":-650,"y":-260,"width":570,"height":260,"color":"2"},
 		{"id":"mba-learning","type":"text","text":"## 📚 4. Controlled learning\nStores context, choices, results, failures, cost, and latency.\n\nCandidate prompts, policies, fine-tunes, or models are evaluated offline. Only an approved named version returns to play.","x":80,"y":-260,"width":570,"height":240,"color":"3"},
 		{"id":"mba-replay","type":"text","text":"## 🎞️ Permanent replay record\nPolicy + decisions + seed + event log\nConsistency + involvement versions and frozen roster snapshots\n\nReplay uses stored evidence; it never invents the past.","x":-650,"y":80,"width":570,"height":190,"color":"5"},
-		{"id":"mba-future-sports","type":"text","text":"## ⚽ 🏈 ⚾ New sport = new brain\nReuse project, athlete-life, world, authority, audit, and learning layers.\n\nAdd a sport-specific action policy and rules engine.","x":80,"y":60,"width":570,"height":180,"color":"6"}
+		{"id":"mba-future-sports","type":"text","text":"## ⚽ 🏈 ⚾ New sport = new brain\nReuse project, athlete-life, world, authority, audit, and learning layers.\n\nAdd a sport-specific action policy and rules engine.","x":80,"y":60,"width":570,"height":180,"color":"6"},
+		{"id":"mba-odds","type":"text","text":"## 📊 5. Basketball Odds Brain — PLANNED\nReads one frozen public pregame snapshot shared with every player.\n\nEmits a named probability + odds version. No hidden/future state. Cannot affect the game.","x":-650,"y":330,"width":570,"height":230,"color":"4"},
+		{"id":"mba-wager","type":"text","text":"## 🔒 6. Wager + Settlement Engine — PLANNED\nLocks one offered market + Odds Bucks stake before the deadline.\n\nConsumes the sealed result, settles once, and writes immutable linked history. No basketball control path.","x":80,"y":330,"width":570,"height":230,"color":"1"},
+		{"id":"mba-admin","type":"text","text":"## 👁️ 7. Admin reconciliation\nRead-only chain: public snapshot → offer → wager → stake ledger → lock → sealed result → settlement.\n\nCurrent console cannot create or settle wagers.","x":-300,"y":650,"width":600,"height":190,"color":"5"}
 	],
 	"edges":[
 		{"id":"mba-edge-1","fromNode":"mba-context","fromSide":"right","toNode":"mba-sport-ai","toSide":"left"},
 		{"id":"mba-edge-2","fromNode":"mba-sport-ai","fromSide":"bottom","toNode":"mba-engine","toSide":"top"},
 		{"id":"mba-edge-3","fromNode":"mba-engine","fromSide":"right","toNode":"mba-learning","toSide":"left"},
-		{"id":"mba-edge-4","fromNode":"mba-engine","fromSide":"bottom","toNode":"mba-replay","toSide":"top"}
+		{"id":"mba-edge-4","fromNode":"mba-engine","fromSide":"bottom","toNode":"mba-replay","toSide":"top"},
+		{"id":"mba-edge-5","fromNode":"mba-odds","fromSide":"right","toNode":"mba-wager","toSide":"left"},
+		{"id":"mba-edge-6","fromNode":"mba-replay","fromSide":"bottom","toNode":"mba-wager","toSide":"top","label":"sealed result only"},
+		{"id":"mba-edge-7","fromNode":"mba-wager","fromSide":"bottom","toNode":"mba-admin","toSide":"top","label":"audit evidence"}
 	]
 }
