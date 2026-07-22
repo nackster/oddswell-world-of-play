@@ -181,15 +181,19 @@ The beta target includes:
 1. Match winner.
 2. Winning margin or spread-style outcome.
 3. Whether the game reaches overtime.
-4. Player scoring threshold, such as a fictional athlete reaching 30 points.
+4. Player-points threshold, such as a fictional athlete reaching 30 points.
+5. Player-rebounds threshold.
+6. Player-fouls threshold after fouls become an authoritative recorded statistic.
 
-Each market must be introduced separately behind exact locking, settlement, replay, and audit evidence. Match winner remains the first and simplest market. A listed beta target does not authorize simultaneous implementation of every market.
+Each market must be introduced separately behind exact probability, locking, settlement, replay, and audit evidence. Match Winner remains first. Points, rebounds, and fouls are separate player-prop gates; a listed beta target does not authorize simultaneous implementation of every market.
 
 ### Approved basketball, odds, and wager separation
 
 Under [[Design/Decisions/DEC-016 Basketball Odds and Wager Isolation]], the **Basketball Brain** chooses legal sport intentions, the **Basketball Rules and Outcome Engine** produces the authoritative sealed result, the **Basketball Odds Brain** produces a versioned offer from one equal public pregame snapshot, and the deterministic **Wager and Settlement Engine** locks and settles Odds Bucks against that result. Admin reconciliation observes the linked evidence without controlling it.
 
-The data flow is one way. Wagers, stakes, Odds Bucks balances, purchases, and displayed odds never feed back into athlete decisions or game resolution. This architecture is approved; wager formulas and operating rules remain open.
+The data flow is one way. Wagers, stakes, Odds Bucks balances, purchases, and displayed odds never feed back into athlete decisions or game resolution. This architecture is approved; each market still requires separately approved and proven operating rules.
+
+**RESOLVED FOR MATCH WINNER V1:** [[Design/Decisions/DEC-017 Match Winner Odds and Stake Defaults]] freezes the public model, fair whole-Odds-Bucks payout formula, `10`–`100` stake range in increments of `10`, game-start lock, void/refund behavior, separate correction entries, and equal-public-information boundary. Player-prop formulas and thresholds remain separate later gates.
 
 ### Wager integrity
 
@@ -200,6 +204,7 @@ The data flow is one way. Wagers, stakes, Odds Bucks balances, purchases, and di
 - **GUARDRAIL:** probabilities, payouts, and displayed odds must be versioned, explainable, and auditable before a new market becomes active.
 - **GUARDRAIL:** the Basketball Odds Brain receives only the same frozen public pregame snapshot shown to players; it receives no future result, hidden RNG state, or private advantage.
 - **GUARDRAIL:** the Wager and Settlement Engine may consume a sealed authoritative result but has no control path back into basketball simulation.
+- **GUARDRAIL:** private Athlete Life Brain choices never enter an odds offer. Only explicitly published consequences shared equally with every player may affect a later probability.
 
 ## Odds Bucks economy
 
@@ -284,7 +289,7 @@ Admin features do not become beta player features. The server remains authoritat
 | Home | Studio, 1BR, 2BR, 3BR, 4BR, and Penthouse progression | LOCKED / layouts OPEN |
 | Work | One physical job location and repeatable Odds Bucks recovery | LOCKED / LOCAL RECOVERY PROVEN |
 | Basketball | Two fictional teams, persistent league, watchable authoritative games | LOCKED |
-| Wagers | Winner, margin, overtime, and player-points targets, introduced one at a time | BETA TARGET |
+| Wagers | Winner, margin, overtime, then points/rebounds/fouls player props, introduced one at a time | BETA TARGET / MATCH WINNER RULES PROVEN |
 | Currency | Odds Bucks only; earn, wager, save, and spend | LOCKED |
 | Real-money credits | Not in beta | LATER / gated |
 | Clothing | Basic store and visible purchased upgrades | LOCKED / catalog OPEN |
@@ -322,7 +327,7 @@ The Scope Director must stop and ask when a phase depends on one of these:
 5. **RESOLVED FOR LOCAL BETA RECOVERY:** start at `0`, earn `100` per successful placeholder shift on a rolling `24`-hour cooldown, accumulate the balance, and provide no separate allowance or catch-up payout. Final job fiction and production account/time authority remain open.
 6. How an 82-game season stays varied with the initial two-team scope.
 7. **PARTIALLY RESOLVED:** current beta placeholder fidelity, camera, commentary, duration, and result-invariant player skip under [[Design/Decisions/DEC-013 Phase 1F4 Presentation Defaults]] and [[Development/Reports/Phase 1F5 Replay View Result Invariance]]; final art, crowd, replay cuts, condensed mode, and special-game duration remain open.
-8. **PARTIALLY RESOLVED:** the Basketball Brain, Basketball Odds Brain, Rules and Outcome Engine, and Wager and Settlement Engine are isolated under [[Design/Decisions/DEC-016 Basketball Odds and Wager Isolation]]. Market order confirmation, rules, limits, payout formulas, lock time, correction/cancellation policy, and equal public information remain open.
+8. **PARTIALLY RESOLVED:** the system boundary is isolated under [[Design/Decisions/DEC-016 Basketball Odds and Wager Isolation]], and Match Winner v1 rules are approved under [[Design/Decisions/DEC-017 Match Winner Odds and Stake Defaults]]. Margin, overtime, points, rebounds, and fouls need separate rules and evidence; external-beta legal/platform/age/region gates remain open.
 9. Initial clothing and furniture catalog sizes.
 10. Shared-city capacity, instancing, regions, communication, blocking, reporting, and moderation.
 11. **RESOLVED:** Unreal Engine 5.8 is approved for beta client development under [[Design/Decisions/DEC-006 Unreal Engine 5.8 Beta Adoption|DEC-006]].
@@ -354,3 +359,4 @@ Before proposing a phase, the Scope Director must:
 - Phase 1F passed for the current archived-game slice: watch, player skip, late arrival, and seal-validated cold reconstruction converge on the same result without client resimulation. Backend reconnect and full-season presentation variety are not proven.
 - Phase 1G.1 provides the server-authoritative append-only Odds Bucks ledger, Phase 1G.2 adds the server-validated `Job` interaction, Phase 1G.3 proves the first persistent `100`-Odds-Bucks credit, Phase 1G.4 proves rolling `24`-hour repeat recovery across a cold packaged-process restart, and Phase 1G.5 exposes a validated output-only projection in Brain Admin; see [[Development/Reports/Phase 1G5 Read Only Odds Bucks Admin Reconciliation]]. The local profile starts at `0`, balances accumulate, and there is no allowance or catch-up payout. No online account identity, trusted backend clock, backend reconnect, multi-device recovery, Admin mutation authority, price, purchase, wager, settlement, real-money path, or second currency is proven.
 - Phase 1H.0 approves the isolated Basketball Odds Brain and Wager and Settlement Engine architecture in [[Design/Decisions/DEC-016 Basketball Odds and Wager Isolation]]. This is design evidence only; no odds offer, wager request, stake debit, lock, settlement, or wager Admin view is implemented.
+- Phase 1H.1 freezes the first Match Winner rules under [[Design/Decisions/DEC-017 Match Winner Odds and Stake Defaults]], and Phase 1H.2 implements a deterministic versioned offer-calculation contract in [[Development/Reports/Phase 1H2 Versioned Match Winner Odds Offer]]. No player wager, stake debit, lock transition, settlement, prop market, or wager Admin view is implemented.

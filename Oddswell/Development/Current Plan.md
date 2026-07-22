@@ -862,7 +862,7 @@ Build the one-city scope defined in [[Design/Decisions/DEC-002 First Playable Sc
 - **Packaged proof:** the first QA process projected `2` entries, balance `200`, and an exact `86,400`-second cooldown. The cold second process restored those values, projected `3` entries and balance `300` at eligibility, and removed the isolated QA save and QA projection. A normal packaged launch published a valid empty-profile projection with balance `0` and the first shift available.
 - **Validation:** editor compilation passed in `12.71s`, game compilation in `20.61s`, and clean BuildCookRun in `100.75s`; focused automation passed `1/1`; full native automation passed `11/11`; all `65/65` frozen regressions passed in `140.036s`; Brain Admin self-check, browser inspection, deterministic exporters, Python compilation, runtime-log audit, diff hygiene, and QA cleanup passed. The Windows package contains `56` files totaling `1,042,923,557` bytes. Cost was `$0.00`. See [[Development/Reports/Phase 1G5 Read Only Odds Bucks Admin Reconciliation]].
 - **Boundary:** this is a read-only local projection, not a source of truth, authenticated console, or anti-cheat control. No online account, trusted backend clock, cloud/multi-device recovery, economy command, price, purchase, wager, settlement, payment, deployment, real-money connection, or second currency was added.
-- **Next owner gate:** Phase 1H.1 requires confirmation that Match Winner is first and approval of its odds/payout formula, minimum and maximum stake, lock time, correction/cancellation behavior, and equal-public-information boundary before any wager implementation.
+- **Closed by Phase 1H.1:** the owner approved the Match Winner v1 rules recorded below.
 
 ### Phase 1H.0 Basketball Odds and Wager Isolation status
 
@@ -870,7 +870,23 @@ Build the one-city scope defined in [[Design/Decisions/DEC-002 First Playable Sc
 - **Decision:** keep the Basketball Brain, Basketball Rules and Outcome Engine, Basketball Odds Brain, deterministic Wager and Settlement Engine, and read-only Admin reconciliation as separate roles with one-way evidence flow. See [[Design/Decisions/DEC-016 Basketball Odds and Wager Isolation]].
 - **Integrity boundary:** the Odds Brain may use only one frozen public pregame snapshot. Wagers, stakes, balances, purchases, and displayed odds cannot influence athlete decisions or the sealed result. Settlement consumes that result exactly once and never resimulates basketball.
 - **Implementation boundary:** no odds offer, payout formula, stake debit, wager request, lock, settlement, cancellation, correction, or wager Admin view was added. The existing public prediction evidence is not automatically promoted into betting odds.
-- **Next owner gate:** Phase 1H.1 freezes Match Winner rules: odds/payout formula, minimum and maximum stake, lock time, cancellation/correction behavior, and equal-public-information snapshot.
+- **Closed by Phase 1H.1:** the approved Match Winner rules are recorded below.
+
+### Phase 1H.1 Match Winner Rules status
+
+- **Status:** Owner approved on 2026-07-21 under [[Design/Decisions/DEC-017 Match Winner Odds and Stake Defaults]].
+- **Rules:** `phase0d4-v1` public Elo-plus-availability/rotation source; zero house edge; `10`–`100` Odds Bucks in increments of `10`; gross whole-credit return `floor(stake/probability)` including the returned stake; lock at authoritative game start; void/refund an unsealed or canceled game; use a separate auditable correction rather than rewriting history.
+- **Public boundary:** only the exact equal `oddswell-public-pregame-v1` snapshot may drive the offer. Private Athlete Life Brain choices, hidden fatigue, seeds, RNG, future results, economy data, and user data are excluded.
+- **Later owner direction:** introduce points, rebounds, and fouls as separate rarity-priced player-prop gates. Public consequences may affect later odds; private choices cannot. Rebounds need durable aggregation, and fouls need an authoritative foul model.
+- **Closed by Phase 1H.2:** the first versioned offer-calculation contract is complete below.
+
+### Phase 1H.2 Versioned Match Winner Odds Offer status
+
+- **Status:** Complete on `agent/phase-0d`; calculation contract only.
+- **Implementation:** `phase1h.odds` verifies an existing public pregame commitment and emits one deterministic `basketball-match-winner-odds-v1` offer with exact integer probabilities/display odds, approved stake rules, lock time, public source versions, and SHA-256 offer identity. A separate pure calculation returns the approved whole-Odds-Bucks gross payout without touching the ledger.
+- **Validation:** focused odds tests passed `3/3` in `0.054s`; all `65/65` frozen regressions passed in `139.785s`; Brain Admin self-check, unchanged replay/league exporters, Python compilation, leakage checks, tamper rejection, and diff hygiene passed. Cost was `$0.00`. See [[Development/Reports/Phase 1H2 Versioned Match Winner Odds Offer]].
+- **Boundary:** no runtime offer publication, account, trusted clock, wager request, stake reservation/debit, lock transition, cancellation/refund, settlement, payout credit, prop market, wager history, Admin wager view, Unreal UI, payment, real-money connection, or second currency was added.
+- **Next gate:** Phase 1H.3 accepts one exact pre-lock Match Winner offer and persists one idempotent local Odds Bucks stake debit. It must not settle the wager yet.
 
 ## Future shared simulation layer
 

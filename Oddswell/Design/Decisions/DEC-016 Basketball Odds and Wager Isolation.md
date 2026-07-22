@@ -48,9 +48,9 @@ This decision approves architecture only. The Basketball Brain, authoritative ru
 
 The existing public prediction model is not automatically promoted into betting odds by this decision. Its suitability, conversion formula, limits, and calibration require their own evidence.
 
-## Open owner rules
+## Match Winner rule resolution
 
-Match Winner remains the recommended first market, but implementation is blocked until the owner approves:
+The owner approved the following Match Winner rules in [[Design/Decisions/DEC-017 Match Winner Odds and Stake Defaults]]:
 
 - displayed odds and payout formula;
 - minimum and maximum Odds Bucks stake;
@@ -59,8 +59,8 @@ Match Winner remains the recommended first market, but implementation is blocked
 - the equal-public-information snapshot;
 - local-only beta safeguards before any external wagering test.
 
-Real-money purchases, cash-out, and a second currency remain outside beta.
+Rules for margin, overtime, points, rebounds, and fouls remain separate later gates. Real-money purchases, cash-out, and a second currency remain outside beta.
 
 ## Next gate
 
-Phase 1H.1 freezes the Match Winner rules above before any wager code is added.
+Phase 1H.2 now proves the isolated versioned Match Winner offer contract. Phase 1H.3 may accept one exact pre-lock request and persist one idempotent local stake debit without settlement.

@@ -73,7 +73,9 @@ The roadmap is intentionally made of measurable product gates, not hundreds of s
 - Phase 1G.5 read-only Admin reconciliation: **COMPLETE FOR ONE LOCAL SAVED PROFILE**; Unreal publishes a validated output-only ledger projection, and Brain Admin independently validates and displays the balance, entries, and next-job eligibility without economy commands. See [[Development/Reports/Phase 1G5 Read Only Odds Bucks Admin Reconciliation]].
 - Phase 1G exit: **PASSED FOR THE CURRENT LOCAL-PROFILE DEPENDENCY**. No online account, trusted backend clock, production authorization, price, purchase, wager, settlement, payment, or second currency is claimed.
 - Phase 1H.0 basketball/odds/wager isolation: **ARCHITECTURE APPROVED** under [[Design/Decisions/DEC-016 Basketball Odds and Wager Isolation]]. This adds no wager behavior.
-- Next gate: **PHASE 1H.1 MATCH WINNER OWNER DECISION**. Confirm Match Winner as the first market and freeze its odds/payout formula, stake limits, lock time, cancellation/correction policy, and equal-public-information boundary before implementation. Sundale remains a working name.
+- Phase 1H.1 Match Winner rules: **OWNER APPROVED** under [[Design/Decisions/DEC-017 Match Winner Odds and Stake Defaults]].
+- Phase 1H.2 versioned Match Winner odds offer: **COMPLETE AS AN ISOLATED CALCULATION CONTRACT**; see [[Development/Reports/Phase 1H2 Versioned Match Winner Odds Offer]]. No wager or ledger mutation exists.
+- Next gate: **PHASE 1H.3 MATCH WINNER REQUEST AND STAKE DEBIT**. Accept one exact pre-lock offer, validate a `10`–`100` stake, and persist one idempotent local Odds Bucks debit without settlement. Player props remain later gates. Sundale remains a working name.
 - Current prerequisite note: UE 5.8, the aligned x64 runtime and .NET Framework 4.8 SDK, portable project, reproducible local Windows package, empty-map launch, LFS, generated-file ignores, primitive block/court iteration, collision, cold-process reopen, direct recorded-replay rendering, deterministic packaged traces, and local resource sampling are verified. UE 5.8 is now the approved beta client engine.
 
 No later roadmap phase is authorized merely because it appears below.
@@ -89,7 +91,7 @@ No later roadmap phase is authorized merely because it appears below.
 | 5 | 1E — Studio and apartment progression | Enter a persistent home and see the six-tier goal | FOUNDATION COMPLETE / FURNITURE IN 1I |
 | 6 | 1F — League, stadium, and match viewing | Research and watch authoritative basketball | COMPLETE FOR CURRENT ARCHIVED GAME |
 | 7 | 1G — Odds Bucks and work recovery | Earn, persist, audit, and recover virtual currency | COMPLETE FOR CURRENT LOCAL PROFILE |
-| 8 | 1H — Wager locking and settlement | Place approved wagers and receive exact outcomes | ARCHITECTURE APPROVED / RULE OWNER GATE |
+| 8 | 1H — Wager locking and settlement | Place approved wagers and receive exact outcomes | ACTIVE — OFFER CONTRACT COMPLETE / NO WAGER YET |
 | 9 | 1I — Stores and lifestyle upgrades | Buy, equip, display, and place basic items | PENDING |
 | 10 | 1J — Athlete life and league storytelling | Understand athletes, availability, and consequences | PENDING |
 | 11 | 1K — First-hour integration | Complete the entire beta promise in one session | PENDING |
@@ -293,18 +295,22 @@ The player can research a scheduled game, go to the venue, watch or skip the sam
 2. Winning margin or spread-style outcome.
 3. Overtime occurrence.
 4. Player-points threshold.
+5. Player-rebounds threshold.
+6. Player-fouls threshold after authoritative foul statistics exist.
 
 Each market is its own evidence gate. A later market does not begin until the previous active market proves exact lock, settlement, rollback, replay/history linkage, and Admin reconciliation.
 
 ### Architecture gate
 
 - **1H.0 COMPLETE — DESIGN ONLY:** isolate the Basketball Brain, Basketball Rules and Outcome Engine, Basketball Odds Brain, Wager and Settlement Engine, and read-only Admin reconciliation. Evidence flows one way; wagers and balances cannot influence basketball. See [[Design/Decisions/DEC-016 Basketball Odds and Wager Isolation]].
-- **NEXT — 1H.1 OWNER DECISION:** freeze the Match Winner operating rules before implementation.
+- **1H.1 COMPLETE — OWNER DECISION:** freeze the public prediction source, zero-house-edge integer payout formula, `10`–`100` stake range in increments of `10`, game-start lock, void/refund, correction, and equal-public-information rules. See [[Design/Decisions/DEC-017 Match Winner Odds and Stake Defaults]].
+- **1H.2 COMPLETE — OFFER CONTRACT ONLY:** deterministically bind the approved rule/model versions, public prediction commitment, game, lock, probabilities, display odds, and stake rules into a SHA-256-identified offer. See [[Development/Reports/Phase 1H2 Versioned Match Winner Odds Offer]].
+- **NEXT — 1H.3:** accept one exact pre-lock offer and persist one idempotent local Odds Bucks stake debit. Do not settle yet.
 
 ### Owner gates
 
-- **PARTIALLY RESOLVED:** Match Winner remains the recommended first market and the system boundary is approved; final order confirmation and operating rules remain open.
-- Odds and payout formula, limits, lock time, correction/cancellation policy, and equal public information.
+- **RESOLVED FOR MATCH WINNER V1:** market order, public source model, fair payout formula, `10`–`100` stake range, game-start lock, void/refund, correction, and equal public information under [[Design/Decisions/DEC-017 Match Winner Odds and Stake Defaults]].
+- Margin, overtime, points, rebounds, and fouls each retain separate formula, threshold, limit, lock, correction/cancellation, and public-evidence gates.
 - Legal, platform, age-rating, and regional review before any external beta involving wagering mechanics.
 
 ### Exit evidence
