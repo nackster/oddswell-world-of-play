@@ -210,7 +210,6 @@ def validated_match_winner_reconciliation(path: Path) -> dict[str, object]:
         "market": "match_winner",
         "offer_id": "9e6870420528e2a821591b763471c47f71b198c063cbdcbecd9ee180f9ea2459",
         "offer_version": "basketball-match-winner-odds-v1",
-        "selected_team": "Harbor City Waves",
         "stake": 40,
         "request_status": "accepted_pending_lock",
         "stake_sequence": 2,
@@ -231,16 +230,41 @@ def validated_match_winner_reconciliation(path: Path) -> dict[str, object]:
         "decision_schema": "oddswell-match-winner-settlement-decision-v1",
         "decision_version": "match-winner-settlement-decision-v1",
         "decision_status": "decided_pending_apply",
-        "outcome": "lost",
-        "gross_return_due": 0,
-        "finalization_schema": "oddswell-match-winner-loss-finalization-v1",
-        "finalization_version": "match-winner-loss-finalization-v1",
-        "finalization_status": "settled_lost",
-        "gross_return_applied": 0,
-        "ledger_entry_count": 2,
-        "final_balance": 60,
-        "net": -40,
     }
+    if data.get("outcome") == "lost":
+        expected.update({
+            "selected_team": "Harbor City Waves",
+            "outcome": "lost",
+            "gross_return_due": 0,
+            "finalization_schema": "oddswell-match-winner-loss-finalization-v1",
+            "finalization_version": "match-winner-loss-finalization-v1",
+            "finalization_status": "settled_lost",
+            "gross_return_applied": 0,
+            "ledger_entry_count": 2,
+            "final_balance": 60,
+            "net": -40,
+        })
+    elif data.get("outcome") == "won":
+        expected.update({
+            "selected_team": "Mesa Vista Sol",
+            "outcome": "won",
+            "selected_win_probability_e8": 40_000_000,
+            "payout_formula": "floor(stake*100000000/win_probability_e8)",
+            "gross_return_due": 100,
+            "payout_sequence": 3,
+            "payout_delta": 100,
+            "payout_reason": "match_winner_payout",
+            "payout_balance_after": 160,
+            "finalization_schema": "oddswell-match-winner-win-finalization-v1",
+            "finalization_version": "match-winner-win-finalization-v1",
+            "finalization_status": "settled_won",
+            "gross_return_applied": 100,
+            "ledger_entry_count": 3,
+            "final_balance": 160,
+            "net": 60,
+        })
+    else:
+        raise ValueError("invalid outcome")
     for field, expected_value in expected.items():
         if data.get(field) != expected_value:
             raise ValueError(f"invalid {field}")
@@ -250,16 +274,21 @@ def validated_match_winner_reconciliation(path: Path) -> dict[str, object]:
     if not isinstance(generated_at, str):
         raise ValueError("generated_at_utc must be text")
     datetime.fromisoformat(generated_at.replace("Z", "+00:00"))
-    for field in (
+    integer_fields = [
         "stake", "stake_sequence", "stake_delta", "stake_balance_after", "season_number",
         "game_number", "game_start_unix", "lock_unix", "home_score", "away_score",
         "gross_return_due", "gross_return_applied", "ledger_entry_count", "final_balance", "net",
-    ):
+    ]
+    if data["outcome"] == "won":
+        integer_fields.extend(("selected_win_probability_e8", "payout_sequence", "payout_delta", "payout_balance_after"))
+    for field in integer_fields:
         data[field] = exact_integer(data.get(field), field)
-    identity_fields = (
+    identity_fields = [
         "offer_id", "request_command_id", "stake_ledger_command_id", "lock_command_id",
         "result_command_id", "decision_command_id", "finalization_command_id",
-    )
+    ]
+    if data["outcome"] == "won":
+        identity_fields.append("payout_ledger_command_id")
     if any(not isinstance(data.get(field), str) or not data[field].strip() for field in identity_fields):
         raise ValueError("command and offer identities must be non-empty text")
     if len(data["offer_id"]) != 64 or any(character not in "0123456789abcdef" for character in data["offer_id"]):
@@ -283,6 +312,8 @@ def validated_match_winner_reconciliation(path: Path) -> dict[str, object]:
         raise ValueError("finalization chain does not link")
     if data["finalization_offer_id"] != offer or data["finalization_offer_version"] != data["offer_version"]:
         raise ValueError("finalization offer does not link")
+    if data["outcome"] == "won" and data["payout_ledger_command_id"] != data["finalization_command_id"]:
+        raise ValueError("payout does not link to win finalization")
     return data
 
 
@@ -293,20 +324,20 @@ def match_winner_reconciliation_payload(path: Path | None = None) -> dict[str, o
     if path is None or not path.is_file():
         return {
             "available": False,
-            "status": "NO FINALIZED LOSS PROJECTION",
+            "status": "NO FINALIZED WAGER PROJECTION",
             "read_only": True,
-            "boundary": "No complete validated exact-loss reconciliation is available. No partial wager evidence is shown.",
+            "boundary": "No complete validated exact wager reconciliation is available. No partial wager evidence is shown.",
         }
     try:
         data = validated_match_winner_reconciliation(path)
     except (OSError, ValueError, OverflowError, TypeError, KeyError, UnicodeDecodeError, json.JSONDecodeError) as error:
         return {
             "available": False,
-            "status": "INVALID FINALIZED LOSS PROJECTION",
+            "status": "INVALID FINALIZED WAGER PROJECTION",
             "read_only": True,
-            "boundary": f"The exact-loss projection was rejected: {error}. No partial wager evidence is shown.",
+            "boundary": f"The exact wager projection was rejected: {error}. No partial wager evidence is shown.",
         }
-    return {
+    payload = {
         "available": True,
         "status": "VALIDATED QA FINALIZED LOSS" if data["qa"] else "VALIDATED FINALIZED LOSS",
         "read_only": True,
@@ -322,6 +353,21 @@ def match_winner_reconciliation_payload(path: Path | None = None) -> dict[str, o
         "command_linkage": " -> ".join((data["request_command_id"], data["lock_command_id"], data["result_command_id"], data["decision_command_id"], data["finalization_command_id"])),
         "boundary": "Immutable read-only server evidence. The prior decision remains decided_pending_apply; this separate finalization adds no ledger entry and exposes no mutation control.",
     }
+    if data["outcome"] == "won":
+        payload.update({
+            "status": "VALIDATED QA FINALIZED WIN" if data["qa"] else "VALIDATED FINALIZED WIN",
+            "outcome": data["outcome"],
+            "probability_e8": data["selected_win_probability_e8"],
+            "payout_formula": data["payout_formula"],
+            "score": f'{data["home_score"]}-{data["away_score"]}',
+            "ledger_entry_count": data["ledger_entry_count"],
+            "ledger_linkage": " | ".join((
+                f'{data["stake_sequence"]}:{data["stake_ledger_command_id"]}:{data["stake_reason"]}:{data["stake_delta"]}->{data["stake_balance_after"]}',
+                f'{data["payout_sequence"]}:{data["payout_ledger_command_id"]}:{data["payout_reason"]}:+{data["payout_delta"]}->{data["payout_balance_after"]}',
+            )),
+            "boundary": "Immutable read-only server evidence. The prior decision remains decided_pending_apply; one exact payout entry and a separate settled_won finalization expose no mutation control.",
+        })
+    return payload
 
 
 def overall_rating(player: Player) -> int:
@@ -1464,7 +1510,7 @@ def self_check() -> None:
         projection_path.write_text("{}", encoding="utf-8")
         assert economy_payload(projection_path)["status"] == "INVALID LOCAL PROJECTION"
         wager_path = Path(temporary_directory) / "match-winner.json"
-        assert match_winner_reconciliation_payload(wager_path)["status"] == "NO FINALIZED LOSS PROJECTION"
+        assert match_winner_reconciliation_payload(wager_path)["status"] == "NO FINALIZED WAGER PROJECTION"
         wager_projection = {
             "schema": "oddswell-match-winner-reconciliation-v1",
             "generated_at_utc": "2033-05-18T03:33:20Z",
@@ -1528,6 +1574,42 @@ def self_check() -> None:
             "final_balance": 60,
             "net": -40,
         }
+        win_projection = {
+            **wager_projection,
+            "request_command_id": "wager:match_winner:win:request:test-1",
+            "selected_team": "Mesa Vista Sol",
+            "stake_ledger_command_id": "wager:match_winner:win:request:test-1",
+            "lock_command_id": "wager:match_winner:win:lock:test-1",
+            "lock_request_command_id": "wager:match_winner:win:request:test-1",
+            "result_command_id": "wager:match_winner:win:result:test-1",
+            "result_request_command_id": "wager:match_winner:win:request:test-1",
+            "result_lock_command_id": "wager:match_winner:win:lock:test-1",
+            "decision_command_id": "wager:match_winner:win:decision:test-1",
+            "decision_request_command_id": "wager:match_winner:win:request:test-1",
+            "decision_lock_command_id": "wager:match_winner:win:lock:test-1",
+            "decision_result_command_id": "wager:match_winner:win:result:test-1",
+            "outcome": "won",
+            "selected_win_probability_e8": 40_000_000,
+            "payout_formula": "floor(stake*100000000/win_probability_e8)",
+            "gross_return_due": 100,
+            "payout_ledger_command_id": "wager:match_winner:win:finalization:test-1",
+            "payout_sequence": 3,
+            "payout_delta": 100,
+            "payout_reason": "match_winner_payout",
+            "payout_balance_after": 160,
+            "finalization_command_id": "wager:match_winner:win:finalization:test-1",
+            "finalization_decision_command_id": "wager:match_winner:win:decision:test-1",
+            "finalization_request_command_id": "wager:match_winner:win:request:test-1",
+            "finalization_lock_command_id": "wager:match_winner:win:lock:test-1",
+            "finalization_result_command_id": "wager:match_winner:win:result:test-1",
+            "finalization_schema": "oddswell-match-winner-win-finalization-v1",
+            "finalization_version": "match-winner-win-finalization-v1",
+            "finalization_status": "settled_won",
+            "gross_return_applied": 100,
+            "ledger_entry_count": 3,
+            "final_balance": 160,
+            "net": 60,
+        }
         wager_path.write_text(json.dumps(wager_projection), encoding="utf-8")
         wager = match_winner_reconciliation_payload(wager_path)
         assert wager == {
@@ -1553,6 +1635,42 @@ def self_check() -> None:
         wager_path.write_text("{}", encoding="utf-8")
         partial_wager = match_winner_reconciliation_payload(wager_path)
         assert partial_wager["available"] is False and "selected_team" not in partial_wager
+        wager_path.write_text(json.dumps(win_projection), encoding="utf-8")
+        win_wager = match_winner_reconciliation_payload(wager_path)
+        assert win_wager == {
+            "available": True,
+            "status": "VALIDATED QA FINALIZED WIN",
+            "read_only": True,
+            "generated_at_utc": "2033-05-18T03:33:20Z",
+            "selected_team": "Mesa Vista Sol",
+            "winner": "Mesa Vista Sol",
+            "stake": 40,
+            "return": 100,
+            "net": 60,
+            "balance": 160,
+            "finalization_status": "settled_won",
+            "replay_seal_sha256": win_projection["replay_seal_sha256"],
+            "command_linkage": " -> ".join((win_projection["request_command_id"], win_projection["lock_command_id"], win_projection["result_command_id"], win_projection["decision_command_id"], win_projection["finalization_command_id"])),
+            "boundary": "Immutable read-only server evidence. The prior decision remains decided_pending_apply; one exact payout entry and a separate settled_won finalization expose no mutation control.",
+            "outcome": "won",
+            "probability_e8": 40_000_000,
+            "payout_formula": "floor(stake*100000000/win_probability_e8)",
+            "score": "101-104",
+            "ledger_entry_count": 3,
+            "ledger_linkage": "2:wager:match_winner:win:request:test-1:match_winner_stake:-40->60 | 3:wager:match_winner:win:finalization:test-1:match_winner_payout:+100->160",
+        }
+        for field, invalid_value in (
+            ("selected_win_probability_e8", 40_000_001),
+            ("payout_formula", "stake/probability"),
+            ("payout_ledger_command_id", "wager:match_winner:win:payout:wrong"),
+            ("payout_balance_after", 159),
+        ):
+            exact_value = win_projection[field]
+            win_projection[field] = invalid_value
+            wager_path.write_text(json.dumps(win_projection), encoding="utf-8")
+            invalid_win = match_winner_reconciliation_payload(wager_path)
+            assert invalid_win["available"] is False and "balance" not in invalid_win
+            win_projection[field] = exact_value
     server = LocalHTTPServer(("127.0.0.1", 0), Handler)
     try:
         try:

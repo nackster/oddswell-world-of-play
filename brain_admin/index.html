@@ -821,7 +821,7 @@
             <div class="page-head"><div><h2>Operations</h2><p>Reconcile the local Odds Bucks projection without exposing economy commands.</p></div><button class="control" id="refresh-economy" type="button">Reload projection</button></div>
             <div class="module-grid">
               <div class="module-card"><span class="state read-only" id="economy-status">Loading</span><h3>Odds Bucks reconciliation</h3><p id="economy-detail">Looking for the latest validated local projection.</p></div>
-              <div class="module-card wide evidence-card"><span class="state read-only" id="match-winner-status">Loading</span><h3>Immutable exact-loss history</h3><p id="match-winner-detail">Looking for one complete server-authored finalization chain.</p><p class="evidence-link" id="match-winner-linkage"></p></div>
+              <div class="module-card wide evidence-card"><span class="state read-only" id="match-winner-status">Loading</span><h3>Immutable exact wager history</h3><p id="match-winner-detail">Looking for one complete server-authored finalization chain.</p><p class="evidence-link" id="match-winner-linkage"></p></div>
               <div class="module-card"><span class="state locked">Not implemented</span><h3>Moderation</h3><p>No player moderation or support system is connected.</p></div>
               <div class="module-card"><span class="state locked">Not implemented</span><h3>Releases</h3><p>No deployment, maintenance, or announcement service is connected.</p></div>
             </div>
@@ -1228,12 +1228,16 @@
       try {
         const response = await fetch('/api/match-winner-reconciliation');
         const data = await response.json();
-        if (!response.ok) throw new Error(data.error || 'exact-loss reconciliation unavailable');
+        if (!response.ok) throw new Error(data.error || 'exact wager reconciliation unavailable');
         $('match-winner-status').textContent = data.status;
         $('match-winner-detail').textContent = data.available
-          ? `${data.selected_team} selected · ${data.winner} won · stake ${data.stake} · return ${data.return} · net ${data.net} · balance ${data.balance} · ${data.finalization_status} · replay ${data.replay_seal_sha256}`
+          ? (data.outcome === 'won'
+            ? `${data.selected_team} selected | probability ${data.probability_e8} | ${data.payout_formula} | sealed score ${data.score} | stake ${data.stake} | return ${data.return} | net +${data.net} | ${data.ledger_entry_count} entries | balance ${data.balance} | ${data.finalization_status} | replay ${data.replay_seal_sha256}`
+            : `${data.selected_team} selected · ${data.winner} won · stake ${data.stake} · return ${data.return} · net ${data.net} · balance ${data.balance} · ${data.finalization_status} · replay ${data.replay_seal_sha256}`)
           : data.boundary;
-        $('match-winner-linkage').textContent = data.available ? data.command_linkage : '';
+        $('match-winner-linkage').textContent = data.available
+          ? [data.command_linkage, data.ledger_linkage].filter(Boolean).join(' | ')
+          : '';
       } catch (error) {
         $('match-winner-status').textContent = 'PROJECTION ERROR';
         $('match-winner-detail').textContent = error.message;
