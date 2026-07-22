@@ -12,22 +12,14 @@
 namespace
 {
 constexpr int32 GamesPerPage = 5;
+constexpr int64 ProbabilityScale = 100000000;
+constexpr int64 OddsDisplayScale = 10000;
+constexpr int64 ExpectedLockUnix = 2000000000;
+const FString ExpectedOfferId(TEXT("29d3ab7c4fd2858b4cfa80f1f413a77aaa30fbdde1ca593b477d82f2e726617e"));
+const FString ExpectedCommitment(TEXT("898e89ef142f884fe2514bc55a65b91c80a5bf25d068467b2ddbfe25569ea98f"));
 
-bool ReadInt(const TSharedPtr<FJsonObject>& Object, const TCHAR* Field, int32& OutValue)
+bool LoadPublicLeagueRoot(TSharedPtr<FJsonObject>& OutRoot, FString& OutError)
 {
-	double Number = 0.0;
-	if (!Object.IsValid() || !Object->TryGetNumberField(Field, Number))
-	{
-		return false;
-	}
-	OutValue = static_cast<int32>(Number);
-	return true;
-}
-}
-
-bool LoadOddsWellPublicLeagueSnapshot(FOddsWellPublicLeagueSnapshot& OutSnapshot, FString& OutError)
-{
-	OutSnapshot = {};
 	const FString Path = FPaths::Combine(FPaths::ProjectContentDir(), TEXT("League/PublicSeason1.json"));
 	FString JsonText;
 	if (!FFileHelper::LoadFileToString(JsonText, *Path))
@@ -35,12 +27,218 @@ bool LoadOddsWellPublicLeagueSnapshot(FOddsWellPublicLeagueSnapshot& OutSnapshot
 		OutError = FString::Printf(TEXT("Public league snapshot not found: %s"), *Path);
 		return false;
 	}
-
-	TSharedPtr<FJsonObject> Root;
 	const TSharedRef<TJsonReader<>> Reader = TJsonReaderFactory<>::Create(JsonText);
-	if (!FJsonSerializer::Deserialize(Reader, Root) || !Root.IsValid())
+	if (!FJsonSerializer::Deserialize(Reader, OutRoot) || !OutRoot.IsValid())
 	{
 		OutError = TEXT("Public league snapshot is not valid JSON.");
+		return false;
+	}
+	return true;
+}
+
+bool HasExactFields(const TSharedPtr<FJsonObject>& Object, const TArray<FString>& Expected)
+{
+	if (!Object.IsValid() || Object->Values.Num() != Expected.Num())
+	{
+		return false;
+	}
+	for (const FString& Field : Expected)
+	{
+		if (!Object->HasField(Field))
+		{
+			return false;
+		}
+	}
+	return true;
+}
+
+bool ReadInt64(const TSharedPtr<FJsonObject>& Object, const TCHAR* Field, int64& OutValue)
+{
+	double Number = 0.0;
+	if (!Object.IsValid() || !Object->TryGetNumberField(Field, Number) || !FMath::IsFinite(Number))
+	{
+		return false;
+	}
+	OutValue = static_cast<int64>(Number);
+	return static_cast<double>(OutValue) == Number;
+}
+
+bool ReadInt(const TSharedPtr<FJsonObject>& Object, const TCHAR* Field, int32& OutValue)
+{
+	int64 Number = 0;
+	if (!ReadInt64(Object, Field, Number) || Number < MIN_int32 || Number > MAX_int32)
+	{
+		return false;
+	}
+	OutValue = static_cast<int32>(Number);
+	return true;
+}
+
+bool ValidateMatchWinnerOffer(
+	const TSharedPtr<FJsonObject>& Root,
+	FOddsWellMatchWinnerOfferPreview& OutPreview,
+	FString& OutError)
+{
+	OutPreview = {};
+	FString RootSchema;
+	bool bPublicOnly = false;
+	const TSharedPtr<FJsonObject>* Offer = nullptr;
+	const TArray<TSharedPtr<FJsonValue>>* Games = nullptr;
+	if (!Root.IsValid()
+		|| !Root->TryGetStringField(TEXT("schema"), RootSchema)
+		|| RootSchema != TEXT("oddswell-public-league-v1")
+		|| !Root->TryGetBoolField(TEXT("public_only"), bPublicOnly)
+		|| !bPublicOnly
+		|| !Root->TryGetObjectField(TEXT("match_winner_offer"), Offer)
+		|| !Root->TryGetArrayField(TEXT("games"), Games))
+	{
+		OutError = TEXT("Match Winner preview has no verified public envelope.");
+		return false;
+	}
+
+	const TArray<FString> OfferFields = {
+		TEXT("offer_id"), TEXT("schema"), TEXT("offer_version"), TEXT("market"), TEXT("currency"),
+		TEXT("source_prediction_version"), TEXT("source_snapshot_version"), TEXT("source_model"),
+		TEXT("source_commitment_sha256"), TEXT("season_number"), TEXT("game_number"), TEXT("home_team"),
+		TEXT("away_team"), TEXT("lock_unix"), TEXT("minimum_stake"), TEXT("maximum_stake"),
+		TEXT("stake_increment"), TEXT("house_edge_bps"), TEXT("payout_formula"), TEXT("selections")};
+	if (!HasExactFields(*Offer, OfferFields))
+	{
+		OutError = TEXT("Match Winner preview offer has malformed or hidden fields.");
+		return false;
+	}
+
+	FString OfferSchema;
+	FString Market;
+	FString Currency;
+	FString PayoutFormula;
+	int64 HouseEdgeBps = -1;
+	const TArray<TSharedPtr<FJsonValue>>* Selections = nullptr;
+	if (!(*Offer)->TryGetStringField(TEXT("offer_id"), OutPreview.OfferId)
+		|| !(*Offer)->TryGetStringField(TEXT("schema"), OfferSchema)
+		|| !(*Offer)->TryGetStringField(TEXT("offer_version"), OutPreview.OfferVersion)
+		|| !(*Offer)->TryGetStringField(TEXT("market"), Market)
+		|| !(*Offer)->TryGetStringField(TEXT("currency"), Currency)
+		|| !(*Offer)->TryGetStringField(TEXT("source_prediction_version"), OutPreview.SourcePredictionVersion)
+		|| !(*Offer)->TryGetStringField(TEXT("source_snapshot_version"), OutPreview.SourceSnapshotVersion)
+		|| !(*Offer)->TryGetStringField(TEXT("source_model"), OutPreview.SourceModel)
+		|| !(*Offer)->TryGetStringField(TEXT("source_commitment_sha256"), OutPreview.SourceCommitmentSha256)
+		|| !ReadInt(*Offer, TEXT("season_number"), OutPreview.SeasonNumber)
+		|| !ReadInt(*Offer, TEXT("game_number"), OutPreview.GameNumber)
+		|| !(*Offer)->TryGetStringField(TEXT("home_team"), OutPreview.HomeTeam)
+		|| !(*Offer)->TryGetStringField(TEXT("away_team"), OutPreview.AwayTeam)
+		|| !ReadInt64(*Offer, TEXT("lock_unix"), OutPreview.LockUnix)
+		|| !ReadInt64(*Offer, TEXT("minimum_stake"), OutPreview.MinimumStake)
+		|| !ReadInt64(*Offer, TEXT("maximum_stake"), OutPreview.MaximumStake)
+		|| !ReadInt64(*Offer, TEXT("stake_increment"), OutPreview.StakeIncrement)
+		|| !ReadInt64(*Offer, TEXT("house_edge_bps"), HouseEdgeBps)
+		|| !(*Offer)->TryGetStringField(TEXT("payout_formula"), PayoutFormula)
+		|| !(*Offer)->TryGetArrayField(TEXT("selections"), Selections))
+	{
+		OutPreview = {};
+		OutError = TEXT("Match Winner preview offer is incomplete.");
+		return false;
+	}
+	if (OutPreview.OfferId != ExpectedOfferId
+		|| OfferSchema != TEXT("oddswell-basketball-odds-offer-v1")
+		|| OutPreview.OfferVersion != TEXT("basketball-match-winner-odds-v1")
+		|| Market != TEXT("match_winner")
+		|| Currency != TEXT("odds_bucks")
+		|| OutPreview.SourcePredictionVersion != TEXT("phase0d4-v1")
+		|| OutPreview.SourceSnapshotVersion != TEXT("oddswell-public-pregame-v1")
+		|| OutPreview.SourceModel != TEXT("public_elo_rotation")
+		|| OutPreview.SourceCommitmentSha256 != ExpectedCommitment
+		|| OutPreview.SeasonNumber != 1
+		|| OutPreview.GameNumber != 1
+		|| OutPreview.HomeTeam != TEXT("Harbor City Waves")
+		|| OutPreview.AwayTeam != TEXT("Mesa Vista Sol")
+		|| OutPreview.LockUnix != ExpectedLockUnix
+		|| OutPreview.MinimumStake != 10
+		|| OutPreview.MaximumStake != 100
+		|| OutPreview.StakeIncrement != 10
+		|| HouseEdgeBps != 0
+		|| PayoutFormula != TEXT("floor(stake*100000000/win_probability_e8)")
+		|| Selections->Num() != 2)
+	{
+		OutPreview = {};
+		OutError = TEXT("Match Winner preview offer is stale or tampered.");
+		return false;
+	}
+
+	const TArray<FString> SelectionFields = {TEXT("team"), TEXT("win_probability_e8"), TEXT("decimal_odds_e4")};
+	for (const TSharedPtr<FJsonValue>& Value : *Selections)
+	{
+		const TSharedPtr<FJsonObject> Selection = Value->AsObject();
+		FOddsWellMatchWinnerSelectionPreview PreviewSelection;
+		if (!HasExactFields(Selection, SelectionFields)
+			|| !Selection->TryGetStringField(TEXT("team"), PreviewSelection.Team)
+			|| !ReadInt64(Selection, TEXT("win_probability_e8"), PreviewSelection.WinProbabilityE8)
+			|| !ReadInt64(Selection, TEXT("decimal_odds_e4"), PreviewSelection.DecimalOddsE4)
+			|| PreviewSelection.WinProbabilityE8 <= 0
+			|| PreviewSelection.WinProbabilityE8 >= ProbabilityScale
+			|| PreviewSelection.DecimalOddsE4 != ProbabilityScale * OddsDisplayScale / PreviewSelection.WinProbabilityE8)
+		{
+			OutPreview = {};
+			OutError = TEXT("Match Winner preview selection is malformed or tampered.");
+			return false;
+		}
+		PreviewSelection.MinimumStakeGrossReturn = OutPreview.MinimumStake * ProbabilityScale / PreviewSelection.WinProbabilityE8;
+		PreviewSelection.MaximumStakeGrossReturn = OutPreview.MaximumStake * ProbabilityScale / PreviewSelection.WinProbabilityE8;
+		OutPreview.Selections.Add(MoveTemp(PreviewSelection));
+	}
+	if (OutPreview.Selections[0].Team != OutPreview.HomeTeam
+		|| OutPreview.Selections[0].WinProbabilityE8 != 57586693
+		|| OutPreview.Selections[1].Team != OutPreview.AwayTeam
+		|| OutPreview.Selections[1].WinProbabilityE8 != 42413307
+		|| OutPreview.Selections[0].WinProbabilityE8 + OutPreview.Selections[1].WinProbabilityE8 != ProbabilityScale)
+	{
+		OutPreview = {};
+		OutError = TEXT("Match Winner preview selections do not match the exact verified offer.");
+		return false;
+	}
+
+	TSharedPtr<FJsonObject> GameOne;
+	for (const TSharedPtr<FJsonValue>& Value : *Games)
+	{
+		const TSharedPtr<FJsonObject> Game = Value->AsObject();
+		int32 GameNumber = 0;
+		if (ReadInt(Game, TEXT("number"), GameNumber) && GameNumber == 1)
+		{
+			GameOne = Game;
+			break;
+		}
+	}
+	FString GameHome;
+	FString GameAway;
+	FString GameCommitment;
+	const TSharedPtr<FJsonObject>* Predictions = nullptr;
+	double PublicProbability = 0.0;
+	if (!GameOne
+		|| !GameOne->TryGetStringField(TEXT("home"), GameHome)
+		|| !GameOne->TryGetStringField(TEXT("away"), GameAway)
+		|| !GameOne->TryGetStringField(TEXT("prediction_commitment_sha256"), GameCommitment)
+		|| !GameOne->TryGetObjectField(TEXT("predictions"), Predictions)
+		|| !(*Predictions)->TryGetNumberField(TEXT("public_elo_rotation"), PublicProbability)
+		|| GameHome != OutPreview.HomeTeam
+		|| GameAway != OutPreview.AwayTeam
+		|| GameCommitment != OutPreview.SourceCommitmentSha256
+		|| FMath::RoundToInt64(PublicProbability * ProbabilityScale) != OutPreview.Selections[0].WinProbabilityE8)
+	{
+		OutPreview = {};
+		OutError = TEXT("Match Winner preview does not match public Season 1 Game 1 evidence.");
+		return false;
+	}
+	OutError.Reset();
+	return true;
+}
+}
+
+bool LoadOddsWellPublicLeagueSnapshot(FOddsWellPublicLeagueSnapshot& OutSnapshot, FString& OutError)
+{
+	OutSnapshot = {};
+	TSharedPtr<FJsonObject> Root;
+	if (!LoadPublicLeagueRoot(Root, OutError))
+	{
 		return false;
 	}
 	FString Schema;
@@ -219,6 +417,58 @@ FString BuildOddsWellPublicLeaguePage(const FOddsWellPublicLeagueSnapshot& Snaps
 	return Text + TEXT("\n[L] CLOSE   [,] PREVIOUS   [.] NEXT");
 }
 
+bool LoadOddsWellMatchWinnerOfferPreview(FOddsWellMatchWinnerOfferPreview& OutPreview, FString& OutError)
+{
+	TSharedPtr<FJsonObject> Root;
+	if (!LoadPublicLeagueRoot(Root, OutError))
+	{
+		OutPreview = {};
+		return false;
+	}
+	return ValidateMatchWinnerOffer(Root, OutPreview, OutError);
+}
+
+FString BuildOddsWellMatchWinnerOfferPreview(const FOddsWellMatchWinnerOfferPreview& Preview)
+{
+	if (Preview.Selections.Num() != 2)
+	{
+		return TEXT("MATCH WINNER PREVIEW UNAVAILABLE");
+	}
+	const FOddsWellMatchWinnerSelectionPreview& Home = Preview.Selections[0];
+	const FOddsWellMatchWinnerSelectionPreview& Away = Preview.Selections[1];
+	return FString::Printf(
+		TEXT("SPORTSBOOK | READ-ONLY MATCH WINNER PREVIEW\n")
+		TEXT("SEASON %d GAME %d | %s vs %s\n")
+		TEXT("%s  %.6f%% | %.4fx | 10 -> %lld | 100 -> %lld\n")
+		TEXT("%s  %.6f%% | %.4fx | 10 -> %lld | 100 -> %lld\n")
+		TEXT("STAKE RULE: 10-100 ODDS BUCKS | INCREMENTS OF 10\n")
+		TEXT("LOCK: GAME START | UNIX %lld\n")
+		TEXT("OFFER ID: %s\n")
+		TEXT("SOURCE: %s | %s | %s\n")
+		TEXT("COMMITMENT: %s\n")
+		TEXT("READ ONLY - NO WAGER OR LEDGER CHANGE\n[E] CLOSE"),
+		Preview.SeasonNumber,
+		Preview.GameNumber,
+		*Preview.AwayTeam,
+		*Preview.HomeTeam,
+		*Home.Team,
+		static_cast<double>(Home.WinProbabilityE8) / 1000000.0,
+		static_cast<double>(Home.DecimalOddsE4) / OddsDisplayScale,
+		Home.MinimumStakeGrossReturn,
+		Home.MaximumStakeGrossReturn,
+		*Away.Team,
+		static_cast<double>(Away.WinProbabilityE8) / 1000000.0,
+		static_cast<double>(Away.DecimalOddsE4) / OddsDisplayScale,
+		Away.MinimumStakeGrossReturn,
+		Away.MaximumStakeGrossReturn,
+		Preview.LockUnix,
+		*Preview.OfferId,
+		*Preview.OfferVersion,
+		*Preview.SourcePredictionVersion,
+		*Preview.SourceSnapshotVersion,
+		*Preview.SourceCommitmentSha256);
+}
+
 #if WITH_DEV_AUTOMATION_TESTS
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
 	FOddsWellPublicLeagueViewTest,
@@ -236,6 +486,41 @@ bool FOddsWellPublicLeagueViewTest::RunTest(const FString& Parameters)
 	TestTrue(TEXT("Standings page names Harbor City"), BuildOddsWellPublicLeaguePage(Snapshot, 0).Contains(TEXT("Harbor City Waves")));
 	TestTrue(TEXT("Roster exposes availability"), BuildOddsWellPublicLeaguePage(Snapshot, 2).Contains(TEXT("OUT")));
 	TestTrue(TEXT("History exposes the final game"), BuildOddsWellPublicLeaguePage(Snapshot, 6).Contains(TEXT("G20")));
+
+	FOddsWellMatchWinnerOfferPreview Offer;
+	TestTrue(TEXT("Exact public Match Winner offer loads"), LoadOddsWellMatchWinnerOfferPreview(Offer, Error));
+	TestEqual(TEXT("Offer identity is exact"), Offer.OfferId, ExpectedOfferId);
+	TestEqual(TEXT("Offer contains two selections"), Offer.Selections.Num(), 2);
+	TestEqual(TEXT("Minimum Harbor return is exact"), Offer.Selections[0].MinimumStakeGrossReturn, int64{17});
+	TestEqual(TEXT("Maximum Mesa return is exact"), Offer.Selections[1].MaximumStakeGrossReturn, int64{235});
+	const FString OfferText = BuildOddsWellMatchWinnerOfferPreview(Offer);
+	TestTrue(TEXT("Preview identifies read-only behavior"), OfferText.Contains(TEXT("READ ONLY - NO WAGER OR LEDGER CHANGE")));
+	TestTrue(TEXT("Preview exposes the full offer ID"), OfferText.Contains(ExpectedOfferId));
+
+	TSharedPtr<FJsonObject> Root;
+	TestTrue(TEXT("Offer fixture reopens for fail-closed checks"), LoadPublicLeagueRoot(Root, Error));
+	const TSharedPtr<FJsonObject>* MutableOffer = nullptr;
+	Root->TryGetObjectField(TEXT("match_winner_offer"), MutableOffer);
+	(*MutableOffer)->SetStringField(TEXT("offer_version"), TEXT("basketball-match-winner-odds-v0"));
+	TestFalse(TEXT("Stale offer version fails closed"), ValidateMatchWinnerOffer(Root, Offer, Error));
+	TestEqual(TEXT("Stale offer exposes no selections"), Offer.Selections.Num(), 0);
+
+	TestTrue(TEXT("Offer fixture reopens for tamper check"), LoadPublicLeagueRoot(Root, Error));
+	Root->TryGetObjectField(TEXT("match_winner_offer"), MutableOffer);
+	const TArray<TSharedPtr<FJsonValue>>* MutableSelections = nullptr;
+	(*MutableOffer)->TryGetArrayField(TEXT("selections"), MutableSelections);
+	(*MutableSelections)[0]->AsObject()->SetNumberField(TEXT("win_probability_e8"), 57586694);
+	TestFalse(TEXT("Tampered probability fails closed"), ValidateMatchWinnerOffer(Root, Offer, Error));
+
+	TestTrue(TEXT("Offer fixture reopens for hidden-field check"), LoadPublicLeagueRoot(Root, Error));
+	Root->TryGetObjectField(TEXT("match_winner_offer"), MutableOffer);
+	(*MutableOffer)->SetNumberField(TEXT("fatigue"), 1);
+	TestFalse(TEXT("Hidden offer field fails closed"), ValidateMatchWinnerOffer(Root, Offer, Error));
+
+	TestTrue(TEXT("Offer fixture reopens for malformed check"), LoadPublicLeagueRoot(Root, Error));
+	Root->TryGetObjectField(TEXT("match_winner_offer"), MutableOffer);
+	(*MutableOffer)->RemoveField(TEXT("selections"));
+	TestFalse(TEXT("Malformed offer fails closed"), ValidateMatchWinnerOffer(Root, Offer, Error));
 	return true;
 }
 #endif

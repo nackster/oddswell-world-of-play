@@ -44,6 +44,36 @@ struct FOddsWellPublicLeagueSnapshot
 	TArray<FOddsWellPublicGame> Games;
 };
 
+struct FOddsWellMatchWinnerSelectionPreview
+{
+	FString Team;
+	int64 WinProbabilityE8 = 0;
+	int64 DecimalOddsE4 = 0;
+	int64 MinimumStakeGrossReturn = 0;
+	int64 MaximumStakeGrossReturn = 0;
+};
+
+struct FOddsWellMatchWinnerOfferPreview
+{
+	FString OfferId;
+	FString OfferVersion;
+	FString SourcePredictionVersion;
+	FString SourceSnapshotVersion;
+	FString SourceModel;
+	FString SourceCommitmentSha256;
+	int32 SeasonNumber = 0;
+	int32 GameNumber = 0;
+	FString HomeTeam;
+	FString AwayTeam;
+	int64 LockUnix = 0;
+	int64 MinimumStake = 0;
+	int64 MaximumStake = 0;
+	int64 StakeIncrement = 0;
+	TArray<FOddsWellMatchWinnerSelectionPreview> Selections;
+};
+
 ODDSWELL_API bool LoadOddsWellPublicLeagueSnapshot(FOddsWellPublicLeagueSnapshot& OutSnapshot, FString& OutError);
 ODDSWELL_API int32 GetOddsWellPublicLeaguePageCount(const FOddsWellPublicLeagueSnapshot& Snapshot);
 ODDSWELL_API FString BuildOddsWellPublicLeaguePage(const FOddsWellPublicLeagueSnapshot& Snapshot, int32 PageIndex);
+ODDSWELL_API bool LoadOddsWellMatchWinnerOfferPreview(FOddsWellMatchWinnerOfferPreview& OutPreview, FString& OutError);
+ODDSWELL_API FString BuildOddsWellMatchWinnerOfferPreview(const FOddsWellMatchWinnerOfferPreview& Preview);

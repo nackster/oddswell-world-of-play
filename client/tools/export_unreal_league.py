@@ -11,9 +11,12 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 
 from brain_admin.server import league_payload
+from phase0d.prediction import run_prediction_study
+from phase1h.odds import match_winner_offer
 
 
 OUTPUT = ROOT / "client/OddsWell/Content/League/PublicSeason1.json"
+GAME_ONE_LOCK_UNIX = 2_000_000_000
 FORBIDDEN_KEY_PARTS = (
     "seed",
     "rng",
@@ -37,9 +40,18 @@ def keys(value: object):
 
 def main() -> None:
     public = league_payload()
+    prediction = run_prediction_study(0, 1, 4, 712).records[0]
+    assert prediction.season_number == 1 and prediction.game_number == 1
+    assert public["games"][0]["prediction_commitment_sha256"] == prediction.commitment_sha256
+    offer = match_winner_offer(
+        prediction.commitment_json,
+        prediction.commitment_sha256,
+        GAME_ONE_LOCK_UNIX,
+    )
     fixture = {
         "schema": "oddswell-public-league-v1",
         "public_only": True,
+        "match_winner_offer": offer,
         **public,
     }
     assert fixture["season"] == {

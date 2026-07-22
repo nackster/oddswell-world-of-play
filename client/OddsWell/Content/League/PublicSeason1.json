@@ -862,6 +862,39 @@
       "winner": "Harbor City Waves"
     }
   ],
+  "match_winner_offer": {
+    "away_team": "Mesa Vista Sol",
+    "currency": "odds_bucks",
+    "game_number": 1,
+    "home_team": "Harbor City Waves",
+    "house_edge_bps": 0,
+    "lock_unix": 2000000000,
+    "market": "match_winner",
+    "maximum_stake": 100,
+    "minimum_stake": 10,
+    "offer_id": "29d3ab7c4fd2858b4cfa80f1f413a77aaa30fbdde1ca593b477d82f2e726617e",
+    "offer_version": "basketball-match-winner-odds-v1",
+    "payout_formula": "floor(stake*100000000/win_probability_e8)",
+    "schema": "oddswell-basketball-odds-offer-v1",
+    "season_number": 1,
+    "selections": [
+      {
+        "decimal_odds_e4": 17365,
+        "team": "Harbor City Waves",
+        "win_probability_e8": 57586693
+      },
+      {
+        "decimal_odds_e4": 23577,
+        "team": "Mesa Vista Sol",
+        "win_probability_e8": 42413307
+      }
+    ],
+    "source_commitment_sha256": "898e89ef142f884fe2514bc55a65b91c80a5bf25d068467b2ddbfe25569ea98f",
+    "source_model": "public_elo_rotation",
+    "source_prediction_version": "phase0d4-v1",
+    "source_snapshot_version": "oddswell-public-pregame-v1",
+    "stake_increment": 10
+  },
   "public_only": true,
   "schema": "oddswell-public-league-v1",
   "season": {

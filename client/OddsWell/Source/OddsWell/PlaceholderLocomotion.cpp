@@ -69,6 +69,7 @@ constexpr float JobInteractionRadius = 350.0f;
 constexpr float StudioEntryRadius = 350.0f;
 constexpr float StudioQaWalkDistance = 200.0f;
 constexpr float StadiumEntryRadius = 350.0f;
+constexpr float SportsbookInteractionRadius = 350.0f;
 constexpr float StadiumQaWaypointTolerance = 75.0f;
 const FName StudioStructureTag(TEXT("OddsWellStudioStructure"));
 const FName StudioFurnitureTag(TEXT("OddsWellStudioFurniture"));
@@ -76,6 +77,7 @@ const FName StadiumStructureTag(TEXT("OddsWellStadiumStructure"));
 const FName StadiumZoneTag(TEXT("OddsWellStadiumZone"));
 const FVector JobInteractionLocation(9500.0, 0.0, 0.0);
 const FVector StadiumEntranceThreshold(7000.0, 18000.0, 0.0);
+const FVector SportsbookInteractionLocation(1000.0, 18000.0, 0.0);
 FVector StadiumCityReturnLocation = StadiumEntranceThreshold + FVector(0.0, -100.0, SafeSpawnLocation.Z);
 const FVector StadiumInteriorSpawn(-1600.0, 0.0, 220.0);
 const FVector StadiumReplayOrigin(350.0, 0.0, 0.0);
@@ -182,7 +184,7 @@ const TArray<FVector>& GetSundaleRouteWaypoints()
 		FVector(12500.0, 9000.0, 0.0),
 		FVector(12500.0, 18000.0, 0.0),
 		StadiumEntranceThreshold,
-		FVector(1000.0, 18000.0, 0.0),
+		SportsbookInteractionLocation,
 		FVector(-9500.0, 18000.0, 0.0),
 		FVector(-9500.0, 16000.0, 0.0),
 		FVector(-9500.0, 5000.0, 0.0),
@@ -382,6 +384,7 @@ void AOddsWellPlaceholderCharacter::BeginPlay()
 	bCameraOrbitQa = FParse::Param(FCommandLine::Get(), TEXT("CameraOrbitQa"));
 	bPublicLeagueQa = FParse::Param(FCommandLine::Get(), TEXT("PublicLeagueQa"));
 	bStadiumQa = FParse::Param(FCommandLine::Get(), TEXT("StadiumQa"));
+	bSportsbookOfferQa = FParse::Param(FCommandLine::Get(), TEXT("SportsbookOfferQa"));
 	bJobPayoutQaVerify = FParse::Param(FCommandLine::Get(), TEXT("JobPayoutQaVerify"));
 	bJobRecoveryQa = FParse::Param(FCommandLine::Get(), TEXT("JobRecoveryQa"));
 	bJobRecoveryQaVerify = FParse::Param(FCommandLine::Get(), TEXT("JobRecoveryQaVerify"));
@@ -482,6 +485,28 @@ void AOddsWellPlaceholderCharacter::BeginPlay()
 					QaExitAt = FPlatformTime::Seconds() + 2.0;
 				}
 			}
+		}
+		SportsbookOfferPreview = MakeUnique<FOddsWellMatchWinnerOfferPreview>();
+		if (!LoadOddsWellMatchWinnerOfferPreview(*SportsbookOfferPreview, Error))
+		{
+			UE_LOG(LogOddsWellLocomotion, Error, TEXT("ODDSWELL_SPORTSBOOK_OFFER|result=FAIL|closed=true|reason=%s"), *Error);
+			SportsbookOfferPreview.Reset();
+		}
+		else
+		{
+			UE_LOG(
+				LogOddsWellLocomotion,
+				Display,
+				TEXT("ODDSWELL_SPORTSBOOK_OFFER|result=PASS|read_only=true|season=%d|game=%d|offer_id=%s|source=%s|selections=%d|minimum_stake=%lld|maximum_stake=%lld|increment=%lld|lock_unix=%lld"),
+				SportsbookOfferPreview->SeasonNumber,
+				SportsbookOfferPreview->GameNumber,
+				*SportsbookOfferPreview->OfferId,
+				*SportsbookOfferPreview->SourceModel,
+				SportsbookOfferPreview->Selections.Num(),
+				SportsbookOfferPreview->MinimumStake,
+				SportsbookOfferPreview->MaximumStake,
+				SportsbookOfferPreview->StakeIncrement,
+				SportsbookOfferPreview->LockUnix);
 		}
 	}
 	UE_LOG(LogOddsWellLocomotion, Display, TEXT("ODDSWELL_LOCOMOTION_READY|spawn=%s|walk=%.0f|run=%.0f|jump=%.0f"), *SafeSpawnLocation.ToCompactString(), WalkSpeed, RunSpeed, JumpVelocity);
@@ -592,6 +617,11 @@ void AOddsWellPlaceholderCharacter::ToggleLeagueView()
 	{
 		return;
 	}
+	if (!bPublicLeagueVisible && bSportsbookOfferVisible)
+	{
+		bSportsbookOfferVisible = false;
+		ShowSportsbookOfferPreview();
+	}
 	bPublicLeagueVisible = !bPublicLeagueVisible;
 	ShowLeaguePage();
 }
@@ -630,6 +660,40 @@ void AOddsWellPlaceholderCharacter::ShowLeaguePage()
 	}
 }
 
+void AOddsWellPlaceholderCharacter::ToggleSportsbookOfferPreview()
+{
+	const bool bAtSportsbook = GetWorld()->GetMapName().Contains(TEXT("SundaleGraybox"))
+		&& FVector::Dist2D(GetActorLocation(), SportsbookInteractionLocation) <= SportsbookInteractionRadius;
+	if (!IsLocallyControlled() || !SportsbookOfferPreview || !bAtSportsbook)
+	{
+		return;
+	}
+	if (!bSportsbookOfferVisible && bPublicLeagueVisible)
+	{
+		bPublicLeagueVisible = false;
+		ShowLeaguePage();
+	}
+	bSportsbookOfferVisible = !bSportsbookOfferVisible;
+	ShowSportsbookOfferPreview();
+}
+
+void AOddsWellPlaceholderCharacter::ShowSportsbookOfferPreview()
+{
+	if (!GEngine)
+	{
+		return;
+	}
+	GEngine->RemoveOnScreenDebugMessage(912017);
+	if (bSportsbookOfferVisible && SportsbookOfferPreview)
+	{
+		GEngine->AddOnScreenDebugMessage(
+			912017,
+			3600.0f,
+			FColor::Yellow,
+			BuildOddsWellMatchWinnerOfferPreview(*SportsbookOfferPreview));
+	}
+}
+
 void AOddsWellPlaceholderCharacter::Tick(const float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
@@ -637,6 +701,7 @@ void AOddsWellPlaceholderCharacter::Tick(const float DeltaSeconds)
 	PollJobInteraction();
 	PollStudioInteraction();
 	PollStadiumInteraction();
+	PollSportsbookInteraction();
 	if (GEngine && IsLocallyControlled() && PublicLeagueSnapshot && !bPublicLeagueVisible)
 	{
 		GEngine->AddOnScreenDebugMessage(912014, 0.0f, FColor::Cyan, TEXT("Press L to open the public basketball league"));
@@ -664,6 +729,10 @@ void AOddsWellPlaceholderCharacter::Tick(const float DeltaSeconds)
 	if (bStadiumQa)
 	{
 		RunStadiumQa(DeltaSeconds);
+	}
+	if (bSportsbookOfferQa)
+	{
+		RunSportsbookOfferQa(DeltaSeconds);
 	}
 	if (bJobQa)
 	{
@@ -1099,6 +1168,142 @@ void AOddsWellPlaceholderCharacter::PollStadiumInteraction()
 		bInStadium
 			? TEXT("game=/Script/OddsWell.OddsWellLocomotionGameMode?StadiumReturn=1")
 			: TEXT("game=/Script/OddsWell.OddsWellStadiumGameMode"));
+}
+
+void AOddsWellPlaceholderCharacter::PollSportsbookInteraction()
+{
+	if (!IsLocallyControlled() || !GetWorld()->GetMapName().Contains(TEXT("SundaleGraybox")))
+	{
+		return;
+	}
+	const bool bAtSportsbook = FVector::Dist2D(GetActorLocation(), SportsbookInteractionLocation) <= SportsbookInteractionRadius;
+	if (!bAtSportsbook)
+	{
+		bSportsbookInteractionArmed = false;
+		if (bSportsbookOfferVisible)
+		{
+			bSportsbookOfferVisible = false;
+			ShowSportsbookOfferPreview();
+		}
+		return;
+	}
+	const APlayerController* PlayerController = Cast<APlayerController>(Controller);
+	if (!PlayerController)
+	{
+		return;
+	}
+	if (GEngine)
+	{
+		GEngine->AddOnScreenDebugMessage(
+			912018,
+			0.0f,
+			SportsbookOfferPreview ? FColor::Yellow : FColor::Red,
+			SportsbookOfferPreview
+				? (bSportsbookOfferVisible ? TEXT("Press E to close the read-only Match Winner preview") : TEXT("Press E to preview the Match Winner offer"))
+				: TEXT("Match Winner preview unavailable"));
+	}
+	if (bSportsbookOfferQa || !SportsbookOfferPreview)
+	{
+		return;
+	}
+	const bool bPressed = PlayerController->IsInputKeyDown(KeyInteract);
+	if (!bPressed)
+	{
+		bSportsbookInteractionArmed = true;
+	}
+	if (bPressed && bSportsbookInteractionArmed)
+	{
+		bSportsbookInteractionArmed = false;
+		ToggleSportsbookOfferPreview();
+	}
+}
+
+void AOddsWellPlaceholderCharacter::RunSportsbookOfferQa(const float DeltaSeconds)
+{
+	if (!IsLocallyControlled() || GetNetMode() != NM_Standalone)
+	{
+		return;
+	}
+	SportsbookOfferQaElapsed += DeltaSeconds;
+	AOddsWellLocomotionGameMode* GameMode = GetWorld()->GetAuthGameMode<AOddsWellLocomotionGameMode>();
+	if (!GetWorld()->GetMapName().Contains(TEXT("SundaleGraybox")) || !GameMode || !SportsbookOfferPreview)
+	{
+		UE_LOG(LogOddsWellLocomotion, Error, TEXT("ODDSWELL_SPORTSBOOK_OFFER_QA|result=FAIL|reason=offer_or_map_unavailable|closed=true"));
+		bSportsbookOfferQa = false;
+		QaExitAt = FPlatformTime::Seconds() + 1.0;
+		return;
+	}
+	if (!GetCharacterMovement()->IsMovingOnGround())
+	{
+		if (SportsbookOfferQaElapsed > 10.0f)
+		{
+			UE_LOG(LogOddsWellLocomotion, Error, TEXT("ODDSWELL_SPORTSBOOK_OFFER_QA|result=FAIL|reason=spawn_timeout|closed=true"));
+			bSportsbookOfferQa = false;
+			QaExitAt = FPlatformTime::Seconds() + 1.0;
+		}
+		return;
+	}
+	if (SportsbookOfferQaStage == 0)
+	{
+		SportsbookOfferQaLedgerEntries = GameMode->GetOddsBucksEntryCount();
+		SportsbookOfferQaBalance = GameMode->GetOddsBucksBalance();
+		SetActorLocation(SafeSpawnLocation, false, nullptr, ETeleportType::TeleportPhysics);
+		ToggleSportsbookOfferPreview();
+		if (bSportsbookOfferVisible)
+		{
+			UE_LOG(LogOddsWellLocomotion, Error, TEXT("ODDSWELL_SPORTSBOOK_OFFER_QA|result=FAIL|reason=available_outside_frontage|closed=true"));
+			bSportsbookOfferQa = false;
+			QaExitAt = FPlatformTime::Seconds() + 1.0;
+			return;
+		}
+		SetActorLocation(FVector(SportsbookInteractionLocation.X, SportsbookInteractionLocation.Y, GetActorLocation().Z), false, nullptr, ETeleportType::TeleportPhysics);
+		SportsbookOfferQaStage = 1;
+		SportsbookOfferQaElapsed = 0.0f;
+		return;
+	}
+	if (SportsbookOfferQaStage == 1)
+	{
+		ToggleSportsbookOfferPreview();
+		const FString PreviewText = BuildOddsWellMatchWinnerOfferPreview(*SportsbookOfferPreview);
+		const bool bExact = bSportsbookOfferVisible
+			&& PreviewText.Contains(SportsbookOfferPreview->OfferId)
+			&& PreviewText.Contains(TEXT("10 -> 17"))
+			&& PreviewText.Contains(TEXT("100 -> 235"))
+			&& PreviewText.Contains(TEXT("READ ONLY - NO WAGER OR LEDGER CHANGE"));
+		const bool bUnchanged = GameMode->GetOddsBucksEntryCount() == SportsbookOfferQaLedgerEntries
+			&& GameMode->GetOddsBucksBalance() == SportsbookOfferQaBalance;
+		if (!bExact || !bUnchanged)
+		{
+			UE_LOG(LogOddsWellLocomotion, Error, TEXT("ODDSWELL_SPORTSBOOK_OFFER_QA|result=FAIL|reason=preview_or_ledger_mismatch|closed=true"));
+			bSportsbookOfferQa = false;
+			QaExitAt = FPlatformTime::Seconds() + 1.0;
+			return;
+		}
+		SportsbookOfferQaStage = 2;
+		SportsbookOfferQaElapsed = 0.0f;
+		return;
+	}
+	if (SportsbookOfferQaStage == 2 && SportsbookOfferQaElapsed >= 1.0f)
+	{
+		if (FParse::Param(FCommandLine::Get(), TEXT("SportsbookOfferQaCapture")))
+		{
+			FScreenshotRequest::RequestScreenshot(TEXT("Phase1H16_SportsbookOfferPreview.png"), true, false);
+		}
+		UE_LOG(
+			LogOddsWellLocomotion,
+			Display,
+			TEXT("ODDSWELL_SPORTSBOOK_OFFER_QA|result=PASS|location=Sportsbook|interaction=press_e_path|elsewhere=false|read_only=true|offer_id=%s|season=1|game=1|teams=Harbor_City_Waves_vs_Mesa_Vista_Sol|probabilities_e8=57586693,42413307|odds_e4=17365,23577|stake=10-100|increment=10|lock=game_start|returns=10:17,23;100:173,235|ledger_entries_before=%d|ledger_entries_after=%d|balance_before=%lld|balance_after=%lld|submission=false|controls=false"),
+			*SportsbookOfferPreview->OfferId,
+			SportsbookOfferQaLedgerEntries,
+			GameMode->GetOddsBucksEntryCount(),
+			SportsbookOfferQaBalance,
+			GameMode->GetOddsBucksBalance());
+		bSportsbookOfferQa = false;
+		if (FParse::Param(FCommandLine::Get(), TEXT("SportsbookOfferAutoExit")))
+		{
+			QaExitAt = FPlatformTime::Seconds() + 2.0;
+		}
+	}
 }
 
 void AOddsWellPlaceholderCharacter::RunStudioQa(const float DeltaSeconds)
@@ -2607,6 +2812,9 @@ bool FOddsWellStadiumGrayboxTest::RunTest(const FString& Parameters)
 	TestTrue(TEXT("Exit is labeled"), ZoneIds.Contains(TEXT("exit")));
 	TestTrue(TEXT("Stadium entrance reuses the existing Arena waypoint"), GetSundaleRouteWaypoints()[4].Equals(StadiumEntranceThreshold));
 	TestTrue(TEXT("Sportsbook remains a separate city threshold"), FVector::Dist2D(GetSundaleRouteWaypoints()[5], StadiumEntranceThreshold) > StadiumEntryRadius * 2.0f);
+	TestTrue(TEXT("Sportsbook interaction reuses its labeled route waypoint"), GetSundaleRouteWaypoints()[5].Equals(SportsbookInteractionLocation));
+	TestTrue(TEXT("Sportsbook preview radius exceeds the player capsule"), SportsbookInteractionRadius > CapsuleRadius);
+	TestTrue(TEXT("Sportsbook preview cannot overlap the Arena threshold"), FVector::Dist2D(SportsbookInteractionLocation, StadiumEntranceThreshold) > SportsbookInteractionRadius + StadiumEntryRadius);
 	TestTrue(TEXT("Stadium entry radius exceeds the player capsule"), StadiumEntryRadius > CapsuleRadius);
 	TestTrue(TEXT("Archived replay consumer stays compact inside the stadium"), StadiumReplayScale > 0.0f && StadiumReplayScale <= 0.25f);
 	TestTrue(TEXT("Archived replay consumer is anchored on the court"), StadiumReplayOrigin.Equals(FVector(350.0, 0.0, 0.0)));
