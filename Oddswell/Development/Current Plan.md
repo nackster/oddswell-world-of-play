@@ -894,7 +894,16 @@ Build the one-city scope defined in [[Design/Decisions/DEC-002 First Playable Sc
 - **Implementation:** one exact Phase 1H.2 offer, request command ID, offered team, whole Odds Bucks stake, accepted time, and lock time are validated before one `accepted_pending_lock` request and one linked `match_winner_stake` debit are saved together. Exact retries are idempotent; conflicting reuse and all invalid, late, tampered, or underfunded requests fail without mutation. Existing schema v1/v2 saves migrate to v3 without inventing wager history.
 - **Validation:** native automation passed `11/11`, including the focused Odds Bucks path; focused odds tests passed `3/3`; all `65/65` frozen regressions passed in `144.957s`; Brain Admin self-check, unchanged exporters, Python compilation, offer-ID parity, disk reload, rejection invariants, and diff hygiene passed. Cost was `$0.00`. See [[Development/Reports/Phase 1H3 Idempotent Match Winner Stake Debit]].
 - **Boundary:** no player-facing request route, runtime offer publication, trusted backend clock, online account, lock transition, cancellation/refund, settlement, payout, correction, prop market, wager history screen, Admin wager view, Unreal UI, payment, real-money connection, or second currency was added.
-- **Next gate:** Phase 1H.4 proves one idempotent lock transition at authoritative game start without settlement.
+- **Closed by Phase 1H.4:** the separate immutable game-start lock decision is complete below.
+
+### Phase 1H.4 Idempotent Match Winner Game-Start Lock status
+
+- **Status:** Complete on `agent/phase-0d`; machine-local server-owned lock primitive only.
+- **Implementation:** one lock command links an existing accepted request to its exact season, game, and approved game-start timestamp in a separate immutable record. Exact retries return the same record; wrong identities/times, conflicting command reuse, a second lock, unknown requests, and malformed saved links fail without mutation. Schema v1-v3 saves migrate to v4 with zero fabricated locks.
+- **Invariance:** locking adds no ledger entry and preserves the accepted offer, team, stake, accepted time, lock time, balance, and job cooldown exactly.
+- **Validation:** native automation passed `11/11`, including focused economy automation `1/1`; focused odds tests passed `3/3`; all `65/65` frozen regressions passed in `143.229s`; Brain Admin self-check, unchanged exporters, Python compilation, disk reload, migration, rejection invariants, and diff hygiene passed. Cost was `$0.00`. See [[Development/Reports/Phase 1H4 Idempotent Match Winner Game Start Lock]].
+- **Boundary:** no result consumption, win/loss decision, settlement, payout, lost-stake finalization, void/refund, cancellation, correction, ledger mutation, player route/UI, Admin wager view, props, trusted clock, online account, payment, real-money connection, or second currency was added.
+- **Next candidate gate:** immutable sealed-result linkage without payout; the Scope Director must confirm the exact next subphase.
 
 ## Future shared simulation layer
 

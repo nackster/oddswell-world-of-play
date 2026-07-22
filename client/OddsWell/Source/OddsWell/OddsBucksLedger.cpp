@@ -24,7 +24,7 @@
 
 namespace
 {
-constexpr int32 OddsBucksSchemaVersion = 3;
+constexpr int32 OddsBucksSchemaVersion = 4;
 constexpr int32 OddsBucksUserIndex = 0;
 constexpr int64 FirstJobPayout = 100;
 constexpr int64 JobPayoutIntervalSeconds = 24 * 60 * 60;
@@ -40,6 +40,7 @@ const FString FirstJobCommandId(TEXT("job:placeholder_shift:first_payout:v1"));
 const FName FirstJobReason(TEXT("placeholder_job_payout"));
 const FName MatchWinnerStakeReason(TEXT("match_winner_stake"));
 const FName AcceptedPendingLockStatus(TEXT("accepted_pending_lock"));
+const FName MatchWinnerLockedDecision(TEXT("locked"));
 const FString MatchWinnerOfferSchema(TEXT("oddswell-basketball-odds-offer-v1"));
 const FString MatchWinnerOfferVersion(TEXT("basketball-match-winner-odds-v1"));
 const FString MatchWinnerMarket(TEXT("match_winner"));
@@ -253,7 +254,52 @@ bool ValidateMatchWinnerRequests(const FOddsWellOddsBucksLedger& Ledger, const T
 	return true;
 }
 
-bool ValidateOddsBucksSave(const UObject* SaveObject, FOddsWellOddsBucksLedger& OutLedger, int64& OutNextJobPayoutUnixSeconds, TArray<FOddsWellMatchWinnerRequestRecord>& OutMatchWinnerRequests, bool& bOutNeedsMigration, FString& OutError)
+bool ValidateMatchWinnerLocks(
+	const TArray<FOddsWellMatchWinnerRequestRecord>& Requests,
+	const TArray<FOddsWellMatchWinnerLockRecord>& Locks,
+	FString& OutError)
+{
+	TSet<FString> LockIds;
+	TSet<FString> LockedRequestIds;
+	for (int32 Index = 0; Index < Locks.Num(); ++Index)
+	{
+		const FOddsWellMatchWinnerLockRecord& Lock = Locks[Index];
+		const FOddsWellMatchWinnerRequestRecord* Request = Requests.FindByPredicate(
+			[&Lock](const FOddsWellMatchWinnerRequestRecord& Candidate)
+			{
+				return Candidate.RequestCommandId == Lock.RequestCommandId;
+			});
+		if (Lock.LockCommandId.TrimStartAndEnd().IsEmpty()
+			|| Lock.RequestCommandId.TrimStartAndEnd().IsEmpty()
+			|| Lock.LockCommandId == Lock.RequestCommandId
+			|| LockIds.Contains(Lock.LockCommandId)
+			|| LockedRequestIds.Contains(Lock.RequestCommandId)
+			|| !Request
+			|| Request->Status != AcceptedPendingLockStatus
+			|| Lock.SeasonNumber != Request->SeasonNumber
+			|| Lock.GameNumber != Request->GameNumber
+			|| Lock.AuthoritativeGameStartUnixSeconds != Request->LockUnixSeconds
+			|| Lock.LockUnixSeconds != Request->LockUnixSeconds
+			|| Lock.Decision != MatchWinnerLockedDecision)
+		{
+			OutError = FString::Printf(TEXT("Invalid Match Winner lock at index %d."), Index);
+			return false;
+		}
+		LockIds.Add(Lock.LockCommandId);
+		LockedRequestIds.Add(Lock.RequestCommandId);
+	}
+	OutError.Reset();
+	return true;
+}
+
+bool ValidateOddsBucksSave(
+	const UObject* SaveObject,
+	FOddsWellOddsBucksLedger& OutLedger,
+	int64& OutNextJobPayoutUnixSeconds,
+	TArray<FOddsWellMatchWinnerRequestRecord>& OutMatchWinnerRequests,
+	TArray<FOddsWellMatchWinnerLockRecord>& OutMatchWinnerLocks,
+	bool& bOutNeedsMigration,
+	FString& OutError)
 {
 	const UOddsWellOddsBucksSaveGame* Record = Cast<UOddsWellOddsBucksSaveGame>(SaveObject);
 	if (!Record)
@@ -261,7 +307,7 @@ bool ValidateOddsBucksSave(const UObject* SaveObject, FOddsWellOddsBucksLedger& 
 		OutError = TEXT("The Odds Bucks save is not the expected object type.");
 		return false;
 	}
-	if (Record->SchemaVersion != 1 && Record->SchemaVersion != 2 && Record->SchemaVersion != OddsBucksSchemaVersion)
+	if (Record->SchemaVersion < 1 || Record->SchemaVersion > OddsBucksSchemaVersion)
 	{
 		OutError = FString::Printf(TEXT("Unsupported Odds Bucks schema version: %d"), Record->SchemaVersion);
 		return false;
@@ -274,9 +320,12 @@ bool ValidateOddsBucksSave(const UObject* SaveObject, FOddsWellOddsBucksLedger& 
 	OutNextJobPayoutUnixSeconds = Record->SchemaVersion == 1 && HasJobPayout(OutLedger)
 		? FDateTime::UtcNow().ToUnixTimestamp() + JobPayoutIntervalSeconds
 		: Record->NextJobPayoutUnixSeconds;
-	OutMatchWinnerRequests = Record->SchemaVersion >= OddsBucksSchemaVersion
+	OutMatchWinnerRequests = Record->SchemaVersion >= 3
 		? Record->MatchWinnerRequests
 		: TArray<FOddsWellMatchWinnerRequestRecord>();
+	OutMatchWinnerLocks = Record->SchemaVersion >= OddsBucksSchemaVersion
+		? Record->MatchWinnerLocks
+		: TArray<FOddsWellMatchWinnerLockRecord>();
 	if (OutNextJobPayoutUnixSeconds < 0
 		|| (HasJobPayout(OutLedger) && OutNextJobPayoutUnixSeconds == 0)
 		|| (!HasJobPayout(OutLedger) && OutNextJobPayoutUnixSeconds != 0))
@@ -285,6 +334,10 @@ bool ValidateOddsBucksSave(const UObject* SaveObject, FOddsWellOddsBucksLedger& 
 		return false;
 	}
 	if (!ValidateMatchWinnerRequests(OutLedger, OutMatchWinnerRequests, OutError))
+	{
+		return false;
+	}
+	if (!ValidateMatchWinnerLocks(OutMatchWinnerRequests, OutMatchWinnerLocks, OutError))
 	{
 		return false;
 	}
@@ -447,6 +500,7 @@ bool SaveOddsWellOddsBucksState(
 	const FOddsWellOddsBucksLedger& Ledger,
 	const int64 NextJobPayoutUnixSeconds,
 	const TArray<FOddsWellMatchWinnerRequestRecord>& MatchWinnerRequests,
+	const TArray<FOddsWellMatchWinnerLockRecord>& MatchWinnerLocks,
 	const bool bQaSlot,
 	FString& OutError)
 {
@@ -461,11 +515,13 @@ bool SaveOddsWellOddsBucksState(
 	Record->Entries = Ledger.GetEntries();
 	Record->NextJobPayoutUnixSeconds = NextJobPayoutUnixSeconds;
 	Record->MatchWinnerRequests = MatchWinnerRequests;
+	Record->MatchWinnerLocks = MatchWinnerLocks;
 	FOddsWellOddsBucksLedger Validated;
 	int64 ValidatedNextJobPayout = 0;
 	TArray<FOddsWellMatchWinnerRequestRecord> ValidatedRequests;
+	TArray<FOddsWellMatchWinnerLockRecord> ValidatedLocks;
 	bool bNeedsMigration = false;
-	if (!ValidateOddsBucksSave(Record, Validated, ValidatedNextJobPayout, ValidatedRequests, bNeedsMigration, OutError))
+	if (!ValidateOddsBucksSave(Record, Validated, ValidatedNextJobPayout, ValidatedRequests, ValidatedLocks, bNeedsMigration, OutError))
 	{
 		return false;
 	}
@@ -483,6 +539,7 @@ bool LoadOddsWellOddsBucksStateRaw(
 	FOddsWellOddsBucksLedger& OutLedger,
 	int64& OutNextJobPayoutUnixSeconds,
 	TArray<FOddsWellMatchWinnerRequestRecord>& OutMatchWinnerRequests,
+	TArray<FOddsWellMatchWinnerLockRecord>& OutMatchWinnerLocks,
 	bool& bOutFound,
 	bool& bOutNeedsMigration,
 	FString& OutError)
@@ -494,6 +551,7 @@ bool LoadOddsWellOddsBucksStateRaw(
 		OutLedger = FOddsWellOddsBucksLedger();
 		OutNextJobPayoutUnixSeconds = 0;
 		OutMatchWinnerRequests.Reset();
+		OutMatchWinnerLocks.Reset();
 		bOutNeedsMigration = false;
 		OutError.Reset();
 		return true;
@@ -503,6 +561,7 @@ bool LoadOddsWellOddsBucksStateRaw(
 		OutLedger,
 		OutNextJobPayoutUnixSeconds,
 		OutMatchWinnerRequests,
+		OutMatchWinnerLocks,
 		bOutNeedsMigration,
 		OutError);
 }
@@ -511,25 +570,27 @@ bool LoadOddsWellOddsBucksStateRaw(
 bool SaveOddsWellOddsBucksLedger(const FOddsWellOddsBucksLedger& Ledger, const int64 NextJobPayoutUnixSeconds, const bool bQaSlot, FString& OutError)
 {
 	TArray<FOddsWellMatchWinnerRequestRecord> ExistingRequests;
+	TArray<FOddsWellMatchWinnerLockRecord> ExistingLocks;
 	if (UGameplayStatics::DoesSaveGameExist(GetOddsBucksSlot(bQaSlot), OddsBucksUserIndex))
 	{
 		FOddsWellOddsBucksLedger ExistingLedger;
 		int64 ExistingNextJobPayout = 0;
 		bool bFound = false;
 		bool bNeedsMigration = false;
-		if (!LoadOddsWellOddsBucksStateRaw(bQaSlot, ExistingLedger, ExistingNextJobPayout, ExistingRequests, bFound, bNeedsMigration, OutError))
+		if (!LoadOddsWellOddsBucksStateRaw(bQaSlot, ExistingLedger, ExistingNextJobPayout, ExistingRequests, ExistingLocks, bFound, bNeedsMigration, OutError))
 		{
 			return false;
 		}
 	}
-	return SaveOddsWellOddsBucksState(Ledger, NextJobPayoutUnixSeconds, ExistingRequests, bQaSlot, OutError);
+	return SaveOddsWellOddsBucksState(Ledger, NextJobPayoutUnixSeconds, ExistingRequests, ExistingLocks, bQaSlot, OutError);
 }
 
-bool LoadOddsWellOddsBucksState(
+bool LoadOddsWellOddsBucksWagerState(
 	const bool bQaSlot,
 	FOddsWellOddsBucksLedger& OutLedger,
 	int64& OutNextJobPayoutUnixSeconds,
 	TArray<FOddsWellMatchWinnerRequestRecord>& OutMatchWinnerRequests,
+	TArray<FOddsWellMatchWinnerLockRecord>& OutMatchWinnerLocks,
 	bool& bOutFound,
 	FString& OutError)
 {
@@ -539,6 +600,7 @@ bool LoadOddsWellOddsBucksState(
 		OutLedger,
 		OutNextJobPayoutUnixSeconds,
 		OutMatchWinnerRequests,
+		OutMatchWinnerLocks,
 		bOutFound,
 		bNeedsMigration,
 		OutError))
@@ -549,7 +611,27 @@ bool LoadOddsWellOddsBucksState(
 		OutLedger,
 		OutNextJobPayoutUnixSeconds,
 		OutMatchWinnerRequests,
+		OutMatchWinnerLocks,
 		bQaSlot,
+		OutError);
+}
+
+bool LoadOddsWellOddsBucksState(
+	const bool bQaSlot,
+	FOddsWellOddsBucksLedger& OutLedger,
+	int64& OutNextJobPayoutUnixSeconds,
+	TArray<FOddsWellMatchWinnerRequestRecord>& OutMatchWinnerRequests,
+	bool& bOutFound,
+	FString& OutError)
+{
+	TArray<FOddsWellMatchWinnerLockRecord> Locks;
+	return LoadOddsWellOddsBucksWagerState(
+		bQaSlot,
+		OutLedger,
+		OutNextJobPayoutUnixSeconds,
+		OutMatchWinnerRequests,
+		Locks,
+		bOutFound,
 		OutError);
 }
 
@@ -590,6 +672,7 @@ EOddsWellMatchWinnerRequestResult AcceptOddsWellMatchWinnerRequest(
 	FOddsWellOddsBucksLedger Ledger;
 	int64 NextJobPayoutUnixSeconds = 0;
 	TArray<FOddsWellMatchWinnerRequestRecord> Requests;
+	TArray<FOddsWellMatchWinnerLockRecord> Locks;
 	bool bFound = false;
 	bool bNeedsMigration = false;
 	if (!LoadOddsWellOddsBucksStateRaw(
@@ -597,6 +680,7 @@ EOddsWellMatchWinnerRequestResult AcceptOddsWellMatchWinnerRequest(
 		Ledger,
 		NextJobPayoutUnixSeconds,
 		Requests,
+		Locks,
 		bFound,
 		bNeedsMigration,
 		OutError))
@@ -662,6 +746,7 @@ EOddsWellMatchWinnerRequestResult AcceptOddsWellMatchWinnerRequest(
 		CandidateLedger,
 		NextJobPayoutUnixSeconds,
 		CandidateRequests,
+		Locks,
 		bQaSlot,
 		OutError))
 	{
@@ -671,6 +756,119 @@ EOddsWellMatchWinnerRequestResult AcceptOddsWellMatchWinnerRequest(
 	OutBalance = CandidateLedger.GetBalance();
 	OutError.Reset();
 	return EOddsWellMatchWinnerRequestResult::Accepted;
+}
+
+EOddsWellMatchWinnerLockResult LockOddsWellMatchWinnerRequest(
+	const FString& RequestCommandId,
+	const FString& LockCommandId,
+	const int32 SeasonNumber,
+	const int32 GameNumber,
+	const int64 AuthoritativeGameStartUnixSeconds,
+	const bool bQaSlot,
+	FOddsWellMatchWinnerLockRecord& OutRecord,
+	FString& OutError)
+{
+	OutRecord = FOddsWellMatchWinnerLockRecord();
+	if (RequestCommandId.TrimStartAndEnd().IsEmpty()
+		|| LockCommandId.TrimStartAndEnd().IsEmpty()
+		|| LockCommandId == RequestCommandId
+		|| SeasonNumber <= 0
+		|| GameNumber <= 0
+		|| AuthoritativeGameStartUnixSeconds <= 0)
+	{
+		OutError = TEXT("The Match Winner lock command has invalid identity, game, or start time.");
+		return EOddsWellMatchWinnerLockResult::Rejected;
+	}
+
+	FOddsWellOddsBucksLedger Ledger;
+	int64 NextJobPayoutUnixSeconds = 0;
+	TArray<FOddsWellMatchWinnerRequestRecord> Requests;
+	TArray<FOddsWellMatchWinnerLockRecord> Locks;
+	bool bFound = false;
+	bool bNeedsMigration = false;
+	if (!LoadOddsWellOddsBucksStateRaw(
+		bQaSlot,
+		Ledger,
+		NextJobPayoutUnixSeconds,
+		Requests,
+		Locks,
+		bFound,
+		bNeedsMigration,
+		OutError))
+	{
+		return EOddsWellMatchWinnerLockResult::Rejected;
+	}
+	if (const FOddsWellMatchWinnerLockRecord* Existing = Locks.FindByPredicate(
+		[&LockCommandId](const FOddsWellMatchWinnerLockRecord& Lock)
+		{
+			return Lock.LockCommandId == LockCommandId;
+		}))
+	{
+		const bool bExact = Existing->RequestCommandId == RequestCommandId
+			&& Existing->SeasonNumber == SeasonNumber
+			&& Existing->GameNumber == GameNumber
+			&& Existing->AuthoritativeGameStartUnixSeconds == AuthoritativeGameStartUnixSeconds
+			&& Existing->LockUnixSeconds == AuthoritativeGameStartUnixSeconds
+			&& Existing->Decision == MatchWinnerLockedDecision;
+		if (!bExact)
+		{
+			OutError = TEXT("The Match Winner lock command was already used with different data.");
+			return EOddsWellMatchWinnerLockResult::Rejected;
+		}
+		OutRecord = *Existing;
+		OutError.Reset();
+		return EOddsWellMatchWinnerLockResult::Duplicate;
+	}
+	if (Locks.ContainsByPredicate(
+		[&RequestCommandId](const FOddsWellMatchWinnerLockRecord& Lock)
+		{
+			return Lock.RequestCommandId == RequestCommandId;
+		}))
+	{
+		OutError = TEXT("The Match Winner request already has a different lock command.");
+		return EOddsWellMatchWinnerLockResult::Rejected;
+	}
+	const FOddsWellMatchWinnerRequestRecord* Request = Requests.FindByPredicate(
+		[&RequestCommandId](const FOddsWellMatchWinnerRequestRecord& Candidate)
+		{
+			return Candidate.RequestCommandId == RequestCommandId;
+		});
+	if (!Request)
+	{
+		OutError = TEXT("The Match Winner lock command references an unknown accepted request.");
+		return EOddsWellMatchWinnerLockResult::Rejected;
+	}
+	if (Request->SeasonNumber != SeasonNumber
+		|| Request->GameNumber != GameNumber
+		|| Request->LockUnixSeconds != AuthoritativeGameStartUnixSeconds)
+	{
+		OutError = TEXT("The Match Winner lock command does not match the accepted game start.");
+		return EOddsWellMatchWinnerLockResult::Rejected;
+	}
+
+	FOddsWellMatchWinnerLockRecord CandidateRecord;
+	CandidateRecord.LockCommandId = LockCommandId;
+	CandidateRecord.RequestCommandId = RequestCommandId;
+	CandidateRecord.SeasonNumber = SeasonNumber;
+	CandidateRecord.GameNumber = GameNumber;
+	CandidateRecord.AuthoritativeGameStartUnixSeconds = AuthoritativeGameStartUnixSeconds;
+	CandidateRecord.LockUnixSeconds = Request->LockUnixSeconds;
+	CandidateRecord.Decision = MatchWinnerLockedDecision;
+	TArray<FOddsWellMatchWinnerLockRecord> CandidateLocks = Locks;
+	CandidateLocks.Add(CandidateRecord);
+	if (!SaveOddsWellOddsBucksState(
+		Ledger,
+		NextJobPayoutUnixSeconds,
+		Requests,
+		CandidateLocks,
+		bQaSlot,
+		OutError))
+	{
+		return EOddsWellMatchWinnerLockResult::Rejected;
+	}
+	OutRecord = MoveTemp(CandidateRecord);
+	OutError.Reset();
+	return EOddsWellMatchWinnerLockResult::Locked;
 }
 
 bool ResetOddsWellQaOddsBucksAndVerify(FString& OutError)
@@ -788,12 +986,13 @@ bool FOddsWellOddsBucksLedgerTest::RunTest(const FString& Parameters)
 	FOddsWellOddsBucksLedger MemoryLedger;
 	int64 MemoryNextJobPayout = 0;
 	TArray<FOddsWellMatchWinnerRequestRecord> MemoryRequests;
+	TArray<FOddsWellMatchWinnerLockRecord> MemoryLocks;
 	bool bNeedsMigration = false;
-	TestTrue(TEXT("Odds Bucks entries validate after a memory round trip"), ValidateOddsBucksSave(UGameplayStatics::LoadGameFromMemory(Bytes), MemoryLedger, MemoryNextJobPayout, MemoryRequests, bNeedsMigration, Error));
+	TestTrue(TEXT("Odds Bucks entries validate after a memory round trip"), ValidateOddsBucksSave(UGameplayStatics::LoadGameFromMemory(Bytes), MemoryLedger, MemoryNextJobPayout, MemoryRequests, MemoryLocks, bNeedsMigration, Error));
 	TestEqual(TEXT("Memory round trip preserves balance"), MemoryLedger.GetBalance(), int64{15});
 	Record->SchemaVersion++;
-	TestFalse(TEXT("An unsupported Odds Bucks schema is rejected"), ValidateOddsBucksSave(Record, MemoryLedger, MemoryNextJobPayout, MemoryRequests, bNeedsMigration, Error));
-	TestFalse(TEXT("A wrong save type is rejected"), ValidateOddsBucksSave(NewObject<UStaticMesh>(), MemoryLedger, MemoryNextJobPayout, MemoryRequests, bNeedsMigration, Error));
+	TestFalse(TEXT("An unsupported Odds Bucks schema is rejected"), ValidateOddsBucksSave(Record, MemoryLedger, MemoryNextJobPayout, MemoryRequests, MemoryLocks, bNeedsMigration, Error));
+	TestFalse(TEXT("A wrong save type is rejected"), ValidateOddsBucksSave(NewObject<UStaticMesh>(), MemoryLedger, MemoryNextJobPayout, MemoryRequests, MemoryLocks, bNeedsMigration, Error));
 
 	ResetOddsWellQaOddsBucksAndVerify(Error);
 	FOddsWellOddsBucksLedger JobLedger;
@@ -825,7 +1024,7 @@ bool FOddsWellOddsBucksLedgerTest::RunTest(const FString& Parameters)
 	TestEqual(TEXT("Migration preserves the first payout"), MigratedLedger.GetBalance(), int64{100});
 	TestTrue(TEXT("Migration starts a fresh 24-hour wait"), MigratedNextJobPayout >= MigrationStartedAt + GetOddsWellJobPayoutIntervalSeconds());
 	const UOddsWellOddsBucksSaveGame* MigratedRecord = Cast<UOddsWellOddsBucksSaveGame>(UGameplayStatics::LoadGameFromSlot(OddsBucksQaSlot, OddsBucksUserIndex));
-	TestTrue(TEXT("Migration rewrites schema v3"), MigratedRecord && MigratedRecord->SchemaVersion == OddsBucksSchemaVersion);
+	TestTrue(TEXT("Migration rewrites schema v4"), MigratedRecord && MigratedRecord->SchemaVersion == OddsBucksSchemaVersion);
 	TestTrue(TEXT("Migrated QA cleanup succeeds"), ResetOddsWellQaOddsBucksAndVerify(Error));
 
 	UOddsWellOddsBucksSaveGame* VersionTwoRecord = NewObject<UOddsWellOddsBucksSaveGame>();
@@ -839,7 +1038,7 @@ bool FOddsWellOddsBucksLedgerTest::RunTest(const FString& Parameters)
 	TestEqual(TEXT("Schema v2 migration preserves job cooldown"), MigratedNextJobPayout, ExpectedNextJobPayout);
 	TestEqual(TEXT("Schema v2 migration invents no wager"), MigratedRequests.Num(), 0);
 	MigratedRecord = Cast<UOddsWellOddsBucksSaveGame>(UGameplayStatics::LoadGameFromSlot(OddsBucksQaSlot, OddsBucksUserIndex));
-	TestTrue(TEXT("Schema v2 migration rewrites schema v3"), MigratedRecord && MigratedRecord->SchemaVersion == OddsBucksSchemaVersion);
+	TestTrue(TEXT("Schema v2 migration rewrites schema v4"), MigratedRecord && MigratedRecord->SchemaVersion == OddsBucksSchemaVersion);
 	TestTrue(TEXT("Migrated schema v2 cleanup succeeds"), ResetOddsWellQaOddsBucksAndVerify(Error));
 
 	TestEqual(TEXT("Existing valid job path funds wager QA"), JobLedger.GetBalance(), int64{100});
@@ -891,6 +1090,62 @@ bool FOddsWellOddsBucksLedgerTest::RunTest(const FString& Parameters)
 	TestEqual(TEXT("Rejected requests append no ledger entry"), WagerLedger.GetEntries().Num(), 2);
 	TestEqual(TEXT("Rejected requests preserve balance"), WagerLedger.GetBalance(), int64{60});
 	TestEqual(TEXT("Rejected requests append no request record"), WagerRequests.Num(), 1);
+
+	UOddsWellOddsBucksSaveGame* VersionThreeRecord = NewObject<UOddsWellOddsBucksSaveGame>();
+	VersionThreeRecord->SchemaVersion = 3;
+	VersionThreeRecord->Entries = WagerLedger.GetEntries();
+	VersionThreeRecord->NextJobPayoutUnixSeconds = WagerNextJobPayout;
+	VersionThreeRecord->MatchWinnerRequests = WagerRequests;
+	TestTrue(TEXT("Schema v3 accepted request writes to the QA slot"), UGameplayStatics::SaveGameToSlot(VersionThreeRecord, OddsBucksQaSlot, OddsBucksUserIndex));
+	TArray<FOddsWellMatchWinnerLockRecord> WagerLocks;
+	TestTrue(TEXT("Schema v3 accepted request migrates"), LoadOddsWellOddsBucksWagerState(true, WagerLedger, WagerNextJobPayout, WagerRequests, WagerLocks, bFound, Error));
+	TestEqual(TEXT("Schema v3 migration preserves one request"), WagerRequests.Num(), 1);
+	TestEqual(TEXT("Schema v3 migration preserves pending request evidence"), WagerRequests[0].Status, AcceptedPendingLockStatus);
+	TestEqual(TEXT("Schema v3 migration invents no lock"), WagerLocks.Num(), 0);
+	MigratedRecord = Cast<UOddsWellOddsBucksSaveGame>(UGameplayStatics::LoadGameFromSlot(OddsBucksQaSlot, OddsBucksUserIndex));
+	TestTrue(TEXT("Schema v3 migration rewrites schema v4"), MigratedRecord && MigratedRecord->SchemaVersion == OddsBucksSchemaVersion);
+
+	FOddsWellMatchWinnerLockRecord LockRecord;
+	const FString RequestCommandId(TEXT("wager:match_winner:test-1"));
+	const FString LockCommandId(TEXT("wager:match_winner:lock:test-1"));
+	TestEqual(TEXT("Unknown accepted request cannot lock"), LockOddsWellMatchWinnerRequest(TEXT("wager:match_winner:unknown"), TEXT("wager:match_winner:lock:unknown"), Offer.SeasonNumber, Offer.GameNumber, Offer.LockUnixSeconds, true, LockRecord, Error), EOddsWellMatchWinnerLockResult::Rejected);
+	TestEqual(TEXT("Wrong game identity cannot lock"), LockOddsWellMatchWinnerRequest(RequestCommandId, TEXT("wager:match_winner:lock:wrong-game"), Offer.SeasonNumber, Offer.GameNumber + 1, Offer.LockUnixSeconds, true, LockRecord, Error), EOddsWellMatchWinnerLockResult::Rejected);
+	TestEqual(TEXT("Prestart time cannot lock"), LockOddsWellMatchWinnerRequest(RequestCommandId, TEXT("wager:match_winner:lock:prestart"), Offer.SeasonNumber, Offer.GameNumber, Offer.LockUnixSeconds - 1, true, LockRecord, Error), EOddsWellMatchWinnerLockResult::Rejected);
+	TestEqual(TEXT("Post-start mismatch cannot lock"), LockOddsWellMatchWinnerRequest(RequestCommandId, TEXT("wager:match_winner:lock:late"), Offer.SeasonNumber, Offer.GameNumber, Offer.LockUnixSeconds + 1, true, LockRecord, Error), EOddsWellMatchWinnerLockResult::Rejected);
+	TestEqual(TEXT("Malformed lock identity is rejected"), LockOddsWellMatchWinnerRequest(RequestCommandId, RequestCommandId, Offer.SeasonNumber, Offer.GameNumber, Offer.LockUnixSeconds, true, LockRecord, Error), EOddsWellMatchWinnerLockResult::Rejected);
+	TestTrue(TEXT("Rejected lock commands leave state readable"), LoadOddsWellOddsBucksWagerState(true, WagerLedger, WagerNextJobPayout, WagerRequests, WagerLocks, bFound, Error));
+	TestEqual(TEXT("Rejected lock commands append no lock"), WagerLocks.Num(), 0);
+	TestEqual(TEXT("Rejected lock commands preserve balance"), WagerLedger.GetBalance(), int64{60});
+
+	TestEqual(TEXT("Exact game-start command locks the accepted request"), LockOddsWellMatchWinnerRequest(RequestCommandId, LockCommandId, Offer.SeasonNumber, Offer.GameNumber, Offer.LockUnixSeconds, true, LockRecord, Error), EOddsWellMatchWinnerLockResult::Locked);
+	TestEqual(TEXT("Lock record links the accepted request"), LockRecord.RequestCommandId, RequestCommandId);
+	TestEqual(TEXT("Lock record stores the exact decision"), LockRecord.Decision, MatchWinnerLockedDecision);
+	TestEqual(TEXT("Lock record stores the authoritative game start"), LockRecord.AuthoritativeGameStartUnixSeconds, Offer.LockUnixSeconds);
+	TestTrue(TEXT("Locked wager cold-restores from the shared state"), LoadOddsWellOddsBucksWagerState(true, WagerLedger, WagerNextJobPayout, WagerRequests, WagerLocks, bFound, Error));
+	TestEqual(TEXT("Cold restore preserves exactly one lock"), WagerLocks.Num(), 1);
+	TestEqual(TEXT("Cold restore preserves the exact lock command"), WagerLocks[0].LockCommandId, LockCommandId);
+	TestEqual(TEXT("Lock does not rewrite accepted request evidence"), WagerRequests[0].Status, AcceptedPendingLockStatus);
+	TestEqual(TEXT("Lock appends no ledger entry"), WagerLedger.GetEntries().Num(), 2);
+	TestEqual(TEXT("Lock preserves debited balance"), WagerLedger.GetBalance(), int64{60});
+	TestEqual(TEXT("Lock preserves job cooldown"), WagerNextJobPayout, ExpectedNextJobPayout);
+
+	FOddsWellMatchWinnerLockRecord RetryLockRecord;
+	TestEqual(TEXT("Exact lock retry is idempotent"), LockOddsWellMatchWinnerRequest(RequestCommandId, LockCommandId, Offer.SeasonNumber, Offer.GameNumber, Offer.LockUnixSeconds, true, RetryLockRecord, Error), EOddsWellMatchWinnerLockResult::Duplicate);
+	TestEqual(TEXT("Conflicting lock command reuse is rejected"), LockOddsWellMatchWinnerRequest(RequestCommandId, LockCommandId, Offer.SeasonNumber, Offer.GameNumber + 1, Offer.LockUnixSeconds, true, RetryLockRecord, Error), EOddsWellMatchWinnerLockResult::Rejected);
+	TestEqual(TEXT("A second lock command for one request is rejected"), LockOddsWellMatchWinnerRequest(RequestCommandId, TEXT("wager:match_winner:lock:test-2"), Offer.SeasonNumber, Offer.GameNumber, Offer.LockUnixSeconds, true, RetryLockRecord, Error), EOddsWellMatchWinnerLockResult::Rejected);
+	TestTrue(TEXT("Lock retries and conflicts leave state readable"), LoadOddsWellOddsBucksWagerState(true, WagerLedger, WagerNextJobPayout, WagerRequests, WagerLocks, bFound, Error));
+	TestEqual(TEXT("Lock retries and conflicts append no lock"), WagerLocks.Num(), 1);
+	TestEqual(TEXT("Lock retries and conflicts append no ledger entry"), WagerLedger.GetEntries().Num(), 2);
+	TestEqual(TEXT("Lock retries and conflicts preserve balance"), WagerLedger.GetBalance(), int64{60});
+	TestEqual(TEXT("Lock retries and conflicts preserve job cooldown"), WagerNextJobPayout, ExpectedNextJobPayout);
+
+	UOddsWellOddsBucksSaveGame* MalformedLockRecord = Cast<UOddsWellOddsBucksSaveGame>(UGameplayStatics::LoadGameFromSlot(OddsBucksQaSlot, OddsBucksUserIndex));
+	TestTrue(TEXT("Saved lock record is available for corruption test"), MalformedLockRecord && MalformedLockRecord->MatchWinnerLocks.Num() == 1);
+	if (MalformedLockRecord && MalformedLockRecord->MatchWinnerLocks.Num() == 1)
+	{
+		MalformedLockRecord->MatchWinnerLocks[0].GameNumber++;
+		TestFalse(TEXT("Malformed persisted lock is rejected"), ValidateOddsBucksSave(MalformedLockRecord, MemoryLedger, MemoryNextJobPayout, MemoryRequests, MemoryLocks, bNeedsMigration, Error));
+	}
 	TestTrue(TEXT("Wager QA cleanup succeeds"), ResetOddsWellQaOddsBucksAndVerify(Error));
 	return !HasAnyErrors();
 }

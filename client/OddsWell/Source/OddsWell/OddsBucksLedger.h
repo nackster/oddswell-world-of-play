@@ -18,6 +18,13 @@ enum class EOddsWellMatchWinnerRequestResult : uint8
 	Rejected
 };
 
+enum class EOddsWellMatchWinnerLockResult : uint8
+{
+	Locked,
+	Duplicate,
+	Rejected
+};
+
 USTRUCT()
 struct FOddsWellOddsBucksEntry
 {
@@ -121,6 +128,33 @@ struct FOddsWellMatchWinnerRequestRecord
 	FName Status;
 };
 
+USTRUCT()
+struct FOddsWellMatchWinnerLockRecord
+{
+	GENERATED_BODY()
+
+	UPROPERTY(SaveGame)
+	FString LockCommandId;
+
+	UPROPERTY(SaveGame)
+	FString RequestCommandId;
+
+	UPROPERTY(SaveGame)
+	int32 SeasonNumber = 0;
+
+	UPROPERTY(SaveGame)
+	int32 GameNumber = 0;
+
+	UPROPERTY(SaveGame)
+	int64 AuthoritativeGameStartUnixSeconds = 0;
+
+	UPROPERTY(SaveGame)
+	int64 LockUnixSeconds = 0;
+
+	UPROPERTY(SaveGame)
+	FName Decision;
+};
+
 UCLASS()
 class ODDSWELL_API UOddsWellOddsBucksSaveGame final : public USaveGame
 {
@@ -128,7 +162,7 @@ class ODDSWELL_API UOddsWellOddsBucksSaveGame final : public USaveGame
 
 public:
 	UPROPERTY(SaveGame)
-	int32 SchemaVersion = 3;
+	int32 SchemaVersion = 4;
 
 	UPROPERTY(SaveGame)
 	TArray<FOddsWellOddsBucksEntry> Entries;
@@ -138,6 +172,9 @@ public:
 
 	UPROPERTY(SaveGame)
 	TArray<FOddsWellMatchWinnerRequestRecord> MatchWinnerRequests;
+
+	UPROPERTY(SaveGame)
+	TArray<FOddsWellMatchWinnerLockRecord> MatchWinnerLocks;
 };
 
 class FOddsWellOddsBucksLedger
@@ -164,5 +201,7 @@ ODDSWELL_API bool WriteOddsWellOddsBucksReconciliation(const FOddsWellOddsBucksL
 ODDSWELL_API bool SaveOddsWellOddsBucksLedger(const FOddsWellOddsBucksLedger& Ledger, int64 NextJobPayoutUnixSeconds, bool bQaSlot, FString& OutError);
 ODDSWELL_API bool LoadOddsWellOddsBucksLedger(bool bQaSlot, FOddsWellOddsBucksLedger& OutLedger, int64& OutNextJobPayoutUnixSeconds, bool& bOutFound, FString& OutError);
 ODDSWELL_API bool LoadOddsWellOddsBucksState(bool bQaSlot, FOddsWellOddsBucksLedger& OutLedger, int64& OutNextJobPayoutUnixSeconds, TArray<FOddsWellMatchWinnerRequestRecord>& OutMatchWinnerRequests, bool& bOutFound, FString& OutError);
+ODDSWELL_API bool LoadOddsWellOddsBucksWagerState(bool bQaSlot, FOddsWellOddsBucksLedger& OutLedger, int64& OutNextJobPayoutUnixSeconds, TArray<FOddsWellMatchWinnerRequestRecord>& OutMatchWinnerRequests, TArray<FOddsWellMatchWinnerLockRecord>& OutMatchWinnerLocks, bool& bOutFound, FString& OutError);
 ODDSWELL_API EOddsWellMatchWinnerRequestResult AcceptOddsWellMatchWinnerRequest(const FOddsWellMatchWinnerOffer& Offer, const FString& RequestCommandId, const FString& OfferedTeam, int64 Stake, int64 AcceptedUnixSeconds, bool bQaSlot, FOddsWellMatchWinnerRequestRecord& OutRecord, int64& OutBalance, FString& OutError);
+ODDSWELL_API EOddsWellMatchWinnerLockResult LockOddsWellMatchWinnerRequest(const FString& RequestCommandId, const FString& LockCommandId, int32 SeasonNumber, int32 GameNumber, int64 AuthoritativeGameStartUnixSeconds, bool bQaSlot, FOddsWellMatchWinnerLockRecord& OutRecord, FString& OutError);
 ODDSWELL_API bool ResetOddsWellQaOddsBucksAndVerify(FString& OutError);
