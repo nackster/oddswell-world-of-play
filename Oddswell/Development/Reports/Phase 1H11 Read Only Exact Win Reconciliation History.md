@@ -32,6 +32,7 @@ Ponytail reused the existing v1 writer, endpoint, validator, card, and native ec
 | Exact win projection | Mesa; stake `40`; probability `40000000`; approved formula; sealed `101-104`; won/due/applied `100`; settled won |
 | Ledger evidence | Stake `2/-40/60`; payout `3/+100/160`; count `3`; balance `160`; net `+60`; exact IDs and reasons |
 | Cold and rejection behavior | Finalization and cold load publish atomically; stale, malformed, partial, tampered, and extra-mutated evidence publishes nothing |
+| Coordinator correction audit | Shared raw persisted-state rejection now removes the stale projection before any caller returns; malformed-finalization and extra-ledger-mutation paths executed in the focused test, which passed `1/1`; the full native suite passed `11/11` |
 | Exact-loss preservation | Existing loss projection/card remains count `2`, balance `60`, net `-40`, `settled_lost` |
 | Focused odds-contract tests | `3/3` passed in `0.043s` |
 | Frozen Python regression | `65/65` passed in `148.904s`, timing-sensitive test first, process verified at High priority |

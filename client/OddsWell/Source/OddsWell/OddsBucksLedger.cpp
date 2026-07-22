@@ -1173,7 +1173,7 @@ bool LoadOddsWellOddsBucksStateRaw(
 		OutError.Reset();
 		return true;
 	}
-	return ValidateOddsBucksSave(
+	const bool bValid = ValidateOddsBucksSave(
 		UGameplayStatics::LoadGameFromSlot(Slot, OddsBucksUserIndex),
 		OutLedger,
 		OutNextJobPayoutUnixSeconds,
@@ -1185,6 +1185,11 @@ bool LoadOddsWellOddsBucksStateRaw(
 		OutMatchWinnerWinFinalizations,
 		bOutNeedsMigration,
 		OutError);
+	if (!bValid)
+	{
+		IFileManager::Get().Delete(*GetMatchWinnerReconciliationPath(bQaSlot), false, true, true);
+	}
+	return bValid;
 }
 }
 
