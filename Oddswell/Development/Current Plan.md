@@ -886,7 +886,15 @@ Build the one-city scope defined in [[Design/Decisions/DEC-002 First Playable Sc
 - **Implementation:** `phase1h.odds` verifies an existing public pregame commitment and emits one deterministic `basketball-match-winner-odds-v1` offer with exact integer probabilities/display odds, approved stake rules, lock time, public source versions, and SHA-256 offer identity. A separate pure calculation returns the approved whole-Odds-Bucks gross payout without touching the ledger.
 - **Validation:** focused odds tests passed `3/3` in `0.054s`; all `65/65` frozen regressions passed in `139.785s`; Brain Admin self-check, unchanged replay/league exporters, Python compilation, leakage checks, tamper rejection, and diff hygiene passed. Cost was `$0.00`. See [[Development/Reports/Phase 1H2 Versioned Match Winner Odds Offer]].
 - **Boundary:** no runtime offer publication, account, trusted clock, wager request, stake reservation/debit, lock transition, cancellation/refund, settlement, payout credit, prop market, wager history, Admin wager view, Unreal UI, payment, real-money connection, or second currency was added.
-- **Next gate:** Phase 1H.3 accepts one exact pre-lock Match Winner offer and persists one idempotent local Odds Bucks stake debit. It must not settle the wager yet.
+- **Closed by Phase 1H.3:** the first local request and stake-debit persistence primitive is complete below.
+
+### Phase 1H.3 Idempotent Match Winner Stake Debit status
+
+- **Status:** Complete on `agent/phase-0d`; machine-local server-owned persistence primitive only.
+- **Implementation:** one exact Phase 1H.2 offer, request command ID, offered team, whole Odds Bucks stake, accepted time, and lock time are validated before one `accepted_pending_lock` request and one linked `match_winner_stake` debit are saved together. Exact retries are idempotent; conflicting reuse and all invalid, late, tampered, or underfunded requests fail without mutation. Existing schema v1/v2 saves migrate to v3 without inventing wager history.
+- **Validation:** native automation passed `11/11`, including the focused Odds Bucks path; focused odds tests passed `3/3`; all `65/65` frozen regressions passed in `144.957s`; Brain Admin self-check, unchanged exporters, Python compilation, offer-ID parity, disk reload, rejection invariants, and diff hygiene passed. Cost was `$0.00`. See [[Development/Reports/Phase 1H3 Idempotent Match Winner Stake Debit]].
+- **Boundary:** no player-facing request route, runtime offer publication, trusted backend clock, online account, lock transition, cancellation/refund, settlement, payout, correction, prop market, wager history screen, Admin wager view, Unreal UI, payment, real-money connection, or second currency was added.
+- **Next gate:** Phase 1H.4 proves one idempotent lock transition at authoritative game start without settlement.
 
 ## Future shared simulation layer
 

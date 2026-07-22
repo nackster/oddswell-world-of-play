@@ -74,8 +74,9 @@ The roadmap is intentionally made of measurable product gates, not hundreds of s
 - Phase 1G exit: **PASSED FOR THE CURRENT LOCAL-PROFILE DEPENDENCY**. No online account, trusted backend clock, production authorization, price, purchase, wager, settlement, payment, or second currency is claimed.
 - Phase 1H.0 basketball/odds/wager isolation: **ARCHITECTURE APPROVED** under [[Design/Decisions/DEC-016 Basketball Odds and Wager Isolation]]. This adds no wager behavior.
 - Phase 1H.1 Match Winner rules: **OWNER APPROVED** under [[Design/Decisions/DEC-017 Match Winner Odds and Stake Defaults]].
-- Phase 1H.2 versioned Match Winner odds offer: **COMPLETE AS AN ISOLATED CALCULATION CONTRACT**; see [[Development/Reports/Phase 1H2 Versioned Match Winner Odds Offer]]. No wager or ledger mutation exists.
-- Next gate: **PHASE 1H.3 MATCH WINNER REQUEST AND STAKE DEBIT**. Accept one exact pre-lock offer, validate a `10`–`100` stake, and persist one idempotent local Odds Bucks debit without settlement. Player props remain later gates. Sundale remains a working name.
+- Phase 1H.2 versioned Match Winner odds offer: **COMPLETE AS AN ISOLATED CALCULATION CONTRACT**; see [[Development/Reports/Phase 1H2 Versioned Match Winner Odds Offer]].
+- Phase 1H.3 idempotent Match Winner request and stake debit: **COMPLETE AS A MACHINE-LOCAL PERSISTENCE PRIMITIVE**; see [[Development/Reports/Phase 1H3 Idempotent Match Winner Stake Debit]]. No player-facing route, lock transition, or settlement exists.
+- Next gate: **PHASE 1H.4 MATCH WINNER LOCK TRANSITION**. Prove one idempotent transition at authoritative game start without settling, refunding, or crediting a payout. Player props remain later gates. Sundale remains a working name.
 - Current prerequisite note: UE 5.8, the aligned x64 runtime and .NET Framework 4.8 SDK, portable project, reproducible local Windows package, empty-map launch, LFS, generated-file ignores, primitive block/court iteration, collision, cold-process reopen, direct recorded-replay rendering, deterministic packaged traces, and local resource sampling are verified. UE 5.8 is now the approved beta client engine.
 
 No later roadmap phase is authorized merely because it appears below.
@@ -91,7 +92,7 @@ No later roadmap phase is authorized merely because it appears below.
 | 5 | 1E — Studio and apartment progression | Enter a persistent home and see the six-tier goal | FOUNDATION COMPLETE / FURNITURE IN 1I |
 | 6 | 1F — League, stadium, and match viewing | Research and watch authoritative basketball | COMPLETE FOR CURRENT ARCHIVED GAME |
 | 7 | 1G — Odds Bucks and work recovery | Earn, persist, audit, and recover virtual currency | COMPLETE FOR CURRENT LOCAL PROFILE |
-| 8 | 1H — Wager locking and settlement | Place approved wagers and receive exact outcomes | ACTIVE — OFFER CONTRACT COMPLETE / NO WAGER YET |
+| 8 | 1H — Wager locking and settlement | Place approved wagers and receive exact outcomes | ACTIVE — LOCAL REQUEST + STAKE DEBIT COMPLETE / NO LOCK OR SETTLEMENT |
 | 9 | 1I — Stores and lifestyle upgrades | Buy, equip, display, and place basic items | PENDING |
 | 10 | 1J — Athlete life and league storytelling | Understand athletes, availability, and consequences | PENDING |
 | 11 | 1K — First-hour integration | Complete the entire beta promise in one session | PENDING |
@@ -305,7 +306,8 @@ Each market is its own evidence gate. A later market does not begin until the pr
 - **1H.0 COMPLETE — DESIGN ONLY:** isolate the Basketball Brain, Basketball Rules and Outcome Engine, Basketball Odds Brain, Wager and Settlement Engine, and read-only Admin reconciliation. Evidence flows one way; wagers and balances cannot influence basketball. See [[Design/Decisions/DEC-016 Basketball Odds and Wager Isolation]].
 - **1H.1 COMPLETE — OWNER DECISION:** freeze the public prediction source, zero-house-edge integer payout formula, `10`–`100` stake range in increments of `10`, game-start lock, void/refund, correction, and equal-public-information rules. See [[Design/Decisions/DEC-017 Match Winner Odds and Stake Defaults]].
 - **1H.2 COMPLETE — OFFER CONTRACT ONLY:** deterministically bind the approved rule/model versions, public prediction commitment, game, lock, probabilities, display odds, and stake rules into a SHA-256-identified offer. See [[Development/Reports/Phase 1H2 Versioned Match Winner Odds Offer]].
-- **NEXT — 1H.3:** accept one exact pre-lock offer and persist one idempotent local Odds Bucks stake debit. Do not settle yet.
+- **1H.3 COMPLETE — LOCAL REQUEST + STAKE DEBIT ONLY:** verify one exact pre-lock offer and persist one idempotent `accepted_pending_lock` request with one linked Odds Bucks debit. See [[Development/Reports/Phase 1H3 Idempotent Match Winner Stake Debit]].
+- **NEXT — 1H.4:** prove one idempotent transition at authoritative game start. Do not settle, refund, or credit a payout yet.
 
 ### Owner gates
 
