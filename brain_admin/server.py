@@ -80,6 +80,14 @@ def economy_projection_candidates() -> list[Path]:
     return candidates
 
 
+def match_winner_reconciliation_candidates() -> list[Path]:
+    candidates = list((ROOT / "client" / "OddsWell" / "Saved" / "Admin").glob("MatchWinnerReconciliation*.json"))
+    candidates.extend(ROOT.glob("client/OddsWell/Builds/*/Windows/OddsWell/Saved/Admin/MatchWinnerReconciliation*.json"))
+    if local_app_data := os.environ.get("LOCALAPPDATA"):
+        candidates.extend((Path(local_app_data) / "OddsWell" / "Saved" / "Admin").glob("MatchWinnerReconciliation*.json"))
+    return candidates
+
+
 def exact_integer(value: object, name: str) -> int:
     if isinstance(value, bool) or not isinstance(value, (int, float)) or int(value) != value:
         raise ValueError(f"{name} must be a whole number")
@@ -157,7 +165,7 @@ def economy_payload(path: Path | None = None) -> dict[str, object]:
         }
     try:
         data = validated_economy_projection(path)
-    except (OSError, ValueError, OverflowError, TypeError, UnicodeDecodeError, json.JSONDecodeError) as error:
+    except (OSError, ValueError, OverflowError, TypeError, KeyError, UnicodeDecodeError, json.JSONDecodeError) as error:
         return {
             "available": False,
             "status": "INVALID LOCAL PROJECTION",
@@ -187,6 +195,132 @@ def economy_payload(path: Path | None = None) -> dict[str, object]:
         "allowance": data["allowance"],
         "entries": data["entries"],
         "boundary": "Read-only machine-local projection from the validated Unreal ledger. The local clock is not trusted production time; no account, backend, payment, wager, or mutation control is connected.",
+    }
+
+
+def validated_match_winner_reconciliation(path: Path) -> dict[str, object]:
+    data = json.loads(path.read_text(encoding="utf-8"))
+    if not isinstance(data, dict):
+        raise ValueError("projection must be a JSON object")
+    expected = {
+        "schema": "oddswell-match-winner-reconciliation-v1",
+        "authority": "server",
+        "profile_scope": "machine_local",
+        "read_only_projection": True,
+        "market": "match_winner",
+        "offer_id": "9e6870420528e2a821591b763471c47f71b198c063cbdcbecd9ee180f9ea2459",
+        "offer_version": "basketball-match-winner-odds-v1",
+        "selected_team": "Harbor City Waves",
+        "stake": 40,
+        "request_status": "accepted_pending_lock",
+        "stake_sequence": 2,
+        "stake_delta": -40,
+        "stake_reason": "match_winner_stake",
+        "stake_balance_after": 60,
+        "season_number": 1,
+        "game_number": 1,
+        "lock_decision": "locked",
+        "result_schema": "oddswell-sealed-match-winner-result-v1",
+        "result_version": "sealed-match-winner-result-v1",
+        "home_team": "Harbor City Waves",
+        "away_team": "Mesa Vista Sol",
+        "home_score": 101,
+        "away_score": 104,
+        "winner": "Mesa Vista Sol",
+        "replay_seal_sha256": "00e4f82c2bb4da5d9ad53d75bf76ece7b97ed9b05ca2f7a8a2628d396c779b75",
+        "decision_schema": "oddswell-match-winner-settlement-decision-v1",
+        "decision_version": "match-winner-settlement-decision-v1",
+        "decision_status": "decided_pending_apply",
+        "outcome": "lost",
+        "gross_return_due": 0,
+        "finalization_schema": "oddswell-match-winner-loss-finalization-v1",
+        "finalization_version": "match-winner-loss-finalization-v1",
+        "finalization_status": "settled_lost",
+        "gross_return_applied": 0,
+        "ledger_entry_count": 2,
+        "final_balance": 60,
+        "net": -40,
+    }
+    for field, expected_value in expected.items():
+        if data.get(field) != expected_value:
+            raise ValueError(f"invalid {field}")
+    if not isinstance(data.get("qa"), bool):
+        raise ValueError("qa must be true or false")
+    generated_at = data.get("generated_at_utc")
+    if not isinstance(generated_at, str):
+        raise ValueError("generated_at_utc must be text")
+    datetime.fromisoformat(generated_at.replace("Z", "+00:00"))
+    for field in (
+        "stake", "stake_sequence", "stake_delta", "stake_balance_after", "season_number",
+        "game_number", "game_start_unix", "lock_unix", "home_score", "away_score",
+        "gross_return_due", "gross_return_applied", "ledger_entry_count", "final_balance", "net",
+    ):
+        data[field] = exact_integer(data.get(field), field)
+    identity_fields = (
+        "offer_id", "request_command_id", "stake_ledger_command_id", "lock_command_id",
+        "result_command_id", "decision_command_id", "finalization_command_id",
+    )
+    if any(not isinstance(data.get(field), str) or not data[field].strip() for field in identity_fields):
+        raise ValueError("command and offer identities must be non-empty text")
+    if len(data["offer_id"]) != 64 or any(character not in "0123456789abcdef" for character in data["offer_id"]):
+        raise ValueError("offer_id must be lower hexadecimal SHA-256")
+    request = data["request_command_id"]
+    lock = data["lock_command_id"]
+    result = data["result_command_id"]
+    decision = data["decision_command_id"]
+    offer = data["offer_id"]
+    if data["stake_ledger_command_id"] != request:
+        raise ValueError("stake debit does not link to request")
+    if data["lock_request_command_id"] != request or data["game_start_unix"] != data["lock_unix"] or data["lock_unix"] <= 0:
+        raise ValueError("lock does not link to request and game start")
+    if data["result_request_command_id"] != request or data["result_lock_command_id"] != lock:
+        raise ValueError("sealed result does not link to request and lock")
+    if (data["decision_request_command_id"], data["decision_lock_command_id"], data["decision_result_command_id"]) != (request, lock, result):
+        raise ValueError("decision chain does not link")
+    if data["decision_offer_id"] != offer or data["decision_offer_version"] != data["offer_version"]:
+        raise ValueError("decision offer does not link")
+    if (data["finalization_decision_command_id"], data["finalization_request_command_id"], data["finalization_lock_command_id"], data["finalization_result_command_id"]) != (decision, request, lock, result):
+        raise ValueError("finalization chain does not link")
+    if data["finalization_offer_id"] != offer or data["finalization_offer_version"] != data["offer_version"]:
+        raise ValueError("finalization offer does not link")
+    return data
+
+
+def match_winner_reconciliation_payload(path: Path | None = None) -> dict[str, object]:
+    if path is None:
+        existing = [candidate for candidate in match_winner_reconciliation_candidates() if candidate.is_file()]
+        path = max(existing, key=lambda candidate: candidate.stat().st_mtime, default=None)
+    if path is None or not path.is_file():
+        return {
+            "available": False,
+            "status": "NO FINALIZED LOSS PROJECTION",
+            "read_only": True,
+            "boundary": "No complete validated exact-loss reconciliation is available. No partial wager evidence is shown.",
+        }
+    try:
+        data = validated_match_winner_reconciliation(path)
+    except (OSError, ValueError, OverflowError, TypeError, KeyError, UnicodeDecodeError, json.JSONDecodeError) as error:
+        return {
+            "available": False,
+            "status": "INVALID FINALIZED LOSS PROJECTION",
+            "read_only": True,
+            "boundary": f"The exact-loss projection was rejected: {error}. No partial wager evidence is shown.",
+        }
+    return {
+        "available": True,
+        "status": "VALIDATED QA FINALIZED LOSS" if data["qa"] else "VALIDATED FINALIZED LOSS",
+        "read_only": True,
+        "generated_at_utc": data["generated_at_utc"],
+        "selected_team": data["selected_team"],
+        "winner": data["winner"],
+        "stake": data["stake"],
+        "return": data["gross_return_applied"],
+        "net": data["net"],
+        "balance": data["final_balance"],
+        "finalization_status": data["finalization_status"],
+        "replay_seal_sha256": data["replay_seal_sha256"],
+        "command_linkage": " -> ".join((data["request_command_id"], data["lock_command_id"], data["result_command_id"], data["decision_command_id"], data["finalization_command_id"])),
+        "boundary": "Immutable read-only server evidence. The prior decision remains decided_pending_apply; this separate finalization adds no ledger entry and exposes no mutation control.",
     }
 
 
@@ -1070,6 +1204,8 @@ class Handler(BaseHTTPRequestHandler):
             self.send_json(athlete_profiles_payload())
         elif path == "/api/economy":
             self.send_json(economy_payload())
+        elif path == "/api/match-winner-reconciliation":
+            self.send_json(match_winner_reconciliation_payload())
         elif path.startswith("/api/career/replay/"):
             try:
                 values = path.removeprefix("/api/career/replay/").split("/")
@@ -1327,6 +1463,96 @@ def self_check() -> None:
         assert economy["eligible_now"] is False and economy["seconds_until_eligible"] == 86_400
         projection_path.write_text("{}", encoding="utf-8")
         assert economy_payload(projection_path)["status"] == "INVALID LOCAL PROJECTION"
+        wager_path = Path(temporary_directory) / "match-winner.json"
+        assert match_winner_reconciliation_payload(wager_path)["status"] == "NO FINALIZED LOSS PROJECTION"
+        wager_projection = {
+            "schema": "oddswell-match-winner-reconciliation-v1",
+            "generated_at_utc": "2033-05-18T03:33:20Z",
+            "authority": "server",
+            "profile_scope": "machine_local",
+            "read_only_projection": True,
+            "qa": True,
+            "market": "match_winner",
+            "offer_id": "9e6870420528e2a821591b763471c47f71b198c063cbdcbecd9ee180f9ea2459",
+            "offer_version": "basketball-match-winner-odds-v1",
+            "request_command_id": "wager:match_winner:request:test-1",
+            "selected_team": "Harbor City Waves",
+            "stake": 40,
+            "request_status": "accepted_pending_lock",
+            "stake_ledger_command_id": "wager:match_winner:request:test-1",
+            "stake_sequence": 2,
+            "stake_delta": -40,
+            "stake_reason": "match_winner_stake",
+            "stake_balance_after": 60,
+            "lock_command_id": "wager:match_winner:lock:test-1",
+            "lock_request_command_id": "wager:match_winner:request:test-1",
+            "season_number": 1,
+            "game_number": 1,
+            "game_start_unix": 2_000_000_000,
+            "lock_unix": 2_000_000_000,
+            "lock_decision": "locked",
+            "result_command_id": "wager:match_winner:result:test-1",
+            "result_request_command_id": "wager:match_winner:request:test-1",
+            "result_lock_command_id": "wager:match_winner:lock:test-1",
+            "result_schema": "oddswell-sealed-match-winner-result-v1",
+            "result_version": "sealed-match-winner-result-v1",
+            "home_team": "Harbor City Waves",
+            "away_team": "Mesa Vista Sol",
+            "home_score": 101,
+            "away_score": 104,
+            "winner": "Mesa Vista Sol",
+            "replay_seal_sha256": "00e4f82c2bb4da5d9ad53d75bf76ece7b97ed9b05ca2f7a8a2628d396c779b75",
+            "decision_command_id": "wager:match_winner:decision:test-1",
+            "decision_request_command_id": "wager:match_winner:request:test-1",
+            "decision_lock_command_id": "wager:match_winner:lock:test-1",
+            "decision_result_command_id": "wager:match_winner:result:test-1",
+            "decision_schema": "oddswell-match-winner-settlement-decision-v1",
+            "decision_version": "match-winner-settlement-decision-v1",
+            "decision_offer_id": "9e6870420528e2a821591b763471c47f71b198c063cbdcbecd9ee180f9ea2459",
+            "decision_offer_version": "basketball-match-winner-odds-v1",
+            "decision_status": "decided_pending_apply",
+            "outcome": "lost",
+            "gross_return_due": 0,
+            "finalization_command_id": "wager:match_winner:finalization:test-1",
+            "finalization_decision_command_id": "wager:match_winner:decision:test-1",
+            "finalization_request_command_id": "wager:match_winner:request:test-1",
+            "finalization_lock_command_id": "wager:match_winner:lock:test-1",
+            "finalization_result_command_id": "wager:match_winner:result:test-1",
+            "finalization_schema": "oddswell-match-winner-loss-finalization-v1",
+            "finalization_version": "match-winner-loss-finalization-v1",
+            "finalization_offer_id": "9e6870420528e2a821591b763471c47f71b198c063cbdcbecd9ee180f9ea2459",
+            "finalization_offer_version": "basketball-match-winner-odds-v1",
+            "finalization_status": "settled_lost",
+            "gross_return_applied": 0,
+            "ledger_entry_count": 2,
+            "final_balance": 60,
+            "net": -40,
+        }
+        wager_path.write_text(json.dumps(wager_projection), encoding="utf-8")
+        wager = match_winner_reconciliation_payload(wager_path)
+        assert wager == {
+            "available": True,
+            "status": "VALIDATED QA FINALIZED LOSS",
+            "read_only": True,
+            "generated_at_utc": "2033-05-18T03:33:20Z",
+            "selected_team": "Harbor City Waves",
+            "winner": "Mesa Vista Sol",
+            "stake": 40,
+            "return": 0,
+            "net": -40,
+            "balance": 60,
+            "finalization_status": "settled_lost",
+            "replay_seal_sha256": wager_projection["replay_seal_sha256"],
+            "command_linkage": " -> ".join((wager_projection["request_command_id"], wager_projection["lock_command_id"], wager_projection["result_command_id"], wager_projection["decision_command_id"], wager_projection["finalization_command_id"])),
+            "boundary": "Immutable read-only server evidence. The prior decision remains decided_pending_apply; this separate finalization adds no ledger entry and exposes no mutation control.",
+        }
+        wager_projection["final_balance"] = 61
+        wager_path.write_text(json.dumps(wager_projection), encoding="utf-8")
+        invalid_wager = match_winner_reconciliation_payload(wager_path)
+        assert invalid_wager["available"] is False and "balance" not in invalid_wager
+        wager_path.write_text("{}", encoding="utf-8")
+        partial_wager = match_winner_reconciliation_payload(wager_path)
+        assert partial_wager["available"] is False and "selected_team" not in partial_wager
     server = LocalHTTPServer(("127.0.0.1", 0), Handler)
     try:
         try:

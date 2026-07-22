@@ -103,6 +103,8 @@
     .module-card h3 { margin: 12px 0 7px; font-size: 1rem; font-weight: 500; }
     .module-card p { margin: 0; color: var(--muted); font-size: 0.79rem; line-height: 1.55; }
     .module-card.wide { grid-column: span 2; }
+    .evidence-card p { overflow-wrap: anywhere; }
+    .evidence-link { margin-top: 10px !important; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: 0.68rem !important; }
     .state { display: inline-block; color: var(--green); font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; }
     .state.locked { color: var(--amber); }
     .state.read-only { color: var(--cyan); }
@@ -819,6 +821,7 @@
             <div class="page-head"><div><h2>Operations</h2><p>Reconcile the local Odds Bucks projection without exposing economy commands.</p></div><button class="control" id="refresh-economy" type="button">Reload projection</button></div>
             <div class="module-grid">
               <div class="module-card"><span class="state read-only" id="economy-status">Loading</span><h3>Odds Bucks reconciliation</h3><p id="economy-detail">Looking for the latest validated local projection.</p></div>
+              <div class="module-card wide evidence-card"><span class="state read-only" id="match-winner-status">Loading</span><h3>Immutable exact-loss history</h3><p id="match-winner-detail">Looking for one complete server-authored finalization chain.</p><p class="evidence-link" id="match-winner-linkage"></p></div>
               <div class="module-card"><span class="state locked">Not implemented</span><h3>Moderation</h3><p>No player moderation or support system is connected.</p></div>
               <div class="module-card"><span class="state locked">Not implemented</span><h3>Releases</h3><p>No deployment, maintenance, or announcement service is connected.</p></div>
             </div>
@@ -899,7 +902,7 @@
       if (page === 'audit') loadAudit();
       if (page === 'world') loadLeague();
       if (page === 'athletes') loadAthletes();
-      if (page === 'operations') loadEconomy();
+      if (page === 'operations') { loadEconomy(); loadMatchWinnerReconciliation(); }
       if (page === 'brains') requestAnimationFrame(() => resizeCanvas());
     }
 
@@ -1218,6 +1221,23 @@
         $('economy-status').textContent = 'PROJECTION ERROR';
         $('economy-detail').textContent = error.message;
         list.textContent = `Economy reconciliation error: ${error.message}`;
+      }
+    }
+
+    async function loadMatchWinnerReconciliation() {
+      try {
+        const response = await fetch('/api/match-winner-reconciliation');
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error || 'exact-loss reconciliation unavailable');
+        $('match-winner-status').textContent = data.status;
+        $('match-winner-detail').textContent = data.available
+          ? `${data.selected_team} selected · ${data.winner} won · stake ${data.stake} · return ${data.return} · net ${data.net} · balance ${data.balance} · ${data.finalization_status} · replay ${data.replay_seal_sha256}`
+          : data.boundary;
+        $('match-winner-linkage').textContent = data.available ? data.command_linkage : '';
+      } catch (error) {
+        $('match-winner-status').textContent = 'PROJECTION ERROR';
+        $('match-winner-detail').textContent = error.message;
+        $('match-winner-linkage').textContent = '';
       }
     }
 
@@ -1843,7 +1863,7 @@
     $('watch-league-game').addEventListener('click', watchLeagueGame);
     $('refresh-status').addEventListener('click', refreshStatus);
     $('refresh-audit').addEventListener('click', loadAudit);
-    $('refresh-economy').addEventListener('click', loadEconomy);
+    $('refresh-economy').addEventListener('click', () => { loadEconomy(); loadMatchWinnerReconciliation(); });
     $('preview').addEventListener('click', previewTraining);
     $('fullscreen').addEventListener('click', () => {
       if (document.fullscreenElement) document.exitFullscreen();
