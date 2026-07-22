@@ -266,6 +266,12 @@ struct FOddsWellMatchWinnerSettlementDecisionRecord
 	int64 GrossReturnDue = 0;
 
 	UPROPERTY(SaveGame)
+	int64 SelectedWinProbabilityE8 = 0;
+
+	UPROPERTY(SaveGame)
+	FString PayoutFormula;
+
+	UPROPERTY(SaveGame)
 	FName Status;
 };
 
@@ -389,5 +395,6 @@ ODDSWELL_API EOddsWellMatchWinnerRequestResult AcceptOddsWellMatchWinnerRequest(
 ODDSWELL_API EOddsWellMatchWinnerLockResult LockOddsWellMatchWinnerRequest(const FString& RequestCommandId, const FString& LockCommandId, int32 SeasonNumber, int32 GameNumber, int64 AuthoritativeGameStartUnixSeconds, bool bQaSlot, FOddsWellMatchWinnerLockRecord& OutRecord, FString& OutError);
 ODDSWELL_API EOddsWellMatchWinnerResultLinkResult LinkOddsWellMatchWinnerResult(const FString& ResultCommandId, const FString& RequestCommandId, const FString& LockCommandId, const FString& ResultSchema, const FString& ResultVersion, int32 SeasonNumber, int32 GameNumber, const FString& HomeTeam, const FString& AwayTeam, int32 HomeScore, int32 AwayScore, const FString& Winner, const FString& ReplaySealSha256, bool bQaSlot, FOddsWellMatchWinnerResultLinkRecord& OutRecord, FString& OutError);
 ODDSWELL_API EOddsWellMatchWinnerSettlementDecisionResult DecideOddsWellMatchWinnerSettlement(const FString& DecisionCommandId, const FString& RequestCommandId, const FString& LockCommandId, const FString& ResultCommandId, bool bQaSlot, FOddsWellMatchWinnerSettlementDecisionRecord& OutRecord, FString& OutError);
+ODDSWELL_API EOddsWellMatchWinnerSettlementDecisionResult DecideOddsWellMatchWinnerSettlement(const FOddsWellMatchWinnerOffer& ExactOffer, const FString& DecisionCommandId, const FString& RequestCommandId, const FString& LockCommandId, const FString& ResultCommandId, bool bQaSlot, FOddsWellMatchWinnerSettlementDecisionRecord& OutRecord, FString& OutError);
 ODDSWELL_API EOddsWellMatchWinnerLossFinalizationResult FinalizeOddsWellMatchWinnerLoss(const FString& FinalizationCommandId, const FString& DecisionCommandId, bool bQaSlot, FOddsWellMatchWinnerLossFinalizationRecord& OutRecord, FString& OutError);
 ODDSWELL_API bool ResetOddsWellQaOddsBucksAndVerify(FString& OutError);

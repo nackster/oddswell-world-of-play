@@ -51,6 +51,7 @@ const FString MatchWinnerPredictionVersion(TEXT("phase0d4-v1"));
 const FString MatchWinnerSnapshotVersion(TEXT("oddswell-public-pregame-v1"));
 const FString MatchWinnerSourceModel(TEXT("public_elo_rotation"));
 const FString MatchWinnerPayoutFormula(TEXT("floor(stake*100000000/win_probability_e8)"));
+const FString ExactMatchWinnerOfferId(TEXT("9e6870420528e2a821591b763471c47f71b198c063cbdcbecd9ee180f9ea2459"));
 const FString MatchWinnerResultSchema(TEXT("oddswell-sealed-match-winner-result-v1"));
 const FString MatchWinnerResultVersion(TEXT("sealed-match-winner-result-v1"));
 constexpr int32 SealedResultSeasonNumber = 1;
@@ -415,6 +416,11 @@ bool ValidateMatchWinnerSettlementDecisions(
 		const FName DerivedOutcome = Request && Result && Request->OfferedTeam == Result->Winner
 			? MatchWinnerWonOutcome
 			: MatchWinnerLostOutcome;
+		const bool bExactWin = DerivedOutcome == MatchWinnerWonOutcome;
+		const int64 ExpectedWinProbabilityE8 = bExactWin ? 40000000 : 0;
+		const int64 ExpectedGrossReturnDue = bExactWin && Request
+			? Request->Stake * MatchWinnerProbabilityScale / ExpectedWinProbabilityE8
+			: 0;
 		if (Decision.DecisionCommandId.TrimStartAndEnd().IsEmpty()
 			|| Decision.RequestCommandId.TrimStartAndEnd().IsEmpty()
 			|| Decision.LockCommandId.TrimStartAndEnd().IsEmpty()
@@ -438,8 +444,10 @@ bool ValidateMatchWinnerSettlementDecisions(
 			|| Decision.AuthoritativeWinner != Result->Winner
 			|| Decision.Stake != Request->Stake
 			|| Decision.Outcome != DerivedOutcome
-			|| DerivedOutcome != MatchWinnerLostOutcome
-			|| Decision.GrossReturnDue != 0
+			|| (bExactWin && (Request->OfferId != ExactMatchWinnerOfferId || Request->OfferedTeam != SealedResultAwayTeam || Request->Stake != 40))
+			|| Decision.GrossReturnDue != ExpectedGrossReturnDue
+			|| Decision.SelectedWinProbabilityE8 != ExpectedWinProbabilityE8
+			|| Decision.PayoutFormula != (bExactWin ? MatchWinnerPayoutFormula : FString())
 			|| Decision.Status != MatchWinnerDecidedPendingApplyStatus)
 		{
 			OutError = FString::Printf(TEXT("Invalid Match Winner settlement decision at index %d."), Index);
@@ -1551,7 +1559,10 @@ EOddsWellMatchWinnerResultLinkResult LinkOddsWellMatchWinnerResult(
 	return EOddsWellMatchWinnerResultLinkResult::Linked;
 }
 
-EOddsWellMatchWinnerSettlementDecisionResult DecideOddsWellMatchWinnerSettlement(
+namespace
+{
+EOddsWellMatchWinnerSettlementDecisionResult DecideOddsWellMatchWinnerSettlementInternal(
+	const FOddsWellMatchWinnerOffer* ExactOffer,
 	const FString& DecisionCommandId,
 	const FString& RequestCommandId,
 	const FString& LockCommandId,
@@ -1597,24 +1608,22 @@ EOddsWellMatchWinnerSettlementDecisionResult DecideOddsWellMatchWinnerSettlement
 	{
 		return EOddsWellMatchWinnerSettlementDecisionResult::Rejected;
 	}
-	if (const FOddsWellMatchWinnerSettlementDecisionRecord* Existing = Decisions.FindByPredicate(
+	const FOddsWellMatchWinnerSettlementDecisionRecord* ExistingDecision = Decisions.FindByPredicate(
 		[&DecisionCommandId](const FOddsWellMatchWinnerSettlementDecisionRecord& Decision)
 		{
 			return Decision.DecisionCommandId == DecisionCommandId;
-		}))
+		});
+	if (ExistingDecision)
 	{
-		if (Existing->RequestCommandId != RequestCommandId
-			|| Existing->LockCommandId != LockCommandId
-			|| Existing->ResultCommandId != ResultCommandId)
+		if (ExistingDecision->RequestCommandId != RequestCommandId
+			|| ExistingDecision->LockCommandId != LockCommandId
+			|| ExistingDecision->ResultCommandId != ResultCommandId)
 		{
 			OutError = TEXT("The Match Winner settlement decision command was already used with different chain identity.");
 			return EOddsWellMatchWinnerSettlementDecisionResult::Rejected;
 		}
-		OutRecord = *Existing;
-		OutError.Reset();
-		return EOddsWellMatchWinnerSettlementDecisionResult::Duplicate;
 	}
-	if (Decisions.ContainsByPredicate(
+	if (!ExistingDecision && Decisions.ContainsByPredicate(
 		[&RequestCommandId](const FOddsWellMatchWinnerSettlementDecisionRecord& Decision)
 		{
 			return Decision.RequestCommandId == RequestCommandId;
@@ -1651,10 +1660,54 @@ EOddsWellMatchWinnerSettlementDecisionResult DecideOddsWellMatchWinnerSettlement
 	const FName DerivedOutcome = Request->OfferedTeam == Result->Winner
 		? MatchWinnerWonOutcome
 		: MatchWinnerLostOutcome;
-	if (DerivedOutcome != MatchWinnerLostOutcome)
+	int64 GrossReturnDue = 0;
+	int64 SelectedWinProbabilityE8 = 0;
+	FString BoundPayoutFormula;
+	if (DerivedOutcome == MatchWinnerWonOutcome)
 	{
-		OutError = TEXT("Phase 1H.6 proves only the exact archived losing selection; a winning gross return is not authorized here.");
-		return EOddsWellMatchWinnerSettlementDecisionResult::Rejected;
+		const FOddsWellMatchWinnerSelection* SelectedOffer = ExactOffer
+			? ExactOffer->Selections.FindByPredicate(
+				[Request](const FOddsWellMatchWinnerSelection& Selection)
+				{
+					return Selection.Team == Request->OfferedTeam;
+				})
+			: nullptr;
+		if (!ExactOffer
+			|| !ValidateMatchWinnerOffer(*ExactOffer, OutError)
+			|| ExactOffer->OfferId != Request->OfferId
+			|| ExactOffer->OfferId != ExactMatchWinnerOfferId
+			|| ExactOffer->OfferVersion != Request->OfferVersion
+			|| ExactOffer->SeasonNumber != Request->SeasonNumber
+			|| ExactOffer->GameNumber != Request->GameNumber
+			|| ExactOffer->HomeTeam != Request->HomeTeam
+			|| ExactOffer->AwayTeam != Request->AwayTeam
+			|| ExactOffer->LockUnixSeconds != Request->LockUnixSeconds
+			|| ExactOffer->PayoutFormula != MatchWinnerPayoutFormula
+			|| Request->OfferedTeam != SealedResultAwayTeam
+			|| Request->Stake != 40
+			|| !SelectedOffer
+			|| SelectedOffer->WinProbabilityE8 != 40000000)
+		{
+			if (OutError.IsEmpty())
+			{
+				OutError = TEXT("The exact winning decision requires the recomputed Mesa offer and approved payout formula.");
+			}
+			return EOddsWellMatchWinnerSettlementDecisionResult::Rejected;
+		}
+		SelectedWinProbabilityE8 = SelectedOffer->WinProbabilityE8;
+		GrossReturnDue = Request->Stake * MatchWinnerProbabilityScale / SelectedWinProbabilityE8;
+		BoundPayoutFormula = ExactOffer->PayoutFormula;
+		if (GrossReturnDue != 100)
+		{
+			OutError = TEXT("The exact winning return does not recompute to 100 Odds Bucks.");
+			return EOddsWellMatchWinnerSettlementDecisionResult::Rejected;
+		}
+	}
+	if (ExistingDecision)
+	{
+		OutRecord = *ExistingDecision;
+		OutError.Reset();
+		return EOddsWellMatchWinnerSettlementDecisionResult::Duplicate;
 	}
 
 	FOddsWellMatchWinnerSettlementDecisionRecord Candidate;
@@ -1670,7 +1723,9 @@ EOddsWellMatchWinnerSettlementDecisionResult DecideOddsWellMatchWinnerSettlement
 	Candidate.AuthoritativeWinner = Result->Winner;
 	Candidate.Stake = Request->Stake;
 	Candidate.Outcome = DerivedOutcome;
-	Candidate.GrossReturnDue = 0;
+	Candidate.GrossReturnDue = GrossReturnDue;
+	Candidate.SelectedWinProbabilityE8 = SelectedWinProbabilityE8;
+	Candidate.PayoutFormula = BoundPayoutFormula;
 	Candidate.Status = MatchWinnerDecidedPendingApplyStatus;
 	TArray<FOddsWellMatchWinnerSettlementDecisionRecord> CandidateDecisions = Decisions;
 	CandidateDecisions.Add(Candidate);
@@ -1690,6 +1745,32 @@ EOddsWellMatchWinnerSettlementDecisionResult DecideOddsWellMatchWinnerSettlement
 	OutRecord = MoveTemp(Candidate);
 	OutError.Reset();
 	return EOddsWellMatchWinnerSettlementDecisionResult::Decided;
+}
+}
+
+EOddsWellMatchWinnerSettlementDecisionResult DecideOddsWellMatchWinnerSettlement(
+	const FString& DecisionCommandId,
+	const FString& RequestCommandId,
+	const FString& LockCommandId,
+	const FString& ResultCommandId,
+	const bool bQaSlot,
+	FOddsWellMatchWinnerSettlementDecisionRecord& OutRecord,
+	FString& OutError)
+{
+	return DecideOddsWellMatchWinnerSettlementInternal(nullptr, DecisionCommandId, RequestCommandId, LockCommandId, ResultCommandId, bQaSlot, OutRecord, OutError);
+}
+
+EOddsWellMatchWinnerSettlementDecisionResult DecideOddsWellMatchWinnerSettlement(
+	const FOddsWellMatchWinnerOffer& ExactOffer,
+	const FString& DecisionCommandId,
+	const FString& RequestCommandId,
+	const FString& LockCommandId,
+	const FString& ResultCommandId,
+	const bool bQaSlot,
+	FOddsWellMatchWinnerSettlementDecisionRecord& OutRecord,
+	FString& OutError)
+{
+	return DecideOddsWellMatchWinnerSettlementInternal(&ExactOffer, DecisionCommandId, RequestCommandId, LockCommandId, ResultCommandId, bQaSlot, OutRecord, OutError);
 }
 
 EOddsWellMatchWinnerLossFinalizationResult FinalizeOddsWellMatchWinnerLoss(
@@ -1900,7 +1981,7 @@ namespace
 FOddsWellMatchWinnerOffer MakeMatchWinnerTestOffer()
 {
 	FOddsWellMatchWinnerOffer Offer;
-	Offer.OfferId = TEXT("9e6870420528e2a821591b763471c47f71b198c063cbdcbecd9ee180f9ea2459");
+	Offer.OfferId = ExactMatchWinnerOfferId;
 	Offer.Schema = MatchWinnerOfferSchema;
 	Offer.OfferVersion = MatchWinnerOfferVersion;
 	Offer.Market = MatchWinnerMarket;
@@ -2295,6 +2376,8 @@ bool FOddsWellOddsBucksLedgerTest::RunTest(const FString& Parameters)
 	TestEqual(TEXT("Decision stores exact stake"), DecisionRecord.Stake, int64{40});
 	TestEqual(TEXT("Decision derives lost outcome"), DecisionRecord.Outcome, MatchWinnerLostOutcome);
 	TestEqual(TEXT("Lost decision has zero gross return due"), DecisionRecord.GrossReturnDue, int64{0});
+	TestEqual(TEXT("Lost decision binds no win probability"), DecisionRecord.SelectedWinProbabilityE8, int64{0});
+	TestTrue(TEXT("Lost decision binds no payout formula"), DecisionRecord.PayoutFormula.IsEmpty());
 	TestEqual(TEXT("Decision remains pending application"), DecisionRecord.Status, MatchWinnerDecidedPendingApplyStatus);
 	TestTrue(TEXT("Settlement decision cold-restores from shared state"), LoadOddsWellOddsBucksWagerDecisionState(true, WagerLedger, WagerNextJobPayout, WagerRequests, WagerLocks, WagerResultLinks, WagerDecisions, bFound, Error));
 	TestEqual(TEXT("Cold restore preserves exactly one decision"), WagerDecisions.Num(), 1);
@@ -2419,6 +2502,8 @@ bool FOddsWellOddsBucksLedgerTest::RunTest(const FString& Parameters)
 	TestEqual(TEXT("Finalization retries append no ledger entry"), WagerLedger.GetEntries().Num(), 2);
 	TestEqual(TEXT("Finalization retries preserve balance"), WagerLedger.GetBalance(), int64{60});
 	TestEqual(TEXT("Finalization retries preserve job cooldown"), WagerNextJobPayout, ExpectedNextJobPayout);
+	TArray<uint8> ExactLossProfileBytes;
+	TestTrue(TEXT("Exact finalized loss profile is preserved before isolated win QA"), UGameplayStatics::SaveGameToMemory(UGameplayStatics::LoadGameFromSlot(OddsBucksQaSlot, OddsBucksUserIndex), ExactLossProfileBytes));
 
 	UOddsWellOddsBucksSaveGame* MalformedFinalizationRecord = Cast<UOddsWellOddsBucksSaveGame>(UGameplayStatics::LoadGameFromSlot(OddsBucksQaSlot, OddsBucksUserIndex));
 	TestTrue(TEXT("Saved finalization is available for corruption test"), MalformedFinalizationRecord && MalformedFinalizationRecord->MatchWinnerLossFinalizations.Num() == 1);
@@ -2488,7 +2573,124 @@ bool FOddsWellOddsBucksLedgerTest::RunTest(const FString& Parameters)
 			&& PersistedMalformedResult->MatchWinnerResultLinks.Num() == 1
 			&& PersistedMalformedResult->MatchWinnerResultLinks[0].ReplaySealSha256 == MalformedSeal);
 	}
-	TestTrue(TEXT("Wager QA cleanup succeeds"), ResetOddsWellQaOddsBucksAndVerify(Error));
+	TestTrue(TEXT("Loss-profile QA cleanup succeeds before isolated win profile"), ResetOddsWellQaOddsBucksAndVerify(Error));
+
+	TestTrue(TEXT("Existing job path funds isolated win QA"), SaveOddsWellOddsBucksLedger(JobLedger, ExpectedNextJobPayout, true, Error));
+	const FString WinRequestCommandId(TEXT("wager:match_winner:win:request:test-1"));
+	const FString WinLockCommandId(TEXT("wager:match_winner:win:lock:test-1"));
+	const FString WinResultCommandId(TEXT("wager:match_winner:win:result:test-1"));
+	const FString WinDecisionCommandId(TEXT("wager:match_winner:win:decision:test-1"));
+	FOddsWellMatchWinnerRequestRecord WinRequest;
+	int64 WinBalance = 0;
+	TestEqual(TEXT("Exact Mesa request is accepted in isolated QA profile"), AcceptOddsWellMatchWinnerRequest(Offer, WinRequestCommandId, Offer.AwayTeam, 40, Offer.LockUnixSeconds - 100, true, WinRequest, WinBalance, Error), EOddsWellMatchWinnerRequestResult::Accepted);
+	TestEqual(TEXT("Isolated win QA debits stake once"), WinBalance, int64{60});
+	FOddsWellMatchWinnerLockRecord WinLock;
+	TestEqual(TEXT("Exact Mesa request locks at game start"), LockOddsWellMatchWinnerRequest(WinRequestCommandId, WinLockCommandId, 1, 1, Offer.LockUnixSeconds, true, WinLock, Error), EOddsWellMatchWinnerLockResult::Locked);
+	FOddsWellMatchWinnerResultLinkRecord WinResult;
+	TestEqual(TEXT("Exact Mesa request links sealed 101-104 result"), LinkOddsWellMatchWinnerResult(
+		WinResultCommandId,
+		WinRequestCommandId,
+		WinLockCommandId,
+		MatchWinnerResultSchema,
+		MatchWinnerResultVersion,
+		1,
+		1,
+		SealedResultHomeTeam,
+		SealedResultAwayTeam,
+		SealedResultHomeScore,
+		SealedResultAwayScore,
+		SealedResultWinner,
+		SealedResultReplaySha,
+		true,
+		WinResult,
+		Error), EOddsWellMatchWinnerResultLinkResult::Linked);
+
+	FOddsWellOddsBucksLedger WinLedger;
+	int64 WinNextJobPayout = 0;
+	TArray<FOddsWellMatchWinnerRequestRecord> WinRequests;
+	TArray<FOddsWellMatchWinnerLockRecord> WinLocks;
+	TArray<FOddsWellMatchWinnerResultLinkRecord> WinResults;
+	TestTrue(TEXT("Isolated win chain reloads before decision"), LoadOddsWellOddsBucksWagerEvidence(true, WinLedger, WinNextJobPayout, WinRequests, WinLocks, WinResults, bFound, Error));
+	UOddsWellOddsBucksSaveGame* VersionFiveWinRecord = NewObject<UOddsWellOddsBucksSaveGame>();
+	VersionFiveWinRecord->SchemaVersion = 5;
+	VersionFiveWinRecord->Entries = WinLedger.GetEntries();
+	VersionFiveWinRecord->NextJobPayoutUnixSeconds = WinNextJobPayout;
+	VersionFiveWinRecord->MatchWinnerRequests = WinRequests;
+	VersionFiveWinRecord->MatchWinnerLocks = WinLocks;
+	VersionFiveWinRecord->MatchWinnerResultLinks = WinResults;
+	TestTrue(TEXT("Schema v5 isolated win chain writes before decision"), UGameplayStatics::SaveGameToSlot(VersionFiveWinRecord, OddsBucksQaSlot, OddsBucksUserIndex));
+	TArray<FOddsWellMatchWinnerSettlementDecisionRecord> WinDecisions;
+	TestTrue(TEXT("Schema v5 isolated win chain migrates without invention"), LoadOddsWellOddsBucksWagerDecisionState(true, WinLedger, WinNextJobPayout, WinRequests, WinLocks, WinResults, WinDecisions, bFound, Error));
+	TestEqual(TEXT("Win-profile migration invents no decision"), WinDecisions.Num(), 0);
+	TestEqual(TEXT("Win-profile migration preserves two ledger entries"), WinLedger.GetEntries().Num(), 2);
+	TestEqual(TEXT("Win-profile migration preserves balance 60"), WinLedger.GetBalance(), int64{60});
+
+	FOddsWellMatchWinnerSettlementDecisionRecord WinDecision;
+	TestEqual(TEXT("Winning decision without exact offer is rejected"), DecideOddsWellMatchWinnerSettlement(WinDecisionCommandId, WinRequestCommandId, WinLockCommandId, WinResultCommandId, true, WinDecision, Error), EOddsWellMatchWinnerSettlementDecisionResult::Rejected);
+	FOddsWellMatchWinnerOffer TamperedWinProbabilityOffer = Offer;
+	TamperedWinProbabilityOffer.Selections[1].WinProbabilityE8++;
+	TestEqual(TEXT("Tampered winning probability is rejected"), DecideOddsWellMatchWinnerSettlement(TamperedWinProbabilityOffer, WinDecisionCommandId, WinRequestCommandId, WinLockCommandId, WinResultCommandId, true, WinDecision, Error), EOddsWellMatchWinnerSettlementDecisionResult::Rejected);
+	FOddsWellMatchWinnerOffer TamperedWinFormulaOffer = Offer;
+	TamperedWinFormulaOffer.PayoutFormula = TEXT("stake/probability");
+	TestEqual(TEXT("Tampered payout formula is rejected"), DecideOddsWellMatchWinnerSettlement(TamperedWinFormulaOffer, WinDecisionCommandId, WinRequestCommandId, WinLockCommandId, WinResultCommandId, true, WinDecision, Error), EOddsWellMatchWinnerSettlementDecisionResult::Rejected);
+	TestEqual(TEXT("Mismatched winning lock is rejected"), DecideOddsWellMatchWinnerSettlement(Offer, WinDecisionCommandId, WinRequestCommandId, TEXT("wager:match_winner:win:lock:unknown"), WinResultCommandId, true, WinDecision, Error), EOddsWellMatchWinnerSettlementDecisionResult::Rejected);
+	TestEqual(TEXT("Exact Mesa chain creates one winning decision"), DecideOddsWellMatchWinnerSettlement(Offer, WinDecisionCommandId, WinRequestCommandId, WinLockCommandId, WinResultCommandId, true, WinDecision, Error), EOddsWellMatchWinnerSettlementDecisionResult::Decided);
+	TestEqual(TEXT("Winning decision selects Mesa"), WinDecision.SelectedTeam, SealedResultAwayTeam);
+	TestEqual(TEXT("Winning decision binds exact offer"), WinDecision.OfferId, ExactMatchWinnerOfferId);
+	TestEqual(TEXT("Winning decision binds probability 40000000"), WinDecision.SelectedWinProbabilityE8, int64{40000000});
+	TestEqual(TEXT("Winning decision binds approved payout formula"), WinDecision.PayoutFormula, MatchWinnerPayoutFormula);
+	TestEqual(TEXT("Winning decision derives won"), WinDecision.Outcome, MatchWinnerWonOutcome);
+	TestEqual(TEXT("Winning decision recomputes gross return due 100"), WinDecision.GrossReturnDue, int64{100});
+	TestEqual(TEXT("Winning decision remains pending application"), WinDecision.Status, MatchWinnerDecidedPendingApplyStatus);
+
+	TArray<FOddsWellMatchWinnerLossFinalizationRecord> WinFinalizations;
+	TestTrue(TEXT("Winning decision cold-restores"), LoadOddsWellOddsBucksWagerFinalizationState(true, WinLedger, WinNextJobPayout, WinRequests, WinLocks, WinResults, WinDecisions, WinFinalizations, bFound, Error));
+	TestEqual(TEXT("Cold win profile has one decision"), WinDecisions.Num(), 1);
+	TestEqual(TEXT("Cold win profile preserves due 100"), WinDecisions[0].GrossReturnDue, int64{100});
+	TestEqual(TEXT("Cold win profile has no finalization"), WinFinalizations.Num(), 0);
+	TestEqual(TEXT("Winning decision adds no ledger entry"), WinLedger.GetEntries().Num(), 2);
+	TestEqual(TEXT("Winning decision preserves balance 60"), WinLedger.GetBalance(), int64{60});
+	TestEqual(TEXT("Winning decision preserves job cooldown"), WinNextJobPayout, ExpectedNextJobPayout);
+
+	FOddsWellMatchWinnerSettlementDecisionRecord RetryWinDecision;
+	TestEqual(TEXT("Exact winning decision retry is idempotent"), DecideOddsWellMatchWinnerSettlement(Offer, WinDecisionCommandId, WinRequestCommandId, WinLockCommandId, WinResultCommandId, true, RetryWinDecision, Error), EOddsWellMatchWinnerSettlementDecisionResult::Duplicate);
+	TestEqual(TEXT("Winning decision command conflict is rejected"), DecideOddsWellMatchWinnerSettlement(Offer, WinDecisionCommandId, WinRequestCommandId, WinLockCommandId, TEXT("wager:match_winner:win:result:unknown"), true, RetryWinDecision, Error), EOddsWellMatchWinnerSettlementDecisionResult::Rejected);
+	TestEqual(TEXT("Second winning decision is rejected"), DecideOddsWellMatchWinnerSettlement(Offer, TEXT("wager:match_winner:win:decision:test-2"), WinRequestCommandId, WinLockCommandId, WinResultCommandId, true, RetryWinDecision, Error), EOddsWellMatchWinnerSettlementDecisionResult::Rejected);
+	FOddsWellMatchWinnerLossFinalizationRecord InvalidWinFinalization;
+	TestEqual(TEXT("Winning decision cannot use loss finalization"), FinalizeOddsWellMatchWinnerLoss(TEXT("wager:match_winner:win:finalization:invalid"), WinDecisionCommandId, true, InvalidWinFinalization, Error), EOddsWellMatchWinnerLossFinalizationResult::Rejected);
+	TestTrue(TEXT("Winning retry rejection preserves cold state"), LoadOddsWellOddsBucksWagerFinalizationState(true, WinLedger, WinNextJobPayout, WinRequests, WinLocks, WinResults, WinDecisions, WinFinalizations, bFound, Error));
+	TestEqual(TEXT("Winning retries preserve one decision"), WinDecisions.Num(), 1);
+	TestEqual(TEXT("Winning retries preserve no finalization"), WinFinalizations.Num(), 0);
+	TestEqual(TEXT("Winning retries preserve balance"), WinLedger.GetBalance(), int64{60});
+
+	UOddsWellOddsBucksSaveGame* MalformedWinDecision = Cast<UOddsWellOddsBucksSaveGame>(UGameplayStatics::LoadGameFromSlot(OddsBucksQaSlot, OddsBucksUserIndex));
+	TestTrue(TEXT("Saved winning decision is available for tamper QA"), MalformedWinDecision && MalformedWinDecision->MatchWinnerSettlementDecisions.Num() == 1);
+	if (MalformedWinDecision && MalformedWinDecision->MatchWinnerSettlementDecisions.Num() == 1)
+	{
+		MalformedWinDecision->MatchWinnerSettlementDecisions[0].GrossReturnDue = 99;
+		TestFalse(TEXT("Tampered winning return is rejected in memory"), ValidateOddsBucksSave(MalformedWinDecision, MemoryLedger, MemoryNextJobPayout, MemoryRequests, MemoryLocks, MemoryResultLinks, MemoryDecisions, MemoryFinalizations, bNeedsMigration, Error));
+		TestTrue(TEXT("Tampered winning decision writes for no-mutation QA"), UGameplayStatics::SaveGameToSlot(MalformedWinDecision, OddsBucksQaSlot, OddsBucksUserIndex));
+		TestEqual(TEXT("Tampered persisted winning decision fails closed"), DecideOddsWellMatchWinnerSettlement(Offer, WinDecisionCommandId, WinRequestCommandId, WinLockCommandId, WinResultCommandId, true, RetryWinDecision, Error), EOddsWellMatchWinnerSettlementDecisionResult::Rejected);
+		const UOddsWellOddsBucksSaveGame* PersistedMalformedWin = Cast<UOddsWellOddsBucksSaveGame>(UGameplayStatics::LoadGameFromSlot(OddsBucksQaSlot, OddsBucksUserIndex));
+		TestTrue(TEXT("Rejected command does not rewrite tampered winning due"), PersistedMalformedWin
+			&& PersistedMalformedWin->MatchWinnerSettlementDecisions.Num() == 1
+			&& PersistedMalformedWin->MatchWinnerSettlementDecisions[0].GrossReturnDue == 99);
+		MalformedWinDecision->MatchWinnerSettlementDecisions[0].GrossReturnDue = 100;
+		TestTrue(TEXT("Exact winning decision restores after tamper QA"), UGameplayStatics::SaveGameToSlot(MalformedWinDecision, OddsBucksQaSlot, OddsBucksUserIndex));
+		TestTrue(TEXT("Restored winning decision validates"), LoadOddsWellOddsBucksWagerDecisionState(true, WinLedger, WinNextJobPayout, WinRequests, WinLocks, WinResults, WinDecisions, bFound, Error));
+	}
+	TestTrue(TEXT("Isolated win QA cleanup succeeds"), ResetOddsWellQaOddsBucksAndVerify(Error));
+
+	USaveGame* PreservedLossProfile = UGameplayStatics::LoadGameFromMemory(ExactLossProfileBytes);
+	TestTrue(TEXT("Preserved exact loss profile restores after win QA"), PreservedLossProfile && UGameplayStatics::SaveGameToSlot(PreservedLossProfile, OddsBucksQaSlot, OddsBucksUserIndex));
+	TestTrue(TEXT("Restored loss chain validates after winning decision proof"), LoadOddsWellOddsBucksWagerFinalizationState(true, WagerLedger, WagerNextJobPayout, WagerRequests, WagerLocks, WagerResultLinks, WagerDecisions, WagerFinalizations, bFound, Error));
+	TestEqual(TEXT("Restored loss profile preserves one lost decision"), WagerDecisions.Num(), 1);
+	TestEqual(TEXT("Restored loss decision remains lost"), WagerDecisions[0].Outcome, MatchWinnerLostOutcome);
+	TestEqual(TEXT("Restored loss decision binds no win probability"), WagerDecisions[0].SelectedWinProbabilityE8, int64{0});
+	TestTrue(TEXT("Restored loss decision binds no payout formula"), WagerDecisions[0].PayoutFormula.IsEmpty());
+	TestEqual(TEXT("Restored loss profile preserves one finalization"), WagerFinalizations.Num(), 1);
+	TestEqual(TEXT("Restored loss finalization remains settled lost"), WagerFinalizations[0].Status, MatchWinnerSettledLostStatus);
+	TestTrue(TEXT("Final wager QA cleanup succeeds"), ResetOddsWellQaOddsBucksAndVerify(Error));
 	return !HasAnyErrors();
 }
 
