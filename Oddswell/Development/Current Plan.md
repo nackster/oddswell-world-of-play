@@ -903,7 +903,16 @@ Build the one-city scope defined in [[Design/Decisions/DEC-002 First Playable Sc
 - **Invariance:** locking adds no ledger entry and preserves the accepted offer, team, stake, accepted time, lock time, balance, and job cooldown exactly.
 - **Validation:** native automation passed `11/11`, including focused economy automation `1/1`; focused odds tests passed `3/3`; all `65/65` frozen regressions passed in `143.229s`; Brain Admin self-check, unchanged exporters, Python compilation, disk reload, migration, rejection invariants, and diff hygiene passed. Cost was `$0.00`. See [[Development/Reports/Phase 1H4 Idempotent Match Winner Game Start Lock]].
 - **Boundary:** no result consumption, win/loss decision, settlement, payout, lost-stake finalization, void/refund, cancellation, correction, ledger mutation, player route/UI, Admin wager view, props, trusted clock, online account, payment, real-money connection, or second currency was added.
-- **Next candidate gate:** immutable sealed-result linkage without payout; the Scope Director must confirm the exact next subphase.
+- **Closed by Phase 1H.5:** the exact immutable sealed-result link is complete below.
+
+### Phase 1H.5 Immutable Sealed Match Winner Result Linkage status
+
+- **Status:** Complete on `agent/phase-0d`; one machine-local archive-evidence link only.
+- **Implementation:** one result command links the exact accepted request and game-start lock to the verified Season 1, Game 1 archive: Harbor City Waves `101`, Mesa Vista Sol `104`, winner Mesa Vista Sol, and replay seal `00e4f82c2bb4da5d9ad53d75bf76ece7b97ed9b05ca2f7a8a2628d396c779b75`. Exact retries return the same record; unknown or unlocked requests, wrong locks, ties, tampered fields, conflicting reuse, a second link, and malformed saved evidence fail without mutation. Schema v1-v4 saves migrate to v5 with zero fabricated result links.
+- **Invariance:** linking adds no ledger entry and preserves the two-entry ledger, balance `60`, job cooldown, `accepted_pending_lock` request, `locked` decision, Basketball Brain, replay, public prediction, and league outputs exactly.
+- **Validation:** native automation passed `11/11`, including focused economy automation `1/1`; focused odds tests passed `3/3` in `0.052s`; all `65/65` frozen regressions passed in `143.403s`; Brain Admin self-check, unchanged `421`-frame replay with exact seal, unchanged `2`-team/`12`-athlete/`20`-game league export, Python compilation, migration, rejection invariants, and diff hygiene passed. Cost was `$0.00`. See [[Development/Reports/Phase 1H5 Immutable Sealed Match Winner Result Linkage]].
+- **Boundary:** no wager win/loss decision, settlement status, gross return, payout, lost-stake finalization, refund, void, correction, new ledger entry, player route/UI, Admin wager view, props, backend, brain change, payment, real-money connection, or second currency was added.
+- **Next candidate gate:** Scope Director review of a deterministic settlement-decision gate with no ledger mutation. This is a candidate only and does not authorize settlement.
 
 ## Future shared simulation layer
 
