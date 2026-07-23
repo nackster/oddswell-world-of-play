@@ -49,6 +49,21 @@ The exact finalized SaveGame is `8,849` bytes with SHA-256 `8c3d75d80c2da0679733
 | Canonical replay | `421` frames, `256,442` bytes, SHA-256 `35d03b7b472901ab3f498c8cd389cea4b9cd1ed9309bafe85cbbd3af1160719f`, seal `00e4f82c2bb4da5d9ad53d75bf76ece7b97ed9b05ca2f7a8a2628d396c779b75` |
 | Cost | `$0.00` |
 
+## Final-source packaged rerun
+
+The accepted evidence was rerun from a clean QA save with the final packaged executable modified `2026-07-23 02:41:35.976 -06:00`. Each transition ran in a separate packaged process. The H22 transition again produced the exact `8,849`-byte state and SHA-256 `8c3d75d80c2da06797338727eb3481d7ba5c424cbfc3cd6eba28aea4703ca2f1` before the separate cold verifier removed it.
+
+| Process | Retained local log | Modified |
+| --- | --- | --- |
+| H17 seed | `client/OddsWell/Builds/Phase1H22-Windows/Windows/OddsWell/Saved/Logs/Phase1H22_FinalSource_H17_Seed.log` | `2026-07-23 02:59:56.424 -06:00` |
+| H19 lock | `client/OddsWell/Builds/Phase1H22-Windows/Windows/OddsWell/Saved/Logs/Phase1H22_FinalSource_H19_Lock.log` | `2026-07-23 03:00:06.286 -06:00` |
+| H20 cancellation | `client/OddsWell/Builds/Phase1H22-Windows/Windows/OddsWell/Saved/Logs/Phase1H22_FinalSource_H20_Cancel.log` | `2026-07-23 03:00:16.327 -06:00` |
+| H21 decision | `client/OddsWell/Builds/Phase1H22-Windows/Windows/OddsWell/Saved/Logs/Phase1H22_FinalSource_H21_Decision.log` | `2026-07-23 03:00:26.385 -06:00` |
+| H22 finalization | `client/OddsWell/Builds/Phase1H22-Windows/Windows/OddsWell/Saved/Logs/Phase1H22_FinalSource_H22_Finalization.log` | `2026-07-23 03:00:32.473 -06:00` |
+| H22 cold verifier | `client/OddsWell/Builds/Phase1H22-Windows/Windows/OddsWell/Saved/Logs/Phase1H22_FinalSource_H22_ColdVerify.log` | `2026-07-23 03:00:59.805 -06:00` |
+
+The finalization log records `result=PASS`, `detail=none`, ledger sequence `3`, delta `40`, entries `3`, and balance `100`. The cold log records `cold_process_restore=true`, `exact_retry=duplicate`, exact upstream links, the complete wrong-decision/wrong-link/conflict/second/tamper/normal-result/malformed/unexpected-ledger rejection audit, `zero_mutation=true`, `cleanup=true`, and `detail=none`. The QA save was absent after cleanup.
+
 ## Truth boundary
 
 This completes refund application/finalization for one noncanonical machine-local QA game only. It is not a generalized void policy, player history, correction system, canonical future-game settlement, account/backend, or monetization path. The existing S99 reconciliation proof remains valid; the exact S100 QA chain is validated on cold load without creating a new history projection.

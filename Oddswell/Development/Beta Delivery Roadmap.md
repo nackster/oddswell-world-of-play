@@ -111,7 +111,7 @@ No later roadmap phase is authorized merely because it appears below.
 | 5 | 1E — Studio and apartment progression | Enter a persistent home and see the six-tier goal | FOUNDATION COMPLETE / FURNITURE IN 1I |
 | 6 | 1F — League, stadium, and match viewing | Research and watch authoritative basketball | COMPLETE FOR CURRENT ARCHIVED GAME |
 | 7 | 1G — Odds Bucks and work recovery | Earn, persist, audit, and recover virtual currency | COMPLETE FOR CURRENT LOCAL PROFILE |
-| 8 | 1H — Wager locking and settlement | Place approved wagers and receive exact outcomes | ACTIVE — LOSS + WIN + CANCELED QA FINALIZED/HISTORY PROOF + READ-ONLY CANONICAL PLAYER OFFER PREVIEW + NONCANONICAL QA SUBMISSION/RECEIPT/EXACT GAME-START LOCK/CANCELLATION/REFUND-DUE DECISION / REFUND APPLICATION, CANONICAL FUTURE-GAME INTEGRATION, BROADER PLAYER HISTORY, AND CORRECTION UNPROVEN |
+| 8 | 1H — Wager locking and settlement | Place approved wagers and receive exact outcomes | ACTIVE — LOSS + WIN + PRIOR CANCELED QA FINALIZED/HISTORY PROOF + READ-ONLY CANONICAL PLAYER OFFER PREVIEW + NONCANONICAL QA SUBMISSION/RECEIPT/EXACT GAME-START LOCK/CANCELLATION/REFUND-DUE DECISION/REFUND APPLICATION AND FINALIZATION COMPLETE / NEW-CHAIN HISTORY, CORRECTION, CANONICAL FUTURE-GAME INTEGRATION, AND BROADER PLAYER HISTORY UNPROVEN |
 | 9 | 1I — Stores and lifestyle upgrades | Buy, equip, display, and place basic items | PENDING |
 | 10 | 1J — Athlete life and league storytelling | Understand athletes, availability, and consequences | PENDING |
 | 11 | 1K — First-hour integration | Complete the entire beta promise in one session | PENDING |
