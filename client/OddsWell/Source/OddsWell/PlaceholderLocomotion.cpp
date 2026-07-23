@@ -216,6 +216,9 @@ const FKey KeyInteract = EKeys::E;
 const FKey KeyLeagueView = EKeys::L;
 const FKey KeyLeaguePrevious = EKeys::Comma;
 const FKey KeyLeagueNext = EKeys::Period;
+const FKey KeyStakeDecrease = EKeys::Hyphen;
+const FKey KeyStakeIncrease = EKeys::Equals;
+const FKey KeyConfirm = EKeys::Enter;
 const FKey KeyControllerMoveX = EKeys::Gamepad_LeftX;
 const FKey KeyControllerMoveY = EKeys::Gamepad_LeftY;
 const FKey KeyControllerLookX = EKeys::Gamepad_RightX;
@@ -385,6 +388,9 @@ void AOddsWellPlaceholderCharacter::BeginPlay()
 	bPublicLeagueQa = FParse::Param(FCommandLine::Get(), TEXT("PublicLeagueQa"));
 	bStadiumQa = FParse::Param(FCommandLine::Get(), TEXT("StadiumQa"));
 	bSportsbookOfferQa = FParse::Param(FCommandLine::Get(), TEXT("SportsbookOfferQa"));
+	bSportsbookWagerQaVerify = FParse::Param(FCommandLine::Get(), TEXT("SportsbookWagerQaVerify"));
+	bSportsbookWagerQaMode = FParse::Param(FCommandLine::Get(), TEXT("SportsbookWagerQa")) || bSportsbookWagerQaVerify;
+	bSportsbookWagerQaAuto = FParse::Param(FCommandLine::Get(), TEXT("SportsbookWagerQaAuto")) || bSportsbookWagerQaVerify;
 	bJobPayoutQaVerify = FParse::Param(FCommandLine::Get(), TEXT("JobPayoutQaVerify"));
 	bJobRecoveryQa = FParse::Param(FCommandLine::Get(), TEXT("JobRecoveryQa"));
 	bJobRecoveryQaVerify = FParse::Param(FCommandLine::Get(), TEXT("JobRecoveryQaVerify"));
@@ -508,6 +514,30 @@ void AOddsWellPlaceholderCharacter::BeginPlay()
 				SportsbookOfferPreview->StakeIncrement,
 				SportsbookOfferPreview->LockUnix);
 		}
+		if (bSportsbookWagerQaMode)
+		{
+			SportsbookQaOffer = MakeUnique<FOddsWellMatchWinnerOffer>();
+			if (!BuildOddsWellUpcomingQaMatchWinnerOffer(*SportsbookQaOffer, Error))
+			{
+				UE_LOG(LogOddsWellLocomotion, Error, TEXT("ODDSWELL_SPORTSBOOK_WAGER|result=FAIL|reason=qa_offer_unavailable|detail=%s"), *Error);
+				SportsbookQaOffer.Reset();
+				bSportsbookWagerQaAuto = false;
+			}
+			else
+			{
+				SportsbookQaStake = SportsbookQaOffer->MinimumStake;
+				UE_LOG(
+					LogOddsWellLocomotion,
+					Display,
+					TEXT("ODDSWELL_SPORTSBOOK_WAGER|result=READY|qa=true|noncanonical=true|offer_id=%s|season=%d|game=%d|accepted_unix=%lld|lock_unix=%lld|accepted_before_lock=%s|result_state=false"),
+					*SportsbookQaOffer->OfferId,
+					SportsbookQaOffer->SeasonNumber,
+					SportsbookQaOffer->GameNumber,
+					GetOddsWellUpcomingQaMatchWinnerAcceptedUnixSeconds(),
+					SportsbookQaOffer->LockUnixSeconds,
+					GetOddsWellUpcomingQaMatchWinnerAcceptedUnixSeconds() < SportsbookQaOffer->LockUnixSeconds ? TEXT("true") : TEXT("false"));
+			}
+		}
 	}
 	UE_LOG(LogOddsWellLocomotion, Display, TEXT("ODDSWELL_LOCOMOTION_READY|spawn=%s|walk=%.0f|run=%.0f|jump=%.0f"), *SafeSpawnLocation.ToCompactString(), WalkSpeed, RunSpeed, JumpVelocity);
 }
@@ -600,6 +630,11 @@ void AOddsWellPlaceholderCharacter::SetupPlayerInputComponent(UInputComponent* P
 	PlayerInputComponent->BindKey(KeyLeagueView, IE_Pressed, this, &AOddsWellPlaceholderCharacter::ToggleLeagueView);
 	PlayerInputComponent->BindKey(KeyLeaguePrevious, IE_Pressed, this, &AOddsWellPlaceholderCharacter::PreviousLeaguePage);
 	PlayerInputComponent->BindKey(KeyLeagueNext, IE_Pressed, this, &AOddsWellPlaceholderCharacter::NextLeaguePage);
+	PlayerInputComponent->BindKey(KeyLeaguePrevious, IE_Pressed, this, &AOddsWellPlaceholderCharacter::SelectPreviousSportsbookQaTeam);
+	PlayerInputComponent->BindKey(KeyLeagueNext, IE_Pressed, this, &AOddsWellPlaceholderCharacter::SelectNextSportsbookQaTeam);
+	PlayerInputComponent->BindKey(KeyStakeDecrease, IE_Pressed, this, &AOddsWellPlaceholderCharacter::DecreaseSportsbookQaStake);
+	PlayerInputComponent->BindKey(KeyStakeIncrease, IE_Pressed, this, &AOddsWellPlaceholderCharacter::IncreaseSportsbookQaStake);
+	PlayerInputComponent->BindKey(KeyConfirm, IE_Pressed, this, &AOddsWellPlaceholderCharacter::ConfirmSportsbookQaWager);
 
 	PlayerInputComponent->BindAxisKey(KeyControllerMoveY, this, &AOddsWellPlaceholderCharacter::MoveForward);
 	PlayerInputComponent->BindAxisKey(KeyControllerMoveX, this, &AOddsWellPlaceholderCharacter::MoveRight);
@@ -694,6 +729,191 @@ void AOddsWellPlaceholderCharacter::ShowSportsbookOfferPreview()
 	}
 }
 
+void AOddsWellPlaceholderCharacter::ToggleSportsbookQaWager()
+{
+	const bool bAtSportsbook = GetWorld()->GetMapName().Contains(TEXT("SundaleGraybox"))
+		&& FVector::Dist2D(GetActorLocation(), SportsbookInteractionLocation) <= SportsbookInteractionRadius;
+	if (!IsLocallyControlled() || !SportsbookQaOffer || !bAtSportsbook)
+	{
+		return;
+	}
+	if (!bSportsbookQaWagerVisible && bPublicLeagueVisible)
+	{
+		bPublicLeagueVisible = false;
+		ShowLeaguePage();
+	}
+	bSportsbookQaWagerVisible = !bSportsbookQaWagerVisible;
+	if (!bSportsbookQaWagerVisible)
+	{
+		bSportsbookQaReviewing = false;
+	}
+	ShowSportsbookQaWager();
+}
+
+FString AOddsWellPlaceholderCharacter::BuildSportsbookQaWagerText() const
+{
+	if (!SportsbookQaOffer || !SportsbookQaOffer->Selections.IsValidIndex(SportsbookQaSelectionIndex))
+	{
+		return TEXT("QA MATCH WINNER REQUEST UNAVAILABLE");
+	}
+	const FOddsWellMatchWinnerSelection& Selection = SportsbookQaOffer->Selections[SportsbookQaSelectionIndex];
+	const int64 GrossReturn = SportsbookQaStake * 100000000 / Selection.WinProbabilityE8;
+	if (bSportsbookQaAccepted)
+	{
+		return FString::Printf(
+			TEXT("QA MATCH WINNER REQUEST - ACCEPTED%s\n\nREQUEST ID\n%s\n\nSELECTED TEAM\n%s\n\nSTAKE\n%lld Odds Bucks\n\nRESULTING BALANCE\n%lld Odds Bucks\n\nSTATUS\naccepted_pending_lock\n\nNo score, winner, replay, result, lock, or settlement was created."),
+			bSportsbookQaDuplicate ? TEXT(" (EXACT RETRY)") : TEXT(""),
+			*SportsbookQaAcceptedRequestId,
+			*SportsbookQaAcceptedTeam,
+			SportsbookQaStake,
+			SportsbookQaResultingBalance);
+	}
+	return FString::Printf(
+		TEXT("QA ONLY - UPCOMING MATCH WINNER\nNONCANONICAL / MACHINE-LOCAL\n\n%s  vs  %s\n\nTEAM  <  %s  >     [, / .]\nSTAKE  -  %lld  +     [- / =]\n\nEXACT GROSS RETURN\n%lld Odds Bucks\n\n%s\n\nOffer %s\nAccepted %lld  |  Lock %lld"),
+		*SportsbookQaOffer->HomeTeam,
+		*SportsbookQaOffer->AwayTeam,
+		*Selection.Team,
+		SportsbookQaStake,
+		GrossReturn,
+		bSportsbookQaReviewing
+			? TEXT("REVIEW THIS EXACT REQUEST\nPRESS ENTER AGAIN TO CONFIRM")
+			: TEXT("PRESS ENTER TO REVIEW"),
+		*SportsbookQaOffer->OfferId,
+		GetOddsWellUpcomingQaMatchWinnerAcceptedUnixSeconds(),
+		SportsbookQaOffer->LockUnixSeconds);
+}
+
+void AOddsWellPlaceholderCharacter::ShowSportsbookQaWager()
+{
+	if (!GEngine)
+	{
+		return;
+	}
+	GEngine->RemoveOnScreenDebugMessage(912019);
+	if (bSportsbookQaWagerVisible)
+	{
+		GEngine->AddOnScreenDebugMessage(912019, 3600.0f, bSportsbookQaAccepted ? FColor::Green : FColor::Yellow, BuildSportsbookQaWagerText());
+	}
+}
+
+void AOddsWellPlaceholderCharacter::SelectPreviousSportsbookQaTeam()
+{
+	if (!bSportsbookQaWagerVisible || bSportsbookQaAccepted || !SportsbookQaOffer)
+	{
+		return;
+	}
+	SportsbookQaSelectionIndex = (SportsbookQaSelectionIndex - 1 + SportsbookQaOffer->Selections.Num()) % SportsbookQaOffer->Selections.Num();
+	bSportsbookQaReviewing = false;
+	ShowSportsbookQaWager();
+}
+
+void AOddsWellPlaceholderCharacter::SelectNextSportsbookQaTeam()
+{
+	if (!bSportsbookQaWagerVisible || bSportsbookQaAccepted || !SportsbookQaOffer)
+	{
+		return;
+	}
+	SportsbookQaSelectionIndex = (SportsbookQaSelectionIndex + 1) % SportsbookQaOffer->Selections.Num();
+	bSportsbookQaReviewing = false;
+	ShowSportsbookQaWager();
+}
+
+void AOddsWellPlaceholderCharacter::DecreaseSportsbookQaStake()
+{
+	if (!bSportsbookQaWagerVisible || bSportsbookQaAccepted || !SportsbookQaOffer)
+	{
+		return;
+	}
+	SportsbookQaStake = FMath::Max(SportsbookQaOffer->MinimumStake, SportsbookQaStake - SportsbookQaOffer->StakeIncrement);
+	bSportsbookQaReviewing = false;
+	ShowSportsbookQaWager();
+}
+
+void AOddsWellPlaceholderCharacter::IncreaseSportsbookQaStake()
+{
+	if (!bSportsbookQaWagerVisible || bSportsbookQaAccepted || !SportsbookQaOffer)
+	{
+		return;
+	}
+	SportsbookQaStake = FMath::Min(SportsbookQaOffer->MaximumStake, SportsbookQaStake + SportsbookQaOffer->StakeIncrement);
+	bSportsbookQaReviewing = false;
+	ShowSportsbookQaWager();
+}
+
+void AOddsWellPlaceholderCharacter::ConfirmSportsbookQaWager()
+{
+	if (!bSportsbookQaWagerVisible || bSportsbookQaAccepted || !SportsbookQaOffer
+		|| !SportsbookQaOffer->Selections.IsValidIndex(SportsbookQaSelectionIndex))
+	{
+		return;
+	}
+	if (!bSportsbookQaReviewing)
+	{
+		bSportsbookQaReviewing = true;
+		ShowSportsbookQaWager();
+		return;
+	}
+	const FOddsWellMatchWinnerSelection& Selection = SportsbookQaOffer->Selections[SportsbookQaSelectionIndex];
+	ServerConfirmSportsbookQaWager(Selection.Team, SportsbookQaStake);
+}
+
+void AOddsWellPlaceholderCharacter::ServerConfirmSportsbookQaWager_Implementation(const FString& OfferedTeam, const int64 Stake)
+{
+	AOddsWellLocomotionGameMode* GameMode = GetWorld()->GetAuthGameMode<AOddsWellLocomotionGameMode>();
+	FOddsWellMatchWinnerRequestRecord Record;
+	int64 Balance = GameMode ? GameMode->GetOddsBucksBalance() : 0;
+	FString Error;
+	const bool bAtSportsbook = GetWorld()->GetMapName().Contains(TEXT("SundaleGraybox"))
+		&& FVector::Dist2D(GetActorLocation(), SportsbookInteractionLocation) <= SportsbookInteractionRadius
+		&& bSportsbookQaWagerVisible;
+	if (!bAtSportsbook)
+	{
+		Error = TEXT("The QA request must be confirmed at the Sundale Sportsbook frontage.");
+	}
+	const EOddsWellMatchWinnerRequestResult Result = GameMode && bAtSportsbook
+		? GameMode->AcceptSportsbookQaWager(OfferedTeam, Stake, Record, Balance, Error)
+		: EOddsWellMatchWinnerRequestResult::Rejected;
+	const bool bAccepted = Result == EOddsWellMatchWinnerRequestResult::Accepted;
+	const bool bDuplicate = Result == EOddsWellMatchWinnerRequestResult::Duplicate;
+	UE_LOG(
+		LogOddsWellLocomotion,
+		Display,
+		TEXT("ODDSWELL_SPORTSBOOK_WAGER_SERVER|result=%s|authority=server|request_id=%s|team=%s|stake=%lld|balance=%lld|detail=%s"),
+		bAccepted ? TEXT("ACCEPTED") : bDuplicate ? TEXT("DUPLICATE") : TEXT("REJECTED"),
+		*Record.RequestCommandId,
+		*OfferedTeam,
+		Stake,
+		Balance,
+		*Error);
+	ClientConfirmSportsbookQaWager(bAccepted, bDuplicate, Record.RequestCommandId, OfferedTeam, Stake, Balance, Error);
+}
+
+void AOddsWellPlaceholderCharacter::ClientConfirmSportsbookQaWager_Implementation(
+	const bool bAccepted,
+	const bool bDuplicate,
+	const FString& RequestId,
+	const FString& OfferedTeam,
+	const int64 Stake,
+	const int64 Balance,
+	const FString& Error)
+{
+	bSportsbookQaAccepted = bAccepted || bDuplicate;
+	bSportsbookQaDuplicate = bDuplicate;
+	if (bSportsbookQaAccepted)
+	{
+		SportsbookQaAcceptedRequestId = RequestId;
+		SportsbookQaAcceptedTeam = OfferedTeam;
+		SportsbookQaStake = Stake;
+		SportsbookQaResultingBalance = Balance;
+		bSportsbookQaReviewing = false;
+		ShowSportsbookQaWager();
+	}
+	else if (GEngine)
+	{
+		GEngine->AddOnScreenDebugMessage(912020, 5.0f, FColor::Red, FString::Printf(TEXT("REQUEST REJECTED\n%s"), *Error));
+	}
+}
+
 void AOddsWellPlaceholderCharacter::Tick(const float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
@@ -733,6 +953,10 @@ void AOddsWellPlaceholderCharacter::Tick(const float DeltaSeconds)
 	if (bSportsbookOfferQa)
 	{
 		RunSportsbookOfferQa(DeltaSeconds);
+	}
+	if (bSportsbookWagerQaAuto)
+	{
+		RunSportsbookWagerQa(DeltaSeconds);
 	}
 	if (bJobQa)
 	{
@@ -1185,6 +1409,12 @@ void AOddsWellPlaceholderCharacter::PollSportsbookInteraction()
 			bSportsbookOfferVisible = false;
 			ShowSportsbookOfferPreview();
 		}
+		if (bSportsbookQaWagerVisible)
+		{
+			bSportsbookQaWagerVisible = false;
+			bSportsbookQaReviewing = false;
+			ShowSportsbookQaWager();
+		}
 		return;
 	}
 	const APlayerController* PlayerController = Cast<APlayerController>(Controller);
@@ -1194,6 +1424,18 @@ void AOddsWellPlaceholderCharacter::PollSportsbookInteraction()
 	}
 	if (GEngine)
 	{
+		if (bSportsbookWagerQaMode)
+		{
+			GEngine->AddOnScreenDebugMessage(
+				912018,
+				0.0f,
+				SportsbookQaOffer ? FColor::Yellow : FColor::Red,
+				SportsbookQaOffer
+					? (bSportsbookQaWagerVisible ? TEXT("Press E to close the QA Match Winner request") : TEXT("Press E to open the QA Match Winner request"))
+					: TEXT("QA Match Winner request unavailable"));
+		}
+		else
+		{
 		GEngine->AddOnScreenDebugMessage(
 			912018,
 			0.0f,
@@ -1201,8 +1443,9 @@ void AOddsWellPlaceholderCharacter::PollSportsbookInteraction()
 			SportsbookOfferPreview
 				? (bSportsbookOfferVisible ? TEXT("Press E to close the read-only Match Winner preview") : TEXT("Press E to preview the Match Winner offer"))
 				: TEXT("Match Winner preview unavailable"));
+		}
 	}
-	if (bSportsbookOfferQa || !SportsbookOfferPreview)
+	if (bSportsbookOfferQa || (bSportsbookWagerQaMode ? !SportsbookQaOffer : !SportsbookOfferPreview))
 	{
 		return;
 	}
@@ -1214,7 +1457,14 @@ void AOddsWellPlaceholderCharacter::PollSportsbookInteraction()
 	if (bPressed && bSportsbookInteractionArmed)
 	{
 		bSportsbookInteractionArmed = false;
-		ToggleSportsbookOfferPreview();
+		if (bSportsbookWagerQaMode)
+		{
+			ToggleSportsbookQaWager();
+		}
+		else
+		{
+			ToggleSportsbookOfferPreview();
+		}
 	}
 }
 
@@ -1303,6 +1553,162 @@ void AOddsWellPlaceholderCharacter::RunSportsbookOfferQa(const float DeltaSecond
 		{
 			QaExitAt = FPlatformTime::Seconds() + 2.0;
 		}
+	}
+}
+
+void AOddsWellPlaceholderCharacter::RunSportsbookWagerQa(const float DeltaSeconds)
+{
+	if (!IsLocallyControlled() || GetNetMode() != NM_Standalone)
+	{
+		return;
+	}
+	SportsbookWagerQaElapsed += DeltaSeconds;
+	AOddsWellLocomotionGameMode* GameMode = GetWorld()->GetAuthGameMode<AOddsWellLocomotionGameMode>();
+	if (!GetWorld()->GetMapName().Contains(TEXT("SundaleGraybox")) || !GameMode || !SportsbookQaOffer)
+	{
+		UE_LOG(LogOddsWellLocomotion, Error, TEXT("ODDSWELL_SPORTSBOOK_WAGER_QA|result=FAIL|reason=offer_or_map_unavailable"));
+		bSportsbookWagerQaAuto = false;
+		QaExitAt = FPlatformTime::Seconds() + 1.0;
+		return;
+	}
+	if (!GetCharacterMovement()->IsMovingOnGround())
+	{
+		if (SportsbookWagerQaElapsed > 10.0f)
+		{
+			UE_LOG(LogOddsWellLocomotion, Error, TEXT("ODDSWELL_SPORTSBOOK_WAGER_QA|result=FAIL|reason=spawn_timeout"));
+			bSportsbookWagerQaAuto = false;
+			QaExitAt = FPlatformTime::Seconds() + 1.0;
+		}
+		return;
+	}
+
+	if (bSportsbookWagerQaVerify)
+	{
+		if (SportsbookWagerQaStage == 0)
+		{
+			SetActorLocation(FVector(SportsbookInteractionLocation.X, SportsbookInteractionLocation.Y, GetActorLocation().Z), false, nullptr, ETeleportType::TeleportPhysics);
+			ToggleSportsbookQaWager();
+			ServerConfirmSportsbookQaWager(SportsbookQaOffer->HomeTeam, 40);
+			int32 Entries = 0;
+			int32 Requests = 0;
+			int64 Balance = 0;
+			FString Error;
+			const bool bAudit = GameMode->WasOddsBucksLoadedFromDisk()
+				&& GameMode->RunSportsbookQaWagerAudit(Entries, Requests, Balance, Error);
+			const bool bPassed = bAudit
+				&& bSportsbookQaAccepted
+				&& bSportsbookQaDuplicate
+				&& Entries == 2
+				&& Requests == 1
+				&& Balance == 60
+				&& GameMode->GetOddsBucksEntryCount() == 2
+				&& GameMode->GetMatchWinnerRequestCount() == 1
+				&& GameMode->GetOddsBucksBalance() == 60;
+			FString CleanupError;
+			const bool bCleanup = ResetOddsWellQaOddsBucksAndVerify(CleanupError);
+			UE_LOG(
+				LogOddsWellLocomotion,
+				Display,
+				TEXT("ODDSWELL_SPORTSBOOK_WAGER_COLD_QA|result=%s|cold_process_restore=true|exact_retry=duplicate|accepted_at=%lld|lock_unix=%lld|accepted_before_lock=true|rejections=stale,tampered,invalid_team,invalid_stake,late,conflict,completed_h16,insufficient_balance|zero_mutation=true|ledger_entries=%d|requests=%d|balance=%lld|cleanup=%s|detail=%s"),
+				bPassed && bCleanup ? TEXT("PASS") : TEXT("FAIL"),
+				GetOddsWellUpcomingQaMatchWinnerAcceptedUnixSeconds(),
+				SportsbookQaOffer->LockUnixSeconds,
+				Entries,
+				Requests,
+				Balance,
+				bCleanup ? TEXT("true") : TEXT("false"),
+				bAudit ? *CleanupError : *Error);
+			bSportsbookWagerQaAuto = false;
+			QaExitAt = FPlatformTime::Seconds() + 2.0;
+		}
+		return;
+	}
+
+	if (SportsbookWagerQaStage == 0)
+	{
+		if (GameMode->GetOddsBucksEntryCount() != 1 || GameMode->GetOddsBucksBalance() != 100 || GameMode->GetMatchWinnerRequestCount() != 0)
+		{
+			UE_LOG(LogOddsWellLocomotion, Error, TEXT("ODDSWELL_SPORTSBOOK_WAGER_QA|result=FAIL|reason=job_funded_baseline_mismatch|entries=%d|requests=%d|balance=%lld"), GameMode->GetOddsBucksEntryCount(), GameMode->GetMatchWinnerRequestCount(), GameMode->GetOddsBucksBalance());
+			bSportsbookWagerQaAuto = false;
+			QaExitAt = FPlatformTime::Seconds() + 1.0;
+			return;
+		}
+		SetActorLocation(FVector(SportsbookInteractionLocation.X, SportsbookInteractionLocation.Y, GetActorLocation().Z), false, nullptr, ETeleportType::TeleportPhysics);
+		ToggleSportsbookQaWager();
+		SelectNextSportsbookQaTeam();
+		const bool bAwaySelectable = BuildSportsbookQaWagerText().Contains(FString::Printf(TEXT("TEAM  <  %s  >"), *SportsbookQaOffer->AwayTeam))
+			&& BuildSportsbookQaWagerText().Contains(TEXT("22 Odds Bucks"));
+		SelectPreviousSportsbookQaTeam();
+		for (int32 Index = 0; Index < 12; ++Index)
+		{
+			IncreaseSportsbookQaStake();
+		}
+		const bool bMaximumBounded = SportsbookQaStake == 100;
+		for (int32 Index = 0; Index < 12; ++Index)
+		{
+			DecreaseSportsbookQaStake();
+		}
+		const bool bMinimumBounded = SportsbookQaStake == 10;
+		IncreaseSportsbookQaStake();
+		IncreaseSportsbookQaStake();
+		IncreaseSportsbookQaStake();
+		ConfirmSportsbookQaWager();
+		const FString ReviewText = BuildSportsbookQaWagerText();
+		if (!bSportsbookQaWagerVisible
+			|| !bSportsbookQaReviewing
+			|| !bAwaySelectable
+			|| !bMaximumBounded
+			|| !bMinimumBounded
+			|| SportsbookQaStake != 40
+			|| !ReviewText.Contains(TEXT("EXACT GROSS RETURN\n72 Odds Bucks"))
+			|| !ReviewText.Contains(TEXT("PRESS ENTER AGAIN TO CONFIRM")))
+		{
+			UE_LOG(LogOddsWellLocomotion, Error, TEXT("ODDSWELL_SPORTSBOOK_WAGER_QA|result=FAIL|reason=review_mismatch"));
+			bSportsbookWagerQaAuto = false;
+			QaExitAt = FPlatformTime::Seconds() + 1.0;
+			return;
+		}
+		SportsbookWagerQaStage = 1;
+		SportsbookWagerQaElapsed = 0.0f;
+		return;
+	}
+	if (SportsbookWagerQaStage == 1 && SportsbookWagerQaElapsed >= 0.25f)
+	{
+		ConfirmSportsbookQaWager();
+		SportsbookWagerQaStage = 2;
+		SportsbookWagerQaElapsed = 0.0f;
+		return;
+	}
+	if (SportsbookWagerQaStage == 2 && SportsbookWagerQaElapsed >= 0.5f)
+	{
+		const FString AcceptedText = BuildSportsbookQaWagerText();
+		const bool bPassed = bSportsbookQaAccepted
+			&& !bSportsbookQaDuplicate
+			&& SportsbookQaAcceptedRequestId == GetOddsWellUpcomingQaMatchWinnerRequestCommandId()
+			&& SportsbookQaAcceptedTeam == SportsbookQaOffer->HomeTeam
+			&& SportsbookQaStake == 40
+			&& SportsbookQaResultingBalance == 60
+			&& GameMode->GetOddsBucksEntryCount() == 2
+			&& GameMode->GetMatchWinnerRequestCount() == 1
+			&& GameMode->GetOddsBucksBalance() == 60
+			&& AcceptedText.Contains(TEXT("accepted_pending_lock"))
+			&& AcceptedText.Contains(TEXT("No score, winner, replay, result, lock, or settlement was created."));
+		if (FParse::Param(FCommandLine::Get(), TEXT("SportsbookWagerQaCapture")))
+		{
+			FScreenshotRequest::RequestScreenshot(TEXT("Phase1H17_SportsbookWagerAccepted.png"), true, false);
+		}
+		UE_LOG(
+			LogOddsWellLocomotion,
+			Display,
+			TEXT("ODDSWELL_SPORTSBOOK_WAGER_QA|result=%s|qa=true|noncanonical=true|location=Sportsbook|review_then_confirm=true|authority=server|atomic=true|request_id=%s|offer_id=%s|team=%s|stake=40|gross_return=72|status=accepted_pending_lock|accepted_at=%lld|lock_unix=%lld|accepted_before_lock=true|ledger_reason=match_winner_stake|ledger_entries=2|requests=1|balance=60|score=false|winner=false|replay=false|result_link=false|hidden_result_state=false|canonical_calendar_unchanged=true"),
+			bPassed ? TEXT("PASS") : TEXT("FAIL"),
+			*SportsbookQaAcceptedRequestId,
+			*SportsbookQaOffer->OfferId,
+			*SportsbookQaAcceptedTeam,
+			GetOddsWellUpcomingQaMatchWinnerAcceptedUnixSeconds(),
+			SportsbookQaOffer->LockUnixSeconds);
+		bSportsbookWagerQaAuto = false;
+		QaExitAt = FPlatformTime::Seconds() + 2.0;
 	}
 }
 
@@ -2308,14 +2714,19 @@ void AOddsWellLocomotionGameMode::BeginPlay()
 {
 	Super::BeginPlay();
 	bOddsBucksQaSlot = UseOddsWellOddsBucksQaSlot();
+	bSportsbookWagerQa = FParse::Param(FCommandLine::Get(), TEXT("SportsbookWagerQa"))
+		|| FParse::Param(FCommandLine::Get(), TEXT("SportsbookWagerQaVerify"));
 	const bool bFreshJobQa = FParse::Param(FCommandLine::Get(), TEXT("JobQa"))
 		|| FParse::Param(FCommandLine::Get(), TEXT("JobPayoutQa"))
-		|| FParse::Param(FCommandLine::Get(), TEXT("JobRecoveryQa"));
+		|| FParse::Param(FCommandLine::Get(), TEXT("JobRecoveryQa"))
+		|| FParse::Param(FCommandLine::Get(), TEXT("SportsbookWagerQa"));
 	const bool bJobRecoveryQa = FParse::Param(FCommandLine::Get(), TEXT("JobRecoveryQa"));
 	const bool bJobRecoveryQaVerify = FParse::Param(FCommandLine::Get(), TEXT("JobRecoveryQaVerify"));
-	if (bJobRecoveryQa || bJobRecoveryQaVerify)
+	if (bJobRecoveryQa || bJobRecoveryQaVerify || bSportsbookWagerQa)
 	{
-		OddsBucksQaNowUnixSeconds = JobRecoveryQaStartUnixSeconds;
+		OddsBucksQaNowUnixSeconds = bSportsbookWagerQa
+			? GetOddsWellUpcomingQaMatchWinnerAcceptedUnixSeconds()
+			: JobRecoveryQaStartUnixSeconds;
 	}
 	FString Error;
 	if (bFreshJobQa && !ResetOddsWellQaOddsBucksAndVerify(Error))
@@ -2323,26 +2734,44 @@ void AOddsWellLocomotionGameMode::BeginPlay()
 		UE_LOG(LogOddsWellLocomotion, Error, TEXT("ODDSWELL_ODDS_BUCKS_LEDGER|result=FAIL|reason=qa_slot_reset_failed|detail=%s"), *Error);
 		return;
 	}
-	if (!LoadOddsWellOddsBucksLedger(bOddsBucksQaSlot, OddsBucksLedger, NextJobPayoutUnixSeconds, bOddsBucksLoadedFromDisk, Error))
+	TArray<FOddsWellMatchWinnerRequestRecord> MatchWinnerRequests;
+	if (!LoadOddsWellOddsBucksState(bOddsBucksQaSlot, OddsBucksLedger, NextJobPayoutUnixSeconds, MatchWinnerRequests, bOddsBucksLoadedFromDisk, Error))
 	{
 		UE_LOG(LogOddsWellLocomotion, Error, TEXT("ODDSWELL_ODDS_BUCKS_LEDGER|result=FAIL|reason=load_failed|detail=%s|payouts_enabled=false"), *Error);
 		return;
 	}
+	MatchWinnerRequestCount = MatchWinnerRequests.Num();
 	if (bJobRecoveryQaVerify && bOddsBucksLoadedFromDisk)
 	{
 		OddsBucksQaNowUnixSeconds = FMath::Max<int64>(1, NextJobPayoutUnixSeconds - 1);
 	}
 	bOddsBucksReady = true;
 	PublishOddsBucksReconciliation();
+	if (FParse::Param(FCommandLine::Get(), TEXT("SportsbookWagerQa")))
+	{
+		bool bCredited = false;
+		int64 Balance = 0;
+		int64 RetryAfterSeconds = 0;
+		FString CommandId;
+		if (!TryCreditPlaceholderJob(bCredited, Balance, RetryAfterSeconds, CommandId, Error)
+			|| !bCredited
+			|| Balance != GetOddsWellFirstJobPayout())
+		{
+			bOddsBucksReady = false;
+			UE_LOG(LogOddsWellLocomotion, Error, TEXT("ODDSWELL_SPORTSBOOK_WAGER|result=FAIL|reason=job_seed_failed|detail=%s"), *Error);
+			return;
+		}
+	}
 	UE_LOG(
 		LogOddsWellLocomotion,
 		Display,
-		TEXT("ODDSWELL_ODDS_BUCKS_LEDGER|result=PASS|schema=oddswell-odds-bucks-ledger-v2|authority=server|currency=odds_bucks|source=%s|entries=%d|balance=%lld|starting_balance=0|job_payout=100|payout_interval_seconds=%lld|next_job_payout_unix=%lld|accumulation=true|allowance=false|append_only=true|idempotent=true|persistent_local_profile=true|client_commands=false|real_money=false|wagering=false"),
+		TEXT("ODDSWELL_ODDS_BUCKS_LEDGER|result=PASS|schema=oddswell-odds-bucks-ledger-v2|authority=server|currency=odds_bucks|source=%s|entries=%d|balance=%lld|starting_balance=0|job_payout=100|payout_interval_seconds=%lld|next_job_payout_unix=%lld|accumulation=true|allowance=false|append_only=true|idempotent=true|persistent_local_profile=true|client_commands=false|real_money=false|wagering=%s"),
 		bOddsBucksLoadedFromDisk ? TEXT("disk") : TEXT("empty"),
 		OddsBucksLedger.GetEntries().Num(),
 		OddsBucksLedger.GetBalance(),
 		GetOddsWellJobPayoutIntervalSeconds(),
-		NextJobPayoutUnixSeconds);
+		NextJobPayoutUnixSeconds,
+		bSportsbookWagerQa ? TEXT("qa_only") : TEXT("false"));
 }
 
 void AOddsWellLocomotionGameMode::PublishOddsBucksReconciliation()
@@ -2426,6 +2855,73 @@ bool AOddsWellLocomotionGameMode::TryCreditPlaceholderJob(bool& bOutCredited, in
 	PublishOddsBucksReconciliation();
 	bOutCredited = true;
 	OutBalance = OddsBucksLedger.GetBalance();
+	return true;
+}
+
+EOddsWellMatchWinnerRequestResult AOddsWellLocomotionGameMode::AcceptSportsbookQaWager(
+	const FString& OfferedTeam,
+	const int64 Stake,
+	FOddsWellMatchWinnerRequestRecord& OutRecord,
+	int64& OutBalance,
+	FString& OutError)
+{
+	if (!bOddsBucksReady || !bOddsBucksQaSlot || !bSportsbookWagerQa || GetNetMode() != NM_Standalone)
+	{
+		OutError = TEXT("The isolated machine-local Sportsbook QA authority is unavailable.");
+		return EOddsWellMatchWinnerRequestResult::Rejected;
+	}
+	FOddsWellMatchWinnerOffer Offer;
+	if (!BuildOddsWellUpcomingQaMatchWinnerOffer(Offer, OutError))
+	{
+		return EOddsWellMatchWinnerRequestResult::Rejected;
+	}
+	const EOddsWellMatchWinnerRequestResult Result = AcceptOddsWellUpcomingQaMatchWinnerRequest(
+		Offer,
+		GetOddsWellUpcomingQaMatchWinnerRequestCommandId(),
+		OfferedTeam,
+		Stake,
+		GetOddsWellUpcomingQaMatchWinnerAcceptedUnixSeconds(),
+		OutRecord,
+		OutBalance,
+		OutError);
+	if (Result == EOddsWellMatchWinnerRequestResult::Accepted || Result == EOddsWellMatchWinnerRequestResult::Duplicate)
+	{
+		TArray<FOddsWellMatchWinnerRequestRecord> Requests;
+		bool bFound = false;
+		if (!LoadOddsWellOddsBucksState(true, OddsBucksLedger, NextJobPayoutUnixSeconds, Requests, bFound, OutError) || !bFound)
+		{
+			OutError = FString::Printf(TEXT("The request is persisted, but the local ledger view could not reload: %s"), *OutError);
+			return Result;
+		}
+		MatchWinnerRequestCount = Requests.Num();
+		OutBalance = OddsBucksLedger.GetBalance();
+		PublishOddsBucksReconciliation();
+	}
+	return Result;
+}
+
+bool AOddsWellLocomotionGameMode::RunSportsbookQaWagerAudit(
+	int32& OutLedgerEntries,
+	int32& OutRequests,
+	int64& OutBalance,
+	FString& OutError)
+{
+	if (!bOddsBucksQaSlot || !bSportsbookWagerQa || GetNetMode() != NM_Standalone
+		|| !RunOddsWellUpcomingQaMatchWinnerAudit(OutLedgerEntries, OutRequests, OutBalance, OutError))
+	{
+		if (OutError.IsEmpty())
+		{
+			OutError = TEXT("The isolated machine-local Sportsbook QA audit is unavailable.");
+		}
+		return false;
+	}
+	TArray<FOddsWellMatchWinnerRequestRecord> Requests;
+	bool bFound = false;
+	if (!LoadOddsWellOddsBucksState(true, OddsBucksLedger, NextJobPayoutUnixSeconds, Requests, bFound, OutError) || !bFound)
+	{
+		return false;
+	}
+	MatchWinnerRequestCount = Requests.Num();
 	return true;
 }
 

@@ -95,9 +95,18 @@ private:
 	void ShowLeaguePage();
 	void ToggleSportsbookOfferPreview();
 	void ShowSportsbookOfferPreview();
+	void ToggleSportsbookQaWager();
+	void ShowSportsbookQaWager();
+	void SelectPreviousSportsbookQaTeam();
+	void SelectNextSportsbookQaTeam();
+	void DecreaseSportsbookQaStake();
+	void IncreaseSportsbookQaStake();
+	void ConfirmSportsbookQaWager();
+	FString BuildSportsbookQaWagerText() const;
 	void RunStudioQa(float DeltaSeconds);
 	void RunStadiumQa(float DeltaSeconds);
 	void RunSportsbookOfferQa(float DeltaSeconds);
+	void RunSportsbookWagerQa(float DeltaSeconds);
 	void RunJobQa(float DeltaSeconds);
 	void RunCameraOrbitQa(float DeltaSeconds);
 	bool ApplySavedOrFallbackAppearance();
@@ -126,6 +135,12 @@ private:
 
 	UFUNCTION(Client, Reliable)
 	void ClientConfirmPlaceholderJob(bool bCompleted, bool bCredited, bool bPayoutReady, int64 Balance, int64 RetryAfterSeconds);
+
+	UFUNCTION(Server, Reliable)
+	void ServerConfirmSportsbookQaWager(const FString& OfferedTeam, int64 Stake);
+
+	UFUNCTION(Client, Reliable)
+	void ClientConfirmSportsbookQaWager(bool bAccepted, bool bDuplicate, const FString& RequestId, const FString& OfferedTeam, int64 Stake, int64 Balance, const FString& Error);
 
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UStaticMeshComponent> PrimitiveBody;
@@ -227,6 +242,7 @@ private:
 	bool bStadiumQaMarkerReached = false;
 	TUniquePtr<FOddsWellPublicLeagueSnapshot> PublicLeagueSnapshot;
 	TUniquePtr<FOddsWellMatchWinnerOfferPreview> SportsbookOfferPreview;
+	TUniquePtr<FOddsWellMatchWinnerOffer> SportsbookQaOffer;
 	int32 PublicLeaguePage = 0;
 	bool bPublicLeagueVisible = false;
 	bool bPublicLeagueQa = false;
@@ -239,6 +255,20 @@ private:
 	bool bSportsbookInteractionArmed = false;
 	bool bSportsbookOfferVisible = false;
 	bool bSportsbookOfferQa = false;
+	int32 SportsbookQaSelectionIndex = 0;
+	int64 SportsbookQaStake = 10;
+	int64 SportsbookQaResultingBalance = 0;
+	FString SportsbookQaAcceptedRequestId;
+	FString SportsbookQaAcceptedTeam;
+	float SportsbookWagerQaElapsed = 0.0f;
+	int32 SportsbookWagerQaStage = 0;
+	bool bSportsbookQaWagerVisible = false;
+	bool bSportsbookQaReviewing = false;
+	bool bSportsbookQaAccepted = false;
+	bool bSportsbookQaDuplicate = false;
+	bool bSportsbookWagerQaMode = false;
+	bool bSportsbookWagerQaAuto = false;
+	bool bSportsbookWagerQaVerify = false;
 	FVector CameraOrbitQaStartLocation = FVector::ZeroVector;
 	float CameraOrbitQaElapsed = 0.0f;
 	float CameraOrbitQaPreviousYaw = 0.0f;
@@ -260,8 +290,11 @@ public:
 	virtual void Logout(AController* Exiting) override;
 	virtual APawn* SpawnDefaultPawnAtTransform_Implementation(AController* NewPlayer, const FTransform&) override;
 	bool TryCreditPlaceholderJob(bool& bOutCredited, int64& OutBalance, int64& OutRetryAfterSeconds, FString& OutCommandId, FString& OutError);
+	EOddsWellMatchWinnerRequestResult AcceptSportsbookQaWager(const FString& OfferedTeam, int64 Stake, FOddsWellMatchWinnerRequestRecord& OutRecord, int64& OutBalance, FString& OutError);
+	bool RunSportsbookQaWagerAudit(int32& OutLedgerEntries, int32& OutRequests, int64& OutBalance, FString& OutError);
 	bool AdvanceOddsBucksQaClock(int64 Seconds);
 	int32 GetOddsBucksEntryCount() const { return OddsBucksLedger.GetEntries().Num(); }
+	int32 GetMatchWinnerRequestCount() const { return MatchWinnerRequestCount; }
 	int64 GetOddsBucksBalance() const { return OddsBucksLedger.GetBalance(); }
 	int64 GetNextJobPayoutUnixSeconds() const { return NextJobPayoutUnixSeconds; }
 	int64 GetOddsBucksNowUnixSeconds() const;
@@ -286,6 +319,8 @@ private:
 	bool bOddsBucksReady = false;
 	bool bOddsBucksQaSlot = false;
 	bool bOddsBucksLoadedFromDisk = false;
+	bool bSportsbookWagerQa = false;
+	int32 MatchWinnerRequestCount = 0;
 	int64 NextJobPayoutUnixSeconds = 0;
 	int64 OddsBucksQaNowUnixSeconds = 0;
 };

@@ -53,6 +53,11 @@ const FString MatchWinnerSnapshotVersion(TEXT("oddswell-public-pregame-v1"));
 const FString MatchWinnerSourceModel(TEXT("public_elo_rotation"));
 const FString MatchWinnerPayoutFormula(TEXT("floor(stake*100000000/win_probability_e8)"));
 const FString ExactMatchWinnerOfferId(TEXT("9e6870420528e2a821591b763471c47f71b198c063cbdcbecd9ee180f9ea2459"));
+const FString UpcomingQaRequestCommandId(TEXT("qa:h17:match_winner:request:1"));
+constexpr int32 UpcomingQaSeasonNumber = 100;
+constexpr int32 UpcomingQaGameNumber = 1;
+constexpr int64 UpcomingQaAcceptedUnixSeconds = 2100000000;
+constexpr int64 UpcomingQaLockUnixSeconds = UpcomingQaAcceptedUnixSeconds + 24 * 60 * 60;
 const FString MatchWinnerResultSchema(TEXT("oddswell-sealed-match-winner-result-v1"));
 const FString MatchWinnerResultVersion(TEXT("sealed-match-winner-result-v1"));
 const FString MatchWinnerCanceledGameSchema(TEXT("oddswell-match-winner-canceled-game-v1"));
@@ -257,6 +262,72 @@ bool ValidateMatchWinnerOffer(const FOddsWellMatchWinnerOffer& Offer, FString& O
 	}
 	OutError.Reset();
 	return true;
+}
+
+bool BuildUpcomingQaMatchWinnerOffer(FOddsWellMatchWinnerOffer& OutOffer, FString& OutError)
+{
+	OutOffer = FOddsWellMatchWinnerOffer();
+	OutOffer.Schema = MatchWinnerOfferSchema;
+	OutOffer.OfferVersion = MatchWinnerOfferVersion;
+	OutOffer.Market = MatchWinnerMarket;
+	OutOffer.Currency = OddsBucksCurrency;
+	OutOffer.SourcePredictionVersion = MatchWinnerPredictionVersion;
+	OutOffer.SourceSnapshotVersion = MatchWinnerSnapshotVersion;
+	OutOffer.SourceModel = MatchWinnerSourceModel;
+	OutOffer.SourceCommitmentSha256 = TEXT("cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc");
+	OutOffer.SeasonNumber = UpcomingQaSeasonNumber;
+	OutOffer.GameNumber = UpcomingQaGameNumber;
+	OutOffer.HomeTeam = TEXT("Sundale Sparks");
+	OutOffer.AwayTeam = TEXT("Red Mesa Rivals");
+	OutOffer.LockUnixSeconds = UpcomingQaLockUnixSeconds;
+	OutOffer.MinimumStake = MatchWinnerMinimumStake;
+	OutOffer.MaximumStake = MatchWinnerMaximumStake;
+	OutOffer.StakeIncrement = MatchWinnerStakeIncrement;
+	OutOffer.HouseEdgeBps = 0;
+	OutOffer.PayoutFormula = MatchWinnerPayoutFormula;
+	FOddsWellMatchWinnerSelection& Home = OutOffer.Selections.AddDefaulted_GetRef();
+	Home.Team = OutOffer.HomeTeam;
+	Home.WinProbabilityE8 = 55000000;
+	Home.DecimalOddsE4 = 18181;
+	FOddsWellMatchWinnerSelection& Away = OutOffer.Selections.AddDefaulted_GetRef();
+	Away.Team = OutOffer.AwayTeam;
+	Away.WinProbabilityE8 = 45000000;
+	Away.DecimalOddsE4 = 22222;
+	return GetMatchWinnerOfferId(OutOffer, OutOffer.OfferId, OutError)
+		&& ValidateMatchWinnerOffer(OutOffer, OutError);
+}
+
+FOddsWellMatchWinnerOffer BuildCompletedH16MatchWinnerOffer()
+{
+	FOddsWellMatchWinnerOffer Offer;
+	Offer.OfferId = TEXT("29d3ab7c4fd2858b4cfa80f1f413a77aaa30fbdde1ca593b477d82f2e726617e");
+	Offer.Schema = MatchWinnerOfferSchema;
+	Offer.OfferVersion = MatchWinnerOfferVersion;
+	Offer.Market = MatchWinnerMarket;
+	Offer.Currency = OddsBucksCurrency;
+	Offer.SourcePredictionVersion = MatchWinnerPredictionVersion;
+	Offer.SourceSnapshotVersion = MatchWinnerSnapshotVersion;
+	Offer.SourceModel = MatchWinnerSourceModel;
+	Offer.SourceCommitmentSha256 = TEXT("898e89ef142f884fe2514bc55a65b91c80a5bf25d068467b2ddbfe25569ea98f");
+	Offer.SeasonNumber = 1;
+	Offer.GameNumber = 1;
+	Offer.HomeTeam = TEXT("Harbor City Waves");
+	Offer.AwayTeam = TEXT("Mesa Vista Sol");
+	Offer.LockUnixSeconds = 2000000000;
+	Offer.MinimumStake = MatchWinnerMinimumStake;
+	Offer.MaximumStake = MatchWinnerMaximumStake;
+	Offer.StakeIncrement = MatchWinnerStakeIncrement;
+	Offer.HouseEdgeBps = 0;
+	Offer.PayoutFormula = MatchWinnerPayoutFormula;
+	FOddsWellMatchWinnerSelection& Home = Offer.Selections.AddDefaulted_GetRef();
+	Home.Team = Offer.HomeTeam;
+	Home.WinProbabilityE8 = 57586693;
+	Home.DecimalOddsE4 = 17365;
+	FOddsWellMatchWinnerSelection& Away = Offer.Selections.AddDefaulted_GetRef();
+	Away.Team = Offer.AwayTeam;
+	Away.WinProbabilityE8 = 42413307;
+	Away.DecimalOddsE4 = 23577;
+	return Offer;
 }
 
 bool ValidateMatchWinnerRequests(const FOddsWellOddsBucksLedger& Ledger, const TArray<FOddsWellMatchWinnerRequestRecord>& Requests, FString& OutError)
@@ -1171,7 +1242,24 @@ bool UseOddsWellOddsBucksQaSlot()
 		|| FParse::Param(FCommandLine::Get(), TEXT("JobPayoutQa"))
 		|| FParse::Param(FCommandLine::Get(), TEXT("JobPayoutQaVerify"))
 		|| FParse::Param(FCommandLine::Get(), TEXT("JobRecoveryQa"))
-		|| FParse::Param(FCommandLine::Get(), TEXT("JobRecoveryQaVerify"));
+		|| FParse::Param(FCommandLine::Get(), TEXT("JobRecoveryQaVerify"))
+		|| FParse::Param(FCommandLine::Get(), TEXT("SportsbookWagerQa"))
+		|| FParse::Param(FCommandLine::Get(), TEXT("SportsbookWagerQaVerify"));
+}
+
+const FString& GetOddsWellUpcomingQaMatchWinnerRequestCommandId()
+{
+	return UpcomingQaRequestCommandId;
+}
+
+int64 GetOddsWellUpcomingQaMatchWinnerAcceptedUnixSeconds()
+{
+	return UpcomingQaAcceptedUnixSeconds;
+}
+
+bool BuildOddsWellUpcomingQaMatchWinnerOffer(FOddsWellMatchWinnerOffer& OutOffer, FString& OutError)
+{
+	return BuildUpcomingQaMatchWinnerOffer(OutOffer, OutError);
 }
 
 bool WriteOddsWellOddsBucksReconciliation(const FOddsWellOddsBucksLedger& Ledger, const int64 NextJobPayoutUnixSeconds, const int64 ObservedNowUnixSeconds, const bool bQaProjection, FString& OutPath, FString& OutError)
@@ -2275,6 +2363,154 @@ EOddsWellMatchWinnerRequestResult AcceptOddsWellMatchWinnerRequest(
 	OutBalance = CandidateLedger.GetBalance();
 	OutError.Reset();
 	return EOddsWellMatchWinnerRequestResult::Accepted;
+}
+
+EOddsWellMatchWinnerRequestResult AcceptOddsWellUpcomingQaMatchWinnerRequest(
+	const FOddsWellMatchWinnerOffer& Offer,
+	const FString& RequestCommandId,
+	const FString& OfferedTeam,
+	const int64 Stake,
+	const int64 AcceptedUnixSeconds,
+	FOddsWellMatchWinnerRequestRecord& OutRecord,
+	int64& OutBalance,
+	FString& OutError)
+{
+	FOddsWellMatchWinnerOffer Expected;
+	if (!BuildUpcomingQaMatchWinnerOffer(Expected, OutError)
+		|| Offer.OfferId != Expected.OfferId
+		|| !ValidateMatchWinnerOffer(Offer, OutError))
+	{
+		if (OutError.IsEmpty())
+		{
+			OutError = TEXT("Only the exact isolated upcoming QA offer may be accepted.");
+		}
+		OutRecord = FOddsWellMatchWinnerRequestRecord();
+		OutBalance = 0;
+		return EOddsWellMatchWinnerRequestResult::Rejected;
+	}
+	return AcceptOddsWellMatchWinnerRequest(
+		Offer,
+		RequestCommandId,
+		OfferedTeam,
+		Stake,
+		AcceptedUnixSeconds,
+		true,
+		OutRecord,
+		OutBalance,
+		OutError);
+}
+
+bool RunOddsWellUpcomingQaMatchWinnerAudit(
+	int32& OutLedgerEntries,
+	int32& OutRequests,
+	int64& OutBalance,
+	FString& OutError)
+{
+	FOddsWellOddsBucksLedger BeforeLedger;
+	int64 BeforeNextJobPayout = 0;
+	TArray<FOddsWellMatchWinnerRequestRecord> BeforeRequests;
+	bool bFound = false;
+	if (!LoadOddsWellOddsBucksState(true, BeforeLedger, BeforeNextJobPayout, BeforeRequests, bFound, OutError)
+		|| !bFound
+		|| BeforeLedger.GetEntries().Num() != 2
+		|| BeforeLedger.GetBalance() != 60
+		|| BeforeRequests.Num() != 1)
+	{
+		if (OutError.IsEmpty())
+		{
+			OutError = TEXT("The isolated upcoming QA request baseline is not exact.");
+		}
+		return false;
+	}
+
+	FOddsWellMatchWinnerOffer Offer;
+	if (!BuildUpcomingQaMatchWinnerOffer(Offer, OutError))
+	{
+		return false;
+	}
+	FOddsWellMatchWinnerRequestRecord Record;
+	int64 ObservedBalance = 0;
+	if (AcceptOddsWellUpcomingQaMatchWinnerRequest(
+			Offer,
+			UpcomingQaRequestCommandId,
+			Offer.HomeTeam,
+			40,
+			UpcomingQaLockUnixSeconds,
+			Record,
+			ObservedBalance,
+			OutError) != EOddsWellMatchWinnerRequestResult::Duplicate
+		|| Record.AcceptedUnixSeconds != UpcomingQaAcceptedUnixSeconds
+		|| Record.AcceptedUnixSeconds >= Record.LockUnixSeconds
+		|| ObservedBalance != 60)
+	{
+		OutError = TEXT("The exact cold retry was not idempotent.");
+		return false;
+	}
+
+	auto Reject = [&Record, &ObservedBalance, &OutError](
+		const FOddsWellMatchWinnerOffer& Attempt,
+		const FString& CommandId,
+		const FString& Team,
+		const int64 Stake,
+		const int64 AcceptedAt)
+	{
+		return AcceptOddsWellUpcomingQaMatchWinnerRequest(
+			Attempt,
+			CommandId,
+			Team,
+			Stake,
+			AcceptedAt,
+			Record,
+			ObservedBalance,
+			OutError) == EOddsWellMatchWinnerRequestResult::Rejected;
+	};
+
+	FOddsWellMatchWinnerOffer Stale = Offer;
+	Stale.OfferVersion = TEXT("basketball-match-winner-odds-v0");
+	FOddsWellMatchWinnerOffer Tampered = Offer;
+	Tampered.Selections[0].WinProbabilityE8++;
+	FString CompletedOfferError;
+	const FOddsWellMatchWinnerOffer CompletedH16 = BuildCompletedH16MatchWinnerOffer();
+	if (!ValidateMatchWinnerOffer(CompletedH16, CompletedOfferError)
+		|| !Reject(Stale, TEXT("qa:h17:reject:stale"), Stale.HomeTeam, 10, UpcomingQaAcceptedUnixSeconds)
+		|| !Reject(Tampered, TEXT("qa:h17:reject:tampered"), Tampered.HomeTeam, 10, UpcomingQaAcceptedUnixSeconds)
+		|| !Reject(Offer, TEXT("qa:h17:reject:team"), TEXT("Not Offered"), 10, UpcomingQaAcceptedUnixSeconds)
+		|| !Reject(Offer, TEXT("qa:h17:reject:stake"), Offer.HomeTeam, 15, UpcomingQaAcceptedUnixSeconds)
+		|| !Reject(Offer, TEXT("qa:h17:reject:late"), Offer.HomeTeam, 10, Offer.LockUnixSeconds)
+		|| !Reject(Offer, UpcomingQaRequestCommandId, Offer.HomeTeam, 50, UpcomingQaAcceptedUnixSeconds)
+		|| !Reject(CompletedH16, TEXT("qa:h17:reject:completed-h16"), CompletedH16.HomeTeam, 10, UpcomingQaAcceptedUnixSeconds)
+		|| !Reject(Offer, TEXT("qa:h17:reject:balance"), Offer.AwayTeam, 100, UpcomingQaAcceptedUnixSeconds))
+	{
+		if (OutError.IsEmpty())
+		{
+			OutError = CompletedOfferError.IsEmpty()
+				? TEXT("An isolated upcoming QA rejection invariant failed.")
+				: CompletedOfferError;
+		}
+		return false;
+	}
+
+	FOddsWellOddsBucksLedger AfterLedger;
+	int64 AfterNextJobPayout = 0;
+	TArray<FOddsWellMatchWinnerRequestRecord> AfterRequests;
+	if (!LoadOddsWellOddsBucksState(true, AfterLedger, AfterNextJobPayout, AfterRequests, bFound, OutError)
+		|| !bFound
+		|| AfterNextJobPayout != BeforeNextJobPayout
+		|| AfterLedger.GetEntries().Num() != BeforeLedger.GetEntries().Num()
+		|| AfterLedger.GetBalance() != BeforeLedger.GetBalance()
+		|| AfterRequests.Num() != BeforeRequests.Num())
+	{
+		if (OutError.IsEmpty())
+		{
+			OutError = TEXT("A rejected isolated upcoming QA request mutated persisted state.");
+		}
+		return false;
+	}
+	OutLedgerEntries = AfterLedger.GetEntries().Num();
+	OutRequests = AfterRequests.Num();
+	OutBalance = AfterLedger.GetBalance();
+	OutError.Reset();
+	return true;
 }
 
 EOddsWellMatchWinnerLockResult LockOddsWellMatchWinnerRequest(
@@ -5114,6 +5350,59 @@ bool FOddsWellOddsBucksLedgerTest::RunTest(const FString& Parameters)
 	TestEqual(TEXT("Exact win remains three ledger entries"), WinLedger.GetEntries().Num(), 3);
 	TestEqual(TEXT("Exact win balance remains 160"), WinLedger.GetBalance(), int64{160});
 	TestTrue(TEXT("Final wager QA cleanup succeeds"), ResetOddsWellQaOddsBucksAndVerify(Error));
+	return !HasAnyErrors();
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(
+	FOddsWellUpcomingQaMatchWinnerRequestTest,
+	"OddsWell.Economy.UpcomingQaMatchWinnerRequest",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+
+bool FOddsWellUpcomingQaMatchWinnerRequestTest::RunTest(const FString& Parameters)
+{
+	FString Error;
+	TestTrue(TEXT("H17 QA starts clean"), ResetOddsWellQaOddsBucksAndVerify(Error));
+	FOddsWellOddsBucksLedger Ledger;
+	TestEqual(
+		TEXT("Existing job ledger funds H17 QA"),
+		Ledger.Append(GetOddsWellFirstJobCommandId(), GetOddsWellFirstJobPayout(), GetOddsWellFirstJobReason()),
+		EOddsWellOddsBucksAppendResult::Applied);
+	TestTrue(
+		TEXT("Job-funded H17 baseline persists"),
+		SaveOddsWellOddsBucksLedger(
+			Ledger,
+			UpcomingQaAcceptedUnixSeconds + GetOddsWellJobPayoutIntervalSeconds(),
+			true,
+			Error));
+
+	FOddsWellMatchWinnerOffer Offer;
+	TestTrue(TEXT("Exact isolated upcoming QA offer builds"), BuildOddsWellUpcomingQaMatchWinnerOffer(Offer, Error));
+	TestEqual(TEXT("QA offer is noncanonical"), Offer.SeasonNumber, UpcomingQaSeasonNumber);
+	TestTrue(TEXT("Fixed QA acceptance precedes lock"), UpcomingQaAcceptedUnixSeconds < Offer.LockUnixSeconds);
+	FOddsWellMatchWinnerRequestRecord Record;
+	int64 Balance = 0;
+	TestEqual(
+		TEXT("Exact H17 request is accepted"),
+		AcceptOddsWellUpcomingQaMatchWinnerRequest(
+			Offer,
+			GetOddsWellUpcomingQaMatchWinnerRequestCommandId(),
+			Offer.HomeTeam,
+			40,
+			GetOddsWellUpcomingQaMatchWinnerAcceptedUnixSeconds(),
+			Record,
+			Balance,
+			Error),
+		EOddsWellMatchWinnerRequestResult::Accepted);
+	TestEqual(TEXT("One stake leaves 60 Odds Bucks"), Balance, int64{60});
+	TestEqual(TEXT("Accepted status remains pending lock"), Record.Status, AcceptedPendingLockStatus);
+
+	int32 Entries = 0;
+	int32 Requests = 0;
+	TestTrue(TEXT("Cold retry and every rejection remain mutation-free"), RunOddsWellUpcomingQaMatchWinnerAudit(Entries, Requests, Balance, Error));
+	TestEqual(TEXT("H17 persists job credit plus one stake debit"), Entries, 2);
+	TestEqual(TEXT("H17 persists exactly one request"), Requests, 1);
+	TestEqual(TEXT("H17 audit preserves resulting balance"), Balance, int64{60});
+	TestTrue(TEXT("H17 QA cleanup succeeds"), ResetOddsWellQaOddsBucksAndVerify(Error));
 	return !HasAnyErrors();
 }
 

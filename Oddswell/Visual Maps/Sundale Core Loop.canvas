@@ -8,14 +8,14 @@
 		{"id":"scl-art-text","type":"text","text":"## ☀️ SUNLIT CIVIC COMMONS\nWarm limestone • muted terracotta • sand concrete • sage trees • cobalt route marks • burnt-orange accents\n\n🏙️ 3–6 story human-scale perimeter\n🏟️ Arena is the single north landmark\n🌳 Mature shade + worn brick paving\n🛍️ Separate stores • Sundale-origin merchandise\n🚫 No luxury resort, futurism, water city, monuments, or final assets","x":20,"y":550,"width":660,"height":330,"color":"2"},
 		{"id":"scl-map-group","type":"group","label":"CLOCKWISE ACCEPTANCE LOOP — 800 m","x":740,"y":100,"width":1060,"height":820,"color":"4"},
 		{"id":"scl-arena","type":"text","text":"4 🏟️ ARENA\n→ 60 m","x":1080,"y":160,"width":220,"height":110,"color":"4"},
-		{"id":"scl-sportsbook","type":"text","text":"5 🎟️ SPORTSBOOK\n→ 125 m\nE: EXACT S1G1 OFFER\nREAD ONLY • NO SUBMIT","x":1420,"y":250,"width":280,"height":160,"color":"3"},
+		{"id":"scl-sportsbook","type":"text","text":"5 🎟️ SPORTSBOOK\n→ 125 m\nNORMAL: S1G1 READ-ONLY PREVIEW\nQA: TEAM + STAKE → REVIEW → CONFIRM","x":1420,"y":250,"width":280,"height":160,"color":"3"},
 		{"id":"scl-court","type":"text","text":"6 🏀 PUBLIC COURT\n→ 110 m","x":1480,"y":500,"width":240,"height":110,"color":"4"},
 		{"id":"scl-furniture","type":"text","text":"7 🪑 FURNITURE\n→ 145 m","x":1320,"y":730,"width":240,"height":110,"color":"4"},
 		{"id":"scl-studio","type":"text","text":"1 🏠 STARTER STUDIO\n→ 95 m","x":880,"y":730,"width":240,"height":110,"color":"4"},
 		{"id":"scl-job","type":"text","text":"2 💼 JOB FRONTAGE\n→ 120 m","x":780,"y":500,"width":240,"height":110,"color":"4"},
 		{"id":"scl-clothing","type":"text","text":"3 👕 CLOTHING\n→ 145 m","x":800,"y":270,"width":240,"height":110,"color":"4"},
 		{"id":"scl-commons","type":"text","text":"## 🌳 CENTRAL COMMONS\n140 m × 90 m\nCross-path shortcuts\nArena visible north","x":1100,"y":430,"width":300,"height":170,"color":"2"},
-		{"id":"scl-footer","type":"text","text":"## ✅ PACKAGED ROUTE + SPORTSBOOK FRONTAGE PROOF\n🚶 Walk 5:07 • 🏃 Run 2:35 • 800 m • 11/11 checkpoints • returned home • blocking floor • Map Check 0/0\n🎟️ At Sportsbook only: E opens exact S1G1 teams • probabilities • odds • 10–100 stake rule • game-start lock • gross-return examples • source IDs\n🔒 Read only • ledger unchanged • no wager submission • no final assets, store purchases, backend, or real money","x":0,"y":970,"width":1800,"height":230,"color":"3"}
+		{"id":"scl-footer","type":"text","text":"## ✅ PACKAGED ROUTE + SPORTSBOOK FRONTAGE PROOF\n🚶 Walk 5:07 • 🏃 Run 2:35 • 800 m • 11/11 checkpoints • returned home • blocking floor • Map Check 0/0\n🎟 Normal: exact canonical S1G1 preview remains read only\n🧪 H17 QA: either team • 10–100 by 10 • exact return • review → confirm • one pending request + one linked debit\n🔒 No score, result, lock, settlement, history, backend, real money, or brain change","x":0,"y":970,"width":1800,"height":230,"color":"3"}
 	],
 	"edges":[
 		{"id":"scl-e1","fromNode":"scl-studio","fromSide":"left","toNode":"scl-job","toSide":"bottom","toEnd":"arrow"},
