@@ -1537,7 +1537,7 @@ void AOddsWellPlaceholderCharacter::PollSportsbookInteraction()
 			0.0f,
 			SportsbookOfferPreview ? FColor::Yellow : FColor::Red,
 			SportsbookOfferPreview
-				? (bSportsbookOfferVisible ? TEXT("Press E to close the read-only Match Winner preview") : TEXT("Press E to preview the Match Winner offer"))
+				? (bSportsbookOfferVisible ? TEXT("Press E to close betting odds") : TEXT("Press E to open betting odds"))
 				: TEXT("Match Winner preview unavailable"));
 		}
 	}
