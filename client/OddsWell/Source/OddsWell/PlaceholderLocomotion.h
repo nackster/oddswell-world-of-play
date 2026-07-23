@@ -311,6 +311,7 @@ public:
 
 private:
 	void PublishOddsBucksReconciliation();
+	void RunSportsbookLockQa();
 	FOddsWellOddsBucksLedger OddsBucksLedger;
 	TMap<int32, FVector> SharedCityQaStartLocations;
 	FOddsWellSharedCityAppearance SharedCityReconnectExpectedAppearance;
@@ -329,6 +330,10 @@ private:
 	bool bOddsBucksQaSlot = false;
 	bool bOddsBucksLoadedFromDisk = false;
 	bool bSportsbookWagerQa = false;
+	bool bSportsbookLockQa = false;
+	bool bSportsbookLockQaVerify = false;
+	bool bSportsbookLockQaDone = false;
+	int32 SportsbookLockQaStage = 0;
 	int32 MatchWinnerRequestCount = 0;
 	int64 NextJobPayoutUnixSeconds = 0;
 	int64 OddsBucksQaNowUnixSeconds = 0;
