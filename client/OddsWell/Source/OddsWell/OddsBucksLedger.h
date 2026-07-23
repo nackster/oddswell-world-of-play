@@ -683,6 +683,7 @@ ODDSWELL_API int64 GetOddsWellUpcomingQaMatchWinnerLockUnixSeconds();
 ODDSWELL_API const FString& GetOddsWellUpcomingQaMatchWinnerCancellationCommandId();
 ODDSWELL_API const FString& GetOddsWellUpcomingQaMatchWinnerCancellationEvidenceId();
 ODDSWELL_API int64 GetOddsWellUpcomingQaMatchWinnerCancellationUnixSeconds();
+ODDSWELL_API const FString& GetOddsWellUpcomingQaMatchWinnerVoidDecisionCommandId();
 ODDSWELL_API bool BuildOddsWellUpcomingQaMatchWinnerOffer(FOddsWellMatchWinnerOffer& OutOffer, FString& OutError);
 ODDSWELL_API EOddsWellMatchWinnerRequestResult AcceptOddsWellUpcomingQaMatchWinnerRequest(const FOddsWellMatchWinnerOffer& Offer, const FString& RequestCommandId, const FString& OfferedTeam, int64 Stake, int64 AcceptedUnixSeconds, FOddsWellMatchWinnerRequestRecord& OutRecord, int64& OutBalance, FString& OutError);
 ODDSWELL_API bool RunOddsWellUpcomingQaMatchWinnerAudit(int32& OutLedgerEntries, int32& OutRequests, int64& OutBalance, FString& OutError);
@@ -690,6 +691,8 @@ ODDSWELL_API EOddsWellMatchWinnerLockResult LockOddsWellUpcomingQaMatchWinnerReq
 ODDSWELL_API bool RunOddsWellUpcomingQaMatchWinnerLockAudit(int32& OutLedgerEntries, int32& OutRequests, int32& OutLocks, int64& OutBalance, FString& OutError);
 ODDSWELL_API EOddsWellMatchWinnerCanceledGameResult RecordOddsWellUpcomingQaMatchWinnerCancellation(FOddsWellMatchWinnerCanceledGameRecord& OutRecord, FString& OutError);
 ODDSWELL_API bool RunOddsWellUpcomingQaMatchWinnerCancellationAudit(int32& OutLedgerEntries, int32& OutRequests, int32& OutLocks, int32& OutCancellations, int64& OutBalance, FString& OutError);
+ODDSWELL_API EOddsWellMatchWinnerVoidDecisionResult DecideOddsWellUpcomingQaMatchWinnerVoidRefundDue(FOddsWellMatchWinnerVoidDecisionRecord& OutRecord, FString& OutError);
+ODDSWELL_API bool RunOddsWellUpcomingQaMatchWinnerVoidDecisionAudit(int32& OutLedgerEntries, int32& OutRequests, int32& OutLocks, int32& OutCancellations, int32& OutVoidDecisions, int64& OutBalance, FString& OutError);
 ODDSWELL_API bool LoadOddsWellPendingQaMatchWinnerReceipt(FOddsWellPendingQaMatchWinnerReceipt& OutReceipt, FString& OutError);
 ODDSWELL_API bool WriteOddsWellOddsBucksReconciliation(const FOddsWellOddsBucksLedger& Ledger, int64 NextJobPayoutUnixSeconds, int64 ObservedNowUnixSeconds, bool bQaProjection, FString& OutPath, FString& OutError);
 ODDSWELL_API bool SaveOddsWellOddsBucksLedger(const FOddsWellOddsBucksLedger& Ledger, int64 NextJobPayoutUnixSeconds, bool bQaSlot, FString& OutError);
