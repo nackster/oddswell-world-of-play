@@ -178,6 +178,25 @@ struct FOddsWellMatchWinnerRequestRecord
 };
 
 USTRUCT()
+struct FOddsWellPendingQaMatchWinnerReceipt
+{
+	GENERATED_BODY()
+
+	FString RequestId;
+	FString OfferId;
+	FString OfferVersion;
+	FString SelectedTeam;
+	int64 Stake = 0;
+	int64 AcceptedUnixSeconds = 0;
+	int64 LockUnixSeconds = 0;
+	FName Status;
+	int64 LedgerSequence = 0;
+	int64 LedgerDelta = 0;
+	FName LedgerReason;
+	int64 CurrentBalance = 0;
+};
+
+USTRUCT()
 struct FOddsWellMatchWinnerLockRecord
 {
 	GENERATED_BODY()
@@ -662,6 +681,7 @@ ODDSWELL_API int64 GetOddsWellUpcomingQaMatchWinnerAcceptedUnixSeconds();
 ODDSWELL_API bool BuildOddsWellUpcomingQaMatchWinnerOffer(FOddsWellMatchWinnerOffer& OutOffer, FString& OutError);
 ODDSWELL_API EOddsWellMatchWinnerRequestResult AcceptOddsWellUpcomingQaMatchWinnerRequest(const FOddsWellMatchWinnerOffer& Offer, const FString& RequestCommandId, const FString& OfferedTeam, int64 Stake, int64 AcceptedUnixSeconds, FOddsWellMatchWinnerRequestRecord& OutRecord, int64& OutBalance, FString& OutError);
 ODDSWELL_API bool RunOddsWellUpcomingQaMatchWinnerAudit(int32& OutLedgerEntries, int32& OutRequests, int64& OutBalance, FString& OutError);
+ODDSWELL_API bool LoadOddsWellPendingQaMatchWinnerReceipt(FOddsWellPendingQaMatchWinnerReceipt& OutReceipt, FString& OutError);
 ODDSWELL_API bool WriteOddsWellOddsBucksReconciliation(const FOddsWellOddsBucksLedger& Ledger, int64 NextJobPayoutUnixSeconds, int64 ObservedNowUnixSeconds, bool bQaProjection, FString& OutPath, FString& OutError);
 ODDSWELL_API bool SaveOddsWellOddsBucksLedger(const FOddsWellOddsBucksLedger& Ledger, int64 NextJobPayoutUnixSeconds, bool bQaSlot, FString& OutError);
 ODDSWELL_API bool LoadOddsWellOddsBucksLedger(bool bQaSlot, FOddsWellOddsBucksLedger& OutLedger, int64& OutNextJobPayoutUnixSeconds, bool& bOutFound, FString& OutError);

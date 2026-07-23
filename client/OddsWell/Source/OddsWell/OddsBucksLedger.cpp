@@ -1244,7 +1244,8 @@ bool UseOddsWellOddsBucksQaSlot()
 		|| FParse::Param(FCommandLine::Get(), TEXT("JobRecoveryQa"))
 		|| FParse::Param(FCommandLine::Get(), TEXT("JobRecoveryQaVerify"))
 		|| FParse::Param(FCommandLine::Get(), TEXT("SportsbookWagerQa"))
-		|| FParse::Param(FCommandLine::Get(), TEXT("SportsbookWagerQaVerify"));
+		|| FParse::Param(FCommandLine::Get(), TEXT("SportsbookWagerQaVerify"))
+		|| FParse::Param(FCommandLine::Get(), TEXT("SportsbookReceiptQa"));
 }
 
 const FString& GetOddsWellUpcomingQaMatchWinnerRequestCommandId()
@@ -1260,6 +1261,123 @@ int64 GetOddsWellUpcomingQaMatchWinnerAcceptedUnixSeconds()
 bool BuildOddsWellUpcomingQaMatchWinnerOffer(FOddsWellMatchWinnerOffer& OutOffer, FString& OutError)
 {
 	return BuildUpcomingQaMatchWinnerOffer(OutOffer, OutError);
+}
+
+bool LoadOddsWellPendingQaMatchWinnerReceipt(
+	FOddsWellPendingQaMatchWinnerReceipt& OutReceipt,
+	FString& OutError)
+{
+	OutReceipt = FOddsWellPendingQaMatchWinnerReceipt();
+	const auto FailClosed = [&OutError]()
+	{
+		OutError = TEXT("Pending Match Winner receipt unavailable.");
+		return false;
+	};
+	if (!UGameplayStatics::DoesSaveGameExist(OddsBucksQaSlot, OddsBucksUserIndex))
+	{
+		return FailClosed();
+	}
+
+	const UOddsWellOddsBucksSaveGame* Record = Cast<UOddsWellOddsBucksSaveGame>(
+		UGameplayStatics::LoadGameFromSlot(OddsBucksQaSlot, OddsBucksUserIndex));
+	FOddsWellOddsBucksLedger Ledger;
+	int64 NextJobPayoutUnixSeconds = 0;
+	TArray<FOddsWellMatchWinnerRequestRecord> Requests;
+	TArray<FOddsWellMatchWinnerLockRecord> Locks;
+	TArray<FOddsWellMatchWinnerResultLinkRecord> ResultLinks;
+	TArray<FOddsWellMatchWinnerSettlementDecisionRecord> Decisions;
+	TArray<FOddsWellMatchWinnerLossFinalizationRecord> LossFinalizations;
+	TArray<FOddsWellMatchWinnerWinFinalizationRecord> WinFinalizations;
+	TArray<FOddsWellMatchWinnerCanceledGameRecord> CanceledGames;
+	TArray<FOddsWellMatchWinnerVoidDecisionRecord> VoidDecisions;
+	bool bNeedsMigration = false;
+	FString ValidationError;
+	if (!Record
+		|| !ValidateOddsBucksSave(
+			Record,
+			Ledger,
+			NextJobPayoutUnixSeconds,
+			Requests,
+			Locks,
+			ResultLinks,
+			Decisions,
+			LossFinalizations,
+			WinFinalizations,
+			CanceledGames,
+			VoidDecisions,
+			bNeedsMigration,
+			ValidationError)
+		|| bNeedsMigration
+		|| Record->SchemaVersion != OddsBucksSchemaVersion)
+	{
+		return FailClosed();
+	}
+
+	FOddsWellMatchWinnerOffer Offer;
+	if (!BuildUpcomingQaMatchWinnerOffer(Offer, ValidationError)
+		|| Ledger.GetEntries().Num() != 2
+		|| Ledger.GetBalance() != 60
+		|| NextJobPayoutUnixSeconds != UpcomingQaLockUnixSeconds
+		|| Requests.Num() != 1
+		|| !Locks.IsEmpty()
+		|| !ResultLinks.IsEmpty()
+		|| !Decisions.IsEmpty()
+		|| !LossFinalizations.IsEmpty()
+		|| !WinFinalizations.IsEmpty()
+		|| !CanceledGames.IsEmpty()
+		|| !VoidDecisions.IsEmpty()
+		|| !Record->MatchWinnerVoidFinalizations.IsEmpty())
+	{
+		return FailClosed();
+	}
+
+	const FOddsWellOddsBucksEntry& Credit = Ledger.GetEntries()[0];
+	const FOddsWellOddsBucksEntry& Debit = Ledger.GetEntries()[1];
+	const FOddsWellMatchWinnerRequestRecord& Request = Requests[0];
+	if (Credit.Sequence != 1
+		|| Credit.CommandId != FirstJobCommandId
+		|| Credit.Delta != FirstJobPayout
+		|| Credit.BalanceAfter != FirstJobPayout
+		|| Credit.Reason != FirstJobReason
+		|| Debit.Sequence != 2
+		|| Debit.CommandId != UpcomingQaRequestCommandId
+		|| Debit.Delta != -40
+		|| Debit.BalanceAfter != 60
+		|| Debit.Reason != MatchWinnerStakeReason
+		|| Request.RequestCommandId != UpcomingQaRequestCommandId
+		|| Request.StakeLedgerCommandId != UpcomingQaRequestCommandId
+		|| Request.OfferId != Offer.OfferId
+		|| Request.OfferVersion != Offer.OfferVersion
+		|| Request.SeasonNumber != Offer.SeasonNumber
+		|| Request.GameNumber != Offer.GameNumber
+		|| Request.HomeTeam != Offer.HomeTeam
+		|| Request.AwayTeam != Offer.AwayTeam
+		|| Request.OfferedTeam != Offer.HomeTeam
+		|| Request.Stake != 40
+		|| Request.AcceptedUnixSeconds != UpcomingQaAcceptedUnixSeconds
+		|| Request.LockUnixSeconds != Offer.LockUnixSeconds
+		|| Request.AcceptedUnixSeconds >= Request.LockUnixSeconds
+		|| Request.Status != AcceptedPendingLockStatus)
+	{
+		return FailClosed();
+	}
+
+	FOddsWellPendingQaMatchWinnerReceipt Candidate;
+	Candidate.RequestId = Request.RequestCommandId;
+	Candidate.OfferId = Request.OfferId;
+	Candidate.OfferVersion = Request.OfferVersion;
+	Candidate.SelectedTeam = Request.OfferedTeam;
+	Candidate.Stake = Request.Stake;
+	Candidate.AcceptedUnixSeconds = Request.AcceptedUnixSeconds;
+	Candidate.LockUnixSeconds = Request.LockUnixSeconds;
+	Candidate.Status = Request.Status;
+	Candidate.LedgerSequence = Debit.Sequence;
+	Candidate.LedgerDelta = Debit.Delta;
+	Candidate.LedgerReason = Debit.Reason;
+	Candidate.CurrentBalance = Ledger.GetBalance();
+	OutReceipt = MoveTemp(Candidate);
+	OutError.Reset();
+	return true;
 }
 
 bool WriteOddsWellOddsBucksReconciliation(const FOddsWellOddsBucksLedger& Ledger, const int64 NextJobPayoutUnixSeconds, const int64 ObservedNowUnixSeconds, const bool bQaProjection, FString& OutPath, FString& OutError)
@@ -5403,6 +5521,183 @@ bool FOddsWellUpcomingQaMatchWinnerRequestTest::RunTest(const FString& Parameter
 	TestEqual(TEXT("H17 persists exactly one request"), Requests, 1);
 	TestEqual(TEXT("H17 audit preserves resulting balance"), Balance, int64{60});
 	TestTrue(TEXT("H17 QA cleanup succeeds"), ResetOddsWellQaOddsBucksAndVerify(Error));
+	return !HasAnyErrors();
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(
+	FOddsWellPendingQaMatchWinnerReceiptTest,
+	"OddsWell.Economy.PendingQaMatchWinnerReceipt",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+
+bool FOddsWellPendingQaMatchWinnerReceiptTest::RunTest(const FString& Parameters)
+{
+	FString Error;
+	TestTrue(TEXT("H18 QA starts clean"), ResetOddsWellQaOddsBucksAndVerify(Error));
+	FOddsWellOddsBucksLedger Ledger;
+	TestEqual(
+		TEXT("Existing job ledger funds H18 QA"),
+		Ledger.Append(GetOddsWellFirstJobCommandId(), GetOddsWellFirstJobPayout(), GetOddsWellFirstJobReason()),
+		EOddsWellOddsBucksAppendResult::Applied);
+	TestTrue(
+		TEXT("Job-funded H18 baseline persists"),
+		SaveOddsWellOddsBucksLedger(
+			Ledger,
+			UpcomingQaAcceptedUnixSeconds + GetOddsWellJobPayoutIntervalSeconds(),
+			true,
+			Error));
+	FOddsWellMatchWinnerOffer Offer;
+	TestTrue(TEXT("Exact H18 offer builds"), BuildOddsWellUpcomingQaMatchWinnerOffer(Offer, Error));
+	FOddsWellMatchWinnerRequestRecord Request;
+	int64 Balance = 0;
+	TestEqual(
+		TEXT("Exact pending request exists for receipt QA"),
+		AcceptOddsWellUpcomingQaMatchWinnerRequest(
+			Offer,
+			GetOddsWellUpcomingQaMatchWinnerRequestCommandId(),
+			Offer.HomeTeam,
+			40,
+			GetOddsWellUpcomingQaMatchWinnerAcceptedUnixSeconds(),
+			Request,
+			Balance,
+			Error),
+		EOddsWellMatchWinnerRequestResult::Accepted);
+
+	TArray<uint8> ExactBytes;
+	TestTrue(
+		TEXT("Exact pending receipt state serializes"),
+		UGameplayStatics::SaveGameToMemory(
+			UGameplayStatics::LoadGameFromSlot(OddsBucksQaSlot, OddsBucksUserIndex),
+			ExactBytes));
+	FOddsWellPendingQaMatchWinnerReceipt Receipt;
+	TestTrue(TEXT("Exact pending receipt cold-loads"), LoadOddsWellPendingQaMatchWinnerReceipt(Receipt, Error));
+	TestEqual(TEXT("Receipt request identity is exact"), Receipt.RequestId, UpcomingQaRequestCommandId);
+	TestEqual(TEXT("Receipt offer identity is exact"), Receipt.OfferId, Offer.OfferId);
+	TestEqual(TEXT("Receipt offer version is exact"), Receipt.OfferVersion, Offer.OfferVersion);
+	TestEqual(TEXT("Receipt selected team is exact"), Receipt.SelectedTeam, Offer.HomeTeam);
+	TestEqual(TEXT("Receipt stake is 40"), Receipt.Stake, int64{40});
+	TestEqual(TEXT("Receipt accepted time is exact"), Receipt.AcceptedUnixSeconds, UpcomingQaAcceptedUnixSeconds);
+	TestEqual(TEXT("Receipt lock time is exact"), Receipt.LockUnixSeconds, UpcomingQaLockUnixSeconds);
+	TestEqual(TEXT("Receipt remains pending lock"), Receipt.Status, AcceptedPendingLockStatus);
+	TestEqual(TEXT("Receipt links ledger sequence two"), Receipt.LedgerSequence, int64{2});
+	TestEqual(TEXT("Receipt links the 40 debit"), Receipt.LedgerDelta, int64{-40});
+	TestEqual(TEXT("Receipt links the stake reason"), Receipt.LedgerReason, MatchWinnerStakeReason);
+	TestEqual(TEXT("Receipt shows current balance 60"), Receipt.CurrentBalance, int64{60});
+	TArray<uint8> AfterReadBytes;
+	TestTrue(
+		TEXT("Exact state serializes after receipt read"),
+		UGameplayStatics::SaveGameToMemory(
+			UGameplayStatics::LoadGameFromSlot(OddsBucksQaSlot, OddsBucksUserIndex),
+			AfterReadBytes));
+	TestTrue(TEXT("Receipt read does not mutate exact state"), ExactBytes == AfterReadBytes);
+
+	auto RestoreExact = [&]()
+	{
+		return UGameplayStatics::SaveGameToSlot(
+			UGameplayStatics::LoadGameFromMemory(ExactBytes),
+			OddsBucksQaSlot,
+			OddsBucksUserIndex);
+	};
+	auto RejectMutation = [&](const TCHAR* Label, TFunctionRef<void(UOddsWellOddsBucksSaveGame&)> Mutate)
+	{
+		UOddsWellOddsBucksSaveGame* Mutated = Cast<UOddsWellOddsBucksSaveGame>(
+			UGameplayStatics::LoadGameFromMemory(ExactBytes));
+		TestNotNull(FString::Printf(TEXT("%s mutation loads"), Label), Mutated);
+		if (!Mutated)
+		{
+			return;
+		}
+		Mutate(*Mutated);
+		TestTrue(
+			FString::Printf(TEXT("%s mutation persists"), Label),
+			UGameplayStatics::SaveGameToSlot(Mutated, OddsBucksQaSlot, OddsBucksUserIndex));
+		Receipt.RequestId = TEXT("partial");
+		Receipt.CurrentBalance = 999;
+		Error.Reset();
+		TestFalse(
+			FString::Printf(TEXT("%s fails closed"), Label),
+			LoadOddsWellPendingQaMatchWinnerReceipt(Receipt, Error));
+		TestTrue(
+			FString::Printf(TEXT("%s exposes no partial values"), Label),
+			Receipt.RequestId.IsEmpty() && Receipt.CurrentBalance == 0);
+		TestEqual(
+			FString::Printf(TEXT("%s returns the generic receipt error"), Label),
+			Error,
+			FString(TEXT("Pending Match Winner receipt unavailable.")));
+		TestTrue(FString::Printf(TEXT("%s exact state restores"), Label), RestoreExact());
+	};
+
+	TestTrue(TEXT("Missing-state setup removes the QA save"), ResetOddsWellQaOddsBucksAndVerify(Error));
+	Receipt.RequestId = TEXT("partial");
+	Receipt.CurrentBalance = 999;
+	TestFalse(TEXT("Missing request state fails closed"), LoadOddsWellPendingQaMatchWinnerReceipt(Receipt, Error));
+	TestTrue(TEXT("Missing state exposes no partial values"), Receipt.RequestId.IsEmpty() && Receipt.CurrentBalance == 0);
+	TestTrue(TEXT("Exact state restores after missing-state QA"), RestoreExact());
+
+	RejectMutation(TEXT("Multiple request evidence"), [](UOddsWellOddsBucksSaveGame& Save)
+	{
+		const FOddsWellMatchWinnerRequestRecord Duplicate = Save.MatchWinnerRequests[0];
+		Save.MatchWinnerRequests.Add(Duplicate);
+	});
+	RejectMutation(TEXT("Mismatched request identity"), [](UOddsWellOddsBucksSaveGame& Save)
+	{
+		Save.MatchWinnerRequests[0].RequestCommandId += TEXT(":other");
+	});
+	RejectMutation(TEXT("Mismatched debit identity"), [](UOddsWellOddsBucksSaveGame& Save)
+	{
+		Save.Entries[1].CommandId += TEXT(":other");
+	});
+	RejectMutation(TEXT("Mismatched offer identity"), [](UOddsWellOddsBucksSaveGame& Save)
+	{
+		Save.MatchWinnerRequests[0].OfferId = FString::ChrN(64, TEXT('d'));
+	});
+	RejectMutation(TEXT("Mismatched accepted time"), [](UOddsWellOddsBucksSaveGame& Save)
+	{
+		Save.MatchWinnerRequests[0].AcceptedUnixSeconds++;
+	});
+	RejectMutation(TEXT("Mismatched request status"), [](UOddsWellOddsBucksSaveGame& Save)
+	{
+		Save.MatchWinnerRequests[0].Status = TEXT("open");
+	});
+	RejectMutation(TEXT("Wrong debit delta"), [](UOddsWellOddsBucksSaveGame& Save)
+	{
+		Save.Entries[1].Delta = -39;
+		Save.Entries[1].BalanceAfter = 61;
+	});
+	RejectMutation(TEXT("Wrong debit sequence"), [](UOddsWellOddsBucksSaveGame& Save)
+	{
+		Save.Entries[1].Sequence = 3;
+	});
+	RejectMutation(TEXT("Wrong debit balance"), [](UOddsWellOddsBucksSaveGame& Save)
+	{
+		Save.Entries[1].BalanceAfter = 59;
+	});
+	RejectMutation(TEXT("Stale offer version"), [](UOddsWellOddsBucksSaveGame& Save)
+	{
+		Save.MatchWinnerRequests[0].OfferVersion = TEXT("basketball-match-winner-odds-v0");
+	});
+	RejectMutation(TEXT("Duplicate debit evidence"), [](UOddsWellOddsBucksSaveGame& Save)
+	{
+		const FOddsWellOddsBucksEntry Duplicate = Save.Entries[1];
+		Save.Entries.Add(Duplicate);
+	});
+	RejectMutation(TEXT("Invented lock evidence"), [](UOddsWellOddsBucksSaveGame& Save)
+	{
+		FOddsWellMatchWinnerLockRecord& Lock = Save.MatchWinnerLocks.AddDefaulted_GetRef();
+		Lock.LockCommandId = TEXT("qa:h18:invented-lock");
+		Lock.RequestCommandId = UpcomingQaRequestCommandId;
+		Lock.SeasonNumber = UpcomingQaSeasonNumber;
+		Lock.GameNumber = UpcomingQaGameNumber;
+		Lock.AuthoritativeGameStartUnixSeconds = UpcomingQaLockUnixSeconds;
+		Lock.LockUnixSeconds = UpcomingQaLockUnixSeconds;
+		Lock.Decision = MatchWinnerLockedDecision;
+	});
+	RejectMutation(TEXT("Invented result evidence"), [](UOddsWellOddsBucksSaveGame& Save)
+	{
+		Save.MatchWinnerResultLinks.AddDefaulted();
+	});
+
+	TestTrue(TEXT("Exact receipt restores after fail-closed matrix"), LoadOddsWellPendingQaMatchWinnerReceipt(Receipt, Error));
+	TestTrue(TEXT("H18 QA cleanup succeeds"), ResetOddsWellQaOddsBucksAndVerify(Error));
 	return !HasAnyErrors();
 }
 
