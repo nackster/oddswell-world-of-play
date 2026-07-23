@@ -2933,6 +2933,10 @@ void AOddsWellLocomotionGameMode::BeginPlay()
 	bSportsbookLockQa = FParse::Param(FCommandLine::Get(), TEXT("SportsbookLockQa"))
 		|| bSportsbookLockQaVerify;
 	SportsbookLockQaStage = bSportsbookLockQaVerify ? 1 : 0;
+	bSportsbookCancellationQaVerify = FParse::Param(FCommandLine::Get(), TEXT("SportsbookCancellationQaVerify"));
+	bSportsbookCancellationQa = FParse::Param(FCommandLine::Get(), TEXT("SportsbookCancellationQa"))
+		|| bSportsbookCancellationQaVerify;
+	SportsbookCancellationQaStage = bSportsbookCancellationQaVerify ? 1 : 0;
 	if (FParse::Param(FCommandLine::Get(), TEXT("SportsbookReceiptQa")))
 	{
 		FOddsWellPendingQaMatchWinnerReceipt Receipt;
@@ -2960,7 +2964,12 @@ void AOddsWellLocomotionGameMode::BeginPlay()
 		|| FParse::Param(FCommandLine::Get(), TEXT("SportsbookWagerQa"));
 	const bool bJobRecoveryQa = FParse::Param(FCommandLine::Get(), TEXT("JobRecoveryQa"));
 	const bool bJobRecoveryQaVerify = FParse::Param(FCommandLine::Get(), TEXT("JobRecoveryQaVerify"));
-	if (bSportsbookLockQa)
+	if (bSportsbookCancellationQa)
+	{
+		OddsBucksQaNowUnixSeconds = GetOddsWellUpcomingQaMatchWinnerCancellationUnixSeconds()
+			- (bSportsbookCancellationQaVerify ? 0 : 1);
+	}
+	else if (bSportsbookLockQa)
 	{
 		OddsBucksQaNowUnixSeconds = GetOddsWellUpcomingQaMatchWinnerLockUnixSeconds()
 			- (bSportsbookLockQaVerify ? 0 : 1);
@@ -3051,10 +3060,10 @@ bool AOddsWellLocomotionGameMode::TryCreditPlaceholderJob(bool& bOutCredited, in
 	OutBalance = OddsBucksLedger.GetBalance();
 	OutRetryAfterSeconds = 0;
 	OutCommandId.Reset();
-	if (!bOddsBucksReady || bSportsbookLockQa)
+	if (!bOddsBucksReady || bSportsbookLockQa || bSportsbookCancellationQa)
 	{
-		OutError = bSportsbookLockQa
-			? TEXT("Job payouts are disabled during the isolated game-start lock transition.")
+		OutError = bSportsbookLockQa || bSportsbookCancellationQa
+			? TEXT("Job payouts are disabled during the isolated game-state transition.")
 			: TEXT("The authoritative Odds Bucks ledger is not ready.");
 		return false;
 	}
@@ -3268,6 +3277,118 @@ void AOddsWellLocomotionGameMode::RunSportsbookLockQa()
 	FPlatformMisc::RequestExit(false);
 }
 
+void AOddsWellLocomotionGameMode::RunSportsbookCancellationQa()
+{
+	if (bSportsbookCancellationQaDone)
+	{
+		return;
+	}
+	const int64 CancellationUnixSeconds = GetOddsWellUpcomingQaMatchWinnerCancellationUnixSeconds();
+	if (!bOddsBucksReady || !bOddsBucksQaSlot || GetNetMode() != NM_Standalone)
+	{
+		bSportsbookCancellationQaDone = true;
+		UE_LOG(LogOddsWellLocomotion, Error, TEXT("ODDSWELL_SPORTSBOOK_CANCELLATION_QA|result=FAIL|reason=authority_unavailable"));
+		FPlatformMisc::RequestExit(false);
+		return;
+	}
+	if (SportsbookCancellationQaStage == 0)
+	{
+		if (GetOddsBucksNowUnixSeconds() != CancellationUnixSeconds - 1
+			|| !AdvanceOddsBucksQaClock(1))
+		{
+			bSportsbookCancellationQaDone = true;
+			UE_LOG(LogOddsWellLocomotion, Error, TEXT("ODDSWELL_SPORTSBOOK_CANCELLATION_QA|result=FAIL|reason=pre_cancellation_gate"));
+			FPlatformMisc::RequestExit(false);
+			return;
+		}
+		SportsbookCancellationQaStage = 1;
+		UE_LOG(LogOddsWellLocomotion, Display, TEXT("ODDSWELL_SPORTSBOOK_CANCELLATION_GATE|result=PASS|post_lock=true|server_clock_advanced=true|now_unix=%lld"), GetOddsBucksNowUnixSeconds());
+		return;
+	}
+	if (GetOddsBucksNowUnixSeconds() != CancellationUnixSeconds)
+	{
+		bSportsbookCancellationQaDone = true;
+		UE_LOG(LogOddsWellLocomotion, Error, TEXT("ODDSWELL_SPORTSBOOK_CANCELLATION_QA|result=FAIL|reason=clock_mismatch|now_unix=%lld|cancellation_unix=%lld"), GetOddsBucksNowUnixSeconds(), CancellationUnixSeconds);
+		FPlatformMisc::RequestExit(false);
+		return;
+	}
+
+	FOddsWellMatchWinnerCanceledGameRecord Cancellation;
+	FString Error;
+	const EOddsWellMatchWinnerCanceledGameResult Result =
+		RecordOddsWellUpcomingQaMatchWinnerCancellation(Cancellation, Error);
+	int32 Entries = 2;
+	int32 Requests = 1;
+	int32 Locks = 1;
+	int32 Cancellations = 1;
+	int64 Balance = 60;
+	bool bPassed = bSportsbookCancellationQaVerify
+		? Result == EOddsWellMatchWinnerCanceledGameResult::Duplicate
+			&& RunOddsWellUpcomingQaMatchWinnerCancellationAudit(
+				Entries,
+				Requests,
+				Locks,
+				Cancellations,
+				Balance,
+				Error)
+		: Result == EOddsWellMatchWinnerCanceledGameResult::Recorded;
+	bool bCleanup = true;
+	if (bSportsbookCancellationQaVerify)
+	{
+		FString CleanupError;
+		bCleanup = ResetOddsWellQaOddsBucksAndVerify(CleanupError);
+		if (!bCleanup && Error.IsEmpty())
+		{
+			Error = CleanupError;
+		}
+		bPassed = bPassed && bCleanup;
+	}
+	bPassed = bPassed
+		&& Cancellation.CancellationCommandId == GetOddsWellUpcomingQaMatchWinnerCancellationCommandId()
+		&& Cancellation.CancellationEvidenceId == GetOddsWellUpcomingQaMatchWinnerCancellationEvidenceId()
+		&& Cancellation.RequestCommandId == GetOddsWellUpcomingQaMatchWinnerRequestCommandId()
+		&& Cancellation.LockCommandId == GetOddsWellUpcomingQaMatchWinnerLockCommandId()
+		&& Cancellation.SeasonNumber == 100
+		&& Cancellation.GameNumber == 1
+		&& Cancellation.AuthoritativeCancellationUnixSeconds == CancellationUnixSeconds
+		&& Cancellation.ReasonCode == FName(TEXT("game_canceled"))
+		&& Cancellation.Status == FName(TEXT("closed_canceled"))
+		&& Entries == 2
+		&& Requests == 1
+		&& Locks == 1
+		&& Cancellations == 1
+		&& Balance == 60;
+	bSportsbookCancellationQaDone = true;
+	const FString Evidence = FString::Printf(
+		TEXT("ODDSWELL_SPORTSBOOK_CANCELLATION_QA|result=%s|cold_process_restore=%s|server_owned=true|client_command=false|request_id=%s|lock_command_id=%s|cancellation_command_id=%s|cancellation_evidence_id=%s|season=100|game=1|authoritative_cancellation_unix=%lld|reason=game_canceled|status=closed_canceled|exact_retry=%s|rejection_audit=%s|zero_mutation=%s|ledger_entries=%d|requests=%d|locks=%d|cancellations=%d|balance=%lld|score=false|winner=false|replay=false|normal_result=false|settlement=false|refund_decision=false|credit=false|finalization=false|cleanup=%s|detail=%s"),
+		bPassed ? TEXT("PASS") : TEXT("FAIL"),
+		bSportsbookCancellationQaVerify ? TEXT("true") : TEXT("false"),
+		*GetOddsWellUpcomingQaMatchWinnerRequestCommandId(),
+		*GetOddsWellUpcomingQaMatchWinnerLockCommandId(),
+		*GetOddsWellUpcomingQaMatchWinnerCancellationCommandId(),
+		*GetOddsWellUpcomingQaMatchWinnerCancellationEvidenceId(),
+		CancellationUnixSeconds,
+		bSportsbookCancellationQaVerify ? TEXT("duplicate") : TEXT("not_run"),
+		bSportsbookCancellationQaVerify ? TEXT("wrong_request,wrong_lock,wrong_game,wrong_time,wrong_evidence,conflict,second,malformed,normal_result,completed_h16") : TEXT("deferred"),
+		bSportsbookCancellationQaVerify ? TEXT("true") : TEXT("not_claimed"),
+		Entries,
+		Requests,
+		Locks,
+		Cancellations,
+		Balance,
+		bSportsbookCancellationQaVerify ? (bCleanup ? TEXT("true") : TEXT("false")) : TEXT("deferred"),
+		Error.IsEmpty() ? TEXT("none") : *Error);
+	if (bPassed)
+	{
+		UE_LOG(LogOddsWellLocomotion, Display, TEXT("%s"), *Evidence);
+	}
+	else
+	{
+		UE_LOG(LogOddsWellLocomotion, Error, TEXT("%s"), *Evidence);
+	}
+	FPlatformMisc::RequestExit(false);
+}
+
 void AOddsWellLocomotionGameMode::PostLogin(APlayerController* NewPlayer)
 {
 	Super::PostLogin(NewPlayer);
@@ -3314,6 +3435,11 @@ void AOddsWellLocomotionGameMode::Tick(const float DeltaSeconds)
 	if (bSportsbookLockQa)
 	{
 		RunSportsbookLockQa();
+		return;
+	}
+	if (bSportsbookCancellationQa)
+	{
+		RunSportsbookCancellationQa();
 		return;
 	}
 	if (!bSharedCityQa

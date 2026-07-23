@@ -55,10 +55,13 @@ const FString MatchWinnerPayoutFormula(TEXT("floor(stake*100000000/win_probabili
 const FString ExactMatchWinnerOfferId(TEXT("9e6870420528e2a821591b763471c47f71b198c063cbdcbecd9ee180f9ea2459"));
 const FString UpcomingQaRequestCommandId(TEXT("qa:h17:match_winner:request:1"));
 const FString UpcomingQaLockCommandId(TEXT("qa:h19:match_winner:lock:1"));
+const FString UpcomingQaCancellationCommandId(TEXT("qa:h20:match_winner:cancellation:1"));
+const FString UpcomingQaCancellationEvidenceId(TEXT("qa:h20:match_winner:cancellation:evidence:1"));
 constexpr int32 UpcomingQaSeasonNumber = 100;
 constexpr int32 UpcomingQaGameNumber = 1;
 constexpr int64 UpcomingQaAcceptedUnixSeconds = 2100000000;
 constexpr int64 UpcomingQaLockUnixSeconds = UpcomingQaAcceptedUnixSeconds + 24 * 60 * 60;
+constexpr int64 UpcomingQaCancellationUnixSeconds = UpcomingQaLockUnixSeconds + 5 * 60;
 const FString MatchWinnerResultSchema(TEXT("oddswell-sealed-match-winner-result-v1"));
 const FString MatchWinnerResultVersion(TEXT("sealed-match-winner-result-v1"));
 const FString MatchWinnerCanceledGameSchema(TEXT("oddswell-match-winner-canceled-game-v1"));
@@ -1248,7 +1251,9 @@ bool UseOddsWellOddsBucksQaSlot()
 		|| FParse::Param(FCommandLine::Get(), TEXT("SportsbookWagerQaVerify"))
 		|| FParse::Param(FCommandLine::Get(), TEXT("SportsbookReceiptQa"))
 		|| FParse::Param(FCommandLine::Get(), TEXT("SportsbookLockQa"))
-		|| FParse::Param(FCommandLine::Get(), TEXT("SportsbookLockQaVerify"));
+		|| FParse::Param(FCommandLine::Get(), TEXT("SportsbookLockQaVerify"))
+		|| FParse::Param(FCommandLine::Get(), TEXT("SportsbookCancellationQa"))
+		|| FParse::Param(FCommandLine::Get(), TEXT("SportsbookCancellationQaVerify"));
 }
 
 const FString& GetOddsWellUpcomingQaMatchWinnerRequestCommandId()
@@ -1269,6 +1274,21 @@ const FString& GetOddsWellUpcomingQaMatchWinnerLockCommandId()
 int64 GetOddsWellUpcomingQaMatchWinnerLockUnixSeconds()
 {
 	return UpcomingQaLockUnixSeconds;
+}
+
+const FString& GetOddsWellUpcomingQaMatchWinnerCancellationCommandId()
+{
+	return UpcomingQaCancellationCommandId;
+}
+
+const FString& GetOddsWellUpcomingQaMatchWinnerCancellationEvidenceId()
+{
+	return UpcomingQaCancellationEvidenceId;
+}
+
+int64 GetOddsWellUpcomingQaMatchWinnerCancellationUnixSeconds()
+{
+	return UpcomingQaCancellationUnixSeconds;
 }
 
 bool BuildOddsWellUpcomingQaMatchWinnerOffer(FOddsWellMatchWinnerOffer& OutOffer, FString& OutError)
@@ -2782,7 +2802,8 @@ bool LoadExactUpcomingQaLockState(
 	int64& OutNextJobPayoutUnixSeconds,
 	TArray<FOddsWellMatchWinnerRequestRecord>& OutRequests,
 	TArray<FOddsWellMatchWinnerLockRecord>& OutLocks,
-	FString& OutError)
+	FString& OutError,
+	TArray<FOddsWellMatchWinnerCanceledGameRecord>* OutCanceledGames = nullptr)
 {
 	TArray<FOddsWellMatchWinnerResultLinkRecord> ResultLinks;
 	TArray<FOddsWellMatchWinnerSettlementDecisionRecord> Decisions;
@@ -2824,7 +2845,8 @@ bool LoadExactUpcomingQaLockState(
 		|| !Decisions.IsEmpty()
 		|| !LossFinalizations.IsEmpty()
 		|| !WinFinalizations.IsEmpty()
-		|| !CanceledGames.IsEmpty()
+		|| (!OutCanceledGames && !CanceledGames.IsEmpty())
+		|| (OutCanceledGames && CanceledGames.Num() > 1)
 		|| !VoidDecisions.IsEmpty()
 		|| !Save->MatchWinnerVoidFinalizations.IsEmpty())
 	{
@@ -2876,6 +2898,29 @@ bool LoadExactUpcomingQaLockState(
 			OutError = TEXT("The isolated upcoming QA lock evidence is not exact.");
 			return false;
 		}
+	}
+	if (OutCanceledGames && CanceledGames.Num() == 1)
+	{
+		const FOddsWellMatchWinnerCanceledGameRecord& Canceled = CanceledGames[0];
+		if (Canceled.CancellationCommandId != UpcomingQaCancellationCommandId
+			|| Canceled.CancellationEvidenceId != UpcomingQaCancellationEvidenceId
+			|| Canceled.RequestCommandId != UpcomingQaRequestCommandId
+			|| Canceled.LockCommandId != UpcomingQaLockCommandId
+			|| Canceled.DispositionSchema != MatchWinnerCanceledGameSchema
+			|| Canceled.DispositionVersion != MatchWinnerCanceledGameVersion
+			|| Canceled.SeasonNumber != UpcomingQaSeasonNumber
+			|| Canceled.GameNumber != UpcomingQaGameNumber
+			|| Canceled.AuthoritativeCancellationUnixSeconds != UpcomingQaCancellationUnixSeconds
+			|| Canceled.ReasonCode != MatchWinnerCanceledGameReason
+			|| Canceled.Status != MatchWinnerClosedCanceledStatus)
+		{
+			OutError = TEXT("The isolated upcoming QA cancellation evidence is not exact.");
+			return false;
+		}
+	}
+	if (OutCanceledGames)
+	{
+		*OutCanceledGames = MoveTemp(CanceledGames);
 	}
 	OutError.Reset();
 	return true;
@@ -3326,6 +3371,171 @@ EOddsWellMatchWinnerCanceledGameResult RecordOddsWellMatchWinnerCanceledGame(
 	OutRecord = MoveTemp(Candidate);
 	OutError.Reset();
 	return EOddsWellMatchWinnerCanceledGameResult::Recorded;
+}
+
+EOddsWellMatchWinnerCanceledGameResult RecordOddsWellUpcomingQaMatchWinnerCancellation(
+	FOddsWellMatchWinnerCanceledGameRecord& OutRecord,
+	FString& OutError)
+{
+	FOddsWellOddsBucksLedger Ledger;
+	int64 NextJobPayoutUnixSeconds = 0;
+	TArray<FOddsWellMatchWinnerRequestRecord> Requests;
+	TArray<FOddsWellMatchWinnerLockRecord> Locks;
+	TArray<FOddsWellMatchWinnerCanceledGameRecord> CanceledGames;
+	if (!LoadExactUpcomingQaLockState(
+			Ledger,
+			NextJobPayoutUnixSeconds,
+			Requests,
+			Locks,
+			OutError,
+			&CanceledGames)
+		|| Locks.Num() != 1)
+	{
+		OutRecord = FOddsWellMatchWinnerCanceledGameRecord();
+		if (OutError.IsEmpty())
+		{
+			OutError = TEXT("The isolated upcoming QA cancellation requires the exact game-start lock.");
+		}
+		return EOddsWellMatchWinnerCanceledGameResult::Rejected;
+	}
+	return RecordOddsWellMatchWinnerCanceledGame(
+		UpcomingQaCancellationCommandId,
+		UpcomingQaCancellationEvidenceId,
+		UpcomingQaRequestCommandId,
+		UpcomingQaLockCommandId,
+		MatchWinnerCanceledGameSchema,
+		MatchWinnerCanceledGameVersion,
+		UpcomingQaSeasonNumber,
+		UpcomingQaGameNumber,
+		UpcomingQaCancellationUnixSeconds,
+		MatchWinnerCanceledGameReason,
+		true,
+		OutRecord,
+		OutError);
+}
+
+bool RunOddsWellUpcomingQaMatchWinnerCancellationAudit(
+	int32& OutLedgerEntries,
+	int32& OutRequests,
+	int32& OutLocks,
+	int32& OutCancellations,
+	int64& OutBalance,
+	FString& OutError)
+{
+	TArray<uint8> BeforeBytes;
+	if (!UGameplayStatics::SaveGameToMemory(
+			UGameplayStatics::LoadGameFromSlot(OddsBucksQaSlot, OddsBucksUserIndex),
+			BeforeBytes))
+	{
+		OutError = TEXT("The exact canceled QA state could not be captured.");
+		return false;
+	}
+
+	FOddsWellMatchWinnerCanceledGameRecord Canceled;
+	if (RecordOddsWellUpcomingQaMatchWinnerCancellation(Canceled, OutError)
+			!= EOddsWellMatchWinnerCanceledGameResult::Duplicate
+		|| Canceled.CancellationCommandId != UpcomingQaCancellationCommandId)
+	{
+		OutError = TEXT("The exact cold cancellation retry was not idempotent.");
+		return false;
+	}
+
+	auto RejectCancellation = [&Canceled, &OutError](
+		const FString& CommandId,
+		const FString& EvidenceId,
+		const FString& RequestId,
+		const FString& LockId,
+		const int32 SeasonNumber,
+		const int32 GameNumber,
+		const int64 CancellationUnixSeconds)
+	{
+		return RecordOddsWellMatchWinnerCanceledGame(
+			CommandId,
+			EvidenceId,
+			RequestId,
+			LockId,
+			MatchWinnerCanceledGameSchema,
+			MatchWinnerCanceledGameVersion,
+			SeasonNumber,
+			GameNumber,
+			CancellationUnixSeconds,
+			MatchWinnerCanceledGameReason,
+			true,
+			Canceled,
+			OutError) == EOddsWellMatchWinnerCanceledGameResult::Rejected;
+	};
+	if (!RejectCancellation(UpcomingQaCancellationCommandId, UpcomingQaCancellationEvidenceId, TEXT("qa:h20:unknown-request"), UpcomingQaLockCommandId, UpcomingQaSeasonNumber, UpcomingQaGameNumber, UpcomingQaCancellationUnixSeconds)
+		|| !RejectCancellation(UpcomingQaCancellationCommandId, UpcomingQaCancellationEvidenceId, UpcomingQaRequestCommandId, TEXT("qa:h20:unknown-lock"), UpcomingQaSeasonNumber, UpcomingQaGameNumber, UpcomingQaCancellationUnixSeconds)
+		|| !RejectCancellation(UpcomingQaCancellationCommandId, UpcomingQaCancellationEvidenceId, UpcomingQaRequestCommandId, UpcomingQaLockCommandId, UpcomingQaSeasonNumber, UpcomingQaGameNumber + 1, UpcomingQaCancellationUnixSeconds)
+		|| !RejectCancellation(UpcomingQaCancellationCommandId, UpcomingQaCancellationEvidenceId, UpcomingQaRequestCommandId, UpcomingQaLockCommandId, UpcomingQaSeasonNumber, UpcomingQaGameNumber, UpcomingQaCancellationUnixSeconds + 1)
+		|| !RejectCancellation(UpcomingQaCancellationCommandId, TEXT("qa:h20:wrong-evidence"), UpcomingQaRequestCommandId, UpcomingQaLockCommandId, UpcomingQaSeasonNumber, UpcomingQaGameNumber, UpcomingQaCancellationUnixSeconds)
+		|| !RejectCancellation(UpcomingQaCancellationCommandId, TEXT("qa:h20:conflict-evidence"), TEXT("qa:h20:conflict-request"), UpcomingQaLockCommandId, UpcomingQaSeasonNumber, UpcomingQaGameNumber, UpcomingQaCancellationUnixSeconds)
+		|| !RejectCancellation(TEXT("qa:h20:second-cancellation"), TEXT("qa:h20:second-evidence"), UpcomingQaRequestCommandId, UpcomingQaLockCommandId, UpcomingQaSeasonNumber, UpcomingQaGameNumber, UpcomingQaCancellationUnixSeconds)
+		|| !RejectCancellation(FString(), FString(), UpcomingQaRequestCommandId, UpcomingQaLockCommandId, UpcomingQaSeasonNumber, UpcomingQaGameNumber, UpcomingQaCancellationUnixSeconds)
+		|| !RejectCancellation(TEXT("qa:h20:completed-h16"), TEXT("qa:h20:completed-h16-evidence"), TEXT("wager:match_winner:test-1"), TEXT("wager:match_winner:lock:test-1"), SealedResultSeasonNumber, SealedResultGameNumber, UpcomingQaCancellationUnixSeconds))
+	{
+		if (OutError.IsEmpty())
+		{
+			OutError = TEXT("An isolated upcoming QA cancellation rejection invariant failed.");
+		}
+		return false;
+	}
+
+	FOddsWellMatchWinnerResultLinkRecord NormalResult;
+	if (LinkOddsWellMatchWinnerResult(
+			TEXT("qa:h20:normal-result"),
+			UpcomingQaRequestCommandId,
+			UpcomingQaLockCommandId,
+			MatchWinnerResultSchema,
+			MatchWinnerResultVersion,
+			UpcomingQaSeasonNumber,
+			UpcomingQaGameNumber,
+			TEXT("Sundale Sparks"),
+			TEXT("Red Mesa Rivals"),
+			101,
+			100,
+			TEXT("Sundale Sparks"),
+			FString::ChrN(64, TEXT('a')),
+			true,
+			NormalResult,
+			OutError) != EOddsWellMatchWinnerResultLinkResult::Rejected)
+	{
+		OutError = TEXT("A canceled upcoming QA game accepted a fabricated normal result.");
+		return false;
+	}
+
+	FOddsWellOddsBucksLedger Ledger;
+	int64 NextJobPayoutUnixSeconds = 0;
+	TArray<FOddsWellMatchWinnerRequestRecord> Requests;
+	TArray<FOddsWellMatchWinnerLockRecord> Locks;
+	TArray<FOddsWellMatchWinnerCanceledGameRecord> CanceledGames;
+	TArray<uint8> AfterBytes;
+	if (!LoadExactUpcomingQaLockState(
+			Ledger,
+			NextJobPayoutUnixSeconds,
+			Requests,
+			Locks,
+			OutError,
+			&CanceledGames)
+		|| CanceledGames.Num() != 1
+		|| !UGameplayStatics::SaveGameToMemory(
+			UGameplayStatics::LoadGameFromSlot(OddsBucksQaSlot, OddsBucksUserIndex),
+			AfterBytes)
+		|| BeforeBytes != AfterBytes)
+	{
+		if (OutError.IsEmpty())
+		{
+			OutError = TEXT("A rejected isolated upcoming QA cancellation mutated persisted state.");
+		}
+		return false;
+	}
+	OutLedgerEntries = Ledger.GetEntries().Num();
+	OutRequests = Requests.Num();
+	OutLocks = Locks.Num();
+	OutCancellations = CanceledGames.Num();
+	OutBalance = Ledger.GetBalance();
+	OutError.Reset();
+	return true;
 }
 
 EOddsWellMatchWinnerVoidDecisionResult DecideOddsWellMatchWinnerVoidRefundDue(
@@ -6103,6 +6313,205 @@ bool FOddsWellUpcomingQaMatchWinnerLockTest::RunTest(const FString& Parameters)
 			RestoredLockedBytes));
 	TestTrue(TEXT("All tamper rejections preserve the exact locked bytes"), RestoredLockedBytes == LockedBytes);
 	TestTrue(TEXT("H19 QA cleanup succeeds"), ResetOddsWellQaOddsBucksAndVerify(Error));
+	return !HasAnyErrors();
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(
+	FOddsWellUpcomingQaMatchWinnerCancellationTest,
+	"OddsWell.Economy.UpcomingQaMatchWinnerCancellation",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+
+bool FOddsWellUpcomingQaMatchWinnerCancellationTest::RunTest(const FString& Parameters)
+{
+	FString Error;
+	TestTrue(TEXT("H20 QA starts clean"), ResetOddsWellQaOddsBucksAndVerify(Error));
+	FOddsWellOddsBucksLedger Ledger;
+	TestEqual(
+		TEXT("Existing job ledger funds H20 QA"),
+		Ledger.Append(GetOddsWellFirstJobCommandId(), GetOddsWellFirstJobPayout(), GetOddsWellFirstJobReason()),
+		EOddsWellOddsBucksAppendResult::Applied);
+	TestTrue(
+		TEXT("Job-funded H20 baseline persists"),
+		SaveOddsWellOddsBucksLedger(Ledger, UpcomingQaLockUnixSeconds, true, Error));
+	FOddsWellMatchWinnerOffer Offer;
+	TestTrue(TEXT("Exact H20 offer builds"), BuildOddsWellUpcomingQaMatchWinnerOffer(Offer, Error));
+	FOddsWellMatchWinnerRequestRecord Request;
+	int64 Balance = 0;
+	TestEqual(
+		TEXT("Exact H17 request exists before H20 cancellation"),
+		AcceptOddsWellUpcomingQaMatchWinnerRequest(
+			Offer,
+			UpcomingQaRequestCommandId,
+			Offer.HomeTeam,
+			40,
+			UpcomingQaAcceptedUnixSeconds,
+			Request,
+			Balance,
+			Error),
+		EOddsWellMatchWinnerRequestResult::Accepted);
+	FOddsWellMatchWinnerLockRecord Lock;
+	TestEqual(
+		TEXT("Exact H19 lock exists before H20 cancellation"),
+		LockOddsWellUpcomingQaMatchWinnerRequestAtGameStart(Lock, Error),
+		EOddsWellMatchWinnerLockResult::Locked);
+
+	TArray<uint8> LockedBytes;
+	TestTrue(
+		TEXT("Exact H19 locked state serializes before H20"),
+		UGameplayStatics::SaveGameToMemory(
+			UGameplayStatics::LoadGameFromSlot(OddsBucksQaSlot, OddsBucksUserIndex),
+			LockedBytes));
+	FOddsWellMatchWinnerCanceledGameRecord Cancellation;
+	TestEqual(
+		TEXT("Server-owned exact post-lock cancellation records once"),
+		RecordOddsWellUpcomingQaMatchWinnerCancellation(Cancellation, Error),
+		EOddsWellMatchWinnerCanceledGameResult::Recorded);
+	TestEqual(TEXT("H20 cancellation command identity is fixed"), Cancellation.CancellationCommandId, UpcomingQaCancellationCommandId);
+	TestEqual(TEXT("H20 cancellation evidence identity is fixed"), Cancellation.CancellationEvidenceId, UpcomingQaCancellationEvidenceId);
+	TestEqual(TEXT("H20 request link is exact"), Cancellation.RequestCommandId, UpcomingQaRequestCommandId);
+	TestEqual(TEXT("H20 lock link is exact"), Cancellation.LockCommandId, UpcomingQaLockCommandId);
+	TestEqual(TEXT("H20 season is isolated"), Cancellation.SeasonNumber, UpcomingQaSeasonNumber);
+	TestEqual(TEXT("H20 game is isolated"), Cancellation.GameNumber, UpcomingQaGameNumber);
+	TestEqual(TEXT("H20 cancellation time is exact"), Cancellation.AuthoritativeCancellationUnixSeconds, UpcomingQaCancellationUnixSeconds);
+	TestTrue(TEXT("H20 cancellation is strictly post-lock"), Cancellation.AuthoritativeCancellationUnixSeconds > UpcomingQaLockUnixSeconds);
+	TestEqual(TEXT("H20 reason is neutral game canceled"), Cancellation.ReasonCode, MatchWinnerCanceledGameReason);
+	TestEqual(TEXT("H20 status is immutable closed canceled"), Cancellation.Status, MatchWinnerClosedCanceledStatus);
+
+	FOddsWellOddsBucksLedger CanceledLedger;
+	int64 CanceledNextJobPayout = 0;
+	TArray<FOddsWellMatchWinnerRequestRecord> CanceledRequests;
+	TArray<FOddsWellMatchWinnerLockRecord> CanceledLocks;
+	TArray<FOddsWellMatchWinnerCanceledGameRecord> CanceledGames;
+	TestTrue(
+		TEXT("Exact canceled chain reloads"),
+		LoadExactUpcomingQaLockState(
+			CanceledLedger,
+			CanceledNextJobPayout,
+			CanceledRequests,
+			CanceledLocks,
+			Error,
+			&CanceledGames));
+	TestEqual(TEXT("H17 ledger remains exactly two entries"), CanceledLedger.GetEntries().Num(), 2);
+	TestEqual(TEXT("H17 balance remains 60"), CanceledLedger.GetBalance(), int64{60});
+	TestEqual(TEXT("H17 cooldown remains byte-for-value"), CanceledNextJobPayout, UpcomingQaLockUnixSeconds);
+	TestEqual(TEXT("H17 request count remains one"), CanceledRequests.Num(), 1);
+	TestEqual(TEXT("H19 lock count remains one"), CanceledLocks.Num(), 1);
+	TestEqual(TEXT("H20 cancellation count is exactly one"), CanceledGames.Num(), 1);
+	if (CanceledLedger.GetEntries().Num() == 2 && CanceledRequests.Num() == 1 && CanceledLocks.Num() == 1)
+	{
+		const FOddsWellOddsBucksEntry& Credit = CanceledLedger.GetEntries()[0];
+		const FOddsWellOddsBucksEntry& Debit = CanceledLedger.GetEntries()[1];
+		const FOddsWellMatchWinnerRequestRecord& SavedRequest = CanceledRequests[0];
+		const FOddsWellMatchWinnerLockRecord& SavedLock = CanceledLocks[0];
+		TestEqual(TEXT("Credit sequence remains one"), Credit.Sequence, int64{1});
+		TestEqual(TEXT("Credit command remains exact"), Credit.CommandId, GetOddsWellFirstJobCommandId());
+		TestEqual(TEXT("Credit delta remains 100"), Credit.Delta, int64{100});
+		TestEqual(TEXT("Credit balance remains 100"), Credit.BalanceAfter, int64{100});
+		TestEqual(TEXT("Debit sequence remains two"), Debit.Sequence, int64{2});
+		TestEqual(TEXT("Debit command remains H17 request"), Debit.CommandId, UpcomingQaRequestCommandId);
+		TestEqual(TEXT("Debit remains minus 40"), Debit.Delta, int64{-40});
+		TestEqual(TEXT("Debit balance remains 60"), Debit.BalanceAfter, int64{60});
+		TestEqual(TEXT("Debit reason remains match winner stake"), Debit.Reason, MatchWinnerStakeReason);
+		TestEqual(TEXT("Request offer remains exact"), SavedRequest.OfferId, Offer.OfferId);
+		TestEqual(TEXT("Request selected team remains Sparks"), SavedRequest.OfferedTeam, Offer.HomeTeam);
+		TestEqual(TEXT("Request stake remains 40"), SavedRequest.Stake, int64{40});
+		TestEqual(TEXT("Request accepted time remains exact"), SavedRequest.AcceptedUnixSeconds, UpcomingQaAcceptedUnixSeconds);
+		TestEqual(TEXT("Request lock time remains exact"), SavedRequest.LockUnixSeconds, UpcomingQaLockUnixSeconds);
+		TestEqual(TEXT("Request remains accepted pending lock"), SavedRequest.Status, AcceptedPendingLockStatus);
+		TestEqual(TEXT("Lock command remains exact"), SavedLock.LockCommandId, UpcomingQaLockCommandId);
+		TestEqual(TEXT("Lock authority time remains exact"), SavedLock.AuthoritativeGameStartUnixSeconds, UpcomingQaLockUnixSeconds);
+		TestEqual(TEXT("Lock decision remains locked"), SavedLock.Decision, MatchWinnerLockedDecision);
+	}
+
+	const UOddsWellOddsBucksSaveGame* ExactCanceled = Cast<UOddsWellOddsBucksSaveGame>(
+		UGameplayStatics::LoadGameFromSlot(OddsBucksQaSlot, OddsBucksUserIndex));
+	TestNotNull(TEXT("Exact canceled save reloads for zero-downstream proof"), ExactCanceled);
+	if (ExactCanceled)
+	{
+		TestTrue(TEXT("H20 adds no result links"), ExactCanceled->MatchWinnerResultLinks.IsEmpty());
+		TestTrue(TEXT("H20 adds no settlement decisions"), ExactCanceled->MatchWinnerSettlementDecisions.IsEmpty());
+		TestTrue(TEXT("H20 adds no loss finalizations"), ExactCanceled->MatchWinnerLossFinalizations.IsEmpty());
+		TestTrue(TEXT("H20 adds no win finalizations"), ExactCanceled->MatchWinnerWinFinalizations.IsEmpty());
+		TestTrue(TEXT("H20 adds no void decisions"), ExactCanceled->MatchWinnerVoidDecisions.IsEmpty());
+		TestTrue(TEXT("H20 adds no refund/finalization"), ExactCanceled->MatchWinnerVoidFinalizations.IsEmpty());
+	}
+
+	TArray<uint8> CanceledBytes;
+	TestTrue(
+		TEXT("Exact H20 canceled state serializes"),
+		UGameplayStatics::SaveGameToMemory(
+			UGameplayStatics::LoadGameFromSlot(OddsBucksQaSlot, OddsBucksUserIndex),
+			CanceledBytes));
+	int32 Entries = 0;
+	int32 Requests = 0;
+	int32 Locks = 0;
+	int32 Cancellations = 0;
+	TestTrue(
+		TEXT("Cold retry and cancellation rejection matrix are byte-stable"),
+		RunOddsWellUpcomingQaMatchWinnerCancellationAudit(
+			Entries,
+			Requests,
+			Locks,
+			Cancellations,
+			Balance,
+			Error));
+	TestEqual(TEXT("H20 audit preserves two ledger entries"), Entries, 2);
+	TestEqual(TEXT("H20 audit preserves one request"), Requests, 1);
+	TestEqual(TEXT("H20 audit preserves one lock"), Locks, 1);
+	TestEqual(TEXT("H20 audit preserves one cancellation"), Cancellations, 1);
+	TestEqual(TEXT("H20 audit preserves balance 60"), Balance, int64{60});
+
+	auto RestoreExactCanceled = [&]()
+	{
+		return UGameplayStatics::SaveGameToSlot(
+			UGameplayStatics::LoadGameFromMemory(CanceledBytes),
+			OddsBucksQaSlot,
+			OddsBucksUserIndex);
+	};
+	auto RejectMutation = [&](const TCHAR* Label, TFunctionRef<void(UOddsWellOddsBucksSaveGame&)> Mutate)
+	{
+		UOddsWellOddsBucksSaveGame* Mutated = Cast<UOddsWellOddsBucksSaveGame>(
+			UGameplayStatics::LoadGameFromMemory(CanceledBytes));
+		TestNotNull(FString::Printf(TEXT("%s mutation loads"), Label), Mutated);
+		if (!Mutated)
+		{
+			return;
+		}
+		Mutate(*Mutated);
+		TestTrue(
+			FString::Printf(TEXT("%s mutation persists"), Label),
+			UGameplayStatics::SaveGameToSlot(Mutated, OddsBucksQaSlot, OddsBucksUserIndex));
+		Error.Reset();
+		TestEqual(
+			FString::Printf(TEXT("%s rejects exact H20 command"), Label),
+			RecordOddsWellUpcomingQaMatchWinnerCancellation(Cancellation, Error),
+			EOddsWellMatchWinnerCanceledGameResult::Rejected);
+		TestTrue(FString::Printf(TEXT("%s exact canceled state restores"), Label), RestoreExactCanceled());
+	};
+	RejectMutation(TEXT("Malformed H17 request"), [](UOddsWellOddsBucksSaveGame& Save)
+	{
+		Save.MatchWinnerRequests[0].Stake = 39;
+	});
+	RejectMutation(TEXT("Malformed H19 lock"), [](UOddsWellOddsBucksSaveGame& Save)
+	{
+		Save.MatchWinnerLocks[0].AuthoritativeGameStartUnixSeconds += 1;
+	});
+	RejectMutation(TEXT("Malformed H20 cancellation"), [](UOddsWellOddsBucksSaveGame& Save)
+	{
+		Save.MatchWinnerCanceledGames[0].Status = TEXT("open");
+	});
+	RejectMutation(TEXT("Fabricated normal result"), [](UOddsWellOddsBucksSaveGame& Save)
+	{
+		Save.MatchWinnerResultLinks.AddDefaulted();
+	});
+	TArray<uint8> RestoredCanceledBytes;
+	TestTrue(
+		TEXT("Restored exact cancellation state serializes"),
+		UGameplayStatics::SaveGameToMemory(
+			UGameplayStatics::LoadGameFromSlot(OddsBucksQaSlot, OddsBucksUserIndex),
+			RestoredCanceledBytes));
+	TestTrue(TEXT("Every tamper rejection preserves exact canceled bytes"), RestoredCanceledBytes == CanceledBytes);
+	TestTrue(TEXT("H20 QA cleanup succeeds"), ResetOddsWellQaOddsBucksAndVerify(Error));
 	return !HasAnyErrors();
 }
 
