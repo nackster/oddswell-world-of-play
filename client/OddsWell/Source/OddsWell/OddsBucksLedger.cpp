@@ -58,6 +58,7 @@ const FString UpcomingQaLockCommandId(TEXT("qa:h19:match_winner:lock:1"));
 const FString UpcomingQaCancellationCommandId(TEXT("qa:h20:match_winner:cancellation:1"));
 const FString UpcomingQaCancellationEvidenceId(TEXT("qa:h20:match_winner:cancellation:evidence:1"));
 const FString UpcomingQaVoidDecisionCommandId(TEXT("qa:h21:match_winner:void-decision:1"));
+const FString UpcomingQaVoidFinalizationCommandId(TEXT("qa:h22:match_winner:void-finalization:1"));
 constexpr int32 UpcomingQaSeasonNumber = 100;
 constexpr int32 UpcomingQaGameNumber = 1;
 constexpr int64 UpcomingQaAcceptedUnixSeconds = 2100000000;
@@ -747,6 +748,9 @@ bool ValidateMatchWinnerVoidFinalizations(
 				{
 					return Candidate.RequestCommandId == Finalization.RequestCommandId;
 				});
+		const bool bSupportedCanceledQaGame =
+			(Finalization.SeasonNumber == CanceledQaSeasonNumber && Finalization.GameNumber == CanceledQaGameNumber)
+			|| (Finalization.SeasonNumber == UpcomingQaSeasonNumber && Finalization.GameNumber == UpcomingQaGameNumber);
 		if (Finalization.FinalizationCommandId.TrimStartAndEnd().IsEmpty()
 			|| Finalization.VoidDecisionCommandId.TrimStartAndEnd().IsEmpty()
 			|| Finalization.FinalizationCommandId != Finalization.RefundLedgerCommandId
@@ -773,8 +777,7 @@ bool ValidateMatchWinnerVoidFinalizations(
 			|| Finalization.OfferId != Decision->OfferId
 			|| Finalization.OfferSchema != Decision->OfferSchema
 			|| Finalization.OfferVersion != Decision->OfferVersion
-			|| Finalization.SeasonNumber != CanceledQaSeasonNumber
-			|| Finalization.GameNumber != CanceledQaGameNumber
+			|| !bSupportedCanceledQaGame
 			|| Finalization.SeasonNumber != Decision->SeasonNumber
 			|| Finalization.GameNumber != Decision->GameNumber
 			|| Finalization.SelectedTeam != Decision->SelectedTeam
@@ -1258,7 +1261,9 @@ bool UseOddsWellOddsBucksQaSlot()
 		|| FParse::Param(FCommandLine::Get(), TEXT("SportsbookCancellationQa"))
 		|| FParse::Param(FCommandLine::Get(), TEXT("SportsbookCancellationQaVerify"))
 		|| FParse::Param(FCommandLine::Get(), TEXT("SportsbookVoidDecisionQa"))
-		|| FParse::Param(FCommandLine::Get(), TEXT("SportsbookVoidDecisionQaVerify"));
+		|| FParse::Param(FCommandLine::Get(), TEXT("SportsbookVoidDecisionQaVerify"))
+		|| FParse::Param(FCommandLine::Get(), TEXT("SportsbookVoidFinalizationQa"))
+		|| FParse::Param(FCommandLine::Get(), TEXT("SportsbookVoidFinalizationQaVerify"));
 }
 
 const FString& GetOddsWellUpcomingQaMatchWinnerRequestCommandId()
@@ -1299,6 +1304,11 @@ int64 GetOddsWellUpcomingQaMatchWinnerCancellationUnixSeconds()
 const FString& GetOddsWellUpcomingQaMatchWinnerVoidDecisionCommandId()
 {
 	return UpcomingQaVoidDecisionCommandId;
+}
+
+const FString& GetOddsWellUpcomingQaMatchWinnerVoidFinalizationCommandId()
+{
+	return UpcomingQaVoidFinalizationCommandId;
 }
 
 bool BuildOddsWellUpcomingQaMatchWinnerOffer(FOddsWellMatchWinnerOffer& OutOffer, FString& OutError)
@@ -1527,6 +1537,10 @@ bool WriteMatchWinnerVoidReconciliationFromValidatedState(
 		{
 			return Entry.CommandId == Finalization.RefundLedgerCommandId;
 		});
+	const bool bCanceledQaChain = Lock.SeasonNumber == CanceledQaSeasonNumber
+		&& Lock.GameNumber == CanceledQaGameNumber;
+	const bool bUpcomingQaChain = Lock.SeasonNumber == UpcomingQaSeasonNumber
+		&& Lock.GameNumber == UpcomingQaGameNumber;
 	if (!bQaProjection
 		|| !StakeEntry
 		|| !RefundEntry
@@ -1540,8 +1554,7 @@ bool WriteMatchWinnerVoidReconciliationFromValidatedState(
 		|| StakeEntry->Reason != MatchWinnerStakeReason
 		|| StakeEntry->BalanceAfter != 60
 		|| Lock.RequestCommandId != Request.RequestCommandId
-		|| Lock.SeasonNumber != CanceledQaSeasonNumber
-		|| Lock.GameNumber != CanceledQaGameNumber
+		|| (!bCanceledQaChain && !bUpcomingQaChain)
 		|| Lock.AuthoritativeGameStartUnixSeconds != Lock.LockUnixSeconds
 		|| Lock.Decision != MatchWinnerLockedDecision
 		|| Canceled.RequestCommandId != Request.RequestCommandId
@@ -1601,6 +1614,11 @@ bool WriteMatchWinnerVoidReconciliationFromValidatedState(
 	{
 		OutError = TEXT("The Match Winner void reconciliation does not match the exact finalized chain.");
 		return false;
+	}
+	if (bUpcomingQaChain)
+	{
+		OutError.Reset();
+		return true;
 	}
 
 	const TSharedRef<FJsonObject> Root = MakeShared<FJsonObject>();
@@ -2814,7 +2832,8 @@ bool LoadExactUpcomingQaLockState(
 	TArray<FOddsWellMatchWinnerLockRecord>& OutLocks,
 	FString& OutError,
 	TArray<FOddsWellMatchWinnerCanceledGameRecord>* OutCanceledGames = nullptr,
-	TArray<FOddsWellMatchWinnerVoidDecisionRecord>* OutVoidDecisions = nullptr)
+	TArray<FOddsWellMatchWinnerVoidDecisionRecord>* OutVoidDecisions = nullptr,
+	TArray<FOddsWellMatchWinnerVoidFinalizationRecord>* OutVoidFinalizations = nullptr)
 {
 	TArray<FOddsWellMatchWinnerResultLinkRecord> ResultLinks;
 	TArray<FOddsWellMatchWinnerSettlementDecisionRecord> Decisions;
@@ -2827,6 +2846,8 @@ bool LoadExactUpcomingQaLockState(
 	const UOddsWellOddsBucksSaveGame* Save = Cast<UOddsWellOddsBucksSaveGame>(
 		UGameplayStatics::LoadGameFromSlot(OddsBucksQaSlot, OddsBucksUserIndex));
 	FOddsWellMatchWinnerOffer Offer;
+	const bool bHasVoidFinalization =
+		OutVoidFinalizations && Save && Save->MatchWinnerVoidFinalizations.Num() == 1;
 	if (!LoadOddsWellOddsBucksStateRaw(
 			true,
 			OutLedger,
@@ -2847,8 +2868,8 @@ bool LoadExactUpcomingQaLockState(
 		|| !Save
 		|| Save->SchemaVersion != OddsBucksSchemaVersion
 		|| !BuildUpcomingQaMatchWinnerOffer(Offer, OutError)
-		|| OutLedger.GetEntries().Num() != 2
-		|| OutLedger.GetBalance() != 60
+		|| OutLedger.GetEntries().Num() != (bHasVoidFinalization ? 3 : 2)
+		|| OutLedger.GetBalance() != (bHasVoidFinalization ? 100 : 60)
 		|| OutNextJobPayoutUnixSeconds != UpcomingQaLockUnixSeconds
 		|| OutRequests.Num() != 1
 		|| OutLocks.Num() > 1
@@ -2860,7 +2881,8 @@ bool LoadExactUpcomingQaLockState(
 		|| (OutCanceledGames && CanceledGames.Num() > 1)
 		|| (!OutVoidDecisions && !VoidDecisions.IsEmpty())
 		|| (OutVoidDecisions && VoidDecisions.Num() > 1)
-		|| !Save->MatchWinnerVoidFinalizations.IsEmpty())
+		|| (!OutVoidFinalizations && !Save->MatchWinnerVoidFinalizations.IsEmpty())
+		|| (OutVoidFinalizations && Save->MatchWinnerVoidFinalizations.Num() > 1))
 	{
 		OutError = TEXT("The isolated upcoming QA lock baseline is not exact.");
 		return false;
@@ -2957,6 +2979,46 @@ bool LoadExactUpcomingQaLockState(
 			return false;
 		}
 	}
+	if (bHasVoidFinalization)
+	{
+		const FOddsWellOddsBucksEntry& Refund = OutLedger.GetEntries()[2];
+		const FOddsWellMatchWinnerVoidFinalizationRecord& Finalization =
+			Save->MatchWinnerVoidFinalizations[0];
+		if (CanceledGames.Num() != 1
+			|| VoidDecisions.Num() != 1
+			|| Refund.Sequence != 3
+			|| Refund.CommandId != UpcomingQaVoidFinalizationCommandId
+			|| Refund.Delta != 40
+			|| Refund.BalanceAfter != 100
+			|| Refund.Reason != MatchWinnerRefundReason
+			|| Finalization.FinalizationCommandId != UpcomingQaVoidFinalizationCommandId
+			|| Finalization.VoidDecisionCommandId != UpcomingQaVoidDecisionCommandId
+			|| Finalization.CancellationCommandId != UpcomingQaCancellationCommandId
+			|| Finalization.CancellationEvidenceId != UpcomingQaCancellationEvidenceId
+			|| Finalization.RequestCommandId != UpcomingQaRequestCommandId
+			|| Finalization.LockCommandId != UpcomingQaLockCommandId
+			|| Finalization.FinalizationSchema != MatchWinnerVoidFinalizationSchema
+			|| Finalization.FinalizationVersion != MatchWinnerVoidFinalizationVersion
+			|| Finalization.OfferId != Offer.OfferId
+			|| Finalization.OfferSchema != MatchWinnerOfferSchema
+			|| Finalization.OfferVersion != Offer.OfferVersion
+			|| Finalization.SeasonNumber != UpcomingQaSeasonNumber
+			|| Finalization.GameNumber != UpcomingQaGameNumber
+			|| Finalization.SelectedTeam != Offer.HomeTeam
+			|| Finalization.Stake != 40
+			|| Finalization.CancellationReason != MatchWinnerCanceledGameReason
+			|| Finalization.Outcome != MatchWinnerVoidedOutcome
+			|| Finalization.RefundDue != 40
+			|| Finalization.RefundApplied != 40
+			|| Finalization.RefundLedgerCommandId != UpcomingQaVoidFinalizationCommandId
+			|| Finalization.Status != MatchWinnerSettledVoidStatus
+			|| Finalization.ObservedLedgerEntryCount != 3
+			|| Finalization.ObservedFinalBalance != 100)
+		{
+			OutError = TEXT("The isolated upcoming QA refund finalization is not exact.");
+			return false;
+		}
+	}
 	if (OutCanceledGames)
 	{
 		*OutCanceledGames = MoveTemp(CanceledGames);
@@ -2964,6 +3026,10 @@ bool LoadExactUpcomingQaLockState(
 	if (OutVoidDecisions)
 	{
 		*OutVoidDecisions = MoveTemp(VoidDecisions);
+	}
+	if (OutVoidFinalizations)
+	{
+		*OutVoidFinalizations = Save->MatchWinnerVoidFinalizations;
 	}
 	OutError.Reset();
 	return true;
@@ -3907,6 +3973,164 @@ bool RunOddsWellUpcomingQaMatchWinnerVoidDecisionAudit(
 	return true;
 }
 
+EOddsWellMatchWinnerVoidFinalizationResult FinalizeOddsWellUpcomingQaMatchWinnerVoidRefund(
+	FOddsWellMatchWinnerVoidFinalizationRecord& OutRecord,
+	FString& OutError)
+{
+	FOddsWellOddsBucksLedger Ledger;
+	int64 NextJobPayoutUnixSeconds = 0;
+	TArray<FOddsWellMatchWinnerRequestRecord> Requests;
+	TArray<FOddsWellMatchWinnerLockRecord> Locks;
+	TArray<FOddsWellMatchWinnerCanceledGameRecord> CanceledGames;
+	TArray<FOddsWellMatchWinnerVoidDecisionRecord> VoidDecisions;
+	TArray<FOddsWellMatchWinnerVoidFinalizationRecord> VoidFinalizations;
+	if (!LoadExactUpcomingQaLockState(
+			Ledger,
+			NextJobPayoutUnixSeconds,
+			Requests,
+			Locks,
+			OutError,
+			&CanceledGames,
+			&VoidDecisions,
+			&VoidFinalizations)
+		|| Locks.Num() != 1
+		|| CanceledGames.Num() != 1
+		|| VoidDecisions.Num() != 1)
+	{
+		OutRecord = FOddsWellMatchWinnerVoidFinalizationRecord();
+		if (OutError.IsEmpty())
+		{
+			OutError = TEXT("The isolated upcoming QA refund requires the exact pending void decision.");
+		}
+		return EOddsWellMatchWinnerVoidFinalizationResult::Rejected;
+	}
+	const EOddsWellMatchWinnerVoidFinalizationResult Result = FinalizeOddsWellMatchWinnerVoidRefund(
+		UpcomingQaVoidFinalizationCommandId,
+		UpcomingQaVoidDecisionCommandId,
+		true,
+		OutRecord,
+		OutError);
+	if (Result == EOddsWellMatchWinnerVoidFinalizationResult::Finalized)
+	{
+		OutError.Reset();
+	}
+	return Result;
+}
+
+bool RunOddsWellUpcomingQaMatchWinnerVoidFinalizationAudit(
+	int32& OutLedgerEntries,
+	int32& OutRequests,
+	int32& OutLocks,
+	int32& OutCancellations,
+	int32& OutVoidDecisions,
+	int32& OutVoidFinalizations,
+	int64& OutBalance,
+	FString& OutError)
+{
+	TArray<uint8> BeforeBytes;
+	if (!UGameplayStatics::SaveGameToMemory(
+			UGameplayStatics::LoadGameFromSlot(OddsBucksQaSlot, OddsBucksUserIndex),
+			BeforeBytes))
+	{
+		OutError = TEXT("The exact refunded QA state could not be captured.");
+		return false;
+	}
+
+	FOddsWellMatchWinnerVoidFinalizationRecord Finalization;
+	if (FinalizeOddsWellUpcomingQaMatchWinnerVoidRefund(Finalization, OutError)
+			!= EOddsWellMatchWinnerVoidFinalizationResult::Duplicate
+		|| Finalization.FinalizationCommandId != UpcomingQaVoidFinalizationCommandId)
+	{
+		OutError = TEXT("The exact cold refund-finalization retry was not idempotent.");
+		return false;
+	}
+	auto RejectFinalization = [&Finalization, &OutError](
+		const FString& FinalizationCommandId,
+		const FString& VoidDecisionCommandId)
+	{
+		return FinalizeOddsWellMatchWinnerVoidRefund(
+			FinalizationCommandId,
+			VoidDecisionCommandId,
+			true,
+			Finalization,
+			OutError) == EOddsWellMatchWinnerVoidFinalizationResult::Rejected;
+	};
+	if (!RejectFinalization(UpcomingQaVoidFinalizationCommandId, TEXT("qa:h22:wrong-decision"))
+		|| !RejectFinalization(UpcomingQaVoidFinalizationCommandId, TEXT("qa:h22:conflict-decision"))
+		|| !RejectFinalization(TEXT("qa:h22:second-finalization"), UpcomingQaVoidDecisionCommandId)
+		|| !RejectFinalization(FString(), UpcomingQaVoidDecisionCommandId)
+		|| !RejectFinalization(UpcomingQaVoidDecisionCommandId, UpcomingQaVoidDecisionCommandId))
+	{
+		if (OutError.IsEmpty())
+		{
+			OutError = TEXT("An isolated upcoming QA refund-finalization rejection invariant failed.");
+		}
+		return false;
+	}
+
+	FOddsWellMatchWinnerResultLinkRecord NormalResult;
+	if (LinkOddsWellMatchWinnerResult(
+			TEXT("qa:h22:normal-result"),
+			UpcomingQaRequestCommandId,
+			UpcomingQaLockCommandId,
+			MatchWinnerResultSchema,
+			MatchWinnerResultVersion,
+			UpcomingQaSeasonNumber,
+			UpcomingQaGameNumber,
+			TEXT("Sundale Sparks"),
+			TEXT("Red Mesa Rivals"),
+			101,
+			100,
+			TEXT("Sundale Sparks"),
+			FString::ChrN(64, TEXT('c')),
+			true,
+			NormalResult,
+			OutError) != EOddsWellMatchWinnerResultLinkResult::Rejected)
+	{
+		OutError = TEXT("A refunded upcoming QA game accepted a fabricated normal result.");
+		return false;
+	}
+
+	FOddsWellOddsBucksLedger Ledger;
+	int64 NextJobPayoutUnixSeconds = 0;
+	TArray<FOddsWellMatchWinnerRequestRecord> Requests;
+	TArray<FOddsWellMatchWinnerLockRecord> Locks;
+	TArray<FOddsWellMatchWinnerCanceledGameRecord> CanceledGames;
+	TArray<FOddsWellMatchWinnerVoidDecisionRecord> VoidDecisions;
+	TArray<FOddsWellMatchWinnerVoidFinalizationRecord> VoidFinalizations;
+	TArray<uint8> AfterBytes;
+	if (!LoadExactUpcomingQaLockState(
+			Ledger,
+			NextJobPayoutUnixSeconds,
+			Requests,
+			Locks,
+			OutError,
+			&CanceledGames,
+			&VoidDecisions,
+			&VoidFinalizations)
+		|| VoidFinalizations.Num() != 1
+		|| !UGameplayStatics::SaveGameToMemory(
+			UGameplayStatics::LoadGameFromSlot(OddsBucksQaSlot, OddsBucksUserIndex),
+			AfterBytes)
+		|| BeforeBytes != AfterBytes)
+	{
+		if (OutError.IsEmpty())
+		{
+			OutError = TEXT("A rejected isolated upcoming QA refund finalization mutated persisted state.");
+		}
+		return false;
+	}
+	OutLedgerEntries = Ledger.GetEntries().Num();
+	OutRequests = Requests.Num();
+	OutLocks = Locks.Num();
+	OutCancellations = CanceledGames.Num();
+	OutVoidDecisions = VoidDecisions.Num();
+	OutVoidFinalizations = VoidFinalizations.Num();
+	OutBalance = Ledger.GetBalance();
+	OutError.Reset();
+	return true;
+}
+
 EOddsWellMatchWinnerVoidFinalizationResult FinalizeOddsWellMatchWinnerVoidRefund(
 	const FString& FinalizationCommandId,
 	const FString& VoidDecisionCommandId,
@@ -4006,6 +4230,9 @@ EOddsWellMatchWinnerVoidFinalizationResult FinalizeOddsWellMatchWinnerVoidRefund
 				return Candidate.LockCommandId == Decision->LockCommandId;
 			})
 		: nullptr;
+	const bool bSupportedCanceledQaGame = Decision
+		&& ((Decision->SeasonNumber == CanceledQaSeasonNumber && Decision->GameNumber == CanceledQaGameNumber)
+			|| (Decision->SeasonNumber == UpcomingQaSeasonNumber && Decision->GameNumber == UpcomingQaGameNumber));
 	if (!Decision
 		|| !Canceled
 		|| !Request
@@ -4017,8 +4244,7 @@ EOddsWellMatchWinnerVoidFinalizationResult FinalizeOddsWellMatchWinnerVoidRefund
 		|| Ledger.HasCommand(FinalizationCommandId)
 		|| Ledger.GetEntries().Num() != 2
 		|| Ledger.GetBalance() != 60
-		|| Decision->SeasonNumber != CanceledQaSeasonNumber
-		|| Decision->GameNumber != CanceledQaGameNumber
+		|| !bSupportedCanceledQaGame
 		|| Decision->Stake != 40
 		|| Decision->RefundDue != 40
 		|| Decision->CancellationReason != MatchWinnerCanceledGameReason
@@ -6923,6 +7149,239 @@ bool FOddsWellUpcomingQaMatchWinnerVoidDecisionTest::RunTest(const FString& Para
 			RestoredDecisionBytes));
 	TestTrue(TEXT("Every H21 tamper rejection preserves exact bytes"), RestoredDecisionBytes == DecisionBytes);
 	TestTrue(TEXT("H21 QA cleanup succeeds"), ResetOddsWellQaOddsBucksAndVerify(Error));
+	return !HasAnyErrors();
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(
+	FOddsWellUpcomingQaMatchWinnerVoidFinalizationTest,
+	"OddsWell.Economy.UpcomingQaMatchWinnerVoidFinalization",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+
+bool FOddsWellUpcomingQaMatchWinnerVoidFinalizationTest::RunTest(const FString& Parameters)
+{
+	FString Error;
+	TestTrue(TEXT("H22 QA starts clean"), ResetOddsWellQaOddsBucksAndVerify(Error));
+	FOddsWellOddsBucksLedger Ledger;
+	TestEqual(
+		TEXT("Existing job ledger funds H22 QA"),
+		Ledger.Append(GetOddsWellFirstJobCommandId(), GetOddsWellFirstJobPayout(), GetOddsWellFirstJobReason()),
+		EOddsWellOddsBucksAppendResult::Applied);
+	TestTrue(
+		TEXT("Job-funded H22 baseline persists"),
+		SaveOddsWellOddsBucksLedger(Ledger, UpcomingQaLockUnixSeconds, true, Error));
+	FOddsWellMatchWinnerOffer Offer;
+	TestTrue(TEXT("Exact H22 offer builds"), BuildOddsWellUpcomingQaMatchWinnerOffer(Offer, Error));
+	FOddsWellMatchWinnerRequestRecord Request;
+	int64 Balance = 0;
+	TestEqual(
+		TEXT("Exact H17 request exists before H22"),
+		AcceptOddsWellUpcomingQaMatchWinnerRequest(
+			Offer,
+			UpcomingQaRequestCommandId,
+			Offer.HomeTeam,
+			40,
+			UpcomingQaAcceptedUnixSeconds,
+			Request,
+			Balance,
+			Error),
+		EOddsWellMatchWinnerRequestResult::Accepted);
+	FOddsWellMatchWinnerLockRecord Lock;
+	TestEqual(
+		TEXT("Exact H19 lock exists before H22"),
+		LockOddsWellUpcomingQaMatchWinnerRequestAtGameStart(Lock, Error),
+		EOddsWellMatchWinnerLockResult::Locked);
+	FOddsWellMatchWinnerCanceledGameRecord Cancellation;
+	TestEqual(
+		TEXT("Exact H20 cancellation exists before H22"),
+		RecordOddsWellUpcomingQaMatchWinnerCancellation(Cancellation, Error),
+		EOddsWellMatchWinnerCanceledGameResult::Recorded);
+	FOddsWellMatchWinnerVoidDecisionRecord Decision;
+	TestEqual(
+		TEXT("Exact H21 refund-due decision exists before H22"),
+		DecideOddsWellUpcomingQaMatchWinnerVoidRefundDue(Decision, Error),
+		EOddsWellMatchWinnerVoidDecisionResult::Decided);
+
+	FOddsWellMatchWinnerVoidFinalizationRecord Finalization;
+	TestEqual(
+		TEXT("Server-owned exact refund applies and finalizes once"),
+		FinalizeOddsWellUpcomingQaMatchWinnerVoidRefund(Finalization, Error),
+		EOddsWellMatchWinnerVoidFinalizationResult::Finalized);
+	TestEqual(TEXT("H22 finalization command is fixed"), Finalization.FinalizationCommandId, UpcomingQaVoidFinalizationCommandId);
+	TestEqual(TEXT("H22 decision link is exact"), Finalization.VoidDecisionCommandId, UpcomingQaVoidDecisionCommandId);
+	TestEqual(TEXT("H22 cancellation command link is exact"), Finalization.CancellationCommandId, UpcomingQaCancellationCommandId);
+	TestEqual(TEXT("H22 cancellation evidence link is exact"), Finalization.CancellationEvidenceId, UpcomingQaCancellationEvidenceId);
+	TestEqual(TEXT("H22 request link is exact"), Finalization.RequestCommandId, UpcomingQaRequestCommandId);
+	TestEqual(TEXT("H22 lock link is exact"), Finalization.LockCommandId, UpcomingQaLockCommandId);
+	TestEqual(TEXT("H22 offer identity is exact"), Finalization.OfferId, Offer.OfferId);
+	TestEqual(TEXT("H22 offer schema is exact"), Finalization.OfferSchema, MatchWinnerOfferSchema);
+	TestEqual(TEXT("H22 offer version is exact"), Finalization.OfferVersion, Offer.OfferVersion);
+	TestEqual(TEXT("H22 season is isolated"), Finalization.SeasonNumber, UpcomingQaSeasonNumber);
+	TestEqual(TEXT("H22 game is isolated"), Finalization.GameNumber, UpcomingQaGameNumber);
+	TestEqual(TEXT("H22 selected team remains Sparks"), Finalization.SelectedTeam, Offer.HomeTeam);
+	TestEqual(TEXT("H22 stake remains 40"), Finalization.Stake, int64{40});
+	TestEqual(TEXT("H22 reason remains game canceled"), Finalization.CancellationReason, MatchWinnerCanceledGameReason);
+	TestEqual(TEXT("H22 outcome remains voided"), Finalization.Outcome, MatchWinnerVoidedOutcome);
+	TestEqual(TEXT("H22 refund due remains 40"), Finalization.RefundDue, int64{40});
+	TestEqual(TEXT("H22 refund applies exactly 40"), Finalization.RefundApplied, int64{40});
+	TestEqual(TEXT("H22 refund ledger command is fixed"), Finalization.RefundLedgerCommandId, UpcomingQaVoidFinalizationCommandId);
+	TestEqual(TEXT("H22 status is settled void"), Finalization.Status, MatchWinnerSettledVoidStatus);
+	TestEqual(TEXT("H22 observes three ledger entries"), Finalization.ObservedLedgerEntryCount, 3);
+	TestEqual(TEXT("H22 observes balance 100"), Finalization.ObservedFinalBalance, int64{100});
+
+	FOddsWellOddsBucksLedger FinalizedLedger;
+	int64 FinalizedNextJobPayout = 0;
+	TArray<FOddsWellMatchWinnerRequestRecord> FinalizedRequests;
+	TArray<FOddsWellMatchWinnerLockRecord> FinalizedLocks;
+	TArray<FOddsWellMatchWinnerCanceledGameRecord> FinalizedCancellations;
+	TArray<FOddsWellMatchWinnerVoidDecisionRecord> FinalizedVoidDecisions;
+	TArray<FOddsWellMatchWinnerVoidFinalizationRecord> FinalizedVoidFinalizations;
+	TestTrue(
+		TEXT("Exact H22 chain reloads"),
+		LoadExactUpcomingQaLockState(
+			FinalizedLedger,
+			FinalizedNextJobPayout,
+			FinalizedRequests,
+			FinalizedLocks,
+			Error,
+			&FinalizedCancellations,
+			&FinalizedVoidDecisions,
+			&FinalizedVoidFinalizations));
+	TestEqual(TEXT("H22 ledger has exactly three entries"), FinalizedLedger.GetEntries().Num(), 3);
+	TestEqual(TEXT("H22 balance is exactly 100"), FinalizedLedger.GetBalance(), int64{100});
+	TestEqual(TEXT("H17 cooldown remains exact"), FinalizedNextJobPayout, UpcomingQaLockUnixSeconds);
+	TestEqual(TEXT("H17 request remains singular"), FinalizedRequests.Num(), 1);
+	TestEqual(TEXT("H19 lock remains singular"), FinalizedLocks.Num(), 1);
+	TestEqual(TEXT("H20 cancellation remains singular"), FinalizedCancellations.Num(), 1);
+	TestEqual(TEXT("H21 decision remains singular"), FinalizedVoidDecisions.Num(), 1);
+	TestEqual(TEXT("H22 finalization remains singular"), FinalizedVoidFinalizations.Num(), 1);
+	if (FinalizedLedger.GetEntries().Num() == 3 && FinalizedVoidDecisions.Num() == 1)
+	{
+		const FOddsWellOddsBucksEntry& Refund = FinalizedLedger.GetEntries()[2];
+		TestEqual(TEXT("Refund entry is sequence three"), Refund.Sequence, int64{3});
+		TestEqual(TEXT("Refund entry command is H22"), Refund.CommandId, UpcomingQaVoidFinalizationCommandId);
+		TestEqual(TEXT("Refund entry is plus 40"), Refund.Delta, int64{40});
+		TestEqual(TEXT("Refund entry reaches 100"), Refund.BalanceAfter, int64{100});
+		TestEqual(TEXT("Refund entry reason is exact"), Refund.Reason, MatchWinnerRefundReason);
+		TestEqual(TEXT("H21 remains pending and immutable"), FinalizedVoidDecisions[0].Status, MatchWinnerDecidedVoidPendingRefundStatus);
+		TestEqual(TEXT("H21 refund due remains 40"), FinalizedVoidDecisions[0].RefundDue, int64{40});
+	}
+	const UOddsWellOddsBucksSaveGame* ExactFinalized = Cast<UOddsWellOddsBucksSaveGame>(
+		UGameplayStatics::LoadGameFromSlot(OddsBucksQaSlot, OddsBucksUserIndex));
+	TestNotNull(TEXT("Exact H22 save reloads"), ExactFinalized);
+	if (ExactFinalized)
+	{
+		TestTrue(TEXT("H22 has no normal result"), ExactFinalized->MatchWinnerResultLinks.IsEmpty());
+		TestTrue(TEXT("H22 has no normal settlement"), ExactFinalized->MatchWinnerSettlementDecisions.IsEmpty());
+		TestTrue(TEXT("H22 has no loss finalization"), ExactFinalized->MatchWinnerLossFinalizations.IsEmpty());
+		TestTrue(TEXT("H22 has no win finalization"), ExactFinalized->MatchWinnerWinFinalizations.IsEmpty());
+		TestEqual(TEXT("H22 has one void finalization"), ExactFinalized->MatchWinnerVoidFinalizations.Num(), 1);
+	}
+
+	TArray<uint8> FinalizedBytes;
+	TestTrue(
+		TEXT("Exact H22 finalized state serializes"),
+		UGameplayStatics::SaveGameToMemory(
+			UGameplayStatics::LoadGameFromSlot(OddsBucksQaSlot, OddsBucksUserIndex),
+			FinalizedBytes));
+	int32 Entries = 0;
+	int32 Requests = 0;
+	int32 Locks = 0;
+	int32 Cancellations = 0;
+	int32 VoidDecisions = 0;
+	int32 VoidFinalizations = 0;
+	TestTrue(
+		TEXT("Cold retry and refund-finalization rejection matrix are byte-stable"),
+		RunOddsWellUpcomingQaMatchWinnerVoidFinalizationAudit(
+			Entries,
+			Requests,
+			Locks,
+			Cancellations,
+			VoidDecisions,
+			VoidFinalizations,
+			Balance,
+			Error));
+	TestEqual(TEXT("H22 audit preserves three ledger entries"), Entries, 3);
+	TestEqual(TEXT("H22 audit preserves one request"), Requests, 1);
+	TestEqual(TEXT("H22 audit preserves one lock"), Locks, 1);
+	TestEqual(TEXT("H22 audit preserves one cancellation"), Cancellations, 1);
+	TestEqual(TEXT("H22 audit preserves one void decision"), VoidDecisions, 1);
+	TestEqual(TEXT("H22 audit preserves one void finalization"), VoidFinalizations, 1);
+	TestEqual(TEXT("H22 audit preserves balance 100"), Balance, int64{100});
+
+	auto RestoreExactFinalization = [&]()
+	{
+		return UGameplayStatics::SaveGameToSlot(
+			UGameplayStatics::LoadGameFromMemory(FinalizedBytes),
+			OddsBucksQaSlot,
+			OddsBucksUserIndex);
+	};
+	auto RejectMutation = [&](const TCHAR* Label, TFunctionRef<void(UOddsWellOddsBucksSaveGame&)> Mutate)
+	{
+		UOddsWellOddsBucksSaveGame* Mutated = Cast<UOddsWellOddsBucksSaveGame>(
+			UGameplayStatics::LoadGameFromMemory(FinalizedBytes));
+		TestNotNull(FString::Printf(TEXT("%s mutation loads"), Label), Mutated);
+		if (!Mutated)
+		{
+			return;
+		}
+		Mutate(*Mutated);
+		TestTrue(
+			FString::Printf(TEXT("%s mutation persists"), Label),
+			UGameplayStatics::SaveGameToSlot(Mutated, OddsBucksQaSlot, OddsBucksUserIndex));
+		Error.Reset();
+		TestEqual(
+			FString::Printf(TEXT("%s rejects exact H22 command"), Label),
+			FinalizeOddsWellUpcomingQaMatchWinnerVoidRefund(Finalization, Error),
+			EOddsWellMatchWinnerVoidFinalizationResult::Rejected);
+		TestTrue(FString::Printf(TEXT("%s exact H22 state restores"), Label), RestoreExactFinalization());
+	};
+	RejectMutation(TEXT("Wrong H21 decision link"), [](UOddsWellOddsBucksSaveGame& Save)
+	{
+		if (!Save.MatchWinnerVoidDecisions.IsEmpty())
+		{
+			Save.MatchWinnerVoidDecisions[0].CancellationEvidenceId = TEXT("qa:h22:invented-evidence");
+		}
+	});
+	RejectMutation(TEXT("Wrong H22 finalization link"), [](UOddsWellOddsBucksSaveGame& Save)
+	{
+		if (!Save.MatchWinnerVoidFinalizations.IsEmpty())
+		{
+			Save.MatchWinnerVoidFinalizations[0].VoidDecisionCommandId = TEXT("qa:h22:invented-decision");
+		}
+	});
+	RejectMutation(TEXT("Wrong applied refund"), [](UOddsWellOddsBucksSaveGame& Save)
+	{
+		if (!Save.MatchWinnerVoidFinalizations.IsEmpty())
+		{
+			Save.MatchWinnerVoidFinalizations[0].RefundApplied = 39;
+		}
+	});
+	RejectMutation(TEXT("Wrong finalization status"), [](UOddsWellOddsBucksSaveGame& Save)
+	{
+		if (!Save.MatchWinnerVoidFinalizations.IsEmpty())
+		{
+			Save.MatchWinnerVoidFinalizations[0].Status = TEXT("open");
+		}
+	});
+	RejectMutation(TEXT("Unexpected refund ledger evidence"), [](UOddsWellOddsBucksSaveGame& Save)
+	{
+		if (Save.Entries.Num() == 3)
+		{
+			Save.Entries[2].Reason = TEXT("qa_unexpected_credit");
+		}
+	});
+	RejectMutation(TEXT("Normal result overlap"), [](UOddsWellOddsBucksSaveGame& Save)
+	{
+		Save.MatchWinnerResultLinks.AddDefaulted();
+	});
+	TArray<uint8> RestoredFinalizedBytes;
+	TestTrue(
+		TEXT("Restored exact H22 state serializes"),
+		UGameplayStatics::SaveGameToMemory(
+			UGameplayStatics::LoadGameFromSlot(OddsBucksQaSlot, OddsBucksUserIndex),
+			RestoredFinalizedBytes));
+	TestTrue(TEXT("Every H22 tamper rejection preserves exact bytes"), RestoredFinalizedBytes == FinalizedBytes);
+	TestTrue(TEXT("H22 QA cleanup succeeds"), ResetOddsWellQaOddsBucksAndVerify(Error));
 	return !HasAnyErrors();
 }
 
