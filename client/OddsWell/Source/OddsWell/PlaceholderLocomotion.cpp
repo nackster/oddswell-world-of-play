@@ -4,6 +4,7 @@
 #include "Camera/PlayerCameraManager.h"
 #include "CharacterAppearanceSave.h"
 #include "CharacterPresetCatalog.h"
+#include "CanonicalPregameCommitment.h"
 #include "CanonicalScheduledGame.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/InputComponent.h"
@@ -3286,6 +3287,34 @@ void AOddsWellLocomotionGameMode::BeginPlay()
 			CanonicalScheduledGame.SeasonCreatedUnixSeconds,
 			CanonicalScheduledGame.TipoffUnixSeconds,
 			CanonicalScheduledGame.OfferEligibleUnixSeconds);
+		FOddsWellCanonicalPregameCommitmentRecord PregameCommitment;
+		FString PregameCommitmentError;
+		const EOddsWellCanonicalPregameCommitmentResult PregameCommitmentResult =
+			CreateOddsWellCanonicalPregameCommitment(
+				PregameCommitment,
+				PregameCommitmentError);
+		if (PregameCommitmentResult == EOddsWellCanonicalPregameCommitmentResult::Rejected)
+		{
+			UE_LOG(
+				LogOddsWellLocomotion,
+				Error,
+				TEXT("ODDSWELL_CANONICAL_PREGAME_COMMITMENT|result=FAIL|detail=%s"),
+				*PregameCommitmentError);
+		}
+		else
+		{
+			UE_LOG(
+				LogOddsWellLocomotion,
+				Display,
+				TEXT("ODDSWELL_CANONICAL_PREGAME_COMMITMENT|result=PASS|transition=%s|season=1|game=1|home=Harbor City Waves|away=Mesa Vista Sol|schedule_created_unix=%lld|tipoff_unix=%lld|snapshot=oddswell-public-pregame-v1|prediction=phase0d4-v1|input_class=public_elo_rotation|commitment_sha256=%s|standings=0-0,0-0|rest_days=7,7|availability=public|projected_minutes=public|offer=false|odds=false|ui=false|wager=false|simulation=false|result_state=false|environment=local_beta"),
+				PregameCommitmentResult
+						== EOddsWellCanonicalPregameCommitmentResult::Created
+					? TEXT("created")
+					: TEXT("duplicate"),
+				PregameCommitment.ScheduleCreatedUnixSeconds,
+				PregameCommitment.ScheduleTipoffUnixSeconds,
+				*PregameCommitment.CommitmentSha256);
+		}
 	}
 	bOddsBucksQaSlot = UseOddsWellOddsBucksQaSlot();
 	bSportsbookWagerQa = FParse::Param(FCommandLine::Get(), TEXT("SportsbookWagerQa"))

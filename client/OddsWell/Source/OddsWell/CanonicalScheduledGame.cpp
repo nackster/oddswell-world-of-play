@@ -173,6 +173,14 @@ EOddsWellCanonicalScheduledGameResult CreateOddsWellCanonicalLocalBetaScheduledG
 		OutError);
 }
 
+bool ValidateOddsWellCanonicalScheduledGameSave(
+	const UObject* SaveObject,
+	FOddsWellCanonicalScheduledGameRecord& OutRecord,
+	FString& OutError)
+{
+	return ValidateCanonicalScheduledGame(SaveObject, OutRecord, OutError);
+}
+
 bool LoadOddsWellCanonicalLocalBetaScheduledGame(
 	FOddsWellCanonicalScheduledGameRecord& OutRecord,
 	FString& OutError)

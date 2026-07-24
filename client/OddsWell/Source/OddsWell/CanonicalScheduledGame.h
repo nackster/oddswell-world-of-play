@@ -81,6 +81,10 @@ enum class EOddsWellCanonicalScheduledGameResult : uint8
 ODDSWELL_API EOddsWellCanonicalScheduledGameResult CreateOddsWellCanonicalLocalBetaScheduledGame(
 	FOddsWellCanonicalScheduledGameRecord& OutRecord,
 	FString& OutError);
+ODDSWELL_API bool ValidateOddsWellCanonicalScheduledGameSave(
+	const UObject* SaveObject,
+	FOddsWellCanonicalScheduledGameRecord& OutRecord,
+	FString& OutError);
 ODDSWELL_API bool LoadOddsWellCanonicalLocalBetaScheduledGame(
 	FOddsWellCanonicalScheduledGameRecord& OutRecord,
 	FString& OutError);
