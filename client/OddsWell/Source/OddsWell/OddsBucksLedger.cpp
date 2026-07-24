@@ -24,7 +24,8 @@
 
 namespace
 {
-constexpr int32 OddsBucksSchemaVersion = 11;
+constexpr int32 OddsBucksSchemaVersion = 12;
+constexpr int32 MatchWinnerRequestEvidenceVersion = 1;
 constexpr int32 OddsBucksUserIndex = 0;
 constexpr int64 FirstJobPayout = 100;
 constexpr int64 JobPayoutIntervalSeconds = 24 * 60 * 60;
@@ -351,7 +352,37 @@ bool ValidateMatchWinnerRequests(const FOddsWellOddsBucksLedger& Ledger, const T
 	for (int32 Index = 0; Index < Requests.Num(); ++Index)
 	{
 		const FOddsWellMatchWinnerRequestRecord& Request = Requests[Index];
-		if (Request.RequestCommandId.TrimStartAndEnd().IsEmpty()
+		const bool bLegacyEvidence =
+			Request.EvidenceVersion == 0
+			&& Request.OfferSchema.IsEmpty()
+			&& Request.Market.IsEmpty()
+			&& Request.Currency.IsEmpty()
+			&& Request.SourcePredictionVersion.IsEmpty()
+			&& Request.SourceSnapshotVersion.IsEmpty()
+			&& Request.SourceModel.IsEmpty()
+			&& Request.SourceCommitmentSha256.IsEmpty()
+			&& Request.SelectedWinProbabilityE8 == 0
+			&& Request.SelectedDecimalOddsE4 == 0
+			&& Request.PayoutFormula.IsEmpty()
+			&& Request.GrossReturn == 0;
+		const bool bCurrentEvidence =
+			Request.EvidenceVersion == MatchWinnerRequestEvidenceVersion
+			&& Request.OfferSchema == MatchWinnerOfferSchema
+			&& Request.Market == MatchWinnerMarket
+			&& Request.Currency == OddsBucksCurrency
+			&& Request.SourcePredictionVersion == MatchWinnerPredictionVersion
+			&& Request.SourceSnapshotVersion == MatchWinnerSnapshotVersion
+			&& Request.SourceModel == MatchWinnerSourceModel
+			&& IsLowerHexHash(Request.SourceCommitmentSha256)
+			&& Request.SelectedWinProbabilityE8 > 0
+			&& Request.SelectedWinProbabilityE8 < MatchWinnerProbabilityScale
+			&& Request.SelectedDecimalOddsE4
+				== MatchWinnerProbabilityScale * 10000 / Request.SelectedWinProbabilityE8
+			&& Request.PayoutFormula == MatchWinnerPayoutFormula
+			&& Request.GrossReturn
+				== Request.Stake * MatchWinnerProbabilityScale / Request.SelectedWinProbabilityE8;
+		if ((!bLegacyEvidence && !bCurrentEvidence)
+			|| Request.RequestCommandId.TrimStartAndEnd().IsEmpty()
 			|| Request.StakeLedgerCommandId != Request.RequestCommandId
 			|| RequestIds.Contains(Request.RequestCommandId)
 			|| !IsLowerHexHash(Request.OfferId)
@@ -1285,7 +1316,9 @@ bool UseOddsWellOddsBucksQaSlot()
 		|| FParse::Param(FCommandLine::Get(), TEXT("SportsbookVoidDecisionQa"))
 		|| FParse::Param(FCommandLine::Get(), TEXT("SportsbookVoidDecisionQaVerify"))
 		|| FParse::Param(FCommandLine::Get(), TEXT("SportsbookVoidFinalizationQa"))
-		|| FParse::Param(FCommandLine::Get(), TEXT("SportsbookVoidFinalizationQaVerify"));
+		|| FParse::Param(FCommandLine::Get(), TEXT("SportsbookVoidFinalizationQaVerify"))
+		|| FParse::Param(FCommandLine::Get(), TEXT("CanonicalMatchWinnerRequestQa"))
+		|| FParse::Param(FCommandLine::Get(), TEXT("CanonicalMatchWinnerRequestQaVerify"));
 }
 
 const FString& GetOddsWellUpcomingQaMatchWinnerRequestCommandId()
@@ -2470,6 +2503,17 @@ EOddsWellMatchWinnerRequestResult AcceptOddsWellMatchWinnerRequest(
 		}
 		return EOddsWellMatchWinnerRequestResult::Rejected;
 	}
+	const FOddsWellMatchWinnerSelection* Selected =
+		Offer.Selections.FindByPredicate(
+			[&OfferedTeam](const FOddsWellMatchWinnerSelection& Selection)
+			{
+				return Selection.Team == OfferedTeam;
+			});
+	if (!Selected)
+	{
+		OutError = TEXT("The Match Winner request does not match an offered selection.");
+		return EOddsWellMatchWinnerRequestResult::Rejected;
+	}
 
 	FOddsWellOddsBucksLedger Ledger;
 	int64 NextJobPayoutUnixSeconds = 0;
@@ -2508,6 +2552,20 @@ EOddsWellMatchWinnerRequestResult AcceptOddsWellMatchWinnerRequest(
 			return Request.RequestCommandId == RequestCommandId;
 		}))
 	{
+		const bool bExactCurrentEvidence =
+			Existing->EvidenceVersion == MatchWinnerRequestEvidenceVersion
+			&& Existing->OfferSchema == Offer.Schema
+			&& Existing->Market == Offer.Market
+			&& Existing->Currency == Offer.Currency
+			&& Existing->SourcePredictionVersion == Offer.SourcePredictionVersion
+			&& Existing->SourceSnapshotVersion == Offer.SourceSnapshotVersion
+			&& Existing->SourceModel == Offer.SourceModel
+			&& Existing->SourceCommitmentSha256 == Offer.SourceCommitmentSha256
+			&& Existing->SelectedWinProbabilityE8 == Selected->WinProbabilityE8
+			&& Existing->SelectedDecimalOddsE4 == Selected->DecimalOddsE4
+			&& Existing->PayoutFormula == Offer.PayoutFormula
+			&& Existing->GrossReturn
+				== Stake * MatchWinnerProbabilityScale / Selected->WinProbabilityE8;
 		const bool bExact = Existing->StakeLedgerCommandId == RequestCommandId
 			&& Existing->OfferId == Offer.OfferId
 			&& Existing->OfferVersion == Offer.OfferVersion
@@ -2518,7 +2576,8 @@ EOddsWellMatchWinnerRequestResult AcceptOddsWellMatchWinnerRequest(
 			&& Existing->OfferedTeam == OfferedTeam
 			&& Existing->Stake == Stake
 			&& Existing->LockUnixSeconds == Offer.LockUnixSeconds
-			&& Existing->Status == AcceptedPendingLockStatus;
+			&& Existing->Status == AcceptedPendingLockStatus
+			&& (Existing->EvidenceVersion == 0 || bExactCurrentEvidence);
 		if (!bExact)
 		{
 			OutError = TEXT("The Match Winner request command was already used with different data.");
@@ -2541,16 +2600,29 @@ EOddsWellMatchWinnerRequestResult AcceptOddsWellMatchWinnerRequest(
 		return EOddsWellMatchWinnerRequestResult::Rejected;
 	}
 	FOddsWellMatchWinnerRequestRecord CandidateRecord;
+	CandidateRecord.EvidenceVersion = MatchWinnerRequestEvidenceVersion;
 	CandidateRecord.RequestCommandId = RequestCommandId;
 	CandidateRecord.StakeLedgerCommandId = RequestCommandId;
 	CandidateRecord.OfferId = Offer.OfferId;
 	CandidateRecord.OfferVersion = Offer.OfferVersion;
+	CandidateRecord.OfferSchema = Offer.Schema;
+	CandidateRecord.Market = Offer.Market;
+	CandidateRecord.Currency = Offer.Currency;
+	CandidateRecord.SourcePredictionVersion = Offer.SourcePredictionVersion;
+	CandidateRecord.SourceSnapshotVersion = Offer.SourceSnapshotVersion;
+	CandidateRecord.SourceModel = Offer.SourceModel;
+	CandidateRecord.SourceCommitmentSha256 = Offer.SourceCommitmentSha256;
 	CandidateRecord.SeasonNumber = Offer.SeasonNumber;
 	CandidateRecord.GameNumber = Offer.GameNumber;
 	CandidateRecord.HomeTeam = Offer.HomeTeam;
 	CandidateRecord.AwayTeam = Offer.AwayTeam;
 	CandidateRecord.OfferedTeam = OfferedTeam;
+	CandidateRecord.SelectedWinProbabilityE8 = Selected->WinProbabilityE8;
+	CandidateRecord.SelectedDecimalOddsE4 = Selected->DecimalOddsE4;
 	CandidateRecord.Stake = Stake;
+	CandidateRecord.PayoutFormula = Offer.PayoutFormula;
+	CandidateRecord.GrossReturn =
+		Stake * MatchWinnerProbabilityScale / Selected->WinProbabilityE8;
 	CandidateRecord.AcceptedUnixSeconds = AcceptedUnixSeconds;
 	CandidateRecord.LockUnixSeconds = Offer.LockUnixSeconds;
 	CandidateRecord.Status = AcceptedPendingLockStatus;
@@ -5163,7 +5235,7 @@ bool FOddsWellOddsBucksLedgerTest::RunTest(const FString& Parameters)
 	TestEqual(TEXT("Migration preserves the first payout"), MigratedLedger.GetBalance(), int64{100});
 	TestTrue(TEXT("Migration starts a fresh 24-hour wait"), MigratedNextJobPayout >= MigrationStartedAt + GetOddsWellJobPayoutIntervalSeconds());
 	const UOddsWellOddsBucksSaveGame* MigratedRecord = Cast<UOddsWellOddsBucksSaveGame>(UGameplayStatics::LoadGameFromSlot(OddsBucksQaSlot, OddsBucksUserIndex));
-	TestTrue(TEXT("Migration rewrites schema v11"), MigratedRecord && MigratedRecord->SchemaVersion == OddsBucksSchemaVersion);
+	TestTrue(TEXT("Migration rewrites schema v12"), MigratedRecord && MigratedRecord->SchemaVersion == OddsBucksSchemaVersion);
 	TestTrue(TEXT("Migrated QA cleanup succeeds"), ResetOddsWellQaOddsBucksAndVerify(Error));
 
 	UOddsWellOddsBucksSaveGame* VersionTwoRecord = NewObject<UOddsWellOddsBucksSaveGame>();
@@ -5177,7 +5249,7 @@ bool FOddsWellOddsBucksLedgerTest::RunTest(const FString& Parameters)
 	TestEqual(TEXT("Schema v2 migration preserves job cooldown"), MigratedNextJobPayout, ExpectedNextJobPayout);
 	TestEqual(TEXT("Schema v2 migration invents no wager"), MigratedRequests.Num(), 0);
 	MigratedRecord = Cast<UOddsWellOddsBucksSaveGame>(UGameplayStatics::LoadGameFromSlot(OddsBucksQaSlot, OddsBucksUserIndex));
-	TestTrue(TEXT("Schema v2 migration rewrites schema v11"), MigratedRecord && MigratedRecord->SchemaVersion == OddsBucksSchemaVersion);
+	TestTrue(TEXT("Schema v2 migration rewrites schema v12"), MigratedRecord && MigratedRecord->SchemaVersion == OddsBucksSchemaVersion);
 	TestTrue(TEXT("Migrated schema v2 cleanup succeeds"), ResetOddsWellQaOddsBucksAndVerify(Error));
 
 	TestEqual(TEXT("Existing valid job path funds wager QA"), JobLedger.GetBalance(), int64{100});
@@ -5242,7 +5314,7 @@ bool FOddsWellOddsBucksLedgerTest::RunTest(const FString& Parameters)
 	TestEqual(TEXT("Schema v3 migration preserves pending request evidence"), WagerRequests[0].Status, AcceptedPendingLockStatus);
 	TestEqual(TEXT("Schema v3 migration invents no lock"), WagerLocks.Num(), 0);
 	MigratedRecord = Cast<UOddsWellOddsBucksSaveGame>(UGameplayStatics::LoadGameFromSlot(OddsBucksQaSlot, OddsBucksUserIndex));
-	TestTrue(TEXT("Schema v3 migration rewrites schema v11"), MigratedRecord && MigratedRecord->SchemaVersion == OddsBucksSchemaVersion);
+	TestTrue(TEXT("Schema v3 migration rewrites schema v12"), MigratedRecord && MigratedRecord->SchemaVersion == OddsBucksSchemaVersion);
 
 	FOddsWellMatchWinnerLockRecord LockRecord;
 	const FString RequestCommandId(TEXT("wager:match_winner:test-1"));
@@ -5328,7 +5400,7 @@ bool FOddsWellOddsBucksLedgerTest::RunTest(const FString& Parameters)
 	TestEqual(TEXT("Schema v4 migration preserves one lock"), WagerLocks.Num(), 1);
 	TestEqual(TEXT("Schema v4 migration invents no result link"), WagerResultLinks.Num(), 0);
 	MigratedRecord = Cast<UOddsWellOddsBucksSaveGame>(UGameplayStatics::LoadGameFromSlot(OddsBucksQaSlot, OddsBucksUserIndex));
-	TestTrue(TEXT("Schema v4 migration rewrites schema v11"), MigratedRecord && MigratedRecord->SchemaVersion == OddsBucksSchemaVersion);
+	TestTrue(TEXT("Schema v4 migration rewrites schema v12"), MigratedRecord && MigratedRecord->SchemaVersion == OddsBucksSchemaVersion);
 
 	FOddsWellMatchWinnerResultLinkRecord TamperedResult = ExactResultInput;
 	TamperedResult.RequestCommandId = TEXT("wager:match_winner:unknown");
@@ -5412,7 +5484,7 @@ bool FOddsWellOddsBucksLedgerTest::RunTest(const FString& Parameters)
 	TestEqual(TEXT("Schema v5 migration preserves one result link"), WagerResultLinks.Num(), 1);
 	TestEqual(TEXT("Schema v5 migration invents no settlement decision"), WagerDecisions.Num(), 0);
 	MigratedRecord = Cast<UOddsWellOddsBucksSaveGame>(UGameplayStatics::LoadGameFromSlot(OddsBucksQaSlot, OddsBucksUserIndex));
-	TestTrue(TEXT("Schema v5 migration rewrites schema v11"), MigratedRecord && MigratedRecord->SchemaVersion == OddsBucksSchemaVersion);
+	TestTrue(TEXT("Schema v5 migration rewrites schema v12"), MigratedRecord && MigratedRecord->SchemaVersion == OddsBucksSchemaVersion);
 
 	const FString DecisionCommandId(TEXT("wager:match_winner:decision:test-1"));
 	FOddsWellMatchWinnerSettlementDecisionRecord DecisionRecord;
@@ -5475,7 +5547,7 @@ bool FOddsWellOddsBucksLedgerTest::RunTest(const FString& Parameters)
 	TestEqual(TEXT("Schema v6 migration invents no win finalization"), WagerWinFinalizations.Num(), 0);
 	TestFalse(TEXT("Pending decision publishes no finalized-loss reconciliation"), IFileManager::Get().FileExists(*GetMatchWinnerReconciliationPath(true)));
 	MigratedRecord = Cast<UOddsWellOddsBucksSaveGame>(UGameplayStatics::LoadGameFromSlot(OddsBucksQaSlot, OddsBucksUserIndex));
-	TestTrue(TEXT("Schema v6 migration rewrites schema v11"), MigratedRecord && MigratedRecord->SchemaVersion == OddsBucksSchemaVersion);
+	TestTrue(TEXT("Schema v6 migration rewrites schema v12"), MigratedRecord && MigratedRecord->SchemaVersion == OddsBucksSchemaVersion);
 
 	const FString FinalizationCommandId(TEXT("wager:match_winner:finalization:test-1"));
 	FOddsWellMatchWinnerLossFinalizationRecord FinalizationRecord;
@@ -5739,7 +5811,7 @@ bool FOddsWellOddsBucksLedgerTest::RunTest(const FString& Parameters)
 	TestTrue(TEXT("Schema v7 pending win migrates without invention"), LoadOddsWellOddsBucksWagerFinalizationState(true, WinLedger, WinNextJobPayout, WinRequests, WinLocks, WinResults, WinDecisions, WinLossFinalizations, WinFinalizations, bFound, Error));
 	TestEqual(TEXT("Schema v7 migration invents no win finalization"), WinFinalizations.Num(), 0);
 	MigratedRecord = Cast<UOddsWellOddsBucksSaveGame>(UGameplayStatics::LoadGameFromSlot(OddsBucksQaSlot, OddsBucksUserIndex));
-	TestTrue(TEXT("Schema v7 migration rewrites schema v11"), MigratedRecord && MigratedRecord->SchemaVersion == OddsBucksSchemaVersion);
+	TestTrue(TEXT("Schema v7 migration rewrites schema v12"), MigratedRecord && MigratedRecord->SchemaVersion == OddsBucksSchemaVersion);
 
 	FOddsWellMatchWinnerSettlementDecisionRecord RetryWinDecision;
 	TestEqual(TEXT("Exact winning decision retry is idempotent"), DecideOddsWellMatchWinnerSettlement(Offer, WinDecisionCommandId, WinRequestCommandId, WinLockCommandId, WinResultCommandId, true, RetryWinDecision, Error), EOddsWellMatchWinnerSettlementDecisionResult::Duplicate);
@@ -6003,7 +6075,7 @@ bool FOddsWellOddsBucksLedgerTest::RunTest(const FString& Parameters)
 	TestTrue(TEXT("Schema v8 canceled-game base migrates"), LoadOddsWellMatchWinnerCanceledGames(true, CanceledGames, bFound, Error));
 	TestEqual(TEXT("Schema v8 migration invents no canceled game"), CanceledGames.Num(), 0);
 	MigratedRecord = Cast<UOddsWellOddsBucksSaveGame>(UGameplayStatics::LoadGameFromSlot(OddsBucksQaSlot, OddsBucksUserIndex));
-	TestTrue(TEXT("Schema v8 migration rewrites schema v11"), MigratedRecord && MigratedRecord->SchemaVersion == OddsBucksSchemaVersion);
+	TestTrue(TEXT("Schema v8 migration rewrites schema v12"), MigratedRecord && MigratedRecord->SchemaVersion == OddsBucksSchemaVersion);
 
 	TestEqual(TEXT("Canceled game requires the QA profile"), RecordOddsWellMatchWinnerCanceledGame(CancellationCommandId, CancellationEvidenceId, CanceledRequestCommandId, CanceledLockCommandId, MatchWinnerCanceledGameSchema, MatchWinnerCanceledGameVersion, CanceledOffer.SeasonNumber, CanceledOffer.GameNumber, CancellationUnixSeconds, MatchWinnerCanceledGameReason, false, CanceledGame, Error), EOddsWellMatchWinnerCanceledGameResult::Rejected);
 	TestEqual(TEXT("Unknown request cannot record a canceled game"), RecordOddsWellMatchWinnerCanceledGame(CancellationCommandId, CancellationEvidenceId, TEXT("wager:match_winner:canceled:request:unknown"), CanceledLockCommandId, MatchWinnerCanceledGameSchema, MatchWinnerCanceledGameVersion, CanceledOffer.SeasonNumber, CanceledOffer.GameNumber, CancellationUnixSeconds, MatchWinnerCanceledGameReason, true, CanceledGame, Error), EOddsWellMatchWinnerCanceledGameResult::Rejected);
@@ -6060,7 +6132,7 @@ bool FOddsWellOddsBucksLedgerTest::RunTest(const FString& Parameters)
 	TestTrue(TEXT("Schema v9 migration preserves canceled-game evidence"), LoadOddsWellMatchWinnerCanceledGames(true, CanceledGames, bFound, Error));
 	TestEqual(TEXT("Schema v9 migration preserves one canceled game"), CanceledGames.Num(), 1);
 	MigratedRecord = Cast<UOddsWellOddsBucksSaveGame>(UGameplayStatics::LoadGameFromSlot(OddsBucksQaSlot, OddsBucksUserIndex));
-	TestTrue(TEXT("Schema v9 migration rewrites schema v11"), MigratedRecord && MigratedRecord->SchemaVersion == OddsBucksSchemaVersion);
+	TestTrue(TEXT("Schema v9 migration rewrites schema v12"), MigratedRecord && MigratedRecord->SchemaVersion == OddsBucksSchemaVersion);
 
 	const FString VoidDecisionCommandId(TEXT("wager:match_winner:canceled:void-decision:test-1"));
 	FOddsWellMatchWinnerVoidDecisionRecord VoidDecision;
@@ -6142,7 +6214,7 @@ bool FOddsWellOddsBucksLedgerTest::RunTest(const FString& Parameters)
 	TestTrue(TEXT("Schema v10 migration preserves pending void decision"), LoadOddsWellMatchWinnerVoidDecisions(true, VoidDecisions, bFound, Error));
 	TestEqual(TEXT("Schema v10 migration preserves one void decision"), VoidDecisions.Num(), 1);
 	MigratedRecord = Cast<UOddsWellOddsBucksSaveGame>(UGameplayStatics::LoadGameFromSlot(OddsBucksQaSlot, OddsBucksUserIndex));
-	TestTrue(TEXT("Schema v10 migration rewrites schema v11"), MigratedRecord && MigratedRecord->SchemaVersion == OddsBucksSchemaVersion);
+	TestTrue(TEXT("Schema v10 migration rewrites schema v12"), MigratedRecord && MigratedRecord->SchemaVersion == OddsBucksSchemaVersion);
 
 	const FString VoidFinalizationCommandId(TEXT("wager:match_winner:canceled:void-finalization:test-1"));
 	FOddsWellMatchWinnerVoidFinalizationRecord VoidFinalization;
@@ -6326,7 +6398,7 @@ bool FOddsWellOddsBucksLedgerTest::RunTest(const FString& Parameters)
 	TestTrue(TEXT("Canceled-game QA cleanup succeeds"), ResetOddsWellQaOddsBucksAndVerify(Error));
 
 	TestTrue(TEXT("Exact loss profile restores after canceled-game QA"), UGameplayStatics::SaveGameToSlot(UGameplayStatics::LoadGameFromMemory(ExactLossProfileBytes), OddsBucksQaSlot, OddsBucksUserIndex));
-	TestTrue(TEXT("Exact loss remains valid after schema v11"), LoadOddsWellOddsBucksWagerFinalizationState(true, WagerLedger, WagerNextJobPayout, WagerRequests, WagerLocks, WagerResultLinks, WagerDecisions, WagerFinalizations, WagerWinFinalizations, bFound, Error));
+	TestTrue(TEXT("Exact loss remains valid after schema v12"), LoadOddsWellOddsBucksWagerFinalizationState(true, WagerLedger, WagerNextJobPayout, WagerRequests, WagerLocks, WagerResultLinks, WagerDecisions, WagerFinalizations, WagerWinFinalizations, bFound, Error));
 	FString H15LossProjectionJson;
 	TSharedPtr<FJsonObject> H15LossProjection;
 	TestTrue(TEXT("H15 restored exact loss reconciliation reads"), FFileHelper::LoadFileToString(H15LossProjectionJson, *MatchWinnerProjectionPath));
@@ -6343,7 +6415,7 @@ bool FOddsWellOddsBucksLedgerTest::RunTest(const FString& Parameters)
 	TestEqual(TEXT("Exact loss remains two ledger entries"), WagerLedger.GetEntries().Num(), 2);
 	TestEqual(TEXT("Exact loss balance remains 60"), WagerLedger.GetBalance(), int64{60});
 	TestTrue(TEXT("Exact win profile restores after canceled-game QA"), UGameplayStatics::SaveGameToSlot(UGameplayStatics::LoadGameFromMemory(ExactWinFinalizedBytes), OddsBucksQaSlot, OddsBucksUserIndex));
-	TestTrue(TEXT("Exact win remains valid after schema v11"), LoadOddsWellOddsBucksWagerFinalizationState(true, WinLedger, WinNextJobPayout, WinRequests, WinLocks, WinResults, WinDecisions, WinLossFinalizations, WinFinalizations, bFound, Error));
+	TestTrue(TEXT("Exact win remains valid after schema v12"), LoadOddsWellOddsBucksWagerFinalizationState(true, WinLedger, WinNextJobPayout, WinRequests, WinLocks, WinResults, WinDecisions, WinLossFinalizations, WinFinalizations, bFound, Error));
 	FString H15WinProjectionJson;
 	TSharedPtr<FJsonObject> H15WinProjection;
 	TestTrue(TEXT("H15 restored exact win reconciliation reads"), FFileHelper::LoadFileToString(H15WinProjectionJson, *MatchWinnerProjectionPath));

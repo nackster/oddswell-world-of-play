@@ -3409,6 +3409,15 @@ void AOddsWellLocomotionGameMode::BeginPlay()
 	bSportsbookVoidFinalizationQaVerify = FParse::Param(FCommandLine::Get(), TEXT("SportsbookVoidFinalizationQaVerify"));
 	bSportsbookVoidFinalizationQa = FParse::Param(FCommandLine::Get(), TEXT("SportsbookVoidFinalizationQa"))
 		|| bSportsbookVoidFinalizationQaVerify;
+	const bool bCanonicalRequestQaVerify =
+		FParse::Param(
+			FCommandLine::Get(),
+			TEXT("CanonicalMatchWinnerRequestQaVerify"));
+	const bool bCanonicalRequestQa =
+		FParse::Param(
+			FCommandLine::Get(),
+			TEXT("CanonicalMatchWinnerRequestQa"))
+		|| bCanonicalRequestQaVerify;
 	if (FParse::Param(FCommandLine::Get(), TEXT("SportsbookReceiptQa")))
 	{
 		FOddsWellPendingQaMatchWinnerReceipt Receipt;
@@ -3433,7 +3442,8 @@ void AOddsWellLocomotionGameMode::BeginPlay()
 	const bool bFreshJobQa = FParse::Param(FCommandLine::Get(), TEXT("JobQa"))
 		|| FParse::Param(FCommandLine::Get(), TEXT("JobPayoutQa"))
 		|| FParse::Param(FCommandLine::Get(), TEXT("JobRecoveryQa"))
-		|| FParse::Param(FCommandLine::Get(), TEXT("SportsbookWagerQa"));
+		|| FParse::Param(FCommandLine::Get(), TEXT("SportsbookWagerQa"))
+		|| (bCanonicalRequestQa && !bCanonicalRequestQaVerify);
 	const bool bJobRecoveryQa = FParse::Param(FCommandLine::Get(), TEXT("JobRecoveryQa"));
 	const bool bJobRecoveryQaVerify = FParse::Param(FCommandLine::Get(), TEXT("JobRecoveryQaVerify"));
 	if (bSportsbookVoidFinalizationQa || bSportsbookVoidDecisionQa)
@@ -3475,7 +3485,8 @@ void AOddsWellLocomotionGameMode::BeginPlay()
 	}
 	bOddsBucksReady = true;
 	PublishOddsBucksReconciliation();
-	if (FParse::Param(FCommandLine::Get(), TEXT("SportsbookWagerQa")))
+	if (FParse::Param(FCommandLine::Get(), TEXT("SportsbookWagerQa"))
+		|| (bCanonicalRequestQa && !bCanonicalRequestQaVerify))
 	{
 		bool bCredited = false;
 		int64 Balance = 0;
@@ -3489,6 +3500,146 @@ void AOddsWellLocomotionGameMode::BeginPlay()
 			UE_LOG(LogOddsWellLocomotion, Error, TEXT("ODDSWELL_SPORTSBOOK_WAGER|result=FAIL|reason=job_seed_failed|detail=%s"), *Error);
 			return;
 		}
+	}
+	if (bCanonicalRequestQa)
+	{
+		FOddsWellCanonicalMatchWinnerOfferRecord Offer;
+		FOddsWellMatchWinnerRequestRecord Request;
+		int64 Balance = 0;
+		EOddsWellMatchWinnerRequestResult Result =
+			EOddsWellMatchWinnerRequestResult::Rejected;
+		bool bPassed =
+			LoadOddsWellCanonicalMatchWinnerOffer(Offer, Error);
+		if (bPassed)
+		{
+			Result = AcceptOddsWellCanonicalMatchWinnerRequest(
+				Offer.OfferId,
+				TEXT("Harbor City Waves"),
+				40,
+				Request,
+				Balance,
+				Error);
+			bPassed =
+				Result == (
+					bCanonicalRequestQaVerify
+						? EOddsWellMatchWinnerRequestResult::Duplicate
+						: EOddsWellMatchWinnerRequestResult::Accepted);
+		}
+		FOddsWellOddsBucksLedger PersistedLedger;
+		int64 PersistedNextJobPayoutUnixSeconds = 0;
+		TArray<FOddsWellMatchWinnerRequestRecord> PersistedRequests;
+		bool bPersistedFound = false;
+		bPassed = bPassed
+			&& LoadOddsWellOddsBucksState(
+				true,
+				PersistedLedger,
+				PersistedNextJobPayoutUnixSeconds,
+				PersistedRequests,
+				bPersistedFound,
+				Error)
+			&& bPersistedFound
+			&& PersistedLedger.GetEntries().Num() == 2
+			&& PersistedLedger.GetBalance() == 60
+			&& PersistedRequests.Num() == 1
+			&& Request.EvidenceVersion == 1
+			&& Request.OfferId == Offer.OfferId
+			&& Request.OfferedTeam == TEXT("Harbor City Waves")
+			&& Request.SelectedWinProbabilityE8 == 57586693
+			&& Request.SelectedDecimalOddsE4 == 17365
+			&& Request.Stake == 40
+			&& Request.GrossReturn == 69
+			&& Request.Status == FName(TEXT("accepted_pending_lock"));
+
+		const int32 BeforeEntries = PersistedLedger.GetEntries().Num();
+		const int32 BeforeRequests = PersistedRequests.Num();
+		const int64 BeforeBalance = PersistedLedger.GetBalance();
+		FOddsWellMatchWinnerRequestRecord Rejected;
+		int64 RejectedBalance = 0;
+		FString RejectionError;
+		const bool bRejectionsPassed =
+			AcceptOddsWellCanonicalMatchWinnerRequest(
+				TEXT("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"),
+				TEXT("Harbor City Waves"),
+				40,
+				Rejected,
+				RejectedBalance,
+				RejectionError)
+				== EOddsWellMatchWinnerRequestResult::Rejected
+			&& AcceptOddsWellCanonicalMatchWinnerRequest(
+				Offer.OfferId,
+				TEXT("Not Offered"),
+				40,
+				Rejected,
+				RejectedBalance,
+				RejectionError)
+				== EOddsWellMatchWinnerRequestResult::Rejected
+			&& AcceptOddsWellCanonicalMatchWinnerRequest(
+				Offer.OfferId,
+				TEXT("Harbor City Waves"),
+				15,
+				Rejected,
+				RejectedBalance,
+				RejectionError)
+				== EOddsWellMatchWinnerRequestResult::Rejected;
+		bPassed = bPassed
+			&& bRejectionsPassed
+			&& LoadOddsWellOddsBucksState(
+				true,
+				PersistedLedger,
+				PersistedNextJobPayoutUnixSeconds,
+				PersistedRequests,
+				bPersistedFound,
+				Error)
+			&& PersistedLedger.GetEntries().Num() == BeforeEntries
+			&& PersistedLedger.GetBalance() == BeforeBalance
+			&& PersistedRequests.Num() == BeforeRequests;
+		bool bCleanup = true;
+		if (bCanonicalRequestQaVerify)
+		{
+			bCleanup = ResetOddsWellQaOddsBucksAndVerify(Error);
+			bPassed = bPassed && bCleanup;
+		}
+		const FString Evidence = FString::Printf(
+			TEXT("ODDSWELL_CANONICAL_MATCH_WINNER_REQUEST_QA|result=%s|transition=%s|cold_process_restore=%s|offer_id=%s|request_id=%s|evidence_version=%d|season=1|game=1|selected_team=Harbor City Waves|selected_probability_e8=%lld|selected_decimal_odds_e4=%lld|stake=%lld|gross_return=%lld|accepted_unix=%lld|lock_unix=%lld|ledger_sequence=2|ledger_delta=-40|entries=%d|requests=%d|balance=%lld|status=accepted_pending_lock|server_time=true|caller_time=false|caller_price=false|normal_ui=false|automatic_normal_path=false|exact_retry=%s|rejection_audit=bad_offer,bad_team,bad_stake|zero_mutation=%s|atomic_failure=native_focused|upstream_mutation=false|archive_mutation=false|qa_offer_identity=false|cleanup=%s|detail=%s"),
+			bPassed ? TEXT("PASS") : TEXT("FAIL"),
+			bCanonicalRequestQaVerify ? TEXT("duplicate") : TEXT("accepted"),
+			bCanonicalRequestQaVerify ? TEXT("true") : TEXT("false"),
+			*Offer.OfferId,
+			*Request.RequestCommandId,
+			Request.EvidenceVersion,
+			Request.SelectedWinProbabilityE8,
+			Request.SelectedDecimalOddsE4,
+			Request.Stake,
+			Request.GrossReturn,
+			Request.AcceptedUnixSeconds,
+			Request.LockUnixSeconds,
+			BeforeEntries,
+			BeforeRequests,
+			BeforeBalance,
+			bCanonicalRequestQaVerify ? TEXT("duplicate") : TEXT("deferred_to_cold_process"),
+			bRejectionsPassed ? TEXT("true") : TEXT("false"),
+			bCanonicalRequestQaVerify
+				? (bCleanup ? TEXT("true") : TEXT("false"))
+				: TEXT("deferred"),
+			Error.IsEmpty() ? TEXT("none") : *Error);
+		if (bPassed)
+		{
+			UE_LOG(
+				LogOddsWellLocomotion,
+				Display,
+				TEXT("%s"),
+				*Evidence);
+		}
+		else
+		{
+			UE_LOG(
+				LogOddsWellLocomotion,
+				Error,
+				TEXT("%s"),
+				*Evidence);
+		}
+		FPlatformMisc::RequestExit(false);
+		return;
 	}
 	UE_LOG(
 		LogOddsWellLocomotion,

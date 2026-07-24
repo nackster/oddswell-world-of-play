@@ -3,8 +3,12 @@
 #include "CanonicalPregameCommitment.h"
 #include "CanonicalScheduledGame.h"
 #include "Dom/JsonObject.h"
+#include "HAL/FileManager.h"
+#include "HAL/PlatformFileManager.h"
 #include "Kismet/GameplayStatics.h"
 #include "Misc/DateTime.h"
+#include "Misc/FileHelper.h"
+#include "Misc/Paths.h"
 #include "OddsBucksLedger.h"
 #include "PublicLeagueView.h"
 #include "Serialization/JsonSerializer.h"
@@ -20,6 +24,7 @@ constexpr int64 HomeProbabilityE8 = 57586693;
 constexpr int64 AwayProbabilityE8 = 42413307;
 const FString CanonicalOfferSlot(TEXT("OddsWellCanonicalMatchWinnerOffer"));
 const FString CanonicalOfferQaSlot(TEXT("OddsWellCanonicalMatchWinnerOfferH26CQA"));
+const FString CanonicalRequestQaOfferSlot(TEXT("OddsWellCanonicalMatchWinnerOfferH26EQA"));
 const FString ExpectedCommitmentSha256(TEXT("898e89ef142f884fe2514bc55a65b91c80a5bf25d068467b2ddbfe25569ea98f"));
 
 bool HasForbiddenValue(const TSharedPtr<FJsonValue>& Value);
@@ -254,6 +259,62 @@ bool LoadPreview(
 	return true;
 }
 
+EOddsWellMatchWinnerRequestResult AcceptCanonicalRequest(
+	const FOddsWellCanonicalScheduledGameRecord& Schedule,
+	const FOddsWellCanonicalPregameCommitmentRecord& Commitment,
+	const FString& OfferSlot,
+	const int64 ServerNowUnixSeconds,
+	const bool bOddsBucksQaSlot,
+	const FString& OfferedOfferId,
+	const FString& OfferedTeam,
+	const int64 Stake,
+	FOddsWellMatchWinnerRequestRecord& OutRecord,
+	int64& OutBalance,
+	FString& OutError)
+{
+	OutRecord = {};
+	OutBalance = 0;
+	FOddsWellMatchWinnerOffer Expected;
+	FString ExpectedCanonicalJson;
+	FOddsWellCanonicalMatchWinnerOfferRecord Persisted;
+	if (!BuildExpectedOffer(
+			Schedule,
+			Commitment,
+			Expected,
+			ExpectedCanonicalJson,
+			OutError)
+		|| ServerNowUnixSeconds < Schedule.SeasonCreatedUnixSeconds
+		|| ServerNowUnixSeconds >= Schedule.TipoffUnixSeconds
+		|| OfferedOfferId != Expected.OfferId
+		|| !UGameplayStatics::DoesSaveGameExist(
+			OfferSlot,
+			CanonicalOfferUserIndex)
+		|| !RestoreExactOffer(
+			UGameplayStatics::LoadGameFromSlot(
+				OfferSlot,
+				CanonicalOfferUserIndex),
+			Expected,
+			ExpectedCanonicalJson,
+			Persisted,
+			OutError))
+	{
+		OutRecord = {};
+		OutBalance = 0;
+		OutError = TEXT("The canonical Match Winner request failed exact pre-tipoff server validation.");
+		return EOddsWellMatchWinnerRequestResult::Rejected;
+	}
+	return AcceptOddsWellMatchWinnerRequest(
+		Expected,
+		TEXT("canonical:h26e:match_winner:request:") + Expected.OfferId,
+		OfferedTeam,
+		Stake,
+		ServerNowUnixSeconds,
+		bOddsBucksQaSlot,
+		OutRecord,
+		OutBalance,
+		OutError);
+}
+
 EOddsWellCanonicalMatchWinnerOfferResult PersistOffer(
 	const FOddsWellCanonicalScheduledGameRecord& Schedule,
 	const FOddsWellCanonicalPregameCommitmentRecord& Commitment,
@@ -441,6 +502,37 @@ bool LoadOddsWellCanonicalMatchWinnerOfferPreview(
 		return false;
 	}
 	return true;
+}
+
+EOddsWellMatchWinnerRequestResult AcceptOddsWellCanonicalMatchWinnerRequest(
+	const FString& OfferedOfferId,
+	const FString& OfferedTeam,
+	const int64 Stake,
+	FOddsWellMatchWinnerRequestRecord& OutRecord,
+	int64& OutBalance,
+	FString& OutError)
+{
+	FOddsWellCanonicalScheduledGameRecord Schedule;
+	FOddsWellCanonicalPregameCommitmentRecord Commitment;
+	if (!LoadOddsWellCanonicalLocalBetaScheduledGame(Schedule, OutError)
+		|| !LoadOddsWellCanonicalPregameCommitment(Commitment, OutError))
+	{
+		OutRecord = {};
+		OutBalance = 0;
+		return EOddsWellMatchWinnerRequestResult::Rejected;
+	}
+	return AcceptCanonicalRequest(
+		Schedule,
+		Commitment,
+		CanonicalOfferSlot,
+		FDateTime::UtcNow().ToUnixTimestamp(),
+		UseOddsWellOddsBucksQaSlot(),
+		OfferedOfferId,
+		OfferedTeam,
+		Stake,
+		OutRecord,
+		OutBalance,
+		OutError);
 }
 
 #if WITH_DEV_AUTOMATION_TESTS
@@ -681,6 +773,420 @@ bool FOddsWellCanonicalMatchWinnerOfferPersistenceTest::RunTest(
 		TEXT("Input rejection writes no offer"),
 		UGameplayStatics::DoesSaveGameExist(
 			CanonicalOfferQaSlot,
+			CanonicalOfferUserIndex));
+	return !HasAnyErrors();
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(
+	FOddsWellCanonicalMatchWinnerRequestTest,
+	"OddsWell.League.CanonicalMatchWinnerRequest",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+
+bool FOddsWellCanonicalMatchWinnerRequestTest::RunTest(
+	const FString& Parameters)
+{
+	FString Error;
+	TestTrue(
+		TEXT("Isolated QA ledger starts clean"),
+		ResetOddsWellQaOddsBucksAndVerify(Error));
+	UGameplayStatics::DeleteGameInSlot(
+		CanonicalRequestQaOfferSlot,
+		CanonicalOfferUserIndex);
+
+	const FOddsWellCanonicalScheduledGameRecord Schedule = TestSchedule();
+	const FOddsWellCanonicalPregameCommitmentRecord Commitment = TestCommitment();
+	FOddsWellCanonicalMatchWinnerOfferRecord OfferRecord;
+	TestEqual(
+		TEXT("Exact canonical request fixture offer creates"),
+		PersistOffer(
+			Schedule,
+			Commitment,
+			CanonicalRequestQaOfferSlot,
+			2200000100,
+			OfferRecord,
+			Error),
+		EOddsWellCanonicalMatchWinnerOfferResult::Created);
+
+	FOddsWellOddsBucksLedger Funded;
+	TestEqual(
+		TEXT("Existing local job credit funds the request"),
+		Funded.Append(
+			GetOddsWellFirstJobCommandId(),
+			GetOddsWellFirstJobPayout(),
+			GetOddsWellFirstJobReason()),
+		EOddsWellOddsBucksAppendResult::Applied);
+	TestTrue(
+		TEXT("Funded isolated ledger persists"),
+		SaveOddsWellOddsBucksLedger(
+			Funded,
+			2200086400,
+			true,
+			Error));
+
+	FOddsWellMatchWinnerRequestRecord Accepted;
+	int64 Balance = 0;
+	TestEqual(
+		TEXT("Exact server-authoritative canonical request accepts"),
+		AcceptCanonicalRequest(
+			Schedule,
+			Commitment,
+			CanonicalRequestQaOfferSlot,
+			2200000100,
+			true,
+			OfferRecord.OfferId,
+			Schedule.HomeTeam,
+			40,
+			Accepted,
+			Balance,
+			Error),
+		EOddsWellMatchWinnerRequestResult::Accepted);
+	TestEqual(TEXT("Accepted request leaves balance 60"), Balance, int64{60});
+	TestEqual(TEXT("Request evidence version is current"), Accepted.EvidenceVersion, 1);
+	TestEqual(TEXT("Request binds exact H26C offer"), Accepted.OfferId, OfferRecord.OfferId);
+	TestEqual(TEXT("Request binds offer schema"), Accepted.OfferSchema, FString(TEXT("oddswell-basketball-odds-offer-v1")));
+	TestEqual(TEXT("Request binds market"), Accepted.Market, FString(TEXT("match_winner")));
+	TestEqual(TEXT("Request binds currency"), Accepted.Currency, FString(TEXT("odds_bucks")));
+	TestEqual(TEXT("Request binds source prediction"), Accepted.SourcePredictionVersion, FString(TEXT("phase0d4-v1")));
+	TestEqual(TEXT("Request binds source snapshot"), Accepted.SourceSnapshotVersion, FString(TEXT("oddswell-public-pregame-v1")));
+	TestEqual(TEXT("Request binds source model"), Accepted.SourceModel, FString(TEXT("public_elo_rotation")));
+	TestEqual(TEXT("Request binds exact H26B commitment"), Accepted.SourceCommitmentSha256, ExpectedCommitmentSha256);
+	TestEqual(TEXT("Request binds selected probability"), Accepted.SelectedWinProbabilityE8, HomeProbabilityE8);
+	TestEqual(TEXT("Request binds selected integer odds"), Accepted.SelectedDecimalOddsE4, int64{17365});
+	TestEqual(TEXT("Request binds approved stake"), Accepted.Stake, int64{40});
+	TestEqual(TEXT("Request binds server acceptance time"), Accepted.AcceptedUnixSeconds, int64{2200000100});
+	TestEqual(TEXT("Request binds exact game-start lock"), Accepted.LockUnixSeconds, Schedule.TipoffUnixSeconds);
+	TestEqual(TEXT("Request binds exact floor gross return"), Accepted.GrossReturn, int64{69});
+	TestEqual(TEXT("Request is accepted pending lock"), Accepted.Status, FName(TEXT("accepted_pending_lock")));
+
+	FOddsWellOddsBucksLedger AcceptedLedger;
+	int64 NextJobPayoutUnixSeconds = 0;
+	TArray<FOddsWellMatchWinnerRequestRecord> AcceptedRequests;
+	bool bFound = false;
+	TestTrue(
+		TEXT("Accepted state cold-loads"),
+		LoadOddsWellOddsBucksState(
+			true,
+			AcceptedLedger,
+			NextJobPayoutUnixSeconds,
+			AcceptedRequests,
+			bFound,
+			Error));
+	TestTrue(TEXT("Accepted state exists"), bFound);
+	TestEqual(TEXT("Accepted ledger has job credit and stake debit"), AcceptedLedger.GetEntries().Num(), 2);
+	TestEqual(TEXT("Accepted ledger balance remains 60"), AcceptedLedger.GetBalance(), int64{60});
+	TestEqual(TEXT("Exactly one request persists"), AcceptedRequests.Num(), 1);
+	if (AcceptedLedger.GetEntries().Num() == 2)
+	{
+		const FOddsWellOddsBucksEntry& Debit = AcceptedLedger.GetEntries()[1];
+		TestEqual(TEXT("Stake debit is ledger sequence 2"), Debit.Sequence, int64{2});
+		TestEqual(TEXT("Stake debit is -40"), Debit.Delta, int64{-40});
+		TestEqual(TEXT("Stake debit reason is exact"), Debit.Reason, FName(TEXT("match_winner_stake")));
+		TestEqual(TEXT("Stake debit links the request command"), Debit.CommandId, Accepted.RequestCommandId);
+	}
+
+	const FString QaLedgerPath = FPaths::Combine(
+		FPaths::ProjectSavedDir(),
+		TEXT("SaveGames"),
+		TEXT("OddsWellOddsBucksQA.sav"));
+	TArray<uint8> AcceptedBytes;
+	TestTrue(
+		TEXT("Accepted state bytes are readable"),
+		FFileHelper::LoadFileToArray(AcceptedBytes, *QaLedgerPath));
+	auto TestLedgerBytesUnchanged = [this, &AcceptedBytes, &QaLedgerPath](const TCHAR* Label)
+	{
+		TArray<uint8> After;
+		TestTrue(
+			FString::Printf(TEXT("%s state remains readable"), Label),
+			FFileHelper::LoadFileToArray(After, *QaLedgerPath));
+		TestTrue(
+			FString::Printf(TEXT("%s causes zero persisted mutation"), Label),
+			After == AcceptedBytes);
+	};
+
+	FOddsWellMatchWinnerRequestRecord Retry;
+	TestEqual(
+		TEXT("Cold exact retry is duplicate-safe"),
+		AcceptCanonicalRequest(
+			Schedule,
+			Commitment,
+			CanonicalRequestQaOfferSlot,
+			2200000200,
+			true,
+			OfferRecord.OfferId,
+			Schedule.HomeTeam,
+			40,
+			Retry,
+			Balance,
+			Error),
+		EOddsWellMatchWinnerRequestResult::Duplicate);
+	TestEqual(TEXT("Retry preserves original server acceptance time"), Retry.AcceptedUnixSeconds, int64{2200000100});
+	TestLedgerBytesUnchanged(TEXT("Exact duplicate"));
+
+	auto TestRejected = [this,
+		&Schedule,
+		&Commitment,
+		&OfferRecord,
+		&Retry,
+		&Balance,
+		&Error,
+		&TestLedgerBytesUnchanged](
+			const TCHAR* Label,
+			const FOddsWellCanonicalScheduledGameRecord& CandidateSchedule,
+			const FOddsWellCanonicalPregameCommitmentRecord& CandidateCommitment,
+			const int64 ServerNow,
+			const FString& OfferedOfferId,
+			const FString& Team,
+			const int64 Stake)
+	{
+		TestEqual(
+			Label,
+			AcceptCanonicalRequest(
+				CandidateSchedule,
+				CandidateCommitment,
+				CanonicalRequestQaOfferSlot,
+				ServerNow,
+				true,
+				OfferedOfferId,
+				Team,
+				Stake,
+				Retry,
+				Balance,
+				Error),
+			EOddsWellMatchWinnerRequestResult::Rejected);
+		TestLedgerBytesUnchanged(Label);
+	};
+	TestRejected(
+		TEXT("Wrong offer ID rejects"),
+		Schedule,
+		Commitment,
+		2200000200,
+		TEXT("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"),
+		Schedule.HomeTeam,
+		40);
+	TestRejected(
+		TEXT("Unapproved team rejects"),
+		Schedule,
+		Commitment,
+		2200000200,
+		OfferRecord.OfferId,
+		TEXT("Not Offered"),
+		40);
+	TestRejected(
+		TEXT("Changed approved team conflicts with the server command"),
+		Schedule,
+		Commitment,
+		2200000200,
+		OfferRecord.OfferId,
+		Schedule.AwayTeam,
+		40);
+	TestRejected(
+		TEXT("Nonincrement stake rejects"),
+		Schedule,
+		Commitment,
+		2200000200,
+		OfferRecord.OfferId,
+		Schedule.HomeTeam,
+		15);
+	TestRejected(
+		TEXT("Changed valid stake conflicts with the server command"),
+		Schedule,
+		Commitment,
+		2200000200,
+		OfferRecord.OfferId,
+		Schedule.HomeTeam,
+		50);
+	TestRejected(
+		TEXT("At-tipoff request rejects"),
+		Schedule,
+		Commitment,
+		Schedule.TipoffUnixSeconds,
+		OfferRecord.OfferId,
+		Schedule.HomeTeam,
+		40);
+	TestRejected(
+		TEXT("Before-creation server time rejects"),
+		Schedule,
+		Commitment,
+		Schedule.SeasonCreatedUnixSeconds - 1,
+		OfferRecord.OfferId,
+		Schedule.HomeTeam,
+		40);
+	FOddsWellCanonicalScheduledGameRecord WrongSchedule = Schedule;
+	WrongSchedule.GameNumber++;
+	TestRejected(
+		TEXT("Tampered H26A input rejects"),
+		WrongSchedule,
+		Commitment,
+		2200000200,
+		OfferRecord.OfferId,
+		Schedule.HomeTeam,
+		40);
+	FOddsWellCanonicalPregameCommitmentRecord WrongCommitment = Commitment;
+	WrongCommitment.InputClass = TEXT("private_model");
+	TestRejected(
+		TEXT("Tampered H26B input rejects"),
+		Schedule,
+		WrongCommitment,
+		2200000200,
+		OfferRecord.OfferId,
+		Schedule.HomeTeam,
+		40);
+
+	UOddsWellCanonicalMatchWinnerOfferSaveGame* TamperedOffer =
+		Cast<UOddsWellCanonicalMatchWinnerOfferSaveGame>(
+			UGameplayStatics::LoadGameFromSlot(
+				CanonicalRequestQaOfferSlot,
+				CanonicalOfferUserIndex));
+	TestNotNull(TEXT("H26C fixture reloads for tamper rejection"), TamperedOffer);
+	if (TamperedOffer)
+	{
+		const FString ExactJson = TamperedOffer->CanonicalOfferJson;
+		TamperedOffer->CanonicalOfferJson += TEXT(" ");
+		TestTrue(
+			TEXT("Tampered H26C fixture writes"),
+			UGameplayStatics::SaveGameToSlot(
+				TamperedOffer,
+				CanonicalRequestQaOfferSlot,
+				CanonicalOfferUserIndex));
+		TestRejected(
+			TEXT("Tampered H26C record rejects"),
+			Schedule,
+			Commitment,
+			2200000200,
+			OfferRecord.OfferId,
+			Schedule.HomeTeam,
+			40);
+		TamperedOffer->CanonicalOfferJson = ExactJson;
+		TestTrue(
+			TEXT("Exact H26C fixture restores"),
+			UGameplayStatics::SaveGameToSlot(
+				TamperedOffer,
+				CanonicalRequestQaOfferSlot,
+				CanonicalOfferUserIndex));
+	}
+
+	TestTrue(
+		TEXT("Accepted profile resets for underfunded proof"),
+		ResetOddsWellQaOddsBucksAndVerify(Error));
+	FOddsWellOddsBucksLedger Underfunded;
+	TestEqual(
+		TEXT("Underfunded fixture credit applies"),
+		Underfunded.Append(
+			TEXT("qa:h26e:underfunded-credit"),
+			10,
+			FName(TEXT("qa_fixture_credit"))),
+		EOddsWellOddsBucksAppendResult::Applied);
+	TestTrue(
+		TEXT("Underfunded fixture persists"),
+		SaveOddsWellOddsBucksLedger(
+			Underfunded,
+			0,
+			true,
+			Error));
+	TArray<uint8> UnderfundedBytes;
+	TestTrue(
+		TEXT("Underfunded bytes are readable"),
+		FFileHelper::LoadFileToArray(
+			UnderfundedBytes,
+			*QaLedgerPath));
+	TestEqual(
+		TEXT("Underfunded canonical request rejects"),
+		AcceptCanonicalRequest(
+			Schedule,
+			Commitment,
+			CanonicalRequestQaOfferSlot,
+			2200000200,
+			true,
+			OfferRecord.OfferId,
+			Schedule.HomeTeam,
+			40,
+			Retry,
+			Balance,
+			Error),
+		EOddsWellMatchWinnerRequestResult::Rejected);
+	TArray<uint8> UnderfundedAfter;
+	TestTrue(
+		TEXT("Underfunded rejection remains readable"),
+		FFileHelper::LoadFileToArray(
+			UnderfundedAfter,
+			*QaLedgerPath));
+	TestTrue(
+		TEXT("Underfunded rejection causes zero mutation"),
+		UnderfundedAfter == UnderfundedBytes);
+
+	TestTrue(
+		TEXT("Underfunded profile resets for atomic save-failure proof"),
+		ResetOddsWellQaOddsBucksAndVerify(Error));
+	TestTrue(
+		TEXT("Atomic failure fixture starts funded"),
+		SaveOddsWellOddsBucksLedger(
+			Funded,
+			2200086400,
+			true,
+			Error));
+	TArray<uint8> BeforeAtomicFailure;
+	TestTrue(
+		TEXT("Atomic failure fixture bytes are readable"),
+		FFileHelper::LoadFileToArray(
+			BeforeAtomicFailure,
+			*QaLedgerPath));
+	TestTrue(
+		TEXT("Atomic failure fixture becomes read-only"),
+		FPlatformFileManager::Get().GetPlatformFile().SetReadOnly(
+			*QaLedgerPath,
+			true));
+	const EOddsWellMatchWinnerRequestResult AtomicFailureResult =
+		AcceptCanonicalRequest(
+			Schedule,
+			Commitment,
+			CanonicalRequestQaOfferSlot,
+			2200000200,
+			true,
+			OfferRecord.OfferId,
+			Schedule.HomeTeam,
+			40,
+			Retry,
+			Balance,
+			Error);
+	TestTrue(
+		TEXT("Atomic failure fixture returns writable for cleanup"),
+		FPlatformFileManager::Get().GetPlatformFile().SetReadOnly(
+			*QaLedgerPath,
+			false));
+	TestEqual(
+		TEXT("Native persistence failure rejects the whole request"),
+		AtomicFailureResult,
+		EOddsWellMatchWinnerRequestResult::Rejected);
+	TArray<uint8> AfterAtomicFailure;
+	TestTrue(
+		TEXT("Atomic failure fixture remains readable"),
+		FFileHelper::LoadFileToArray(
+			AfterAtomicFailure,
+			*QaLedgerPath));
+	TestTrue(
+		TEXT("Native persistence failure leaves ledger and requests byte-stable"),
+		AfterAtomicFailure == BeforeAtomicFailure);
+	FOddsWellOddsBucksLedger AtomicFailureLedger;
+	TArray<FOddsWellMatchWinnerRequestRecord> AtomicFailureRequests;
+	TestTrue(
+		TEXT("Atomic failure state cold-loads"),
+		LoadOddsWellOddsBucksState(
+			true,
+			AtomicFailureLedger,
+			NextJobPayoutUnixSeconds,
+			AtomicFailureRequests,
+			bFound,
+			Error));
+	TestEqual(TEXT("Atomic failure keeps only job credit"), AtomicFailureLedger.GetEntries().Num(), 1);
+	TestEqual(TEXT("Atomic failure keeps balance 100"), AtomicFailureLedger.GetBalance(), int64{100});
+	TestEqual(TEXT("Atomic failure persists no request"), AtomicFailureRequests.Num(), 0);
+	TestTrue(
+		TEXT("Atomic failure profile cleanup succeeds"),
+		ResetOddsWellQaOddsBucksAndVerify(Error));
+	TestTrue(
+		TEXT("Canonical request offer cleanup succeeds"),
+		UGameplayStatics::DeleteGameInSlot(
+			CanonicalRequestQaOfferSlot,
 			CanonicalOfferUserIndex));
 	return !HasAnyErrors();
 }

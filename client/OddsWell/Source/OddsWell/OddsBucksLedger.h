@@ -138,6 +138,9 @@ struct FOddsWellMatchWinnerRequestRecord
 	GENERATED_BODY()
 
 	UPROPERTY(SaveGame)
+	int32 EvidenceVersion = 0;
+
+	UPROPERTY(SaveGame)
 	FString RequestCommandId;
 
 	UPROPERTY(SaveGame)
@@ -148,6 +151,27 @@ struct FOddsWellMatchWinnerRequestRecord
 
 	UPROPERTY(SaveGame)
 	FString OfferVersion;
+
+	UPROPERTY(SaveGame)
+	FString OfferSchema;
+
+	UPROPERTY(SaveGame)
+	FString Market;
+
+	UPROPERTY(SaveGame)
+	FString Currency;
+
+	UPROPERTY(SaveGame)
+	FString SourcePredictionVersion;
+
+	UPROPERTY(SaveGame)
+	FString SourceSnapshotVersion;
+
+	UPROPERTY(SaveGame)
+	FString SourceModel;
+
+	UPROPERTY(SaveGame)
+	FString SourceCommitmentSha256;
 
 	UPROPERTY(SaveGame)
 	int32 SeasonNumber = 0;
@@ -165,7 +189,19 @@ struct FOddsWellMatchWinnerRequestRecord
 	FString OfferedTeam;
 
 	UPROPERTY(SaveGame)
+	int64 SelectedWinProbabilityE8 = 0;
+
+	UPROPERTY(SaveGame)
+	int64 SelectedDecimalOddsE4 = 0;
+
+	UPROPERTY(SaveGame)
 	int64 Stake = 0;
+
+	UPROPERTY(SaveGame)
+	FString PayoutFormula;
+
+	UPROPERTY(SaveGame)
+	int64 GrossReturn = 0;
 
 	UPROPERTY(SaveGame)
 	int64 AcceptedUnixSeconds = 0;
@@ -620,7 +656,7 @@ class ODDSWELL_API UOddsWellOddsBucksSaveGame final : public USaveGame
 
 public:
 	UPROPERTY(SaveGame)
-	int32 SchemaVersion = 11;
+	int32 SchemaVersion = 12;
 
 	UPROPERTY(SaveGame)
 	TArray<FOddsWellOddsBucksEntry> Entries;

@@ -5,6 +5,8 @@
 #include "CanonicalMatchWinnerOffer.generated.h"
 
 struct FOddsWellMatchWinnerOfferPreview;
+struct FOddsWellMatchWinnerRequestRecord;
+enum class EOddsWellMatchWinnerRequestResult : uint8;
 
 UCLASS()
 class ODDSWELL_API UOddsWellCanonicalMatchWinnerOfferSaveGame final : public USaveGame
@@ -41,4 +43,11 @@ ODDSWELL_API bool LoadOddsWellCanonicalMatchWinnerOffer(
 	FString& OutError);
 ODDSWELL_API bool LoadOddsWellCanonicalMatchWinnerOfferPreview(
 	FOddsWellMatchWinnerOfferPreview& OutPreview,
+	FString& OutError);
+ODDSWELL_API EOddsWellMatchWinnerRequestResult AcceptOddsWellCanonicalMatchWinnerRequest(
+	const FString& OfferedOfferId,
+	const FString& OfferedTeam,
+	int64 Stake,
+	FOddsWellMatchWinnerRequestRecord& OutRecord,
+	int64& OutBalance,
 	FString& OutError);
