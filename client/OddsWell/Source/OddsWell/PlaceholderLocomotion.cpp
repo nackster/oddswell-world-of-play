@@ -433,6 +433,8 @@ void AOddsWellPlaceholderCharacter::BeginPlay()
 	bStadiumQa = FParse::Param(FCommandLine::Get(), TEXT("StadiumQa"));
 	bCanonicalPendingReceiptQa =
 		FParse::Param(FCommandLine::Get(), TEXT("CanonicalPendingReceiptQa"));
+	bCanonicalPostLockQa =
+		FParse::Param(FCommandLine::Get(), TEXT("CanonicalPostLockQa"));
 	bCanonicalMissingHeldOpenTipoffQa =
 		FParse::Param(
 			FCommandLine::Get(),
@@ -440,6 +442,7 @@ void AOddsWellPlaceholderCharacter::BeginPlay()
 	bSportsbookOfferQa =
 		FParse::Param(FCommandLine::Get(), TEXT("SportsbookOfferQa"))
 		|| bCanonicalPendingReceiptQa
+		|| bCanonicalPostLockQa
 		|| bCanonicalMissingHeldOpenTipoffQa;
 	bSportsbookWagerQaVerify = FParse::Param(FCommandLine::Get(), TEXT("SportsbookWagerQaVerify"));
 	bSportsbookWagerQaMode = FParse::Param(FCommandLine::Get(), TEXT("SportsbookWagerQa")) || bSportsbookWagerQaVerify;
@@ -1791,6 +1794,29 @@ void AOddsWellPlaceholderCharacter::RunSportsbookOfferQa(const float DeltaSecond
 	if (SportsbookOfferQaStage == 1)
 	{
 		ToggleSportsbookOfferPreview();
+		if (bCanonicalPostLockQa)
+		{
+			const bool bExact =
+				bSportsbookOfferVisible
+				&& !SportsbookOfferPreview
+				&& !SportsbookCanonicalReceipt
+				&& GameMode->GetOddsBucksEntryCount() == 2
+				&& GameMode->GetMatchWinnerRequestCount() == 1
+				&& GameMode->GetOddsBucksBalance() == 60;
+			if (!bExact)
+			{
+				UE_LOG(
+					LogOddsWellLocomotion,
+					Error,
+					TEXT("ODDSWELL_CANONICAL_POST_LOCK_QA|result=FAIL|reason=locked_panel_or_state_mismatch|closed=true"));
+				bSportsbookOfferQa = false;
+				QaExitAt = FPlatformTime::Seconds() + 1.0;
+				return;
+			}
+			SportsbookOfferQaStage = 2;
+			SportsbookOfferQaElapsed = 0.0f;
+			return;
+		}
 		const FString PreviewText = SportsbookOfferPreview
 			? BuildOddsWellMatchWinnerOfferPreview(*SportsbookOfferPreview)
 			: FString();
@@ -1899,13 +1925,30 @@ void AOddsWellPlaceholderCharacter::RunSportsbookOfferQa(const float DeltaSecond
 		if (FParse::Param(FCommandLine::Get(), TEXT("SportsbookOfferQaCapture")))
 		{
 			FScreenshotRequest::RequestScreenshot(
-				bCanonicalMissingHeldOpenTipoffQa
+				bCanonicalPostLockQa
+					? TEXT("Phase1H26G_CanonicalPostLockBooth.png")
+					: (bCanonicalMissingHeldOpenTipoffQa
 					? TEXT("Phase1H26F_HeldOpenMissingTipoffLocked.png")
 					: (bCanonicalPendingReceiptQa
 						? TEXT("Phase1H26F_CanonicalPendingReceipt.png")
-						: TEXT("Phase1H26D_CanonicalMatchWinnerOffer.png")),
+						: TEXT("Phase1H26D_CanonicalMatchWinnerOffer.png"))),
 				true,
 				false);
+		}
+		if (bCanonicalPostLockQa)
+		{
+			UE_LOG(
+				LogOddsWellLocomotion,
+				Display,
+				TEXT("ODDSWELL_CANONICAL_POST_LOCK_QA|result=PASS|phase=H26G|cold_restore=true|locked_panel=true|offer=false|pending=false|teams=false|prices=false|selection=false|result=false|entries=2|requests=1|locks=1|balance=60|read_only=true|request_api=false|write=false|partial=false"));
+			bSportsbookOfferQa = false;
+			if (FParse::Param(
+					FCommandLine::Get(),
+					TEXT("SportsbookOfferAutoExit")))
+			{
+				QaExitAt = FPlatformTime::Seconds() + 2.0;
+			}
+			return;
 		}
 		if (bCanonicalMissingHeldOpenTipoffQa)
 		{
@@ -3685,6 +3728,172 @@ void AOddsWellLocomotionGameMode::BeginPlay()
 		FParse::Param(
 			FCommandLine::Get(),
 			TEXT("CanonicalPendingReceiptQa"));
+	const bool bCanonicalLockQaVerify =
+		FParse::Param(
+			FCommandLine::Get(),
+			TEXT("CanonicalMatchWinnerLockQaVerify"));
+	const bool bCanonicalLockQa =
+		FParse::Param(
+			FCommandLine::Get(),
+			TEXT("CanonicalMatchWinnerLockQa"))
+		|| bCanonicalLockQaVerify;
+	const bool bCanonicalPostLockQa =
+		FParse::Param(
+			FCommandLine::Get(),
+			TEXT("CanonicalPostLockQa"));
+	if (bCanonicalLockQa)
+	{
+		FOddsWellMatchWinnerLockRecord Lock;
+		FString Error;
+		const EOddsWellMatchWinnerLockResult Result =
+			LockOddsWellCanonicalMatchWinnerRequestAtGameStart(
+				Lock,
+				Error);
+		FOddsWellOddsBucksLedger PersistedLedger;
+		int64 PersistedNextJobPayoutUnixSeconds = 0;
+		TArray<FOddsWellMatchWinnerRequestRecord> Requests;
+		TArray<FOddsWellMatchWinnerLockRecord> Locks;
+		TArray<FOddsWellMatchWinnerResultLinkRecord> Results;
+		bool bFound = false;
+		bool bPassed =
+			Result == (
+				bCanonicalLockQaVerify
+					? EOddsWellMatchWinnerLockResult::Duplicate
+					: EOddsWellMatchWinnerLockResult::Locked)
+			&& LoadOddsWellOddsBucksWagerEvidence(
+				true,
+				PersistedLedger,
+				PersistedNextJobPayoutUnixSeconds,
+				Requests,
+				Locks,
+				Results,
+				bFound,
+				Error)
+			&& bFound
+			&& PersistedLedger.GetEntries().Num() == 2
+			&& PersistedLedger.GetBalance() == 60
+			&& Requests.Num() == 1
+			&& Locks.Num() == 1
+			&& Results.IsEmpty()
+			&& Requests[0].OfferedTeam == TEXT("Harbor City Waves")
+			&& Requests[0].SelectedWinProbabilityE8 == 57586693
+			&& Requests[0].SelectedDecimalOddsE4 == 17365
+			&& Requests[0].Stake == 40
+			&& Requests[0].GrossReturn == 69
+			&& Requests[0].Status == FName(TEXT("accepted_pending_lock"))
+			&& Locks[0].RequestCommandId == Requests[0].RequestCommandId
+			&& Locks[0].Decision == FName(TEXT("locked"));
+		bool bRejectionStable = true;
+		if (bPassed && bCanonicalLockQaVerify)
+		{
+			FOddsWellMatchWinnerLockRecord Rejected;
+			FString RejectionError;
+			bRejectionStable =
+				LockOddsWellMatchWinnerRequest(
+					Requests[0].RequestCommandId,
+					TEXT("canonical:h26g:conflicting-lock"),
+					Requests[0].SeasonNumber,
+					Requests[0].GameNumber,
+					Requests[0].LockUnixSeconds,
+					true,
+					Rejected,
+					RejectionError)
+					== EOddsWellMatchWinnerLockResult::Rejected;
+			FOddsWellOddsBucksLedger AfterLedger;
+			int64 AfterNextJobPayoutUnixSeconds = 0;
+			TArray<FOddsWellMatchWinnerRequestRecord> AfterRequests;
+			TArray<FOddsWellMatchWinnerLockRecord> AfterLocks;
+			TArray<FOddsWellMatchWinnerResultLinkRecord> AfterResults;
+			bRejectionStable = bRejectionStable
+				&& LoadOddsWellOddsBucksWagerEvidence(
+					true,
+					AfterLedger,
+					AfterNextJobPayoutUnixSeconds,
+					AfterRequests,
+					AfterLocks,
+					AfterResults,
+					bFound,
+					Error)
+				&& AfterLedger.GetEntries().Num() == 2
+				&& AfterLedger.GetBalance() == 60
+				&& AfterRequests.Num() == 1
+				&& AfterLocks.Num() == 1
+				&& AfterResults.IsEmpty()
+				&& AfterNextJobPayoutUnixSeconds
+					== PersistedNextJobPayoutUnixSeconds;
+			bPassed = bPassed && bRejectionStable;
+		}
+		bool bCleanup = true;
+		if (bCanonicalLockQaVerify)
+		{
+			bCleanup = ResetOddsWellQaOddsBucksAndVerify(Error);
+			bPassed = bPassed && bCleanup;
+		}
+		const FString Evidence = FString::Printf(
+			TEXT("ODDSWELL_CANONICAL_MATCH_WINNER_LOCK_QA|result=%s|transition=%s|cold_process_restore=%s|season=1|game=1|selected_team=Harbor_City_Waves|probability_e8=57586693|odds_e4=17365|stake=40|gross_return=69|entries=2|requests=1|locks=1|balance=60|request_status=accepted_pending_lock|lock_decision=locked|authority=server|clock=exact_h26a_tipoff|caller_identity=false|caller_time=false|schema=12|separate_immutable_record=true|result=false|settlement=false|upstream_mutation=false|rejection_zero_mutation=%s|cleanup=%s|detail=%s"),
+			bPassed ? TEXT("PASS") : TEXT("FAIL"),
+			bCanonicalLockQaVerify ? TEXT("duplicate") : TEXT("locked"),
+			bCanonicalLockQaVerify ? TEXT("true") : TEXT("false"),
+			bCanonicalLockQaVerify
+				? (bRejectionStable ? TEXT("true") : TEXT("false"))
+				: TEXT("deferred_to_cold_verify"),
+			bCanonicalLockQaVerify
+				? (bCleanup ? TEXT("true") : TEXT("false"))
+				: TEXT("deferred"),
+			Error.IsEmpty() ? TEXT("none") : *Error);
+		if (bPassed)
+		{
+			UE_LOG(LogOddsWellLocomotion, Display, TEXT("%s"), *Evidence);
+		}
+		else
+		{
+			UE_LOG(LogOddsWellLocomotion, Error, TEXT("%s"), *Evidence);
+		}
+		FPlatformMisc::RequestExit(false);
+		return;
+	}
+	if (bCanonicalPostLockQa)
+	{
+		int64 PersistedNextJobPayoutUnixSeconds = 0;
+		TArray<FOddsWellMatchWinnerRequestRecord> Requests;
+		TArray<FOddsWellMatchWinnerLockRecord> Locks;
+		TArray<FOddsWellMatchWinnerResultLinkRecord> Results;
+		FString Error;
+		const bool bPassed =
+			LoadOddsWellOddsBucksWagerEvidence(
+				true,
+				OddsBucksLedger,
+				PersistedNextJobPayoutUnixSeconds,
+				Requests,
+				Locks,
+				Results,
+				bOddsBucksLoadedFromDisk,
+				Error)
+			&& bOddsBucksLoadedFromDisk
+			&& OddsBucksLedger.GetEntries().Num() == 2
+			&& OddsBucksLedger.GetBalance() == 60
+			&& Requests.Num() == 1
+			&& Locks.Num() == 1
+			&& Results.IsEmpty();
+		MatchWinnerRequestCount = Requests.Num();
+		const FString Evidence = FString::Printf(
+			TEXT("ODDSWELL_CANONICAL_POST_LOCK_MODE|result=%s|cold_process_restore=true|read_only=true|entries=%d|requests=%d|locks=%d|balance=%lld|write=false|detail=%s"),
+			bPassed ? TEXT("PASS") : TEXT("FAIL"),
+			OddsBucksLedger.GetEntries().Num(),
+			Requests.Num(),
+			Locks.Num(),
+			OddsBucksLedger.GetBalance(),
+			Error.IsEmpty() ? TEXT("none") : *Error);
+		if (bPassed)
+		{
+			UE_LOG(LogOddsWellLocomotion, Display, TEXT("%s"), *Evidence);
+		}
+		else
+		{
+			UE_LOG(LogOddsWellLocomotion, Error, TEXT("%s"), *Evidence);
+		}
+		return;
+	}
 	if (bCanonicalPendingReceiptQa)
 	{
 		FOddsWellCanonicalPendingMatchWinnerReceipt Receipt;

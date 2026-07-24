@@ -275,6 +275,7 @@ private:
 	bool bSportsbookOfferVisible = false;
 	bool bSportsbookOfferQa = false;
 	bool bCanonicalPendingReceiptQa = false;
+	bool bCanonicalPostLockQa = false;
 	bool bCanonicalMissingHeldOpenTipoffQa = false;
 	int32 SportsbookMarketPage = 0;
 	int32 SportsbookQaSelectionIndex = 0;

@@ -1213,6 +1213,97 @@ bool ValidateOddsBucksSave(
 	OutError.Reset();
 	return true;
 }
+
+bool HasExactCanonicalRequestEvidence(
+	const FOddsWellMatchWinnerOffer& ExactOffer,
+	const int64 OfferEligibleUnixSeconds,
+	const int64 ObservedServerUnixSeconds,
+	const FOddsWellOddsBucksLedger& Ledger,
+	const UOddsWellOddsBucksSaveGame& Record,
+	const TArray<FOddsWellMatchWinnerRequestRecord>& Requests,
+	const TArray<FOddsWellMatchWinnerLockRecord>& Locks,
+	const TArray<FOddsWellMatchWinnerResultLinkRecord>& ResultLinks,
+	const TArray<FOddsWellMatchWinnerSettlementDecisionRecord>& Decisions,
+	const TArray<FOddsWellMatchWinnerLossFinalizationRecord>& LossFinalizations,
+	const TArray<FOddsWellMatchWinnerWinFinalizationRecord>& WinFinalizations,
+	const TArray<FOddsWellMatchWinnerCanceledGameRecord>& CanceledGames,
+	const TArray<FOddsWellMatchWinnerVoidDecisionRecord>& VoidDecisions,
+	const bool bAllowExactLock)
+{
+	if (ObservedServerUnixSeconds < OfferEligibleUnixSeconds
+		|| Requests.Num() != 1
+		|| Ledger.GetEntries().Num() != 2
+		|| Ledger.GetBalance() != 60
+		|| !ResultLinks.IsEmpty()
+		|| !Decisions.IsEmpty()
+		|| !LossFinalizations.IsEmpty()
+		|| !WinFinalizations.IsEmpty()
+		|| !CanceledGames.IsEmpty()
+		|| !VoidDecisions.IsEmpty()
+		|| !Record.MatchWinnerVoidFinalizations.IsEmpty()
+		|| ExactOffer.Selections.Num() != 2)
+	{
+		return false;
+	}
+
+	const FOddsWellOddsBucksEntry& Credit = Ledger.GetEntries()[0];
+	const FOddsWellOddsBucksEntry& Debit = Ledger.GetEntries()[1];
+	const FOddsWellMatchWinnerRequestRecord& Request = Requests[0];
+	const FOddsWellMatchWinnerSelection& Selection = ExactOffer.Selections[0];
+	const FString ExpectedRequestId =
+		TEXT("canonical:h26e:match_winner:request:") + ExactOffer.OfferId;
+	const FString ExpectedLockId =
+		TEXT("canonical:h26g:match_winner:lock:") + ExactOffer.OfferId;
+	const bool bLockEvidenceExact = Locks.IsEmpty()
+		|| (bAllowExactLock
+			&& Locks.Num() == 1
+			&& Locks[0].LockCommandId == ExpectedLockId
+			&& Locks[0].RequestCommandId == ExpectedRequestId
+			&& Locks[0].SeasonNumber == ExactOffer.SeasonNumber
+			&& Locks[0].GameNumber == ExactOffer.GameNumber
+			&& Locks[0].AuthoritativeGameStartUnixSeconds == ExactOffer.LockUnixSeconds
+			&& Locks[0].LockUnixSeconds == ExactOffer.LockUnixSeconds
+			&& Locks[0].Decision == MatchWinnerLockedDecision);
+	return bLockEvidenceExact
+		&& Credit.Sequence == 1
+		&& Credit.CommandId == FirstJobCommandId
+		&& Credit.Delta == 100
+		&& Credit.BalanceAfter == 100
+		&& Credit.Reason == FirstJobReason
+		&& Debit.Sequence == 2
+		&& Debit.CommandId == ExpectedRequestId
+		&& Debit.Delta == -40
+		&& Debit.BalanceAfter == 60
+		&& Debit.Reason == MatchWinnerStakeReason
+		&& Request.EvidenceVersion == MatchWinnerRequestEvidenceVersion
+		&& Request.RequestCommandId == ExpectedRequestId
+		&& Request.StakeLedgerCommandId == ExpectedRequestId
+		&& Request.OfferId == ExactOffer.OfferId
+		&& Request.OfferVersion == ExactOffer.OfferVersion
+		&& Request.OfferSchema == ExactOffer.Schema
+		&& Request.Market == ExactOffer.Market
+		&& Request.Currency == ExactOffer.Currency
+		&& Request.SourcePredictionVersion == ExactOffer.SourcePredictionVersion
+		&& Request.SourceSnapshotVersion == ExactOffer.SourceSnapshotVersion
+		&& Request.SourceModel == ExactOffer.SourceModel
+		&& Request.SourceCommitmentSha256 == ExactOffer.SourceCommitmentSha256
+		&& Request.SeasonNumber == ExactOffer.SeasonNumber
+		&& Request.GameNumber == ExactOffer.GameNumber
+		&& Request.HomeTeam == ExactOffer.HomeTeam
+		&& Request.AwayTeam == ExactOffer.AwayTeam
+		&& Request.OfferedTeam == ExactOffer.HomeTeam
+		&& Request.OfferedTeam == Selection.Team
+		&& Request.SelectedWinProbabilityE8 == Selection.WinProbabilityE8
+		&& Request.SelectedDecimalOddsE4 == Selection.DecimalOddsE4
+		&& Request.Stake == 40
+		&& Request.PayoutFormula == ExactOffer.PayoutFormula
+		&& Request.GrossReturn == 69
+		&& Request.AcceptedUnixSeconds >= OfferEligibleUnixSeconds
+		&& Request.AcceptedUnixSeconds <= ObservedServerUnixSeconds
+		&& Request.AcceptedUnixSeconds < Request.LockUnixSeconds
+		&& Request.LockUnixSeconds == ExactOffer.LockUnixSeconds
+		&& Request.Status == AcceptedPendingLockStatus;
+}
 }
 
 EOddsWellOddsBucksAppendResult FOddsWellOddsBucksLedger::Append(const FString& CommandId, const int64 Delta, const FName Reason)
@@ -1319,7 +1410,10 @@ bool UseOddsWellOddsBucksQaSlot()
 		|| FParse::Param(FCommandLine::Get(), TEXT("SportsbookVoidFinalizationQaVerify"))
 		|| FParse::Param(FCommandLine::Get(), TEXT("CanonicalMatchWinnerRequestQa"))
 		|| FParse::Param(FCommandLine::Get(), TEXT("CanonicalMatchWinnerRequestQaVerify"))
-		|| FParse::Param(FCommandLine::Get(), TEXT("CanonicalPendingReceiptQa"));
+		|| FParse::Param(FCommandLine::Get(), TEXT("CanonicalPendingReceiptQa"))
+		|| FParse::Param(FCommandLine::Get(), TEXT("CanonicalMatchWinnerLockQa"))
+		|| FParse::Param(FCommandLine::Get(), TEXT("CanonicalMatchWinnerLockQaVerify"))
+		|| FParse::Param(FCommandLine::Get(), TEXT("CanonicalPostLockQa"));
 }
 
 const FString& GetOddsWellUpcomingQaMatchWinnerRequestCommandId()
@@ -1567,71 +1661,27 @@ EOddsWellCanonicalPendingReceiptResult LoadOddsWellCanonicalPendingMatchWinnerRe
 		OutError.Reset();
 		return EOddsWellCanonicalPendingReceiptResult::Missing;
 	}
-	if (ObservedServerUnixSeconds < OfferEligibleUnixSeconds
-		|| ObservedServerUnixSeconds >= ExactOffer.LockUnixSeconds
-		|| Requests.Num() != 1
-		|| Ledger.GetEntries().Num() != 2
-		|| Ledger.GetBalance() != 60
-		|| !Locks.IsEmpty()
-		|| !ResultLinks.IsEmpty()
-		|| !Decisions.IsEmpty()
-		|| !LossFinalizations.IsEmpty()
-		|| !WinFinalizations.IsEmpty()
-		|| !CanceledGames.IsEmpty()
-		|| !VoidDecisions.IsEmpty()
-		|| !Record->MatchWinnerVoidFinalizations.IsEmpty()
-		|| ExactOffer.Selections.Num() != 2)
+	if (ObservedServerUnixSeconds >= ExactOffer.LockUnixSeconds
+		|| !HasExactCanonicalRequestEvidence(
+			ExactOffer,
+			OfferEligibleUnixSeconds,
+			ObservedServerUnixSeconds,
+			Ledger,
+			*Record,
+			Requests,
+			Locks,
+			ResultLinks,
+			Decisions,
+			LossFinalizations,
+			WinFinalizations,
+			CanceledGames,
+			VoidDecisions,
+			false))
 	{
 		return Reject();
 	}
 
-	const FOddsWellOddsBucksEntry& Credit = Ledger.GetEntries()[0];
-	const FOddsWellOddsBucksEntry& Debit = Ledger.GetEntries()[1];
 	const FOddsWellMatchWinnerRequestRecord& Request = Requests[0];
-	const FOddsWellMatchWinnerSelection& Selection = ExactOffer.Selections[0];
-	const FString ExpectedRequestId =
-		TEXT("canonical:h26e:match_winner:request:") + ExactOffer.OfferId;
-	if (Credit.Sequence != 1
-		|| Credit.CommandId != FirstJobCommandId
-		|| Credit.Delta != 100
-		|| Credit.BalanceAfter != 100
-		|| Credit.Reason != FirstJobReason
-		|| Debit.Sequence != 2
-		|| Debit.CommandId != ExpectedRequestId
-		|| Debit.Delta != -40
-		|| Debit.BalanceAfter != 60
-		|| Debit.Reason != MatchWinnerStakeReason
-		|| Request.EvidenceVersion != MatchWinnerRequestEvidenceVersion
-		|| Request.RequestCommandId != ExpectedRequestId
-		|| Request.StakeLedgerCommandId != ExpectedRequestId
-		|| Request.OfferId != ExactOffer.OfferId
-		|| Request.OfferVersion != ExactOffer.OfferVersion
-		|| Request.OfferSchema != ExactOffer.Schema
-		|| Request.Market != ExactOffer.Market
-		|| Request.Currency != ExactOffer.Currency
-		|| Request.SourcePredictionVersion != ExactOffer.SourcePredictionVersion
-		|| Request.SourceSnapshotVersion != ExactOffer.SourceSnapshotVersion
-		|| Request.SourceModel != ExactOffer.SourceModel
-		|| Request.SourceCommitmentSha256 != ExactOffer.SourceCommitmentSha256
-		|| Request.SeasonNumber != ExactOffer.SeasonNumber
-		|| Request.GameNumber != ExactOffer.GameNumber
-		|| Request.HomeTeam != ExactOffer.HomeTeam
-		|| Request.AwayTeam != ExactOffer.AwayTeam
-		|| Request.OfferedTeam != ExactOffer.HomeTeam
-		|| Request.OfferedTeam != Selection.Team
-		|| Request.SelectedWinProbabilityE8 != Selection.WinProbabilityE8
-		|| Request.SelectedDecimalOddsE4 != Selection.DecimalOddsE4
-		|| Request.Stake != 40
-		|| Request.PayoutFormula != ExactOffer.PayoutFormula
-		|| Request.GrossReturn != 69
-		|| Request.AcceptedUnixSeconds < OfferEligibleUnixSeconds
-		|| Request.AcceptedUnixSeconds > ObservedServerUnixSeconds
-		|| Request.AcceptedUnixSeconds >= Request.LockUnixSeconds
-		|| Request.LockUnixSeconds != ExactOffer.LockUnixSeconds
-		|| Request.Status != AcceptedPendingLockStatus)
-	{
-		return Reject();
-	}
 
 	FOddsWellCanonicalPendingMatchWinnerReceipt Candidate;
 	Candidate.RequestId = Request.RequestCommandId;
@@ -1648,6 +1698,80 @@ EOddsWellCanonicalPendingReceiptResult LoadOddsWellCanonicalPendingMatchWinnerRe
 	OutReceipt = MoveTemp(Candidate);
 	OutError.Reset();
 	return EOddsWellCanonicalPendingReceiptResult::Ready;
+}
+
+EOddsWellMatchWinnerLockResult LockOddsWellCanonicalMatchWinnerRequestEvidence(
+	const FOddsWellMatchWinnerOffer& ExactOffer,
+	const int64 OfferEligibleUnixSeconds,
+	const int64 ObservedServerUnixSeconds,
+	const bool bQaSlot,
+	FOddsWellMatchWinnerLockRecord& OutRecord,
+	FString& OutError)
+{
+	OutRecord = {};
+	const FString& Slot = GetOddsBucksSlot(bQaSlot);
+	const UOddsWellOddsBucksSaveGame* Record =
+		Cast<UOddsWellOddsBucksSaveGame>(
+			UGameplayStatics::LoadGameFromSlot(Slot, OddsBucksUserIndex));
+	FOddsWellOddsBucksLedger Ledger;
+	int64 NextJobPayoutUnixSeconds = 0;
+	TArray<FOddsWellMatchWinnerRequestRecord> Requests;
+	TArray<FOddsWellMatchWinnerLockRecord> Locks;
+	TArray<FOddsWellMatchWinnerResultLinkRecord> ResultLinks;
+	TArray<FOddsWellMatchWinnerSettlementDecisionRecord> Decisions;
+	TArray<FOddsWellMatchWinnerLossFinalizationRecord> LossFinalizations;
+	TArray<FOddsWellMatchWinnerWinFinalizationRecord> WinFinalizations;
+	TArray<FOddsWellMatchWinnerCanceledGameRecord> CanceledGames;
+	TArray<FOddsWellMatchWinnerVoidDecisionRecord> VoidDecisions;
+	bool bNeedsMigration = false;
+	FString ValidationError;
+	if (!Record
+		|| !ValidateOddsBucksSave(
+			Record,
+			Ledger,
+			NextJobPayoutUnixSeconds,
+			Requests,
+			Locks,
+			ResultLinks,
+			Decisions,
+			LossFinalizations,
+			WinFinalizations,
+			CanceledGames,
+			VoidDecisions,
+			bNeedsMigration,
+			ValidationError)
+		|| bNeedsMigration
+		|| Record->SchemaVersion != OddsBucksSchemaVersion
+		|| ObservedServerUnixSeconds != ExactOffer.LockUnixSeconds
+		|| !HasExactCanonicalRequestEvidence(
+			ExactOffer,
+			OfferEligibleUnixSeconds,
+			ObservedServerUnixSeconds,
+			Ledger,
+			*Record,
+			Requests,
+			Locks,
+			ResultLinks,
+			Decisions,
+			LossFinalizations,
+			WinFinalizations,
+			CanceledGames,
+			VoidDecisions,
+			true))
+	{
+		OutError = TEXT("Canonical Match Winner lock requires the exact current H26E request at H26A tipoff.");
+		return EOddsWellMatchWinnerLockResult::Rejected;
+	}
+
+	return LockOddsWellMatchWinnerRequest(
+		TEXT("canonical:h26e:match_winner:request:") + ExactOffer.OfferId,
+		TEXT("canonical:h26g:match_winner:lock:") + ExactOffer.OfferId,
+		ExactOffer.SeasonNumber,
+		ExactOffer.GameNumber,
+		ExactOffer.LockUnixSeconds,
+		bQaSlot,
+		OutRecord,
+		OutError);
 }
 
 bool WriteOddsWellOddsBucksReconciliation(const FOddsWellOddsBucksLedger& Ledger, const int64 NextJobPayoutUnixSeconds, const int64 ObservedNowUnixSeconds, const bool bQaProjection, FString& OutPath, FString& OutError)

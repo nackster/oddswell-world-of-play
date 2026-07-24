@@ -7,7 +7,9 @@
 struct FOddsWellMatchWinnerOfferPreview;
 struct FOddsWellMatchWinnerRequestRecord;
 struct FOddsWellCanonicalPendingMatchWinnerReceipt;
+struct FOddsWellMatchWinnerLockRecord;
 enum class EOddsWellMatchWinnerRequestResult : uint8;
+enum class EOddsWellMatchWinnerLockResult : uint8;
 enum class EOddsWellCanonicalPendingReceiptResult : uint8;
 
 UCLASS()
@@ -55,4 +57,7 @@ ODDSWELL_API EOddsWellMatchWinnerRequestResult AcceptOddsWellCanonicalMatchWinne
 	int64 Stake,
 	FOddsWellMatchWinnerRequestRecord& OutRecord,
 	int64& OutBalance,
+	FString& OutError);
+ODDSWELL_API EOddsWellMatchWinnerLockResult LockOddsWellCanonicalMatchWinnerRequestAtGameStart(
+	FOddsWellMatchWinnerLockRecord& OutRecord,
 	FString& OutError);
