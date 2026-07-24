@@ -70,6 +70,7 @@ public:
 	bool IsTicketBoothMenuVisible() const { return bSportsbookOfferVisible; }
 	int32 GetTicketBoothMarketPage() const { return SportsbookMarketPage; }
 	const FOddsWellMatchWinnerOfferPreview* GetTicketBoothOffer() const { return SportsbookOfferPreview.Get(); }
+	const FOddsWellCanonicalPendingMatchWinnerReceipt* GetTicketBoothCanonicalReceipt() const { return SportsbookCanonicalReceipt.Get(); }
 	void SetTicketBoothMarketPage(int32 Page);
 	void CloseTicketBoothMenu();
 
@@ -257,6 +258,7 @@ private:
 	bool bStadiumQaMarkerReached = false;
 	TUniquePtr<FOddsWellPublicLeagueSnapshot> PublicLeagueSnapshot;
 	TUniquePtr<FOddsWellMatchWinnerOfferPreview> SportsbookOfferPreview;
+	TUniquePtr<FOddsWellCanonicalPendingMatchWinnerReceipt> SportsbookCanonicalReceipt;
 	TUniquePtr<FOddsWellMatchWinnerOffer> SportsbookQaOffer;
 	TUniquePtr<FOddsWellPendingQaMatchWinnerReceipt> SportsbookReceipt;
 	int32 PublicLeaguePage = 0;
@@ -272,6 +274,7 @@ private:
 	bool bAtSportsbookInteraction = false;
 	bool bSportsbookOfferVisible = false;
 	bool bSportsbookOfferQa = false;
+	bool bCanonicalPendingReceiptQa = false;
 	int32 SportsbookMarketPage = 0;
 	int32 SportsbookQaSelectionIndex = 0;
 	int64 SportsbookQaStake = 10;

@@ -410,7 +410,11 @@ void AOddsWellPlaceholderCharacter::BeginPlay()
 	bCameraOrbitQa = FParse::Param(FCommandLine::Get(), TEXT("CameraOrbitQa"));
 	bPublicLeagueQa = FParse::Param(FCommandLine::Get(), TEXT("PublicLeagueQa"));
 	bStadiumQa = FParse::Param(FCommandLine::Get(), TEXT("StadiumQa"));
-	bSportsbookOfferQa = FParse::Param(FCommandLine::Get(), TEXT("SportsbookOfferQa"));
+	bCanonicalPendingReceiptQa =
+		FParse::Param(FCommandLine::Get(), TEXT("CanonicalPendingReceiptQa"));
+	bSportsbookOfferQa =
+		FParse::Param(FCommandLine::Get(), TEXT("SportsbookOfferQa"))
+		|| bCanonicalPendingReceiptQa;
 	bSportsbookWagerQaVerify = FParse::Param(FCommandLine::Get(), TEXT("SportsbookWagerQaVerify"));
 	bSportsbookWagerQaMode = FParse::Param(FCommandLine::Get(), TEXT("SportsbookWagerQa")) || bSportsbookWagerQaVerify;
 	bSportsbookWagerQaAuto = FParse::Param(FCommandLine::Get(), TEXT("SportsbookWagerQaAuto")) || bSportsbookWagerQaVerify;
@@ -729,16 +733,54 @@ void AOddsWellPlaceholderCharacter::ShowLeaguePage()
 
 void AOddsWellPlaceholderCharacter::RefreshSportsbookOfferPreview()
 {
-	SportsbookOfferPreview = MakeUnique<FOddsWellMatchWinnerOfferPreview>();
+	SportsbookCanonicalReceipt =
+		MakeUnique<FOddsWellCanonicalPendingMatchWinnerReceipt>();
 	FString Error;
+	const EOddsWellCanonicalPendingReceiptResult ReceiptResult =
+		LoadOddsWellCanonicalPendingMatchWinnerReceipt(
+			*SportsbookCanonicalReceipt,
+			Error);
+	if (ReceiptResult == EOddsWellCanonicalPendingReceiptResult::Rejected)
+	{
+		SportsbookCanonicalReceipt.Reset();
+		SportsbookOfferPreview.Reset();
+		UE_LOG(
+			LogOddsWellLocomotion,
+			Display,
+			TEXT("ODDSWELL_CANONICAL_PENDING_RECEIPT|result=REJECTED|closed=true|partial=false|migration=false|write=false|request_api=false|locked_claim=false|settled_claim=false"));
+		return;
+	}
+	if (ReceiptResult == EOddsWellCanonicalPendingReceiptResult::Missing)
+	{
+		SportsbookCanonicalReceipt.Reset();
+	}
+
+	SportsbookOfferPreview = MakeUnique<FOddsWellMatchWinnerOfferPreview>();
 	if (!LoadOddsWellCanonicalMatchWinnerOfferPreview(*SportsbookOfferPreview, Error))
 	{
+		SportsbookCanonicalReceipt.Reset();
 		SportsbookOfferPreview.Reset();
 		UE_LOG(
 			LogOddsWellLocomotion,
 			Display,
 			TEXT("ODDSWELL_CANONICAL_TICKET_BOOTH|result=UNAVAILABLE|locked_or_invalid=true|teams=false|prices=false|archive_fallback=false|submission=false|debit=false"));
 		return;
+	}
+	if (SportsbookCanonicalReceipt)
+	{
+		UE_LOG(
+			LogOddsWellLocomotion,
+			Display,
+			TEXT("ODDSWELL_CANONICAL_PENDING_RECEIPT|result=READY|cold_restore=true|read_only=true|canonical=true|selected_team=%s|probability_e8=%lld|odds_e4=%lld|stake=%lld|gross_return=%lld|balance=%lld|accepted_unix=%lld|tipoff_unix=%lld|status=%s|partial=false|migration=false|write=false|request_api=false|debit=false|locked_claim=false|settled_claim=false"),
+			*SportsbookCanonicalReceipt->SelectedTeam,
+			SportsbookCanonicalReceipt->SelectedWinProbabilityE8,
+			SportsbookCanonicalReceipt->SelectedDecimalOddsE4,
+			SportsbookCanonicalReceipt->Stake,
+			SportsbookCanonicalReceipt->GrossReturn,
+			SportsbookCanonicalReceipt->CurrentBalance,
+			SportsbookCanonicalReceipt->AcceptedUnixSeconds,
+			SportsbookCanonicalReceipt->LockUnixSeconds,
+			*SportsbookCanonicalReceipt->Status.ToString());
 	}
 	UE_LOG(
 		LogOddsWellLocomotion,
@@ -1575,10 +1617,20 @@ void AOddsWellPlaceholderCharacter::PollSportsbookInteraction()
 	bAtSportsbookInteraction = bAtSportsbook;
 	if (!bSportsbookWagerQaMode
 		&& !bSportsbookReceiptQaMode
+		&& bSportsbookOfferVisible
 		&& SportsbookOfferPreview
-		&& FDateTime::UtcNow().ToUnixTimestamp() >= SportsbookOfferPreview->LockUnix)
+		&& SportsbookCanonicalReceipt)
 	{
-		SportsbookOfferPreview.Reset();
+		FOddsWellCanonicalPendingMatchWinnerReceipt CurrentReceipt;
+		FString Error;
+		if (LoadOddsWellCanonicalPendingMatchWinnerReceipt(
+				CurrentReceipt,
+				Error)
+			!= EOddsWellCanonicalPendingReceiptResult::Ready)
+		{
+			SportsbookCanonicalReceipt.Reset();
+			SportsbookOfferPreview.Reset();
+		}
 	}
 	if (!bAtSportsbook)
 	{
@@ -1710,20 +1762,73 @@ void AOddsWellPlaceholderCharacter::RunSportsbookOfferQa(const float DeltaSecond
 		const FString PreviewText = SportsbookOfferPreview
 			? BuildOddsWellMatchWinnerOfferPreview(*SportsbookOfferPreview)
 			: FString();
+		const bool bCanonicalReceiptExact =
+			!bCanonicalPendingReceiptQa
+			|| (SportsbookCanonicalReceipt
+				&& SportsbookCanonicalReceipt->SelectedTeam
+					== TEXT("Harbor City Waves")
+				&& SportsbookCanonicalReceipt->SelectedWinProbabilityE8
+					== 57586693
+				&& SportsbookCanonicalReceipt->SelectedDecimalOddsE4 == 17365
+				&& SportsbookCanonicalReceipt->Stake == 40
+				&& SportsbookCanonicalReceipt->GrossReturn == 69
+				&& SportsbookCanonicalReceipt->CurrentBalance == 60
+				&& SportsbookCanonicalReceipt->Status
+					== FName(TEXT("accepted_pending_lock"))
+				&& SportsbookCanonicalReceipt->LockUnixSeconds
+					== SportsbookOfferPreview->LockUnix);
 		const bool bExact = SportsbookOfferPreview
 			&& bSportsbookOfferVisible
 			&& PreviewText.Contains(SportsbookOfferPreview->OfferId)
 			&& PreviewText.Contains(TEXT("10 -> 17"))
 			&& PreviewText.Contains(TEXT("100 -> 235"))
-			&& PreviewText.Contains(TEXT("READ ONLY - NO WAGER OR LEDGER CHANGE"));
-		const bool bUnchanged = GameMode->GetOddsBucksEntryCount() == SportsbookOfferQaLedgerEntries
-			&& GameMode->GetOddsBucksBalance() == SportsbookOfferQaBalance;
+			&& PreviewText.Contains(TEXT("READ ONLY - NO WAGER OR LEDGER CHANGE"))
+			&& bCanonicalReceiptExact;
+		const bool bUnchanged = bCanonicalPendingReceiptQa
+			|| (GameMode->GetOddsBucksEntryCount() == SportsbookOfferQaLedgerEntries
+				&& GameMode->GetOddsBucksBalance() == SportsbookOfferQaBalance);
 		if (!bExact || !bUnchanged)
 		{
 			UE_LOG(LogOddsWellLocomotion, Error, TEXT("ODDSWELL_SPORTSBOOK_OFFER_QA|result=FAIL|reason=preview_or_ledger_mismatch|closed=true"));
 			bSportsbookOfferQa = false;
 			QaExitAt = FPlatformTime::Seconds() + 1.0;
 			return;
+		}
+		if (bCanonicalPendingReceiptQa)
+		{
+			SetTicketBoothMarketPage(1);
+			const bool bTabSafe = SportsbookMarketPage == 1;
+			SetTicketBoothMarketPage(0);
+			CloseTicketBoothMenu();
+			SetActorLocation(
+				SafeSpawnLocation,
+				false,
+				nullptr,
+				ETeleportType::TeleportPhysics);
+			ToggleSportsbookOfferPreview();
+			const bool bLeaveAndCloseSafe = !bSportsbookOfferVisible;
+			SetActorLocation(
+				FVector(
+					SportsbookInteractionLocation.X,
+					SportsbookInteractionLocation.Y,
+					GetActorLocation().Z),
+				false,
+				nullptr,
+				ETeleportType::TeleportPhysics);
+			ToggleSportsbookOfferPreview();
+			if (!bTabSafe
+				|| !bLeaveAndCloseSafe
+				|| !bSportsbookOfferVisible
+				|| !SportsbookCanonicalReceipt)
+			{
+				UE_LOG(
+					LogOddsWellLocomotion,
+					Error,
+					TEXT("ODDSWELL_CANONICAL_PENDING_RECEIPT_QA|result=FAIL|reason=input_safety_mismatch|closed=true"));
+				bSportsbookOfferQa = false;
+				QaExitAt = FPlatformTime::Seconds() + 1.0;
+				return;
+			}
 		}
 		SportsbookOfferQaStage = 2;
 		SportsbookOfferQaElapsed = 0.0f;
@@ -1733,7 +1838,27 @@ void AOddsWellPlaceholderCharacter::RunSportsbookOfferQa(const float DeltaSecond
 	{
 		if (FParse::Param(FCommandLine::Get(), TEXT("SportsbookOfferQaCapture")))
 		{
-			FScreenshotRequest::RequestScreenshot(TEXT("Phase1H26D_CanonicalMatchWinnerOffer.png"), true, false);
+			FScreenshotRequest::RequestScreenshot(
+				bCanonicalPendingReceiptQa
+					? TEXT("Phase1H26F_CanonicalPendingReceipt.png")
+					: TEXT("Phase1H26D_CanonicalMatchWinnerOffer.png"),
+				true,
+				false);
+		}
+		if (bCanonicalPendingReceiptQa)
+		{
+			UE_LOG(
+				LogOddsWellLocomotion,
+				Display,
+				TEXT("ODDSWELL_CANONICAL_PENDING_RECEIPT_QA|result=PASS|phase=H26F|cold_restore=true|read_only=true|canonical=true|selection=Harbor_City_Waves|probability_e8=57586693|odds_e4=17365|stake=40|gross_return=69|balance=60|status=accepted_pending_lock|tipoff=canonical_server_lock|ids_visible=false|cards_interactive=false|open_submit=false|close_submit=false|leave_submit=false|tab_submit=false|cold_submit=false|request_api=false|debit=false|migration=false|write=false|partial=false|locked_claim=false|settled_claim=false"));
+			bSportsbookOfferQa = false;
+			if (FParse::Param(
+					FCommandLine::Get(),
+					TEXT("SportsbookOfferAutoExit")))
+			{
+				QaExitAt = FPlatformTime::Seconds() + 2.0;
+			}
+			return;
 		}
 		UE_LOG(
 			LogOddsWellLocomotion,
@@ -3253,22 +3378,79 @@ void AOddsWellSportsbookHUD::DrawTicketBoothMenu(
 		0.95f);
 
 	DrawRect(FLinearColor(0.96f, 0.94f, 0.87f, 1.0f), SlipX, ContentY, SlipWidth, ContentHeight);
-	DrawText(TEXT("BET SLIP"), FLinearColor(0.025f, 0.055f, 0.08f), SlipX + 20.0f, ContentY + 20.0f, nullptr, 1.35f);
-	DrawText(TEXT("READ-ONLY PREVIEW"), FLinearColor(0.08f, 0.45f, 0.42f), SlipX + 20.0f, ContentY + 55.0f, nullptr, 0.92f);
+	const FOddsWellCanonicalPendingMatchWinnerReceipt* Receipt =
+		Character.GetTicketBoothCanonicalReceipt();
+	DrawText(
+		Receipt ? TEXT("BET ACCEPTED") : TEXT("BET SLIP"),
+		FLinearColor(0.025f, 0.055f, 0.08f),
+		SlipX + 20.0f,
+		ContentY + 20.0f,
+		nullptr,
+		1.35f);
+	DrawText(
+		Receipt ? TEXT("PENDING TIPOFF") : TEXT("READ-ONLY PREVIEW"),
+		FLinearColor(0.08f, 0.45f, 0.42f),
+		SlipX + 20.0f,
+		ContentY + 55.0f,
+		nullptr,
+		0.92f);
 	DrawRect(FLinearColor(0.84f, 0.82f, 0.76f, 1.0f), SlipX + 20.0f, ContentY + 92.0f, SlipWidth - 40.0f, 2.0f);
 	DrawText(TEXT("SELECTION"), FLinearColor(0.32f, 0.34f, 0.36f), SlipX + 20.0f, ContentY + 116.0f, nullptr, 0.82f);
-	DrawText(TEXT("No wager selected"), FLinearColor(0.025f, 0.055f, 0.08f), SlipX + 20.0f, ContentY + 145.0f, nullptr, 1.05f);
-	DrawText(TEXT("STAKE RANGE"), FLinearColor(0.32f, 0.34f, 0.36f), SlipX + 20.0f, ContentY + 194.0f, nullptr, 0.82f);
 	DrawText(
-		FString::Printf(TEXT("%lld-%lld Odds Bucks  |  step %lld"), Offer.MinimumStake, Offer.MaximumStake, Offer.StakeIncrement),
+		Receipt ? Receipt->SelectedTeam : TEXT("No wager selected"),
+		FLinearColor(0.025f, 0.055f, 0.08f),
+		SlipX + 20.0f,
+		ContentY + 145.0f,
+		nullptr,
+		1.05f);
+	DrawText(
+		Receipt ? TEXT("STAKE / POTENTIAL GROSS") : TEXT("STAKE RANGE"),
+		FLinearColor(0.32f, 0.34f, 0.36f),
+		SlipX + 20.0f,
+		ContentY + 194.0f,
+		nullptr,
+		0.82f);
+	DrawText(
+		Receipt
+			? FString::Printf(
+				TEXT("%lld Odds Bucks  /  %lld gross"),
+				Receipt->Stake,
+				Receipt->GrossReturn)
+			: FString::Printf(
+				TEXT("%lld-%lld Odds Bucks  |  step %lld"),
+				Offer.MinimumStake,
+				Offer.MaximumStake,
+				Offer.StakeIncrement),
 		FLinearColor(0.025f, 0.055f, 0.08f),
 		SlipX + 20.0f,
 		ContentY + 223.0f,
 		nullptr,
 		1.05f);
-	DrawText(TEXT("GROSS RETURN"), FLinearColor(0.32f, 0.34f, 0.36f), SlipX + 20.0f, ContentY + 272.0f, nullptr, 0.82f);
-	DrawText(TEXT("floor(stake / win probability)"), FLinearColor(0.025f, 0.055f, 0.08f), SlipX + 20.0f, ContentY + 301.0f, nullptr, 1.0f);
-	DrawText(FString::Printf(TEXT("Locks at server tipoff: %lld"), Offer.LockUnix), FLinearColor(0.55f, 0.22f, 0.12f), SlipX + 20.0f, ContentY + ContentHeight - 116.0f, nullptr, 0.92f);
+	DrawText(
+		Receipt ? TEXT("CURRENT BALANCE") : TEXT("GROSS RETURN"),
+		FLinearColor(0.32f, 0.34f, 0.36f),
+		SlipX + 20.0f,
+		ContentY + 272.0f,
+		nullptr,
+		0.82f);
+	DrawText(
+		Receipt
+			? FString::Printf(TEXT("%lld Odds Bucks"), Receipt->CurrentBalance)
+			: TEXT("floor(stake / win probability)"),
+		FLinearColor(0.025f, 0.055f, 0.08f),
+		SlipX + 20.0f,
+		ContentY + 301.0f,
+		nullptr,
+		1.0f);
+	DrawText(
+		FString::Printf(
+			TEXT("Server tipoff / lock: %lld"),
+			Receipt ? Receipt->LockUnixSeconds : Offer.LockUnix),
+		FLinearColor(0.55f, 0.22f, 0.12f),
+		SlipX + 20.0f,
+		ContentY + ContentHeight - 116.0f,
+		nullptr,
+		0.92f);
 	DrawText(TEXT("Odds Bucks only. No real money."), FLinearColor(0.55f, 0.22f, 0.12f), SlipX + 20.0f, ContentY + ContentHeight - 85.0f, nullptr, 0.92f);
 	DrawText(TEXT("LEFT / RIGHT: MARKET    E or ESC: CLOSE"), FLinearColor(0.32f, 0.34f, 0.36f), SlipX + 20.0f, ContentY + ContentHeight - 43.0f, nullptr, 0.78f);
 }
@@ -3418,6 +3600,38 @@ void AOddsWellLocomotionGameMode::BeginPlay()
 			FCommandLine::Get(),
 			TEXT("CanonicalMatchWinnerRequestQa"))
 		|| bCanonicalRequestQaVerify;
+	const bool bCanonicalPendingReceiptQa =
+		FParse::Param(
+			FCommandLine::Get(),
+			TEXT("CanonicalPendingReceiptQa"));
+	if (bCanonicalPendingReceiptQa)
+	{
+		FOddsWellCanonicalPendingMatchWinnerReceipt Receipt;
+		FString Error;
+		const bool bPassed =
+			LoadOddsWellCanonicalPendingMatchWinnerReceipt(
+				Receipt,
+				Error)
+				== EOddsWellCanonicalPendingReceiptResult::Ready;
+		const FString Evidence = FString::Printf(
+			TEXT("ODDSWELL_CANONICAL_PENDING_RECEIPT_MODE|result=%s|cold_process_restore=true|read_only=true|request_api=false|migration=false|write=false|partial=false|selected_team=%s|stake=%lld|gross_return=%lld|balance=%lld|status=%s|detail=%s"),
+			bPassed ? TEXT("PASS") : TEXT("FAIL"),
+			*Receipt.SelectedTeam,
+			Receipt.Stake,
+			Receipt.GrossReturn,
+			Receipt.CurrentBalance,
+			*Receipt.Status.ToString(),
+			Error.IsEmpty() ? TEXT("none") : *Error);
+		if (bPassed)
+		{
+			UE_LOG(LogOddsWellLocomotion, Display, TEXT("%s"), *Evidence);
+		}
+		else
+		{
+			UE_LOG(LogOddsWellLocomotion, Error, TEXT("%s"), *Evidence);
+		}
+		return;
+	}
 	if (FParse::Param(FCommandLine::Get(), TEXT("SportsbookReceiptQa")))
 	{
 		FOddsWellPendingQaMatchWinnerReceipt Receipt;

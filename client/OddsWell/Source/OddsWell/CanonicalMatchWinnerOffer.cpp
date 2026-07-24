@@ -259,6 +259,51 @@ bool LoadPreview(
 	return true;
 }
 
+EOddsWellCanonicalPendingReceiptResult LoadPendingReceipt(
+	const FOddsWellCanonicalScheduledGameRecord& Schedule,
+	const FOddsWellCanonicalPregameCommitmentRecord& Commitment,
+	const FString& OfferSlot,
+	const int64 ObservedServerUnixSeconds,
+	const bool bOddsBucksQaSlot,
+	FOddsWellCanonicalPendingMatchWinnerReceipt& OutReceipt,
+	FString& OutError)
+{
+	OutReceipt = {};
+	FOddsWellMatchWinnerOffer Expected;
+	FString ExpectedCanonicalJson;
+	FOddsWellCanonicalMatchWinnerOfferRecord Persisted;
+	if (!BuildExpectedOffer(
+			Schedule,
+			Commitment,
+			Expected,
+			ExpectedCanonicalJson,
+			OutError)
+		|| ObservedServerUnixSeconds < Schedule.OfferEligibleUnixSeconds
+		|| !UGameplayStatics::DoesSaveGameExist(
+			OfferSlot,
+			CanonicalOfferUserIndex)
+		|| !RestoreExactOffer(
+			UGameplayStatics::LoadGameFromSlot(
+				OfferSlot,
+				CanonicalOfferUserIndex),
+			Expected,
+			ExpectedCanonicalJson,
+			Persisted,
+			OutError))
+	{
+		OutReceipt = {};
+		OutError = TEXT("Canonical pending Match Winner receipt failed exact H26A/B/C validation.");
+		return EOddsWellCanonicalPendingReceiptResult::Rejected;
+	}
+	return LoadOddsWellCanonicalPendingMatchWinnerReceiptEvidence(
+		Expected,
+		Schedule.OfferEligibleUnixSeconds,
+		ObservedServerUnixSeconds,
+		bOddsBucksQaSlot,
+		OutReceipt,
+		OutError);
+}
+
 EOddsWellMatchWinnerRequestResult AcceptCanonicalRequest(
 	const FOddsWellCanonicalScheduledGameRecord& Schedule,
 	const FOddsWellCanonicalPregameCommitmentRecord& Commitment,
@@ -502,6 +547,28 @@ bool LoadOddsWellCanonicalMatchWinnerOfferPreview(
 		return false;
 	}
 	return true;
+}
+
+EOddsWellCanonicalPendingReceiptResult LoadOddsWellCanonicalPendingMatchWinnerReceipt(
+	FOddsWellCanonicalPendingMatchWinnerReceipt& OutReceipt,
+	FString& OutError)
+{
+	FOddsWellCanonicalScheduledGameRecord Schedule;
+	FOddsWellCanonicalPregameCommitmentRecord Commitment;
+	if (!LoadOddsWellCanonicalLocalBetaScheduledGame(Schedule, OutError)
+		|| !LoadOddsWellCanonicalPregameCommitment(Commitment, OutError))
+	{
+		OutReceipt = {};
+		return EOddsWellCanonicalPendingReceiptResult::Rejected;
+	}
+	return LoadPendingReceipt(
+		Schedule,
+		Commitment,
+		CanonicalOfferSlot,
+		FDateTime::UtcNow().ToUnixTimestamp(),
+		UseOddsWellOddsBucksQaSlot(),
+		OutReceipt,
+		OutError);
 }
 
 EOddsWellMatchWinnerRequestResult AcceptOddsWellCanonicalMatchWinnerRequest(
@@ -1185,6 +1252,434 @@ bool FOddsWellCanonicalMatchWinnerRequestTest::RunTest(
 		ResetOddsWellQaOddsBucksAndVerify(Error));
 	TestTrue(
 		TEXT("Canonical request offer cleanup succeeds"),
+		UGameplayStatics::DeleteGameInSlot(
+			CanonicalRequestQaOfferSlot,
+			CanonicalOfferUserIndex));
+	return !HasAnyErrors();
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(
+	FOddsWellCanonicalPendingMatchWinnerReceiptTest,
+	"OddsWell.League.CanonicalPendingMatchWinnerReceipt",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+
+bool FOddsWellCanonicalPendingMatchWinnerReceiptTest::RunTest(
+	const FString& Parameters)
+{
+	FString Error;
+	TestTrue(
+		TEXT("H26F isolated ledger starts clean"),
+		ResetOddsWellQaOddsBucksAndVerify(Error));
+	UGameplayStatics::DeleteGameInSlot(
+		CanonicalRequestQaOfferSlot,
+		CanonicalOfferUserIndex);
+
+	const FOddsWellCanonicalScheduledGameRecord Schedule = TestSchedule();
+	const FOddsWellCanonicalPregameCommitmentRecord Commitment = TestCommitment();
+	FOddsWellCanonicalMatchWinnerOfferRecord OfferRecord;
+	TestEqual(
+		TEXT("H26F exact H26C fixture creates"),
+		PersistOffer(
+			Schedule,
+			Commitment,
+			CanonicalRequestQaOfferSlot,
+			2200000100,
+			OfferRecord,
+			Error),
+		EOddsWellCanonicalMatchWinnerOfferResult::Created);
+
+	FOddsWellOddsBucksLedger Funded;
+	TestEqual(
+		TEXT("H26F job credit applies"),
+		Funded.Append(
+			GetOddsWellFirstJobCommandId(),
+			GetOddsWellFirstJobPayout(),
+			GetOddsWellFirstJobReason()),
+		EOddsWellOddsBucksAppendResult::Applied);
+	TestTrue(
+		TEXT("H26F funded ledger persists"),
+		SaveOddsWellOddsBucksLedger(
+			Funded,
+			2200086400,
+			true,
+			Error));
+
+	FOddsWellMatchWinnerRequestRecord Accepted;
+	int64 Balance = 0;
+	TestEqual(
+		TEXT("H26F exact H26E request fixture accepts"),
+		AcceptCanonicalRequest(
+			Schedule,
+			Commitment,
+			CanonicalRequestQaOfferSlot,
+			2200000100,
+			true,
+			OfferRecord.OfferId,
+			Schedule.HomeTeam,
+			40,
+			Accepted,
+			Balance,
+			Error),
+		EOddsWellMatchWinnerRequestResult::Accepted);
+
+	const FString QaLedgerPath = FPaths::Combine(
+		FPaths::ProjectSavedDir(),
+		TEXT("SaveGames"),
+		TEXT("OddsWellOddsBucksQA.sav"));
+	auto ReadLedgerBytes = [this, &QaLedgerPath](
+		const TCHAR* Label,
+		TArray<uint8>& OutBytes)
+	{
+		TestTrue(
+			Label,
+			FFileHelper::LoadFileToArray(OutBytes, *QaLedgerPath));
+	};
+	auto TestBytesUnchanged = [this, &ReadLedgerBytes](
+		const TCHAR* Label,
+		const TArray<uint8>& Before)
+	{
+		TArray<uint8> After;
+		ReadLedgerBytes(Label, After);
+		TestTrue(
+			FString::Printf(TEXT("%s remains byte-stable"), Label),
+			After == Before);
+	};
+
+	TArray<uint8> ExactDiskBytes;
+	ReadLedgerBytes(TEXT("H26F exact state bytes read"), ExactDiskBytes);
+	const UOddsWellOddsBucksSaveGame* ExactState =
+		Cast<UOddsWellOddsBucksSaveGame>(
+			UGameplayStatics::LoadGameFromSlot(
+				TEXT("OddsWellOddsBucksQA"),
+				0));
+	TestNotNull(TEXT("H26F exact schema-12 state reloads"), ExactState);
+	TArray<uint8> ExactMemoryBytes;
+	TestTrue(
+		TEXT("H26F exact state serializes to memory"),
+		ExactState
+			&& UGameplayStatics::SaveGameToMemory(
+				const_cast<UOddsWellOddsBucksSaveGame*>(ExactState),
+				ExactMemoryBytes));
+	auto RestoreExactState = [this, &ExactMemoryBytes]()
+	{
+		USaveGame* Restored =
+			UGameplayStatics::LoadGameFromMemory(ExactMemoryBytes);
+		TestTrue(
+			TEXT("H26F exact state restores"),
+			Restored
+				&& UGameplayStatics::SaveGameToSlot(
+					Restored,
+					TEXT("OddsWellOddsBucksQA"),
+					0));
+	};
+
+	FOddsWellCanonicalPendingMatchWinnerReceipt Receipt;
+	TestEqual(
+		TEXT("H26F exact pending receipt cold-loads"),
+		LoadPendingReceipt(
+			Schedule,
+			Commitment,
+			CanonicalRequestQaOfferSlot,
+			2200000200,
+			true,
+			Receipt,
+			Error),
+		EOddsWellCanonicalPendingReceiptResult::Ready);
+	TestEqual(TEXT("H26F selection is Harbor"), Receipt.SelectedTeam, Schedule.HomeTeam);
+	TestEqual(TEXT("H26F selected probability is exact"), Receipt.SelectedWinProbabilityE8, int64{57586693});
+	TestEqual(TEXT("H26F selected odds are exact"), Receipt.SelectedDecimalOddsE4, int64{17365});
+	TestEqual(TEXT("H26F stake is 40"), Receipt.Stake, int64{40});
+	TestEqual(TEXT("H26F gross return is 69"), Receipt.GrossReturn, int64{69});
+	TestEqual(TEXT("H26F balance is 60"), Receipt.CurrentBalance, int64{60});
+	TestEqual(TEXT("H26F server acceptance time is retained"), Receipt.AcceptedUnixSeconds, int64{2200000100});
+	TestEqual(TEXT("H26F canonical tipoff is retained"), Receipt.LockUnixSeconds, Schedule.TipoffUnixSeconds);
+	TestEqual(TEXT("H26F status remains pending lock"), Receipt.Status, FName(TEXT("accepted_pending_lock")));
+	TestBytesUnchanged(TEXT("H26F cold read"), ExactDiskBytes);
+	TestEqual(
+		TEXT("H26F repeated cold read remains ready"),
+		LoadPendingReceipt(
+			Schedule,
+			Commitment,
+			CanonicalRequestQaOfferSlot,
+			2200000200,
+			true,
+			Receipt,
+			Error),
+		EOddsWellCanonicalPendingReceiptResult::Ready);
+	TestBytesUnchanged(TEXT("H26F repeated cold read"), ExactDiskBytes);
+
+	TestEqual(
+		TEXT("H26F at-tipoff request fails closed without a lock claim"),
+		LoadPendingReceipt(
+			Schedule,
+			Commitment,
+			CanonicalRequestQaOfferSlot,
+			Schedule.TipoffUnixSeconds,
+			true,
+			Receipt,
+			Error),
+		EOddsWellCanonicalPendingReceiptResult::Rejected);
+	TestTrue(TEXT("H26F post-tipoff rejection exposes no partial receipt"), Receipt.RequestId.IsEmpty() && Receipt.Stake == 0);
+	TestBytesUnchanged(TEXT("H26F at-tipoff rejection"), ExactDiskBytes);
+
+	FOddsWellCanonicalScheduledGameRecord WrongSchedule = Schedule;
+	WrongSchedule.HomeTeam = TEXT("Archive Harbor");
+	TestEqual(
+		TEXT("H26F tampered H26A rejects"),
+		LoadPendingReceipt(
+			WrongSchedule,
+			Commitment,
+			CanonicalRequestQaOfferSlot,
+			2200000200,
+			true,
+			Receipt,
+			Error),
+		EOddsWellCanonicalPendingReceiptResult::Rejected);
+	FOddsWellCanonicalPregameCommitmentRecord WrongCommitment = Commitment;
+	WrongCommitment.InputClass = TEXT("private_model");
+	TestEqual(
+		TEXT("H26F tampered H26B rejects"),
+		LoadPendingReceipt(
+			Schedule,
+			WrongCommitment,
+			CanonicalRequestQaOfferSlot,
+			2200000200,
+			true,
+			Receipt,
+			Error),
+		EOddsWellCanonicalPendingReceiptResult::Rejected);
+	TestBytesUnchanged(TEXT("H26F H26A/B rejections"), ExactDiskBytes);
+
+	UOddsWellCanonicalMatchWinnerOfferSaveGame* TamperedOffer =
+		Cast<UOddsWellCanonicalMatchWinnerOfferSaveGame>(
+			UGameplayStatics::LoadGameFromSlot(
+				CanonicalRequestQaOfferSlot,
+				CanonicalOfferUserIndex));
+	TestNotNull(TEXT("H26F H26C state reloads for tamper"), TamperedOffer);
+	if (TamperedOffer)
+	{
+		const FString ExactJson = TamperedOffer->CanonicalOfferJson;
+		TamperedOffer->CanonicalOfferJson += TEXT(" ");
+		TestTrue(
+			TEXT("H26F tampered H26C fixture writes"),
+			UGameplayStatics::SaveGameToSlot(
+				TamperedOffer,
+				CanonicalRequestQaOfferSlot,
+				CanonicalOfferUserIndex));
+		TestEqual(
+			TEXT("H26F tampered H26C rejects"),
+			LoadPendingReceipt(
+				Schedule,
+				Commitment,
+				CanonicalRequestQaOfferSlot,
+				2200000200,
+				true,
+				Receipt,
+				Error),
+			EOddsWellCanonicalPendingReceiptResult::Rejected);
+		TamperedOffer->CanonicalOfferJson = ExactJson;
+		TestTrue(
+			TEXT("H26F exact H26C fixture restores"),
+			UGameplayStatics::SaveGameToSlot(
+				TamperedOffer,
+				CanonicalRequestQaOfferSlot,
+				CanonicalOfferUserIndex));
+	}
+	TestBytesUnchanged(TEXT("H26F H26C rejection"), ExactDiskBytes);
+
+	auto TestRejectedMutation =
+		[this,
+			&Schedule,
+			&Commitment,
+			&Receipt,
+			&Error,
+			&ExactMemoryBytes,
+			&RestoreExactState,
+			&ReadLedgerBytes,
+			&TestBytesUnchanged](
+			const TCHAR* Label,
+			TFunction<void(UOddsWellOddsBucksSaveGame&)> Mutate)
+	{
+		UOddsWellOddsBucksSaveGame* Candidate =
+			Cast<UOddsWellOddsBucksSaveGame>(
+				UGameplayStatics::LoadGameFromMemory(ExactMemoryBytes));
+		TestNotNull(
+			FString::Printf(TEXT("%s fixture reloads"), Label),
+			Candidate);
+		if (!Candidate)
+		{
+			return;
+		}
+		Mutate(*Candidate);
+		TestTrue(
+			FString::Printf(TEXT("%s fixture persists"), Label),
+			UGameplayStatics::SaveGameToSlot(
+				Candidate,
+				TEXT("OddsWellOddsBucksQA"),
+				0));
+		TArray<uint8> Before;
+		ReadLedgerBytes(Label, Before);
+		TestEqual(
+			Label,
+			LoadPendingReceipt(
+				Schedule,
+				Commitment,
+				CanonicalRequestQaOfferSlot,
+				2200000200,
+				true,
+				Receipt,
+				Error),
+			EOddsWellCanonicalPendingReceiptResult::Rejected);
+		TestTrue(
+			FString::Printf(TEXT("%s exposes no partial"), Label),
+			Receipt.RequestId.IsEmpty()
+				&& Receipt.SelectedTeam.IsEmpty()
+				&& Receipt.Stake == 0
+				&& Receipt.CurrentBalance == 0);
+		TestBytesUnchanged(Label, Before);
+		RestoreExactState();
+	};
+	TestRejectedMutation(
+		TEXT("H26F tampered request"),
+		[](UOddsWellOddsBucksSaveGame& Save)
+		{
+			Save.MatchWinnerRequests[0].GrossReturn = 70;
+		});
+	TestRejectedMutation(
+		TEXT("H26F multiple requests"),
+		[](UOddsWellOddsBucksSaveGame& Save)
+		{
+			FOddsWellMatchWinnerRequestRecord Duplicate =
+				Save.MatchWinnerRequests[0];
+			Duplicate.RequestCommandId += TEXT(":duplicate");
+			Duplicate.StakeLedgerCommandId = Duplicate.RequestCommandId;
+			Save.MatchWinnerRequests.Add(Duplicate);
+		});
+	TestRejectedMutation(
+		TEXT("H26F missing request with debit"),
+		[](UOddsWellOddsBucksSaveGame& Save)
+		{
+			Save.MatchWinnerRequests.Reset();
+		});
+	TestRejectedMutation(
+		TEXT("H26F migration-required schema"),
+		[](UOddsWellOddsBucksSaveGame& Save)
+		{
+			Save.SchemaVersion = 11;
+		});
+	TestRejectedMutation(
+		TEXT("H26F archive identity"),
+		[](UOddsWellOddsBucksSaveGame& Save)
+		{
+			const FString ArchiveOfferId(
+				TEXT("9e6870420528e2a821591b763471c47f71b198c063cbdcbecd9ee180f9ea2459"));
+			Save.MatchWinnerRequests[0].OfferId = ArchiveOfferId;
+		});
+
+	FOddsWellMatchWinnerLockRecord Lock;
+	TestEqual(
+		TEXT("H26F valid downstream lock fixture persists"),
+		LockOddsWellMatchWinnerRequest(
+			Accepted.RequestCommandId,
+			TEXT("qa:h26f:downstream-lock"),
+			Schedule.SeasonNumber,
+			Schedule.GameNumber,
+			Schedule.TipoffUnixSeconds,
+			true,
+			Lock,
+			Error),
+		EOddsWellMatchWinnerLockResult::Locked);
+	TArray<uint8> LockedBytes;
+	ReadLedgerBytes(TEXT("H26F downstream bytes read"), LockedBytes);
+	TestEqual(
+		TEXT("H26F authoritative downstream evidence rejects pending receipt"),
+		LoadPendingReceipt(
+			Schedule,
+			Commitment,
+			CanonicalRequestQaOfferSlot,
+			2200000200,
+			true,
+			Receipt,
+			Error),
+		EOddsWellCanonicalPendingReceiptResult::Rejected);
+	TestBytesUnchanged(TEXT("H26F downstream rejection"), LockedBytes);
+	RestoreExactState();
+
+	TestTrue(
+		TEXT("H26F exact state resets for missing-request proof"),
+		ResetOddsWellQaOddsBucksAndVerify(Error));
+	TestTrue(
+		TEXT("H26F valid funded no-request state persists"),
+		SaveOddsWellOddsBucksLedger(
+			Funded,
+			2200086400,
+			true,
+			Error));
+	TArray<uint8> MissingBytes;
+	ReadLedgerBytes(TEXT("H26F no-request bytes read"), MissingBytes);
+	TestEqual(
+		TEXT("H26F valid no-request state preserves the H26D offer path"),
+		LoadPendingReceipt(
+			Schedule,
+			Commitment,
+			CanonicalRequestQaOfferSlot,
+			2200000200,
+			true,
+			Receipt,
+			Error),
+		EOddsWellCanonicalPendingReceiptResult::Missing);
+	TestTrue(TEXT("H26F missing state exposes no receipt"), Receipt.RequestId.IsEmpty() && Receipt.Stake == 0);
+	TestBytesUnchanged(TEXT("H26F no-request read"), MissingBytes);
+
+	TestTrue(
+		TEXT("H26F no-request state resets for old QA rejection"),
+		ResetOddsWellQaOddsBucksAndVerify(Error));
+	TestTrue(
+		TEXT("H26F old QA funded state persists"),
+		SaveOddsWellOddsBucksLedger(
+			Funded,
+			GetOddsWellUpcomingQaMatchWinnerLockUnixSeconds(),
+			true,
+			Error));
+	FOddsWellMatchWinnerOffer OldQaOffer;
+	TestTrue(
+		TEXT("H26F old QA offer builds"),
+		BuildOddsWellUpcomingQaMatchWinnerOffer(
+			OldQaOffer,
+			Error));
+	FOddsWellMatchWinnerRequestRecord OldQaRequest;
+	TestEqual(
+		TEXT("H26F old QA request fixture accepts"),
+		AcceptOddsWellUpcomingQaMatchWinnerRequest(
+			OldQaOffer,
+			GetOddsWellUpcomingQaMatchWinnerRequestCommandId(),
+			OldQaOffer.HomeTeam,
+			40,
+			GetOddsWellUpcomingQaMatchWinnerAcceptedUnixSeconds(),
+			OldQaRequest,
+			Balance,
+			Error),
+		EOddsWellMatchWinnerRequestResult::Accepted);
+	TArray<uint8> OldQaBytes;
+	ReadLedgerBytes(TEXT("H26F old QA bytes read"), OldQaBytes);
+	TestEqual(
+		TEXT("H26F old QA request cannot masquerade as canonical"),
+		LoadPendingReceipt(
+			Schedule,
+			Commitment,
+			CanonicalRequestQaOfferSlot,
+			2200000200,
+			true,
+			Receipt,
+			Error),
+		EOddsWellCanonicalPendingReceiptResult::Rejected);
+	TestBytesUnchanged(TEXT("H26F old QA rejection"), OldQaBytes);
+
+	TestTrue(
+		TEXT("H26F QA ledger cleanup succeeds"),
+		ResetOddsWellQaOddsBucksAndVerify(Error));
+	TestTrue(
+		TEXT("H26F offer fixture cleanup succeeds"),
 		UGameplayStatics::DeleteGameInSlot(
 			CanonicalRequestQaOfferSlot,
 			CanonicalOfferUserIndex));

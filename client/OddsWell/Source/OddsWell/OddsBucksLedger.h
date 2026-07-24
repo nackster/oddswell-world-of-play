@@ -232,6 +232,28 @@ struct FOddsWellPendingQaMatchWinnerReceipt
 	int64 CurrentBalance = 0;
 };
 
+enum class EOddsWellCanonicalPendingReceiptResult : uint8
+{
+	Missing,
+	Ready,
+	Rejected
+};
+
+struct FOddsWellCanonicalPendingMatchWinnerReceipt
+{
+	FString RequestId;
+	FString OfferId;
+	FString SelectedTeam;
+	int64 SelectedWinProbabilityE8 = 0;
+	int64 SelectedDecimalOddsE4 = 0;
+	int64 Stake = 0;
+	int64 GrossReturn = 0;
+	int64 AcceptedUnixSeconds = 0;
+	int64 LockUnixSeconds = 0;
+	FName Status;
+	int64 CurrentBalance = 0;
+};
+
 USTRUCT()
 struct FOddsWellMatchWinnerLockRecord
 {
@@ -737,6 +759,13 @@ ODDSWELL_API bool RunOddsWellUpcomingQaMatchWinnerVoidDecisionAudit(int32& OutLe
 ODDSWELL_API EOddsWellMatchWinnerVoidFinalizationResult FinalizeOddsWellUpcomingQaMatchWinnerVoidRefund(FOddsWellMatchWinnerVoidFinalizationRecord& OutRecord, FString& OutError);
 ODDSWELL_API bool RunOddsWellUpcomingQaMatchWinnerVoidFinalizationAudit(int32& OutLedgerEntries, int32& OutRequests, int32& OutLocks, int32& OutCancellations, int32& OutVoidDecisions, int32& OutVoidFinalizations, int64& OutBalance, FString& OutError);
 ODDSWELL_API bool LoadOddsWellPendingQaMatchWinnerReceipt(FOddsWellPendingQaMatchWinnerReceipt& OutReceipt, FString& OutError);
+ODDSWELL_API EOddsWellCanonicalPendingReceiptResult LoadOddsWellCanonicalPendingMatchWinnerReceiptEvidence(
+	const FOddsWellMatchWinnerOffer& ExactOffer,
+	int64 OfferEligibleUnixSeconds,
+	int64 ObservedServerUnixSeconds,
+	bool bQaSlot,
+	FOddsWellCanonicalPendingMatchWinnerReceipt& OutReceipt,
+	FString& OutError);
 ODDSWELL_API bool WriteOddsWellOddsBucksReconciliation(const FOddsWellOddsBucksLedger& Ledger, int64 NextJobPayoutUnixSeconds, int64 ObservedNowUnixSeconds, bool bQaProjection, FString& OutPath, FString& OutError);
 ODDSWELL_API bool SaveOddsWellOddsBucksLedger(const FOddsWellOddsBucksLedger& Ledger, int64 NextJobPayoutUnixSeconds, bool bQaSlot, FString& OutError);
 ODDSWELL_API bool LoadOddsWellOddsBucksLedger(bool bQaSlot, FOddsWellOddsBucksLedger& OutLedger, int64& OutNextJobPayoutUnixSeconds, bool& bOutFound, FString& OutError);
