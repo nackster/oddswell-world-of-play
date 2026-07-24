@@ -9,6 +9,7 @@
 #include "Components/SkeletalMeshComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "Components/TextRenderComponent.h"
+#include "Engine/Canvas.h"
 #include "Engine/StaticMesh.h"
 #include "Engine/StaticMeshActor.h"
 #include "Engine/TextRenderActor.h"
@@ -79,6 +80,7 @@ const FVector JobInteractionLocation(9500.0, 0.0, 0.0);
 const FVector StadiumEntranceThreshold(7000.0, 18000.0, 0.0);
 const FVector SportsbookInteractionLocation(1000.0, 18000.0, 0.0);
 const TCHAR* TicketBoothOpenPrompt = TEXT("Press E to open betting odds");
+constexpr int32 TicketBoothMarketPageCount = 4;
 FVector StadiumCityReturnLocation = StadiumEntranceThreshold + FVector(0.0, -100.0, SafeSpawnLocation.Z);
 const FVector StadiumInteriorSpawn(-1600.0, 0.0, 220.0);
 const FVector StadiumReplayOrigin(350.0, 0.0, 0.0);
@@ -87,29 +89,15 @@ constexpr int64 JobRecoveryQaStartUnixSeconds = 2000000000;
 int32 StudioQaProcessStage = 0;
 int32 StadiumQaProcessStage = 0;
 
-FString BuildTicketBoothOddsText(const FOddsWellMatchWinnerOfferPreview& Preview)
+const TArray<FString>& GetTicketBoothMarketLabels()
 {
-	if (Preview.Selections.Num() != 2)
-	{
-		return TEXT("BASKETBALL ODDS UNAVAILABLE");
-	}
-	return FString::Printf(
-		TEXT("STADIUM TICKET BOOTH\n\n")
-		TEXT("BASKETBALL ODDS\n")
-		TEXT("%s  vs  %s\n\n")
-		TEXT("%s   %.4fx\n")
-		TEXT("%s   %.4fx\n\n")
-		TEXT("STAKE: %lld-%lld ODDS BUCKS\n")
-		TEXT("BETS LOCK AT GAME START\n\n")
-		TEXT("VIEW ONLY FOR THIS GAME\n[E] CLOSE"),
-		*Preview.AwayTeam,
-		*Preview.HomeTeam,
-		*Preview.Selections[0].Team,
-		static_cast<double>(Preview.Selections[0].DecimalOddsE4) / 10000.0,
-		*Preview.Selections[1].Team,
-		static_cast<double>(Preview.Selections[1].DecimalOddsE4) / 10000.0,
-		Preview.MinimumStake,
-		Preview.MaximumStake);
+	static const TArray<FString> Labels = {
+		TEXT("GAME LINES"),
+		TEXT("MARGIN"),
+		TEXT("OVERTIME"),
+		TEXT("PLAYER PROPS"),
+	};
+	return Labels;
 }
 
 struct FStudioSurfaceSpec
@@ -245,12 +233,18 @@ const FKey KeyLeagueNext = EKeys::Period;
 const FKey KeyStakeDecrease = EKeys::Hyphen;
 const FKey KeyStakeIncrease = EKeys::Equals;
 const FKey KeyConfirm = EKeys::Enter;
+const FKey KeyMarketPrevious = EKeys::Left;
+const FKey KeyMarketNext = EKeys::Right;
+const FKey KeyMenuClose = EKeys::Escape;
 const FKey KeyControllerMoveX = EKeys::Gamepad_LeftX;
 const FKey KeyControllerMoveY = EKeys::Gamepad_LeftY;
 const FKey KeyControllerLookX = EKeys::Gamepad_RightX;
 const FKey KeyControllerLookY = EKeys::Gamepad_RightY;
 const FKey KeyControllerRun = EKeys::Gamepad_LeftThumbstick;
 const FKey KeyControllerJump = EKeys::Gamepad_FaceButton_Bottom;
+const FKey KeyControllerMarketPrevious = EKeys::Gamepad_LeftShoulder;
+const FKey KeyControllerMarketNext = EKeys::Gamepad_RightShoulder;
+const FKey KeyControllerMenuClose = EKeys::Gamepad_FaceButton_Right;
 }
 
 bool FOddsWellStarterOutfitState::Equip(const FName ItemId, const EOddsWellStarterEquipmentSlot Slot, FString& OutError)
@@ -686,6 +680,9 @@ void AOddsWellPlaceholderCharacter::SetupPlayerInputComponent(UInputComponent* P
 	PlayerInputComponent->BindKey(KeyStakeDecrease, IE_Pressed, this, &AOddsWellPlaceholderCharacter::DecreaseSportsbookQaStake);
 	PlayerInputComponent->BindKey(KeyStakeIncrease, IE_Pressed, this, &AOddsWellPlaceholderCharacter::IncreaseSportsbookQaStake);
 	PlayerInputComponent->BindKey(KeyConfirm, IE_Pressed, this, &AOddsWellPlaceholderCharacter::ConfirmSportsbookQaWager);
+	PlayerInputComponent->BindKey(KeyMarketPrevious, IE_Pressed, this, &AOddsWellPlaceholderCharacter::PreviousSportsbookMarketPage);
+	PlayerInputComponent->BindKey(KeyMarketNext, IE_Pressed, this, &AOddsWellPlaceholderCharacter::NextSportsbookMarketPage);
+	PlayerInputComponent->BindKey(KeyMenuClose, IE_Pressed, this, &AOddsWellPlaceholderCharacter::CloseTicketBoothMenu);
 
 	PlayerInputComponent->BindAxisKey(KeyControllerMoveY, this, &AOddsWellPlaceholderCharacter::MoveForward);
 	PlayerInputComponent->BindAxisKey(KeyControllerMoveX, this, &AOddsWellPlaceholderCharacter::MoveRight);
@@ -695,6 +692,9 @@ void AOddsWellPlaceholderCharacter::SetupPlayerInputComponent(UInputComponent* P
 	PlayerInputComponent->BindKey(KeyControllerRun, IE_Released, this, &AOddsWellPlaceholderCharacter::StopRun);
 	PlayerInputComponent->BindKey(KeyControllerJump, IE_Pressed, this, &AOddsWellPlaceholderCharacter::StartJump);
 	PlayerInputComponent->BindKey(KeyControllerJump, IE_Released, this, &AOddsWellPlaceholderCharacter::StopJump);
+	PlayerInputComponent->BindKey(KeyControllerMarketPrevious, IE_Pressed, this, &AOddsWellPlaceholderCharacter::PreviousSportsbookMarketPage);
+	PlayerInputComponent->BindKey(KeyControllerMarketNext, IE_Pressed, this, &AOddsWellPlaceholderCharacter::NextSportsbookMarketPage);
+	PlayerInputComponent->BindKey(KeyControllerMenuClose, IE_Pressed, this, &AOddsWellPlaceholderCharacter::CloseTicketBoothMenu);
 }
 
 void AOddsWellPlaceholderCharacter::ToggleLeagueView()
@@ -705,8 +705,7 @@ void AOddsWellPlaceholderCharacter::ToggleLeagueView()
 	}
 	if (!bPublicLeagueVisible && bSportsbookOfferVisible)
 	{
-		bSportsbookOfferVisible = false;
-		ShowSportsbookOfferPreview();
+		CloseTicketBoothMenu();
 	}
 	bPublicLeagueVisible = !bPublicLeagueVisible;
 	ShowLeaguePage();
@@ -760,6 +759,11 @@ void AOddsWellPlaceholderCharacter::ToggleSportsbookOfferPreview()
 		ShowLeaguePage();
 	}
 	bSportsbookOfferVisible = !bSportsbookOfferVisible;
+	if (bSportsbookOfferVisible)
+	{
+		SportsbookMarketPage = 0;
+	}
+	SetTicketBoothInputMode(bSportsbookOfferVisible);
 	ShowSportsbookOfferPreview();
 }
 
@@ -770,13 +774,67 @@ void AOddsWellPlaceholderCharacter::ShowSportsbookOfferPreview()
 		return;
 	}
 	GEngine->RemoveOnScreenDebugMessage(912017);
-	if (bSportsbookOfferVisible && SportsbookOfferPreview)
+}
+
+bool AOddsWellPlaceholderCharacter::IsTicketBoothPromptVisible() const
+{
+	return bAtSportsbookInteraction
+		&& !bSportsbookOfferVisible
+		&& SportsbookOfferPreview
+		&& !bSportsbookWagerQaMode
+		&& !bSportsbookReceiptQaMode;
+}
+
+void AOddsWellPlaceholderCharacter::SetTicketBoothMarketPage(const int32 Page)
+{
+	if (!IsTicketBoothMenuVisible())
 	{
-		GEngine->AddOnScreenDebugMessage(
-			912017,
-			3600.0f,
-			FColor::Yellow,
-			BuildTicketBoothOddsText(*SportsbookOfferPreview));
+		return;
+	}
+	SportsbookMarketPage = (Page % TicketBoothMarketPageCount + TicketBoothMarketPageCount) % TicketBoothMarketPageCount;
+}
+
+void AOddsWellPlaceholderCharacter::PreviousSportsbookMarketPage()
+{
+	SetTicketBoothMarketPage(SportsbookMarketPage - 1);
+}
+
+void AOddsWellPlaceholderCharacter::NextSportsbookMarketPage()
+{
+	SetTicketBoothMarketPage(SportsbookMarketPage + 1);
+}
+
+void AOddsWellPlaceholderCharacter::CloseTicketBoothMenu()
+{
+	if (!bSportsbookOfferVisible)
+	{
+		return;
+	}
+	bSportsbookOfferVisible = false;
+	SetTicketBoothInputMode(false);
+	ShowSportsbookOfferPreview();
+}
+
+void AOddsWellPlaceholderCharacter::SetTicketBoothInputMode(const bool bMenuOpen)
+{
+	APlayerController* PlayerController = Cast<APlayerController>(Controller);
+	if (!PlayerController || !IsLocallyControlled())
+	{
+		return;
+	}
+	PlayerController->SetIgnoreMoveInput(bMenuOpen);
+	PlayerController->SetIgnoreLookInput(bMenuOpen);
+	PlayerController->bShowMouseCursor = bMenuOpen;
+	PlayerController->bEnableClickEvents = bMenuOpen;
+	if (bMenuOpen)
+	{
+		FInputModeGameAndUI InputMode;
+		InputMode.SetHideCursorDuringCapture(false);
+		PlayerController->SetInputMode(InputMode);
+	}
+	else
+	{
+		PlayerController->SetInputMode(FInputModeGameOnly());
 	}
 }
 
@@ -1504,13 +1562,13 @@ void AOddsWellPlaceholderCharacter::PollSportsbookInteraction()
 		return;
 	}
 	const bool bAtSportsbook = FVector::Dist2D(GetActorLocation(), SportsbookInteractionLocation) <= SportsbookInteractionRadius;
+	bAtSportsbookInteraction = bAtSportsbook;
 	if (!bAtSportsbook)
 	{
 		bSportsbookInteractionArmed = false;
 		if (bSportsbookOfferVisible)
 		{
-			bSportsbookOfferVisible = false;
-			ShowSportsbookOfferPreview();
+			CloseTicketBoothMenu();
 		}
 		if (bSportsbookQaWagerVisible)
 		{
@@ -1555,14 +1613,6 @@ void AOddsWellPlaceholderCharacter::PollSportsbookInteraction()
 		else
 		{
 			GEngine->RemoveOnScreenDebugMessage(912018);
-			if (!bSportsbookOfferVisible)
-			{
-				GEngine->AddOnScreenDebugMessage(
-					912018,
-					0.0f,
-					SportsbookOfferPreview ? FColor::Yellow : FColor::Red,
-					SportsbookOfferPreview ? TicketBoothOpenPrompt : TEXT("Betting odds unavailable"));
-			}
 		}
 	}
 	if (bSportsbookOfferQa
@@ -2937,10 +2987,269 @@ void AOddsWellPlaceholderCharacter::FinishSundaleRouteQa(const bool bPassed)
 	}
 }
 
+AOddsWellPlaceholderCharacter* AOddsWellSportsbookHUD::GetOddsWellCharacter() const
+{
+	const APlayerController* PlayerController = GetOwningPlayerController();
+	return PlayerController ? Cast<AOddsWellPlaceholderCharacter>(PlayerController->GetPawn()) : nullptr;
+}
+
+void AOddsWellSportsbookHUD::DrawHUD()
+{
+	Super::DrawHUD();
+	if (!Canvas)
+	{
+		return;
+	}
+	AOddsWellPlaceholderCharacter* Character = GetOddsWellCharacter();
+	if (!Character)
+	{
+		return;
+	}
+	if (Character->IsTicketBoothMenuVisible())
+	{
+		if (const FOddsWellMatchWinnerOfferPreview* Offer = Character->GetTicketBoothOffer())
+		{
+			DrawTicketBoothMenu(*Character, *Offer);
+		}
+	}
+	else if (Character->IsTicketBoothPromptVisible())
+	{
+		DrawTicketBoothPrompt();
+	}
+}
+
+void AOddsWellSportsbookHUD::DrawTicketBoothPrompt()
+{
+	const float Width = FMath::Min(430.0f, Canvas->SizeX - 32.0f);
+	const float Height = 58.0f;
+	const float X = (Canvas->SizeX - Width) * 0.5f;
+	const float Y = Canvas->SizeY - Height - 42.0f;
+	DrawRect(FLinearColor(0.025f, 0.055f, 0.08f, 0.94f), X, Y, Width, Height);
+	DrawRect(FLinearColor(0.20f, 0.75f, 0.68f, 1.0f), X, Y, 6.0f, Height);
+	DrawText(TicketBoothOpenPrompt, FLinearColor::White, X + 28.0f, Y + 17.0f, nullptr, 1.35f);
+}
+
+void AOddsWellSportsbookHUD::DrawMarketCard(
+	const FString& Title,
+	const FString& Subtitle,
+	const float X,
+	const float Y,
+	const float Width,
+	const float Height,
+	const bool bAvailable)
+{
+	const FLinearColor Card = bAvailable
+		? FLinearColor(0.075f, 0.18f, 0.22f, 1.0f)
+		: FLinearColor(0.085f, 0.10f, 0.13f, 1.0f);
+	const FLinearColor Accent = bAvailable
+		? FLinearColor(0.20f, 0.75f, 0.68f, 1.0f)
+		: FLinearColor(0.42f, 0.46f, 0.50f, 1.0f);
+	DrawRect(Card, X, Y, Width, Height);
+	DrawRect(Accent, X, Y, 5.0f, Height);
+	DrawText(Title, FLinearColor::White, X + 20.0f, Y + 16.0f, nullptr, 1.20f);
+	DrawText(Subtitle, bAvailable ? FLinearColor(0.96f, 0.78f, 0.30f) : FLinearColor(0.70f, 0.73f, 0.76f), X + 20.0f, Y + 49.0f, nullptr, 1.05f);
+	DrawText(
+		bAvailable ? TEXT("ACTIVE MARKET") : TEXT("LOCKED - ODDS NOT PUBLISHED"),
+		Accent,
+		X + 20.0f,
+		Y + Height - 30.0f,
+		nullptr,
+		0.85f);
+}
+
+void AOddsWellSportsbookHUD::DrawTicketBoothMenu(
+	const AOddsWellPlaceholderCharacter& Character,
+	const FOddsWellMatchWinnerOfferPreview& Offer)
+{
+	const float Margin = 28.0f;
+	const float X = Margin;
+	const float Y = Margin;
+	const float Width = Canvas->SizeX - Margin * 2.0f;
+	const float Height = Canvas->SizeY - Margin * 2.0f;
+	const float HeaderHeight = 86.0f;
+	const float TabHeight = 54.0f;
+	const float ContentY = Y + HeaderHeight + TabHeight + 18.0f;
+	const float ContentHeight = Height - HeaderHeight - TabHeight - 38.0f;
+	const float SlipWidth = FMath::Clamp(Width * 0.29f, 300.0f, 390.0f);
+	const float Gap = 18.0f;
+	const float MarketWidth = Width - SlipWidth - Gap - 36.0f;
+	const float MarketX = X + 18.0f;
+	const float SlipX = MarketX + MarketWidth + Gap;
+	const FLinearColor Navy(0.025f, 0.055f, 0.08f, 0.985f);
+	const FLinearColor Panel(0.055f, 0.085f, 0.11f, 1.0f);
+	const FLinearColor Teal(0.20f, 0.75f, 0.68f, 1.0f);
+	const FLinearColor Gold(0.96f, 0.78f, 0.30f, 1.0f);
+	const FLinearColor Muted(0.70f, 0.73f, 0.76f, 1.0f);
+
+	DrawRect(FLinearColor(0.0f, 0.0f, 0.0f, 0.62f), 0.0f, 0.0f, Canvas->SizeX, Canvas->SizeY);
+	DrawRect(Navy, X, Y, Width, Height);
+	DrawRect(Teal, X, Y, Width, 5.0f);
+	DrawText(TEXT("STADIUM TICKET BOOTH"), FLinearColor::White, X + 24.0f, Y + 20.0f, nullptr, 1.55f);
+	DrawText(
+		FString::Printf(TEXT("BASKETBALL  |  PRE-GAME  |  %s at %s"), *Offer.AwayTeam, *Offer.HomeTeam),
+		Muted,
+		X + 24.0f,
+		Y + 54.0f,
+		nullptr,
+		0.95f);
+
+	const float CloseWidth = 92.0f;
+	const float CloseX = X + Width - CloseWidth - 18.0f;
+	const float CloseY = Y + 18.0f;
+	DrawRect(FLinearColor(0.16f, 0.19f, 0.22f, 1.0f), CloseX, CloseY, CloseWidth, 38.0f);
+	DrawText(TEXT("X  CLOSE"), FLinearColor::White, CloseX + 13.0f, CloseY + 10.0f, nullptr, 0.90f);
+	AddHitBox(FVector2D(CloseX, CloseY), FVector2D(CloseWidth, 38.0f), TEXT("TicketBoothClose"), true, 20);
+
+	const TArray<FString>& Labels = GetTicketBoothMarketLabels();
+	const float TabY = Y + HeaderHeight;
+	const float TabWidth = Width / Labels.Num();
+	for (int32 Index = 0; Index < Labels.Num(); ++Index)
+	{
+		const float TabX = X + TabWidth * Index;
+		const bool bActive = Index == Character.GetTicketBoothMarketPage();
+		DrawRect(bActive ? FLinearColor(0.10f, 0.34f, 0.34f, 1.0f) : Panel, TabX, TabY, TabWidth - 2.0f, TabHeight);
+		if (bActive)
+		{
+			DrawRect(Gold, TabX, TabY + TabHeight - 5.0f, TabWidth - 2.0f, 5.0f);
+		}
+		DrawText(
+			bActive ? FString::Printf(TEXT("%s  ACTIVE"), *Labels[Index]) : Labels[Index],
+			bActive ? FLinearColor::White : Muted,
+			TabX + 15.0f,
+			TabY + 18.0f,
+			nullptr,
+			0.90f);
+		AddHitBox(
+			FVector2D(TabX, TabY),
+			FVector2D(TabWidth - 2.0f, TabHeight),
+			FName(*FString::Printf(TEXT("TicketBoothTab%d"), Index)),
+			true,
+			10);
+	}
+
+	DrawRect(Panel, MarketX, ContentY, MarketWidth, ContentHeight);
+	const float InnerX = MarketX + 20.0f;
+	const float InnerWidth = MarketWidth - 40.0f;
+	const int32 Page = Character.GetTicketBoothMarketPage();
+	DrawText(Labels[Page], FLinearColor::White, InnerX, ContentY + 18.0f, nullptr, 1.35f);
+
+	if (Page == 0 && Offer.Selections.Num() == 2)
+	{
+		DrawText(TEXT("MATCH WINNER  |  DECIMAL ODDS"), Muted, InnerX, ContentY + 53.0f, nullptr, 0.95f);
+		const float CardY = ContentY + 88.0f;
+		const float CardGap = 14.0f;
+		const float CardWidth = (InnerWidth - CardGap) * 0.5f;
+		for (int32 Index = 0; Index < Offer.Selections.Num(); ++Index)
+		{
+			const FOddsWellMatchWinnerSelectionPreview& Selection = Offer.Selections[Index];
+			const FString Odds = FString::Printf(
+				TEXT("%.4f DECIMAL"),
+				static_cast<double>(Selection.DecimalOddsE4) / 10000.0);
+			DrawMarketCard(
+				Selection.Team,
+				Odds,
+				InnerX + Index * (CardWidth + CardGap),
+				CardY,
+				CardWidth,
+				134.0f,
+				true);
+		}
+		DrawText(TEXT("Example gross return"), Muted, InnerX, CardY + 160.0f, nullptr, 0.95f);
+		DrawText(
+			FString::Printf(
+				TEXT("%lld Odds Bucks returns %lld or %lld, based on your selection"),
+				Offer.MinimumStake,
+				Offer.Selections[0].MinimumStakeGrossReturn,
+				Offer.Selections[1].MinimumStakeGrossReturn),
+			FLinearColor::White,
+			InnerX,
+			CardY + 190.0f,
+			nullptr,
+			1.0f);
+	}
+	else if (Page == 1)
+	{
+		DrawText(TEXT("FUTURE SCORE-MARGIN MARKETS"), Muted, InnerX, ContentY + 53.0f, nullptr, 0.95f);
+		const float CardWidth = (InnerWidth - 28.0f) / 3.0f;
+		DrawMarketCard(TEXT("WIN BY 1-5"), TEXT("Either team"), InnerX, ContentY + 88.0f, CardWidth, 134.0f, false);
+		DrawMarketCard(TEXT("WIN BY 6-10"), TEXT("Either team"), InnerX + CardWidth + 14.0f, ContentY + 88.0f, CardWidth, 134.0f, false);
+		DrawMarketCard(TEXT("WIN BY 11+"), TEXT("Either team"), InnerX + (CardWidth + 14.0f) * 2.0f, ContentY + 88.0f, CardWidth, 134.0f, false);
+	}
+	else if (Page == 2)
+	{
+		DrawText(TEXT("FUTURE GAME OUTCOME MARKET"), Muted, InnerX, ContentY + 53.0f, nullptr, 0.95f);
+		const float CardWidth = (InnerWidth - 14.0f) * 0.5f;
+		DrawMarketCard(TEXT("OVERTIME - YES"), TEXT("Game reaches overtime"), InnerX, ContentY + 88.0f, CardWidth, 134.0f, false);
+		DrawMarketCard(TEXT("OVERTIME - NO"), TEXT("Game ends in regulation"), InnerX + CardWidth + 14.0f, ContentY + 88.0f, CardWidth, 134.0f, false);
+	}
+	else
+	{
+		DrawText(TEXT("FUTURE ATHLETE MARKETS"), Muted, InnerX, ContentY + 53.0f, nullptr, 0.95f);
+		const float CardWidth = (InnerWidth - 28.0f) / 3.0f;
+		DrawMarketCard(TEXT("POINTS"), TEXT("Over / under"), InnerX, ContentY + 88.0f, CardWidth, 134.0f, false);
+		DrawMarketCard(TEXT("REBOUNDS"), TEXT("Over / under"), InnerX + CardWidth + 14.0f, ContentY + 88.0f, CardWidth, 134.0f, false);
+		DrawMarketCard(TEXT("PERSONAL FOULS"), TEXT("Over / under"), InnerX + (CardWidth + 14.0f) * 2.0f, ContentY + 88.0f, CardWidth, 134.0f, false);
+	}
+
+	DrawText(
+		Page == 0
+			? TEXT("Only validated Match Winner odds are published.")
+			: TEXT("This category stays locked until its event and settlement proof passes."),
+		Page == 0 ? Teal : Gold,
+		InnerX,
+		ContentY + ContentHeight - 46.0f,
+		nullptr,
+		0.95f);
+
+	DrawRect(FLinearColor(0.96f, 0.94f, 0.87f, 1.0f), SlipX, ContentY, SlipWidth, ContentHeight);
+	DrawText(TEXT("BET SLIP"), FLinearColor(0.025f, 0.055f, 0.08f), SlipX + 20.0f, ContentY + 20.0f, nullptr, 1.35f);
+	DrawText(TEXT("READ-ONLY PREVIEW"), FLinearColor(0.08f, 0.45f, 0.42f), SlipX + 20.0f, ContentY + 55.0f, nullptr, 0.92f);
+	DrawRect(FLinearColor(0.84f, 0.82f, 0.76f, 1.0f), SlipX + 20.0f, ContentY + 92.0f, SlipWidth - 40.0f, 2.0f);
+	DrawText(TEXT("SELECTION"), FLinearColor(0.32f, 0.34f, 0.36f), SlipX + 20.0f, ContentY + 116.0f, nullptr, 0.82f);
+	DrawText(TEXT("No wager selected"), FLinearColor(0.025f, 0.055f, 0.08f), SlipX + 20.0f, ContentY + 145.0f, nullptr, 1.05f);
+	DrawText(TEXT("STAKE RANGE"), FLinearColor(0.32f, 0.34f, 0.36f), SlipX + 20.0f, ContentY + 194.0f, nullptr, 0.82f);
+	DrawText(
+		FString::Printf(TEXT("%lld-%lld Odds Bucks"), Offer.MinimumStake, Offer.MaximumStake),
+		FLinearColor(0.025f, 0.055f, 0.08f),
+		SlipX + 20.0f,
+		ContentY + 223.0f,
+		nullptr,
+		1.05f);
+	DrawText(TEXT("DECIMAL RETURN"), FLinearColor(0.32f, 0.34f, 0.36f), SlipX + 20.0f, ContentY + 272.0f, nullptr, 0.82f);
+	DrawText(TEXT("stake x displayed odds"), FLinearColor(0.025f, 0.055f, 0.08f), SlipX + 20.0f, ContentY + 301.0f, nullptr, 1.0f);
+	DrawText(TEXT("Bets lock at game start."), FLinearColor(0.55f, 0.22f, 0.12f), SlipX + 20.0f, ContentY + ContentHeight - 116.0f, nullptr, 0.92f);
+	DrawText(TEXT("Odds Bucks only. No real money."), FLinearColor(0.55f, 0.22f, 0.12f), SlipX + 20.0f, ContentY + ContentHeight - 85.0f, nullptr, 0.92f);
+	DrawText(TEXT("LEFT / RIGHT: MARKET    E or ESC: CLOSE"), FLinearColor(0.32f, 0.34f, 0.36f), SlipX + 20.0f, ContentY + ContentHeight - 43.0f, nullptr, 0.78f);
+}
+
+void AOddsWellSportsbookHUD::NotifyHitBoxClick(const FName BoxName)
+{
+	Super::NotifyHitBoxClick(BoxName);
+	AOddsWellPlaceholderCharacter* Character = GetOddsWellCharacter();
+	if (!Character)
+	{
+		return;
+	}
+	if (BoxName == TEXT("TicketBoothClose"))
+	{
+		Character->CloseTicketBoothMenu();
+		return;
+	}
+	for (int32 Index = 0; Index < TicketBoothMarketPageCount; ++Index)
+	{
+		if (BoxName == FName(*FString::Printf(TEXT("TicketBoothTab%d"), Index)))
+		{
+			Character->SetTicketBoothMarketPage(Index);
+			return;
+		}
+	}
+}
+
 AOddsWellLocomotionGameMode::AOddsWellLocomotionGameMode()
 {
 	PrimaryActorTick.bCanEverTick = true;
 	DefaultPawnClass = AOddsWellPlaceholderCharacter::StaticClass();
+	HUDClass = AOddsWellSportsbookHUD::StaticClass();
 	bSharedCityQa = FParse::Param(FCommandLine::Get(), TEXT("SharedCityQa"));
 	bSharedCityReconnectQa = FParse::Param(FCommandLine::Get(), TEXT("SharedCityReconnectQa"));
 	bSharedCityCapacityQa = FParse::Param(FCommandLine::Get(), TEXT("SharedCityCapacityQa"));
@@ -4039,12 +4348,13 @@ bool FOddsWellStadiumGrayboxTest::RunTest(const FString& Parameters)
 	FOddsWellMatchWinnerOfferPreview TicketBoothOffer;
 	FString TicketBoothError;
 	TestTrue(TEXT("Ticket booth can load the validated public odds"), LoadOddsWellMatchWinnerOfferPreview(TicketBoothOffer, TicketBoothError));
-	const FString TicketBoothText = BuildTicketBoothOddsText(TicketBoothOffer);
-	TestTrue(TEXT("Ticket booth view names basketball odds"), TicketBoothText.Contains(TEXT("BASKETBALL ODDS")));
-	TestTrue(TEXT("Ticket booth view shows both teams"), TicketBoothText.Contains(TicketBoothOffer.HomeTeam) && TicketBoothText.Contains(TicketBoothOffer.AwayTeam));
-	TestFalse(TEXT("Ticket booth hides technical offer identity"), TicketBoothText.Contains(TEXT("OFFER ID")));
-	TestFalse(TEXT("Ticket booth hides source commitments"), TicketBoothText.Contains(TEXT("COMMITMENT")));
-	TestFalse(TEXT("Ticket booth hides Unix timestamps"), TicketBoothText.Contains(TEXT("UNIX")));
+	const TArray<FString>& MarketLabels = GetTicketBoothMarketLabels();
+	TestEqual(TEXT("Ticket booth exposes four concise basketball market tabs"), MarketLabels.Num(), TicketBoothMarketPageCount);
+	TestEqual(TEXT("Validated Match Winner offer owns the Game Lines tab"), MarketLabels[0], FString(TEXT("GAME LINES")));
+	TestTrue(TEXT("Future score-margin category is visible"), MarketLabels.Contains(TEXT("MARGIN")));
+	TestTrue(TEXT("Future overtime category is visible"), MarketLabels.Contains(TEXT("OVERTIME")));
+	TestTrue(TEXT("Future athlete category is visible"), MarketLabels.Contains(TEXT("PLAYER PROPS")));
+	TestEqual(TEXT("Only the validated market currently publishes two selections"), TicketBoothOffer.Selections.Num(), 2);
 	TestTrue(TEXT("Stadium entry radius exceeds the player capsule"), StadiumEntryRadius > CapsuleRadius);
 	TestTrue(TEXT("Archived replay consumer stays compact inside the stadium"), StadiumReplayScale > 0.0f && StadiumReplayScale <= 0.25f);
 	TestTrue(TEXT("Archived replay consumer is anchored on the court"), StadiumReplayOrigin.Equals(FVector(350.0, 0.0, 0.0)));
@@ -4109,6 +4419,8 @@ bool FOddsWellLocomotionDefaultsTest::RunTest(const FString& Parameters)
 	TestFalse(TEXT("Keyboard jump route is not a gamepad key"), KeyJump.IsGamepadKey());
 	TestTrue(TEXT("Controller run route is present"), KeyControllerRun.IsGamepadKey());
 	TestTrue(TEXT("Controller jump route is present"), KeyControllerJump.IsGamepadKey());
+	TestTrue(TEXT("Controller market navigation routes are present"), KeyControllerMarketPrevious.IsGamepadKey() && KeyControllerMarketNext.IsGamepadKey());
+	TestTrue(TEXT("Controller ticket booth close route is present"), KeyControllerMenuClose.IsGamepadKey());
 
 	TestFalse(TEXT("Crouch is not supported"), AllowCrouch);
 	TestFalse(TEXT("Flight is not supported"), AllowFlight);

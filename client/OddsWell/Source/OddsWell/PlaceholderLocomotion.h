@@ -4,6 +4,7 @@
 #include "CharacterPresetCatalog.h"
 #include "GameFramework/Character.h"
 #include "GameFramework/GameModeBase.h"
+#include "GameFramework/HUD.h"
 #include "OddsBucksLedger.h"
 #include "PublicLeagueView.h"
 #include "PlaceholderLocomotion.generated.h"
@@ -65,6 +66,12 @@ public:
 	const FOddsWellSharedCityAppearance& GetSharedCityAppearance() const { return SharedCityAppearance; }
 	bool HasValidSharedCityAppearance() const;
 	bool HasSubmittedSharedCityAppearance() const { return SharedCityAppearance.bOwnerSubmitted; }
+	bool IsTicketBoothPromptVisible() const;
+	bool IsTicketBoothMenuVisible() const { return bSportsbookOfferVisible && SportsbookOfferPreview.IsValid(); }
+	int32 GetTicketBoothMarketPage() const { return SportsbookMarketPage; }
+	const FOddsWellMatchWinnerOfferPreview* GetTicketBoothOffer() const { return SportsbookOfferPreview.Get(); }
+	void SetTicketBoothMarketPage(int32 Page);
+	void CloseTicketBoothMenu();
 
 protected:
 	virtual void BeginPlay() override;
@@ -95,6 +102,9 @@ private:
 	void ShowLeaguePage();
 	void ToggleSportsbookOfferPreview();
 	void ShowSportsbookOfferPreview();
+	void PreviousSportsbookMarketPage();
+	void NextSportsbookMarketPage();
+	void SetTicketBoothInputMode(bool bMenuOpen);
 	void ToggleSportsbookQaWager();
 	void ShowSportsbookQaWager();
 	void ToggleSportsbookReceipt();
@@ -258,8 +268,10 @@ private:
 	int32 SportsbookOfferQaLedgerEntries = 0;
 	int64 SportsbookOfferQaBalance = 0;
 	bool bSportsbookInteractionArmed = false;
+	bool bAtSportsbookInteraction = false;
 	bool bSportsbookOfferVisible = false;
 	bool bSportsbookOfferQa = false;
+	int32 SportsbookMarketPage = 0;
 	int32 SportsbookQaSelectionIndex = 0;
 	int64 SportsbookQaStake = 10;
 	int64 SportsbookQaResultingBalance = 0;
@@ -284,6 +296,22 @@ private:
 	float CameraOrbitQaSweep = 0.0f;
 	bool bCameraOrbitQa = false;
 	bool bCameraOrbitQaStarted = false;
+};
+
+UCLASS()
+class ODDSWELL_API AOddsWellSportsbookHUD final : public AHUD
+{
+	GENERATED_BODY()
+
+public:
+	virtual void DrawHUD() override;
+	virtual void NotifyHitBoxClick(FName BoxName) override;
+
+private:
+	AOddsWellPlaceholderCharacter* GetOddsWellCharacter() const;
+	void DrawTicketBoothPrompt();
+	void DrawTicketBoothMenu(const AOddsWellPlaceholderCharacter& Character, const FOddsWellMatchWinnerOfferPreview& Offer);
+	void DrawMarketCard(const FString& Title, const FString& Subtitle, float X, float Y, float Width, float Height, bool bAvailable);
 };
 
 UCLASS()
