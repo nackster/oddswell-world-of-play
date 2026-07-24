@@ -685,6 +685,10 @@ ODDSWELL_API const FString& GetOddsWellUpcomingQaMatchWinnerCancellationEvidence
 ODDSWELL_API int64 GetOddsWellUpcomingQaMatchWinnerCancellationUnixSeconds();
 ODDSWELL_API const FString& GetOddsWellUpcomingQaMatchWinnerVoidDecisionCommandId();
 ODDSWELL_API const FString& GetOddsWellUpcomingQaMatchWinnerVoidFinalizationCommandId();
+ODDSWELL_API bool FinalizeOddsWellMatchWinnerOfferIdentity(
+	FOddsWellMatchWinnerOffer& InOutOffer,
+	FString& OutCanonicalJson,
+	FString& OutError);
 ODDSWELL_API bool BuildOddsWellUpcomingQaMatchWinnerOffer(FOddsWellMatchWinnerOffer& OutOffer, FString& OutError);
 ODDSWELL_API EOddsWellMatchWinnerRequestResult AcceptOddsWellUpcomingQaMatchWinnerRequest(const FOddsWellMatchWinnerOffer& Offer, const FString& RequestCommandId, const FString& OfferedTeam, int64 Stake, int64 AcceptedUnixSeconds, FOddsWellMatchWinnerRequestRecord& OutRecord, int64& OutBalance, FString& OutError);
 ODDSWELL_API bool RunOddsWellUpcomingQaMatchWinnerAudit(int32& OutLedgerEntries, int32& OutRequests, int64& OutBalance, FString& OutError);

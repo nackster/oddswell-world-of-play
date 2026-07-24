@@ -4,6 +4,7 @@
 #include "Camera/PlayerCameraManager.h"
 #include "CharacterAppearanceSave.h"
 #include "CharacterPresetCatalog.h"
+#include "CanonicalMatchWinnerOffer.h"
 #include "CanonicalPregameCommitment.h"
 #include "CanonicalScheduledGame.h"
 #include "Components/CapsuleComponent.h"
@@ -3314,6 +3315,33 @@ void AOddsWellLocomotionGameMode::BeginPlay()
 				PregameCommitment.ScheduleCreatedUnixSeconds,
 				PregameCommitment.ScheduleTipoffUnixSeconds,
 				*PregameCommitment.CommitmentSha256);
+			FOddsWellCanonicalMatchWinnerOfferRecord CanonicalOffer;
+			FString CanonicalOfferError;
+			const EOddsWellCanonicalMatchWinnerOfferResult CanonicalOfferResult =
+				CreateOddsWellCanonicalMatchWinnerOffer(
+					CanonicalOffer,
+					CanonicalOfferError);
+			if (CanonicalOfferResult == EOddsWellCanonicalMatchWinnerOfferResult::Rejected)
+			{
+				UE_LOG(
+					LogOddsWellLocomotion,
+					Error,
+					TEXT("ODDSWELL_CANONICAL_MATCH_WINNER_OFFER|result=FAIL|detail=%s"),
+					*CanonicalOfferError);
+			}
+			else
+			{
+				UE_LOG(
+					LogOddsWellLocomotion,
+					Display,
+					TEXT("ODDSWELL_CANONICAL_MATCH_WINNER_OFFER|result=PASS|transition=%s|offer_id=%s|schema=oddswell-basketball-odds-offer-v1|offer_version=basketball-match-winner-odds-v1|market=match_winner|currency=odds_bucks|season=1|game=1|home=Harbor City Waves|away=Mesa Vista Sol|lock_unix=%lld|source_snapshot=oddswell-public-pregame-v1|source_prediction=phase0d4-v1|source_model=public_elo_rotation|source_commitment_sha256=898e89ef142f884fe2514bc55a65b91c80a5bf25d068467b2ddbfe25569ea98f|probabilities_e8=57586693,42413307|decimal_odds_e4=17365,23577|stake=10-100|increment=10|edge_bps=0|payout=floor(stake*100000000/win_probability_e8)|upstream_mutation=false|ui=false|slip=false|request=false|debit=false|lock_transition=false|simulation=false|result=false|settlement=false|environment=local_beta"),
+					CanonicalOfferResult
+							== EOddsWellCanonicalMatchWinnerOfferResult::Created
+						? TEXT("created")
+						: TEXT("duplicate"),
+					*CanonicalOffer.OfferId,
+					CanonicalOffer.LockUnixSeconds);
+			}
 		}
 	}
 	bOddsBucksQaSlot = UseOddsWellOddsBucksQaSlot();

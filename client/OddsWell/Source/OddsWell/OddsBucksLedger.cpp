@@ -145,7 +145,11 @@ bool IsLowerHexHash(const FString& Value)
 	return true;
 }
 
-bool GetMatchWinnerOfferId(const FOddsWellMatchWinnerOffer& Offer, FString& OutOfferId, FString& OutError)
+bool GetMatchWinnerOfferId(
+	const FOddsWellMatchWinnerOffer& Offer,
+	FString& OutOfferId,
+	FString& OutError,
+	FString* OutCanonicalJson = nullptr)
 {
 	FString CanonicalJson;
 	const TSharedRef<TJsonWriter<TCHAR, TCondensedJsonPrintPolicy<TCHAR>>> Writer =
@@ -184,6 +188,10 @@ bool GetMatchWinnerOfferId(const FOddsWellMatchWinnerOffer& Offer, FString& OutO
 	{
 		OutError = TEXT("The Match Winner offer identity could not be serialized.");
 		return false;
+	}
+	if (OutCanonicalJson)
+	{
+		*OutCanonicalJson = CanonicalJson;
 	}
 	const FTCHARToUTF8 Utf8(*CanonicalJson);
 	uint8 Digest[32];
@@ -1245,6 +1253,19 @@ const FString& GetOddsWellFirstJobCommandId()
 FName GetOddsWellFirstJobReason()
 {
 	return FirstJobReason;
+}
+
+bool FinalizeOddsWellMatchWinnerOfferIdentity(
+	FOddsWellMatchWinnerOffer& InOutOffer,
+	FString& OutCanonicalJson,
+	FString& OutError)
+{
+	return GetMatchWinnerOfferId(
+			InOutOffer,
+			InOutOffer.OfferId,
+			OutError,
+			&OutCanonicalJson)
+		&& ValidateMatchWinnerOffer(InOutOffer, OutError);
 }
 
 bool UseOddsWellOddsBucksQaSlot()
