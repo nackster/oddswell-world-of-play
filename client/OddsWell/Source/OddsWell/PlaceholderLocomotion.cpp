@@ -517,28 +517,7 @@ void AOddsWellPlaceholderCharacter::BeginPlay()
 				}
 			}
 		}
-		SportsbookOfferPreview = MakeUnique<FOddsWellMatchWinnerOfferPreview>();
-		if (!LoadOddsWellMatchWinnerOfferPreview(*SportsbookOfferPreview, Error))
-		{
-			UE_LOG(LogOddsWellLocomotion, Error, TEXT("ODDSWELL_SPORTSBOOK_OFFER|result=FAIL|closed=true|reason=%s"), *Error);
-			SportsbookOfferPreview.Reset();
-		}
-		else
-		{
-			UE_LOG(
-				LogOddsWellLocomotion,
-				Display,
-				TEXT("ODDSWELL_SPORTSBOOK_OFFER|result=PASS|read_only=true|season=%d|game=%d|offer_id=%s|source=%s|selections=%d|minimum_stake=%lld|maximum_stake=%lld|increment=%lld|lock_unix=%lld"),
-				SportsbookOfferPreview->SeasonNumber,
-				SportsbookOfferPreview->GameNumber,
-				*SportsbookOfferPreview->OfferId,
-				*SportsbookOfferPreview->SourceModel,
-				SportsbookOfferPreview->Selections.Num(),
-				SportsbookOfferPreview->MinimumStake,
-				SportsbookOfferPreview->MaximumStake,
-				SportsbookOfferPreview->StakeIncrement,
-				SportsbookOfferPreview->LockUnix);
-		}
+		RefreshSportsbookOfferPreview();
 		if (bSportsbookReceiptQaMode)
 		{
 			SportsbookReceipt = MakeUnique<FOddsWellPendingQaMatchWinnerReceipt>();
@@ -748,11 +727,39 @@ void AOddsWellPlaceholderCharacter::ShowLeaguePage()
 	}
 }
 
+void AOddsWellPlaceholderCharacter::RefreshSportsbookOfferPreview()
+{
+	SportsbookOfferPreview = MakeUnique<FOddsWellMatchWinnerOfferPreview>();
+	FString Error;
+	if (!LoadOddsWellCanonicalMatchWinnerOfferPreview(*SportsbookOfferPreview, Error))
+	{
+		SportsbookOfferPreview.Reset();
+		UE_LOG(
+			LogOddsWellLocomotion,
+			Display,
+			TEXT("ODDSWELL_CANONICAL_TICKET_BOOTH|result=UNAVAILABLE|locked_or_invalid=true|teams=false|prices=false|archive_fallback=false|submission=false|debit=false"));
+		return;
+	}
+	UE_LOG(
+		LogOddsWellLocomotion,
+		Display,
+		TEXT("ODDSWELL_CANONICAL_TICKET_BOOTH|result=PASS|read_only=true|season=%d|game=%d|offer_id=%s|source=%s|selections=%d|minimum_stake=%lld|maximum_stake=%lld|increment=%lld|lock_unix=%lld|timing_authority=server|environment=local_beta|archive_fallback=false|submission=false|debit=false"),
+		SportsbookOfferPreview->SeasonNumber,
+		SportsbookOfferPreview->GameNumber,
+		*SportsbookOfferPreview->OfferId,
+		*SportsbookOfferPreview->SourceModel,
+		SportsbookOfferPreview->Selections.Num(),
+		SportsbookOfferPreview->MinimumStake,
+		SportsbookOfferPreview->MaximumStake,
+		SportsbookOfferPreview->StakeIncrement,
+		SportsbookOfferPreview->LockUnix);
+}
+
 void AOddsWellPlaceholderCharacter::ToggleSportsbookOfferPreview()
 {
 	const bool bAtSportsbook = GetWorld()->GetMapName().Contains(TEXT("SundaleGraybox"))
 		&& FVector::Dist2D(GetActorLocation(), SportsbookInteractionLocation) <= SportsbookInteractionRadius;
-	if (!IsLocallyControlled() || !SportsbookOfferPreview || !bAtSportsbook)
+	if (!IsLocallyControlled() || !bAtSportsbook)
 	{
 		return;
 	}
@@ -764,6 +771,7 @@ void AOddsWellPlaceholderCharacter::ToggleSportsbookOfferPreview()
 	bSportsbookOfferVisible = !bSportsbookOfferVisible;
 	if (bSportsbookOfferVisible)
 	{
+		RefreshSportsbookOfferPreview();
 		SportsbookMarketPage = 0;
 	}
 	SetTicketBoothInputMode(bSportsbookOfferVisible);
@@ -783,7 +791,6 @@ bool AOddsWellPlaceholderCharacter::IsTicketBoothPromptVisible() const
 {
 	return bAtSportsbookInteraction
 		&& !bSportsbookOfferVisible
-		&& SportsbookOfferPreview
 		&& !bSportsbookWagerQaMode
 		&& !bSportsbookReceiptQaMode;
 }
@@ -1566,6 +1573,13 @@ void AOddsWellPlaceholderCharacter::PollSportsbookInteraction()
 	}
 	const bool bAtSportsbook = FVector::Dist2D(GetActorLocation(), SportsbookInteractionLocation) <= SportsbookInteractionRadius;
 	bAtSportsbookInteraction = bAtSportsbook;
+	if (!bSportsbookWagerQaMode
+		&& !bSportsbookReceiptQaMode
+		&& SportsbookOfferPreview
+		&& FDateTime::UtcNow().ToUnixTimestamp() >= SportsbookOfferPreview->LockUnix)
+	{
+		SportsbookOfferPreview.Reset();
+	}
 	if (!bAtSportsbook)
 	{
 		bSportsbookInteractionArmed = false;
@@ -1620,7 +1634,7 @@ void AOddsWellPlaceholderCharacter::PollSportsbookInteraction()
 	}
 	if (bSportsbookOfferQa
 		|| (bSportsbookReceiptQaMode && !SportsbookReceipt)
-		|| (!bSportsbookReceiptQaMode && (bSportsbookWagerQaMode ? !SportsbookQaOffer : !SportsbookOfferPreview)))
+		|| (!bSportsbookReceiptQaMode && bSportsbookWagerQaMode && !SportsbookQaOffer))
 	{
 		return;
 	}
@@ -1655,7 +1669,7 @@ void AOddsWellPlaceholderCharacter::RunSportsbookOfferQa(const float DeltaSecond
 	}
 	SportsbookOfferQaElapsed += DeltaSeconds;
 	AOddsWellLocomotionGameMode* GameMode = GetWorld()->GetAuthGameMode<AOddsWellLocomotionGameMode>();
-	if (!GetWorld()->GetMapName().Contains(TEXT("SundaleGraybox")) || !GameMode || !SportsbookOfferPreview)
+	if (!GetWorld()->GetMapName().Contains(TEXT("SundaleGraybox")) || !GameMode)
 	{
 		UE_LOG(LogOddsWellLocomotion, Error, TEXT("ODDSWELL_SPORTSBOOK_OFFER_QA|result=FAIL|reason=offer_or_map_unavailable|closed=true"));
 		bSportsbookOfferQa = false;
@@ -1693,8 +1707,11 @@ void AOddsWellPlaceholderCharacter::RunSportsbookOfferQa(const float DeltaSecond
 	if (SportsbookOfferQaStage == 1)
 	{
 		ToggleSportsbookOfferPreview();
-		const FString PreviewText = BuildOddsWellMatchWinnerOfferPreview(*SportsbookOfferPreview);
-		const bool bExact = bSportsbookOfferVisible
+		const FString PreviewText = SportsbookOfferPreview
+			? BuildOddsWellMatchWinnerOfferPreview(*SportsbookOfferPreview)
+			: FString();
+		const bool bExact = SportsbookOfferPreview
+			&& bSportsbookOfferVisible
 			&& PreviewText.Contains(SportsbookOfferPreview->OfferId)
 			&& PreviewText.Contains(TEXT("10 -> 17"))
 			&& PreviewText.Contains(TEXT("100 -> 235"))
@@ -1716,12 +1733,12 @@ void AOddsWellPlaceholderCharacter::RunSportsbookOfferQa(const float DeltaSecond
 	{
 		if (FParse::Param(FCommandLine::Get(), TEXT("SportsbookOfferQaCapture")))
 		{
-			FScreenshotRequest::RequestScreenshot(TEXT("Phase1H16_SportsbookOfferPreview.png"), true, false);
+			FScreenshotRequest::RequestScreenshot(TEXT("Phase1H26D_CanonicalMatchWinnerOffer.png"), true, false);
 		}
 		UE_LOG(
 			LogOddsWellLocomotion,
 			Display,
-			TEXT("ODDSWELL_SPORTSBOOK_OFFER_QA|result=PASS|location=Sportsbook|interaction=press_e_path|elsewhere=false|read_only=true|offer_id=%s|season=1|game=1|teams=Harbor_City_Waves_vs_Mesa_Vista_Sol|probabilities_e8=57586693,42413307|odds_e4=17365,23577|stake=10-100|increment=10|lock=game_start|returns=10:17,23;100:173,235|ledger_entries_before=%d|ledger_entries_after=%d|balance_before=%lld|balance_after=%lld|submission=false|controls=false"),
+			TEXT("ODDSWELL_SPORTSBOOK_OFFER_QA|result=PASS|phase=H26D|location=Sportsbook|interaction=press_e_path|elsewhere=false|read_only=true|canonical=true|archive_fallback=false|timing_authority=server|environment=local_beta|offer_id=%s|season=1|game=1|teams=Harbor_City_Waves_vs_Mesa_Vista_Sol|probabilities_e8=57586693,42413307|odds_e4=17365,23577|stake=10-100|increment=10|lock=server_tipoff|returns=10:17,23;100:173,235|ledger_entries_before=%d|ledger_entries_after=%d|balance_before=%lld|balance_after=%lld|submission=false|selection=false|editor=false|confirm=false|request=false|debit=false|mutation=false"),
 			*SportsbookOfferPreview->OfferId,
 			SportsbookOfferQaLedgerEntries,
 			GameMode->GetOddsBucksEntryCount(),
@@ -3014,6 +3031,10 @@ void AOddsWellSportsbookHUD::DrawHUD()
 		{
 			DrawTicketBoothMenu(*Character, *Offer);
 		}
+		else
+		{
+			DrawTicketBoothUnavailableMenu();
+		}
 	}
 	else if (Character->IsTicketBoothPromptVisible())
 	{
@@ -3030,6 +3051,33 @@ void AOddsWellSportsbookHUD::DrawTicketBoothPrompt()
 	DrawRect(FLinearColor(0.025f, 0.055f, 0.08f, 0.94f), X, Y, Width, Height);
 	DrawRect(FLinearColor(0.20f, 0.75f, 0.68f, 1.0f), X, Y, 6.0f, Height);
 	DrawText(TicketBoothOpenPrompt, FLinearColor::White, X + 28.0f, Y + 17.0f, nullptr, 1.35f);
+}
+
+void AOddsWellSportsbookHUD::DrawTicketBoothUnavailableMenu()
+{
+	const float Width = FMath::Min(720.0f, Canvas->SizeX - 56.0f);
+	const float Height = 330.0f;
+	const float X = (Canvas->SizeX - Width) * 0.5f;
+	const float Y = (Canvas->SizeY - Height) * 0.5f;
+	const FLinearColor Navy(0.025f, 0.055f, 0.08f, 0.985f);
+	const FLinearColor Muted(0.70f, 0.73f, 0.76f, 1.0f);
+	const FLinearColor Gold(0.96f, 0.78f, 0.30f, 1.0f);
+
+	DrawRect(FLinearColor(0.0f, 0.0f, 0.0f, 0.62f), 0.0f, 0.0f, Canvas->SizeX, Canvas->SizeY);
+	DrawRect(Navy, X, Y, Width, Height);
+	DrawRect(Gold, X, Y, Width, 5.0f);
+	DrawText(TEXT("STADIUM TICKET BOOTH"), FLinearColor::White, X + 26.0f, Y + 24.0f, nullptr, 1.55f);
+	DrawText(TEXT("MATCH WINNER UNAVAILABLE / LOCKED"), Gold, X + 26.0f, Y + 90.0f, nullptr, 1.30f);
+	DrawText(TEXT("The canonical local-beta offer is missing, invalid, or locked at server tipoff."), Muted, X + 26.0f, Y + 139.0f, nullptr, 1.0f);
+	DrawText(TEXT("No teams, prices, selections, or wager controls are shown."), Muted, X + 26.0f, Y + 176.0f, nullptr, 1.0f);
+	DrawText(TEXT("E or ESC: CLOSE"), FLinearColor::White, X + 26.0f, Y + Height - 52.0f, nullptr, 0.90f);
+
+	const float CloseWidth = 92.0f;
+	const float CloseX = X + Width - CloseWidth - 18.0f;
+	const float CloseY = Y + 18.0f;
+	DrawRect(FLinearColor(0.16f, 0.19f, 0.22f, 1.0f), CloseX, CloseY, CloseWidth, 38.0f);
+	DrawText(TEXT("X  CLOSE"), FLinearColor::White, CloseX + 13.0f, CloseY + 10.0f, nullptr, 0.90f);
+	AddHitBox(FVector2D(CloseX, CloseY), FVector2D(CloseWidth, 38.0f), TEXT("TicketBoothClose"), true, 20);
 }
 
 void AOddsWellSportsbookHUD::DrawMarketCard(
@@ -3052,7 +3100,7 @@ void AOddsWellSportsbookHUD::DrawMarketCard(
 	DrawText(Title, FLinearColor::White, X + 20.0f, Y + 16.0f, nullptr, 1.20f);
 	DrawText(Subtitle, bAvailable ? FLinearColor(0.96f, 0.78f, 0.30f) : FLinearColor(0.70f, 0.73f, 0.76f), X + 20.0f, Y + 49.0f, nullptr, 1.05f);
 	DrawText(
-		bAvailable ? TEXT("ACTIVE MARKET") : TEXT("LOCKED - ODDS NOT PUBLISHED"),
+		bAvailable ? TEXT("READ-ONLY ODDS") : TEXT("LOCKED - ODDS NOT PUBLISHED"),
 		Accent,
 		X + 20.0f,
 		Y + Height - 30.0f,
@@ -3089,7 +3137,7 @@ void AOddsWellSportsbookHUD::DrawTicketBoothMenu(
 	DrawRect(Teal, X, Y, Width, 5.0f);
 	DrawText(TEXT("STADIUM TICKET BOOTH"), FLinearColor::White, X + 24.0f, Y + 20.0f, nullptr, 1.55f);
 	DrawText(
-		FString::Printf(TEXT("BASKETBALL  |  PRE-GAME  |  %s at %s"), *Offer.AwayTeam, *Offer.HomeTeam),
+		FString::Printf(TEXT("BASKETBALL  |  PRE-GAME  |  %s at %s  |  LOCAL BETA"), *Offer.AwayTeam, *Offer.HomeTeam),
 		Muted,
 		X + 24.0f,
 		Y + 54.0f,
@@ -3212,15 +3260,15 @@ void AOddsWellSportsbookHUD::DrawTicketBoothMenu(
 	DrawText(TEXT("No wager selected"), FLinearColor(0.025f, 0.055f, 0.08f), SlipX + 20.0f, ContentY + 145.0f, nullptr, 1.05f);
 	DrawText(TEXT("STAKE RANGE"), FLinearColor(0.32f, 0.34f, 0.36f), SlipX + 20.0f, ContentY + 194.0f, nullptr, 0.82f);
 	DrawText(
-		FString::Printf(TEXT("%lld-%lld Odds Bucks"), Offer.MinimumStake, Offer.MaximumStake),
+		FString::Printf(TEXT("%lld-%lld Odds Bucks  |  step %lld"), Offer.MinimumStake, Offer.MaximumStake, Offer.StakeIncrement),
 		FLinearColor(0.025f, 0.055f, 0.08f),
 		SlipX + 20.0f,
 		ContentY + 223.0f,
 		nullptr,
 		1.05f);
-	DrawText(TEXT("DECIMAL RETURN"), FLinearColor(0.32f, 0.34f, 0.36f), SlipX + 20.0f, ContentY + 272.0f, nullptr, 0.82f);
-	DrawText(TEXT("stake x displayed odds"), FLinearColor(0.025f, 0.055f, 0.08f), SlipX + 20.0f, ContentY + 301.0f, nullptr, 1.0f);
-	DrawText(TEXT("Bets lock at game start."), FLinearColor(0.55f, 0.22f, 0.12f), SlipX + 20.0f, ContentY + ContentHeight - 116.0f, nullptr, 0.92f);
+	DrawText(TEXT("GROSS RETURN"), FLinearColor(0.32f, 0.34f, 0.36f), SlipX + 20.0f, ContentY + 272.0f, nullptr, 0.82f);
+	DrawText(TEXT("floor(stake / win probability)"), FLinearColor(0.025f, 0.055f, 0.08f), SlipX + 20.0f, ContentY + 301.0f, nullptr, 1.0f);
+	DrawText(FString::Printf(TEXT("Locks at server tipoff: %lld"), Offer.LockUnix), FLinearColor(0.55f, 0.22f, 0.12f), SlipX + 20.0f, ContentY + ContentHeight - 116.0f, nullptr, 0.92f);
 	DrawText(TEXT("Odds Bucks only. No real money."), FLinearColor(0.55f, 0.22f, 0.12f), SlipX + 20.0f, ContentY + ContentHeight - 85.0f, nullptr, 0.92f);
 	DrawText(TEXT("LEFT / RIGHT: MARKET    E or ESC: CLOSE"), FLinearColor(0.32f, 0.34f, 0.36f), SlipX + 20.0f, ContentY + ContentHeight - 43.0f, nullptr, 0.78f);
 }
@@ -4430,16 +4478,12 @@ bool FOddsWellStadiumGrayboxTest::RunTest(const FString& Parameters)
 	TestTrue(TEXT("Sportsbook preview radius exceeds the player capsule"), SportsbookInteractionRadius > CapsuleRadius);
 	TestTrue(TEXT("Sportsbook preview cannot overlap the Arena threshold"), FVector::Dist2D(SportsbookInteractionLocation, StadiumEntranceThreshold) > SportsbookInteractionRadius + StadiumEntryRadius);
 	TestEqual(TEXT("Ticket booth uses the approved proximity prompt"), FString(TicketBoothOpenPrompt), FString(TEXT("Press E to open betting odds")));
-	FOddsWellMatchWinnerOfferPreview TicketBoothOffer;
-	FString TicketBoothError;
-	TestTrue(TEXT("Ticket booth can load the validated public odds"), LoadOddsWellMatchWinnerOfferPreview(TicketBoothOffer, TicketBoothError));
 	const TArray<FString>& MarketLabels = GetTicketBoothMarketLabels();
 	TestEqual(TEXT("Ticket booth exposes four concise basketball market tabs"), MarketLabels.Num(), TicketBoothMarketPageCount);
 	TestEqual(TEXT("Validated Match Winner offer owns the Game Lines tab"), MarketLabels[0], FString(TEXT("GAME LINES")));
 	TestTrue(TEXT("Future score-margin category is visible"), MarketLabels.Contains(TEXT("MARGIN")));
 	TestTrue(TEXT("Future overtime category is visible"), MarketLabels.Contains(TEXT("OVERTIME")));
 	TestTrue(TEXT("Future athlete category is visible"), MarketLabels.Contains(TEXT("PLAYER PROPS")));
-	TestEqual(TEXT("Only the validated market currently publishes two selections"), TicketBoothOffer.Selections.Num(), 2);
 	TestTrue(TEXT("Stadium entry radius exceeds the player capsule"), StadiumEntryRadius > CapsuleRadius);
 	TestTrue(TEXT("Archived replay consumer stays compact inside the stadium"), StadiumReplayScale > 0.0f && StadiumReplayScale <= 0.25f);
 	TestTrue(TEXT("Archived replay consumer is anchored on the court"), StadiumReplayOrigin.Equals(FVector(350.0, 0.0, 0.0)));

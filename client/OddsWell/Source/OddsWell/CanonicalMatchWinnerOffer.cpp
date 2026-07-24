@@ -6,6 +6,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Misc/DateTime.h"
 #include "OddsBucksLedger.h"
+#include "PublicLeagueView.h"
 #include "Serialization/JsonSerializer.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
@@ -190,6 +191,69 @@ bool RestoreExactOffer(
 	return true;
 }
 
+bool LoadPreview(
+	const FOddsWellCanonicalScheduledGameRecord& Schedule,
+	const FOddsWellCanonicalPregameCommitmentRecord& Commitment,
+	const FString& Slot,
+	const int64 ObservedNowUnixSeconds,
+	FOddsWellMatchWinnerOfferPreview& OutPreview,
+	FString& OutError)
+{
+	OutPreview = {};
+	FOddsWellMatchWinnerOffer Expected;
+	FString ExpectedCanonicalJson;
+	FOddsWellCanonicalMatchWinnerOfferRecord Persisted;
+	if (!BuildExpectedOffer(
+			Schedule,
+			Commitment,
+			Expected,
+			ExpectedCanonicalJson,
+			OutError)
+		|| ObservedNowUnixSeconds < Schedule.SeasonCreatedUnixSeconds
+		|| ObservedNowUnixSeconds >= Schedule.TipoffUnixSeconds
+		|| !UGameplayStatics::DoesSaveGameExist(Slot, CanonicalOfferUserIndex)
+		|| !RestoreExactOffer(
+			UGameplayStatics::LoadGameFromSlot(Slot, CanonicalOfferUserIndex),
+			Expected,
+			ExpectedCanonicalJson,
+			Persisted,
+			OutError))
+	{
+		OutPreview = {};
+		OutError = TEXT("The canonical Match Winner offer is unavailable or locked.");
+		return false;
+	}
+
+	OutPreview.OfferId = Expected.OfferId;
+	OutPreview.OfferVersion = Expected.OfferVersion;
+	OutPreview.SourcePredictionVersion = Expected.SourcePredictionVersion;
+	OutPreview.SourceSnapshotVersion = Expected.SourceSnapshotVersion;
+	OutPreview.SourceModel = Expected.SourceModel;
+	OutPreview.SourceCommitmentSha256 = Expected.SourceCommitmentSha256;
+	OutPreview.SeasonNumber = Expected.SeasonNumber;
+	OutPreview.GameNumber = Expected.GameNumber;
+	OutPreview.HomeTeam = Expected.HomeTeam;
+	OutPreview.AwayTeam = Expected.AwayTeam;
+	OutPreview.LockUnix = Expected.LockUnixSeconds;
+	OutPreview.MinimumStake = Expected.MinimumStake;
+	OutPreview.MaximumStake = Expected.MaximumStake;
+	OutPreview.StakeIncrement = Expected.StakeIncrement;
+	for (const FOddsWellMatchWinnerSelection& Selection : Expected.Selections)
+	{
+		FOddsWellMatchWinnerSelectionPreview& Preview =
+			OutPreview.Selections.AddDefaulted_GetRef();
+		Preview.Team = Selection.Team;
+		Preview.WinProbabilityE8 = Selection.WinProbabilityE8;
+		Preview.DecimalOddsE4 = Selection.DecimalOddsE4;
+		Preview.MinimumStakeGrossReturn =
+			Expected.MinimumStake * 100000000 / Selection.WinProbabilityE8;
+		Preview.MaximumStakeGrossReturn =
+			Expected.MaximumStake * 100000000 / Selection.WinProbabilityE8;
+	}
+	OutError.Reset();
+	return true;
+}
+
 EOddsWellCanonicalMatchWinnerOfferResult PersistOffer(
 	const FOddsWellCanonicalScheduledGameRecord& Schedule,
 	const FOddsWellCanonicalPregameCommitmentRecord& Commitment,
@@ -356,6 +420,29 @@ bool LoadOddsWellCanonicalMatchWinnerOffer(
 		OutError);
 }
 
+bool LoadOddsWellCanonicalMatchWinnerOfferPreview(
+	FOddsWellMatchWinnerOfferPreview& OutPreview,
+	FString& OutError)
+{
+	FOddsWellCanonicalScheduledGameRecord Schedule;
+	FOddsWellCanonicalPregameCommitmentRecord Commitment;
+	if (!LoadOddsWellCanonicalLocalBetaScheduledGame(Schedule, OutError)
+		|| !LoadOddsWellCanonicalPregameCommitment(Commitment, OutError)
+		|| !LoadPreview(
+			Schedule,
+			Commitment,
+			CanonicalOfferSlot,
+			FDateTime::UtcNow().ToUnixTimestamp(),
+			OutPreview,
+			OutError))
+	{
+		OutPreview = {};
+		OutError = TEXT("The canonical Match Winner offer is unavailable or locked.");
+		return false;
+	}
+	return true;
+}
+
 #if WITH_DEV_AUTOMATION_TESTS
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
 	FOddsWellCanonicalMatchWinnerOfferPersistenceTest,
@@ -393,6 +480,65 @@ bool FOddsWellCanonicalMatchWinnerOfferPersistenceTest::RunTest(
 	TestTrue(TEXT("Home decimal odds are exact"), Created.CanonicalOfferJson.Contains(TEXT("\"decimal_odds_e4\":17365")));
 	TestTrue(TEXT("Away decimal odds are exact"), Created.CanonicalOfferJson.Contains(TEXT("\"decimal_odds_e4\":23577")));
 
+	FOddsWellMatchWinnerOfferPreview Preview;
+	TestTrue(
+		TEXT("Exact persisted offer loads into the read-only preview before tipoff"),
+		LoadPreview(
+			Schedule,
+			Commitment,
+			CanonicalOfferQaSlot,
+			2200000100,
+			Preview,
+			Error));
+	TestEqual(TEXT("Preview exposes Harbor home"), Preview.HomeTeam, FString(TEXT("Harbor City Waves")));
+	TestEqual(TEXT("Preview exposes Mesa away"), Preview.AwayTeam, FString(TEXT("Mesa Vista Sol")));
+	TestEqual(TEXT("Preview exposes exactly two selections"), Preview.Selections.Num(), 2);
+	if (Preview.Selections.Num() == 2)
+	{
+		TestEqual(TEXT("Harbor integer odds stay exact"), Preview.Selections[0].DecimalOddsE4, int64{17365});
+		TestEqual(TEXT("Mesa integer odds stay exact"), Preview.Selections[1].DecimalOddsE4, int64{23577});
+		TestEqual(TEXT("Harbor minimum gross return uses exact floor convention"), Preview.Selections[0].MinimumStakeGrossReturn, int64{17});
+		TestEqual(TEXT("Mesa maximum gross return uses exact floor convention"), Preview.Selections[1].MaximumStakeGrossReturn, int64{235});
+	}
+	const UOddsWellCanonicalMatchWinnerOfferSaveGame* AfterPreview =
+		Cast<UOddsWellCanonicalMatchWinnerOfferSaveGame>(
+			UGameplayStatics::LoadGameFromSlot(
+				CanonicalOfferQaSlot,
+				CanonicalOfferUserIndex));
+	TestTrue(
+		TEXT("Preview read leaves persisted identity and JSON unchanged"),
+		AfterPreview
+			&& AfterPreview->OfferId == Created.OfferId
+			&& AfterPreview->CanonicalOfferJson == Created.CanonicalOfferJson);
+	TestFalse(
+		TEXT("Preview rejects a clock before canonical schedule creation"),
+		LoadPreview(
+			Schedule,
+			Commitment,
+			CanonicalOfferQaSlot,
+			Schedule.SeasonCreatedUnixSeconds - 1,
+			Preview,
+			Error));
+	TestTrue(
+		TEXT("Before-creation preview exposes no partial teams or prices"),
+		Preview.HomeTeam.IsEmpty()
+			&& Preview.AwayTeam.IsEmpty()
+			&& Preview.Selections.IsEmpty());
+	TestFalse(
+		TEXT("Preview locks at exact server tipoff"),
+		LoadPreview(
+			Schedule,
+			Commitment,
+			CanonicalOfferQaSlot,
+			Schedule.TipoffUnixSeconds,
+			Preview,
+			Error));
+	TestTrue(
+		TEXT("Locked preview exposes no partial teams or prices"),
+		Preview.HomeTeam.IsEmpty()
+			&& Preview.AwayTeam.IsEmpty()
+			&& Preview.Selections.IsEmpty());
+
 	FOddsWellCanonicalMatchWinnerOfferRecord Duplicate;
 	TestEqual(
 		TEXT("Cold exact retry is duplicate-safe"),
@@ -406,6 +552,23 @@ bool FOddsWellCanonicalMatchWinnerOfferPersistenceTest::RunTest(
 		EOddsWellCanonicalMatchWinnerOfferResult::Duplicate);
 	TestEqual(TEXT("Duplicate offer ID is unchanged"), Duplicate.OfferId, Created.OfferId);
 	TestEqual(TEXT("Duplicate canonical JSON is unchanged"), Duplicate.CanonicalOfferJson, Created.CanonicalOfferJson);
+
+	FOddsWellCanonicalPregameCommitmentRecord MismatchedCommitment = Commitment;
+	MismatchedCommitment.ScheduleTipoffUnixSeconds++;
+	TestFalse(
+		TEXT("Mismatched upstream commitment is unavailable to the preview"),
+		LoadPreview(
+			Schedule,
+			MismatchedCommitment,
+			CanonicalOfferQaSlot,
+			2200000300,
+			Preview,
+			Error));
+	TestTrue(
+		TEXT("Mismatched preview exposes no partial teams or prices"),
+		Preview.HomeTeam.IsEmpty()
+			&& Preview.AwayTeam.IsEmpty()
+			&& Preview.Selections.IsEmpty());
 
 	UOddsWellCanonicalMatchWinnerOfferSaveGame* Tampered =
 		Cast<UOddsWellCanonicalMatchWinnerOfferSaveGame>(
@@ -432,6 +595,20 @@ bool FOddsWellCanonicalMatchWinnerOfferPersistenceTest::RunTest(
 				Duplicate,
 				Error),
 			EOddsWellCanonicalMatchWinnerOfferResult::Rejected);
+		TestFalse(
+			TEXT("Tampered persisted offer is unavailable to the preview"),
+			LoadPreview(
+				Schedule,
+				Commitment,
+				CanonicalOfferQaSlot,
+				2200000300,
+				Preview,
+				Error));
+		TestTrue(
+			TEXT("Tampered preview exposes no partial teams or prices"),
+			Preview.HomeTeam.IsEmpty()
+				&& Preview.AwayTeam.IsEmpty()
+				&& Preview.Selections.IsEmpty());
 		const UOddsWellCanonicalMatchWinnerOfferSaveGame* Unchanged =
 			Cast<UOddsWellCanonicalMatchWinnerOfferSaveGame>(
 				UGameplayStatics::LoadGameFromSlot(
@@ -447,6 +624,20 @@ bool FOddsWellCanonicalMatchWinnerOfferPersistenceTest::RunTest(
 		UGameplayStatics::DeleteGameInSlot(
 			CanonicalOfferQaSlot,
 			CanonicalOfferUserIndex));
+	TestFalse(
+		TEXT("Missing canonical offer has no archived fallback"),
+		LoadPreview(
+			Schedule,
+			Commitment,
+			CanonicalOfferQaSlot,
+			2200000300,
+			Preview,
+			Error));
+	TestTrue(
+		TEXT("Missing preview exposes no partial teams or prices"),
+		Preview.HomeTeam.IsEmpty()
+			&& Preview.AwayTeam.IsEmpty()
+			&& Preview.Selections.IsEmpty());
 	TestEqual(
 		TEXT("Creation before the H26A creation time rejects"),
 		PersistOffer(

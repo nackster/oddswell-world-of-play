@@ -4,6 +4,8 @@
 #include "GameFramework/SaveGame.h"
 #include "CanonicalMatchWinnerOffer.generated.h"
 
+struct FOddsWellMatchWinnerOfferPreview;
+
 UCLASS()
 class ODDSWELL_API UOddsWellCanonicalMatchWinnerOfferSaveGame final : public USaveGame
 {
@@ -36,4 +38,7 @@ ODDSWELL_API EOddsWellCanonicalMatchWinnerOfferResult CreateOddsWellCanonicalMat
 	FString& OutError);
 ODDSWELL_API bool LoadOddsWellCanonicalMatchWinnerOffer(
 	FOddsWellCanonicalMatchWinnerOfferRecord& OutRecord,
+	FString& OutError);
+ODDSWELL_API bool LoadOddsWellCanonicalMatchWinnerOfferPreview(
+	FOddsWellMatchWinnerOfferPreview& OutPreview,
 	FString& OutError);

@@ -67,7 +67,7 @@ public:
 	bool HasValidSharedCityAppearance() const;
 	bool HasSubmittedSharedCityAppearance() const { return SharedCityAppearance.bOwnerSubmitted; }
 	bool IsTicketBoothPromptVisible() const;
-	bool IsTicketBoothMenuVisible() const { return bSportsbookOfferVisible && SportsbookOfferPreview.IsValid(); }
+	bool IsTicketBoothMenuVisible() const { return bSportsbookOfferVisible; }
 	int32 GetTicketBoothMarketPage() const { return SportsbookMarketPage; }
 	const FOddsWellMatchWinnerOfferPreview* GetTicketBoothOffer() const { return SportsbookOfferPreview.Get(); }
 	void SetTicketBoothMarketPage(int32 Page);
@@ -100,6 +100,7 @@ private:
 	void PreviousLeaguePage();
 	void NextLeaguePage();
 	void ShowLeaguePage();
+	void RefreshSportsbookOfferPreview();
 	void ToggleSportsbookOfferPreview();
 	void ShowSportsbookOfferPreview();
 	void PreviousSportsbookMarketPage();
@@ -310,6 +311,7 @@ public:
 private:
 	AOddsWellPlaceholderCharacter* GetOddsWellCharacter() const;
 	void DrawTicketBoothPrompt();
+	void DrawTicketBoothUnavailableMenu();
 	void DrawTicketBoothMenu(const AOddsWellPlaceholderCharacter& Character, const FOddsWellMatchWinnerOfferPreview& Offer);
 	void DrawMarketCard(const FString& Title, const FString& Subtitle, float X, float Y, float Width, float Height, bool bAvailable);
 };
