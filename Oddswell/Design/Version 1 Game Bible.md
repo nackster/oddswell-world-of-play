@@ -137,6 +137,7 @@ No Version 1 claim may describe fictional deterministic behavior as real-world r
 - **V1 REQUIRED:** server-authoritative append-only balance ledger, idempotent settlement, exact lock times, versioned odds/payouts, reconciliation, recovery, and Admin audit.
 - **V1 REQUIRED:** equal competitively relevant information and no paid, cosmetic, social, or housing advantage in game outcomes.
 - **V1 REQUIRED:** zero-balance players retain a non-paid work/allowance recovery route.
+- **BETA EVIDENCE:** one active local-beta Season `1`, Game `1` scheduled-game record now fixes Harbor City Waves home versus Mesa Vista Sol away, server-owned creation time, exact `+1,800`-second tipoff, eligibility at creation, no published offer, and `scheduled_unplayed`. It remains separate from the immutable completed benchmark archive; see [[Design/Decisions/DEC-018 Canonical Local Beta Schedule Timing]].
 - **OPEN:** starting balance, job income, allowance cadence, wager limits, market limits, payout formulas, economy sinks, inflation targets, and correction/cancellation policy.
 - **OPEN:** real-money Odds Bucks purchases. They do not become Version 1 scope merely because Version 1 follows beta.
 - **GUARDRAIL:** real-money purchases require separate owner approval plus current legal, platform, payment, regional, age-rating, fraud, security, economy, and audit review.

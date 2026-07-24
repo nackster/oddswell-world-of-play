@@ -4,6 +4,7 @@
 #include "Camera/PlayerCameraManager.h"
 #include "CharacterAppearanceSave.h"
 #include "CharacterPresetCatalog.h"
+#include "CanonicalScheduledGame.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/InputComponent.h"
 #include "Components/SkeletalMeshComponent.h"
@@ -3259,6 +3260,33 @@ AOddsWellLocomotionGameMode::AOddsWellLocomotionGameMode()
 void AOddsWellLocomotionGameMode::BeginPlay()
 {
 	Super::BeginPlay();
+	FOddsWellCanonicalScheduledGameRecord CanonicalScheduledGame;
+	FString CanonicalScheduleError;
+	const EOddsWellCanonicalScheduledGameResult CanonicalScheduleResult =
+		CreateOddsWellCanonicalLocalBetaScheduledGame(
+			CanonicalScheduledGame,
+			CanonicalScheduleError);
+	if (CanonicalScheduleResult == EOddsWellCanonicalScheduledGameResult::Rejected)
+	{
+		UE_LOG(
+			LogOddsWellLocomotion,
+			Error,
+			TEXT("ODDSWELL_CANONICAL_SCHEDULE|result=FAIL|detail=%s"),
+			*CanonicalScheduleError);
+	}
+	else
+	{
+		UE_LOG(
+			LogOddsWellLocomotion,
+			Display,
+			TEXT("ODDSWELL_CANONICAL_SCHEDULE|result=PASS|transition=%s|season=1|game=1|home=Harbor City Waves|away=Mesa Vista Sol|season_created_unix=%lld|tipoff_unix=%lld|offer_eligible_unix=%lld|offer_published=false|status=scheduled_unplayed|environment=local_beta|timing_authority=server|production_timing=false"),
+			CanonicalScheduleResult == EOddsWellCanonicalScheduledGameResult::Created
+				? TEXT("created")
+				: TEXT("duplicate"),
+			CanonicalScheduledGame.SeasonCreatedUnixSeconds,
+			CanonicalScheduledGame.TipoffUnixSeconds,
+			CanonicalScheduledGame.OfferEligibleUnixSeconds);
+	}
 	bOddsBucksQaSlot = UseOddsWellOddsBucksQaSlot();
 	bSportsbookWagerQa = FParse::Param(FCommandLine::Get(), TEXT("SportsbookWagerQa"))
 		|| FParse::Param(FCommandLine::Get(), TEXT("SportsbookWagerQaVerify"));
