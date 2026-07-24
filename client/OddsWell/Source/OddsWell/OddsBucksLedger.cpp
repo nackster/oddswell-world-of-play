@@ -1413,7 +1413,9 @@ bool UseOddsWellOddsBucksQaSlot()
 		|| FParse::Param(FCommandLine::Get(), TEXT("CanonicalPendingReceiptQa"))
 		|| FParse::Param(FCommandLine::Get(), TEXT("CanonicalMatchWinnerLockQa"))
 		|| FParse::Param(FCommandLine::Get(), TEXT("CanonicalMatchWinnerLockQaVerify"))
-		|| FParse::Param(FCommandLine::Get(), TEXT("CanonicalPostLockQa"));
+		|| FParse::Param(FCommandLine::Get(), TEXT("CanonicalPostLockQa"))
+		|| FParse::Param(FCommandLine::Get(), TEXT("CanonicalExecutionCommitmentQa"))
+		|| FParse::Param(FCommandLine::Get(), TEXT("CanonicalExecutionCommitmentQaVerify"));
 }
 
 const FString& GetOddsWellUpcomingQaMatchWinnerRequestCommandId()
@@ -1772,6 +1774,73 @@ EOddsWellMatchWinnerLockResult LockOddsWellCanonicalMatchWinnerRequestEvidence(
 		bQaSlot,
 		OutRecord,
 		OutError);
+}
+
+bool LoadOddsWellCanonicalMatchWinnerLockEvidence(
+	const FOddsWellMatchWinnerOffer& ExactOffer,
+	const int64 OfferEligibleUnixSeconds,
+	const bool bQaSlot,
+	FOddsWellMatchWinnerLockRecord& OutRecord,
+	FString& OutError)
+{
+	OutRecord = {};
+	const UOddsWellOddsBucksSaveGame* Record =
+		Cast<UOddsWellOddsBucksSaveGame>(
+			UGameplayStatics::LoadGameFromSlot(
+				GetOddsBucksSlot(bQaSlot),
+				OddsBucksUserIndex));
+	FOddsWellOddsBucksLedger Ledger;
+	int64 NextJobPayoutUnixSeconds = 0;
+	TArray<FOddsWellMatchWinnerRequestRecord> Requests;
+	TArray<FOddsWellMatchWinnerLockRecord> Locks;
+	TArray<FOddsWellMatchWinnerResultLinkRecord> ResultLinks;
+	TArray<FOddsWellMatchWinnerSettlementDecisionRecord> Decisions;
+	TArray<FOddsWellMatchWinnerLossFinalizationRecord> LossFinalizations;
+	TArray<FOddsWellMatchWinnerWinFinalizationRecord> WinFinalizations;
+	TArray<FOddsWellMatchWinnerCanceledGameRecord> CanceledGames;
+	TArray<FOddsWellMatchWinnerVoidDecisionRecord> VoidDecisions;
+	bool bNeedsMigration = false;
+	FString ValidationError;
+	if (!Record
+		|| !ValidateOddsBucksSave(
+			Record,
+			Ledger,
+			NextJobPayoutUnixSeconds,
+			Requests,
+			Locks,
+			ResultLinks,
+			Decisions,
+			LossFinalizations,
+			WinFinalizations,
+			CanceledGames,
+			VoidDecisions,
+			bNeedsMigration,
+			ValidationError)
+		|| bNeedsMigration
+		|| Record->SchemaVersion != OddsBucksSchemaVersion
+		|| Locks.Num() != 1
+		|| !HasExactCanonicalRequestEvidence(
+			ExactOffer,
+			OfferEligibleUnixSeconds,
+			ExactOffer.LockUnixSeconds,
+			Ledger,
+			*Record,
+			Requests,
+			Locks,
+			ResultLinks,
+			Decisions,
+			LossFinalizations,
+			WinFinalizations,
+			CanceledGames,
+			VoidDecisions,
+			true))
+	{
+		OutError = TEXT("Canonical active-game execution requires the exact current H26G lock with no downstream evidence.");
+		return false;
+	}
+	OutRecord = Locks[0];
+	OutError.Reset();
+	return true;
 }
 
 bool WriteOddsWellOddsBucksReconciliation(const FOddsWellOddsBucksLedger& Ledger, const int64 NextJobPayoutUnixSeconds, const int64 ObservedNowUnixSeconds, const bool bQaProjection, FString& OutPath, FString& OutError)

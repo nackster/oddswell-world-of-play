@@ -773,6 +773,12 @@ ODDSWELL_API EOddsWellMatchWinnerLockResult LockOddsWellCanonicalMatchWinnerRequ
 	bool bQaSlot,
 	FOddsWellMatchWinnerLockRecord& OutRecord,
 	FString& OutError);
+ODDSWELL_API bool LoadOddsWellCanonicalMatchWinnerLockEvidence(
+	const FOddsWellMatchWinnerOffer& ExactOffer,
+	int64 OfferEligibleUnixSeconds,
+	bool bQaSlot,
+	FOddsWellMatchWinnerLockRecord& OutRecord,
+	FString& OutError);
 ODDSWELL_API bool WriteOddsWellOddsBucksReconciliation(const FOddsWellOddsBucksLedger& Ledger, int64 NextJobPayoutUnixSeconds, int64 ObservedNowUnixSeconds, bool bQaProjection, FString& OutPath, FString& OutError);
 ODDSWELL_API bool SaveOddsWellOddsBucksLedger(const FOddsWellOddsBucksLedger& Ledger, int64 NextJobPayoutUnixSeconds, bool bQaSlot, FString& OutError);
 ODDSWELL_API bool LoadOddsWellOddsBucksLedger(bool bQaSlot, FOddsWellOddsBucksLedger& OutLedger, int64& OutNextJobPayoutUnixSeconds, bool& bOutFound, FString& OutError);

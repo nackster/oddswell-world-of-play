@@ -4,6 +4,7 @@
 #include "Camera/PlayerCameraManager.h"
 #include "CharacterAppearanceSave.h"
 #include "CharacterPresetCatalog.h"
+#include "CanonicalActiveGameExecutionCommitment.h"
 #include "CanonicalMatchWinnerOffer.h"
 #include "CanonicalPregameCommitment.h"
 #include "CanonicalScheduledGame.h"
@@ -3741,6 +3742,159 @@ void AOddsWellLocomotionGameMode::BeginPlay()
 		FParse::Param(
 			FCommandLine::Get(),
 			TEXT("CanonicalPostLockQa"));
+	const bool bCanonicalExecutionCommitmentQaVerify =
+		FParse::Param(
+			FCommandLine::Get(),
+			TEXT("CanonicalExecutionCommitmentQaVerify"));
+	const bool bCanonicalExecutionCommitmentQa =
+		FParse::Param(
+			FCommandLine::Get(),
+			TEXT("CanonicalExecutionCommitmentQa"))
+		|| bCanonicalExecutionCommitmentQaVerify;
+	if (bCanonicalExecutionCommitmentQa)
+	{
+		FOddsWellOddsBucksLedger BeforeLedger;
+		int64 BeforeNextJobPayoutUnixSeconds = 0;
+		TArray<FOddsWellMatchWinnerRequestRecord> BeforeRequests;
+		TArray<FOddsWellMatchWinnerLockRecord> BeforeLocks;
+		TArray<FOddsWellMatchWinnerResultLinkRecord> BeforeResults;
+		bool bBeforeFound = false;
+		FString Error;
+		bool bPassed =
+			LoadOddsWellOddsBucksWagerEvidence(
+				true,
+				BeforeLedger,
+				BeforeNextJobPayoutUnixSeconds,
+				BeforeRequests,
+				BeforeLocks,
+				BeforeResults,
+				bBeforeFound,
+				Error)
+			&& bBeforeFound
+			&& BeforeLedger.GetEntries().Num() == 2
+			&& BeforeLedger.GetBalance() == 60
+			&& BeforeRequests.Num() == 1
+			&& BeforeLocks.Num() == 1
+			&& BeforeResults.IsEmpty();
+		FOddsWellCanonicalActiveGameExecutionCommitmentRecord Commitment;
+		const EOddsWellCanonicalActiveGameExecutionCommitmentResult Result =
+			bPassed
+				? CreateOddsWellCanonicalActiveGameExecutionCommitment(
+					Commitment,
+					Error)
+				: EOddsWellCanonicalActiveGameExecutionCommitmentResult::Rejected;
+		bPassed = bPassed
+			&& Result == (
+				bCanonicalExecutionCommitmentQaVerify
+					? EOddsWellCanonicalActiveGameExecutionCommitmentResult::Duplicate
+					: EOddsWellCanonicalActiveGameExecutionCommitmentResult::Created)
+			&& Commitment.Schema
+				== TEXT("oddswell-canonical-active-game-execution-commitment-v1")
+			&& Commitment.RecordVersion == 1
+			&& Commitment.SeasonNumber == 1
+			&& Commitment.GameNumber == 1
+			&& Commitment.Status == TEXT("committed_for_execution")
+			&& Commitment.Environment == TEXT("local_beta")
+			&& Commitment.SeedDerivationVersion
+				== TEXT("oddswell-canonical-active-game-seed-v1")
+			&& Commitment.SeedMaterialSha256.Len() == 64
+			&& Commitment.ExecutionInputSha256.Len() == 64
+			&& Commitment.CommitmentSha256.Len() == 64;
+		FOddsWellOddsBucksLedger AfterLedger;
+		int64 AfterNextJobPayoutUnixSeconds = 0;
+		TArray<FOddsWellMatchWinnerRequestRecord> AfterRequests;
+		TArray<FOddsWellMatchWinnerLockRecord> AfterLocks;
+		TArray<FOddsWellMatchWinnerResultLinkRecord> AfterResults;
+		bool bAfterFound = false;
+		bPassed = bPassed
+			&& LoadOddsWellOddsBucksWagerEvidence(
+				true,
+				AfterLedger,
+				AfterNextJobPayoutUnixSeconds,
+				AfterRequests,
+				AfterLocks,
+				AfterResults,
+				bAfterFound,
+				Error)
+			&& bAfterFound
+			&& AfterLedger.GetEntries().Num()
+				== BeforeLedger.GetEntries().Num()
+			&& AfterLedger.GetBalance() == BeforeLedger.GetBalance()
+			&& AfterRequests.Num() == BeforeRequests.Num()
+			&& AfterLocks.Num() == BeforeLocks.Num()
+			&& AfterResults.IsEmpty()
+			&& AfterNextJobPayoutUnixSeconds
+				== BeforeNextJobPayoutUnixSeconds;
+		bool bMissingLockRejected = false;
+		bool bCommitmentImmutable = false;
+		bool bCleanup = !bCanonicalExecutionCommitmentQaVerify;
+		if (bPassed && bCanonicalExecutionCommitmentQaVerify)
+		{
+			bCleanup = ResetOddsWellQaOddsBucksAndVerify(Error);
+			FOddsWellCanonicalActiveGameExecutionCommitmentRecord RejectedRecord;
+			const EOddsWellCanonicalActiveGameExecutionCommitmentResult
+				MissingLockResult =
+					bCleanup
+						? CreateOddsWellCanonicalActiveGameExecutionCommitment(
+							RejectedRecord,
+							Error)
+						: EOddsWellCanonicalActiveGameExecutionCommitmentResult::Created;
+			bMissingLockRejected =
+				bCleanup
+				&& MissingLockResult
+					== EOddsWellCanonicalActiveGameExecutionCommitmentResult::Rejected;
+			FOddsWellCanonicalActiveGameExecutionCommitmentRecord
+				RestoredCommitment;
+			bCommitmentImmutable =
+				bMissingLockRejected
+				&& LoadOddsWellCanonicalActiveGameExecutionCommitment(
+					RestoredCommitment,
+					Error)
+				&& RestoredCommitment.SeedMaterialSha256
+					== Commitment.SeedMaterialSha256
+				&& RestoredCommitment.ExecutionInputSha256
+					== Commitment.ExecutionInputSha256
+				&& RestoredCommitment.CommitmentSha256
+					== Commitment.CommitmentSha256
+				&& RestoredCommitment.Status == Commitment.Status;
+			bPassed = bPassed
+				&& bMissingLockRejected
+				&& bCommitmentImmutable;
+			if (bPassed)
+			{
+				Error.Reset();
+			}
+		}
+		const FString Evidence = FString::Printf(
+			TEXT("ODDSWELL_CANONICAL_EXECUTION_COMMITMENT_QA|result=%s|transition=%s|cold_process_restore=%s|schema=oddswell-canonical-active-game-execution-commitment-v1|record_version=1|season=1|game=1|status=committed_for_execution|seed_derivation=sha256_h26a_h26b_only|execution_input_sha256=%s|commitment_sha256=%s|private_seed=true|private_input=true|public_offer_mutation=false|booth_mutation=false|league_export_mutation=false|reconciliation_mutation=false|ledger_entries=2|requests=1|locks=1|results=0|balance=60|simulation=false|result_state=false|settlement=false|missing_lock_rejected=%s|commitment_immutable=%s|cleanup=%s|detail=%s"),
+			bPassed ? TEXT("PASS") : TEXT("FAIL"),
+			bCanonicalExecutionCommitmentQaVerify
+				? TEXT("duplicate")
+				: TEXT("created"),
+			bCanonicalExecutionCommitmentQaVerify
+				? TEXT("true")
+				: TEXT("false"),
+			*Commitment.ExecutionInputSha256,
+			*Commitment.CommitmentSha256,
+			bCanonicalExecutionCommitmentQaVerify
+				? (bMissingLockRejected ? TEXT("true") : TEXT("false"))
+				: TEXT("not_run"),
+			bCanonicalExecutionCommitmentQaVerify
+				? (bCommitmentImmutable ? TEXT("true") : TEXT("false"))
+				: TEXT("not_run"),
+			bCleanup ? TEXT("true") : TEXT("false"),
+			Error.IsEmpty() ? TEXT("none") : *Error);
+		if (bPassed)
+		{
+			UE_LOG(LogOddsWellLocomotion, Display, TEXT("%s"), *Evidence);
+		}
+		else
+		{
+			UE_LOG(LogOddsWellLocomotion, Error, TEXT("%s"), *Evidence);
+		}
+		FPlatformMisc::RequestExit(false);
+		return;
+	}
 	if (bCanonicalLockQa)
 	{
 		FOddsWellMatchWinnerLockRecord Lock;

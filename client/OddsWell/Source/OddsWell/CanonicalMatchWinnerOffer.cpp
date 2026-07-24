@@ -573,6 +573,56 @@ bool LoadOddsWellCanonicalMatchWinnerOffer(
 		OutError);
 }
 
+bool ValidateOddsWellCanonicalMatchWinnerOfferEvidence(
+	const FOddsWellCanonicalScheduledGameRecord& Schedule,
+	const FOddsWellCanonicalPregameCommitmentRecord& Commitment,
+	const FOddsWellCanonicalMatchWinnerOfferRecord& Record,
+	FString& OutError)
+{
+	FOddsWellMatchWinnerOffer Expected;
+	FString ExpectedCanonicalJson;
+	if (!BuildExpectedOffer(
+			Schedule,
+			Commitment,
+			Expected,
+			ExpectedCanonicalJson,
+			OutError)
+		|| Record.OfferId != Expected.OfferId
+		|| Record.CanonicalOfferJson != ExpectedCanonicalJson
+		|| Record.LockUnixSeconds != Expected.LockUnixSeconds)
+	{
+		if (OutError.IsEmpty())
+		{
+			OutError = TEXT("The canonical Match Winner offer is not exact H26C evidence.");
+		}
+		return false;
+	}
+	OutError.Reset();
+	return true;
+}
+
+bool BuildOddsWellCanonicalMatchWinnerOfferEvidence(
+	const FOddsWellCanonicalScheduledGameRecord& Schedule,
+	const FOddsWellCanonicalPregameCommitmentRecord& Commitment,
+	FOddsWellCanonicalMatchWinnerOfferRecord& OutRecord,
+	FString& OutError)
+{
+	FOddsWellMatchWinnerOffer Expected;
+	if (!BuildExpectedOffer(
+			Schedule,
+			Commitment,
+			Expected,
+			OutRecord.CanonicalOfferJson,
+			OutError))
+	{
+		OutRecord = {};
+		return false;
+	}
+	OutRecord.OfferId = Expected.OfferId;
+	OutRecord.LockUnixSeconds = Expected.LockUnixSeconds;
+	return true;
+}
+
 bool LoadOddsWellCanonicalMatchWinnerOfferPreview(
 	FOddsWellMatchWinnerOfferPreview& OutPreview,
 	FString& OutError)
@@ -616,6 +666,47 @@ EOddsWellCanonicalPendingReceiptResult LoadOddsWellCanonicalPendingMatchWinnerRe
 		UseOddsWellOddsBucksQaSlot(),
 		OutReceipt,
 		OutError);
+}
+
+bool LoadOddsWellCanonicalMatchWinnerLock(
+	FOddsWellMatchWinnerLockRecord& OutRecord,
+	FString& OutError)
+{
+	FOddsWellCanonicalScheduledGameRecord Schedule;
+	FOddsWellCanonicalPregameCommitmentRecord Commitment;
+	FOddsWellMatchWinnerOffer ExactOffer;
+	FString ExactCanonicalJson;
+	FOddsWellCanonicalMatchWinnerOfferRecord PersistedOffer;
+	if (!LoadOddsWellCanonicalLocalBetaScheduledGame(Schedule, OutError)
+		|| !LoadOddsWellCanonicalPregameCommitment(Commitment, OutError)
+		|| !BuildExpectedOffer(
+			Schedule,
+			Commitment,
+			ExactOffer,
+			ExactCanonicalJson,
+			OutError)
+		|| !UGameplayStatics::DoesSaveGameExist(
+			CanonicalOfferSlot,
+			CanonicalOfferUserIndex)
+		|| !RestoreExactOffer(
+			UGameplayStatics::LoadGameFromSlot(
+				CanonicalOfferSlot,
+				CanonicalOfferUserIndex),
+			ExactOffer,
+			ExactCanonicalJson,
+			PersistedOffer,
+			OutError)
+		|| !LoadOddsWellCanonicalMatchWinnerLockEvidence(
+			ExactOffer,
+			Schedule.OfferEligibleUnixSeconds,
+			UseOddsWellOddsBucksQaSlot(),
+			OutRecord,
+			OutError))
+	{
+		OutRecord = {};
+		return false;
+	}
+	return true;
 }
 
 EOddsWellMatchWinnerRequestResult AcceptOddsWellCanonicalMatchWinnerRequest(
