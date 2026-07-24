@@ -78,6 +78,7 @@ const FName StadiumZoneTag(TEXT("OddsWellStadiumZone"));
 const FVector JobInteractionLocation(9500.0, 0.0, 0.0);
 const FVector StadiumEntranceThreshold(7000.0, 18000.0, 0.0);
 const FVector SportsbookInteractionLocation(1000.0, 18000.0, 0.0);
+const TCHAR* TicketBoothOpenPrompt = TEXT("Press E to open betting odds");
 FVector StadiumCityReturnLocation = StadiumEntranceThreshold + FVector(0.0, -100.0, SafeSpawnLocation.Z);
 const FVector StadiumInteriorSpawn(-1600.0, 0.0, 220.0);
 const FVector StadiumReplayOrigin(350.0, 0.0, 0.0);
@@ -85,6 +86,31 @@ constexpr float StadiumReplayScale = 0.15f;
 constexpr int64 JobRecoveryQaStartUnixSeconds = 2000000000;
 int32 StudioQaProcessStage = 0;
 int32 StadiumQaProcessStage = 0;
+
+FString BuildTicketBoothOddsText(const FOddsWellMatchWinnerOfferPreview& Preview)
+{
+	if (Preview.Selections.Num() != 2)
+	{
+		return TEXT("BASKETBALL ODDS UNAVAILABLE");
+	}
+	return FString::Printf(
+		TEXT("STADIUM TICKET BOOTH\n\n")
+		TEXT("BASKETBALL ODDS\n")
+		TEXT("%s  vs  %s\n\n")
+		TEXT("%s   %.4fx\n")
+		TEXT("%s   %.4fx\n\n")
+		TEXT("STAKE: %lld-%lld ODDS BUCKS\n")
+		TEXT("BETS LOCK AT GAME START\n\n")
+		TEXT("VIEW ONLY FOR THIS GAME\n[E] CLOSE"),
+		*Preview.AwayTeam,
+		*Preview.HomeTeam,
+		*Preview.Selections[0].Team,
+		static_cast<double>(Preview.Selections[0].DecimalOddsE4) / 10000.0,
+		*Preview.Selections[1].Team,
+		static_cast<double>(Preview.Selections[1].DecimalOddsE4) / 10000.0,
+		Preview.MinimumStake,
+		Preview.MaximumStake);
+}
 
 struct FStudioSurfaceSpec
 {
@@ -750,7 +776,7 @@ void AOddsWellPlaceholderCharacter::ShowSportsbookOfferPreview()
 			912017,
 			3600.0f,
 			FColor::Yellow,
-			BuildOddsWellMatchWinnerOfferPreview(*SportsbookOfferPreview));
+			BuildTicketBoothOddsText(*SportsbookOfferPreview));
 	}
 }
 
@@ -999,10 +1025,6 @@ void AOddsWellPlaceholderCharacter::Tick(const float DeltaSeconds)
 	PollStudioInteraction();
 	PollStadiumInteraction();
 	PollSportsbookInteraction();
-	if (GEngine && IsLocallyControlled() && PublicLeagueSnapshot && !bPublicLeagueVisible)
-	{
-		GEngine->AddOnScreenDebugMessage(912014, 0.0f, FColor::Cyan, TEXT("Press L to open the public basketball league"));
-	}
 	if (bQaEnabled)
 	{
 		RunQa(DeltaSeconds);
@@ -1532,13 +1554,15 @@ void AOddsWellPlaceholderCharacter::PollSportsbookInteraction()
 		}
 		else
 		{
-		GEngine->AddOnScreenDebugMessage(
-			912018,
-			0.0f,
-			SportsbookOfferPreview ? FColor::Yellow : FColor::Red,
-			SportsbookOfferPreview
-				? (bSportsbookOfferVisible ? TEXT("Press E to close betting odds") : TEXT("Press E to open betting odds"))
-				: TEXT("Match Winner preview unavailable"));
+			GEngine->RemoveOnScreenDebugMessage(912018);
+			if (!bSportsbookOfferVisible)
+			{
+				GEngine->AddOnScreenDebugMessage(
+					912018,
+					0.0f,
+					SportsbookOfferPreview ? FColor::Yellow : FColor::Red,
+					SportsbookOfferPreview ? TicketBoothOpenPrompt : TEXT("Betting odds unavailable"));
+			}
 		}
 	}
 	if (bSportsbookOfferQa
@@ -4011,6 +4035,16 @@ bool FOddsWellStadiumGrayboxTest::RunTest(const FString& Parameters)
 	TestTrue(TEXT("Sportsbook interaction reuses its labeled route waypoint"), GetSundaleRouteWaypoints()[5].Equals(SportsbookInteractionLocation));
 	TestTrue(TEXT("Sportsbook preview radius exceeds the player capsule"), SportsbookInteractionRadius > CapsuleRadius);
 	TestTrue(TEXT("Sportsbook preview cannot overlap the Arena threshold"), FVector::Dist2D(SportsbookInteractionLocation, StadiumEntranceThreshold) > SportsbookInteractionRadius + StadiumEntryRadius);
+	TestEqual(TEXT("Ticket booth uses the approved proximity prompt"), FString(TicketBoothOpenPrompt), FString(TEXT("Press E to open betting odds")));
+	FOddsWellMatchWinnerOfferPreview TicketBoothOffer;
+	FString TicketBoothError;
+	TestTrue(TEXT("Ticket booth can load the validated public odds"), LoadOddsWellMatchWinnerOfferPreview(TicketBoothOffer, TicketBoothError));
+	const FString TicketBoothText = BuildTicketBoothOddsText(TicketBoothOffer);
+	TestTrue(TEXT("Ticket booth view names basketball odds"), TicketBoothText.Contains(TEXT("BASKETBALL ODDS")));
+	TestTrue(TEXT("Ticket booth view shows both teams"), TicketBoothText.Contains(TicketBoothOffer.HomeTeam) && TicketBoothText.Contains(TicketBoothOffer.AwayTeam));
+	TestFalse(TEXT("Ticket booth hides technical offer identity"), TicketBoothText.Contains(TEXT("OFFER ID")));
+	TestFalse(TEXT("Ticket booth hides source commitments"), TicketBoothText.Contains(TEXT("COMMITMENT")));
+	TestFalse(TEXT("Ticket booth hides Unix timestamps"), TicketBoothText.Contains(TEXT("UNIX")));
 	TestTrue(TEXT("Stadium entry radius exceeds the player capsule"), StadiumEntryRadius > CapsuleRadius);
 	TestTrue(TEXT("Archived replay consumer stays compact inside the stadium"), StadiumReplayScale > 0.0f && StadiumReplayScale <= 0.25f);
 	TestTrue(TEXT("Archived replay consumer is anchored on the court"), StadiumReplayOrigin.Equals(FVector(350.0, 0.0, 0.0)));
