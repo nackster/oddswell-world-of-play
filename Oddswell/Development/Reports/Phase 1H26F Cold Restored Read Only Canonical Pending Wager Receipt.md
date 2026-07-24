@@ -38,7 +38,7 @@ The output object is cleared before validation and assigned only after the compl
 - A valid pretipoff request replaces the H26D read-only offer slip with the pending receipt.
 - No request preserves the H26D read-only offer.
 - Missing, multiple, orphaned, stale-schema, mismatched, tampered, or downstream evidence fails closed.
-- At or after tipoff without an authoritative canonical lock, the booth makes no pending, locked, or settled claim.
+- At or after tipoff without an authoritative canonical lock, the booth makes no pending, locked, or settled claim. If the no-request H26D offer is already open as tipoff arrives, its teams and prices clear immediately into the unavailable/locked panel without close/reopen.
 - Opening, switching tabs, closing, leaving the frontage, returning, reopening, and cold restarting never call acceptance and never debit.
 - The receipt reader performs zero migration, reconciliation, save, or deletion work.
 
@@ -48,15 +48,15 @@ This phase adds no normal selection/editor/confirmation route, game-start lock, 
 
 ### Native and frozen regressions
 
-- Focused automation: `OddsWell.League.CanonicalPendingMatchWinnerReceipt` — `1/1` passed.
-- Full Unreal automation: `22/22` passed.
+- Focused automation: the exact receipt plus held-open no-request tipoff regressions passed `2/2`.
+- Full Unreal automation: `23/23` passed.
 - Phase 1H odds contracts: `3/3` passed in `0.08s`.
 - Frozen Python suite: `68` tests and `16` subtests passed in `125.24s`.
 - Brain Admin self-check passed.
 - Python `compileall` passed.
-- Final editor and game builds passed.
-- Fresh Windows BuildCookRun passed in `53.97s`.
-- Final package: `50` files, `1,046,390,030` bytes.
+- Final correction-source editor and game builds passed.
+- Fresh correction-source Windows BuildCookRun passed in `51.66s`.
+- Final correction package: `50` files, `1,046,411,022` bytes.
 
 ### Packaged cold-process proof
 
@@ -76,6 +76,32 @@ Separate packaged proofs also showed:
 - accepted, cold-view, missing, and rejected runs exit without fatal errors or ensures.
 
 The retained rendered frame `Phase1H26F_CanonicalPendingReceipt.png` was inspected at `1280×800`: the receipt is legible, unclipped, IDs are hidden, and the cards are visibly read-only.
+
+### Held-open tipoff correction
+
+Coordinator review found that H26F receipt polling had accidentally narrowed the older H26D tipoff expiry to states that already contained a receipt. The same phase was corrected by restoring unconditional visible-offer expiry while retaining independent receipt revalidation.
+
+The final native test `OddsWell.League.CanonicalPendingReceiptHeldOpenMissingTipoff` holds a no-request offer open, advances the observed server time to the exact lock, and proves that the menu stays open while the offer and receipt evidence clear. The resulting HUD path is therefore `MATCH WINNER UNAVAILABLE / LOCKED`, with no teams or prices. QA ledger existence and bytes remain unchanged.
+
+A fresh correction package repeated the proof across two processes. The first created exact H26A/H26B/H26C with no request, ledger entries `0`, and balance `0`. The second held the menu open at exact tipoff and logged:
+
+- `offer_cleared=true`;
+- `receipt=false`;
+- `locked_panel=true`;
+- `teams=false`;
+- `prices=false`;
+- entries and balance `0/0` before and after;
+- `request_api=false`, `debit=false`, `write=false`, and `close_reopen=false`.
+
+All three canonical files retained their exact lengths, hashes, and UTC modification times:
+
+| Evidence | Bytes | SHA-256 |
+| --- | ---: | --- |
+| H26A schedule | `2,771` | `09c3d52ce9a279c35463512632ff4f03bafe85b13a95e033f0fe79b7efe4cf56` |
+| H26B commitment | `5,153` | `ea59e03178bd9b911af0e1c3c91ffe9d87716e0ed33e0174b9451f5843bffee4` |
+| H26C offer | `2,960` | `406e692b6c6c2d3a823db3d46c3bd0e55ae38b24e0c3134a4b93ab537f52af10` |
+
+The retained `1280×800` frame `Phase1H26F_HeldOpenMissingTipoffLocked.png` was visually inspected: it cleanly shows the locked panel and explicitly states that no teams, prices, selections, or wager controls are shown.
 
 ### Unchanged deterministic evidence
 

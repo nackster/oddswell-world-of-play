@@ -21,6 +21,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/PlayerController.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "HAL/FileManager.h"
 #include "HAL/PlatformMisc.h"
 #include "HousingTierCatalog.h"
 #include "InputCoreTypes.h"
@@ -31,6 +32,7 @@
 #include "Materials/MaterialInstanceDynamic.h"
 #include "Materials/MaterialInterface.h"
 #include "Misc/CommandLine.h"
+#include "Misc/FileHelper.h"
 #include "Misc/Parse.h"
 #include "Net/UnrealNetwork.h"
 #include "PublicLeagueView.h"
@@ -101,6 +103,25 @@ const TArray<FString>& GetTicketBoothMarketLabels()
 		TEXT("PLAYER PROPS"),
 	};
 	return Labels;
+}
+
+void ApplyTicketBoothEvidenceExpiry(
+	const int64 ObservedServerUnixSeconds,
+	const EOddsWellCanonicalPendingReceiptResult ReceiptResult,
+	bool& bMenuVisible,
+	TUniquePtr<FOddsWellMatchWinnerOfferPreview>& Offer,
+	TUniquePtr<FOddsWellCanonicalPendingMatchWinnerReceipt>& Receipt)
+{
+	if (bMenuVisible
+		&& Offer
+		&& (ObservedServerUnixSeconds >= Offer->LockUnix
+			|| (Receipt
+				&& ReceiptResult
+					!= EOddsWellCanonicalPendingReceiptResult::Ready)))
+	{
+		Receipt.Reset();
+		Offer.Reset();
+	}
 }
 
 struct FStudioSurfaceSpec
@@ -412,9 +433,14 @@ void AOddsWellPlaceholderCharacter::BeginPlay()
 	bStadiumQa = FParse::Param(FCommandLine::Get(), TEXT("StadiumQa"));
 	bCanonicalPendingReceiptQa =
 		FParse::Param(FCommandLine::Get(), TEXT("CanonicalPendingReceiptQa"));
+	bCanonicalMissingHeldOpenTipoffQa =
+		FParse::Param(
+			FCommandLine::Get(),
+			TEXT("CanonicalMissingHeldOpenTipoffQa"));
 	bSportsbookOfferQa =
 		FParse::Param(FCommandLine::Get(), TEXT("SportsbookOfferQa"))
-		|| bCanonicalPendingReceiptQa;
+		|| bCanonicalPendingReceiptQa
+		|| bCanonicalMissingHeldOpenTipoffQa;
 	bSportsbookWagerQaVerify = FParse::Param(FCommandLine::Get(), TEXT("SportsbookWagerQaVerify"));
 	bSportsbookWagerQaMode = FParse::Param(FCommandLine::Get(), TEXT("SportsbookWagerQa")) || bSportsbookWagerQaVerify;
 	bSportsbookWagerQaAuto = FParse::Param(FCommandLine::Get(), TEXT("SportsbookWagerQaAuto")) || bSportsbookWagerQaVerify;
@@ -1618,19 +1644,25 @@ void AOddsWellPlaceholderCharacter::PollSportsbookInteraction()
 	if (!bSportsbookWagerQaMode
 		&& !bSportsbookReceiptQaMode
 		&& bSportsbookOfferVisible
-		&& SportsbookOfferPreview
-		&& SportsbookCanonicalReceipt)
+		&& SportsbookOfferPreview)
 	{
-		FOddsWellCanonicalPendingMatchWinnerReceipt CurrentReceipt;
-		FString Error;
-		if (LoadOddsWellCanonicalPendingMatchWinnerReceipt(
-				CurrentReceipt,
-				Error)
-			!= EOddsWellCanonicalPendingReceiptResult::Ready)
+		EOddsWellCanonicalPendingReceiptResult ReceiptResult =
+			EOddsWellCanonicalPendingReceiptResult::Missing;
+		if (SportsbookCanonicalReceipt)
 		{
-			SportsbookCanonicalReceipt.Reset();
-			SportsbookOfferPreview.Reset();
+			FOddsWellCanonicalPendingMatchWinnerReceipt CurrentReceipt;
+			FString Error;
+			ReceiptResult =
+				LoadOddsWellCanonicalPendingMatchWinnerReceipt(
+					CurrentReceipt,
+					Error);
 		}
+		ApplyTicketBoothEvidenceExpiry(
+			FDateTime::UtcNow().ToUnixTimestamp(),
+			ReceiptResult,
+			bSportsbookOfferVisible,
+			SportsbookOfferPreview,
+			SportsbookCanonicalReceipt);
 	}
 	if (!bAtSportsbook)
 	{
@@ -1794,6 +1826,34 @@ void AOddsWellPlaceholderCharacter::RunSportsbookOfferQa(const float DeltaSecond
 			QaExitAt = FPlatformTime::Seconds() + 1.0;
 			return;
 		}
+		if (bCanonicalMissingHeldOpenTipoffQa)
+		{
+			const int64 TipoffUnix = SportsbookOfferPreview->LockUnix;
+			ApplyTicketBoothEvidenceExpiry(
+				TipoffUnix,
+				EOddsWellCanonicalPendingReceiptResult::Missing,
+				bSportsbookOfferVisible,
+				SportsbookOfferPreview,
+				SportsbookCanonicalReceipt);
+			const bool bHeldOpenLocked =
+				bSportsbookOfferVisible
+				&& !SportsbookOfferPreview
+				&& !SportsbookCanonicalReceipt
+				&& GameMode->GetOddsBucksEntryCount()
+					== SportsbookOfferQaLedgerEntries
+				&& GameMode->GetOddsBucksBalance()
+					== SportsbookOfferQaBalance;
+			if (!bHeldOpenLocked)
+			{
+				UE_LOG(
+					LogOddsWellLocomotion,
+					Error,
+					TEXT("ODDSWELL_CANONICAL_MISSING_HELD_OPEN_TIPOFF_QA|result=FAIL|reason=expiry_or_ledger_mismatch|closed=true"));
+				bSportsbookOfferQa = false;
+				QaExitAt = FPlatformTime::Seconds() + 1.0;
+				return;
+			}
+		}
 		if (bCanonicalPendingReceiptQa)
 		{
 			SetTicketBoothMarketPage(1);
@@ -1839,11 +1899,32 @@ void AOddsWellPlaceholderCharacter::RunSportsbookOfferQa(const float DeltaSecond
 		if (FParse::Param(FCommandLine::Get(), TEXT("SportsbookOfferQaCapture")))
 		{
 			FScreenshotRequest::RequestScreenshot(
-				bCanonicalPendingReceiptQa
-					? TEXT("Phase1H26F_CanonicalPendingReceipt.png")
-					: TEXT("Phase1H26D_CanonicalMatchWinnerOffer.png"),
+				bCanonicalMissingHeldOpenTipoffQa
+					? TEXT("Phase1H26F_HeldOpenMissingTipoffLocked.png")
+					: (bCanonicalPendingReceiptQa
+						? TEXT("Phase1H26F_CanonicalPendingReceipt.png")
+						: TEXT("Phase1H26D_CanonicalMatchWinnerOffer.png")),
 				true,
 				false);
+		}
+		if (bCanonicalMissingHeldOpenTipoffQa)
+		{
+			UE_LOG(
+				LogOddsWellLocomotion,
+				Display,
+				TEXT("ODDSWELL_CANONICAL_MISSING_HELD_OPEN_TIPOFF_QA|result=PASS|phase=H26F|held_open=true|tipoff=exact|offer_cleared=true|receipt=false|locked_panel=true|teams=false|prices=false|entries_before=%d|entries_after=%d|balance_before=%lld|balance_after=%lld|request_api=false|debit=false|write=false|close_reopen=false"),
+				SportsbookOfferQaLedgerEntries,
+				GameMode->GetOddsBucksEntryCount(),
+				SportsbookOfferQaBalance,
+				GameMode->GetOddsBucksBalance());
+			bSportsbookOfferQa = false;
+			if (FParse::Param(
+					FCommandLine::Get(),
+					TEXT("SportsbookOfferAutoExit")))
+			{
+				QaExitAt = FPlatformTime::Seconds() + 2.0;
+			}
+			return;
 		}
 		if (bCanonicalPendingReceiptQa)
 		{
@@ -4852,6 +4933,80 @@ bool FOddsWellStadiumGrayboxTest::RunTest(const FString& Parameters)
 	TestTrue(TEXT("Stadium entry radius exceeds the player capsule"), StadiumEntryRadius > CapsuleRadius);
 	TestTrue(TEXT("Archived replay consumer stays compact inside the stadium"), StadiumReplayScale > 0.0f && StadiumReplayScale <= 0.25f);
 	TestTrue(TEXT("Archived replay consumer is anchored on the court"), StadiumReplayOrigin.Equals(FVector(350.0, 0.0, 0.0)));
+	return !HasAnyErrors();
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(
+	FOddsWellCanonicalPendingReceiptHeldOpenTipoffTest,
+	"OddsWell.League.CanonicalPendingReceiptHeldOpenMissingTipoff",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+
+bool FOddsWellCanonicalPendingReceiptHeldOpenTipoffTest::RunTest(
+	const FString& Parameters)
+{
+	const FString QaLedgerPath = FPaths::Combine(
+		FPaths::ProjectSavedDir(),
+		TEXT("SaveGames"),
+		TEXT("OddsWellOddsBucksQA.sav"));
+	TArray<uint8> BeforeBytes;
+	const bool bLedgerExistedBefore =
+		IFileManager::Get().FileExists(*QaLedgerPath);
+	if (bLedgerExistedBefore)
+	{
+		TestTrue(
+			TEXT("H26F held-open fixture reads existing ledger bytes"),
+			FFileHelper::LoadFileToArray(BeforeBytes, *QaLedgerPath));
+	}
+
+	TUniquePtr<FOddsWellMatchWinnerOfferPreview> HeldOpenOffer =
+		MakeUnique<FOddsWellMatchWinnerOfferPreview>();
+	HeldOpenOffer->HomeTeam = TEXT("Harbor City Waves");
+	HeldOpenOffer->AwayTeam = TEXT("Mesa Vista Sol");
+	HeldOpenOffer->LockUnix = 2200001800;
+	FOddsWellMatchWinnerSelectionPreview HomeSelection;
+	HomeSelection.Team = HeldOpenOffer->HomeTeam;
+	HomeSelection.DecimalOddsE4 = 17365;
+	HeldOpenOffer->Selections.Add(HomeSelection);
+	FOddsWellMatchWinnerSelectionPreview AwaySelection;
+	AwaySelection.Team = HeldOpenOffer->AwayTeam;
+	AwaySelection.DecimalOddsE4 = 23577;
+	HeldOpenOffer->Selections.Add(AwaySelection);
+	TUniquePtr<FOddsWellCanonicalPendingMatchWinnerReceipt> MissingReceipt;
+	bool bMenuRemainsHeldOpen = true;
+
+	ApplyTicketBoothEvidenceExpiry(
+		HeldOpenOffer->LockUnix,
+		EOddsWellCanonicalPendingReceiptResult::Missing,
+		bMenuRemainsHeldOpen,
+		HeldOpenOffer,
+		MissingReceipt);
+
+	TestTrue(
+		TEXT("H26F no-request menu remains held open at tipoff"),
+		bMenuRemainsHeldOpen);
+	TestNull(
+		TEXT("H26F held-open no-request tipoff clears all teams and prices"),
+		HeldOpenOffer.Get());
+	TestNull(
+		TEXT("H26F held-open no-request tipoff exposes no pending receipt"),
+		MissingReceipt.Get());
+
+	TArray<uint8> AfterBytes;
+	const bool bLedgerExistsAfter =
+		IFileManager::Get().FileExists(*QaLedgerPath);
+	TestEqual(
+		TEXT("H26F held-open expiry creates no ledger or debit"),
+		bLedgerExistsAfter,
+		bLedgerExistedBefore);
+	if (bLedgerExistedBefore && bLedgerExistsAfter)
+	{
+		TestTrue(
+			TEXT("H26F held-open fixture rereads existing ledger bytes"),
+			FFileHelper::LoadFileToArray(AfterBytes, *QaLedgerPath));
+		TestTrue(
+			TEXT("H26F held-open expiry leaves existing ledger bytes unchanged"),
+			AfterBytes == BeforeBytes);
+	}
 	return !HasAnyErrors();
 }
 
