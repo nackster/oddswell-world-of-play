@@ -271,6 +271,39 @@ def validated_match_winner_void_reconciliation(data: dict[str, object]) -> dict[
         "final_balance": 100,
         "net": 0,
     }
+    if data.get("season_number") == 100:
+        expected.update({
+            "offer_id": "4a30feca21ab8dfb8a3f64ca642aadcdb33743b07a7cedf49b6b743f1c6f2f31",
+            "request_command_id": "qa:h17:match_winner:request:1",
+            "selected_team": "Sundale Sparks",
+            "request_accepted_unix": 2_100_000_000,
+            "request_lock_unix": 2_100_086_400,
+            "stake_ledger_command_id": "qa:h17:match_winner:request:1",
+            "lock_command_id": "qa:h19:match_winner:lock:1",
+            "lock_request_command_id": "qa:h17:match_winner:request:1",
+            "season_number": 100,
+            "game_start_unix": 2_100_086_400,
+            "lock_unix": 2_100_086_400,
+            "cancellation_command_id": "qa:h20:match_winner:cancellation:1",
+            "cancellation_evidence_id": "qa:h20:match_winner:cancellation:evidence:1",
+            "cancellation_request_command_id": "qa:h17:match_winner:request:1",
+            "cancellation_lock_command_id": "qa:h19:match_winner:lock:1",
+            "cancellation_unix": 2_100_086_700,
+            "decision_command_id": "qa:h21:match_winner:void-decision:1",
+            "decision_cancellation_command_id": "qa:h20:match_winner:cancellation:1",
+            "decision_cancellation_evidence_id": "qa:h20:match_winner:cancellation:evidence:1",
+            "decision_request_command_id": "qa:h17:match_winner:request:1",
+            "decision_lock_command_id": "qa:h19:match_winner:lock:1",
+            "decision_offer_id": "4a30feca21ab8dfb8a3f64ca642aadcdb33743b07a7cedf49b6b743f1c6f2f31",
+            "refund_ledger_command_id": "qa:h22:match_winner:void-finalization:1",
+            "finalization_command_id": "qa:h22:match_winner:void-finalization:1",
+            "finalization_decision_command_id": "qa:h21:match_winner:void-decision:1",
+            "finalization_cancellation_command_id": "qa:h20:match_winner:cancellation:1",
+            "finalization_cancellation_evidence_id": "qa:h20:match_winner:cancellation:evidence:1",
+            "finalization_request_command_id": "qa:h17:match_winner:request:1",
+            "finalization_lock_command_id": "qa:h19:match_winner:lock:1",
+            "finalization_offer_id": "4a30feca21ab8dfb8a3f64ca642aadcdb33743b07a7cedf49b6b743f1c6f2f31",
+        })
     integer_fields = (
         "stake", "request_accepted_unix", "request_lock_unix", "stake_sequence", "stake_delta",
         "stake_balance_after", "season_number", "game_number", "game_start_unix", "lock_unix",
@@ -1826,6 +1859,40 @@ def self_check() -> None:
             "final_balance": 100,
             "net": 0,
         }
+        legacy_void_projection_json = json.dumps(void_projection, sort_keys=True)
+        upcoming_void_projection = {
+            **void_projection,
+            "offer_id": "4a30feca21ab8dfb8a3f64ca642aadcdb33743b07a7cedf49b6b743f1c6f2f31",
+            "request_command_id": "qa:h17:match_winner:request:1",
+            "selected_team": "Sundale Sparks",
+            "request_accepted_unix": 2_100_000_000,
+            "request_lock_unix": 2_100_086_400,
+            "stake_ledger_command_id": "qa:h17:match_winner:request:1",
+            "lock_command_id": "qa:h19:match_winner:lock:1",
+            "lock_request_command_id": "qa:h17:match_winner:request:1",
+            "season_number": 100,
+            "game_start_unix": 2_100_086_400,
+            "lock_unix": 2_100_086_400,
+            "cancellation_command_id": "qa:h20:match_winner:cancellation:1",
+            "cancellation_evidence_id": "qa:h20:match_winner:cancellation:evidence:1",
+            "cancellation_request_command_id": "qa:h17:match_winner:request:1",
+            "cancellation_lock_command_id": "qa:h19:match_winner:lock:1",
+            "cancellation_unix": 2_100_086_700,
+            "decision_command_id": "qa:h21:match_winner:void-decision:1",
+            "decision_cancellation_command_id": "qa:h20:match_winner:cancellation:1",
+            "decision_cancellation_evidence_id": "qa:h20:match_winner:cancellation:evidence:1",
+            "decision_request_command_id": "qa:h17:match_winner:request:1",
+            "decision_lock_command_id": "qa:h19:match_winner:lock:1",
+            "decision_offer_id": "4a30feca21ab8dfb8a3f64ca642aadcdb33743b07a7cedf49b6b743f1c6f2f31",
+            "refund_ledger_command_id": "qa:h22:match_winner:void-finalization:1",
+            "finalization_command_id": "qa:h22:match_winner:void-finalization:1",
+            "finalization_decision_command_id": "qa:h21:match_winner:void-decision:1",
+            "finalization_cancellation_command_id": "qa:h20:match_winner:cancellation:1",
+            "finalization_cancellation_evidence_id": "qa:h20:match_winner:cancellation:evidence:1",
+            "finalization_request_command_id": "qa:h17:match_winner:request:1",
+            "finalization_lock_command_id": "qa:h19:match_winner:lock:1",
+            "finalization_offer_id": "4a30feca21ab8dfb8a3f64ca642aadcdb33743b07a7cedf49b6b743f1c6f2f31",
+        }
         wager_path.write_text(json.dumps(wager_projection), encoding="utf-8")
         wager = match_winner_reconciliation_payload(wager_path)
         assert wager == {
@@ -1940,6 +2007,59 @@ def self_check() -> None:
         wager_path.write_text("{}", encoding="utf-8")
         partial_void = match_winner_reconciliation_payload(wager_path)
         assert partial_void["available"] is False and "selected_team" not in partial_void
+        wager_path.write_text(json.dumps(upcoming_void_projection), encoding="utf-8")
+        upcoming_void_wager = match_winner_reconciliation_payload(wager_path)
+        assert upcoming_void_wager == {
+            "available": True,
+            "status": "VALIDATED QA FINALIZED VOID",
+            "read_only": True,
+            "generated_at_utc": "2033-05-18T03:33:20Z",
+            "outcome": "voided",
+            "selected_team": "Sundale Sparks",
+            "stake": 40,
+            "return": 40,
+            "refund_due": 40,
+            "net": 0,
+            "balance": 100,
+            "ledger_entry_count": 3,
+            "finalization_status": "settled_void",
+            "cancellation_evidence_id": "qa:h20:match_winner:cancellation:evidence:1",
+            "cancellation_unix": 2_100_086_700,
+            "cancellation_reason": "game_canceled",
+            "cancellation_status": "closed_canceled",
+            "decision_status": "decided_void_pending_refund",
+            "command_linkage": "qa:h17:match_winner:request:1 -> qa:h19:match_winner:lock:1 -> qa:h20:match_winner:cancellation:1 -> qa:h21:match_winner:void-decision:1 -> qa:h22:match_winner:void-finalization:1",
+            "ledger_linkage": "2:qa:h17:match_winner:request:1:match_winner_stake:-40->60 | 3:qa:h22:match_winner:void-finalization:1:match_winner_refund:+40->100",
+            "boundary": "Immutable read-only server evidence. The void decision remains decided_void_pending_refund; one exact refund entry and a separate settled_void finalization expose no mutation control.",
+        }
+        for field, invalid_value in (
+            ("request_lock_unix", 2_100_086_399),
+            ("offer_id", "0" * 64),
+            ("finalization_request_command_id", "qa:h17:match_winner:request:wrong"),
+        ):
+            invalid_upcoming = {**upcoming_void_projection, field: invalid_value}
+            wager_path.write_text(json.dumps(invalid_upcoming), encoding="utf-8")
+            rejected_upcoming = match_winner_reconciliation_payload(wager_path)
+            assert rejected_upcoming["available"] is False
+            assert not {"selected_team", "balance", "command_linkage"}.intersection(rejected_upcoming)
+        partial_upcoming = {
+            field: value
+            for field, value in upcoming_void_projection.items()
+            if not field.startswith("finalization_")
+        }
+        wager_path.write_text(json.dumps(partial_upcoming), encoding="utf-8")
+        rejected_partial_upcoming = match_winner_reconciliation_payload(wager_path)
+        assert rejected_partial_upcoming["available"] is False
+        assert not {"selected_team", "balance", "command_linkage"}.intersection(rejected_partial_upcoming)
+        mixed_upcoming = {
+            **upcoming_void_projection,
+            "result_command_id": "qa:h25:invented-normal-result",
+        }
+        wager_path.write_text(json.dumps(mixed_upcoming), encoding="utf-8")
+        rejected_mixed_upcoming = match_winner_reconciliation_payload(wager_path)
+        assert rejected_mixed_upcoming["available"] is False
+        assert not {"selected_team", "balance", "command_linkage"}.intersection(rejected_mixed_upcoming)
+        assert json.dumps(void_projection, sort_keys=True) == legacy_void_projection_json
     server = LocalHTTPServer(("127.0.0.1", 0), Handler)
     try:
         try:

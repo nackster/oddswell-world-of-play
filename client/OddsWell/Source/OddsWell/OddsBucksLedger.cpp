@@ -53,6 +53,7 @@ const FString MatchWinnerSnapshotVersion(TEXT("oddswell-public-pregame-v1"));
 const FString MatchWinnerSourceModel(TEXT("public_elo_rotation"));
 const FString MatchWinnerPayoutFormula(TEXT("floor(stake*100000000/win_probability_e8)"));
 const FString ExactMatchWinnerOfferId(TEXT("9e6870420528e2a821591b763471c47f71b198c063cbdcbecd9ee180f9ea2459"));
+const FString UpcomingQaOfferId(TEXT("4a30feca21ab8dfb8a3f64ca642aadcdb33743b07a7cedf49b6b743f1c6f2f31"));
 const FString UpcomingQaRequestCommandId(TEXT("qa:h17:match_winner:request:1"));
 const FString UpcomingQaLockCommandId(TEXT("qa:h19:match_winner:lock:1"));
 const FString UpcomingQaCancellationCommandId(TEXT("qa:h20:match_winner:cancellation:1"));
@@ -1540,7 +1541,25 @@ bool WriteMatchWinnerVoidReconciliationFromValidatedState(
 	const bool bCanceledQaChain = Lock.SeasonNumber == CanceledQaSeasonNumber
 		&& Lock.GameNumber == CanceledQaGameNumber;
 	const bool bUpcomingQaChain = Lock.SeasonNumber == UpcomingQaSeasonNumber
-		&& Lock.GameNumber == UpcomingQaGameNumber;
+		&& Lock.GameNumber == UpcomingQaGameNumber
+		&& Request.OfferId == UpcomingQaOfferId
+		&& Request.OfferVersion == MatchWinnerOfferVersion
+		&& Request.RequestCommandId == UpcomingQaRequestCommandId
+		&& Request.StakeLedgerCommandId == UpcomingQaRequestCommandId
+		&& Request.HomeTeam == TEXT("Sundale Sparks")
+		&& Request.AwayTeam == TEXT("Red Mesa Rivals")
+		&& Request.OfferedTeam == TEXT("Sundale Sparks")
+		&& Request.AcceptedUnixSeconds == UpcomingQaAcceptedUnixSeconds
+		&& Request.LockUnixSeconds == UpcomingQaLockUnixSeconds
+		&& Lock.LockCommandId == UpcomingQaLockCommandId
+		&& Lock.RequestCommandId == UpcomingQaRequestCommandId
+		&& Lock.AuthoritativeGameStartUnixSeconds == UpcomingQaLockUnixSeconds
+		&& Lock.LockUnixSeconds == UpcomingQaLockUnixSeconds
+		&& Canceled.CancellationCommandId == UpcomingQaCancellationCommandId
+		&& Canceled.CancellationEvidenceId == UpcomingQaCancellationEvidenceId
+		&& Canceled.AuthoritativeCancellationUnixSeconds == UpcomingQaCancellationUnixSeconds
+		&& Decision.VoidDecisionCommandId == UpcomingQaVoidDecisionCommandId
+		&& Finalization.FinalizationCommandId == UpcomingQaVoidFinalizationCommandId;
 	if (!bQaProjection
 		|| !StakeEntry
 		|| !RefundEntry
@@ -1615,12 +1634,6 @@ bool WriteMatchWinnerVoidReconciliationFromValidatedState(
 		OutError = TEXT("The Match Winner void reconciliation does not match the exact finalized chain.");
 		return false;
 	}
-	if (bUpcomingQaChain)
-	{
-		OutError.Reset();
-		return true;
-	}
-
 	const TSharedRef<FJsonObject> Root = MakeShared<FJsonObject>();
 	Root->SetStringField(TEXT("schema"), MatchWinnerReconciliationSchema);
 	Root->SetStringField(TEXT("generated_at_utc"), FDateTime::UtcNow().ToIso8601());
@@ -1649,7 +1662,7 @@ bool WriteMatchWinnerVoidReconciliationFromValidatedState(
 	Root->SetNumberField(TEXT("game_number"), Lock.GameNumber);
 	Root->SetNumberField(TEXT("game_start_unix"), static_cast<double>(Lock.AuthoritativeGameStartUnixSeconds));
 	Root->SetNumberField(TEXT("lock_unix"), static_cast<double>(Lock.LockUnixSeconds));
-	Root->SetStringField(TEXT("lock_decision"), Lock.Decision.ToString());
+	Root->SetStringField(TEXT("lock_decision"), bUpcomingQaChain ? TEXT("locked") : Lock.Decision.ToString());
 	Root->SetStringField(TEXT("cancellation_command_id"), Canceled.CancellationCommandId);
 	Root->SetStringField(TEXT("cancellation_evidence_id"), Canceled.CancellationEvidenceId);
 	Root->SetStringField(TEXT("cancellation_request_command_id"), Canceled.RequestCommandId);
@@ -7265,6 +7278,72 @@ bool FOddsWellUpcomingQaMatchWinnerVoidFinalizationTest::RunTest(const FString& 
 		TestEqual(TEXT("H21 remains pending and immutable"), FinalizedVoidDecisions[0].Status, MatchWinnerDecidedVoidPendingRefundStatus);
 		TestEqual(TEXT("H21 refund due remains 40"), FinalizedVoidDecisions[0].RefundDue, int64{40});
 	}
+	const FString MatchWinnerProjectionPath = GetMatchWinnerReconciliationPath(true);
+	TestTrue(TEXT("H25 publishes exact upcoming QA history"), IFileManager::Get().FileExists(*MatchWinnerProjectionPath));
+	FString UpcomingVoidProjectionJson;
+	TSharedPtr<FJsonObject> UpcomingVoidProjection;
+	TestTrue(TEXT("H25 exact upcoming QA history reads"), FFileHelper::LoadFileToString(UpcomingVoidProjectionJson, *MatchWinnerProjectionPath));
+	const TSharedRef<TJsonReader<>> UpcomingVoidProjectionReader = TJsonReaderFactory<>::Create(UpcomingVoidProjectionJson);
+	TestTrue(TEXT("H25 exact upcoming QA history parses"), FJsonSerializer::Deserialize(UpcomingVoidProjectionReader, UpcomingVoidProjection) && UpcomingVoidProjection.IsValid());
+	FString NormalizedUpcomingVoidProjectionJson;
+	if (UpcomingVoidProjection.IsValid())
+	{
+		TestEqual(TEXT("H25 keeps reconciliation v1"), UpcomingVoidProjection->GetStringField(TEXT("schema")), MatchWinnerReconciliationSchema);
+		TestEqual(TEXT("H25 binds exact offer"), UpcomingVoidProjection->GetStringField(TEXT("offer_id")), UpcomingQaOfferId);
+		TestEqual(TEXT("H25 binds H17 request"), UpcomingVoidProjection->GetStringField(TEXT("request_command_id")), UpcomingQaRequestCommandId);
+		TestEqual(TEXT("H25 binds H19 lock"), UpcomingVoidProjection->GetStringField(TEXT("lock_command_id")), UpcomingQaLockCommandId);
+		TestEqual(TEXT("H25 canonicalizes H19 locked decision"), UpcomingVoidProjection->GetStringField(TEXT("lock_decision")), TEXT("locked"));
+		TestEqual(TEXT("H25 binds H20 cancellation"), UpcomingVoidProjection->GetStringField(TEXT("cancellation_command_id")), UpcomingQaCancellationCommandId);
+		TestEqual(TEXT("H25 binds H20 evidence"), UpcomingVoidProjection->GetStringField(TEXT("cancellation_evidence_id")), UpcomingQaCancellationEvidenceId);
+		TestEqual(TEXT("H25 binds H21 decision"), UpcomingVoidProjection->GetStringField(TEXT("decision_command_id")), UpcomingQaVoidDecisionCommandId);
+		TestEqual(TEXT("H25 binds H22 finalization"), UpcomingVoidProjection->GetStringField(TEXT("finalization_command_id")), UpcomingQaVoidFinalizationCommandId);
+		TestEqual(TEXT("H25 keeps settled void"), UpcomingVoidProjection->GetStringField(TEXT("finalization_status")), MatchWinnerSettledVoidStatus.ToString());
+		TestEqual(TEXT("H25 keeps ledger count three"), static_cast<int32>(UpcomingVoidProjection->GetNumberField(TEXT("ledger_entry_count"))), 3);
+		TestEqual(TEXT("H25 keeps final balance 100"), static_cast<int64>(UpcomingVoidProjection->GetNumberField(TEXT("final_balance"))), int64{100});
+		TestEqual(TEXT("H25 keeps net zero"), static_cast<int64>(UpcomingVoidProjection->GetNumberField(TEXT("net"))), int64{0});
+		TestFalse(TEXT("H25 invents no result"), UpcomingVoidProjection->HasField(TEXT("result_command_id")));
+		TestFalse(TEXT("H25 invents no winner"), UpcomingVoidProjection->HasField(TEXT("winner")));
+		TestFalse(TEXT("H25 invents no replay"), UpcomingVoidProjection->HasField(TEXT("replay_seal_sha256")));
+		UpcomingVoidProjection->RemoveField(TEXT("generated_at_utc"));
+		const TSharedRef<TJsonWriter<>> NormalizedUpcomingVoidProjectionWriter = TJsonWriterFactory<>::Create(&NormalizedUpcomingVoidProjectionJson);
+		TestTrue(TEXT("H25 exact upcoming QA history normalizes"), FJsonSerializer::Serialize(UpcomingVoidProjection.ToSharedRef(), NormalizedUpcomingVoidProjectionWriter));
+	}
+	TestTrue(TEXT("H25 projection can be removed for cold-load proof"), IFileManager::Get().Delete(*MatchWinnerProjectionPath, false, true, true));
+	FOddsWellOddsBucksLedger HistoryLedger;
+	int64 HistoryNextJobPayout = 0;
+	TArray<FOddsWellMatchWinnerRequestRecord> HistoryRequests;
+	TArray<FOddsWellMatchWinnerLockRecord> HistoryLocks;
+	TArray<FOddsWellMatchWinnerResultLinkRecord> HistoryResults;
+	TArray<FOddsWellMatchWinnerSettlementDecisionRecord> HistoryDecisions;
+	TArray<FOddsWellMatchWinnerLossFinalizationRecord> HistoryLossFinalizations;
+	TArray<FOddsWellMatchWinnerWinFinalizationRecord> HistoryWinFinalizations;
+	bool bHistoryFound = false;
+	TestTrue(TEXT("H25 cold load accepts only the exact finalized chain"), LoadOddsWellOddsBucksWagerFinalizationState(
+		true,
+		HistoryLedger,
+		HistoryNextJobPayout,
+		HistoryRequests,
+		HistoryLocks,
+		HistoryResults,
+		HistoryDecisions,
+		HistoryLossFinalizations,
+		HistoryWinFinalizations,
+		bHistoryFound,
+		Error));
+	TestTrue(TEXT("H25 cold load regenerates exact upcoming QA history"), IFileManager::Get().FileExists(*MatchWinnerProjectionPath));
+	FString ColdUpcomingVoidProjectionJson;
+	TSharedPtr<FJsonObject> ColdUpcomingVoidProjection;
+	TestTrue(TEXT("H25 regenerated history reads"), FFileHelper::LoadFileToString(ColdUpcomingVoidProjectionJson, *MatchWinnerProjectionPath));
+	const TSharedRef<TJsonReader<>> ColdUpcomingVoidProjectionReader = TJsonReaderFactory<>::Create(ColdUpcomingVoidProjectionJson);
+	TestTrue(TEXT("H25 regenerated history parses"), FJsonSerializer::Deserialize(ColdUpcomingVoidProjectionReader, ColdUpcomingVoidProjection) && ColdUpcomingVoidProjection.IsValid());
+	if (ColdUpcomingVoidProjection.IsValid())
+	{
+		ColdUpcomingVoidProjection->RemoveField(TEXT("generated_at_utc"));
+		FString NormalizedColdUpcomingVoidProjectionJson;
+		const TSharedRef<TJsonWriter<>> NormalizedColdUpcomingVoidProjectionWriter = TJsonWriterFactory<>::Create(&NormalizedColdUpcomingVoidProjectionJson);
+		TestTrue(TEXT("H25 regenerated history normalizes"), FJsonSerializer::Serialize(ColdUpcomingVoidProjection.ToSharedRef(), NormalizedColdUpcomingVoidProjectionWriter));
+		TestEqual(TEXT("H25 cold history is byte-equivalent after timestamp removal"), NormalizedColdUpcomingVoidProjectionJson, NormalizedUpcomingVoidProjectionJson);
+	}
 	const UOddsWellOddsBucksSaveGame* ExactFinalized = Cast<UOddsWellOddsBucksSaveGame>(
 		UGameplayStatics::LoadGameFromSlot(OddsBucksQaSlot, OddsBucksUserIndex));
 	TestNotNull(TEXT("Exact H22 save reloads"), ExactFinalized);
@@ -7333,6 +7412,7 @@ bool FOddsWellUpcomingQaMatchWinnerVoidFinalizationTest::RunTest(const FString& 
 			FString::Printf(TEXT("%s rejects exact H22 command"), Label),
 			FinalizeOddsWellUpcomingQaMatchWinnerVoidRefund(Finalization, Error),
 			EOddsWellMatchWinnerVoidFinalizationResult::Rejected);
+		TestFalse(FString::Printf(TEXT("%s exposes no stale H25 history"), Label), IFileManager::Get().FileExists(*MatchWinnerProjectionPath));
 		TestTrue(FString::Printf(TEXT("%s exact H22 state restores"), Label), RestoreExactFinalization());
 	};
 	RejectMutation(TEXT("Wrong H21 decision link"), [](UOddsWellOddsBucksSaveGame& Save)
@@ -7381,6 +7461,19 @@ bool FOddsWellUpcomingQaMatchWinnerVoidFinalizationTest::RunTest(const FString& 
 			UGameplayStatics::LoadGameFromSlot(OddsBucksQaSlot, OddsBucksUserIndex),
 			RestoredFinalizedBytes));
 	TestTrue(TEXT("Every H22 tamper rejection preserves exact bytes"), RestoredFinalizedBytes == FinalizedBytes);
+	TestTrue(TEXT("H25 restored exact state cold-publishes again"), LoadOddsWellOddsBucksWagerFinalizationState(
+		true,
+		HistoryLedger,
+		HistoryNextJobPayout,
+		HistoryRequests,
+		HistoryLocks,
+		HistoryResults,
+		HistoryDecisions,
+		HistoryLossFinalizations,
+		HistoryWinFinalizations,
+		bHistoryFound,
+		Error));
+	TestTrue(TEXT("H25 restored exact state exposes one read-only history"), IFileManager::Get().FileExists(*MatchWinnerProjectionPath));
 	TestTrue(TEXT("H22 QA cleanup succeeds"), ResetOddsWellQaOddsBucksAndVerify(Error));
 	return !HasAnyErrors();
 }
