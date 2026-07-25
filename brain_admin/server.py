@@ -226,7 +226,6 @@ def validated_match_winner_void_reconciliation(data: dict[str, object]) -> dict[
         "game_number": 1,
         "game_start_unix": 2_100_000_000,
         "lock_unix": 2_100_000_000,
-        "lock_decision": "locked",
         "cancellation_command_id": "wager:match_winner:canceled:disposition:test-1",
         "cancellation_evidence_id": "server:cancellation:evidence:test-1",
         "cancellation_request_command_id": "wager:match_winner:canceled:request:test-1",
@@ -348,13 +347,16 @@ def validated_match_winner_reconciliation(path: Path) -> dict[str, object]:
         raise ValueError("projection must be a JSON object")
     if data.get("outcome") == "voided":
         return validated_match_winner_void_reconciliation(data)
+    canonical_loss = (
+        data.get("outcome") == "lost"
+        and data.get("result_schema") == "oddswell-private-canonical-game-result-v1"
+    )
     expected = {
         "schema": "oddswell-match-winner-reconciliation-v1",
         "authority": "server",
         "profile_scope": "machine_local",
         "read_only_projection": True,
         "market": "match_winner",
-        "offer_id": "9e6870420528e2a821591b763471c47f71b198c063cbdcbecd9ee180f9ea2459",
         "offer_version": "basketball-match-winner-odds-v1",
         "stake": 40,
         "request_status": "accepted_pending_lock",
@@ -365,18 +367,60 @@ def validated_match_winner_reconciliation(path: Path) -> dict[str, object]:
         "season_number": 1,
         "game_number": 1,
         "lock_decision": "locked",
-        "result_schema": "oddswell-sealed-match-winner-result-v1",
-        "result_version": "sealed-match-winner-result-v1",
         "home_team": "Harbor City Waves",
         "away_team": "Mesa Vista Sol",
-        "home_score": 101,
-        "away_score": 104,
         "winner": "Mesa Vista Sol",
-        "replay_seal_sha256": "00e4f82c2bb4da5d9ad53d75bf76ece7b97ed9b05ca2f7a8a2628d396c779b75",
         "decision_schema": "oddswell-match-winner-settlement-decision-v1",
         "decision_version": "match-winner-settlement-decision-v1",
         "decision_status": "decided_pending_apply",
     }
+    if canonical_loss:
+        result_sha = "e4b8b4e26126612e1173b4509c67666df44cfcf7082b51051e9de0097f45d0c6"
+        offer_id = "1b5c696d7f9fd63a01e4f7d611d77834c4cccf23a97e811ac8d0f887c9183631"
+        request_id = f"canonical:h26e:match_winner:request:{offer_id}"
+        lock_id = f"canonical:h26g:match_winner:lock:{offer_id}"
+        result_id = f"canonical:h26l:match_winner:result:{result_sha}"
+        decision_id = f"canonical:h26m:match_winner:decision:{result_sha}"
+        expected.update({
+            "offer_id": offer_id,
+            "request_command_id": request_id,
+            "stake_ledger_command_id": request_id,
+            "lock_command_id": lock_id,
+            "lock_request_command_id": request_id,
+            "lock_decision": "Locked",
+            "result_command_id": result_id,
+            "result_request_command_id": request_id,
+            "result_lock_command_id": lock_id,
+            "result_schema": "oddswell-private-canonical-game-result-v1",
+            "result_version": "oddswell-private-game-result-recorder-v1",
+            "home_score": 97,
+            "away_score": 101,
+            "replay_seal_sha256": "efe7575962c88e9b8b4fcfcb6357c5307c6eeedd828b4b8f532c6e5eae985f62",
+            "decision_command_id": decision_id,
+            "decision_request_command_id": request_id,
+            "decision_lock_command_id": lock_id,
+            "decision_result_command_id": result_id,
+            "decision_offer_id": offer_id,
+            "finalization_command_id": f"canonical:h26n:match_winner:finalization:{result_sha}",
+            "finalization_decision_command_id": decision_id,
+            "finalization_request_command_id": request_id,
+            "finalization_lock_command_id": lock_id,
+            "finalization_result_command_id": result_id,
+            "finalization_offer_id": offer_id,
+            "selected_win_probability_e8": 57_586_693,
+            "selected_decimal_odds_e4": 17_365,
+            "potential_gross_return": 69,
+        })
+    else:
+        expected.update({
+            "offer_id": "9e6870420528e2a821591b763471c47f71b198c063cbdcbecd9ee180f9ea2459",
+            "lock_decision": "locked",
+            "result_schema": "oddswell-sealed-match-winner-result-v1",
+            "result_version": "sealed-match-winner-result-v1",
+            "home_score": 101,
+            "away_score": 104,
+            "replay_seal_sha256": "00e4f82c2bb4da5d9ad53d75bf76ece7b97ed9b05ca2f7a8a2628d396c779b75",
+        })
     if data.get("outcome") == "lost":
         expected.update({
             "selected_team": "Harbor City Waves",
@@ -425,6 +469,8 @@ def validated_match_winner_reconciliation(path: Path) -> dict[str, object]:
         "game_number", "game_start_unix", "lock_unix", "home_score", "away_score",
         "gross_return_due", "gross_return_applied", "ledger_entry_count", "final_balance", "net",
     ]
+    if canonical_loss:
+        integer_fields.extend(("selected_win_probability_e8", "selected_decimal_odds_e4", "potential_gross_return"))
     if data["outcome"] == "won":
         integer_fields.extend(("selected_win_probability_e8", "payout_sequence", "payout_delta", "payout_balance_after"))
     for field in integer_fields:
@@ -460,6 +506,11 @@ def validated_match_winner_reconciliation(path: Path) -> dict[str, object]:
         raise ValueError("finalization offer does not link")
     if data["outcome"] == "won" and data["payout_ledger_command_id"] != data["finalization_command_id"]:
         raise ValueError("payout does not link to win finalization")
+    if canonical_loss and {
+        "payout_ledger_command_id", "payout_sequence", "payout_delta",
+        "payout_reason", "payout_balance_after", "refund_due", "refund_applied",
+    }.intersection(data):
+        raise ValueError("canonical loss contains payout or refund evidence")
     return data
 
 
@@ -529,6 +580,19 @@ def match_winner_reconciliation_payload(path: Path | None = None) -> dict[str, o
         "command_linkage": " -> ".join((data["request_command_id"], data["lock_command_id"], data["result_command_id"], data["decision_command_id"], data["finalization_command_id"])),
         "boundary": "Immutable read-only server evidence. The prior decision remains decided_pending_apply; this separate finalization adds no ledger entry and exposes no mutation control.",
     }
+    canonical_loss = data["result_schema"] == "oddswell-private-canonical-game-result-v1"
+    if canonical_loss:
+        payload.update({
+            "outcome": "lost",
+            "probability_e8": data["selected_win_probability_e8"],
+            "decimal_odds_e4": data["selected_decimal_odds_e4"],
+            "potential_return": data["potential_gross_return"],
+            "score": f'{data["home_score"]}-{data["away_score"]}',
+            "decision_status": data["decision_status"],
+            "ledger_entry_count": data["ledger_entry_count"],
+            "ledger_linkage": f'{data["stake_sequence"]}:{data["stake_ledger_command_id"]}:{data["stake_reason"]}:{data["stake_delta"]}->{data["stake_balance_after"]}',
+            "boundary": "Immutable read-only exact H26A-H26N evidence. No payout, refund, ledger mutation, or admin control is exposed.",
+        })
     if data["outcome"] == "won":
         payload.update({
             "status": "VALIDATED QA FINALIZED WIN" if data["qa"] else "VALIDATED FINALIZED WIN",
@@ -1911,6 +1975,81 @@ def self_check() -> None:
             "command_linkage": " -> ".join((wager_projection["request_command_id"], wager_projection["lock_command_id"], wager_projection["result_command_id"], wager_projection["decision_command_id"], wager_projection["finalization_command_id"])),
             "boundary": "Immutable read-only server evidence. The prior decision remains decided_pending_apply; this separate finalization adds no ledger entry and exposes no mutation control.",
         }
+        canonical_result_sha = "e4b8b4e26126612e1173b4509c67666df44cfcf7082b51051e9de0097f45d0c6"
+        canonical_offer_id = "1b5c696d7f9fd63a01e4f7d611d77834c4cccf23a97e811ac8d0f887c9183631"
+        canonical_request_id = f"canonical:h26e:match_winner:request:{canonical_offer_id}"
+        canonical_lock_id = f"canonical:h26g:match_winner:lock:{canonical_offer_id}"
+        canonical_result_id = f"canonical:h26l:match_winner:result:{canonical_result_sha}"
+        canonical_decision_id = f"canonical:h26m:match_winner:decision:{canonical_result_sha}"
+        canonical_finalization_id = f"canonical:h26n:match_winner:finalization:{canonical_result_sha}"
+        canonical_projection = {
+            **wager_projection,
+            "offer_id": canonical_offer_id,
+            "request_command_id": canonical_request_id,
+            "stake_ledger_command_id": canonical_request_id,
+            "lock_command_id": canonical_lock_id,
+            "lock_request_command_id": canonical_request_id,
+            "lock_decision": "Locked",
+            "result_command_id": canonical_result_id,
+            "result_request_command_id": canonical_request_id,
+            "result_lock_command_id": canonical_lock_id,
+            "result_schema": "oddswell-private-canonical-game-result-v1",
+            "result_version": "oddswell-private-game-result-recorder-v1",
+            "home_score": 97,
+            "away_score": 101,
+            "replay_seal_sha256": "efe7575962c88e9b8b4fcfcb6357c5307c6eeedd828b4b8f532c6e5eae985f62",
+            "decision_command_id": canonical_decision_id,
+            "decision_request_command_id": canonical_request_id,
+            "decision_lock_command_id": canonical_lock_id,
+            "decision_result_command_id": canonical_result_id,
+            "decision_offer_id": canonical_offer_id,
+            "finalization_command_id": canonical_finalization_id,
+            "finalization_decision_command_id": canonical_decision_id,
+            "finalization_request_command_id": canonical_request_id,
+            "finalization_lock_command_id": canonical_lock_id,
+            "finalization_result_command_id": canonical_result_id,
+            "finalization_offer_id": canonical_offer_id,
+            "selected_win_probability_e8": 57_586_693,
+            "selected_decimal_odds_e4": 17_365,
+            "potential_gross_return": 69,
+        }
+        wager_path.write_text(json.dumps(canonical_projection), encoding="utf-8")
+        canonical_wager = match_winner_reconciliation_payload(wager_path)
+        assert canonical_wager["available"] is True
+        assert canonical_wager["status"] == "VALIDATED QA FINALIZED LOSS"
+        assert canonical_wager["outcome"] == "lost"
+        assert canonical_wager["probability_e8"] == 57_586_693
+        assert canonical_wager["decimal_odds_e4"] == 17_365
+        assert canonical_wager["potential_return"] == 69
+        assert canonical_wager["score"] == "97-101"
+        assert canonical_wager["return"] == 0 and canonical_wager["net"] == -40
+        assert canonical_wager["balance"] == 60 and canonical_wager["ledger_entry_count"] == 2
+        assert canonical_wager["decision_status"] == "decided_pending_apply"
+        assert canonical_wager["finalization_status"] == "settled_lost"
+        assert canonical_wager["ledger_linkage"].startswith("2:canonical:h26e")
+        for field, invalid_value in (
+            ("selected_win_probability_e8", 57_586_692),
+            ("selected_decimal_odds_e4", 17_364),
+            ("potential_gross_return", 68),
+            ("result_command_id", "canonical:h26l:match_winner:result:" + "f" * 64),
+            ("replay_seal_sha256", "f" * 64),
+            ("finalization_status", "settled_won"),
+        ):
+            invalid_canonical = {**canonical_projection, field: invalid_value}
+            wager_path.write_text(json.dumps(invalid_canonical), encoding="utf-8")
+            rejected_canonical = match_winner_reconciliation_payload(wager_path)
+            assert rejected_canonical["available"] is False
+            assert not {"selected_team", "balance", "command_linkage"}.intersection(rejected_canonical)
+        partial_canonical = {key: value for key, value in canonical_projection.items() if key != "finalization_command_id"}
+        wager_path.write_text(json.dumps(partial_canonical), encoding="utf-8")
+        rejected_partial_canonical = match_winner_reconciliation_payload(wager_path)
+        assert rejected_partial_canonical["available"] is False
+        assert not {"selected_team", "balance", "command_linkage"}.intersection(rejected_partial_canonical)
+        mixed_canonical = {**canonical_projection, "payout_ledger_command_id": "invented"}
+        wager_path.write_text(json.dumps(mixed_canonical), encoding="utf-8")
+        rejected_mixed_canonical = match_winner_reconciliation_payload(wager_path)
+        assert rejected_mixed_canonical["available"] is False
+        assert not {"selected_team", "balance", "command_linkage"}.intersection(rejected_mixed_canonical)
         wager_projection["final_balance"] = 61
         wager_path.write_text(json.dumps(wager_projection), encoding="utf-8")
         invalid_wager = match_winner_reconciliation_payload(wager_path)

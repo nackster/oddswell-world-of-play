@@ -35,6 +35,7 @@
 #include "Misc/CommandLine.h"
 #include "Misc/FileHelper.h"
 #include "Misc/Parse.h"
+#include "Misc/Paths.h"
 #include "Net/UnrealNetwork.h"
 #include "PublicLeagueView.h"
 #include "ReplayBenchmarkActor.h"
@@ -3782,6 +3783,95 @@ void AOddsWellLocomotionGameMode::BeginPlay()
 			FCommandLine::Get(),
 			TEXT("CanonicalMatchWinnerLossFinalizationQa"))
 		|| bCanonicalLossFinalizationQaVerify;
+	const bool bCanonicalLossReconciliationQaVerify =
+		FParse::Param(
+			FCommandLine::Get(),
+			TEXT("CanonicalMatchWinnerLossReconciliationQaVerify"));
+	const bool bCanonicalLossReconciliationQa =
+		FParse::Param(
+			FCommandLine::Get(),
+			TEXT("CanonicalMatchWinnerLossReconciliationQa"))
+		|| bCanonicalLossReconciliationQaVerify;
+	if (bCanonicalLossReconciliationQa)
+	{
+		const FString SourcePath = FPaths::Combine(
+			FPaths::ProjectSavedDir(),
+			TEXT("SaveGames/OddsWellOddsBucksQA.sav"));
+		TArray<uint8> BeforeBytes;
+		const FDateTime BeforeModified =
+			IFileManager::Get().GetTimeStamp(*SourcePath);
+		FString ProjectionPath;
+		FString Error;
+		bool bPassed = FFileHelper::LoadFileToArray(
+			BeforeBytes,
+			*SourcePath)
+			&& WriteOddsWellCanonicalMatchWinnerLossReconciliation(
+				true,
+				ProjectionPath,
+				Error);
+		TArray<uint8> AfterBytes;
+		FString Projection;
+		const bool bSourceReloaded =
+			FFileHelper::LoadFileToArray(AfterBytes, *SourcePath);
+		const bool bSourceBytesStable =
+			bSourceReloaded && BeforeBytes == AfterBytes;
+		const bool bSourceMtimeStable = BeforeModified
+			== IFileManager::Get().GetTimeStamp(*SourcePath);
+		bPassed = bPassed
+			&& bSourceBytesStable
+			&& bSourceMtimeStable
+			&& FFileHelper::LoadFileToString(
+				Projection,
+				*ProjectionPath)
+			&& Projection.Contains(
+				TEXT("\"schema\": \"oddswell-match-winner-reconciliation-v1\""))
+			&& Projection.Contains(
+				TEXT("\"offer_id\": \"1b5c696d7f9fd63a01e4f7d611d77834c4cccf23a97e811ac8d0f887c9183631\""))
+			&& Projection.Contains(
+				TEXT("\"selected_team\": \"Harbor City Waves\""))
+			&& Projection.Contains(
+				TEXT("\"selected_win_probability_e8\": 57586693"))
+			&& Projection.Contains(
+				TEXT("\"selected_decimal_odds_e4\": 17365"))
+			&& Projection.Contains(
+				TEXT("\"potential_gross_return\": 69"))
+			&& Projection.Contains(TEXT("\"home_score\": 97"))
+			&& Projection.Contains(TEXT("\"away_score\": 101"))
+			&& Projection.Contains(
+				TEXT("\"winner\": \"Mesa Vista Sol\""))
+			&& Projection.Contains(TEXT("\"outcome\": \"lost\""))
+			&& Projection.Contains(
+				TEXT("\"decision_status\": \"decided_pending_apply\""))
+			&& Projection.Contains(
+				TEXT("\"finalization_status\": \"settled_lost\""))
+			&& Projection.Contains(TEXT("\"gross_return_applied\": 0"))
+			&& Projection.Contains(TEXT("\"ledger_entry_count\": 2"))
+			&& Projection.Contains(TEXT("\"final_balance\": 60"))
+			&& Projection.Contains(TEXT("\"net\": -40"));
+		bool bCleanup = false;
+		if (bPassed && bCanonicalLossReconciliationQaVerify)
+		{
+			bCleanup = ResetOddsWellQaOddsBucksAndVerify(Error);
+			bPassed = bCleanup;
+		}
+		const FString Evidence = FString::Printf(
+			TEXT("ODDSWELL_CANONICAL_MATCH_WINNER_LOSS_RECONCILIATION_QA|result=%s|schema=oddswell-match-winner-reconciliation-v1|offer_id=1b5c696d7f9fd63a01e4f7d611d77834c4cccf23a97e811ac8d0f887c9183631|selected_team=Harbor_City_Waves|probability_e8=57586693|decimal_odds_e4=17365|stake=40|potential_return=69|final_score=97-101|winner=Mesa_Vista_Sol|outcome=lost|gross_return_due=0|gross_return_applied=0|decision_status=decided_pending_apply|finalization_status=settled_lost|ledger_entries=2|final_balance=60|net=-40|read_only=true|source_bytes_stable=%s|source_mtime_stable=%s|controls=false|mutation=false|payout=false|refund=false|cleanup=%s|detail=%s"),
+			bPassed ? TEXT("PASS") : TEXT("FAIL"),
+			bSourceBytesStable ? TEXT("true") : TEXT("false"),
+			bSourceMtimeStable ? TEXT("true") : TEXT("false"),
+			bCleanup ? TEXT("true") : TEXT("false"),
+			Error.IsEmpty() ? TEXT("none") : *Error);
+		if (bPassed)
+		{
+			UE_LOG(LogOddsWellLocomotion, Display, TEXT("%s"), *Evidence);
+		}
+		else
+		{
+			UE_LOG(LogOddsWellLocomotion, Error, TEXT("%s"), *Evidence);
+		}
+		FPlatformMisc::RequestExit(false);
+		return;
+	}
 	if (bCanonicalLossFinalizationQa)
 	{
 		FOddsWellOddsBucksLedger BeforeLedger;
