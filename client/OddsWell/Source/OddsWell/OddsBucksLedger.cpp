@@ -72,6 +72,7 @@ const FString PrivateCanonicalResultSchema(TEXT("oddswell-private-canonical-game
 const FString PrivateCanonicalResultRecorderVersion(TEXT("oddswell-private-game-result-recorder-v1"));
 const FString PrivateCanonicalResultCommandPrefix(TEXT("canonical:h26l:match_winner:result:"));
 const FString PrivateCanonicalLossDecisionCommandPrefix(TEXT("canonical:h26m:match_winner:decision:"));
+const FString PrivateCanonicalLossFinalizationCommandPrefix(TEXT("canonical:h26n:match_winner:finalization:"));
 const FString MatchWinnerCanceledGameSchema(TEXT("oddswell-match-winner-canceled-game-v1"));
 const FString MatchWinnerCanceledGameVersion(TEXT("match-winner-canceled-game-v1"));
 const FName MatchWinnerCanceledGameReason(TEXT("game_canceled"));
@@ -542,6 +543,29 @@ bool IsSameMatchWinnerSettlementDecision(
 		&& Left.SelectedWinProbabilityE8 == Right.SelectedWinProbabilityE8
 		&& Left.PayoutFormula == Right.PayoutFormula
 		&& Left.Status == Right.Status;
+}
+
+bool IsSameMatchWinnerLossFinalization(
+	const FOddsWellMatchWinnerLossFinalizationRecord& Left,
+	const FOddsWellMatchWinnerLossFinalizationRecord& Right)
+{
+	return Left.FinalizationCommandId == Right.FinalizationCommandId
+		&& Left.DecisionCommandId == Right.DecisionCommandId
+		&& Left.RequestCommandId == Right.RequestCommandId
+		&& Left.LockCommandId == Right.LockCommandId
+		&& Left.ResultCommandId == Right.ResultCommandId
+		&& Left.FinalizationSchema == Right.FinalizationSchema
+		&& Left.FinalizationVersion == Right.FinalizationVersion
+		&& Left.OfferId == Right.OfferId
+		&& Left.OfferVersion == Right.OfferVersion
+		&& Left.SelectedTeam == Right.SelectedTeam
+		&& Left.AuthoritativeWinner == Right.AuthoritativeWinner
+		&& Left.Stake == Right.Stake
+		&& Left.Outcome == Right.Outcome
+		&& Left.GrossReturnApplied == Right.GrossReturnApplied
+		&& Left.Status == Right.Status
+		&& Left.ObservedFinalBalance == Right.ObservedFinalBalance
+		&& Left.ObservedLedgerEntryCount == Right.ObservedLedgerEntryCount;
 }
 
 bool ValidateMatchWinnerResultLinks(
@@ -1303,7 +1327,8 @@ bool HasExactCanonicalRequestEvidence(
 	const TArray<FOddsWellMatchWinnerVoidDecisionRecord>& VoidDecisions,
 	const bool bAllowExactLock,
 	const FOddsWellMatchWinnerResultLinkRecord* ExactAllowedResult = nullptr,
-	const FOddsWellMatchWinnerSettlementDecisionRecord* ExactAllowedDecision = nullptr)
+	const FOddsWellMatchWinnerSettlementDecisionRecord* ExactAllowedDecision = nullptr,
+	const FOddsWellMatchWinnerLossFinalizationRecord* ExactAllowedLossFinalization = nullptr)
 {
 	const bool bResultEvidenceExact =
 		ResultLinks.IsEmpty()
@@ -1319,13 +1344,20 @@ bool HasExactCanonicalRequestEvidence(
 			&& IsSameMatchWinnerSettlementDecision(
 				Decisions[0],
 				*ExactAllowedDecision));
+	const bool bLossFinalizationEvidenceExact =
+		LossFinalizations.IsEmpty()
+		|| (ExactAllowedLossFinalization
+			&& LossFinalizations.Num() == 1
+			&& IsSameMatchWinnerLossFinalization(
+				LossFinalizations[0],
+				*ExactAllowedLossFinalization));
 	if (ObservedServerUnixSeconds < OfferEligibleUnixSeconds
 		|| Requests.Num() != 1
 		|| Ledger.GetEntries().Num() != 2
 		|| Ledger.GetBalance() != 60
 		|| !bResultEvidenceExact
 		|| !bDecisionEvidenceExact
-		|| !LossFinalizations.IsEmpty()
+		|| !bLossFinalizationEvidenceExact
 		|| !WinFinalizations.IsEmpty()
 		|| !CanceledGames.IsEmpty()
 		|| !VoidDecisions.IsEmpty()
@@ -1508,7 +1540,9 @@ bool UseOddsWellOddsBucksQaSlot()
 		|| FParse::Param(FCommandLine::Get(), TEXT("CanonicalMatchWinnerResultLinkQa"))
 		|| FParse::Param(FCommandLine::Get(), TEXT("CanonicalMatchWinnerResultLinkQaVerify"))
 		|| FParse::Param(FCommandLine::Get(), TEXT("CanonicalMatchWinnerLossDecisionQa"))
-		|| FParse::Param(FCommandLine::Get(), TEXT("CanonicalMatchWinnerLossDecisionQaVerify"));
+		|| FParse::Param(FCommandLine::Get(), TEXT("CanonicalMatchWinnerLossDecisionQaVerify"))
+		|| FParse::Param(FCommandLine::Get(), TEXT("CanonicalMatchWinnerLossFinalizationQa"))
+		|| FParse::Param(FCommandLine::Get(), TEXT("CanonicalMatchWinnerLossFinalizationQaVerify"));
 }
 
 const FString& GetOddsWellUpcomingQaMatchWinnerRequestCommandId()
@@ -2148,6 +2182,171 @@ EOddsWellMatchWinnerSettlementDecisionResult DecideOddsWellCanonicalMatchWinnerL
 	}
 	OutError.Reset();
 	return DecisionResult;
+}
+
+EOddsWellMatchWinnerLossFinalizationResult FinalizeOddsWellCanonicalMatchWinnerLossEvidence(
+	const FOddsWellMatchWinnerOffer& ExactOffer,
+	const int64 OfferEligibleUnixSeconds,
+	const bool bQaSlot,
+	FOddsWellMatchWinnerLossFinalizationRecord& OutRecord,
+	FString& OutError)
+{
+	OutRecord = {};
+	const UOddsWellOddsBucksSaveGame* Record =
+		Cast<UOddsWellOddsBucksSaveGame>(
+			UGameplayStatics::LoadGameFromSlot(
+				GetOddsBucksSlot(bQaSlot),
+				OddsBucksUserIndex));
+	FOddsWellOddsBucksLedger Ledger;
+	int64 NextJobPayoutUnixSeconds = 0;
+	TArray<FOddsWellMatchWinnerRequestRecord> Requests;
+	TArray<FOddsWellMatchWinnerLockRecord> Locks;
+	TArray<FOddsWellMatchWinnerResultLinkRecord> ResultLinks;
+	TArray<FOddsWellMatchWinnerSettlementDecisionRecord> Decisions;
+	TArray<FOddsWellMatchWinnerLossFinalizationRecord> LossFinalizations;
+	TArray<FOddsWellMatchWinnerWinFinalizationRecord> WinFinalizations;
+	TArray<FOddsWellMatchWinnerCanceledGameRecord> CanceledGames;
+	TArray<FOddsWellMatchWinnerVoidDecisionRecord> VoidDecisions;
+	bool bNeedsMigration = false;
+	FString ValidationError;
+	const FString ExpectedRequestId =
+		TEXT("canonical:h26e:match_winner:request:")
+		+ ExactOffer.OfferId;
+	const FString ExpectedLockId =
+		TEXT("canonical:h26g:match_winner:lock:")
+		+ ExactOffer.OfferId;
+	if (!Record
+		|| !ValidateOddsBucksSave(
+			Record,
+			Ledger,
+			NextJobPayoutUnixSeconds,
+			Requests,
+			Locks,
+			ResultLinks,
+			Decisions,
+			LossFinalizations,
+			WinFinalizations,
+			CanceledGames,
+			VoidDecisions,
+			bNeedsMigration,
+			ValidationError)
+		|| bNeedsMigration
+		|| Record->SchemaVersion != OddsBucksSchemaVersion
+		|| Locks.Num() != 1
+		|| ResultLinks.Num() != 1
+		|| Decisions.Num() != 1
+		|| !IsExactPrivateCanonicalMatchWinnerResult(ResultLinks[0])
+		|| ResultLinks[0].RequestCommandId != ExpectedRequestId
+		|| ResultLinks[0].LockCommandId != ExpectedLockId
+		|| ResultLinks[0].Winner != ExactOffer.AwayTeam)
+	{
+		OutError =
+			TEXT("Canonical Match Winner loss finalization requires the exact current H26E/H26G/H26L/H26M chain.");
+		return EOddsWellMatchWinnerLossFinalizationResult::Rejected;
+	}
+
+	const FOddsWellMatchWinnerResultLinkRecord& Result = ResultLinks[0];
+	const FString ResultRecordSha256 =
+		Result.ResultCommandId.RightChop(
+			PrivateCanonicalResultCommandPrefix.Len());
+	const FOddsWellMatchWinnerSettlementDecisionRecord& Decision =
+		Decisions[0];
+	const FString ExpectedDecisionCommandId =
+		PrivateCanonicalLossDecisionCommandPrefix
+		+ ResultRecordSha256;
+	if (Decision.DecisionCommandId != ExpectedDecisionCommandId
+		|| Decision.RequestCommandId != ExpectedRequestId
+		|| Decision.LockCommandId != ExpectedLockId
+		|| Decision.ResultCommandId != Result.ResultCommandId
+		|| Decision.DecisionSchema != MatchWinnerSettlementDecisionSchema
+		|| Decision.DecisionVersion != MatchWinnerSettlementDecisionVersion
+		|| Decision.OfferId != ExactOffer.OfferId
+		|| Decision.OfferVersion != ExactOffer.OfferVersion
+		|| Decision.SelectedTeam != ExactOffer.HomeTeam
+		|| Decision.AuthoritativeWinner != ExactOffer.AwayTeam
+		|| Decision.Stake != 40
+		|| Decision.Outcome != MatchWinnerLostOutcome
+		|| Decision.GrossReturnDue != 0
+		|| Decision.SelectedWinProbabilityE8 != 0
+		|| !Decision.PayoutFormula.IsEmpty()
+		|| Decision.Status != MatchWinnerDecidedPendingApplyStatus)
+	{
+		OutError =
+			TEXT("Canonical Match Winner loss finalization requires the exact pending H26M loss decision.");
+		return EOddsWellMatchWinnerLossFinalizationResult::Rejected;
+	}
+
+	FOddsWellMatchWinnerLossFinalizationRecord ExactFinalization;
+	ExactFinalization.FinalizationCommandId =
+		PrivateCanonicalLossFinalizationCommandPrefix
+		+ ResultRecordSha256;
+	ExactFinalization.DecisionCommandId = Decision.DecisionCommandId;
+	ExactFinalization.RequestCommandId = ExpectedRequestId;
+	ExactFinalization.LockCommandId = ExpectedLockId;
+	ExactFinalization.ResultCommandId = Result.ResultCommandId;
+	ExactFinalization.FinalizationSchema =
+		MatchWinnerLossFinalizationSchema;
+	ExactFinalization.FinalizationVersion =
+		MatchWinnerLossFinalizationVersion;
+	ExactFinalization.OfferId = ExactOffer.OfferId;
+	ExactFinalization.OfferVersion = ExactOffer.OfferVersion;
+	ExactFinalization.SelectedTeam = ExactOffer.HomeTeam;
+	ExactFinalization.AuthoritativeWinner = ExactOffer.AwayTeam;
+	ExactFinalization.Stake = 40;
+	ExactFinalization.Outcome = MatchWinnerLostOutcome;
+	ExactFinalization.GrossReturnApplied = 0;
+	ExactFinalization.Status = MatchWinnerSettledLostStatus;
+	ExactFinalization.ObservedFinalBalance = 60;
+	ExactFinalization.ObservedLedgerEntryCount = 2;
+	if (!HasExactCanonicalRequestEvidence(
+			ExactOffer,
+			OfferEligibleUnixSeconds,
+			ExactOffer.LockUnixSeconds,
+			Ledger,
+			*Record,
+			Requests,
+			Locks,
+			ResultLinks,
+			Decisions,
+			LossFinalizations,
+			WinFinalizations,
+			CanceledGames,
+			VoidDecisions,
+			true,
+			&Result,
+			&Decision,
+			&ExactFinalization))
+	{
+		OutError =
+			TEXT("Canonical Match Winner loss finalization requires exact schema-12 evidence and no later state.");
+		return EOddsWellMatchWinnerLossFinalizationResult::Rejected;
+	}
+
+	const EOddsWellMatchWinnerLossFinalizationResult FinalizationResult =
+		FinalizeOddsWellMatchWinnerLoss(
+			ExactFinalization.FinalizationCommandId,
+			ExactFinalization.DecisionCommandId,
+			bQaSlot,
+			OutRecord,
+			OutError);
+	if ((FinalizationResult
+			!= EOddsWellMatchWinnerLossFinalizationResult::Finalized
+			&& FinalizationResult
+				!= EOddsWellMatchWinnerLossFinalizationResult::Duplicate)
+		|| !IsSameMatchWinnerLossFinalization(
+			OutRecord,
+			ExactFinalization))
+	{
+		OutRecord = {};
+		if (OutError.IsEmpty())
+		{
+			OutError =
+				TEXT("The canonical Match Winner loss finalization primitive returned non-exact evidence.");
+		}
+		return EOddsWellMatchWinnerLossFinalizationResult::Rejected;
+	}
+	OutError.Reset();
+	return FinalizationResult;
 }
 
 bool WriteOddsWellOddsBucksReconciliation(const FOddsWellOddsBucksLedger& Ledger, const int64 NextJobPayoutUnixSeconds, const int64 ObservedNowUnixSeconds, const bool bQaProjection, FString& OutPath, FString& OutError)

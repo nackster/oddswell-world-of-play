@@ -2,7 +2,7 @@
 	"nodes":[
 		{"id":"bdr-title","type":"text","text":"# ODDSWELL BETA DELIVERY ROADMAP\nFollow the numbers. Each phase proves one player-facing dependency before the next begins.","x":0,"y":-260,"width":2040,"height":130,"color":"6"},
 		{"id":"bdr-file","type":"file","file":"Development/Beta Delivery Roadmap.md","x":0,"y":-100,"width":1320,"height":100,"color":"6"},
-		{"id":"bdr-now","type":"text","text":"## CURRENT EVIDENCE — 1H.26M COMPLETE\n🧠 Exact loss decision ✓  •  Finalization UNPROVED","x":1360,"y":-100,"width":680,"height":100,"color":"3"},
+		{"id":"bdr-now","type":"text","text":"## CURRENT EVIDENCE — 1H.26N COMPLETE\n✅ Exact loss finalization  •  Application/history UNPROVED","x":1360,"y":-100,"width":680,"height":100,"color":"3"},
 		{"id":"bdr-foundation-group","type":"group","x":0,"y":80,"width":2040,"height":340,"color":"5","label":"FOUNDATION — PROVE THE 3D WORLD"},
 		{"id":"bdr-core-group","type":"group","x":0,"y":500,"width":2040,"height":340,"color":"3","label":"CORE LOOP — HOME, SPORT, MONEY, WAGERS"},
 		{"id":"bdr-experience-group","type":"group","x":0,"y":920,"width":2040,"height":340,"color":"4","label":"PLAYER EXPERIENCE — PROGRESSION + UNDERSTANDING"},
