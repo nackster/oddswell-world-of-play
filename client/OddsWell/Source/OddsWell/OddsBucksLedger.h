@@ -254,6 +254,28 @@ struct FOddsWellCanonicalPendingMatchWinnerReceipt
 	int64 CurrentBalance = 0;
 };
 
+enum class EOddsWellCanonicalSettledLossReceiptResult : uint8
+{
+	Missing,
+	Ready,
+	Rejected
+};
+
+struct FOddsWellCanonicalSettledLossReceipt
+{
+	FString SelectedTeam;
+	FString HomeTeam;
+	FString AwayTeam;
+	FString Winner;
+	int64 Stake = 0;
+	int32 HomeScore = 0;
+	int32 AwayScore = 0;
+	int64 Returned = 0;
+	int64 Net = 0;
+	int32 LedgerEntryCount = 0;
+	int64 CurrentBalance = 0;
+};
+
 USTRUCT()
 struct FOddsWellMatchWinnerLockRecord
 {
@@ -765,6 +787,10 @@ ODDSWELL_API EOddsWellCanonicalPendingReceiptResult LoadOddsWellCanonicalPending
 	int64 ObservedServerUnixSeconds,
 	bool bQaSlot,
 	FOddsWellCanonicalPendingMatchWinnerReceipt& OutReceipt,
+	FString& OutError);
+ODDSWELL_API EOddsWellCanonicalSettledLossReceiptResult LoadOddsWellCanonicalSettledLossReceiptEvidence(
+	bool bQaSlot,
+	FOddsWellCanonicalSettledLossReceipt& OutReceipt,
 	FString& OutError);
 ODDSWELL_API EOddsWellMatchWinnerLockResult LockOddsWellCanonicalMatchWinnerRequestEvidence(
 	const FOddsWellMatchWinnerOffer& ExactOffer,

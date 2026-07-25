@@ -71,6 +71,7 @@ public:
 	int32 GetTicketBoothMarketPage() const { return SportsbookMarketPage; }
 	const FOddsWellMatchWinnerOfferPreview* GetTicketBoothOffer() const { return SportsbookOfferPreview.Get(); }
 	const FOddsWellCanonicalPendingMatchWinnerReceipt* GetTicketBoothCanonicalReceipt() const { return SportsbookCanonicalReceipt.Get(); }
+	const FOddsWellCanonicalSettledLossReceipt* GetTicketBoothSettledLossReceipt() const { return SportsbookSettledLossReceipt.Get(); }
 	void SetTicketBoothMarketPage(int32 Page);
 	void CloseTicketBoothMenu();
 
@@ -259,6 +260,7 @@ private:
 	TUniquePtr<FOddsWellPublicLeagueSnapshot> PublicLeagueSnapshot;
 	TUniquePtr<FOddsWellMatchWinnerOfferPreview> SportsbookOfferPreview;
 	TUniquePtr<FOddsWellCanonicalPendingMatchWinnerReceipt> SportsbookCanonicalReceipt;
+	TUniquePtr<FOddsWellCanonicalSettledLossReceipt> SportsbookSettledLossReceipt;
 	TUniquePtr<FOddsWellMatchWinnerOffer> SportsbookQaOffer;
 	TUniquePtr<FOddsWellPendingQaMatchWinnerReceipt> SportsbookReceipt;
 	int32 PublicLeaguePage = 0;
@@ -276,6 +278,7 @@ private:
 	bool bSportsbookOfferQa = false;
 	bool bCanonicalPendingReceiptQa = false;
 	bool bCanonicalPostLockQa = false;
+	bool bCanonicalSettledLossReceiptQa = false;
 	bool bCanonicalMissingHeldOpenTipoffQa = false;
 	int32 SportsbookMarketPage = 0;
 	int32 SportsbookQaSelectionIndex = 0;
@@ -317,6 +320,7 @@ private:
 	AOddsWellPlaceholderCharacter* GetOddsWellCharacter() const;
 	void DrawTicketBoothPrompt();
 	void DrawTicketBoothUnavailableMenu();
+	void DrawTicketBoothSettledLossReceipt(const FOddsWellCanonicalSettledLossReceipt& Receipt);
 	void DrawTicketBoothMenu(const AOddsWellPlaceholderCharacter& Character, const FOddsWellMatchWinnerOfferPreview& Offer);
 	void DrawMarketCard(const FString& Title, const FString& Subtitle, float X, float Y, float Width, float Height, bool bAvailable);
 };

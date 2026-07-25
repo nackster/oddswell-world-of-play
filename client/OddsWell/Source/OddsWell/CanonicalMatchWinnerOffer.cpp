@@ -752,6 +752,23 @@ EOddsWellCanonicalPendingReceiptResult LoadOddsWellCanonicalPendingMatchWinnerRe
 		OutError);
 }
 
+EOddsWellCanonicalSettledLossReceiptResult
+LoadOddsWellCanonicalSettledLossReceipt(
+	FOddsWellCanonicalSettledLossReceipt& OutReceipt,
+	FString& OutError)
+{
+	OutReceipt = {};
+	FOddsWellCanonicalMatchWinnerOfferRecord ExactOffer;
+	if (!LoadOddsWellCanonicalMatchWinnerOffer(ExactOffer, OutError))
+	{
+		return EOddsWellCanonicalSettledLossReceiptResult::Rejected;
+	}
+	return LoadOddsWellCanonicalSettledLossReceiptEvidence(
+		UseOddsWellOddsBucksQaSlot(),
+		OutReceipt,
+		OutError);
+}
+
 bool LoadOddsWellCanonicalMatchWinnerLock(
 	FOddsWellMatchWinnerLockRecord& OutRecord,
 	FString& OutError)

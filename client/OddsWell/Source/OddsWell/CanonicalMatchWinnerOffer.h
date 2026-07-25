@@ -7,6 +7,7 @@
 struct FOddsWellMatchWinnerOfferPreview;
 struct FOddsWellMatchWinnerRequestRecord;
 struct FOddsWellCanonicalPendingMatchWinnerReceipt;
+struct FOddsWellCanonicalSettledLossReceipt;
 struct FOddsWellMatchWinnerLockRecord;
 struct FOddsWellMatchWinnerResultLinkRecord;
 struct FOddsWellMatchWinnerSettlementDecisionRecord;
@@ -18,6 +19,7 @@ enum class EOddsWellMatchWinnerLockResult : uint8;
 enum class EOddsWellMatchWinnerSettlementDecisionResult : uint8;
 enum class EOddsWellMatchWinnerLossFinalizationResult : uint8;
 enum class EOddsWellCanonicalPendingReceiptResult : uint8;
+enum class EOddsWellCanonicalSettledLossReceiptResult : uint8;
 
 UCLASS()
 class ODDSWELL_API UOddsWellCanonicalMatchWinnerOfferSaveGame final : public USaveGame
@@ -67,6 +69,9 @@ ODDSWELL_API bool LoadOddsWellCanonicalMatchWinnerOfferPreview(
 	FString& OutError);
 ODDSWELL_API EOddsWellCanonicalPendingReceiptResult LoadOddsWellCanonicalPendingMatchWinnerReceipt(
 	FOddsWellCanonicalPendingMatchWinnerReceipt& OutReceipt,
+	FString& OutError);
+ODDSWELL_API EOddsWellCanonicalSettledLossReceiptResult LoadOddsWellCanonicalSettledLossReceipt(
+	FOddsWellCanonicalSettledLossReceipt& OutReceipt,
 	FString& OutError);
 ODDSWELL_API EOddsWellMatchWinnerRequestResult AcceptOddsWellCanonicalMatchWinnerRequest(
 	const FString& OfferedOfferId,

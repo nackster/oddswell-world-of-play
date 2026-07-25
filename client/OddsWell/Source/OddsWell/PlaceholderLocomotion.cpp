@@ -107,6 +107,21 @@ const TArray<FString>& GetTicketBoothMarketLabels()
 	return Labels;
 }
 
+FString BuildCanonicalSettledLossReceiptText(
+	const FOddsWellCanonicalSettledLossReceipt& Receipt)
+{
+	return FString::Printf(
+		TEXT("BET SETTLED \u2014 LOSS\n%s selected\nStake %lld Odds Bucks\nFinal Harbor %d\u2013%d Mesa\nWinner %s\nReturned %lld\nNet %lld\nBalance %lld\nE or ESC: CLOSE"),
+		*Receipt.SelectedTeam,
+		Receipt.Stake,
+		Receipt.HomeScore,
+		Receipt.AwayScore,
+		*Receipt.Winner,
+		Receipt.Returned,
+		Receipt.Net,
+		Receipt.CurrentBalance);
+}
+
 void ApplyTicketBoothEvidenceExpiry(
 	const int64 ObservedServerUnixSeconds,
 	const EOddsWellCanonicalPendingReceiptResult ReceiptResult,
@@ -437,6 +452,10 @@ void AOddsWellPlaceholderCharacter::BeginPlay()
 		FParse::Param(FCommandLine::Get(), TEXT("CanonicalPendingReceiptQa"));
 	bCanonicalPostLockQa =
 		FParse::Param(FCommandLine::Get(), TEXT("CanonicalPostLockQa"));
+	bCanonicalSettledLossReceiptQa =
+		FParse::Param(
+			FCommandLine::Get(),
+			TEXT("CanonicalSettledLossReceiptQa"));
 	bCanonicalMissingHeldOpenTipoffQa =
 		FParse::Param(
 			FCommandLine::Get(),
@@ -445,6 +464,7 @@ void AOddsWellPlaceholderCharacter::BeginPlay()
 		FParse::Param(FCommandLine::Get(), TEXT("SportsbookOfferQa"))
 		|| bCanonicalPendingReceiptQa
 		|| bCanonicalPostLockQa
+		|| bCanonicalSettledLossReceiptQa
 		|| bCanonicalMissingHeldOpenTipoffQa;
 	bSportsbookWagerQaVerify = FParse::Param(FCommandLine::Get(), TEXT("SportsbookWagerQaVerify"));
 	bSportsbookWagerQaMode = FParse::Param(FCommandLine::Get(), TEXT("SportsbookWagerQa")) || bSportsbookWagerQaVerify;
@@ -764,9 +784,44 @@ void AOddsWellPlaceholderCharacter::ShowLeaguePage()
 
 void AOddsWellPlaceholderCharacter::RefreshSportsbookOfferPreview()
 {
+	SportsbookSettledLossReceipt =
+		MakeUnique<FOddsWellCanonicalSettledLossReceipt>();
+	FString Error;
+	const EOddsWellCanonicalSettledLossReceiptResult SettledResult =
+		LoadOddsWellCanonicalSettledLossReceipt(
+			*SportsbookSettledLossReceipt,
+			Error);
+	if (SettledResult == EOddsWellCanonicalSettledLossReceiptResult::Rejected)
+	{
+		SportsbookSettledLossReceipt.Reset();
+		SportsbookCanonicalReceipt.Reset();
+		SportsbookOfferPreview.Reset();
+		UE_LOG(
+			LogOddsWellLocomotion,
+			Display,
+			TEXT("ODDSWELL_CANONICAL_SETTLED_LOSS_RECEIPT|result=REJECTED|unavailable=true|partial=false|teams=false|score=false|return=false|balance=false|archive_fallback=false|projection=false|write=false"));
+		return;
+	}
+	if (SettledResult == EOddsWellCanonicalSettledLossReceiptResult::Ready)
+	{
+		SportsbookCanonicalReceipt.Reset();
+		SportsbookOfferPreview.Reset();
+		UE_LOG(
+			LogOddsWellLocomotion,
+			Display,
+			TEXT("ODDSWELL_CANONICAL_SETTLED_LOSS_RECEIPT|result=READY|read_only=true|selected_team=Harbor_City_Waves|stake=%lld|final_score=%d-%d|winner=Mesa_Vista_Sol|returned=%lld|net=%lld|balance=%lld|ledger_entries=%d|ids_visible=false|hashes_visible=false|projection=false|write=false"),
+			SportsbookSettledLossReceipt->Stake,
+			SportsbookSettledLossReceipt->HomeScore,
+			SportsbookSettledLossReceipt->AwayScore,
+			SportsbookSettledLossReceipt->Returned,
+			SportsbookSettledLossReceipt->Net,
+			SportsbookSettledLossReceipt->CurrentBalance,
+			SportsbookSettledLossReceipt->LedgerEntryCount);
+		return;
+	}
+	SportsbookSettledLossReceipt.Reset();
 	SportsbookCanonicalReceipt =
 		MakeUnique<FOddsWellCanonicalPendingMatchWinnerReceipt>();
-	FString Error;
 	const EOddsWellCanonicalPendingReceiptResult ReceiptResult =
 		LoadOddsWellCanonicalPendingMatchWinnerReceipt(
 			*SportsbookCanonicalReceipt,
@@ -1795,7 +1850,95 @@ void AOddsWellPlaceholderCharacter::RunSportsbookOfferQa(const float DeltaSecond
 	}
 	if (SportsbookOfferQaStage == 1)
 	{
+		const FString QaLedgerPath = FPaths::Combine(
+			FPaths::ProjectSavedDir(),
+			TEXT("SaveGames/OddsWellOddsBucksQA.sav"));
+		TArray<uint8> BeforeReceiptBytes;
+		const FDateTime BeforeReceiptMtime =
+			IFileManager::Get().GetTimeStamp(*QaLedgerPath);
+		const bool bReadReceiptSource = !bCanonicalSettledLossReceiptQa
+			|| FFileHelper::LoadFileToArray(
+				BeforeReceiptBytes,
+				*QaLedgerPath);
 		ToggleSportsbookOfferPreview();
+		if (bCanonicalSettledLossReceiptQa)
+		{
+			const FString ReceiptText = SportsbookSettledLossReceipt
+				? BuildCanonicalSettledLossReceiptText(
+					*SportsbookSettledLossReceipt)
+				: FString();
+			const bool bExactReceipt = bSportsbookOfferVisible
+				&& SportsbookSettledLossReceipt
+				&& !SportsbookOfferPreview
+				&& !SportsbookCanonicalReceipt
+				&& SportsbookSettledLossReceipt->SelectedTeam
+					== TEXT("Harbor City Waves")
+				&& SportsbookSettledLossReceipt->Stake == 40
+				&& SportsbookSettledLossReceipt->HomeScore == 97
+				&& SportsbookSettledLossReceipt->AwayScore == 101
+				&& SportsbookSettledLossReceipt->Winner
+					== TEXT("Mesa Vista Sol")
+				&& SportsbookSettledLossReceipt->Returned == 0
+				&& SportsbookSettledLossReceipt->Net == -40
+				&& SportsbookSettledLossReceipt->LedgerEntryCount == 2
+				&& SportsbookSettledLossReceipt->CurrentBalance == 60
+				&& ReceiptText.Contains(TEXT("BET SETTLED \u2014 LOSS"))
+				&& ReceiptText.Contains(TEXT("Final Harbor 97\u2013101 Mesa"))
+				&& ReceiptText.Contains(TEXT("E or ESC: CLOSE"));
+			CloseTicketBoothMenu();
+			const bool bClosed = !bSportsbookOfferVisible;
+			SetActorLocation(
+				SafeSpawnLocation,
+				false,
+				nullptr,
+				ETeleportType::TeleportPhysics);
+			ToggleSportsbookOfferPreview();
+			const bool bUnavailableOutsideFrontage =
+				!bSportsbookOfferVisible;
+			SetActorLocation(
+				FVector(
+					SportsbookInteractionLocation.X,
+					SportsbookInteractionLocation.Y,
+					GetActorLocation().Z),
+				false,
+				nullptr,
+				ETeleportType::TeleportPhysics);
+			ToggleSportsbookOfferPreview();
+			TArray<uint8> AfterReceiptBytes;
+			const bool bSourceStable = bReadReceiptSource
+				&& FFileHelper::LoadFileToArray(
+					AfterReceiptBytes,
+					*QaLedgerPath)
+				&& BeforeReceiptBytes == AfterReceiptBytes
+				&& BeforeReceiptMtime
+					== IFileManager::Get().GetTimeStamp(*QaLedgerPath);
+			const bool bExact = bExactReceipt
+				&& bClosed
+				&& bUnavailableOutsideFrontage
+				&& bSportsbookOfferVisible
+				&& SportsbookSettledLossReceipt
+				&& bSourceStable
+				&& GameMode->GetOddsBucksEntryCount()
+					== SportsbookOfferQaLedgerEntries
+				&& GameMode->GetOddsBucksEntryCount() == 2
+				&& GameMode->GetMatchWinnerRequestCount() == 1
+				&& GameMode->GetOddsBucksBalance()
+					== SportsbookOfferQaBalance
+				&& GameMode->GetOddsBucksBalance() == 60;
+			if (!bExact)
+			{
+				UE_LOG(
+					LogOddsWellLocomotion,
+					Error,
+					TEXT("ODDSWELL_CANONICAL_SETTLED_LOSS_RECEIPT_QA|result=FAIL|reason=receipt_or_invariance_mismatch|unavailable=true"));
+				bSportsbookOfferQa = false;
+				QaExitAt = FPlatformTime::Seconds() + 1.0;
+				return;
+			}
+			SportsbookOfferQaStage = 2;
+			SportsbookOfferQaElapsed = 0.0f;
+			return;
+		}
 		if (bCanonicalPostLockQa)
 		{
 			const bool bExact =
@@ -1927,15 +2070,32 @@ void AOddsWellPlaceholderCharacter::RunSportsbookOfferQa(const float DeltaSecond
 		if (FParse::Param(FCommandLine::Get(), TEXT("SportsbookOfferQaCapture")))
 		{
 			FScreenshotRequest::RequestScreenshot(
-				bCanonicalPostLockQa
+				bCanonicalSettledLossReceiptQa
+					? TEXT("Phase1H26P_CanonicalSettledLossReceipt.png")
+					: (bCanonicalPostLockQa
 					? TEXT("Phase1H26G_CanonicalPostLockBooth.png")
 					: (bCanonicalMissingHeldOpenTipoffQa
 					? TEXT("Phase1H26F_HeldOpenMissingTipoffLocked.png")
 					: (bCanonicalPendingReceiptQa
 						? TEXT("Phase1H26F_CanonicalPendingReceipt.png")
-						: TEXT("Phase1H26D_CanonicalMatchWinnerOffer.png"))),
+						: TEXT("Phase1H26D_CanonicalMatchWinnerOffer.png")))),
 				true,
 				false);
+		}
+		if (bCanonicalSettledLossReceiptQa)
+		{
+			UE_LOG(
+				LogOddsWellLocomotion,
+				Display,
+				TEXT("ODDSWELL_CANONICAL_SETTLED_LOSS_RECEIPT_QA|result=PASS|phase=H26P|cold_restore=true|read_only=true|location=Sportsbook|headline=BET_SETTLED_LOSS|selection=Harbor_City_Waves|stake=40|final_score=97-101|winner=Mesa_Vista_Sol|returned=0|net=-40|balance=60|ledger_entries=2|close_instruction=one|view_close_leave_reopen=true|source_bytes_stable=true|source_mtime_stable=true|ids_visible=false|hashes_visible=false|seeds_visible=false|private_athlete_data=false|archive_fallback=false|projection=false|api=false|writer=false|mutation=false"));
+			bSportsbookOfferQa = false;
+			if (FParse::Param(
+					FCommandLine::Get(),
+					TEXT("SportsbookOfferAutoExit")))
+			{
+				QaExitAt = FPlatformTime::Seconds() + 2.0;
+			}
+			return;
 		}
 		if (bCanonicalPostLockQa)
 		{
@@ -3278,7 +3438,12 @@ void AOddsWellSportsbookHUD::DrawHUD()
 	}
 	if (Character->IsTicketBoothMenuVisible())
 	{
-		if (const FOddsWellMatchWinnerOfferPreview* Offer = Character->GetTicketBoothOffer())
+		if (const FOddsWellCanonicalSettledLossReceipt* Receipt =
+			Character->GetTicketBoothSettledLossReceipt())
+		{
+			DrawTicketBoothSettledLossReceipt(*Receipt);
+		}
+		else if (const FOddsWellMatchWinnerOfferPreview* Offer = Character->GetTicketBoothOffer())
 		{
 			DrawTicketBoothMenu(*Character, *Offer);
 		}
@@ -3329,6 +3494,39 @@ void AOddsWellSportsbookHUD::DrawTicketBoothUnavailableMenu()
 	DrawRect(FLinearColor(0.16f, 0.19f, 0.22f, 1.0f), CloseX, CloseY, CloseWidth, 38.0f);
 	DrawText(TEXT("X  CLOSE"), FLinearColor::White, CloseX + 13.0f, CloseY + 10.0f, nullptr, 0.90f);
 	AddHitBox(FVector2D(CloseX, CloseY), FVector2D(CloseWidth, 38.0f), TEXT("TicketBoothClose"), true, 20);
+}
+
+void AOddsWellSportsbookHUD::DrawTicketBoothSettledLossReceipt(
+	const FOddsWellCanonicalSettledLossReceipt& Receipt)
+{
+	const float Width = FMath::Min(720.0f, Canvas->SizeX - 56.0f);
+	const float Height = 520.0f;
+	const float X = (Canvas->SizeX - Width) * 0.5f;
+	const float Y = (Canvas->SizeY - Height) * 0.5f;
+	DrawRect(
+		FLinearColor(0.0f, 0.0f, 0.0f, 0.62f),
+		0.0f,
+		0.0f,
+		Canvas->SizeX,
+		Canvas->SizeY);
+	DrawRect(FLinearColor(0.025f, 0.055f, 0.08f, 0.985f), X, Y, Width, Height);
+	DrawRect(FLinearColor(0.96f, 0.78f, 0.30f, 1.0f), X, Y, Width, 5.0f);
+	TArray<FString> Lines;
+	BuildCanonicalSettledLossReceiptText(Receipt).ParseIntoArrayLines(
+		Lines,
+		false);
+	for (int32 Index = 0; Index < Lines.Num(); ++Index)
+	{
+		DrawText(
+			Lines[Index],
+			Index == 0
+				? FLinearColor(0.96f, 0.78f, 0.30f, 1.0f)
+				: FLinearColor::White,
+			X + 42.0f,
+			Y + 38.0f + Index * 48.0f,
+			nullptr,
+			Index == 0 ? 1.55f : 1.08f);
+	}
 }
 
 void AOddsWellSportsbookHUD::DrawMarketCard(
@@ -6224,6 +6422,64 @@ bool FOddsWellCanonicalPendingReceiptHeldOpenTipoffTest::RunTest(
 			TEXT("H26F held-open expiry leaves existing ledger bytes unchanged"),
 			AfterBytes == BeforeBytes);
 	}
+	return !HasAnyErrors();
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(
+	FOddsWellCanonicalSettledLossReceiptPresentationTest,
+	"OddsWell.Locomotion.CanonicalSettledLossReceipt",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+
+bool FOddsWellCanonicalSettledLossReceiptPresentationTest::RunTest(
+	const FString& Parameters)
+{
+	FOddsWellCanonicalSettledLossReceipt Receipt;
+	Receipt.SelectedTeam = TEXT("Harbor City Waves");
+	Receipt.HomeTeam = TEXT("Harbor City Waves");
+	Receipt.AwayTeam = TEXT("Mesa Vista Sol");
+	Receipt.Winner = TEXT("Mesa Vista Sol");
+	Receipt.Stake = 40;
+	Receipt.HomeScore = 97;
+	Receipt.AwayScore = 101;
+	Receipt.Returned = 0;
+	Receipt.Net = -40;
+	Receipt.LedgerEntryCount = 2;
+	Receipt.CurrentBalance = 60;
+	const FString Text = BuildCanonicalSettledLossReceiptText(Receipt);
+	TArray<FString> Lines;
+	Text.ParseIntoArrayLines(Lines, false);
+	TestEqual(TEXT("H26P receipt contains nine concise lines"), Lines.Num(), 9);
+	TestEqual(
+		TEXT("H26P receipt headline is an exact settled loss"),
+		Lines[0],
+		FString(TEXT("BET SETTLED \u2014 LOSS")));
+	TestTrue(
+		TEXT("H26P receipt shows only approved result values"),
+		Text.Contains(TEXT("Harbor City Waves selected"))
+			&& Text.Contains(TEXT("Stake 40 Odds Bucks"))
+			&& Text.Contains(TEXT("Final Harbor 97\u2013101 Mesa"))
+			&& Text.Contains(TEXT("Winner Mesa Vista Sol"))
+			&& Text.Contains(TEXT("Returned 0"))
+			&& Text.Contains(TEXT("Net -40"))
+			&& Text.Contains(TEXT("Balance 60")));
+	const int32 FirstClose = Text.Find(TEXT("CLOSE"));
+	TestTrue(
+		TEXT("H26P receipt contains exactly one close instruction"),
+		FirstClose != INDEX_NONE
+			&& FirstClose
+				== Text.Find(
+					TEXT("CLOSE"),
+					ESearchCase::CaseSensitive,
+					ESearchDir::FromEnd));
+	const FString Lower = Text.ToLower();
+	TestFalse(
+		TEXT("H26P receipt exposes no command IDs, hashes, seeds, or athlete data"),
+		Lower.Contains(TEXT("command"))
+			|| Lower.Contains(TEXT("hash"))
+			|| Lower.Contains(TEXT("seed"))
+			|| Lower.Contains(TEXT("athlete"))
+			|| Lower.Contains(TEXT("offer"))
+			|| Lower.Contains(TEXT("request")));
 	return !HasAnyErrors();
 }
 

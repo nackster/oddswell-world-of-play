@@ -1661,7 +1661,8 @@ bool UseOddsWellOddsBucksQaSlot()
 		|| FParse::Param(FCommandLine::Get(), TEXT("CanonicalMatchWinnerLossFinalizationQa"))
 		|| FParse::Param(FCommandLine::Get(), TEXT("CanonicalMatchWinnerLossFinalizationQaVerify"))
 		|| FParse::Param(FCommandLine::Get(), TEXT("CanonicalMatchWinnerLossReconciliationQa"))
-		|| FParse::Param(FCommandLine::Get(), TEXT("CanonicalMatchWinnerLossReconciliationQaVerify"));
+		|| FParse::Param(FCommandLine::Get(), TEXT("CanonicalMatchWinnerLossReconciliationQaVerify"))
+		|| FParse::Param(FCommandLine::Get(), TEXT("CanonicalSettledLossReceiptQa"));
 }
 
 const FString& GetOddsWellUpcomingQaMatchWinnerRequestCommandId()
@@ -3340,6 +3341,110 @@ bool WriteOddsWellCanonicalMatchWinnerLossReconciliation(
 		return Reject(OutError);
 	}
 	return true;
+}
+
+EOddsWellCanonicalSettledLossReceiptResult
+LoadOddsWellCanonicalSettledLossReceiptEvidence(
+	const bool bQaSlot,
+	FOddsWellCanonicalSettledLossReceipt& OutReceipt,
+	FString& OutError)
+{
+	OutReceipt = {};
+	if (!UGameplayStatics::DoesSaveGameExist(
+			GetOddsBucksSlot(bQaSlot),
+			OddsBucksUserIndex))
+	{
+		OutError.Reset();
+		return EOddsWellCanonicalSettledLossReceiptResult::Missing;
+	}
+	const UOddsWellOddsBucksSaveGame* Record =
+		Cast<UOddsWellOddsBucksSaveGame>(
+			UGameplayStatics::LoadGameFromSlot(
+				GetOddsBucksSlot(bQaSlot),
+				OddsBucksUserIndex));
+	FOddsWellOddsBucksLedger Ledger;
+	int64 NextJobPayoutUnixSeconds = 0;
+	TArray<FOddsWellMatchWinnerRequestRecord> Requests;
+	TArray<FOddsWellMatchWinnerLockRecord> Locks;
+	TArray<FOddsWellMatchWinnerResultLinkRecord> Results;
+	TArray<FOddsWellMatchWinnerSettlementDecisionRecord> Decisions;
+	TArray<FOddsWellMatchWinnerLossFinalizationRecord> LossFinalizations;
+	TArray<FOddsWellMatchWinnerWinFinalizationRecord> WinFinalizations;
+	TArray<FOddsWellMatchWinnerCanceledGameRecord> CanceledGames;
+	TArray<FOddsWellMatchWinnerVoidDecisionRecord> VoidDecisions;
+	bool bNeedsMigration = false;
+	if (!Record
+		|| !ValidateOddsBucksSave(
+			Record,
+			Ledger,
+			NextJobPayoutUnixSeconds,
+			Requests,
+			Locks,
+			Results,
+			Decisions,
+			LossFinalizations,
+			WinFinalizations,
+			CanceledGames,
+			VoidDecisions,
+			bNeedsMigration,
+			OutError)
+		|| bNeedsMigration
+		|| Record->SchemaVersion != OddsBucksSchemaVersion)
+	{
+		OutReceipt = {};
+		if (OutError.IsEmpty())
+		{
+			OutError = TEXT("The canonical settled-loss receipt source is invalid.");
+		}
+		return EOddsWellCanonicalSettledLossReceiptResult::Rejected;
+	}
+	const bool bHasSettlementEvidence = !Results.IsEmpty()
+		|| !Decisions.IsEmpty()
+		|| !LossFinalizations.IsEmpty()
+		|| !WinFinalizations.IsEmpty()
+		|| !CanceledGames.IsEmpty()
+		|| !VoidDecisions.IsEmpty()
+		|| !Record->MatchWinnerVoidFinalizations.IsEmpty();
+	if (!bHasSettlementEvidence)
+	{
+		OutError.Reset();
+		return EOddsWellCanonicalSettledLossReceiptResult::Missing;
+	}
+	if (Requests.Num() != 1
+		|| Locks.Num() != 1
+		|| Results.Num() != 1
+		|| Decisions.Num() != 1
+		|| LossFinalizations.Num() != 1
+		|| !WinFinalizations.IsEmpty()
+		|| !CanceledGames.IsEmpty()
+		|| !VoidDecisions.IsEmpty()
+		|| !Record->MatchWinnerVoidFinalizations.IsEmpty()
+		|| !IsExactRetainedCanonicalLossReconciliation(
+			Ledger,
+			Requests[0],
+			Locks[0],
+			Results[0],
+			Decisions[0],
+			LossFinalizations[0]))
+	{
+		OutReceipt = {};
+		OutError = TEXT("The exact canonical settled-loss receipt is unavailable.");
+		return EOddsWellCanonicalSettledLossReceiptResult::Rejected;
+	}
+	OutReceipt.SelectedTeam = Requests[0].OfferedTeam;
+	OutReceipt.HomeTeam = Results[0].HomeTeam;
+	OutReceipt.AwayTeam = Results[0].AwayTeam;
+	OutReceipt.Winner = Results[0].Winner;
+	OutReceipt.Stake = Requests[0].Stake;
+	OutReceipt.HomeScore = Results[0].HomeScore;
+	OutReceipt.AwayScore = Results[0].AwayScore;
+	OutReceipt.Returned = LossFinalizations[0].GrossReturnApplied;
+	OutReceipt.Net = Ledger.GetEntries()[1].Delta
+		+ LossFinalizations[0].GrossReturnApplied;
+	OutReceipt.LedgerEntryCount = Ledger.GetEntries().Num();
+	OutReceipt.CurrentBalance = Ledger.GetBalance();
+	OutError.Reset();
+	return EOddsWellCanonicalSettledLossReceiptResult::Ready;
 }
 
 bool LoadOddsWellMatchWinnerCanceledGames(
@@ -8784,6 +8889,27 @@ bool FOddsWellCanonicalMatchWinnerLossReconciliationTest::RunTest(
 			Exact,
 			OddsBucksQaSlot,
 			OddsBucksUserIndex));
+	FOddsWellCanonicalSettledLossReceipt PlayerReceipt;
+	TestEqual(
+		TEXT("H26P exact H26N source exposes one settled-loss receipt"),
+		LoadOddsWellCanonicalSettledLossReceiptEvidence(
+			true,
+			PlayerReceipt,
+			Error),
+		EOddsWellCanonicalSettledLossReceiptResult::Ready);
+	TestTrue(
+		TEXT("H26P receipt contains only the exact player-facing result"),
+		PlayerReceipt.SelectedTeam == SealedResultHomeTeam
+			&& PlayerReceipt.Stake == 40
+			&& PlayerReceipt.HomeTeam == SealedResultHomeTeam
+			&& PlayerReceipt.AwayTeam == SealedResultAwayTeam
+			&& PlayerReceipt.HomeScore == 97
+			&& PlayerReceipt.AwayScore == 101
+			&& PlayerReceipt.Winner == SealedResultAwayTeam
+			&& PlayerReceipt.Returned == 0
+			&& PlayerReceipt.Net == -40
+			&& PlayerReceipt.LedgerEntryCount == 2
+			&& PlayerReceipt.CurrentBalance == 60);
 	TArray<uint8> ExactBytes;
 	TestTrue(
 		TEXT("H26O exact source bytes read"),
@@ -8844,6 +8970,26 @@ bool FOddsWellCanonicalMatchWinnerLossReconciliationTest::RunTest(
 		TestTrue(
 			FString::Printf(TEXT("%s bytes read"), Label),
 			UGameplayStatics::SaveGameToMemory(Mutated, Before));
+		FOddsWellCanonicalSettledLossReceipt RejectedReceipt;
+		TestEqual(
+			FString::Printf(TEXT("%s player receipt rejects"), Label),
+			LoadOddsWellCanonicalSettledLossReceiptEvidence(
+				true,
+				RejectedReceipt,
+				Error),
+			EOddsWellCanonicalSettledLossReceiptResult::Rejected);
+		TestTrue(
+			FString::Printf(TEXT("%s exposes no partial player receipt"), Label),
+			RejectedReceipt.SelectedTeam.IsEmpty()
+				&& RejectedReceipt.HomeTeam.IsEmpty()
+				&& RejectedReceipt.AwayTeam.IsEmpty()
+				&& RejectedReceipt.Winner.IsEmpty()
+				&& RejectedReceipt.Stake == 0
+				&& RejectedReceipt.HomeScore == 0
+				&& RejectedReceipt.AwayScore == 0
+				&& RejectedReceipt.Returned == 0
+				&& RejectedReceipt.Net == 0
+				&& RejectedReceipt.CurrentBalance == 0);
 		TestFalse(
 			Label,
 			WriteOddsWellCanonicalMatchWinnerLossReconciliation(
@@ -8885,6 +9031,19 @@ bool FOddsWellCanonicalMatchWinnerLossReconciliationTest::RunTest(
 	{
 		State.MatchWinnerLossFinalizations[0].ObservedFinalBalance++;
 	});
+	Reject(TEXT("H26P Season 99 cannot substitute"), [](UOddsWellOddsBucksSaveGame& State)
+	{
+		State.MatchWinnerRequests[0].SeasonNumber = 99;
+	});
+	Reject(TEXT("H26P Season 100 cannot substitute"), [](UOddsWellOddsBucksSaveGame& State)
+	{
+		State.MatchWinnerRequests[0].SeasonNumber = 100;
+	});
+	Reject(TEXT("H26P archived result cannot substitute"), [](UOddsWellOddsBucksSaveGame& State)
+	{
+		State.MatchWinnerResultLinks[0].ResultSchema =
+			TEXT("oddswell-sealed-match-winner-result-v1");
+	});
 	Reject(TEXT("H26O mixed state rejects"), [](UOddsWellOddsBucksSaveGame& State)
 	{
 		State.MatchWinnerWinFinalizations.AddDefaulted();
@@ -8895,6 +9054,27 @@ bool FOddsWellCanonicalMatchWinnerLossReconciliationTest::RunTest(
 			UGameplayStatics::LoadGameFromMemory(ExactBytes),
 			OddsBucksQaSlot,
 			OddsBucksUserIndex));
+	FOddsWellCanonicalSettledLossReceipt ColdPlayerReceipt;
+	TestEqual(
+		TEXT("H26P cold exact source restores the identical receipt"),
+		LoadOddsWellCanonicalSettledLossReceiptEvidence(
+			true,
+			ColdPlayerReceipt,
+			Error),
+		EOddsWellCanonicalSettledLossReceiptResult::Ready);
+	TestTrue(
+		TEXT("H26P cold receipt is identical"),
+		ColdPlayerReceipt.SelectedTeam == PlayerReceipt.SelectedTeam
+			&& ColdPlayerReceipt.Stake == PlayerReceipt.Stake
+			&& ColdPlayerReceipt.HomeScore == PlayerReceipt.HomeScore
+			&& ColdPlayerReceipt.AwayScore == PlayerReceipt.AwayScore
+			&& ColdPlayerReceipt.Winner == PlayerReceipt.Winner
+			&& ColdPlayerReceipt.Returned == PlayerReceipt.Returned
+			&& ColdPlayerReceipt.Net == PlayerReceipt.Net
+			&& ColdPlayerReceipt.LedgerEntryCount
+				== PlayerReceipt.LedgerEntryCount
+			&& ColdPlayerReceipt.CurrentBalance
+				== PlayerReceipt.CurrentBalance);
 	TestTrue(
 		TEXT("H26O cold republish succeeds"),
 		WriteOddsWellCanonicalMatchWinnerLossReconciliation(
@@ -8902,6 +9082,14 @@ bool FOddsWellCanonicalMatchWinnerLossReconciliationTest::RunTest(
 			ProjectionPath,
 			Error));
 	TestTrue(TEXT("H26O QA cleanup succeeds"), ResetOddsWellQaOddsBucksAndVerify(Error));
+	FOddsWellCanonicalSettledLossReceipt MissingPlayerReceipt;
+	TestEqual(
+		TEXT("H26P missing source exposes no receipt"),
+		LoadOddsWellCanonicalSettledLossReceiptEvidence(
+			true,
+			MissingPlayerReceipt,
+			Error),
+		EOddsWellCanonicalSettledLossReceiptResult::Missing);
 	return !HasAnyErrors();
 }
 
