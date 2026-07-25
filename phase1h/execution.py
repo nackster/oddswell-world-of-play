@@ -42,6 +42,9 @@ EXPECTED_PREGAME_COMMITMENT_SHA256 = (
 EXECUTOR_VERSION = "oddswell-private-game-executor-v1"
 RECEIPT_SCHEMA = "oddswell-private-game-execution-receipt-v1"
 RECEIPT_STATUS = "executed_pending_seal"
+VERIFIER_VERSION = "oddswell-private-game-digest-verifier-v1"
+SEAL_SCHEMA = "oddswell-private-game-execution-digest-seal-v1"
+SEAL_STATUS = "sealed_pending_result"
 _FORBIDDEN_HANDOFF_KEY_PARTS = (
     "offer_id",
     "request",
@@ -407,7 +410,10 @@ def _valid_sha256(value: object) -> bool:
     )
 
 
-def _validate_receipt(raw: str, commitment: ExecutionCommitment) -> None:
+def _validate_receipt(
+    raw: str,
+    commitment: ExecutionCommitment,
+) -> dict[str, object]:
     receipt = _loads_exact_json(raw)
     expected_keys = {
         "commitment_sha256",
@@ -437,6 +443,29 @@ def _validate_receipt(raw: str, commitment: ExecutionCommitment) -> None:
         or hashlib.sha256(_canonical_json(body).encode()).hexdigest() != receipt_sha256
     ):
         raise ValueError("private execution receipt hash does not verify")
+    return receipt
+
+
+def _write_atomically(path: Path, raw: str) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    temporary_path: Path | None = None
+    try:
+        with tempfile.NamedTemporaryFile(
+            "w",
+            encoding="utf-8",
+            dir=path.parent,
+            prefix=f".{path.stem}.",
+            suffix=".tmp",
+            delete=False,
+        ) as temporary:
+            temporary.write(raw)
+            temporary.flush()
+            os.fsync(temporary.fileno())
+            temporary_path = Path(temporary.name)
+        os.replace(temporary_path, path)
+    finally:
+        if temporary_path and temporary_path.exists():
+            temporary_path.unlink()
 
 
 def consume_execution_handoff(
@@ -472,27 +501,116 @@ def consume_execution_handoff(
     receipt = dict(body)
     receipt["receipt_sha256"] = hashlib.sha256(_canonical_json(body).encode()).hexdigest()
     raw_receipt = _canonical_json(receipt)
-    receipt_directory.mkdir(parents=True, exist_ok=True)
-    temporary_path: Path | None = None
-    try:
-        with tempfile.NamedTemporaryFile(
-            "w",
-            encoding="utf-8",
-            dir=receipt_directory,
-            prefix=f".{commitment.commitment_sha256}.",
-            suffix=".tmp",
-            delete=False,
-        ) as temporary:
-            temporary.write(raw_receipt)
-            temporary.flush()
-            os.fsync(temporary.fileno())
-            temporary_path = Path(temporary.name)
-        os.replace(temporary_path, receipt_path)
-    finally:
-        if temporary_path and temporary_path.exists():
-            temporary_path.unlink()
+    _write_atomically(receipt_path, raw_receipt)
     _validate_receipt(receipt_path.read_text(encoding="utf-8"), commitment)
     return "executed", receipt_path
+
+
+def _execution_evidence(
+    handoff_directory: str | Path,
+    receipt_directory: str | Path,
+) -> tuple[ExecutionCommitment, dict[str, object]]:
+    handoffs = sorted(Path(handoff_directory).glob("*.json"))
+    if len(handoffs) != 1:
+        raise ValueError("exactly one private execution handoff is required")
+    commitment = validate_execution_handoff(handoffs[0].read_text(encoding="utf-8"))
+    receipt_path = Path(receipt_directory) / f"{commitment.commitment_sha256}.json"
+    receipts = sorted(Path(receipt_directory).glob("*.json"))
+    if receipts != [receipt_path]:
+        raise ValueError("exactly one matching private execution receipt is required")
+    receipt = _validate_receipt(receipt_path.read_text(encoding="utf-8"), commitment)
+    return commitment, receipt
+
+
+def _validate_seal(
+    raw: str,
+    commitment: ExecutionCommitment,
+    receipt: dict[str, object],
+) -> dict[str, object]:
+    seal = _loads_exact_json(raw)
+    expected_keys = {
+        "commitment_sha256",
+        "execution_input_sha256",
+        "executor_version",
+        "receipt_sha256",
+        "record_version",
+        "schema",
+        "seal_sha256",
+        "status",
+        "verified_output_digest_sha256",
+        "verifier_version",
+    }
+    if (
+        set(seal) != expected_keys
+        or seal["schema"] != SEAL_SCHEMA
+        or seal["record_version"] != 1
+        or seal["commitment_sha256"] != commitment.commitment_sha256
+        or seal["execution_input_sha256"] != commitment.execution_input_sha256
+        or seal["receipt_sha256"] != receipt["receipt_sha256"]
+        or seal["executor_version"] != EXECUTOR_VERSION
+        or seal["verifier_version"] != VERIFIER_VERSION
+        or seal["verified_output_digest_sha256"]
+        != receipt["output_digest_sha256"]
+        or seal["status"] != SEAL_STATUS
+    ):
+        raise ValueError("private execution digest seal conflicts with exact evidence")
+    body = dict(seal)
+    seal_sha256 = body.pop("seal_sha256")
+    if (
+        not _valid_sha256(seal_sha256)
+        or hashlib.sha256(_canonical_json(body).encode()).hexdigest() != seal_sha256
+    ):
+        raise ValueError("private execution digest seal hash does not verify")
+    return seal
+
+
+def seal_execution_receipt(
+    handoff_directory: str | Path,
+    receipt_directory: str | Path,
+    seal_directory: str | Path,
+) -> tuple[str, Path]:
+    commitment, receipt = _execution_evidence(
+        handoff_directory,
+        receipt_directory,
+    )
+    seal_path = Path(seal_directory) / f"{commitment.commitment_sha256}.json"
+    seals = sorted(Path(seal_directory).glob("*.json")) if Path(seal_directory).exists() else []
+    if seals:
+        if seals != [seal_path]:
+            raise ValueError("private execution digest seal set conflicts with evidence")
+        _validate_seal(
+            seal_path.read_text(encoding="utf-8"),
+            commitment,
+            receipt,
+        )
+        return "duplicate", seal_path
+
+    verified_output_digest = _simulate_once(commitment)
+    if (
+        not _valid_sha256(verified_output_digest)
+        or verified_output_digest != receipt["output_digest_sha256"]
+    ):
+        raise ValueError("private execution digest does not match the receipt")
+    body = {
+        "commitment_sha256": commitment.commitment_sha256,
+        "execution_input_sha256": commitment.execution_input_sha256,
+        "executor_version": EXECUTOR_VERSION,
+        "receipt_sha256": receipt["receipt_sha256"],
+        "record_version": 1,
+        "schema": SEAL_SCHEMA,
+        "status": SEAL_STATUS,
+        "verified_output_digest_sha256": verified_output_digest,
+        "verifier_version": VERIFIER_VERSION,
+    }
+    seal = dict(body)
+    seal["seal_sha256"] = hashlib.sha256(_canonical_json(body).encode()).hexdigest()
+    _write_atomically(seal_path, _canonical_json(seal))
+    _validate_seal(
+        seal_path.read_text(encoding="utf-8"),
+        commitment,
+        receipt,
+    )
+    return "sealed", seal_path
 
 
 def _main() -> int:
@@ -501,12 +619,20 @@ def _main() -> int:
     parser = argparse.ArgumentParser(description="Consume one private OddsWell H26H handoff.")
     parser.add_argument("handoff_directory")
     parser.add_argument("receipt_directory")
+    parser.add_argument("seal_directory", nargs="?")
     args = parser.parse_args()
-    status, receipt_path = consume_execution_handoff(
-        args.handoff_directory,
-        args.receipt_directory,
-    )
-    print(f"{status}: {receipt_path.name}")
+    if args.seal_directory:
+        status, output_path = seal_execution_receipt(
+            args.handoff_directory,
+            args.receipt_directory,
+            args.seal_directory,
+        )
+    else:
+        status, output_path = consume_execution_handoff(
+            args.handoff_directory,
+            args.receipt_directory,
+        )
+    print(f"{status}: {output_path.name}")
     return 0
 
 
