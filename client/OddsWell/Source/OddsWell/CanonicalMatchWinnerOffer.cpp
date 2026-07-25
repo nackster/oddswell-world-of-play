@@ -407,6 +407,48 @@ EOddsWellMatchWinnerLockResult LockCanonicalRequestAtGameStart(
 		OutError);
 }
 
+EOddsWellMatchWinnerSettlementDecisionResult DecideCanonicalMatchWinnerLoss(
+	const FOddsWellCanonicalScheduledGameRecord& Schedule,
+	const FOddsWellCanonicalPregameCommitmentRecord& Commitment,
+	const FString& OfferSlot,
+	const bool bOddsBucksQaSlot,
+	FOddsWellMatchWinnerSettlementDecisionRecord& OutRecord,
+	FString& OutError)
+{
+	OutRecord = {};
+	FOddsWellMatchWinnerOffer ExactOffer;
+	FString ExactCanonicalJson;
+	FOddsWellCanonicalMatchWinnerOfferRecord PersistedOffer;
+	if (!BuildExpectedOffer(
+			Schedule,
+			Commitment,
+			ExactOffer,
+			ExactCanonicalJson,
+			OutError)
+		|| !UGameplayStatics::DoesSaveGameExist(
+			OfferSlot,
+			CanonicalOfferUserIndex)
+		|| !RestoreExactOffer(
+			UGameplayStatics::LoadGameFromSlot(
+				OfferSlot,
+				CanonicalOfferUserIndex),
+			ExactOffer,
+			ExactCanonicalJson,
+			PersistedOffer,
+			OutError))
+	{
+		OutError =
+			TEXT("Canonical Match Winner loss decision failed exact H26A/B/C validation.");
+		return EOddsWellMatchWinnerSettlementDecisionResult::Rejected;
+	}
+	return DecideOddsWellCanonicalMatchWinnerLossDecisionEvidence(
+		ExactOffer,
+		Schedule.OfferEligibleUnixSeconds,
+		bOddsBucksQaSlot,
+		OutRecord,
+		OutError);
+}
+
 EOddsWellCanonicalMatchWinnerOfferResult PersistOffer(
 	const FOddsWellCanonicalScheduledGameRecord& Schedule,
 	const FOddsWellCanonicalPregameCommitmentRecord& Commitment,
@@ -750,6 +792,31 @@ bool ValidateOddsWellCanonicalMatchWinnerResultLinkPrerequisites(
 	}
 	OutError.Reset();
 	return true;
+}
+
+EOddsWellMatchWinnerSettlementDecisionResult DecideOddsWellCanonicalMatchWinnerLossDecision(
+	FOddsWellMatchWinnerSettlementDecisionRecord& OutRecord,
+	FString& OutError)
+{
+	FOddsWellCanonicalScheduledGameRecord Schedule;
+	FOddsWellCanonicalPregameCommitmentRecord Commitment;
+	if (!LoadOddsWellCanonicalLocalBetaScheduledGame(
+			Schedule,
+			OutError)
+		|| !LoadOddsWellCanonicalPregameCommitment(
+			Commitment,
+			OutError))
+	{
+		OutRecord = {};
+		return EOddsWellMatchWinnerSettlementDecisionResult::Rejected;
+	}
+	return DecideCanonicalMatchWinnerLoss(
+		Schedule,
+		Commitment,
+		CanonicalOfferSlot,
+		UseOddsWellOddsBucksQaSlot(),
+		OutRecord,
+		OutError);
 }
 
 EOddsWellMatchWinnerRequestResult AcceptOddsWellCanonicalMatchWinnerRequest(
@@ -2388,6 +2455,522 @@ bool FOddsWellCanonicalMatchWinnerLockTest::RunTest(
 	TestTrue(TEXT("H26G QA ledger cleanup succeeds"), ResetOddsWellQaOddsBucksAndVerify(Error));
 	TestTrue(
 		TEXT("H26G offer fixture cleanup succeeds"),
+		UGameplayStatics::DeleteGameInSlot(
+			CanonicalRequestQaOfferSlot,
+			CanonicalOfferUserIndex));
+	return !HasAnyErrors();
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(
+	FOddsWellCanonicalMatchWinnerLossDecisionTest,
+	"OddsWell.League.CanonicalMatchWinnerLossDecision",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+
+bool FOddsWellCanonicalMatchWinnerLossDecisionTest::RunTest(
+	const FString& Parameters)
+{
+	FString Error;
+	TestTrue(
+		TEXT("H26M QA ledger starts clean"),
+		ResetOddsWellQaOddsBucksAndVerify(Error));
+	UGameplayStatics::DeleteGameInSlot(
+		CanonicalRequestQaOfferSlot,
+		CanonicalOfferUserIndex);
+	const FOddsWellCanonicalScheduledGameRecord Schedule =
+		TestSchedule();
+	const FOddsWellCanonicalPregameCommitmentRecord Commitment =
+		TestCommitment();
+	FOddsWellCanonicalMatchWinnerOfferRecord OfferRecord;
+	TestEqual(
+		TEXT("H26M exact H26C fixture creates"),
+		PersistOffer(
+			Schedule,
+			Commitment,
+			CanonicalRequestQaOfferSlot,
+			Schedule.SeasonCreatedUnixSeconds + 100,
+			OfferRecord,
+			Error),
+		EOddsWellCanonicalMatchWinnerOfferResult::Created);
+	FOddsWellMatchWinnerOffer ExactOffer;
+	FString ExactOfferJson;
+	TestTrue(
+		TEXT("H26M exact offer rebuilds"),
+		BuildExpectedOffer(
+			Schedule,
+			Commitment,
+			ExactOffer,
+			ExactOfferJson,
+			Error));
+	FOddsWellOddsBucksLedger Funded;
+	TestEqual(
+		TEXT("H26M job credit applies"),
+		Funded.Append(
+			GetOddsWellFirstJobCommandId(),
+			GetOddsWellFirstJobPayout(),
+			GetOddsWellFirstJobReason()),
+		EOddsWellOddsBucksAppendResult::Applied);
+	TestTrue(
+		TEXT("H26M funded ledger persists"),
+		SaveOddsWellOddsBucksLedger(
+			Funded,
+			2200086400,
+			true,
+			Error));
+	FOddsWellMatchWinnerRequestRecord Request;
+	int64 Balance = 0;
+	TestEqual(
+		TEXT("H26M exact H26E request accepts Harbor 40"),
+		AcceptCanonicalRequest(
+			Schedule,
+			Commitment,
+			CanonicalRequestQaOfferSlot,
+			Schedule.SeasonCreatedUnixSeconds + 100,
+			true,
+			OfferRecord.OfferId,
+			Schedule.HomeTeam,
+			40,
+			Request,
+			Balance,
+			Error),
+		EOddsWellMatchWinnerRequestResult::Accepted);
+	FOddsWellMatchWinnerLockRecord Lock;
+	TestEqual(
+		TEXT("H26M exact H26G lock persists"),
+		LockCanonicalRequestAtGameStart(
+			Schedule,
+			Commitment,
+			CanonicalRequestQaOfferSlot,
+			Schedule.TipoffUnixSeconds,
+			true,
+			Lock,
+			Error),
+		EOddsWellMatchWinnerLockResult::Locked);
+	const FString ResultRecordSha256(
+		TEXT(
+			"dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"));
+	const FString ResultCommandId =
+		TEXT("canonical:h26l:match_winner:result:")
+		+ ResultRecordSha256;
+	FOddsWellMatchWinnerResultLinkRecord ResultLink;
+	TestEqual(
+		TEXT("H26M exact H26L result link persists"),
+		LinkOddsWellMatchWinnerResult(
+			ResultCommandId,
+			Request.RequestCommandId,
+			Lock.LockCommandId,
+			TEXT("oddswell-private-canonical-game-result-v1"),
+			TEXT("oddswell-private-game-result-recorder-v1"),
+			1,
+			1,
+			Schedule.HomeTeam,
+			Schedule.AwayTeam,
+			97,
+			101,
+			Schedule.AwayTeam,
+			TEXT(
+				"eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"),
+			true,
+			ResultLink,
+			Error),
+		EOddsWellMatchWinnerResultLinkResult::Linked);
+
+	const FString QaLedgerPath = FPaths::Combine(
+		FPaths::ProjectSavedDir(),
+		TEXT("SaveGames"),
+		TEXT("OddsWellOddsBucksQA.sav"));
+	TArray<uint8> ExactMemoryBytes;
+	TestTrue(
+		TEXT("H26M exact H26L baseline serializes"),
+		UGameplayStatics::SaveGameToMemory(
+			UGameplayStatics::LoadGameFromSlot(
+				TEXT("OddsWellOddsBucksQA"),
+				0),
+			ExactMemoryBytes));
+	auto RestoreExactState =
+		[this, &ExactMemoryBytes]()
+	{
+		USaveGame* State =
+			UGameplayStatics::LoadGameFromMemory(
+				ExactMemoryBytes);
+		TestTrue(
+			TEXT("H26M exact H26L baseline restores"),
+			State
+				&& UGameplayStatics::SaveGameToSlot(
+					State,
+					TEXT("OddsWellOddsBucksQA"),
+					0));
+	};
+	auto TestZeroMutation =
+		[this, &QaLedgerPath](
+			const FString& Label,
+			const TArray<uint8>& Before)
+	{
+		TArray<uint8> After;
+		TestTrue(
+			Label + TEXT(" remains readable"),
+			FFileHelper::LoadFileToArray(
+				After,
+				*QaLedgerPath));
+		TestTrue(
+			Label + TEXT(" causes zero mutation"),
+			After == Before);
+	};
+	auto RejectMutation =
+		[this,
+			&Schedule,
+			&Commitment,
+			&Error,
+			&ExactMemoryBytes,
+			&QaLedgerPath,
+			&RestoreExactState,
+			&TestZeroMutation](
+			const FString& Label,
+			TFunction<void(UOddsWellOddsBucksSaveGame&)> Mutate)
+	{
+		UOddsWellOddsBucksSaveGame* State =
+			Cast<UOddsWellOddsBucksSaveGame>(
+				UGameplayStatics::LoadGameFromMemory(
+					ExactMemoryBytes));
+		TestNotNull(Label + TEXT(" fixture loads"), State);
+		if (!State)
+		{
+			return;
+		}
+		Mutate(*State);
+		TestTrue(
+			Label + TEXT(" fixture persists"),
+			UGameplayStatics::SaveGameToSlot(
+				State,
+				TEXT("OddsWellOddsBucksQA"),
+				0));
+		TArray<uint8> Before;
+		TestTrue(
+			Label + TEXT(" fixture bytes read"),
+			FFileHelper::LoadFileToArray(
+				Before,
+				*QaLedgerPath));
+		FOddsWellMatchWinnerSettlementDecisionRecord Rejected;
+		TestEqual(
+			Label,
+			DecideCanonicalMatchWinnerLoss(
+				Schedule,
+				Commitment,
+				CanonicalRequestQaOfferSlot,
+				true,
+				Rejected,
+				Error),
+			EOddsWellMatchWinnerSettlementDecisionResult::Rejected);
+		TestTrue(
+			Label + TEXT(" exposes no decision"),
+			Rejected.DecisionCommandId.IsEmpty());
+		TestZeroMutation(Label, Before);
+		RestoreExactState();
+	};
+	RejectMutation(
+		TEXT("H26M stale schema"),
+		[](UOddsWellOddsBucksSaveGame& State)
+		{
+			State.SchemaVersion = 11;
+		});
+	RejectMutation(
+		TEXT("H26M changed H26E request"),
+		[](UOddsWellOddsBucksSaveGame& State)
+		{
+			State.MatchWinnerRequests[0].GrossReturn++;
+		});
+	RejectMutation(
+		TEXT("H26M changed stake debit"),
+		[](UOddsWellOddsBucksSaveGame& State)
+		{
+			State.Entries[1].Delta = -50;
+			State.Entries[1].BalanceAfter = 50;
+		});
+	RejectMutation(
+		TEXT("H26M changed H26G lock"),
+		[](UOddsWellOddsBucksSaveGame& State)
+		{
+			State.MatchWinnerLocks[0].LockUnixSeconds++;
+		});
+	RejectMutation(
+		TEXT("H26M archive result cannot relabel as H26L"),
+		[](UOddsWellOddsBucksSaveGame& State)
+		{
+			FOddsWellMatchWinnerResultLinkRecord& Result =
+				State.MatchWinnerResultLinks[0];
+			Result.ResultSchema =
+				TEXT("oddswell-sealed-match-winner-result-v1");
+			Result.ResultVersion =
+				TEXT("sealed-match-winner-result-v1");
+			Result.HomeScore = 101;
+			Result.AwayScore = 104;
+			Result.Winner = TEXT("Mesa Vista Sol");
+			Result.ReplaySealSha256 =
+				TEXT(
+					"00e4f82c2bb4da5d9ad53d75bf76ece7b97ed9b05ca2f7a8a2628d396c779b75");
+		});
+	RejectMutation(
+		TEXT("H26M non-loss outcome"),
+		[](UOddsWellOddsBucksSaveGame& State)
+		{
+			FOddsWellMatchWinnerResultLinkRecord& Result =
+				State.MatchWinnerResultLinks[0];
+			Result.HomeScore = 101;
+			Result.AwayScore = 97;
+			Result.Winner = TEXT("Harbor City Waves");
+		});
+	RejectMutation(
+		TEXT("H26M downstream cancellation"),
+		[](UOddsWellOddsBucksSaveGame& State)
+		{
+			State.MatchWinnerCanceledGames.AddDefaulted();
+		});
+	RejectMutation(
+		TEXT("H26M downstream void"),
+		[](UOddsWellOddsBucksSaveGame& State)
+		{
+			State.MatchWinnerVoidDecisions.AddDefaulted();
+		});
+
+	FOddsWellMatchWinnerSettlementDecisionRecord ForeignDecision;
+	TestEqual(
+		TEXT("H26M valid foreign decision fixture persists"),
+		DecideOddsWellMatchWinnerSettlement(
+			ExactOffer,
+			TEXT("qa:h26m:foreign-decision"),
+			Request.RequestCommandId,
+			Lock.LockCommandId,
+			ResultLink.ResultCommandId,
+			true,
+			ForeignDecision,
+			Error),
+		EOddsWellMatchWinnerSettlementDecisionResult::Decided);
+	TArray<uint8> ForeignDecisionBytes;
+	TestTrue(
+		TEXT("H26M foreign decision bytes read"),
+		FFileHelper::LoadFileToArray(
+			ForeignDecisionBytes,
+			*QaLedgerPath));
+	FOddsWellMatchWinnerSettlementDecisionRecord RejectedDecision;
+	TestEqual(
+		TEXT("H26M foreign decision identity rejects"),
+		DecideCanonicalMatchWinnerLoss(
+			Schedule,
+			Commitment,
+			CanonicalRequestQaOfferSlot,
+			true,
+			RejectedDecision,
+			Error),
+		EOddsWellMatchWinnerSettlementDecisionResult::Rejected);
+	TestZeroMutation(
+		TEXT("H26M foreign decision rejection"),
+		ForeignDecisionBytes);
+	FOddsWellMatchWinnerLossFinalizationRecord ForeignFinalization;
+	TestEqual(
+		TEXT("H26M valid finalization fixture persists"),
+		FinalizeOddsWellMatchWinnerLoss(
+			TEXT("qa:h26m:foreign-finalization"),
+			ForeignDecision.DecisionCommandId,
+			true,
+			ForeignFinalization,
+			Error),
+		EOddsWellMatchWinnerLossFinalizationResult::Finalized);
+	TArray<uint8> FinalizationBytes;
+	TestTrue(
+		TEXT("H26M finalization bytes read"),
+		FFileHelper::LoadFileToArray(
+			FinalizationBytes,
+			*QaLedgerPath));
+	TestEqual(
+		TEXT("H26M finalized chain rejects"),
+		DecideCanonicalMatchWinnerLoss(
+			Schedule,
+			Commitment,
+			CanonicalRequestQaOfferSlot,
+			true,
+			RejectedDecision,
+			Error),
+		EOddsWellMatchWinnerSettlementDecisionResult::Rejected);
+	TestZeroMutation(
+		TEXT("H26M finalized chain rejection"),
+		FinalizationBytes);
+	RestoreExactState();
+
+	TArray<uint8> BeforeWriteFailure;
+	TestTrue(
+		TEXT("H26M pre-write-failure bytes read"),
+		FFileHelper::LoadFileToArray(
+			BeforeWriteFailure,
+			*QaLedgerPath));
+	TestTrue(
+		TEXT("H26M fixture becomes read-only"),
+		FPlatformFileManager::Get().GetPlatformFile().SetReadOnly(
+			*QaLedgerPath,
+			true));
+	const EOddsWellMatchWinnerSettlementDecisionResult
+		WriteFailure =
+			DecideCanonicalMatchWinnerLoss(
+				Schedule,
+				Commitment,
+				CanonicalRequestQaOfferSlot,
+				true,
+				RejectedDecision,
+				Error);
+	TestTrue(
+		TEXT("H26M fixture returns writable"),
+		FPlatformFileManager::Get().GetPlatformFile().SetReadOnly(
+			*QaLedgerPath,
+			false));
+	TestEqual(
+		TEXT("H26M persistence failure rejects"),
+		WriteFailure,
+		EOddsWellMatchWinnerSettlementDecisionResult::Rejected);
+	TestZeroMutation(
+		TEXT("H26M persistence failure"),
+		BeforeWriteFailure);
+
+	FOddsWellMatchWinnerSettlementDecisionRecord Decision;
+	TestEqual(
+		TEXT("H26M exact loss decision appends"),
+		DecideCanonicalMatchWinnerLoss(
+			Schedule,
+			Commitment,
+			CanonicalRequestQaOfferSlot,
+			true,
+			Decision,
+			Error),
+		EOddsWellMatchWinnerSettlementDecisionResult::Decided);
+	const FString ExpectedDecisionCommandId =
+		TEXT("canonical:h26m:match_winner:decision:")
+		+ ResultRecordSha256;
+	TestEqual(
+		TEXT("H26M decision identity derives only from H26K"),
+		Decision.DecisionCommandId,
+		ExpectedDecisionCommandId);
+	TestEqual(
+		TEXT("H26M request link is exact"),
+		Decision.RequestCommandId,
+		Request.RequestCommandId);
+	TestEqual(
+		TEXT("H26M lock link is exact"),
+		Decision.LockCommandId,
+		Lock.LockCommandId);
+	TestEqual(
+		TEXT("H26M result link is exact"),
+		Decision.ResultCommandId,
+		ResultLink.ResultCommandId);
+	TestEqual(
+		TEXT("H26M decision schema is approved"),
+		Decision.DecisionSchema,
+		FString(
+			TEXT(
+				"oddswell-match-winner-settlement-decision-v1")));
+	TestEqual(
+		TEXT("H26M decision version is approved"),
+		Decision.DecisionVersion,
+		FString(
+			TEXT(
+				"match-winner-settlement-decision-v1")));
+	TestEqual(
+		TEXT("H26M selected Harbor"),
+		Decision.SelectedTeam,
+		Schedule.HomeTeam);
+	TestEqual(
+		TEXT("H26M authoritative winner is Mesa"),
+		Decision.AuthoritativeWinner,
+		Schedule.AwayTeam);
+	TestEqual(TEXT("H26M stake remains 40"), Decision.Stake, int64{40});
+	TestEqual(
+		TEXT("H26M outcome is lost"),
+		Decision.Outcome,
+		FName(TEXT("lost")));
+	TestEqual(
+		TEXT("H26M loss return due is zero"),
+		Decision.GrossReturnDue,
+		int64{0});
+	TestEqual(
+		TEXT("H26M status is pending apply"),
+		Decision.Status,
+		FName(TEXT("decided_pending_apply")));
+
+	FOddsWellOddsBucksLedger AfterLedger;
+	int64 NextJobPayoutUnixSeconds = 0;
+	TArray<FOddsWellMatchWinnerRequestRecord> Requests;
+	TArray<FOddsWellMatchWinnerLockRecord> Locks;
+	TArray<FOddsWellMatchWinnerResultLinkRecord> Results;
+	TArray<FOddsWellMatchWinnerSettlementDecisionRecord> Decisions;
+	bool bFound = false;
+	TestTrue(
+		TEXT("H26M decided state reloads"),
+		LoadOddsWellOddsBucksWagerDecisionState(
+			true,
+			AfterLedger,
+			NextJobPayoutUnixSeconds,
+			Requests,
+			Locks,
+			Results,
+			Decisions,
+			bFound,
+			Error));
+	TestTrue(TEXT("H26M decided state exists"), bFound);
+	TestEqual(
+		TEXT("H26M keeps two ledger entries"),
+		AfterLedger.GetEntries().Num(),
+		2);
+	TestEqual(
+		TEXT("H26M keeps stake debit -40"),
+		AfterLedger.GetEntries()[1].Delta,
+		int64{-40});
+	TestEqual(
+		TEXT("H26M keeps balance 60"),
+		AfterLedger.GetBalance(),
+		int64{60});
+	TestEqual(TEXT("H26M keeps one request"), Requests.Num(), 1);
+	TestEqual(TEXT("H26M keeps one lock"), Locks.Num(), 1);
+	TestEqual(TEXT("H26M keeps one result link"), Results.Num(), 1);
+	TestEqual(TEXT("H26M appends one decision"), Decisions.Num(), 1);
+	const UOddsWellOddsBucksSaveGame* DecidedState =
+		Cast<UOddsWellOddsBucksSaveGame>(
+			UGameplayStatics::LoadGameFromSlot(
+				TEXT("OddsWellOddsBucksQA"),
+				0));
+	TestTrue(
+		TEXT("H26M creates no later state"),
+		DecidedState
+			&& DecidedState->MatchWinnerLossFinalizations.IsEmpty()
+			&& DecidedState->MatchWinnerWinFinalizations.IsEmpty()
+			&& DecidedState->MatchWinnerCanceledGames.IsEmpty()
+			&& DecidedState->MatchWinnerVoidDecisions.IsEmpty()
+			&& DecidedState->MatchWinnerVoidFinalizations.IsEmpty());
+	TArray<uint8> BeforeDuplicate;
+	TestTrue(
+		TEXT("H26M duplicate baseline bytes read"),
+		FFileHelper::LoadFileToArray(
+			BeforeDuplicate,
+			*QaLedgerPath));
+	FOddsWellMatchWinnerSettlementDecisionRecord Duplicate;
+	TestEqual(
+		TEXT("H26M exact retry is duplicate"),
+		DecideCanonicalMatchWinnerLoss(
+			Schedule,
+			Commitment,
+			CanonicalRequestQaOfferSlot,
+			true,
+			Duplicate,
+			Error),
+		EOddsWellMatchWinnerSettlementDecisionResult::Duplicate);
+	TestEqual(
+		TEXT("H26M duplicate returns immutable identity"),
+		Duplicate.DecisionCommandId,
+		Decision.DecisionCommandId);
+	TestZeroMutation(
+		TEXT("H26M duplicate"),
+		BeforeDuplicate);
+
+	TestTrue(
+		TEXT("H26M QA ledger cleanup succeeds"),
+		ResetOddsWellQaOddsBucksAndVerify(Error));
+	TestTrue(
+		TEXT("H26M offer fixture cleanup succeeds"),
 		UGameplayStatics::DeleteGameInSlot(
 			CanonicalRequestQaOfferSlot,
 			CanonicalOfferUserIndex));

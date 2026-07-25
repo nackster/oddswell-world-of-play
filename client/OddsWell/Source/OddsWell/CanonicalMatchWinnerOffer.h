@@ -9,10 +9,12 @@ struct FOddsWellMatchWinnerRequestRecord;
 struct FOddsWellCanonicalPendingMatchWinnerReceipt;
 struct FOddsWellMatchWinnerLockRecord;
 struct FOddsWellMatchWinnerResultLinkRecord;
+struct FOddsWellMatchWinnerSettlementDecisionRecord;
 struct FOddsWellCanonicalScheduledGameRecord;
 struct FOddsWellCanonicalPregameCommitmentRecord;
 enum class EOddsWellMatchWinnerRequestResult : uint8;
 enum class EOddsWellMatchWinnerLockResult : uint8;
+enum class EOddsWellMatchWinnerSettlementDecisionResult : uint8;
 enum class EOddsWellCanonicalPendingReceiptResult : uint8;
 
 UCLASS()
@@ -79,4 +81,7 @@ ODDSWELL_API bool LoadOddsWellCanonicalMatchWinnerLock(
 	FString& OutError);
 ODDSWELL_API bool ValidateOddsWellCanonicalMatchWinnerResultLinkPrerequisites(
 	const FOddsWellMatchWinnerResultLinkRecord& ExactResult,
+	FString& OutError);
+ODDSWELL_API EOddsWellMatchWinnerSettlementDecisionResult DecideOddsWellCanonicalMatchWinnerLossDecision(
+	FOddsWellMatchWinnerSettlementDecisionRecord& OutRecord,
 	FString& OutError);

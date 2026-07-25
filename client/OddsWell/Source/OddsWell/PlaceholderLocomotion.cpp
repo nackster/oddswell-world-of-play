@@ -3764,6 +3764,267 @@ void AOddsWellLocomotionGameMode::BeginPlay()
 			FCommandLine::Get(),
 			TEXT("CanonicalMatchWinnerResultLinkQa"))
 		|| bCanonicalResultLinkQaVerify;
+	const bool bCanonicalLossDecisionQaVerify =
+		FParse::Param(
+			FCommandLine::Get(),
+			TEXT("CanonicalMatchWinnerLossDecisionQaVerify"));
+	const bool bCanonicalLossDecisionQa =
+		FParse::Param(
+			FCommandLine::Get(),
+			TEXT("CanonicalMatchWinnerLossDecisionQa"))
+		|| bCanonicalLossDecisionQaVerify;
+	if (bCanonicalLossDecisionQa)
+	{
+		FOddsWellOddsBucksLedger BeforeLedger;
+		int64 BeforeNextJobPayoutUnixSeconds = 0;
+		TArray<FOddsWellMatchWinnerRequestRecord> BeforeRequests;
+		TArray<FOddsWellMatchWinnerLockRecord> BeforeLocks;
+		TArray<FOddsWellMatchWinnerResultLinkRecord> BeforeResults;
+		TArray<FOddsWellMatchWinnerSettlementDecisionRecord>
+			BeforeDecisions;
+		bool bBeforeFound = false;
+		FString Error;
+		bool bPassed =
+			LoadOddsWellOddsBucksWagerDecisionState(
+				true,
+				BeforeLedger,
+				BeforeNextJobPayoutUnixSeconds,
+				BeforeRequests,
+				BeforeLocks,
+				BeforeResults,
+				BeforeDecisions,
+				bBeforeFound,
+				Error)
+			&& bBeforeFound
+			&& BeforeLedger.GetEntries().Num() == 2
+			&& BeforeLedger.GetEntries()[0].Delta == 100
+			&& BeforeLedger.GetEntries()[1].Delta == -40
+			&& BeforeLedger.GetBalance() == 60
+			&& BeforeRequests.Num() == 1
+			&& BeforeRequests[0].OfferedTeam
+				== TEXT("Harbor City Waves")
+			&& BeforeRequests[0].Stake == 40
+			&& BeforeLocks.Num() == 1
+			&& BeforeResults.Num() == 1
+			&& BeforeResults[0].Winner
+				== TEXT("Mesa Vista Sol")
+			&& BeforeDecisions.Num()
+				== (bCanonicalLossDecisionQaVerify ? 1 : 0);
+		TArray<uint8> BeforeBytes;
+		bPassed = bPassed
+			&& UGameplayStatics::SaveGameToMemory(
+				UGameplayStatics::LoadGameFromSlot(
+					TEXT("OddsWellOddsBucksQA"),
+					0),
+				BeforeBytes);
+		FOddsWellMatchWinnerSettlementDecisionRecord Decision;
+		const EOddsWellMatchWinnerSettlementDecisionResult Result =
+			bPassed
+				? DecideOddsWellCanonicalMatchWinnerLossDecision(
+					Decision,
+					Error)
+				: EOddsWellMatchWinnerSettlementDecisionResult::Rejected;
+		const FString ExpectedDecisionId =
+			BeforeResults.Num() == 1
+				? TEXT("canonical:h26m:match_winner:decision:")
+					+ BeforeResults[0].ResultCommandId.RightChop(
+						FString(
+							TEXT(
+								"canonical:h26l:match_winner:result:"))
+							.Len())
+				: FString();
+		bPassed = bPassed
+			&& Result
+				== (bCanonicalLossDecisionQaVerify
+					? EOddsWellMatchWinnerSettlementDecisionResult::Duplicate
+					: EOddsWellMatchWinnerSettlementDecisionResult::Decided)
+			&& Decision.DecisionCommandId == ExpectedDecisionId
+			&& Decision.RequestCommandId
+				== BeforeRequests[0].RequestCommandId
+			&& Decision.LockCommandId
+				== BeforeLocks[0].LockCommandId
+			&& Decision.ResultCommandId
+				== BeforeResults[0].ResultCommandId
+			&& Decision.DecisionSchema
+				== TEXT(
+					"oddswell-match-winner-settlement-decision-v1")
+			&& Decision.DecisionVersion
+				== TEXT(
+					"match-winner-settlement-decision-v1")
+			&& Decision.OfferId == BeforeRequests[0].OfferId
+			&& Decision.OfferVersion
+				== BeforeRequests[0].OfferVersion
+			&& Decision.SelectedTeam
+				== TEXT("Harbor City Waves")
+			&& Decision.AuthoritativeWinner
+				== TEXT("Mesa Vista Sol")
+			&& Decision.Stake == 40
+			&& Decision.Outcome == FName(TEXT("lost"))
+			&& Decision.GrossReturnDue == 0
+			&& Decision.SelectedWinProbabilityE8 == 0
+			&& Decision.PayoutFormula.IsEmpty()
+			&& Decision.Status
+				== FName(TEXT("decided_pending_apply"));
+
+		FOddsWellOddsBucksLedger AfterLedger;
+		int64 AfterNextJobPayoutUnixSeconds = 0;
+		TArray<FOddsWellMatchWinnerRequestRecord> AfterRequests;
+		TArray<FOddsWellMatchWinnerLockRecord> AfterLocks;
+		TArray<FOddsWellMatchWinnerResultLinkRecord> AfterResults;
+		TArray<FOddsWellMatchWinnerSettlementDecisionRecord>
+			AfterDecisions;
+		bool bAfterFound = false;
+		bPassed = bPassed
+			&& LoadOddsWellOddsBucksWagerDecisionState(
+				true,
+				AfterLedger,
+				AfterNextJobPayoutUnixSeconds,
+				AfterRequests,
+				AfterLocks,
+				AfterResults,
+				AfterDecisions,
+				bAfterFound,
+				Error)
+			&& bAfterFound
+			&& AfterLedger.GetEntries().Num() == 2
+			&& AfterLedger.GetEntries()[0].CommandId
+				== BeforeLedger.GetEntries()[0].CommandId
+			&& AfterLedger.GetEntries()[0].Delta == 100
+			&& AfterLedger.GetEntries()[0].BalanceAfter == 100
+			&& AfterLedger.GetEntries()[1].CommandId
+				== BeforeLedger.GetEntries()[1].CommandId
+			&& AfterLedger.GetEntries()[1].Delta == -40
+			&& AfterLedger.GetEntries()[1].BalanceAfter == 60
+			&& AfterLedger.GetBalance() == 60
+			&& AfterNextJobPayoutUnixSeconds
+				== BeforeNextJobPayoutUnixSeconds
+			&& AfterRequests.Num() == 1
+			&& AfterLocks.Num() == 1
+			&& AfterResults.Num() == 1
+			&& AfterDecisions.Num() == 1
+			&& AfterDecisions[0].DecisionCommandId
+				== Decision.DecisionCommandId;
+		const UOddsWellOddsBucksSaveGame* ExactState =
+			Cast<UOddsWellOddsBucksSaveGame>(
+				UGameplayStatics::LoadGameFromSlot(
+					TEXT("OddsWellOddsBucksQA"),
+					0));
+		bPassed = bPassed
+			&& ExactState
+			&& ExactState->SchemaVersion == 12
+			&& ExactState->MatchWinnerLossFinalizations.IsEmpty()
+			&& ExactState->MatchWinnerWinFinalizations.IsEmpty()
+			&& ExactState->MatchWinnerCanceledGames.IsEmpty()
+			&& ExactState->MatchWinnerVoidDecisions.IsEmpty()
+			&& ExactState->MatchWinnerVoidFinalizations.IsEmpty();
+		bool bDuplicateByteStable =
+			!bCanonicalLossDecisionQaVerify;
+		if (bPassed && bCanonicalLossDecisionQaVerify)
+		{
+			TArray<uint8> AfterBytes;
+			bDuplicateByteStable =
+				UGameplayStatics::SaveGameToMemory(
+					UGameplayStatics::LoadGameFromSlot(
+						TEXT("OddsWellOddsBucksQA"),
+						0),
+					AfterBytes)
+				&& BeforeBytes == AfterBytes;
+			bPassed = bPassed && bDuplicateByteStable;
+		}
+		bool bCleanup = false;
+		if (bPassed && bCanonicalLossDecisionQaVerify)
+		{
+			bCleanup =
+				ResetOddsWellQaOddsBucksAndVerify(Error);
+			bPassed = bCleanup;
+		}
+		const FOddsWellOddsBucksLedger& ObservedLedger =
+			bAfterFound ? AfterLedger : BeforeLedger;
+		const int32 ObservedResultLinks =
+			bAfterFound ? AfterResults.Num() : BeforeResults.Num();
+		const int32 ObservedDecisions =
+			bAfterFound
+				? AfterDecisions.Num()
+				: BeforeDecisions.Num();
+		const FString ObservedTransition =
+			Result
+				== EOddsWellMatchWinnerSettlementDecisionResult::Decided
+				? TEXT("decided")
+				: Result
+					== EOddsWellMatchWinnerSettlementDecisionResult::Duplicate
+					? TEXT("duplicate")
+					: TEXT("rejected");
+		const FString Evidence = FString::Printf(
+			TEXT("ODDSWELL_CANONICAL_MATCH_WINNER_LOSS_DECISION_QA|result=%s|transition=%s|cold_process_restore=%s|decision_command_id=%s|request_command_id=%s|lock_command_id=%s|result_command_id=%s|decision_schema=%s|decision_version=%s|season=1|game=1|selected_team=%s|authoritative_winner=%s|stake=%lld|outcome=%s|gross_return_due=%lld|status=%s|schema_version=12|ledger_entries=%d|balance=%lld|result_links=%d|decisions=%d|loss_finalizations=%d|win_finalizations=%d|cancellations=%d|voids=%d|duplicate_byte_stable=%s|caller_input=false|finalization=false|application=false|history=false|ui=false|admin=false|replay=false|stats=false|simulation=false|cleanup=%s|detail=%s"),
+			bPassed ? TEXT("PASS") : TEXT("FAIL"),
+			*ObservedTransition,
+			bCanonicalLossDecisionQaVerify
+				? TEXT("true")
+				: TEXT("false"),
+			*Decision.DecisionCommandId,
+			*Decision.RequestCommandId,
+			*Decision.LockCommandId,
+			*Decision.ResultCommandId,
+			Decision.DecisionSchema.IsEmpty()
+				? TEXT("none")
+				: *Decision.DecisionSchema,
+			Decision.DecisionVersion.IsEmpty()
+				? TEXT("none")
+				: *Decision.DecisionVersion,
+			Decision.SelectedTeam.IsEmpty()
+				? TEXT("none")
+				: *Decision.SelectedTeam,
+			Decision.AuthoritativeWinner.IsEmpty()
+				? TEXT("none")
+				: *Decision.AuthoritativeWinner,
+			Decision.Stake,
+			Decision.Outcome.IsNone()
+				? TEXT("none")
+				: *Decision.Outcome.ToString(),
+			Decision.GrossReturnDue,
+			Decision.Status.IsNone()
+				? TEXT("none")
+				: *Decision.Status.ToString(),
+			ObservedLedger.GetEntries().Num(),
+			ObservedLedger.GetBalance(),
+			ObservedResultLinks,
+			ObservedDecisions,
+			ExactState
+				? ExactState->MatchWinnerLossFinalizations.Num()
+				: 0,
+			ExactState
+				? ExactState->MatchWinnerWinFinalizations.Num()
+				: 0,
+			ExactState
+				? ExactState->MatchWinnerCanceledGames.Num()
+				: 0,
+			ExactState
+				? ExactState->MatchWinnerVoidDecisions.Num()
+				: 0,
+			bDuplicateByteStable
+				? TEXT("true")
+				: TEXT("false"),
+			bCleanup ? TEXT("true") : TEXT("false"),
+			Error.IsEmpty() ? TEXT("none") : *Error);
+		if (bPassed)
+		{
+			UE_LOG(
+				LogOddsWellLocomotion,
+				Display,
+				TEXT("%s"),
+				*Evidence);
+		}
+		else
+		{
+			UE_LOG(
+				LogOddsWellLocomotion,
+				Error,
+				TEXT("%s"),
+				*Evidence);
+		}
+		FPlatformMisc::RequestExit(false);
+		return;
+	}
 	if (bCanonicalResultLinkQa)
 	{
 		FOddsWellOddsBucksLedger BeforeLedger;
