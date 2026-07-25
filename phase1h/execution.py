@@ -23,6 +23,7 @@ from phase0d.league import (
     INJURY_MODEL_VERSION,
     LEAGUE_VERSION,
     ScheduledGame,
+    SeasonGame,
     empty_availability,
     empty_fatigue,
     empty_readiness,
@@ -45,6 +46,9 @@ RECEIPT_STATUS = "executed_pending_seal"
 VERIFIER_VERSION = "oddswell-private-game-digest-verifier-v1"
 SEAL_SCHEMA = "oddswell-private-game-execution-digest-seal-v1"
 SEAL_STATUS = "sealed_pending_result"
+RECORDER_VERSION = "oddswell-private-game-result-recorder-v1"
+RESULT_SCHEMA = "oddswell-private-canonical-game-result-v1"
+RESULT_STATUS = "recorded_pending_decision"
 _FORBIDDEN_HANDOFF_KEY_PARTS = (
     "offer_id",
     "request",
@@ -254,7 +258,7 @@ def dry_simulation_manifest_hash(commitment: ExecutionCommitment) -> str:
     return first
 
 
-def _simulate_once(commitment: ExecutionCommitment) -> str:
+def _simulate_result(commitment: ExecutionCommitment) -> SeasonGame:
     values = json.loads(commitment.execution_input_json)
     teams = default_teams()
     fixture = ScheduledGame(1, commitment.execution_seed, teams[0], teams[1])
@@ -281,7 +285,11 @@ def _simulate_once(commitment: ExecutionCommitment) -> str:
         "offensive_involvement_version": values["offensive_involvement_version"],
         "stored_offensive_involvement_snapshot": involvement,
     }
-    return simulate_scheduled_game(*arguments, **options).replay_sha256
+    return simulate_scheduled_game(*arguments, **options)
+
+
+def _simulate_once(commitment: ExecutionCommitment) -> str:
+    return _simulate_result(commitment).replay_sha256
 
 
 def canonical_execution_handoff(
@@ -613,6 +621,169 @@ def seal_execution_receipt(
     return "sealed", seal_path
 
 
+def _sealed_execution_evidence(
+    handoff_directory: str | Path,
+    receipt_directory: str | Path,
+    seal_directory: str | Path,
+) -> tuple[ExecutionCommitment, dict[str, object], dict[str, object]]:
+    commitment, receipt = _execution_evidence(handoff_directory, receipt_directory)
+    seal_path = Path(seal_directory) / f"{commitment.commitment_sha256}.json"
+    seals = sorted(Path(seal_directory).glob("*.json"))
+    if seals != [seal_path]:
+        raise ValueError("exactly one matching private execution digest seal is required")
+    seal = _validate_seal(
+        seal_path.read_text(encoding="utf-8"),
+        commitment,
+        receipt,
+    )
+    return commitment, receipt, seal
+
+
+def _validate_result_record(
+    raw: str,
+    commitment: ExecutionCommitment,
+    seal: dict[str, object],
+) -> dict[str, object]:
+    record = _loads_exact_json(raw)
+    schedule = json.loads(commitment.execution_input_json)["schedule"]
+    expected_keys = {
+        "away_score",
+        "away_team",
+        "commitment_sha256",
+        "game_number",
+        "home_score",
+        "home_team",
+        "record_sha256",
+        "record_version",
+        "recorder_version",
+        "replay_sha256",
+        "schema",
+        "seal_sha256",
+        "season_number",
+        "status",
+        "winner",
+    }
+    home_score = record.get("home_score")
+    away_score = record.get("away_score")
+    if (
+        set(record) != expected_keys
+        or record["schema"] != RESULT_SCHEMA
+        or record["record_version"] != 1
+        or record["status"] != RESULT_STATUS
+        or record["recorder_version"] != RECORDER_VERSION
+        or record["commitment_sha256"] != commitment.commitment_sha256
+        or record["seal_sha256"] != seal["seal_sha256"]
+        or record["season_number"] != 1
+        or record["game_number"] != schedule["game_number"]
+        or record["home_team"] != schedule["home_team"]
+        or record["away_team"] != schedule["away_team"]
+        or type(home_score) is not int
+        or type(away_score) is not int
+        or home_score < 0
+        or away_score < 0
+        or home_score == away_score
+        or record["winner"]
+        != (record["home_team"] if home_score > away_score else record["away_team"])
+        or record["replay_sha256"] != seal["verified_output_digest_sha256"]
+    ):
+        raise ValueError("private canonical game result conflicts with exact evidence")
+    body = dict(record)
+    record_sha256 = body.pop("record_sha256")
+    if (
+        not _valid_sha256(record_sha256)
+        or hashlib.sha256(_canonical_json(body).encode()).hexdigest() != record_sha256
+    ):
+        raise ValueError("private canonical game result hash does not verify")
+    return record
+
+
+def _result_record(
+    commitment: ExecutionCommitment,
+    seal: dict[str, object],
+    result: SeasonGame,
+) -> dict[str, object]:
+    schedule = json.loads(commitment.execution_input_json)["schedule"]
+    if (
+        result.number != schedule["game_number"]
+        or result.home_team != schedule["home_team"]
+        or result.away_team != schedule["away_team"]
+        or type(result.home_score) is not int
+        or type(result.away_score) is not int
+        or result.home_score < 0
+        or result.away_score < 0
+        or result.home_score == result.away_score
+        or result.winner
+        != (
+            result.home_team
+            if result.home_score > result.away_score
+            else result.away_team
+        )
+        or result.replay_sha256 != seal["verified_output_digest_sha256"]
+    ):
+        raise ValueError("frozen simulator result conflicts with the private digest seal")
+    body = {
+        "away_score": result.away_score,
+        "away_team": result.away_team,
+        "commitment_sha256": commitment.commitment_sha256,
+        "game_number": result.number,
+        "home_score": result.home_score,
+        "home_team": result.home_team,
+        "record_version": 1,
+        "recorder_version": RECORDER_VERSION,
+        "replay_sha256": result.replay_sha256,
+        "schema": RESULT_SCHEMA,
+        "seal_sha256": seal["seal_sha256"],
+        "season_number": 1,
+        "status": RESULT_STATUS,
+        "winner": result.winner,
+    }
+    record = dict(body)
+    record["record_sha256"] = hashlib.sha256(_canonical_json(body).encode()).hexdigest()
+    return record
+
+
+def record_game_result(
+    handoff_directory: str | Path,
+    receipt_directory: str | Path,
+    seal_directory: str | Path,
+    result_directory: str | Path,
+) -> tuple[str, Path]:
+    commitment, _, seal = _sealed_execution_evidence(
+        handoff_directory,
+        receipt_directory,
+        seal_directory,
+    )
+    result_path = Path(result_directory) / f"{commitment.commitment_sha256}.json"
+    results = (
+        sorted(Path(result_directory).glob("*.json"))
+        if Path(result_directory).exists()
+        else []
+    )
+    existing: dict[str, object] | None = None
+    if results:
+        if results != [result_path]:
+            raise ValueError("private canonical game result set conflicts with evidence")
+        existing = _validate_result_record(
+            result_path.read_text(encoding="utf-8"),
+            commitment,
+            seal,
+        )
+
+    record = _result_record(commitment, seal, _simulate_result(commitment))
+    if existing is not None:
+        if existing != record:
+            raise ValueError("private canonical game result conflicts with recomputation")
+        return "duplicate", result_path
+
+    _write_atomically(result_path, _canonical_json(record))
+    _validate_result_record(
+        result_path.read_text(encoding="utf-8"),
+        commitment,
+        seal,
+    )
+    return "recorded", result_path
+
+
 def _main() -> int:
     import argparse
 
@@ -620,8 +791,16 @@ def _main() -> int:
     parser.add_argument("handoff_directory")
     parser.add_argument("receipt_directory")
     parser.add_argument("seal_directory", nargs="?")
+    parser.add_argument("result_directory", nargs="?")
     args = parser.parse_args()
-    if args.seal_directory:
+    if args.result_directory:
+        status, output_path = record_game_result(
+            args.handoff_directory,
+            args.receipt_directory,
+            args.seal_directory,
+            args.result_directory,
+        )
+    elif args.seal_directory:
         status, output_path = seal_execution_receipt(
             args.handoff_directory,
             args.receipt_directory,
