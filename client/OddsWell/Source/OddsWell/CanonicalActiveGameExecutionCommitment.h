@@ -111,6 +111,13 @@ enum class EOddsWellCanonicalActiveGameExecutionCommitmentResult : uint8
 	Rejected
 };
 
+enum class EOddsWellCanonicalGameExecutionHandoffResult : uint8
+{
+	Created,
+	Duplicate,
+	Rejected
+};
+
 ODDSWELL_API EOddsWellCanonicalActiveGameExecutionCommitmentResult
 	CreateOddsWellCanonicalActiveGameExecutionCommitment(
 		FOddsWellCanonicalActiveGameExecutionCommitmentRecord& OutRecord,
@@ -118,3 +125,8 @@ ODDSWELL_API EOddsWellCanonicalActiveGameExecutionCommitmentResult
 ODDSWELL_API bool LoadOddsWellCanonicalActiveGameExecutionCommitment(
 	FOddsWellCanonicalActiveGameExecutionCommitmentRecord& OutRecord,
 	FString& OutError);
+ODDSWELL_API EOddsWellCanonicalGameExecutionHandoffResult
+	WriteOddsWellCanonicalGameExecutionHandoff(
+		FString& OutPath,
+		FString& OutSha256,
+		FString& OutError);

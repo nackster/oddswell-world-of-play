@@ -3,7 +3,10 @@
 #include "CanonicalMatchWinnerOffer.h"
 #include "CanonicalPregameCommitment.h"
 #include "CanonicalScheduledGame.h"
+#include "HAL/FileManager.h"
 #include "Kismet/GameplayStatics.h"
+#include "Misc/FileHelper.h"
+#include "Misc/Paths.h"
 #include "OddsBucksLedger.h"
 
 #if PLATFORM_WINDOWS
@@ -276,6 +279,35 @@ bool BuildExpectedCommitment(
 		LocalBetaEnvironment};
 	OutError.Reset();
 	return true;
+}
+
+FString BuildExecutionHandoffJson(
+	const FOddsWellCanonicalActiveGameExecutionCommitmentRecord& Record)
+{
+	return FString::Printf(
+		TEXT("{\"away_team\":\"%s\",\"commitment\":%s,\"commitment_sha256\":\"%s\",\"environment\":\"%s\",\"execution_input\":%s,\"execution_input_sha256\":\"%s\",\"execution_seed\":%lld,\"game_number\":%d,\"home_team\":\"%s\",\"offer_eligible_unix\":%lld,\"pregame_commitment_sha256\":\"%s\",\"record_version\":%d,\"schedule_created_unix\":%lld,\"schedule_record_version\":%d,\"schedule_schema\":\"%s\",\"schedule_tipoff_unix\":%lld,\"schema\":\"%s\",\"season_number\":%d,\"seed_derivation_version\":\"%s\",\"seed_material\":%s,\"seed_material_sha256\":\"%s\",\"status\":\"%s\"}"),
+		*Record.AwayTeam,
+		*Record.CommitmentJson,
+		*Record.CommitmentSha256,
+		*Record.Environment,
+		*Record.ExecutionInputJson,
+		*Record.ExecutionInputSha256,
+		Record.ExecutionSeed,
+		Record.GameNumber,
+		*Record.HomeTeam,
+		Record.OfferEligibleUnixSeconds,
+		*Record.PregameCommitmentSha256,
+		Record.RecordVersion,
+		Record.ScheduleCreatedUnixSeconds,
+		Record.ScheduleRecordVersion,
+		*Record.ScheduleSchema,
+		Record.ScheduleTipoffUnixSeconds,
+		*Record.Schema,
+		Record.SeasonNumber,
+		*Record.SeedDerivationVersion,
+		*Record.SeedMaterialJson,
+		*Record.SeedMaterialSha256,
+		*Record.Status);
 }
 
 bool IsSameCommitment(
@@ -570,6 +602,73 @@ bool LoadOddsWellCanonicalActiveGameExecutionCommitment(
 		OutError);
 }
 
+EOddsWellCanonicalGameExecutionHandoffResult
+WriteOddsWellCanonicalGameExecutionHandoff(
+	FString& OutPath,
+	FString& OutSha256,
+	FString& OutError)
+{
+	OutPath.Reset();
+	OutSha256.Reset();
+	FOddsWellCanonicalActiveGameExecutionCommitmentRecord Commitment;
+	if (!LoadOddsWellCanonicalActiveGameExecutionCommitment(
+		Commitment,
+		OutError))
+	{
+		return EOddsWellCanonicalGameExecutionHandoffResult::Rejected;
+	}
+	const FString Json = BuildExecutionHandoffJson(Commitment);
+	if (!HashSha256(Json, OutSha256, OutError))
+	{
+		return EOddsWellCanonicalGameExecutionHandoffResult::Rejected;
+	}
+	OutPath = FPaths::Combine(
+		FPaths::ProjectSavedDir(),
+		TEXT("PrivateExecution"),
+		TEXT("Handoff"),
+		TEXT("OddsWellCanonicalActiveGameExecutionHandoff.json"));
+	if (IFileManager::Get().FileExists(*OutPath))
+	{
+		FString Existing;
+		if (!FFileHelper::LoadFileToString(Existing, *OutPath)
+			|| Existing != Json)
+		{
+			OutError =
+				TEXT("The private execution handoff conflicts with exact H26H evidence.");
+			return EOddsWellCanonicalGameExecutionHandoffResult::Rejected;
+		}
+		OutError.Reset();
+		return EOddsWellCanonicalGameExecutionHandoffResult::Duplicate;
+	}
+	IFileManager::Get().MakeDirectory(*FPaths::GetPath(OutPath), true);
+	const FString TemporaryPath = OutPath + TEXT(".tmp");
+	if (!FFileHelper::SaveStringToFile(
+			Json,
+			*TemporaryPath,
+			FFileHelper::EEncodingOptions::ForceUTF8WithoutBOM)
+		|| !IFileManager::Get().Move(
+			*OutPath,
+			*TemporaryPath,
+			true,
+			true,
+			false,
+			true))
+	{
+		IFileManager::Get().Delete(*TemporaryPath, false, true, true);
+		OutError = TEXT("The private execution handoff could not be written atomically.");
+		return EOddsWellCanonicalGameExecutionHandoffResult::Rejected;
+	}
+	FString Persisted;
+	if (!FFileHelper::LoadFileToString(Persisted, *OutPath)
+		|| Persisted != Json)
+	{
+		OutError = TEXT("The private execution handoff did not persist exactly.");
+		return EOddsWellCanonicalGameExecutionHandoffResult::Rejected;
+	}
+	OutError.Reset();
+	return EOddsWellCanonicalGameExecutionHandoffResult::Created;
+}
+
 #if WITH_DEV_AUTOMATION_TESTS
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
 	FOddsWellCanonicalActiveGameExecutionCommitmentTest,
@@ -858,6 +957,71 @@ bool FOddsWellCanonicalActiveGameExecutionCommitmentTest::RunTest(
 		UGameplayStatics::DoesSaveGameExist(
 			ExecutionCommitmentQaSlot,
 			ExecutionCommitmentUserIndex));
+	return !HasAnyErrors();
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(
+	FOddsWellCanonicalGameExecutionHandoffTest,
+	"OddsWell.League.CanonicalGameExecutionHandoff",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+
+bool FOddsWellCanonicalGameExecutionHandoffTest::RunTest(
+	const FString& Parameters)
+{
+	FOddsWellCanonicalActiveGameExecutionCommitmentRecord Commitment;
+	FString Error;
+	TestTrue(
+		TEXT("Exact fixture builds"),
+		BuildExpectedCommitment(
+			TestSchedule(),
+			TestPregameCommitment(),
+			Commitment,
+			Error));
+	const FString Handoff = BuildExecutionHandoffJson(Commitment);
+	FString HandoffSha256;
+	TestTrue(
+		TEXT("Handoff hashes"),
+		HashSha256(Handoff, HandoffSha256, Error));
+	TestEqual(TEXT("Canonical handoff length is fixed"), Handoff.Len(), 7099);
+	TestEqual(
+		TEXT("Native handoff matches independent Python canonical SHA"),
+		HandoffSha256,
+		FString(
+			TEXT("6337d3fa64e88ab2c0372c74616e45a96f2523c084fe111d0bd9a41a671a9667")));
+	TestTrue(
+		TEXT("Handoff embeds exact commitment object"),
+		Handoff.Contains(
+			TEXT("\"commitment\":{\"away_team\":\"Mesa Vista Sol\"")));
+	TestTrue(
+		TEXT("Handoff embeds exact frozen input object"),
+		Handoff.Contains(
+			TEXT("\"execution_input\":{\"brain_version\":\"baseline-v2\"")));
+	TestTrue(
+		TEXT("Handoff embeds exact seed material object"),
+		Handoff.Contains(
+			TEXT("\"seed_material\":{\"away_team\":\"Mesa Vista Sol\"")));
+	for (const TCHAR* Forbidden : {
+		TEXT("\"offer_id\""),
+		TEXT("\"request\""),
+		TEXT("\"selection\""),
+		TEXT("\"stake\""),
+		TEXT("\"balance\""),
+		TEXT("\"ledger\""),
+		TEXT("\"lock_command\""),
+		TEXT("\"accepted_unix\""),
+		TEXT("\"output\""),
+		TEXT("\"score\""),
+		TEXT("\"winner\""),
+		TEXT("\"tape\""),
+		TEXT("\"event_log\""),
+		TEXT("\"replay\""),
+		TEXT("\"settlement\""),
+		TEXT("\"odds_bucks\"")})
+	{
+		TestFalse(
+			FString::Printf(TEXT("Private handoff excludes %s"), Forbidden),
+			Handoff.Contains(Forbidden));
+	}
 	return !HasAnyErrors();
 }
 #endif

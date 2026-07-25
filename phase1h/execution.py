@@ -4,7 +4,10 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
+import tempfile
 from dataclasses import dataclass
+from pathlib import Path
 
 from phase0a.simulator import BRAIN_VERSION, ENGINE_VERSION, default_teams
 from phase0d.consistency import (
@@ -33,6 +36,23 @@ RECORD_VERSION = 1
 SEED_DERIVATION_VERSION = "oddswell-canonical-active-game-seed-v1"
 STATUS = "committed_for_execution"
 ENVIRONMENT = "local_beta"
+EXPECTED_PREGAME_COMMITMENT_SHA256 = (
+    "898e89ef142f884fe2514bc55a65b91c80a5bf25d068467b2ddbfe25569ea98f"
+)
+EXECUTOR_VERSION = "oddswell-private-game-executor-v1"
+RECEIPT_SCHEMA = "oddswell-private-game-execution-receipt-v1"
+RECEIPT_STATUS = "executed_pending_seal"
+_FORBIDDEN_HANDOFF_KEY_PARTS = (
+    "offer_id",
+    "request",
+    "selection",
+    "stake",
+    "balance",
+    "ledger",
+    "lock_command",
+    "accepted_unix",
+    "output",
+)
 
 
 @dataclass(frozen=True)
@@ -85,8 +105,7 @@ def _require_upstream(schedule: dict[str, object], pregame_sha256: str) -> None:
         or schedule["timing_authority"] != "server"
         or schedule["production_timing"] is not False
         or schedule["offer_published"] is not False
-        or len(pregame_sha256) != 64
-        or any(character not in "0123456789abcdef" for character in pregame_sha256)
+        or pregame_sha256 != EXPECTED_PREGAME_COMMITMENT_SHA256
     ):
         raise ValueError("exact immutable H26A/H26B evidence is required")
 
@@ -225,6 +244,14 @@ def dry_simulation_manifest_hash(commitment: ExecutionCommitment) -> str:
         != commitment.commitment_sha256
     ):
         raise ValueError("execution commitment hashes do not verify")
+    first = _simulate_once(commitment)
+    second = _simulate_once(commitment)
+    if first != second:
+        raise RuntimeError("identical execution commitments produced different manifests")
+    return first
+
+
+def _simulate_once(commitment: ExecutionCommitment) -> str:
     values = json.loads(commitment.execution_input_json)
     teams = default_teams()
     fixture = ScheduledGame(1, commitment.execution_seed, teams[0], teams[1])
@@ -251,8 +278,237 @@ def dry_simulation_manifest_hash(commitment: ExecutionCommitment) -> str:
         "offensive_involvement_version": values["offensive_involvement_version"],
         "stored_offensive_involvement_snapshot": involvement,
     }
-    first = simulate_scheduled_game(*arguments, **options).replay_sha256
-    second = simulate_scheduled_game(*arguments, **options).replay_sha256
-    if first != second:
-        raise RuntimeError("identical execution commitments produced different manifests")
-    return first
+    return simulate_scheduled_game(*arguments, **options).replay_sha256
+
+
+def canonical_execution_handoff(
+    schedule: dict[str, object],
+    pregame_sha256: str,
+) -> str:
+    commitment = active_game_execution_commitment(schedule, pregame_sha256)
+    return _canonical_json(
+        {
+            "away_team": schedule["away_team"],
+            "commitment": json.loads(commitment.commitment_json),
+            "commitment_sha256": commitment.commitment_sha256,
+            "environment": ENVIRONMENT,
+            "execution_input": json.loads(commitment.execution_input_json),
+            "execution_input_sha256": commitment.execution_input_sha256,
+            "execution_seed": commitment.execution_seed,
+            "game_number": schedule["game_number"],
+            "home_team": schedule["home_team"],
+            "offer_eligible_unix": schedule["offer_eligible_unix"],
+            "pregame_commitment_sha256": pregame_sha256,
+            "record_version": RECORD_VERSION,
+            "schedule_created_unix": schedule["season_created_unix"],
+            "schedule_record_version": schedule["record_version"],
+            "schedule_schema": schedule["schema"],
+            "schedule_tipoff_unix": schedule["tipoff_unix"],
+            "schema": SCHEMA,
+            "season_number": schedule["season_number"],
+            "seed_derivation_version": SEED_DERIVATION_VERSION,
+            "seed_material": json.loads(commitment.seed_material_json),
+            "seed_material_sha256": commitment.seed_material_sha256,
+            "status": STATUS,
+        }
+    )
+
+
+def _loads_exact_json(raw: str) -> dict[str, object]:
+    def no_duplicates(pairs: list[tuple[str, object]]) -> dict[str, object]:
+        value: dict[str, object] = {}
+        for key, item in pairs:
+            if key in value:
+                raise ValueError(f"duplicate JSON key: {key}")
+            value[key] = item
+        return value
+
+    try:
+        value = json.loads(raw, object_pairs_hook=no_duplicates)
+    except (json.JSONDecodeError, ValueError) as error:
+        raise ValueError("private execution JSON is malformed") from error
+    if not isinstance(value, dict) or _canonical_json(value) != raw:
+        raise ValueError("private execution JSON is not exact canonical JSON")
+    return value
+
+
+def _reject_forbidden_handoff_keys(value: object) -> None:
+    if isinstance(value, dict):
+        for key, item in value.items():
+            if any(part in key for part in _FORBIDDEN_HANDOFF_KEY_PARTS):
+                raise ValueError("private execution handoff contains a forbidden field")
+            _reject_forbidden_handoff_keys(item)
+    elif isinstance(value, list):
+        for item in value:
+            _reject_forbidden_handoff_keys(item)
+
+
+def validate_execution_handoff(raw: str) -> ExecutionCommitment:
+    handoff = _loads_exact_json(raw)
+    _reject_forbidden_handoff_keys(handoff)
+    expected_keys = {
+        "away_team",
+        "commitment",
+        "commitment_sha256",
+        "environment",
+        "execution_input",
+        "execution_input_sha256",
+        "execution_seed",
+        "game_number",
+        "home_team",
+        "offer_eligible_unix",
+        "pregame_commitment_sha256",
+        "record_version",
+        "schedule_created_unix",
+        "schedule_record_version",
+        "schedule_schema",
+        "schedule_tipoff_unix",
+        "schema",
+        "season_number",
+        "seed_derivation_version",
+        "seed_material",
+        "seed_material_sha256",
+        "status",
+    }
+    if set(handoff) != expected_keys or not isinstance(handoff["seed_material"], dict):
+        raise ValueError("private execution handoff fields are not exact")
+    seed_material = handoff["seed_material"]
+    try:
+        schedule = {
+            "schema": handoff["schedule_schema"],
+            "record_version": handoff["schedule_record_version"],
+            "season_number": handoff["season_number"],
+            "game_number": handoff["game_number"],
+            "home_team": handoff["home_team"],
+            "away_team": handoff["away_team"],
+            "season_created_unix": handoff["schedule_created_unix"],
+            "tipoff_unix": handoff["schedule_tipoff_unix"],
+            "offer_eligible_unix": handoff["offer_eligible_unix"],
+            "status": seed_material["schedule_status"],
+            "environment": handoff["environment"],
+            "timing_authority": seed_material["timing_authority"],
+            "production_timing": seed_material["production_timing"],
+            "offer_published": seed_material["offer_published"],
+        }
+        pregame_sha256 = handoff["pregame_commitment_sha256"]
+        expected_raw = canonical_execution_handoff(schedule, pregame_sha256)
+    except (KeyError, TypeError, ValueError) as error:
+        raise ValueError("private execution handoff is not exact H26H evidence") from error
+    if raw != expected_raw:
+        raise ValueError("private execution handoff conflicts with exact H26H evidence")
+    return active_game_execution_commitment(schedule, pregame_sha256)
+
+
+def _valid_sha256(value: object) -> bool:
+    return (
+        isinstance(value, str)
+        and len(value) == 64
+        and all(character in "0123456789abcdef" for character in value)
+    )
+
+
+def _validate_receipt(raw: str, commitment: ExecutionCommitment) -> None:
+    receipt = _loads_exact_json(raw)
+    expected_keys = {
+        "commitment_sha256",
+        "execution_input_sha256",
+        "executor_version",
+        "output_digest_sha256",
+        "receipt_sha256",
+        "record_version",
+        "schema",
+        "status",
+    }
+    if (
+        set(receipt) != expected_keys
+        or receipt["schema"] != RECEIPT_SCHEMA
+        or receipt["record_version"] != 1
+        or receipt["commitment_sha256"] != commitment.commitment_sha256
+        or receipt["execution_input_sha256"] != commitment.execution_input_sha256
+        or receipt["executor_version"] != EXECUTOR_VERSION
+        or receipt["status"] != RECEIPT_STATUS
+        or not _valid_sha256(receipt["output_digest_sha256"])
+    ):
+        raise ValueError("private execution receipt conflicts with the handoff")
+    body = dict(receipt)
+    receipt_sha256 = body.pop("receipt_sha256")
+    if (
+        not _valid_sha256(receipt_sha256)
+        or hashlib.sha256(_canonical_json(body).encode()).hexdigest() != receipt_sha256
+    ):
+        raise ValueError("private execution receipt hash does not verify")
+
+
+def consume_execution_handoff(
+    handoff_directory: str | Path,
+    receipt_directory: str | Path,
+) -> tuple[str, Path]:
+    handoffs = sorted(Path(handoff_directory).glob("*.json"))
+    if len(handoffs) != 1:
+        raise ValueError("exactly one private execution handoff is required")
+    raw_handoff = handoffs[0].read_text(encoding="utf-8")
+    commitment = validate_execution_handoff(raw_handoff)
+    receipt_directory = Path(receipt_directory)
+    receipt_path = receipt_directory / f"{commitment.commitment_sha256}.json"
+    receipts = sorted(receipt_directory.glob("*.json")) if receipt_directory.exists() else []
+    if receipts:
+        if receipts != [receipt_path]:
+            raise ValueError("private execution receipt set conflicts with the handoff")
+        _validate_receipt(receipt_path.read_text(encoding="utf-8"), commitment)
+        return "duplicate", receipt_path
+
+    output_digest = _simulate_once(commitment)
+    if not _valid_sha256(output_digest):
+        raise RuntimeError("private execution produced an invalid output digest")
+    body = {
+        "commitment_sha256": commitment.commitment_sha256,
+        "execution_input_sha256": commitment.execution_input_sha256,
+        "executor_version": EXECUTOR_VERSION,
+        "output_digest_sha256": output_digest,
+        "record_version": 1,
+        "schema": RECEIPT_SCHEMA,
+        "status": RECEIPT_STATUS,
+    }
+    receipt = dict(body)
+    receipt["receipt_sha256"] = hashlib.sha256(_canonical_json(body).encode()).hexdigest()
+    raw_receipt = _canonical_json(receipt)
+    receipt_directory.mkdir(parents=True, exist_ok=True)
+    temporary_path: Path | None = None
+    try:
+        with tempfile.NamedTemporaryFile(
+            "w",
+            encoding="utf-8",
+            dir=receipt_directory,
+            prefix=f".{commitment.commitment_sha256}.",
+            suffix=".tmp",
+            delete=False,
+        ) as temporary:
+            temporary.write(raw_receipt)
+            temporary.flush()
+            os.fsync(temporary.fileno())
+            temporary_path = Path(temporary.name)
+        os.replace(temporary_path, receipt_path)
+    finally:
+        if temporary_path and temporary_path.exists():
+            temporary_path.unlink()
+    _validate_receipt(receipt_path.read_text(encoding="utf-8"), commitment)
+    return "executed", receipt_path
+
+
+def _main() -> int:
+    import argparse
+
+    parser = argparse.ArgumentParser(description="Consume one private OddsWell H26H handoff.")
+    parser.add_argument("handoff_directory")
+    parser.add_argument("receipt_directory")
+    args = parser.parse_args()
+    status, receipt_path = consume_execution_handoff(
+        args.handoff_directory,
+        args.receipt_directory,
+    )
+    print(f"{status}: {receipt_path.name}")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(_main())

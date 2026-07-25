@@ -3751,6 +3751,46 @@ void AOddsWellLocomotionGameMode::BeginPlay()
 			FCommandLine::Get(),
 			TEXT("CanonicalExecutionCommitmentQa"))
 		|| bCanonicalExecutionCommitmentQaVerify;
+	const bool bCanonicalExecutionHandoffQa =
+		FParse::Param(
+			FCommandLine::Get(),
+			TEXT("CanonicalExecutionHandoffQa"));
+	if (bCanonicalExecutionHandoffQa)
+	{
+		FString HandoffPath;
+		FString HandoffSha256;
+		FString Error;
+		const EOddsWellCanonicalGameExecutionHandoffResult Result =
+			WriteOddsWellCanonicalGameExecutionHandoff(
+				HandoffPath,
+				HandoffSha256,
+				Error);
+		FOddsWellCanonicalActiveGameExecutionCommitmentRecord Commitment;
+		const bool bPassed =
+			Result == EOddsWellCanonicalGameExecutionHandoffResult::Created
+			&& LoadOddsWellCanonicalActiveGameExecutionCommitment(
+				Commitment,
+				Error)
+			&& Commitment.Status == TEXT("committed_for_execution")
+			&& HandoffSha256.Len() == 64;
+		const FString Evidence = FString::Printf(
+			TEXT("ODDSWELL_CANONICAL_EXECUTION_HANDOFF_QA|result=%s|transition=created|schema=oddswell-canonical-active-game-execution-commitment-v1|record_version=1|status=committed_for_execution|commitment_sha256=%s|execution_input_sha256=%s|handoff_sha256=%s|private=true|caller_seed=false|caller_input=false|caller_version=false|caller_team=false|caller_wager=false|caller_time=false|caller_output=false|runtime_python=false|service=false|port=false|simulation=false|result=false|seal=false|settlement=false|detail=%s"),
+			bPassed ? TEXT("PASS") : TEXT("FAIL"),
+			*Commitment.CommitmentSha256,
+			*Commitment.ExecutionInputSha256,
+			*HandoffSha256,
+			Error.IsEmpty() ? TEXT("none") : *Error);
+		if (bPassed)
+		{
+			UE_LOG(LogOddsWellLocomotion, Display, TEXT("%s"), *Evidence);
+		}
+		else
+		{
+			UE_LOG(LogOddsWellLocomotion, Error, TEXT("%s"), *Evidence);
+		}
+		FPlatformMisc::RequestExit(false);
+		return;
+	}
 	if (bCanonicalExecutionCommitmentQa)
 	{
 		FOddsWellOddsBucksLedger BeforeLedger;
