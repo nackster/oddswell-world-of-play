@@ -3755,6 +3755,188 @@ void AOddsWellLocomotionGameMode::BeginPlay()
 		FParse::Param(
 			FCommandLine::Get(),
 			TEXT("CanonicalExecutionHandoffQa"));
+	const bool bCanonicalResultLinkQaVerify =
+		FParse::Param(
+			FCommandLine::Get(),
+			TEXT("CanonicalMatchWinnerResultLinkQaVerify"));
+	const bool bCanonicalResultLinkQa =
+		FParse::Param(
+			FCommandLine::Get(),
+			TEXT("CanonicalMatchWinnerResultLinkQa"))
+		|| bCanonicalResultLinkQaVerify;
+	if (bCanonicalResultLinkQa)
+	{
+		FOddsWellOddsBucksLedger BeforeLedger;
+		int64 BeforeNextJobPayoutUnixSeconds = 0;
+		TArray<FOddsWellMatchWinnerRequestRecord> BeforeRequests;
+		TArray<FOddsWellMatchWinnerLockRecord> BeforeLocks;
+		TArray<FOddsWellMatchWinnerResultLinkRecord> BeforeResults;
+		bool bBeforeFound = false;
+		FString Error;
+		bool bPassed =
+			LoadOddsWellOddsBucksWagerEvidence(
+				true,
+				BeforeLedger,
+				BeforeNextJobPayoutUnixSeconds,
+				BeforeRequests,
+				BeforeLocks,
+				BeforeResults,
+				bBeforeFound,
+				Error)
+			&& bBeforeFound
+			&& BeforeLedger.GetEntries().Num() == 2
+			&& BeforeLedger.GetBalance() == 60
+			&& BeforeRequests.Num() == 1
+			&& BeforeLocks.Num() == 1
+			&& BeforeResults.Num()
+				== (bCanonicalResultLinkQaVerify ? 1 : 0);
+		TArray<uint8> BeforeBytes;
+		bPassed = bPassed
+			&& UGameplayStatics::SaveGameToMemory(
+				UGameplayStatics::LoadGameFromSlot(
+					TEXT("OddsWellOddsBucksQA"),
+					0),
+				BeforeBytes);
+		FOddsWellMatchWinnerResultLinkRecord Linked;
+		const EOddsWellMatchWinnerResultLinkResult Result =
+			bPassed
+				? LinkOddsWellCanonicalMatchWinnerResult(
+					Linked,
+					Error)
+				: EOddsWellMatchWinnerResultLinkResult::Rejected;
+		bPassed = bPassed
+			&& Result
+				== (bCanonicalResultLinkQaVerify
+					? EOddsWellMatchWinnerResultLinkResult::Duplicate
+					: EOddsWellMatchWinnerResultLinkResult::Linked);
+		FOddsWellOddsBucksLedger AfterLedger;
+		int64 AfterNextJobPayoutUnixSeconds = 0;
+		TArray<FOddsWellMatchWinnerRequestRecord> AfterRequests;
+		TArray<FOddsWellMatchWinnerLockRecord> AfterLocks;
+		TArray<FOddsWellMatchWinnerResultLinkRecord> AfterResults;
+		bool bAfterFound = false;
+		bPassed = bPassed
+			&& LoadOddsWellOddsBucksWagerEvidence(
+				true,
+				AfterLedger,
+				AfterNextJobPayoutUnixSeconds,
+				AfterRequests,
+				AfterLocks,
+				AfterResults,
+				bAfterFound,
+				Error)
+			&& bAfterFound
+			&& AfterLedger.GetEntries().Num() == 2
+			&& AfterLedger.GetEntries()[1].Delta == -40
+			&& AfterLedger.GetBalance() == 60
+			&& AfterRequests.Num() == 1
+			&& AfterLocks.Num() == 1
+			&& AfterResults.Num() == 1
+			&& AfterResults[0].ResultCommandId
+				== Linked.ResultCommandId
+			&& AfterResults[0].RequestCommandId
+				== BeforeRequests[0].RequestCommandId
+			&& AfterResults[0].LockCommandId
+				== BeforeLocks[0].LockCommandId
+			&& AfterResults[0].ResultSchema
+				== TEXT(
+					"oddswell-private-canonical-game-result-v1")
+			&& AfterResults[0].ResultVersion
+				== TEXT(
+					"oddswell-private-game-result-recorder-v1")
+			&& AfterResults[0].SeasonNumber == 1
+			&& AfterResults[0].GameNumber == 1
+			&& AfterResults[0].HomeTeam
+				== TEXT("Harbor City Waves")
+			&& AfterResults[0].AwayTeam
+				== TEXT("Mesa Vista Sol")
+			&& AfterResults[0].HomeScore >= 0
+			&& AfterResults[0].AwayScore >= 0
+			&& AfterResults[0].HomeScore
+				!= AfterResults[0].AwayScore
+			&& AfterResults[0].Winner
+				== (AfterResults[0].HomeScore
+						> AfterResults[0].AwayScore
+					? AfterResults[0].HomeTeam
+					: AfterResults[0].AwayTeam)
+			&& AfterResults[0].ReplaySealSha256.Len() == 64
+			&& AfterNextJobPayoutUnixSeconds
+				== BeforeNextJobPayoutUnixSeconds;
+		const UOddsWellOddsBucksSaveGame* ExactState =
+			Cast<UOddsWellOddsBucksSaveGame>(
+				UGameplayStatics::LoadGameFromSlot(
+					TEXT("OddsWellOddsBucksQA"),
+					0));
+		bPassed = bPassed
+			&& ExactState
+			&& ExactState->SchemaVersion == 12
+			&& ExactState->MatchWinnerSettlementDecisions.IsEmpty()
+			&& ExactState->MatchWinnerLossFinalizations.IsEmpty()
+			&& ExactState->MatchWinnerWinFinalizations.IsEmpty()
+			&& ExactState->MatchWinnerCanceledGames.IsEmpty()
+			&& ExactState->MatchWinnerVoidDecisions.IsEmpty()
+			&& ExactState->MatchWinnerVoidFinalizations.IsEmpty();
+		bool bDuplicateByteStable =
+			!bCanonicalResultLinkQaVerify;
+		if (bPassed && bCanonicalResultLinkQaVerify)
+		{
+			TArray<uint8> AfterBytes;
+			bDuplicateByteStable =
+				UGameplayStatics::SaveGameToMemory(
+					UGameplayStatics::LoadGameFromSlot(
+						TEXT("OddsWellOddsBucksQA"),
+						0),
+					AfterBytes)
+				&& BeforeBytes == AfterBytes;
+			bPassed = bPassed && bDuplicateByteStable;
+		}
+		bool bCleanup = false;
+		if (bPassed && bCanonicalResultLinkQaVerify)
+		{
+			bCleanup =
+				ResetOddsWellQaOddsBucksAndVerify(Error);
+			bPassed = bCleanup;
+		}
+		const FString Evidence = FString::Printf(
+			TEXT("ODDSWELL_CANONICAL_MATCH_WINNER_RESULT_LINK_QA|result=%s|transition=%s|cold_process_restore=%s|schema=oddswell-private-canonical-game-result-v1|recorder_version=oddswell-private-game-result-recorder-v1|season=1|game=1|home=%s|away=%s|home_score=%d|away_score=%d|winner=%s|replay_sha256=%s|result_command_id=%s|request_link=true|lock_link=true|schema_version=12|ledger_entries=2|stake_delta=-40|balance=60|result_links=1|decisions=0|finalizations=0|cancellations=0|refunds=0|payouts=0|duplicate_byte_stable=%s|archive_fallback=false|caller_input=false|simulation=false|settlement=false|cleanup=%s|detail=%s"),
+			bPassed ? TEXT("PASS") : TEXT("FAIL"),
+			bCanonicalResultLinkQaVerify
+				? TEXT("duplicate")
+				: TEXT("linked"),
+			bCanonicalResultLinkQaVerify
+				? TEXT("true")
+				: TEXT("false"),
+			*Linked.HomeTeam,
+			*Linked.AwayTeam,
+			Linked.HomeScore,
+			Linked.AwayScore,
+			*Linked.Winner,
+			*Linked.ReplaySealSha256,
+			*Linked.ResultCommandId,
+			bDuplicateByteStable
+				? TEXT("true")
+				: TEXT("false"),
+			bCleanup ? TEXT("true") : TEXT("false"),
+			Error.IsEmpty() ? TEXT("none") : *Error);
+		if (bPassed)
+		{
+			UE_LOG(
+				LogOddsWellLocomotion,
+				Display,
+				TEXT("%s"),
+				*Evidence);
+		}
+		else
+		{
+			UE_LOG(
+				LogOddsWellLocomotion,
+				Error,
+				TEXT("%s"),
+				*Evidence);
+		}
+		FPlatformMisc::RequestExit(false);
+		return;
+	}
 	if (bCanonicalExecutionHandoffQa)
 	{
 		FString HandoffPath;

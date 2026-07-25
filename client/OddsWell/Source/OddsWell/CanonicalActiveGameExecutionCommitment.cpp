@@ -3,11 +3,15 @@
 #include "CanonicalMatchWinnerOffer.h"
 #include "CanonicalPregameCommitment.h"
 #include "CanonicalScheduledGame.h"
+#include "Dom/JsonObject.h"
 #include "HAL/FileManager.h"
 #include "Kismet/GameplayStatics.h"
 #include "Misc/FileHelper.h"
 #include "Misc/Paths.h"
 #include "OddsBucksLedger.h"
+#include "Serialization/JsonSerializer.h"
+
+#include <initializer_list>
 
 #if PLATFORM_WINDOWS
 #include "Windows/AllowWindowsPlatformTypes.h"
@@ -36,6 +40,29 @@ const FString ExecutionCommitmentSlot(
 	TEXT("OddsWellCanonicalActiveGameExecutionCommitment"));
 const FString ExecutionCommitmentQaSlot(
 	TEXT("OddsWellCanonicalActiveGameExecutionCommitmentH26HQA"));
+const FString PrivateSealSchema(
+	TEXT("oddswell-private-game-execution-digest-seal-v1"));
+const FString PrivateSealStatus(TEXT("sealed_pending_result"));
+const FString PrivateExecutorVersion(
+	TEXT("oddswell-private-game-executor-v1"));
+const FString PrivateVerifierVersion(
+	TEXT("oddswell-private-game-digest-verifier-v1"));
+const FString PrivateResultSchema(
+	TEXT("oddswell-private-canonical-game-result-v1"));
+const FString PrivateResultRecorderVersion(
+	TEXT("oddswell-private-game-result-recorder-v1"));
+const FString PrivateResultStatus(TEXT("recorded_pending_decision"));
+const FString PrivateResultCommandPrefix(
+	TEXT("canonical:h26l:match_winner:result:"));
+
+struct FPrivateCanonicalResultEvidence
+{
+	int32 HomeScore = 0;
+	int32 AwayScore = 0;
+	FString Winner;
+	FString RecordSha256;
+	FString ReplaySha256;
+};
 
 bool HashSha256(
 	const FString& Value,
@@ -88,6 +115,427 @@ bool HashSha256(
 	OutError = TEXT("The canonical execution commitment hash is not implemented for this platform.");
 	return false;
 #endif
+}
+
+bool IsLowerHexHash(const FString& Value)
+{
+	if (Value.Len() != 64)
+	{
+		return false;
+	}
+	for (const TCHAR Character : Value)
+	{
+		if (!((Character >= TEXT('0') && Character <= TEXT('9'))
+			|| (Character >= TEXT('a') && Character <= TEXT('f'))))
+		{
+			return false;
+		}
+	}
+	return true;
+}
+
+bool HasExactKeys(
+	const TSharedPtr<FJsonObject>& Object,
+	std::initializer_list<const TCHAR*> ExpectedKeys)
+{
+	if (!Object.IsValid()
+		|| Object->Values.Num()
+			!= static_cast<int32>(ExpectedKeys.size()))
+	{
+		return false;
+	}
+	for (const TCHAR* Key : ExpectedKeys)
+	{
+		if (!Object->HasField(Key))
+		{
+			return false;
+		}
+	}
+	return true;
+}
+
+bool TryGetExactString(
+	const TSharedPtr<FJsonObject>& Object,
+	const TCHAR* Key,
+	FString& OutValue)
+{
+	const TSharedPtr<FJsonValue>* Value = Object->Values.Find(Key);
+	if (!Value || !Value->IsValid() || (*Value)->Type != EJson::String)
+	{
+		return false;
+	}
+	OutValue = (*Value)->AsString();
+	return true;
+}
+
+bool TryGetExactInt32(
+	const TSharedPtr<FJsonObject>& Object,
+	const TCHAR* Key,
+	int32& OutValue)
+{
+	const TSharedPtr<FJsonValue>* Value = Object->Values.Find(Key);
+	if (!Value || !Value->IsValid() || (*Value)->Type != EJson::Number)
+	{
+		return false;
+	}
+	const double Number = (*Value)->AsNumber();
+	if (!FMath::IsFinite(Number)
+		|| Number < static_cast<double>(TNumericLimits<int32>::Min())
+		|| Number > static_cast<double>(TNumericLimits<int32>::Max()))
+	{
+		return false;
+	}
+	const int32 Integer = static_cast<int32>(Number);
+	if (Number != static_cast<double>(Integer))
+	{
+		return false;
+	}
+	OutValue = Integer;
+	return true;
+}
+
+bool ParseExactJson(
+	const FString& Raw,
+	std::initializer_list<const TCHAR*> ExpectedKeys,
+	TSharedPtr<FJsonObject>& OutObject)
+{
+	OutObject.Reset();
+	const TSharedRef<TJsonReader<>> Reader =
+		TJsonReaderFactory<>::Create(Raw);
+	return FJsonSerializer::Deserialize(Reader, OutObject)
+		&& HasExactKeys(OutObject, ExpectedKeys);
+}
+
+bool LoadOnlyCommitmentFile(
+	const FString& Directory,
+	const FString& CommitmentSha256,
+	FString& OutRaw,
+	FString& OutError)
+{
+	const FString ExpectedName = CommitmentSha256 + TEXT(".json");
+	TArray<FString> Names;
+	IFileManager::Get().FindFiles(
+		Names,
+		*FPaths::Combine(Directory, TEXT("*.json")),
+		true,
+		false);
+	Names.Sort();
+	if (Names.Num() != 1 || Names[0] != ExpectedName)
+	{
+		OutError =
+			TEXT("Exactly one commitment-keyed private JSON record is required.");
+		return false;
+	}
+	if (!FFileHelper::LoadFileToString(
+		OutRaw,
+		*FPaths::Combine(Directory, ExpectedName)))
+	{
+		OutError = TEXT("The private JSON record could not be read.");
+		return false;
+	}
+	return true;
+}
+
+bool LoadPrivateCanonicalResultEvidence(
+	const FOddsWellCanonicalActiveGameExecutionCommitmentRecord& Commitment,
+	const FString& SealDirectory,
+	const FString& ResultDirectory,
+	FPrivateCanonicalResultEvidence& OutEvidence,
+	FString& OutError)
+{
+	OutEvidence = {};
+	FString SealRaw;
+	if (!LoadOnlyCommitmentFile(
+		SealDirectory,
+		Commitment.CommitmentSha256,
+		SealRaw,
+		OutError))
+	{
+		return false;
+	}
+	TSharedPtr<FJsonObject> Seal;
+	FString SealCommitmentSha256;
+	FString SealExecutionInputSha256;
+	FString ExecutorVersion;
+	FString ReceiptSha256;
+	int32 SealRecordVersion = 0;
+	FString SealSchema;
+	FString SealSha256;
+	FString SealStatus;
+	FString VerifiedDigestSha256;
+	FString VerifierVersion;
+	if (!ParseExactJson(
+			SealRaw,
+			{
+				TEXT("commitment_sha256"),
+				TEXT("execution_input_sha256"),
+				TEXT("executor_version"),
+				TEXT("receipt_sha256"),
+				TEXT("record_version"),
+				TEXT("schema"),
+				TEXT("seal_sha256"),
+				TEXT("status"),
+				TEXT("verified_output_digest_sha256"),
+				TEXT("verifier_version")},
+			Seal)
+		|| !TryGetExactString(
+			Seal,
+			TEXT("commitment_sha256"),
+			SealCommitmentSha256)
+		|| !TryGetExactString(
+			Seal,
+			TEXT("execution_input_sha256"),
+			SealExecutionInputSha256)
+		|| !TryGetExactString(
+			Seal,
+			TEXT("executor_version"),
+			ExecutorVersion)
+		|| !TryGetExactString(
+			Seal,
+			TEXT("receipt_sha256"),
+			ReceiptSha256)
+		|| !TryGetExactInt32(
+			Seal,
+			TEXT("record_version"),
+			SealRecordVersion)
+		|| !TryGetExactString(Seal, TEXT("schema"), SealSchema)
+		|| !TryGetExactString(
+			Seal,
+			TEXT("seal_sha256"),
+			SealSha256)
+		|| !TryGetExactString(Seal, TEXT("status"), SealStatus)
+		|| !TryGetExactString(
+			Seal,
+			TEXT("verified_output_digest_sha256"),
+			VerifiedDigestSha256)
+		|| !TryGetExactString(
+			Seal,
+			TEXT("verifier_version"),
+			VerifierVersion))
+	{
+		OutError =
+			TEXT("The private H26J seal has invalid keys or JSON types.");
+		return false;
+	}
+	const FString SealBody = FString::Printf(
+		TEXT("{\"commitment_sha256\":\"%s\",\"execution_input_sha256\":\"%s\",\"executor_version\":\"%s\",\"receipt_sha256\":\"%s\",\"record_version\":%d,\"schema\":\"%s\",\"status\":\"%s\",\"verified_output_digest_sha256\":\"%s\",\"verifier_version\":\"%s\"}"),
+		*SealCommitmentSha256,
+		*SealExecutionInputSha256,
+		*ExecutorVersion,
+		*ReceiptSha256,
+		SealRecordVersion,
+		*SealSchema,
+		*SealStatus,
+		*VerifiedDigestSha256,
+		*VerifierVersion);
+	FString ExpectedSealSha256;
+	if (SealCommitmentSha256 != Commitment.CommitmentSha256
+		|| SealExecutionInputSha256
+			!= Commitment.ExecutionInputSha256
+		|| ExecutorVersion != PrivateExecutorVersion
+		|| !IsLowerHexHash(ReceiptSha256)
+		|| SealRecordVersion != 1
+		|| SealSchema != PrivateSealSchema
+		|| SealStatus != PrivateSealStatus
+		|| !IsLowerHexHash(VerifiedDigestSha256)
+		|| VerifierVersion != PrivateVerifierVersion
+		|| !HashSha256(
+			SealBody,
+			ExpectedSealSha256,
+			OutError)
+		|| SealSha256 != ExpectedSealSha256
+		|| !IsLowerHexHash(SealSha256))
+	{
+		if (OutError.IsEmpty())
+		{
+			OutError =
+				TEXT("The private H26J seal conflicts with exact H26H evidence.");
+		}
+		return false;
+	}
+	const FString ExpectedSealRaw = FString::Printf(
+		TEXT("{\"commitment_sha256\":\"%s\",\"execution_input_sha256\":\"%s\",\"executor_version\":\"%s\",\"receipt_sha256\":\"%s\",\"record_version\":%d,\"schema\":\"%s\",\"seal_sha256\":\"%s\",\"status\":\"%s\",\"verified_output_digest_sha256\":\"%s\",\"verifier_version\":\"%s\"}"),
+		*SealCommitmentSha256,
+		*SealExecutionInputSha256,
+		*ExecutorVersion,
+		*ReceiptSha256,
+		SealRecordVersion,
+		*SealSchema,
+		*SealSha256,
+		*SealStatus,
+		*VerifiedDigestSha256,
+		*VerifierVersion);
+	if (SealRaw != ExpectedSealRaw)
+	{
+		OutError = TEXT("The private H26J seal is not exact canonical JSON.");
+		return false;
+	}
+
+	FString ResultRaw;
+	if (!LoadOnlyCommitmentFile(
+		ResultDirectory,
+		Commitment.CommitmentSha256,
+		ResultRaw,
+		OutError))
+	{
+		return false;
+	}
+	TSharedPtr<FJsonObject> Result;
+	int32 AwayScore = 0;
+	FString AwayTeam;
+	FString ResultCommitmentSha256;
+	int32 GameNumber = 0;
+	int32 HomeScore = 0;
+	FString HomeTeam;
+	FString RecordSha256;
+	int32 ResultRecordVersion = 0;
+	FString RecorderVersion;
+	FString ReplaySha256;
+	FString ResultSchema;
+	FString ResultSealSha256;
+	int32 SeasonNumber = 0;
+	FString ResultStatus;
+	FString Winner;
+	if (!ParseExactJson(
+			ResultRaw,
+			{
+				TEXT("away_score"),
+				TEXT("away_team"),
+				TEXT("commitment_sha256"),
+				TEXT("game_number"),
+				TEXT("home_score"),
+				TEXT("home_team"),
+				TEXT("record_sha256"),
+				TEXT("record_version"),
+				TEXT("recorder_version"),
+				TEXT("replay_sha256"),
+				TEXT("schema"),
+				TEXT("seal_sha256"),
+				TEXT("season_number"),
+				TEXT("status"),
+				TEXT("winner")},
+			Result)
+		|| !TryGetExactInt32(Result, TEXT("away_score"), AwayScore)
+		|| !TryGetExactString(Result, TEXT("away_team"), AwayTeam)
+		|| !TryGetExactString(
+			Result,
+			TEXT("commitment_sha256"),
+			ResultCommitmentSha256)
+		|| !TryGetExactInt32(Result, TEXT("game_number"), GameNumber)
+		|| !TryGetExactInt32(Result, TEXT("home_score"), HomeScore)
+		|| !TryGetExactString(Result, TEXT("home_team"), HomeTeam)
+		|| !TryGetExactString(
+			Result,
+			TEXT("record_sha256"),
+			RecordSha256)
+		|| !TryGetExactInt32(
+			Result,
+			TEXT("record_version"),
+			ResultRecordVersion)
+		|| !TryGetExactString(
+			Result,
+			TEXT("recorder_version"),
+			RecorderVersion)
+		|| !TryGetExactString(
+			Result,
+			TEXT("replay_sha256"),
+			ReplaySha256)
+		|| !TryGetExactString(Result, TEXT("schema"), ResultSchema)
+		|| !TryGetExactString(
+			Result,
+			TEXT("seal_sha256"),
+			ResultSealSha256)
+		|| !TryGetExactInt32(
+			Result,
+			TEXT("season_number"),
+			SeasonNumber)
+		|| !TryGetExactString(Result, TEXT("status"), ResultStatus)
+		|| !TryGetExactString(Result, TEXT("winner"), Winner))
+	{
+		OutError =
+			TEXT("The private H26K result has invalid keys or JSON types.");
+		return false;
+	}
+	const FString DerivedWinner =
+		HomeScore > AwayScore ? HomeTeam : AwayTeam;
+	const FString ResultBody = FString::Printf(
+		TEXT("{\"away_score\":%d,\"away_team\":\"%s\",\"commitment_sha256\":\"%s\",\"game_number\":%d,\"home_score\":%d,\"home_team\":\"%s\",\"record_version\":%d,\"recorder_version\":\"%s\",\"replay_sha256\":\"%s\",\"schema\":\"%s\",\"seal_sha256\":\"%s\",\"season_number\":%d,\"status\":\"%s\",\"winner\":\"%s\"}"),
+		AwayScore,
+		*AwayTeam,
+		*ResultCommitmentSha256,
+		GameNumber,
+		HomeScore,
+		*HomeTeam,
+		ResultRecordVersion,
+		*RecorderVersion,
+		*ReplaySha256,
+		*ResultSchema,
+		*ResultSealSha256,
+		SeasonNumber,
+		*ResultStatus,
+		*Winner);
+	FString ExpectedRecordSha256;
+	if (AwayScore < 0
+		|| HomeScore < 0
+		|| AwayScore == HomeScore
+		|| AwayTeam != Commitment.AwayTeam
+		|| HomeTeam != Commitment.HomeTeam
+		|| ResultCommitmentSha256
+			!= Commitment.CommitmentSha256
+		|| GameNumber != Commitment.GameNumber
+		|| ResultRecordVersion != 1
+		|| RecorderVersion != PrivateResultRecorderVersion
+		|| ReplaySha256 != VerifiedDigestSha256
+		|| !IsLowerHexHash(ReplaySha256)
+		|| ResultSchema != PrivateResultSchema
+		|| ResultSealSha256 != SealSha256
+		|| SeasonNumber != Commitment.SeasonNumber
+		|| ResultStatus != PrivateResultStatus
+		|| Winner != DerivedWinner
+		|| !HashSha256(
+			ResultBody,
+			ExpectedRecordSha256,
+			OutError)
+		|| RecordSha256 != ExpectedRecordSha256
+		|| !IsLowerHexHash(RecordSha256))
+	{
+		if (OutError.IsEmpty())
+		{
+			OutError =
+				TEXT("The private H26K result conflicts with exact H26H/H26J evidence.");
+		}
+		return false;
+	}
+	const FString ExpectedResultRaw = FString::Printf(
+		TEXT("{\"away_score\":%d,\"away_team\":\"%s\",\"commitment_sha256\":\"%s\",\"game_number\":%d,\"home_score\":%d,\"home_team\":\"%s\",\"record_sha256\":\"%s\",\"record_version\":%d,\"recorder_version\":\"%s\",\"replay_sha256\":\"%s\",\"schema\":\"%s\",\"seal_sha256\":\"%s\",\"season_number\":%d,\"status\":\"%s\",\"winner\":\"%s\"}"),
+		AwayScore,
+		*AwayTeam,
+		*ResultCommitmentSha256,
+		GameNumber,
+		HomeScore,
+		*HomeTeam,
+		*RecordSha256,
+		ResultRecordVersion,
+		*RecorderVersion,
+		*ReplaySha256,
+		*ResultSchema,
+		*ResultSealSha256,
+		SeasonNumber,
+		*ResultStatus,
+		*Winner);
+	if (ResultRaw != ExpectedResultRaw)
+	{
+		OutError =
+			TEXT("The private H26K result is not exact canonical JSON.");
+		return false;
+	}
+	OutEvidence.HomeScore = HomeScore;
+	OutEvidence.AwayScore = AwayScore;
+	OutEvidence.Winner = MoveTemp(Winner);
+	OutEvidence.RecordSha256 = MoveTemp(RecordSha256);
+	OutEvidence.ReplaySha256 = MoveTemp(ReplaySha256);
+	OutError.Reset();
+	return true;
 }
 
 bool HasExactH26AB(
@@ -669,6 +1117,103 @@ WriteOddsWellCanonicalGameExecutionHandoff(
 	return EOddsWellCanonicalGameExecutionHandoffResult::Created;
 }
 
+EOddsWellMatchWinnerResultLinkResult
+LinkOddsWellCanonicalMatchWinnerResult(
+	FOddsWellMatchWinnerResultLinkRecord& OutRecord,
+	FString& OutError)
+{
+	OutRecord = {};
+	FOddsWellCanonicalScheduledGameRecord Schedule;
+	FOddsWellCanonicalPregameCommitmentRecord PregameCommitment;
+	FOddsWellCanonicalMatchWinnerOfferRecord Offer;
+	FOddsWellCanonicalActiveGameExecutionCommitmentRecord Commitment;
+	if (!LoadOddsWellCanonicalLocalBetaScheduledGame(
+			Schedule,
+			OutError)
+		|| !LoadOddsWellCanonicalPregameCommitment(
+			PregameCommitment,
+			OutError)
+		|| !LoadOddsWellCanonicalMatchWinnerOffer(
+			Offer,
+			OutError)
+		|| !LoadOddsWellCanonicalActiveGameExecutionCommitment(
+			Commitment,
+			OutError)
+		|| !HasExactH26AB(Schedule, PregameCommitment)
+		|| Commitment.SeasonNumber != Schedule.SeasonNumber
+		|| Commitment.GameNumber != Schedule.GameNumber
+		|| Commitment.HomeTeam != Schedule.HomeTeam
+		|| Commitment.AwayTeam != Schedule.AwayTeam)
+	{
+		if (OutError.IsEmpty())
+		{
+			OutError =
+				TEXT("Canonical result linking requires exact H26A/B/C/H evidence.");
+		}
+		return EOddsWellMatchWinnerResultLinkResult::Rejected;
+	}
+
+	FPrivateCanonicalResultEvidence Evidence;
+	if (!LoadPrivateCanonicalResultEvidence(
+			Commitment,
+			FPaths::Combine(
+				FPaths::ProjectSavedDir(),
+				TEXT("PrivateExecution"),
+				TEXT("Seals")),
+			FPaths::Combine(
+				FPaths::ProjectSavedDir(),
+				TEXT("PrivateExecution"),
+				TEXT("Results")),
+			Evidence,
+			OutError))
+	{
+		return EOddsWellMatchWinnerResultLinkResult::Rejected;
+	}
+
+	FOddsWellMatchWinnerResultLinkRecord Candidate;
+	Candidate.ResultCommandId =
+		PrivateResultCommandPrefix + Evidence.RecordSha256;
+	Candidate.RequestCommandId =
+		TEXT("canonical:h26e:match_winner:request:")
+		+ Offer.OfferId;
+	Candidate.LockCommandId =
+		TEXT("canonical:h26g:match_winner:lock:")
+		+ Offer.OfferId;
+	Candidate.ResultSchema = PrivateResultSchema;
+	Candidate.ResultVersion = PrivateResultRecorderVersion;
+	Candidate.SeasonNumber = Schedule.SeasonNumber;
+	Candidate.GameNumber = Schedule.GameNumber;
+	Candidate.HomeTeam = Schedule.HomeTeam;
+	Candidate.AwayTeam = Schedule.AwayTeam;
+	Candidate.HomeScore = Evidence.HomeScore;
+	Candidate.AwayScore = Evidence.AwayScore;
+	Candidate.Winner = Evidence.Winner;
+	Candidate.ReplaySealSha256 = Evidence.ReplaySha256;
+	if (!ValidateOddsWellCanonicalMatchWinnerResultLinkPrerequisites(
+			Candidate,
+			OutError))
+	{
+		return EOddsWellMatchWinnerResultLinkResult::Rejected;
+	}
+	return LinkOddsWellMatchWinnerResult(
+		Candidate.ResultCommandId,
+		Candidate.RequestCommandId,
+		Candidate.LockCommandId,
+		Candidate.ResultSchema,
+		Candidate.ResultVersion,
+		Candidate.SeasonNumber,
+		Candidate.GameNumber,
+		Candidate.HomeTeam,
+		Candidate.AwayTeam,
+		Candidate.HomeScore,
+		Candidate.AwayScore,
+		Candidate.Winner,
+		Candidate.ReplaySealSha256,
+		UseOddsWellOddsBucksQaSlot(),
+		OutRecord,
+		OutError);
+}
+
 #if WITH_DEV_AUTOMATION_TESTS
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
 	FOddsWellCanonicalActiveGameExecutionCommitmentTest,
@@ -1022,6 +1567,338 @@ bool FOddsWellCanonicalGameExecutionHandoffTest::RunTest(
 			FString::Printf(TEXT("Private handoff excludes %s"), Forbidden),
 			Handoff.Contains(Forbidden));
 	}
+	return !HasAnyErrors();
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(
+	FOddsWellCanonicalMatchWinnerResultLinkEvidenceTest,
+	"OddsWell.League.CanonicalMatchWinnerResultLink",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+
+bool FOddsWellCanonicalMatchWinnerResultLinkEvidenceTest::RunTest(
+	const FString& Parameters)
+{
+	FOddsWellCanonicalActiveGameExecutionCommitmentRecord Commitment;
+	FString Error;
+	TestTrue(
+		TEXT("Exact H26H fixture builds"),
+		BuildExpectedCommitment(
+			TestSchedule(),
+			TestPregameCommitment(),
+			Commitment,
+			Error));
+	const FString Root = FPaths::Combine(
+		FPaths::ProjectSavedDir(),
+		TEXT("Automation"),
+		TEXT("H26L"));
+	const FString SealDirectory =
+		FPaths::Combine(Root, TEXT("Seals"));
+	const FString ResultDirectory =
+		FPaths::Combine(Root, TEXT("Results"));
+	IFileManager::Get().DeleteDirectory(*Root, false, true);
+	TestTrue(
+		TEXT("Private fixture directories create"),
+		IFileManager::Get().MakeDirectory(
+			*SealDirectory,
+			true)
+			&& IFileManager::Get().MakeDirectory(
+				*ResultDirectory,
+				true));
+	const FString EvidenceName =
+		Commitment.CommitmentSha256 + TEXT(".json");
+	const FString SealPath =
+		FPaths::Combine(SealDirectory, EvidenceName);
+	const FString ResultPath =
+		FPaths::Combine(ResultDirectory, EvidenceName);
+	const FString ReceiptSha256 = FString::ChrN(64, TEXT('1'));
+	const FString ReplaySha256 = FString::ChrN(64, TEXT('2'));
+	const FString SealBody = FString::Printf(
+		TEXT("{\"commitment_sha256\":\"%s\",\"execution_input_sha256\":\"%s\",\"executor_version\":\"%s\",\"receipt_sha256\":\"%s\",\"record_version\":1,\"schema\":\"%s\",\"status\":\"%s\",\"verified_output_digest_sha256\":\"%s\",\"verifier_version\":\"%s\"}"),
+		*Commitment.CommitmentSha256,
+		*Commitment.ExecutionInputSha256,
+		*PrivateExecutorVersion,
+		*ReceiptSha256,
+		*PrivateSealSchema,
+		*PrivateSealStatus,
+		*ReplaySha256,
+		*PrivateVerifierVersion);
+	FString SealSha256;
+	TestTrue(
+		TEXT("Exact H26J fixture hashes"),
+		HashSha256(SealBody, SealSha256, Error));
+	const FString SealRaw = FString::Printf(
+		TEXT("{\"commitment_sha256\":\"%s\",\"execution_input_sha256\":\"%s\",\"executor_version\":\"%s\",\"receipt_sha256\":\"%s\",\"record_version\":1,\"schema\":\"%s\",\"seal_sha256\":\"%s\",\"status\":\"%s\",\"verified_output_digest_sha256\":\"%s\",\"verifier_version\":\"%s\"}"),
+		*Commitment.CommitmentSha256,
+		*Commitment.ExecutionInputSha256,
+		*PrivateExecutorVersion,
+		*ReceiptSha256,
+		*PrivateSealSchema,
+		*SealSha256,
+		*PrivateSealStatus,
+		*ReplaySha256,
+		*PrivateVerifierVersion);
+	const FString ResultBody = FString::Printf(
+		TEXT("{\"away_score\":104,\"away_team\":\"%s\",\"commitment_sha256\":\"%s\",\"game_number\":1,\"home_score\":99,\"home_team\":\"%s\",\"record_version\":1,\"recorder_version\":\"%s\",\"replay_sha256\":\"%s\",\"schema\":\"%s\",\"seal_sha256\":\"%s\",\"season_number\":1,\"status\":\"%s\",\"winner\":\"%s\"}"),
+		*Commitment.AwayTeam,
+		*Commitment.CommitmentSha256,
+		*Commitment.HomeTeam,
+		*PrivateResultRecorderVersion,
+		*ReplaySha256,
+		*PrivateResultSchema,
+		*SealSha256,
+		*PrivateResultStatus,
+		*Commitment.AwayTeam);
+	FString RecordSha256;
+	TestTrue(
+		TEXT("Exact H26K fixture hashes"),
+		HashSha256(ResultBody, RecordSha256, Error));
+	const FString ResultRaw = FString::Printf(
+		TEXT("{\"away_score\":104,\"away_team\":\"%s\",\"commitment_sha256\":\"%s\",\"game_number\":1,\"home_score\":99,\"home_team\":\"%s\",\"record_sha256\":\"%s\",\"record_version\":1,\"recorder_version\":\"%s\",\"replay_sha256\":\"%s\",\"schema\":\"%s\",\"seal_sha256\":\"%s\",\"season_number\":1,\"status\":\"%s\",\"winner\":\"%s\"}"),
+		*Commitment.AwayTeam,
+		*Commitment.CommitmentSha256,
+		*Commitment.HomeTeam,
+		*RecordSha256,
+		*PrivateResultRecorderVersion,
+		*ReplaySha256,
+		*PrivateResultSchema,
+		*SealSha256,
+		*PrivateResultStatus,
+		*Commitment.AwayTeam);
+	auto WriteExact = [this](
+		const FString& Path,
+		const FString& Raw,
+		const TCHAR* Label)
+	{
+		TestTrue(
+			Label,
+			FFileHelper::SaveStringToFile(
+				Raw,
+				*Path,
+				FFileHelper::EEncodingOptions::ForceUTF8WithoutBOM));
+	};
+	WriteExact(SealPath, SealRaw, TEXT("Exact H26J fixture writes"));
+	WriteExact(ResultPath, ResultRaw, TEXT("Exact H26K fixture writes"));
+	FPrivateCanonicalResultEvidence Evidence;
+	TestTrue(
+		TEXT("Exact private H26J/H26K chain validates"),
+		LoadPrivateCanonicalResultEvidence(
+			Commitment,
+			SealDirectory,
+			ResultDirectory,
+			Evidence,
+			Error));
+	TestEqual(TEXT("H26K home score is exact"), Evidence.HomeScore, 99);
+	TestEqual(TEXT("H26K away score is exact"), Evidence.AwayScore, 104);
+	TestEqual(TEXT("H26K winner is exact"), Evidence.Winner, Commitment.AwayTeam);
+	TestEqual(TEXT("H26K record hash is exact"), Evidence.RecordSha256, RecordSha256);
+	TestEqual(TEXT("H26K replay hash is exact"), Evidence.ReplaySha256, ReplaySha256);
+
+	auto RejectRawWithoutRepair =
+		[this,
+			&Commitment,
+			&SealDirectory,
+			&ResultDirectory,
+			&Evidence,
+			&Error,
+			&WriteExact](
+			const FString& Path,
+			const FString& Raw,
+			const TCHAR* Label)
+	{
+		WriteExact(Path, Raw, Label);
+		TestFalse(
+			Label,
+			LoadPrivateCanonicalResultEvidence(
+				Commitment,
+				SealDirectory,
+				ResultDirectory,
+				Evidence,
+				Error));
+		FString After;
+		TestTrue(
+			TEXT("Rejected private evidence remains readable"),
+			FFileHelper::LoadFileToString(After, *Path));
+		TestEqual(
+			TEXT("Rejected private evidence is not repaired"),
+			After,
+			Raw);
+	};
+	for (const TPair<FString, FString>& Mutation : {
+		TPair<FString, FString>(
+			TEXT("H26J wrong schema rejects"),
+			SealRaw.Replace(
+				*PrivateSealSchema,
+				TEXT("wrong-seal-schema"))),
+		TPair<FString, FString>(
+			TEXT("H26J wrong status rejects"),
+			SealRaw.Replace(
+				*PrivateSealStatus,
+				TEXT("wrong_status"))),
+		TPair<FString, FString>(
+			TEXT("H26J wrong version rejects"),
+			SealRaw.Replace(
+				TEXT("\"record_version\":1"),
+				TEXT("\"record_version\":2"))),
+		TPair<FString, FString>(
+			TEXT("H26J wrong commitment rejects"),
+			SealRaw.Replace(
+				*Commitment.CommitmentSha256,
+				*FString::ChrN(64, TEXT('3')))),
+		TPair<FString, FString>(
+			TEXT("H26J wrong input hash rejects"),
+			SealRaw.Replace(
+				*Commitment.ExecutionInputSha256,
+				*FString::ChrN(64, TEXT('4')))),
+		TPair<FString, FString>(
+			TEXT("H26J wrong receipt hash rejects"),
+			SealRaw.Replace(
+				*ReceiptSha256,
+				*FString::ChrN(64, TEXT('5')))),
+		TPair<FString, FString>(
+			TEXT("H26J wrong digest rejects"),
+			SealRaw.Replace(
+				*ReplaySha256,
+				*FString::ChrN(64, TEXT('6')))),
+		TPair<FString, FString>(
+			TEXT("H26J wrong seal hash rejects"),
+			SealRaw.Replace(
+				*SealSha256,
+				*FString::ChrN(64, TEXT('7')))),
+		TPair<FString, FString>(
+			TEXT("H26J extra key rejects"),
+			SealRaw.LeftChop(1) + TEXT(",\"extra\":0}")),
+		TPair<FString, FString>(
+			TEXT("H26J noncanonical bytes reject"),
+			SealRaw + TEXT(" "))})
+	{
+		RejectRawWithoutRepair(
+			SealPath,
+			Mutation.Value,
+			*Mutation.Key);
+		WriteExact(
+			SealPath,
+			SealRaw,
+			TEXT("Exact H26J fixture restores"));
+	}
+	for (const TPair<FString, FString>& Mutation : {
+		TPair<FString, FString>(
+			TEXT("H26K wrong schema rejects"),
+			ResultRaw.Replace(
+				*PrivateResultSchema,
+				TEXT("wrong-result-schema"))),
+		TPair<FString, FString>(
+			TEXT("H26K wrong recorder rejects"),
+			ResultRaw.Replace(
+				*PrivateResultRecorderVersion,
+				TEXT("wrong-recorder"))),
+		TPair<FString, FString>(
+			TEXT("H26K wrong status rejects"),
+			ResultRaw.Replace(
+				*PrivateResultStatus,
+				TEXT("wrong_status"))),
+		TPair<FString, FString>(
+			TEXT("H26K wrong version rejects"),
+			ResultRaw.Replace(
+				TEXT("\"record_version\":1"),
+				TEXT("\"record_version\":2"))),
+		TPair<FString, FString>(
+			TEXT("H26K wrong commitment rejects"),
+			ResultRaw.Replace(
+				*Commitment.CommitmentSha256,
+				*FString::ChrN(64, TEXT('3')))),
+		TPair<FString, FString>(
+			TEXT("H26K wrong seal rejects"),
+			ResultRaw.Replace(
+				*SealSha256,
+				*FString::ChrN(64, TEXT('4')))),
+		TPair<FString, FString>(
+			TEXT("H26K wrong replay rejects"),
+			ResultRaw.Replace(
+				*ReplaySha256,
+				*FString::ChrN(64, TEXT('5')))),
+		TPair<FString, FString>(
+			TEXT("H26K wrong home team rejects"),
+			ResultRaw.Replace(
+				*Commitment.HomeTeam,
+				TEXT("Wrong Home"))),
+		TPair<FString, FString>(
+			TEXT("H26K wrong away team rejects"),
+			ResultRaw.Replace(
+				*Commitment.AwayTeam,
+				TEXT("Wrong Away"))),
+		TPair<FString, FString>(
+			TEXT("H26K wrong game rejects"),
+			ResultRaw.Replace(
+				TEXT("\"game_number\":1"),
+				TEXT("\"game_number\":2"))),
+		TPair<FString, FString>(
+			TEXT("H26K wrong season rejects"),
+			ResultRaw.Replace(
+				TEXT("\"season_number\":1"),
+				TEXT("\"season_number\":2"))),
+		TPair<FString, FString>(
+			TEXT("H26K tie rejects"),
+			ResultRaw.Replace(
+				TEXT("\"home_score\":99"),
+				TEXT("\"home_score\":104"))),
+		TPair<FString, FString>(
+			TEXT("H26K fractional score rejects"),
+			ResultRaw.Replace(
+				TEXT("\"home_score\":99"),
+				TEXT("\"home_score\":99.5"))),
+		TPair<FString, FString>(
+			TEXT("H26K wrong winner rejects"),
+			ResultRaw.Replace(
+				TEXT("\"winner\":\"Mesa Vista Sol\""),
+				TEXT("\"winner\":\"Harbor City Waves\""))),
+		TPair<FString, FString>(
+			TEXT("H26K wrong record hash rejects"),
+			ResultRaw.Replace(
+				*RecordSha256,
+				*FString::ChrN(64, TEXT('6')))),
+		TPair<FString, FString>(
+			TEXT("H26K extra key rejects"),
+			ResultRaw.LeftChop(1) + TEXT(",\"extra\":0}")),
+		TPair<FString, FString>(
+			TEXT("H26K noncanonical bytes reject"),
+			ResultRaw + TEXT(" "))})
+	{
+		RejectRawWithoutRepair(
+			ResultPath,
+			Mutation.Value,
+			*Mutation.Key);
+		WriteExact(
+			ResultPath,
+			ResultRaw,
+			TEXT("Exact H26K fixture restores"));
+	}
+	WriteExact(
+		FPaths::Combine(ResultDirectory, TEXT("extra.json")),
+		ResultRaw,
+		TEXT("Conflicting second H26K result writes"));
+	TestFalse(
+		TEXT("Multiple H26K results reject"),
+		LoadPrivateCanonicalResultEvidence(
+			Commitment,
+			SealDirectory,
+			ResultDirectory,
+			Evidence,
+			Error));
+	TestTrue(
+		TEXT("Conflicting H26K result deletes"),
+		IFileManager::Get().Delete(
+			*FPaths::Combine(ResultDirectory, TEXT("extra.json"))));
+	TestTrue(
+		TEXT("Exact private chain restores after rejection matrix"),
+		LoadPrivateCanonicalResultEvidence(
+			Commitment,
+			SealDirectory,
+			ResultDirectory,
+			Evidence,
+			Error));
+	TestTrue(
+		TEXT("Private evidence test cleanup succeeds"),
+		IFileManager::Get().DeleteDirectory(*Root, false, true));
 	return !HasAnyErrors();
 }
 #endif

@@ -4,6 +4,9 @@
 #include "GameFramework/SaveGame.h"
 #include "CanonicalActiveGameExecutionCommitment.generated.h"
 
+struct FOddsWellMatchWinnerResultLinkRecord;
+enum class EOddsWellMatchWinnerResultLinkResult : uint8;
+
 UCLASS()
 class ODDSWELL_API UOddsWellCanonicalActiveGameExecutionCommitmentSaveGame final
 	: public USaveGame
@@ -129,4 +132,8 @@ ODDSWELL_API EOddsWellCanonicalGameExecutionHandoffResult
 	WriteOddsWellCanonicalGameExecutionHandoff(
 		FString& OutPath,
 		FString& OutSha256,
+		FString& OutError);
+ODDSWELL_API EOddsWellMatchWinnerResultLinkResult
+	LinkOddsWellCanonicalMatchWinnerResult(
+		FOddsWellMatchWinnerResultLinkRecord& OutRecord,
 		FString& OutError);

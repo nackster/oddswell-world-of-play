@@ -709,6 +709,49 @@ bool LoadOddsWellCanonicalMatchWinnerLock(
 	return true;
 }
 
+bool ValidateOddsWellCanonicalMatchWinnerResultLinkPrerequisites(
+	const FOddsWellMatchWinnerResultLinkRecord& ExactResult,
+	FString& OutError)
+{
+	FOddsWellCanonicalScheduledGameRecord Schedule;
+	FOddsWellCanonicalPregameCommitmentRecord Commitment;
+	FOddsWellMatchWinnerOffer ExactOffer;
+	FString ExactCanonicalJson;
+	FOddsWellCanonicalMatchWinnerOfferRecord PersistedOffer;
+	if (!LoadOddsWellCanonicalLocalBetaScheduledGame(Schedule, OutError)
+		|| !LoadOddsWellCanonicalPregameCommitment(Commitment, OutError)
+		|| !BuildExpectedOffer(
+			Schedule,
+			Commitment,
+			ExactOffer,
+			ExactCanonicalJson,
+			OutError)
+		|| !UGameplayStatics::DoesSaveGameExist(
+			CanonicalOfferSlot,
+			CanonicalOfferUserIndex)
+		|| !RestoreExactOffer(
+			UGameplayStatics::LoadGameFromSlot(
+				CanonicalOfferSlot,
+				CanonicalOfferUserIndex),
+			ExactOffer,
+			ExactCanonicalJson,
+			PersistedOffer,
+			OutError)
+		|| !::ValidateOddsWellCanonicalMatchWinnerResultLinkPrerequisites(
+			ExactOffer,
+			Schedule.OfferEligibleUnixSeconds,
+			ExactResult,
+			UseOddsWellOddsBucksQaSlot(),
+			OutError))
+	{
+		OutError =
+			TEXT("Canonical Match Winner result prerequisites failed exact H26A/B/C/E/G validation.");
+		return false;
+	}
+	OutError.Reset();
+	return true;
+}
+
 EOddsWellMatchWinnerRequestResult AcceptOddsWellCanonicalMatchWinnerRequest(
 	const FString& OfferedOfferId,
 	const FString& OfferedTeam,
