@@ -72,6 +72,15 @@ public:
 	const FOddsWellMatchWinnerOfferPreview* GetTicketBoothOffer() const { return SportsbookOfferPreview.Get(); }
 	const FOddsWellCanonicalPendingMatchWinnerReceipt* GetTicketBoothCanonicalReceipt() const { return SportsbookCanonicalReceipt.Get(); }
 	const FOddsWellCanonicalSettledLossReceipt* GetTicketBoothSettledLossReceipt() const { return SportsbookSettledLossReceipt.Get(); }
+	bool CanReviewTicketBoothBetSlip() const;
+	int32 GetTicketBoothReviewSelectionIndex() const { return TicketBoothReviewSelectionIndex; }
+	int64 GetTicketBoothReviewStake() const { return TicketBoothReviewStake; }
+	int64 GetTicketBoothReviewGrossReturn() const;
+	int64 GetTicketBoothCurrentBalance() const;
+	FString GetTicketBoothReviewText() const;
+	void SelectTicketBoothReviewTeam(int32 SelectionIndex);
+	void DecreaseTicketBoothReviewStake();
+	void IncreaseTicketBoothReviewStake();
 	void SetTicketBoothMarketPage(int32 Page);
 	void CloseTicketBoothMenu();
 
@@ -107,6 +116,9 @@ private:
 	void ShowSportsbookOfferPreview();
 	void PreviousSportsbookMarketPage();
 	void NextSportsbookMarketPage();
+	void SelectPreviousTicketBoothReviewTeam();
+	void SelectNextTicketBoothReviewTeam();
+	void ResetTicketBoothReview();
 	void SetTicketBoothInputMode(bool bMenuOpen);
 	void ToggleSportsbookQaWager();
 	void ShowSportsbookQaWager();
@@ -279,8 +291,11 @@ private:
 	bool bCanonicalPendingReceiptQa = false;
 	bool bCanonicalPostLockQa = false;
 	bool bCanonicalSettledLossReceiptQa = false;
+	bool bCanonicalBetSlipReviewQa = false;
 	bool bCanonicalMissingHeldOpenTipoffQa = false;
 	int32 SportsbookMarketPage = 0;
+	int32 TicketBoothReviewSelectionIndex = INDEX_NONE;
+	int64 TicketBoothReviewStake = 10;
 	int32 SportsbookQaSelectionIndex = 0;
 	int64 SportsbookQaStake = 10;
 	int64 SportsbookQaResultingBalance = 0;

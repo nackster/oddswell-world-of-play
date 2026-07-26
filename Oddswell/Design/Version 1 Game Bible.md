@@ -128,6 +128,7 @@ No Version 1 claim may describe fictional deterministic behavior as real-world r
 - **V1 REQUIRED:** reconnecting or skipping presentation never changes the result or settlement.
 - **V1 REQUIRED:** players who watch, skip, arrive late, or remain offline receive the same final authoritative outcome.
 - **OPEN:** final 2D/2.5D/3D fidelity, broadcast cameras, commentary, crowd, replay cuts, highlights, condensed mode, accessibility, and performance tiers.
+- **OPEN POST-BETA TARGET:** the owner would like an optional roughly 20-minute presentation mode. Beta remains on the inherited roughly two-to-five-minute target; this note does not authorize a duration change, new simulation, or presentation expansion.
 
 ## Wagers and Odds Bucks
 
@@ -142,6 +143,7 @@ No Version 1 claim may describe fictional deterministic behavior as real-world r
 - **BETA EVIDENCE:** one separate pre-tipoff canonical Match Winner record binds that schedule and commitment to the approved zero-edge, `10`–`100` by `10`, exact floor-payout offer contract. The exact record now appears read-only at the stadium ticket booth before server tipoff; invalid or locked evidence reveals no teams or prices. No canonical selection or wager action exists; see [[Development/Reports/Phase 1H26C Immutable Canonical Match Winner Offer Record]] and [[Development/Reports/Phase 1H26D Player Facing Read Only Canonical Match Winner Offer]].
 - **OPEN:** starting balance, job income, allowance cadence, wager limits, market limits, payout formulas, economy sinks, inflation targets, and correction/cancellation policy.
 - **OPEN:** real-money Odds Bucks purchases. They do not become Version 1 scope merely because Version 1 follows beta.
+- **OPEN POST-BETA TARGET:** the owner would like live/in-game odds. Beta remains limited to immutable pregame odds that lock at authoritative game start; this note does not authorize repricing, in-play wagering, a new odds feed, or a new market.
 - **GUARDRAIL:** real-money purchases require separate owner approval plus current legal, platform, payment, regional, age-rating, fraud, security, economy, and audit review.
 
 ## Work and lifestyle progression

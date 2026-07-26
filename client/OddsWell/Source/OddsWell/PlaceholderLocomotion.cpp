@@ -78,6 +78,7 @@ constexpr float StudioEntryRadius = 350.0f;
 constexpr float StudioQaWalkDistance = 200.0f;
 constexpr float StadiumEntryRadius = 350.0f;
 constexpr float SportsbookInteractionRadius = 350.0f;
+constexpr int64 CanonicalProbabilityScale = 100000000;
 constexpr float StadiumQaWaypointTolerance = 75.0f;
 const FName StudioStructureTag(TEXT("OddsWellStudioStructure"));
 const FName StudioFurnitureTag(TEXT("OddsWellStudioFurniture"));
@@ -120,6 +121,71 @@ FString BuildCanonicalSettledLossReceiptText(
 		Receipt.Returned,
 		Receipt.Net,
 		Receipt.CurrentBalance);
+}
+
+bool IsCanonicalBetSlipOfferUsable(
+	const FOddsWellMatchWinnerOfferPreview& Offer)
+{
+	return Offer.Selections.Num() == 2
+		&& Offer.MinimumStake == 10
+		&& Offer.MaximumStake == 100
+		&& Offer.StakeIncrement == 10
+		&& Offer.Selections[0].Team == Offer.HomeTeam
+		&& Offer.Selections[1].Team == Offer.AwayTeam
+		&& Offer.Selections[0].WinProbabilityE8 > 0
+		&& Offer.Selections[1].WinProbabilityE8 > 0
+		&& Offer.Selections[0].DecimalOddsE4 > 0
+		&& Offer.Selections[1].DecimalOddsE4 > 0;
+}
+
+int64 CalculateCanonicalBetSlipGrossReturn(
+	const int64 Stake,
+	const int64 WinProbabilityE8)
+{
+	return Stake > 0 && WinProbabilityE8 > 0
+		? Stake * CanonicalProbabilityScale / WinProbabilityE8
+		: 0;
+}
+
+bool ShouldShowCanonicalBetSlipReview(
+	const bool bHasOffer,
+	const bool bHasPendingReceipt,
+	const bool bHasSettledReceipt)
+{
+	return bHasOffer && !bHasPendingReceipt && !bHasSettledReceipt;
+}
+
+FString BuildCanonicalBetSlipReviewText(
+	const FOddsWellMatchWinnerOfferPreview& Offer,
+	const int32 SelectionIndex,
+	const int64 Stake,
+	const int64 CurrentBalance)
+{
+	if (!IsCanonicalBetSlipOfferUsable(Offer)
+		|| Stake < Offer.MinimumStake
+		|| Stake > Offer.MaximumStake
+		|| (Stake - Offer.MinimumStake) % Offer.StakeIncrement != 0)
+	{
+		return TEXT("BET SLIP UNAVAILABLE");
+	}
+	if (!Offer.Selections.IsValidIndex(SelectionIndex))
+	{
+		return FString::Printf(
+			TEXT("BET SLIP\nSELECT A TEAM\nSTAKE %lld Odds Bucks\nCURRENT BALANCE %lld Odds Bucks\nLOCKS AT GAME START\nREVIEW ONLY \u2014 WAGER NOT PLACED\nMOUSE: SELECT / - / +\nKEYBOARD: , / . TEAM   - / = STAKE\nCONTROLLER: D-PAD LEFT / RIGHT TEAM   UP / DOWN STAKE"),
+			Stake,
+			CurrentBalance);
+	}
+	const FOddsWellMatchWinnerSelectionPreview& Selection =
+		Offer.Selections[SelectionIndex];
+	return FString::Printf(
+		TEXT("BET SLIP\n%s\nDECIMAL ODDS %.4f\nSTAKE %lld Odds Bucks\nPOTENTIAL GROSS RETURN %lld Odds Bucks\nCURRENT BALANCE %lld Odds Bucks\nLOCKS AT GAME START\nREVIEW ONLY \u2014 WAGER NOT PLACED\nMOUSE: SELECT / - / +\nKEYBOARD: , / . TEAM   - / = STAKE\nCONTROLLER: D-PAD LEFT / RIGHT TEAM   UP / DOWN STAKE"),
+		*Selection.Team,
+		static_cast<double>(Selection.DecimalOddsE4) / 10000.0,
+		Stake,
+		CalculateCanonicalBetSlipGrossReturn(
+			Stake,
+			Selection.WinProbabilityE8),
+		CurrentBalance);
 }
 
 void ApplyTicketBoothEvidenceExpiry(
@@ -286,6 +352,14 @@ const FKey KeyControllerJump = EKeys::Gamepad_FaceButton_Bottom;
 const FKey KeyControllerMarketPrevious = EKeys::Gamepad_LeftShoulder;
 const FKey KeyControllerMarketNext = EKeys::Gamepad_RightShoulder;
 const FKey KeyControllerMenuClose = EKeys::Gamepad_FaceButton_Right;
+const FKey KeyControllerTeamPrevious = EKeys::Gamepad_DPad_Left;
+const FKey KeyControllerTeamNext = EKeys::Gamepad_DPad_Right;
+const FKey KeyControllerStakeDecrease = EKeys::Gamepad_DPad_Down;
+const FKey KeyControllerStakeIncrease = EKeys::Gamepad_DPad_Up;
+const FName TicketBoothHomeTeamHitBox(TEXT("TicketBoothTeam0"));
+const FName TicketBoothAwayTeamHitBox(TEXT("TicketBoothTeam1"));
+const FName TicketBoothStakeDecreaseHitBox(TEXT("TicketBoothStakeDecrease"));
+const FName TicketBoothStakeIncreaseHitBox(TEXT("TicketBoothStakeIncrease"));
 }
 
 bool FOddsWellStarterOutfitState::Equip(const FName ItemId, const EOddsWellStarterEquipmentSlot Slot, FString& OutError)
@@ -456,6 +530,10 @@ void AOddsWellPlaceholderCharacter::BeginPlay()
 		FParse::Param(
 			FCommandLine::Get(),
 			TEXT("CanonicalSettledLossReceiptQa"));
+	bCanonicalBetSlipReviewQa =
+		FParse::Param(
+			FCommandLine::Get(),
+			TEXT("CanonicalBetSlipReviewQa"));
 	bCanonicalMissingHeldOpenTipoffQa =
 		FParse::Param(
 			FCommandLine::Get(),
@@ -465,6 +543,7 @@ void AOddsWellPlaceholderCharacter::BeginPlay()
 		|| bCanonicalPendingReceiptQa
 		|| bCanonicalPostLockQa
 		|| bCanonicalSettledLossReceiptQa
+		|| bCanonicalBetSlipReviewQa
 		|| bCanonicalMissingHeldOpenTipoffQa;
 	bSportsbookWagerQaVerify = FParse::Param(FCommandLine::Get(), TEXT("SportsbookWagerQaVerify"));
 	bSportsbookWagerQaMode = FParse::Param(FCommandLine::Get(), TEXT("SportsbookWagerQa")) || bSportsbookWagerQaVerify;
@@ -716,6 +795,10 @@ void AOddsWellPlaceholderCharacter::SetupPlayerInputComponent(UInputComponent* P
 	PlayerInputComponent->BindKey(KeyLeagueNext, IE_Pressed, this, &AOddsWellPlaceholderCharacter::SelectNextSportsbookQaTeam);
 	PlayerInputComponent->BindKey(KeyStakeDecrease, IE_Pressed, this, &AOddsWellPlaceholderCharacter::DecreaseSportsbookQaStake);
 	PlayerInputComponent->BindKey(KeyStakeIncrease, IE_Pressed, this, &AOddsWellPlaceholderCharacter::IncreaseSportsbookQaStake);
+	PlayerInputComponent->BindKey(KeyLeaguePrevious, IE_Pressed, this, &AOddsWellPlaceholderCharacter::SelectPreviousTicketBoothReviewTeam);
+	PlayerInputComponent->BindKey(KeyLeagueNext, IE_Pressed, this, &AOddsWellPlaceholderCharacter::SelectNextTicketBoothReviewTeam);
+	PlayerInputComponent->BindKey(KeyStakeDecrease, IE_Pressed, this, &AOddsWellPlaceholderCharacter::DecreaseTicketBoothReviewStake);
+	PlayerInputComponent->BindKey(KeyStakeIncrease, IE_Pressed, this, &AOddsWellPlaceholderCharacter::IncreaseTicketBoothReviewStake);
 	PlayerInputComponent->BindKey(KeyConfirm, IE_Pressed, this, &AOddsWellPlaceholderCharacter::ConfirmSportsbookQaWager);
 	PlayerInputComponent->BindKey(KeyMarketPrevious, IE_Pressed, this, &AOddsWellPlaceholderCharacter::PreviousSportsbookMarketPage);
 	PlayerInputComponent->BindKey(KeyMarketNext, IE_Pressed, this, &AOddsWellPlaceholderCharacter::NextSportsbookMarketPage);
@@ -732,6 +815,10 @@ void AOddsWellPlaceholderCharacter::SetupPlayerInputComponent(UInputComponent* P
 	PlayerInputComponent->BindKey(KeyControllerMarketPrevious, IE_Pressed, this, &AOddsWellPlaceholderCharacter::PreviousSportsbookMarketPage);
 	PlayerInputComponent->BindKey(KeyControllerMarketNext, IE_Pressed, this, &AOddsWellPlaceholderCharacter::NextSportsbookMarketPage);
 	PlayerInputComponent->BindKey(KeyControllerMenuClose, IE_Pressed, this, &AOddsWellPlaceholderCharacter::CloseTicketBoothMenu);
+	PlayerInputComponent->BindKey(KeyControllerTeamPrevious, IE_Pressed, this, &AOddsWellPlaceholderCharacter::SelectPreviousTicketBoothReviewTeam);
+	PlayerInputComponent->BindKey(KeyControllerTeamNext, IE_Pressed, this, &AOddsWellPlaceholderCharacter::SelectNextTicketBoothReviewTeam);
+	PlayerInputComponent->BindKey(KeyControllerStakeDecrease, IE_Pressed, this, &AOddsWellPlaceholderCharacter::DecreaseTicketBoothReviewStake);
+	PlayerInputComponent->BindKey(KeyControllerStakeIncrease, IE_Pressed, this, &AOddsWellPlaceholderCharacter::IncreaseTicketBoothReviewStake);
 }
 
 void AOddsWellPlaceholderCharacter::ToggleLeagueView()
@@ -784,6 +871,8 @@ void AOddsWellPlaceholderCharacter::ShowLeaguePage()
 
 void AOddsWellPlaceholderCharacter::RefreshSportsbookOfferPreview()
 {
+	TicketBoothReviewSelectionIndex = INDEX_NONE;
+	TicketBoothReviewStake = 10;
 	SportsbookSettledLossReceipt =
 		MakeUnique<FOddsWellCanonicalSettledLossReceipt>();
 	FString Error;
@@ -881,6 +970,7 @@ void AOddsWellPlaceholderCharacter::RefreshSportsbookOfferPreview()
 		SportsbookOfferPreview->MaximumStake,
 		SportsbookOfferPreview->StakeIncrement,
 		SportsbookOfferPreview->LockUnix);
+	ResetTicketBoothReview();
 }
 
 void AOddsWellPlaceholderCharacter::ToggleSportsbookOfferPreview()
@@ -942,6 +1032,116 @@ void AOddsWellPlaceholderCharacter::NextSportsbookMarketPage()
 	SetTicketBoothMarketPage(SportsbookMarketPage + 1);
 }
 
+bool AOddsWellPlaceholderCharacter::CanReviewTicketBoothBetSlip() const
+{
+	return bSportsbookOfferVisible
+		&& SportsbookOfferPreview
+		&& IsCanonicalBetSlipOfferUsable(*SportsbookOfferPreview)
+		&& ShouldShowCanonicalBetSlipReview(
+			true,
+			SportsbookCanonicalReceipt != nullptr,
+			SportsbookSettledLossReceipt != nullptr);
+}
+
+int64 AOddsWellPlaceholderCharacter::GetTicketBoothReviewGrossReturn() const
+{
+	if (!CanReviewTicketBoothBetSlip()
+		|| !SportsbookOfferPreview->Selections.IsValidIndex(
+			TicketBoothReviewSelectionIndex))
+	{
+		return 0;
+	}
+	return CalculateCanonicalBetSlipGrossReturn(
+		TicketBoothReviewStake,
+		SportsbookOfferPreview->Selections[TicketBoothReviewSelectionIndex]
+			.WinProbabilityE8);
+}
+
+int64 AOddsWellPlaceholderCharacter::GetTicketBoothCurrentBalance() const
+{
+	const AOddsWellLocomotionGameMode* GameMode =
+		GetWorld() ? GetWorld()->GetAuthGameMode<AOddsWellLocomotionGameMode>() : nullptr;
+	return GameMode ? GameMode->GetOddsBucksBalance() : 0;
+}
+
+FString AOddsWellPlaceholderCharacter::GetTicketBoothReviewText() const
+{
+	return CanReviewTicketBoothBetSlip()
+		? BuildCanonicalBetSlipReviewText(
+			*SportsbookOfferPreview,
+			TicketBoothReviewSelectionIndex,
+			TicketBoothReviewStake,
+			GetTicketBoothCurrentBalance())
+		: FString(TEXT("BET SLIP UNAVAILABLE"));
+}
+
+void AOddsWellPlaceholderCharacter::SelectTicketBoothReviewTeam(
+	const int32 SelectionIndex)
+{
+	if (CanReviewTicketBoothBetSlip()
+		&& SportsbookMarketPage == 0
+		&& SportsbookOfferPreview->Selections.IsValidIndex(SelectionIndex))
+	{
+		TicketBoothReviewSelectionIndex = SelectionIndex;
+	}
+}
+
+void AOddsWellPlaceholderCharacter::SelectPreviousTicketBoothReviewTeam()
+{
+	if (!CanReviewTicketBoothBetSlip() || SportsbookMarketPage != 0)
+	{
+		return;
+	}
+	SelectTicketBoothReviewTeam(
+		TicketBoothReviewSelectionIndex == INDEX_NONE
+			? SportsbookOfferPreview->Selections.Num() - 1
+			: (TicketBoothReviewSelectionIndex - 1
+				+ SportsbookOfferPreview->Selections.Num())
+				% SportsbookOfferPreview->Selections.Num());
+}
+
+void AOddsWellPlaceholderCharacter::SelectNextTicketBoothReviewTeam()
+{
+	if (!CanReviewTicketBoothBetSlip() || SportsbookMarketPage != 0)
+	{
+		return;
+	}
+	SelectTicketBoothReviewTeam(
+		TicketBoothReviewSelectionIndex == INDEX_NONE
+			? 0
+			: (TicketBoothReviewSelectionIndex + 1)
+				% SportsbookOfferPreview->Selections.Num());
+}
+
+void AOddsWellPlaceholderCharacter::DecreaseTicketBoothReviewStake()
+{
+	if (CanReviewTicketBoothBetSlip())
+	{
+		TicketBoothReviewStake = FMath::Max(
+			SportsbookOfferPreview->MinimumStake,
+			TicketBoothReviewStake - SportsbookOfferPreview->StakeIncrement);
+	}
+}
+
+void AOddsWellPlaceholderCharacter::IncreaseTicketBoothReviewStake()
+{
+	if (CanReviewTicketBoothBetSlip())
+	{
+		TicketBoothReviewStake = FMath::Min(
+			SportsbookOfferPreview->MaximumStake,
+			TicketBoothReviewStake + SportsbookOfferPreview->StakeIncrement);
+	}
+}
+
+void AOddsWellPlaceholderCharacter::ResetTicketBoothReview()
+{
+	TicketBoothReviewSelectionIndex = INDEX_NONE;
+	TicketBoothReviewStake = SportsbookOfferPreview
+		&& IsCanonicalBetSlipOfferUsable(*SportsbookOfferPreview)
+		? SportsbookOfferPreview->MinimumStake
+		: 10;
+}
+
 void AOddsWellPlaceholderCharacter::CloseTicketBoothMenu()
 {
 	if (!bSportsbookOfferVisible)
@@ -949,6 +1149,7 @@ void AOddsWellPlaceholderCharacter::CloseTicketBoothMenu()
 		return;
 	}
 	bSportsbookOfferVisible = false;
+	ResetTicketBoothReview();
 	SetTicketBoothInputMode(false);
 	ShowSportsbookOfferPreview();
 }
@@ -1723,6 +1924,10 @@ void AOddsWellPlaceholderCharacter::PollSportsbookInteraction()
 			bSportsbookOfferVisible,
 			SportsbookOfferPreview,
 			SportsbookCanonicalReceipt);
+		if (!SportsbookOfferPreview)
+		{
+			ResetTicketBoothReview();
+		}
 	}
 	if (!bAtSportsbook)
 	{
@@ -1939,6 +2144,154 @@ void AOddsWellPlaceholderCharacter::RunSportsbookOfferQa(const float DeltaSecond
 			SportsbookOfferQaElapsed = 0.0f;
 			return;
 		}
+		if (bCanonicalBetSlipReviewQa)
+		{
+			const int64 ExpectedGrossReturns[2][10] = {
+				{17, 34, 52, 69, 86, 104, 121, 138, 156, 173},
+				{23, 47, 70, 94, 117, 141, 165, 188, 212, 235}};
+			FOddsWellMatchWinnerOfferPreview InvalidOffer =
+				*SportsbookOfferPreview;
+			InvalidOffer.StakeIncrement = 0;
+			const bool bInvalidFailsClosed =
+				BuildCanonicalBetSlipReviewText(InvalidOffer, 1, 40, 100)
+					== TEXT("BET SLIP UNAVAILABLE");
+			const bool bPrecedenceExact =
+				ShouldShowCanonicalBetSlipReview(true, false, false)
+				&& !ShouldShowCanonicalBetSlipReview(true, true, false)
+				&& !ShouldShowCanonicalBetSlipReview(true, false, true)
+				&& !ShouldShowCanonicalBetSlipReview(false, false, false);
+			const bool bInputRoutesExact =
+				TicketBoothHomeTeamHitBox != NAME_None
+				&& TicketBoothAwayTeamHitBox != NAME_None
+				&& TicketBoothStakeDecreaseHitBox != NAME_None
+				&& TicketBoothStakeIncreaseHitBox != NAME_None
+				&& !KeyLeaguePrevious.IsGamepadKey()
+				&& !KeyLeagueNext.IsGamepadKey()
+				&& !KeyStakeDecrease.IsGamepadKey()
+				&& !KeyStakeIncrease.IsGamepadKey()
+				&& KeyControllerTeamPrevious.IsGamepadKey()
+				&& KeyControllerTeamNext.IsGamepadKey()
+				&& KeyControllerStakeDecrease.IsGamepadKey()
+				&& KeyControllerStakeIncrease.IsGamepadKey();
+			bool bExactReturns = CanReviewTicketBoothBetSlip()
+				&& TicketBoothReviewSelectionIndex == INDEX_NONE
+				&& TicketBoothReviewStake == 10;
+			for (int32 SelectionIndex = 0;
+				bExactReturns && SelectionIndex < 2;
+				++SelectionIndex)
+			{
+				ResetTicketBoothReview();
+				SelectTicketBoothReviewTeam(SelectionIndex);
+				for (int32 StakeIndex = 0; StakeIndex < 10; ++StakeIndex)
+				{
+					const FString ReviewText = GetTicketBoothReviewText();
+					bExactReturns =
+						TicketBoothReviewStake == 10 + StakeIndex * 10
+						&& GetTicketBoothReviewGrossReturn()
+							== ExpectedGrossReturns[SelectionIndex][StakeIndex]
+						&& ReviewText.Contains(
+							SportsbookOfferPreview->Selections[SelectionIndex].Team)
+						&& ReviewText.Contains(TEXT("REVIEW ONLY \u2014 WAGER NOT PLACED"))
+						&& ReviewText.Contains(TEXT("LOCKS AT GAME START"));
+					IncreaseTicketBoothReviewStake();
+				}
+			}
+			ResetTicketBoothReview();
+			SelectPreviousTicketBoothReviewTeam();
+			const bool bPreviousRoute = TicketBoothReviewSelectionIndex == 1;
+			SelectNextTicketBoothReviewTeam();
+			const bool bNextRoute = TicketBoothReviewSelectionIndex == 0;
+			DecreaseTicketBoothReviewStake();
+			const bool bMinimumBounded = TicketBoothReviewStake == 10;
+			for (int32 Index = 0; Index < 12; ++Index)
+			{
+				IncreaseTicketBoothReviewStake();
+			}
+			const bool bMaximumBounded = TicketBoothReviewStake == 100;
+			SetTicketBoothMarketPage(1);
+			const bool bLaterMarketSafe = SportsbookMarketPage == 1
+				&& TicketBoothReviewSelectionIndex == 0
+				&& TicketBoothReviewStake == 100;
+			SetTicketBoothMarketPage(0);
+			CloseTicketBoothMenu();
+			const bool bCloseReset = !bSportsbookOfferVisible
+				&& TicketBoothReviewSelectionIndex == INDEX_NONE
+				&& TicketBoothReviewStake == 10;
+			ToggleSportsbookOfferPreview();
+			const bool bReopenReset = bSportsbookOfferVisible
+				&& TicketBoothReviewSelectionIndex == INDEX_NONE
+				&& TicketBoothReviewStake == 10;
+			SetActorLocation(
+				SafeSpawnLocation,
+				false,
+				nullptr,
+				ETeleportType::TeleportPhysics);
+			PollSportsbookInteraction();
+			const bool bLeaveReset = !bSportsbookOfferVisible
+				&& TicketBoothReviewSelectionIndex == INDEX_NONE
+				&& TicketBoothReviewStake == 10;
+			SetActorLocation(
+				FVector(
+					SportsbookInteractionLocation.X,
+					SportsbookInteractionLocation.Y,
+					GetActorLocation().Z),
+				false,
+				nullptr,
+				ETeleportType::TeleportPhysics);
+			ToggleSportsbookOfferPreview();
+			SelectTicketBoothReviewTeam(1);
+			for (int32 Index = 0; Index < 3; ++Index)
+			{
+				IncreaseTicketBoothReviewStake();
+			}
+			const FString FinalReviewText = GetTicketBoothReviewText();
+			const FString LowerReviewText = FinalReviewText.ToLower();
+			const bool bExact = bExactReturns
+				&& bInvalidFailsClosed
+				&& bPrecedenceExact
+				&& bInputRoutesExact
+				&& bPreviousRoute
+				&& bNextRoute
+				&& bMinimumBounded
+				&& bMaximumBounded
+				&& bLaterMarketSafe
+				&& bCloseReset
+				&& bReopenReset
+				&& bLeaveReset
+				&& bSportsbookOfferVisible
+				&& TicketBoothReviewSelectionIndex == 1
+				&& TicketBoothReviewStake == 40
+				&& GetTicketBoothReviewGrossReturn() == 94
+				&& FinalReviewText.Contains(TEXT("Mesa Vista Sol"))
+				&& FinalReviewText.Contains(TEXT("DECIMAL ODDS 2.3577"))
+				&& FinalReviewText.Contains(TEXT("STAKE 40 Odds Bucks"))
+				&& FinalReviewText.Contains(TEXT("POTENTIAL GROSS RETURN 94 Odds Bucks"))
+				&& FinalReviewText.Contains(TEXT("MOUSE:"))
+				&& FinalReviewText.Contains(TEXT("KEYBOARD:"))
+				&& FinalReviewText.Contains(TEXT("CONTROLLER:"))
+				&& !LowerReviewText.Contains(TEXT("confirm"))
+				&& !LowerReviewText.Contains(TEXT("submit"))
+				&& !LowerReviewText.Contains(TEXT("request"))
+				&& !LowerReviewText.Contains(TEXT("debit"))
+				&& GameMode->GetOddsBucksEntryCount()
+					== SportsbookOfferQaLedgerEntries
+				&& GameMode->GetMatchWinnerRequestCount() == 0
+				&& GameMode->GetOddsBucksBalance()
+					== SportsbookOfferQaBalance;
+			if (!bExact)
+			{
+				UE_LOG(
+					LogOddsWellLocomotion,
+					Error,
+					TEXT("ODDSWELL_CANONICAL_BET_SLIP_REVIEW_QA|result=FAIL|reason=review_or_invariance_mismatch|closed=true"));
+				bSportsbookOfferQa = false;
+				QaExitAt = FPlatformTime::Seconds() + 1.0;
+				return;
+			}
+			SportsbookOfferQaStage = 2;
+			SportsbookOfferQaElapsed = 0.0f;
+			return;
+		}
 		if (bCanonicalPostLockQa)
 		{
 			const bool bExact =
@@ -2070,7 +2423,9 @@ void AOddsWellPlaceholderCharacter::RunSportsbookOfferQa(const float DeltaSecond
 		if (FParse::Param(FCommandLine::Get(), TEXT("SportsbookOfferQaCapture")))
 		{
 			FScreenshotRequest::RequestScreenshot(
-				bCanonicalSettledLossReceiptQa
+				bCanonicalBetSlipReviewQa
+					? TEXT("Phase1H26Q_CanonicalBetSlipReview.png")
+					: (bCanonicalSettledLossReceiptQa
 					? TEXT("Phase1H26P_CanonicalSettledLossReceipt.png")
 					: (bCanonicalPostLockQa
 					? TEXT("Phase1H26G_CanonicalPostLockBooth.png")
@@ -2078,9 +2433,15 @@ void AOddsWellPlaceholderCharacter::RunSportsbookOfferQa(const float DeltaSecond
 					? TEXT("Phase1H26F_HeldOpenMissingTipoffLocked.png")
 					: (bCanonicalPendingReceiptQa
 						? TEXT("Phase1H26F_CanonicalPendingReceipt.png")
-						: TEXT("Phase1H26D_CanonicalMatchWinnerOffer.png")))),
+						: TEXT("Phase1H26D_CanonicalMatchWinnerOffer.png"))))),
 				true,
 				false);
+		}
+		if (bCanonicalBetSlipReviewQa)
+		{
+			SportsbookOfferQaStage = 3;
+			SportsbookOfferQaElapsed = 0.0f;
+			return;
 		}
 		if (bCanonicalSettledLossReceiptQa)
 		{
@@ -2157,6 +2518,52 @@ void AOddsWellPlaceholderCharacter::RunSportsbookOfferQa(const float DeltaSecond
 			GameMode->GetOddsBucksBalance());
 		bSportsbookOfferQa = false;
 		if (FParse::Param(FCommandLine::Get(), TEXT("SportsbookOfferAutoExit")))
+		{
+			QaExitAt = FPlatformTime::Seconds() + 2.0;
+		}
+	}
+	if (SportsbookOfferQaStage == 3 && SportsbookOfferQaElapsed >= 1.0f)
+	{
+		const int64 TipoffUnix = SportsbookOfferPreview
+			? SportsbookOfferPreview->LockUnix
+			: 0;
+		ApplyTicketBoothEvidenceExpiry(
+			TipoffUnix,
+			EOddsWellCanonicalPendingReceiptResult::Missing,
+			bSportsbookOfferVisible,
+			SportsbookOfferPreview,
+			SportsbookCanonicalReceipt);
+		ResetTicketBoothReview();
+		const bool bExact = bCanonicalBetSlipReviewQa
+			&& bSportsbookOfferVisible
+			&& !SportsbookOfferPreview
+			&& !SportsbookCanonicalReceipt
+			&& !SportsbookSettledLossReceipt
+			&& TicketBoothReviewSelectionIndex == INDEX_NONE
+			&& TicketBoothReviewStake == 10
+			&& GameMode->GetOddsBucksEntryCount()
+				== SportsbookOfferQaLedgerEntries
+			&& GameMode->GetMatchWinnerRequestCount() == 0
+			&& GameMode->GetOddsBucksBalance()
+				== SportsbookOfferQaBalance;
+		if (bExact)
+		{
+			UE_LOG(
+				LogOddsWellLocomotion,
+				Display,
+				TEXT("ODDSWELL_CANONICAL_BET_SLIP_REVIEW_QA|result=PASS|phase=H26Q|read_only=true|teams=Harbor_City_Waves,Mesa_Vista_Sol|stakes=10-100|increment=10|returns_exact=true|mouse=true|keyboard=true|controller=true|focus_visible=true|label=REVIEW_ONLY_WAGER_NOT_PLACED|close_reset=true|reopen_reset=true|leave_reset=true|cold_reset=true|later_markets_locked=true|pending_precedence=true|settled_precedence=true|tipoff_clears=true|invalid_reveals=false|confirm=false|submit=false|request=false|debit=false|lock=false|receipt=false|ledger_mutation=false|save_mutation=false|cost_usd=0"));
+		}
+		else
+		{
+			UE_LOG(
+				LogOddsWellLocomotion,
+				Error,
+				TEXT("ODDSWELL_CANONICAL_BET_SLIP_REVIEW_QA|result=FAIL|phase=H26Q|reason=tipoff_or_invariance_mismatch"));
+		}
+		bSportsbookOfferQa = false;
+		if (FParse::Param(
+				FCommandLine::Get(),
+				TEXT("SportsbookOfferAutoExit")))
 		{
 			QaExitAt = FPlatformTime::Seconds() + 2.0;
 		}
@@ -3549,7 +3956,7 @@ void AOddsWellSportsbookHUD::DrawMarketCard(
 	DrawText(Title, FLinearColor::White, X + 20.0f, Y + 16.0f, nullptr, 1.20f);
 	DrawText(Subtitle, bAvailable ? FLinearColor(0.96f, 0.78f, 0.30f) : FLinearColor(0.70f, 0.73f, 0.76f), X + 20.0f, Y + 49.0f, nullptr, 1.05f);
 	DrawText(
-		bAvailable ? TEXT("READ-ONLY ODDS") : TEXT("LOCKED - ODDS NOT PUBLISHED"),
+		bAvailable ? TEXT("SELECT FOR REVIEW") : TEXT("LOCKED - ODDS NOT PUBLISHED"),
 		Accent,
 		X + 20.0f,
 		Y + Height - 30.0f,
@@ -3642,19 +4049,45 @@ void AOddsWellSportsbookHUD::DrawTicketBoothMenu(
 		for (int32 Index = 0; Index < Offer.Selections.Num(); ++Index)
 		{
 			const FOddsWellMatchWinnerSelectionPreview& Selection = Offer.Selections[Index];
+			const float SelectionX =
+				InnerX + Index * (CardWidth + CardGap);
 			const FString Odds = FString::Printf(
 				TEXT("%.4f DECIMAL"),
 				static_cast<double>(Selection.DecimalOddsE4) / 10000.0);
 			DrawMarketCard(
 				Selection.Team,
 				Odds,
-				InnerX + Index * (CardWidth + CardGap),
+				SelectionX,
 				CardY,
 				CardWidth,
 				134.0f,
 				true);
+			if (Character.CanReviewTicketBoothBetSlip())
+			{
+				const bool bSelected =
+					Character.GetTicketBoothReviewSelectionIndex() == Index;
+				if (bSelected)
+				{
+					DrawRect(Gold, SelectionX, CardY, CardWidth, 5.0f);
+					DrawText(
+						TEXT("SELECTED"),
+						Gold,
+						SelectionX + CardWidth - 88.0f,
+						CardY + 16.0f,
+						nullptr,
+						0.82f);
+				}
+				AddHitBox(
+					FVector2D(SelectionX, CardY),
+					FVector2D(CardWidth, 134.0f),
+					Index == 0
+						? TicketBoothHomeTeamHitBox
+						: TicketBoothAwayTeamHitBox,
+					true,
+					15);
+			}
 		}
-		DrawText(TEXT("Example gross return"), Muted, InnerX, CardY + 160.0f, nullptr, 0.95f);
+		DrawText(TEXT("Click a team or use , / . or D-pad left / right"), Muted, InnerX, CardY + 160.0f, nullptr, 0.95f);
 		DrawText(
 			FString::Printf(
 				TEXT("%lld Odds Bucks returns %lld or %lld, based on your selection"),
@@ -3704,79 +4137,64 @@ void AOddsWellSportsbookHUD::DrawTicketBoothMenu(
 	DrawRect(FLinearColor(0.96f, 0.94f, 0.87f, 1.0f), SlipX, ContentY, SlipWidth, ContentHeight);
 	const FOddsWellCanonicalPendingMatchWinnerReceipt* Receipt =
 		Character.GetTicketBoothCanonicalReceipt();
-	DrawText(
-		Receipt ? TEXT("BET ACCEPTED") : TEXT("BET SLIP"),
-		FLinearColor(0.025f, 0.055f, 0.08f),
-		SlipX + 20.0f,
-		ContentY + 20.0f,
-		nullptr,
-		1.35f);
-	DrawText(
-		Receipt ? TEXT("PENDING TIPOFF") : TEXT("READ-ONLY PREVIEW"),
-		FLinearColor(0.08f, 0.45f, 0.42f),
-		SlipX + 20.0f,
-		ContentY + 55.0f,
-		nullptr,
-		0.92f);
+	if (Receipt)
+	{
+		DrawText(TEXT("BET ACCEPTED"), FLinearColor(0.025f, 0.055f, 0.08f), SlipX + 20.0f, ContentY + 20.0f, nullptr, 1.35f);
+		DrawText(TEXT("PENDING TIPOFF"), FLinearColor(0.08f, 0.45f, 0.42f), SlipX + 20.0f, ContentY + 55.0f, nullptr, 0.92f);
+		DrawRect(FLinearColor(0.84f, 0.82f, 0.76f, 1.0f), SlipX + 20.0f, ContentY + 92.0f, SlipWidth - 40.0f, 2.0f);
+		DrawText(TEXT("SELECTION"), FLinearColor(0.32f, 0.34f, 0.36f), SlipX + 20.0f, ContentY + 116.0f, nullptr, 0.82f);
+		DrawText(Receipt->SelectedTeam, FLinearColor(0.025f, 0.055f, 0.08f), SlipX + 20.0f, ContentY + 145.0f, nullptr, 1.05f);
+		DrawText(TEXT("STAKE / POTENTIAL GROSS"), FLinearColor(0.32f, 0.34f, 0.36f), SlipX + 20.0f, ContentY + 194.0f, nullptr, 0.82f);
+		DrawText(FString::Printf(TEXT("%lld Odds Bucks  /  %lld gross"), Receipt->Stake, Receipt->GrossReturn), FLinearColor(0.025f, 0.055f, 0.08f), SlipX + 20.0f, ContentY + 223.0f, nullptr, 1.05f);
+		DrawText(TEXT("CURRENT BALANCE"), FLinearColor(0.32f, 0.34f, 0.36f), SlipX + 20.0f, ContentY + 272.0f, nullptr, 0.82f);
+		DrawText(FString::Printf(TEXT("%lld Odds Bucks"), Receipt->CurrentBalance), FLinearColor(0.025f, 0.055f, 0.08f), SlipX + 20.0f, ContentY + 301.0f, nullptr, 1.0f);
+		DrawText(TEXT("LOCKED AT GAME START"), FLinearColor(0.55f, 0.22f, 0.12f), SlipX + 20.0f, ContentY + ContentHeight - 116.0f, nullptr, 0.92f);
+		DrawText(TEXT("Odds Bucks only. No real money."), FLinearColor(0.55f, 0.22f, 0.12f), SlipX + 20.0f, ContentY + ContentHeight - 85.0f, nullptr, 0.92f);
+		DrawText(TEXT("LEFT / RIGHT: MARKET    E or ESC: CLOSE"), FLinearColor(0.32f, 0.34f, 0.36f), SlipX + 20.0f, ContentY + ContentHeight - 43.0f, nullptr, 0.78f);
+		return;
+	}
+
+	const bool bReviewAvailable = Character.CanReviewTicketBoothBetSlip();
+	const int32 SelectionIndex =
+		Character.GetTicketBoothReviewSelectionIndex();
+	const FOddsWellMatchWinnerSelectionPreview* Selection =
+		bReviewAvailable && Offer.Selections.IsValidIndex(SelectionIndex)
+			? &Offer.Selections[SelectionIndex]
+			: nullptr;
+	const int64 Stake = Character.GetTicketBoothReviewStake();
+	DrawText(TEXT("BET SLIP"), FLinearColor(0.025f, 0.055f, 0.08f), SlipX + 20.0f, ContentY + 20.0f, nullptr, 1.35f);
+	DrawText(Selection ? TEXT("PRE-COMMIT REVIEW") : TEXT("CHOOSE A TEAM"), FLinearColor(0.08f, 0.45f, 0.42f), SlipX + 20.0f, ContentY + 55.0f, nullptr, 0.92f);
 	DrawRect(FLinearColor(0.84f, 0.82f, 0.76f, 1.0f), SlipX + 20.0f, ContentY + 92.0f, SlipWidth - 40.0f, 2.0f);
-	DrawText(TEXT("SELECTION"), FLinearColor(0.32f, 0.34f, 0.36f), SlipX + 20.0f, ContentY + 116.0f, nullptr, 0.82f);
+	DrawText(TEXT("SELECTION / DECIMAL ODDS"), FLinearColor(0.32f, 0.34f, 0.36f), SlipX + 20.0f, ContentY + 112.0f, nullptr, 0.82f);
 	DrawText(
-		Receipt ? Receipt->SelectedTeam : TEXT("No wager selected"),
-		FLinearColor(0.025f, 0.055f, 0.08f),
-		SlipX + 20.0f,
-		ContentY + 145.0f,
-		nullptr,
-		1.05f);
+		Selection
+			? FString::Printf(TEXT("%s  |  %.4f"), *Selection->Team, static_cast<double>(Selection->DecimalOddsE4) / 10000.0)
+			: TEXT("Select Harbor or Mesa"),
+		FLinearColor(0.025f, 0.055f, 0.08f), SlipX + 20.0f, ContentY + 140.0f, nullptr, 0.94f);
+	DrawText(TEXT("STAKE"), FLinearColor(0.32f, 0.34f, 0.36f), SlipX + 20.0f, ContentY + 184.0f, nullptr, 0.82f);
+	const float StakeY = ContentY + 210.0f;
+	DrawRect(FLinearColor(0.16f, 0.19f, 0.22f, 1.0f), SlipX + 20.0f, StakeY, 42.0f, 38.0f);
+	DrawText(TEXT("-"), FLinearColor::White, SlipX + 35.0f, StakeY + 8.0f, nullptr, 1.10f);
+	DrawText(FString::Printf(TEXT("%lld Odds Bucks"), Stake), FLinearColor(0.025f, 0.055f, 0.08f), SlipX + 74.0f, StakeY + 9.0f, nullptr, 0.94f);
+	DrawRect(FLinearColor(0.16f, 0.19f, 0.22f, 1.0f), SlipX + SlipWidth - 62.0f, StakeY, 42.0f, 38.0f);
+	DrawText(TEXT("+"), FLinearColor::White, SlipX + SlipWidth - 48.0f, StakeY + 8.0f, nullptr, 1.10f);
+	if (bReviewAvailable)
+	{
+		AddHitBox(FVector2D(SlipX + 20.0f, StakeY), FVector2D(42.0f, 38.0f), TicketBoothStakeDecreaseHitBox, true, 15);
+		AddHitBox(FVector2D(SlipX + SlipWidth - 62.0f, StakeY), FVector2D(42.0f, 38.0f), TicketBoothStakeIncreaseHitBox, true, 15);
+	}
+	DrawText(TEXT("POTENTIAL GROSS RETURN"), FLinearColor(0.32f, 0.34f, 0.36f), SlipX + 20.0f, ContentY + 270.0f, nullptr, 0.82f);
 	DrawText(
-		Receipt ? TEXT("STAKE / POTENTIAL GROSS") : TEXT("STAKE RANGE"),
-		FLinearColor(0.32f, 0.34f, 0.36f),
-		SlipX + 20.0f,
-		ContentY + 194.0f,
-		nullptr,
-		0.82f);
-	DrawText(
-		Receipt
-			? FString::Printf(
-				TEXT("%lld Odds Bucks  /  %lld gross"),
-				Receipt->Stake,
-				Receipt->GrossReturn)
-			: FString::Printf(
-				TEXT("%lld-%lld Odds Bucks  |  step %lld"),
-				Offer.MinimumStake,
-				Offer.MaximumStake,
-				Offer.StakeIncrement),
-		FLinearColor(0.025f, 0.055f, 0.08f),
-		SlipX + 20.0f,
-		ContentY + 223.0f,
-		nullptr,
-		1.05f);
-	DrawText(
-		Receipt ? TEXT("CURRENT BALANCE") : TEXT("GROSS RETURN"),
-		FLinearColor(0.32f, 0.34f, 0.36f),
-		SlipX + 20.0f,
-		ContentY + 272.0f,
-		nullptr,
-		0.82f);
-	DrawText(
-		Receipt
-			? FString::Printf(TEXT("%lld Odds Bucks"), Receipt->CurrentBalance)
-			: TEXT("floor(stake / win probability)"),
-		FLinearColor(0.025f, 0.055f, 0.08f),
-		SlipX + 20.0f,
-		ContentY + 301.0f,
-		nullptr,
-		1.0f);
-	DrawText(
-		FString::Printf(
-			TEXT("Server tipoff / lock: %lld"),
-			Receipt ? Receipt->LockUnixSeconds : Offer.LockUnix),
-		FLinearColor(0.55f, 0.22f, 0.12f),
-		SlipX + 20.0f,
-		ContentY + ContentHeight - 116.0f,
-		nullptr,
-		0.92f);
-	DrawText(TEXT("Odds Bucks only. No real money."), FLinearColor(0.55f, 0.22f, 0.12f), SlipX + 20.0f, ContentY + ContentHeight - 85.0f, nullptr, 0.92f);
-	DrawText(TEXT("LEFT / RIGHT: MARKET    E or ESC: CLOSE"), FLinearColor(0.32f, 0.34f, 0.36f), SlipX + 20.0f, ContentY + ContentHeight - 43.0f, nullptr, 0.78f);
+		Selection
+			? FString::Printf(TEXT("%lld Odds Bucks"), Character.GetTicketBoothReviewGrossReturn())
+			: TEXT("Select a team to calculate"),
+		FLinearColor(0.025f, 0.055f, 0.08f), SlipX + 20.0f, ContentY + 298.0f, nullptr, 1.0f);
+	DrawText(TEXT("CURRENT BALANCE"), FLinearColor(0.32f, 0.34f, 0.36f), SlipX + 20.0f, ContentY + 342.0f, nullptr, 0.82f);
+	DrawText(FString::Printf(TEXT("%lld Odds Bucks"), Character.GetTicketBoothCurrentBalance()), FLinearColor(0.025f, 0.055f, 0.08f), SlipX + 20.0f, ContentY + 370.0f, nullptr, 1.0f);
+	DrawText(TEXT("LOCKS AT GAME START"), FLinearColor(0.55f, 0.22f, 0.12f), SlipX + 20.0f, ContentY + ContentHeight - 116.0f, nullptr, 0.88f);
+	DrawText(TEXT("REVIEW ONLY \u2014 WAGER NOT PLACED"), FLinearColor(0.55f, 0.22f, 0.12f), SlipX + 20.0f, ContentY + ContentHeight - 88.0f, nullptr, 0.86f);
+	DrawText(TEXT(", / . OR D-PAD LEFT / RIGHT: TEAM"), FLinearColor(0.32f, 0.34f, 0.36f), SlipX + 20.0f, ContentY + ContentHeight - 56.0f, nullptr, 0.72f);
+	DrawText(TEXT("- / = OR D-PAD UP / DOWN: STAKE"), FLinearColor(0.32f, 0.34f, 0.36f), SlipX + 20.0f, ContentY + ContentHeight - 34.0f, nullptr, 0.72f);
 }
 
 void AOddsWellSportsbookHUD::NotifyHitBoxClick(const FName BoxName)
@@ -3790,6 +4208,23 @@ void AOddsWellSportsbookHUD::NotifyHitBoxClick(const FName BoxName)
 	if (BoxName == TEXT("TicketBoothClose"))
 	{
 		Character->CloseTicketBoothMenu();
+		return;
+	}
+	if (BoxName == TicketBoothHomeTeamHitBox
+		|| BoxName == TicketBoothAwayTeamHitBox)
+	{
+		Character->SelectTicketBoothReviewTeam(
+			BoxName == TicketBoothHomeTeamHitBox ? 0 : 1);
+		return;
+	}
+	if (BoxName == TicketBoothStakeDecreaseHitBox)
+	{
+		Character->DecreaseTicketBoothReviewStake();
+		return;
+	}
+	if (BoxName == TicketBoothStakeIncreaseHitBox)
+	{
+		Character->IncreaseTicketBoothReviewStake();
 		return;
 	}
 	for (int32 Index = 0; Index < TicketBoothMarketPageCount; ++Index)
@@ -6480,6 +6915,111 @@ bool FOddsWellCanonicalSettledLossReceiptPresentationTest::RunTest(
 			|| Lower.Contains(TEXT("athlete"))
 			|| Lower.Contains(TEXT("offer"))
 			|| Lower.Contains(TEXT("request")));
+	return !HasAnyErrors();
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(
+	FOddsWellCanonicalBetSlipReviewTest,
+	"OddsWell.Locomotion.CanonicalBetSlipReview",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+
+bool FOddsWellCanonicalBetSlipReviewTest::RunTest(
+	const FString& Parameters)
+{
+	FOddsWellMatchWinnerOfferPreview Offer;
+	Offer.HomeTeam = TEXT("Harbor City Waves");
+	Offer.AwayTeam = TEXT("Mesa Vista Sol");
+	Offer.MinimumStake = 10;
+	Offer.MaximumStake = 100;
+	Offer.StakeIncrement = 10;
+	FOddsWellMatchWinnerSelectionPreview Harbor;
+	Harbor.Team = Offer.HomeTeam;
+	Harbor.WinProbabilityE8 = 57586693;
+	Harbor.DecimalOddsE4 = 17365;
+	Offer.Selections.Add(Harbor);
+	FOddsWellMatchWinnerSelectionPreview Mesa;
+	Mesa.Team = Offer.AwayTeam;
+	Mesa.WinProbabilityE8 = 42413307;
+	Mesa.DecimalOddsE4 = 23577;
+	Offer.Selections.Add(Mesa);
+	TestTrue(TEXT("H26Q accepts only the exact two-team stake contract"), IsCanonicalBetSlipOfferUsable(Offer));
+
+	const int64 ExpectedGrossReturns[2][10] = {
+		{17, 34, 52, 69, 86, 104, 121, 138, 156, 173},
+		{23, 47, 70, 94, 117, 141, 165, 188, 212, 235}};
+	for (int32 SelectionIndex = 0; SelectionIndex < 2; ++SelectionIndex)
+	{
+		for (int32 StakeIndex = 0; StakeIndex < 10; ++StakeIndex)
+		{
+			const int64 Stake = 10 + StakeIndex * 10;
+			TestEqual(
+				FString::Printf(
+					TEXT("H26Q %s stake %lld has exact integer-formula gross return"),
+					*Offer.Selections[SelectionIndex].Team,
+					Stake),
+				CalculateCanonicalBetSlipGrossReturn(
+					Stake,
+					Offer.Selections[SelectionIndex].WinProbabilityE8),
+				ExpectedGrossReturns[SelectionIndex][StakeIndex]);
+		}
+	}
+
+	const FString ReviewText = BuildCanonicalBetSlipReviewText(Offer, 1, 40, 100);
+	TestTrue(
+		TEXT("H26Q selected slip exposes only the approved review values"),
+		ReviewText.Contains(TEXT("Mesa Vista Sol"))
+			&& ReviewText.Contains(TEXT("DECIMAL ODDS 2.3577"))
+			&& ReviewText.Contains(TEXT("STAKE 40 Odds Bucks"))
+			&& ReviewText.Contains(TEXT("POTENTIAL GROSS RETURN 94 Odds Bucks"))
+			&& ReviewText.Contains(TEXT("CURRENT BALANCE 100 Odds Bucks"))
+			&& ReviewText.Contains(TEXT("LOCKS AT GAME START"))
+			&& ReviewText.Contains(TEXT("REVIEW ONLY \u2014 WAGER NOT PLACED")));
+	TestTrue(
+		TEXT("H26Q slip labels mouse, keyboard, and controller routes"),
+		ReviewText.Contains(TEXT("MOUSE:"))
+			&& ReviewText.Contains(TEXT("KEYBOARD:"))
+			&& ReviewText.Contains(TEXT("CONTROLLER:")));
+	const FString LowerReviewText = ReviewText.ToLower();
+	TestFalse(
+		TEXT("H26Q review exposes no confirm, submit, request, debit, IDs, hashes, or seeds"),
+		LowerReviewText.Contains(TEXT("confirm"))
+			|| LowerReviewText.Contains(TEXT("submit"))
+			|| LowerReviewText.Contains(TEXT("request"))
+			|| LowerReviewText.Contains(TEXT("debit"))
+			|| LowerReviewText.Contains(TEXT("offer_id"))
+			|| LowerReviewText.Contains(TEXT("hash"))
+			|| LowerReviewText.Contains(TEXT("seed")));
+	TestTrue(
+		TEXT("H26Q mouse routes have stable visible-focus hitboxes"),
+		TicketBoothHomeTeamHitBox == TEXT("TicketBoothTeam0")
+			&& TicketBoothAwayTeamHitBox == TEXT("TicketBoothTeam1")
+			&& TicketBoothStakeDecreaseHitBox == TEXT("TicketBoothStakeDecrease")
+			&& TicketBoothStakeIncreaseHitBox == TEXT("TicketBoothStakeIncrease"));
+	TestTrue(
+		TEXT("H26Q controller routes are D-pad gamepad keys"),
+		KeyControllerTeamPrevious.IsGamepadKey()
+			&& KeyControllerTeamNext.IsGamepadKey()
+			&& KeyControllerStakeDecrease.IsGamepadKey()
+			&& KeyControllerStakeIncrease.IsGamepadKey());
+	TestTrue(
+		TEXT("H26Q keyboard team and stake routes remain non-gamepad keys"),
+		!KeyLeaguePrevious.IsGamepadKey()
+			&& !KeyLeagueNext.IsGamepadKey()
+			&& !KeyStakeDecrease.IsGamepadKey()
+			&& !KeyStakeIncrease.IsGamepadKey());
+	TestTrue(
+		TEXT("H26Q pending and settled receipts retain precedence over review"),
+		ShouldShowCanonicalBetSlipReview(true, false, false)
+			&& !ShouldShowCanonicalBetSlipReview(true, true, false)
+			&& !ShouldShowCanonicalBetSlipReview(true, false, true)
+			&& !ShouldShowCanonicalBetSlipReview(true, true, true)
+			&& !ShouldShowCanonicalBetSlipReview(false, false, false));
+	Offer.StakeIncrement = 0;
+	TestFalse(TEXT("H26Q rejects malformed H26A-C offer state"), IsCanonicalBetSlipOfferUsable(Offer));
+	TestEqual(
+		TEXT("H26Q malformed offer reveals no partial values"),
+		BuildCanonicalBetSlipReviewText(Offer, 1, 40, 100),
+		FString(TEXT("BET SLIP UNAVAILABLE")));
 	return !HasAnyErrors();
 }
 
