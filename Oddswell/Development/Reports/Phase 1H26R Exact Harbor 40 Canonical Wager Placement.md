@@ -44,7 +44,7 @@ The accepted state is exactly:
 - Frozen simulator/brain/league/odds contracts: `77` tests and `106` subtests.
 - Brain Admin Python compilation and self-check: PASS and unchanged.
 - Unreal Win64 Development game build: PASS.
-- Final explicit `Bootstrap+SundaleGraybox` BuildCookRun: PASS in `66.4s`.
+- Final explicit `Bootstrap+SundaleGraybox` BuildCookRun: PASS in `65.45s`.
 - Package: `50` files, `1,047,902,846` bytes, zero Python files.
 - Deterministic league export: `30,288` bytes, SHA-256 `e08e4d44ef99c45689621351e1c983240ab476039ed17bba8c1ecec0f22923ff`.
 - Deterministic replay export: `421` frames, `256,442` bytes, SHA-256 `35d03b7b472901ab3f498c8cd389cea4b9cd1ed9309bafe85cbbd3af1160719f`.
