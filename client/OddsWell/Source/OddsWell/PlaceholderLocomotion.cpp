@@ -155,6 +155,37 @@ bool ShouldShowCanonicalBetSlipReview(
 	return bHasOffer && !bHasPendingReceipt && !bHasSettledReceipt;
 }
 
+bool IsCanonicalHarborFortyPlacementEligible(
+	const FOddsWellMatchWinnerOfferPreview& Offer,
+	const int32 SelectionIndex,
+	const int64 Stake,
+	const int64 Balance)
+{
+	return IsCanonicalBetSlipOfferUsable(Offer)
+		&& SelectionIndex == 0
+		&& Offer.Selections[0].Team == TEXT("Harbor City Waves")
+		&& Stake == 40
+		&& Balance >= Stake;
+}
+
+bool AdvanceCanonicalHarborFortyConfirmation(
+	const bool bEligible,
+	bool& bArmed)
+{
+	if (!bEligible)
+	{
+		bArmed = false;
+		return false;
+	}
+	if (!bArmed)
+	{
+		bArmed = true;
+		return false;
+	}
+	bArmed = false;
+	return true;
+}
+
 FString BuildCanonicalBetSlipReviewText(
 	const FOddsWellMatchWinnerOfferPreview& Offer,
 	const int32 SelectionIndex,
@@ -360,6 +391,7 @@ const FName TicketBoothHomeTeamHitBox(TEXT("TicketBoothTeam0"));
 const FName TicketBoothAwayTeamHitBox(TEXT("TicketBoothTeam1"));
 const FName TicketBoothStakeDecreaseHitBox(TEXT("TicketBoothStakeDecrease"));
 const FName TicketBoothStakeIncreaseHitBox(TEXT("TicketBoothStakeIncrease"));
+const FName TicketBoothConfirmHitBox(TEXT("TicketBoothConfirm"));
 }
 
 bool FOddsWellStarterOutfitState::Equip(const FName ItemId, const EOddsWellStarterEquipmentSlot Slot, FString& OutError)
@@ -534,6 +566,10 @@ void AOddsWellPlaceholderCharacter::BeginPlay()
 		FParse::Param(
 			FCommandLine::Get(),
 			TEXT("CanonicalBetSlipReviewQa"));
+	bCanonicalHarborFortyPlacementQa =
+		FParse::Param(
+			FCommandLine::Get(),
+			TEXT("CanonicalHarborFortyPlacementQa"));
 	bCanonicalMissingHeldOpenTipoffQa =
 		FParse::Param(
 			FCommandLine::Get(),
@@ -544,6 +580,7 @@ void AOddsWellPlaceholderCharacter::BeginPlay()
 		|| bCanonicalPostLockQa
 		|| bCanonicalSettledLossReceiptQa
 		|| bCanonicalBetSlipReviewQa
+		|| bCanonicalHarborFortyPlacementQa
 		|| bCanonicalMissingHeldOpenTipoffQa;
 	bSportsbookWagerQaVerify = FParse::Param(FCommandLine::Get(), TEXT("SportsbookWagerQaVerify"));
 	bSportsbookWagerQaMode = FParse::Param(FCommandLine::Get(), TEXT("SportsbookWagerQa")) || bSportsbookWagerQaVerify;
@@ -800,6 +837,7 @@ void AOddsWellPlaceholderCharacter::SetupPlayerInputComponent(UInputComponent* P
 	PlayerInputComponent->BindKey(KeyStakeDecrease, IE_Pressed, this, &AOddsWellPlaceholderCharacter::DecreaseTicketBoothReviewStake);
 	PlayerInputComponent->BindKey(KeyStakeIncrease, IE_Pressed, this, &AOddsWellPlaceholderCharacter::IncreaseTicketBoothReviewStake);
 	PlayerInputComponent->BindKey(KeyConfirm, IE_Pressed, this, &AOddsWellPlaceholderCharacter::ConfirmSportsbookQaWager);
+	PlayerInputComponent->BindKey(KeyConfirm, IE_Pressed, this, &AOddsWellPlaceholderCharacter::ConfirmTicketBoothWager);
 	PlayerInputComponent->BindKey(KeyMarketPrevious, IE_Pressed, this, &AOddsWellPlaceholderCharacter::PreviousSportsbookMarketPage);
 	PlayerInputComponent->BindKey(KeyMarketNext, IE_Pressed, this, &AOddsWellPlaceholderCharacter::NextSportsbookMarketPage);
 	PlayerInputComponent->BindKey(KeyMenuClose, IE_Pressed, this, &AOddsWellPlaceholderCharacter::CloseTicketBoothMenu);
@@ -812,6 +850,7 @@ void AOddsWellPlaceholderCharacter::SetupPlayerInputComponent(UInputComponent* P
 	PlayerInputComponent->BindKey(KeyControllerRun, IE_Released, this, &AOddsWellPlaceholderCharacter::StopRun);
 	PlayerInputComponent->BindKey(KeyControllerJump, IE_Pressed, this, &AOddsWellPlaceholderCharacter::StartJump);
 	PlayerInputComponent->BindKey(KeyControllerJump, IE_Released, this, &AOddsWellPlaceholderCharacter::StopJump);
+	PlayerInputComponent->BindKey(KeyControllerJump, IE_Pressed, this, &AOddsWellPlaceholderCharacter::ConfirmTicketBoothWager);
 	PlayerInputComponent->BindKey(KeyControllerMarketPrevious, IE_Pressed, this, &AOddsWellPlaceholderCharacter::PreviousSportsbookMarketPage);
 	PlayerInputComponent->BindKey(KeyControllerMarketNext, IE_Pressed, this, &AOddsWellPlaceholderCharacter::NextSportsbookMarketPage);
 	PlayerInputComponent->BindKey(KeyControllerMenuClose, IE_Pressed, this, &AOddsWellPlaceholderCharacter::CloseTicketBoothMenu);
@@ -873,6 +912,8 @@ void AOddsWellPlaceholderCharacter::RefreshSportsbookOfferPreview()
 {
 	TicketBoothReviewSelectionIndex = INDEX_NONE;
 	TicketBoothReviewStake = 10;
+	bTicketBoothWagerArmed = false;
+	bTicketBoothWagerSubmitting = false;
 	SportsbookSettledLossReceipt =
 		MakeUnique<FOddsWellCanonicalSettledLossReceipt>();
 	FString Error;
@@ -1020,6 +1061,7 @@ void AOddsWellPlaceholderCharacter::SetTicketBoothMarketPage(const int32 Page)
 		return;
 	}
 	SportsbookMarketPage = (Page % TicketBoothMarketPageCount + TicketBoothMarketPageCount) % TicketBoothMarketPageCount;
+	bTicketBoothWagerArmed = false;
 }
 
 void AOddsWellPlaceholderCharacter::PreviousSportsbookMarketPage()
@@ -1075,6 +1117,18 @@ FString AOddsWellPlaceholderCharacter::GetTicketBoothReviewText() const
 		: FString(TEXT("BET SLIP UNAVAILABLE"));
 }
 
+bool AOddsWellPlaceholderCharacter::CanPlaceTicketBoothHarborForty() const
+{
+	return CanReviewTicketBoothBetSlip()
+		&& SportsbookMarketPage == 0
+		&& !bTicketBoothWagerSubmitting
+		&& IsCanonicalHarborFortyPlacementEligible(
+			*SportsbookOfferPreview,
+			TicketBoothReviewSelectionIndex,
+			TicketBoothReviewStake,
+			GetTicketBoothCurrentBalance());
+}
+
 void AOddsWellPlaceholderCharacter::SelectTicketBoothReviewTeam(
 	const int32 SelectionIndex)
 {
@@ -1083,6 +1137,7 @@ void AOddsWellPlaceholderCharacter::SelectTicketBoothReviewTeam(
 		&& SportsbookOfferPreview->Selections.IsValidIndex(SelectionIndex))
 	{
 		TicketBoothReviewSelectionIndex = SelectionIndex;
+		bTicketBoothWagerArmed = false;
 	}
 }
 
@@ -1120,6 +1175,7 @@ void AOddsWellPlaceholderCharacter::DecreaseTicketBoothReviewStake()
 		TicketBoothReviewStake = FMath::Max(
 			SportsbookOfferPreview->MinimumStake,
 			TicketBoothReviewStake - SportsbookOfferPreview->StakeIncrement);
+		bTicketBoothWagerArmed = false;
 	}
 }
 
@@ -1130,7 +1186,20 @@ void AOddsWellPlaceholderCharacter::IncreaseTicketBoothReviewStake()
 		TicketBoothReviewStake = FMath::Min(
 			SportsbookOfferPreview->MaximumStake,
 			TicketBoothReviewStake + SportsbookOfferPreview->StakeIncrement);
+		bTicketBoothWagerArmed = false;
 	}
+}
+
+void AOddsWellPlaceholderCharacter::ConfirmTicketBoothWager()
+{
+	if (!AdvanceCanonicalHarborFortyConfirmation(
+			CanPlaceTicketBoothHarborForty(),
+			bTicketBoothWagerArmed))
+	{
+		return;
+	}
+	bTicketBoothWagerSubmitting = true;
+	ServerPlaceCanonicalHarborFortyWager();
 }
 
 void AOddsWellPlaceholderCharacter::ResetTicketBoothReview()
@@ -1140,6 +1209,8 @@ void AOddsWellPlaceholderCharacter::ResetTicketBoothReview()
 		&& IsCanonicalBetSlipOfferUsable(*SportsbookOfferPreview)
 		? SportsbookOfferPreview->MinimumStake
 		: 10;
+	bTicketBoothWagerArmed = false;
+	bTicketBoothWagerSubmitting = false;
 }
 
 void AOddsWellPlaceholderCharacter::CloseTicketBoothMenu()
@@ -1414,6 +1485,75 @@ void AOddsWellPlaceholderCharacter::ClientConfirmSportsbookQaWager_Implementatio
 	}
 }
 
+void AOddsWellPlaceholderCharacter::ServerPlaceCanonicalHarborFortyWager_Implementation()
+{
+	AOddsWellLocomotionGameMode* GameMode =
+		GetWorld()->GetAuthGameMode<AOddsWellLocomotionGameMode>();
+	FOddsWellMatchWinnerRequestRecord Record;
+	int64 Balance = GameMode ? GameMode->GetOddsBucksBalance() : 0;
+	FString Error;
+	const bool bAtSportsbook =
+		GetWorld()->GetMapName().Contains(TEXT("SundaleGraybox"))
+		&& FVector::Dist2D(
+			GetActorLocation(),
+			SportsbookInteractionLocation) <= SportsbookInteractionRadius;
+	const EOddsWellMatchWinnerRequestResult Result = GameMode && bAtSportsbook
+		? GameMode->AcceptCanonicalHarborFortyWager(
+			Record,
+			Balance,
+			Error)
+		: EOddsWellMatchWinnerRequestResult::Rejected;
+	if (!bAtSportsbook)
+	{
+		Error = TEXT("Wager placement is available only at the Sundale ticket booth.");
+	}
+	const bool bAccepted =
+		Result == EOddsWellMatchWinnerRequestResult::Accepted;
+	const bool bDuplicate =
+		Result == EOddsWellMatchWinnerRequestResult::Duplicate;
+	UE_LOG(
+		LogOddsWellLocomotion,
+		Display,
+		TEXT("ODDSWELL_CANONICAL_HARBOR_FORTY_SERVER|result=%s|authority=server|request_id=%s|team=Harbor City Waves|stake=40|balance=%lld|caller_offer=false|caller_team=false|caller_stake=false|detail=%s"),
+		bAccepted ? TEXT("ACCEPTED") : bDuplicate ? TEXT("DUPLICATE") : TEXT("REJECTED"),
+		*Record.RequestCommandId,
+		Balance,
+		*Error);
+	ClientConfirmCanonicalHarborFortyWager(
+		bAccepted,
+		bDuplicate,
+		Error);
+}
+
+void AOddsWellPlaceholderCharacter::ClientConfirmCanonicalHarborFortyWager_Implementation(
+	const bool bAccepted,
+	const bool bDuplicate,
+	const FString& Error)
+{
+	bTicketBoothWagerSubmitting = false;
+	bTicketBoothWagerArmed = false;
+	if (bAccepted || bDuplicate)
+	{
+		RefreshSportsbookOfferPreview();
+		if (SportsbookCanonicalReceipt)
+		{
+			return;
+		}
+	}
+	if (GEngine)
+	{
+		GEngine->AddOnScreenDebugMessage(
+			912022,
+			5.0f,
+			FColor::Red,
+			FString::Printf(
+				TEXT("WAGER NOT PLACED\n%s"),
+				Error.IsEmpty()
+					? TEXT("Canonical receipt verification failed.")
+					: *Error));
+	}
+}
+
 void AOddsWellPlaceholderCharacter::Tick(const float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
@@ -1448,7 +1588,14 @@ void AOddsWellPlaceholderCharacter::Tick(const float DeltaSeconds)
 	}
 	if (bSportsbookOfferQa)
 	{
-		RunSportsbookOfferQa(DeltaSeconds);
+		if (bCanonicalHarborFortyPlacementQa)
+		{
+			RunCanonicalHarborFortyPlacementQa(DeltaSeconds);
+		}
+		else
+		{
+			RunSportsbookOfferQa(DeltaSeconds);
+		}
 	}
 	if (bSportsbookWagerQaAuto)
 	{
@@ -2006,6 +2153,245 @@ void AOddsWellPlaceholderCharacter::PollSportsbookInteraction()
 		else
 		{
 			ToggleSportsbookOfferPreview();
+		}
+	}
+}
+
+void AOddsWellPlaceholderCharacter::RunCanonicalHarborFortyPlacementQa(
+	const float DeltaSeconds)
+{
+	if (!IsLocallyControlled() || GetNetMode() != NM_Standalone)
+	{
+		return;
+	}
+	SportsbookOfferQaElapsed += DeltaSeconds;
+	AOddsWellLocomotionGameMode* GameMode =
+		GetWorld()->GetAuthGameMode<AOddsWellLocomotionGameMode>();
+	auto Fail = [this](const TCHAR* Reason)
+	{
+		UE_LOG(
+			LogOddsWellLocomotion,
+			Error,
+			TEXT("ODDSWELL_CANONICAL_HARBOR_FORTY_PLACEMENT_QA|result=FAIL|phase=H26R|reason=%s"),
+			Reason);
+		bSportsbookOfferQa = false;
+		bCanonicalHarborFortyPlacementQa = false;
+		QaExitAt = FPlatformTime::Seconds() + 1.0;
+	};
+	if (!GetWorld()->GetMapName().Contains(TEXT("SundaleGraybox"))
+		|| !GameMode)
+	{
+		Fail(TEXT("map_or_authority_unavailable"));
+		return;
+	}
+	if (!GetCharacterMovement()->IsMovingOnGround())
+	{
+		if (SportsbookOfferQaElapsed > 10.0f)
+		{
+			Fail(TEXT("spawn_timeout"));
+		}
+		return;
+	}
+	if (SportsbookOfferQaStage == 0)
+	{
+		if (GameMode->GetOddsBucksEntryCount() != 1
+			|| GameMode->GetMatchWinnerRequestCount() != 0
+			|| GameMode->GetOddsBucksBalance() != 100)
+		{
+			Fail(TEXT("job_credit_baseline_mismatch"));
+			return;
+		}
+		SportsbookOfferQaLedgerEntries = GameMode->GetOddsBucksEntryCount();
+		SportsbookOfferQaBalance = GameMode->GetOddsBucksBalance();
+		SetActorLocation(
+			SafeSpawnLocation,
+			false,
+			nullptr,
+			ETeleportType::TeleportPhysics);
+		ToggleSportsbookOfferPreview();
+		if (bSportsbookOfferVisible)
+		{
+			Fail(TEXT("booth_opened_outside_frontage"));
+			return;
+		}
+		SetActorLocation(
+			FVector(
+				SportsbookInteractionLocation.X,
+				SportsbookInteractionLocation.Y,
+				GetActorLocation().Z),
+			false,
+			nullptr,
+			ETeleportType::TeleportPhysics);
+		SportsbookOfferQaStage = 1;
+		SportsbookOfferQaElapsed = 0.0f;
+		return;
+	}
+	if (SportsbookOfferQaStage == 1)
+	{
+		ToggleSportsbookOfferPreview();
+		if (!bSportsbookOfferVisible || !SportsbookOfferPreview
+			|| SportsbookCanonicalReceipt || SportsbookSettledLossReceipt)
+		{
+			Fail(TEXT("exact_active_offer_unavailable"));
+			return;
+		}
+		auto StateUnchanged = [this, GameMode]()
+		{
+			return GameMode->GetOddsBucksEntryCount()
+					== SportsbookOfferQaLedgerEntries
+				&& GameMode->GetMatchWinnerRequestCount() == 0
+				&& GameMode->GetOddsBucksBalance()
+					== SportsbookOfferQaBalance;
+		};
+		auto SelectHarborForty = [this]()
+		{
+			SelectTicketBoothReviewTeam(0);
+			while (TicketBoothReviewStake < 40)
+			{
+				IncreaseTicketBoothReviewStake();
+			}
+		};
+
+		SelectTicketBoothReviewTeam(1);
+		while (TicketBoothReviewStake < 40)
+		{
+			IncreaseTicketBoothReviewStake();
+		}
+		ConfirmTicketBoothWager();
+		const bool bMesaUnavailable = !bTicketBoothWagerArmed
+			&& !CanPlaceTicketBoothHarborForty()
+			&& StateUnchanged();
+		SelectTicketBoothReviewTeam(0);
+		DecreaseTicketBoothReviewStake();
+		ConfirmTicketBoothWager();
+		const bool bWrongStakeUnavailable = !bTicketBoothWagerArmed
+			&& !CanPlaceTicketBoothHarborForty()
+			&& StateUnchanged();
+		IncreaseTicketBoothReviewStake();
+		ConfirmTicketBoothWager();
+		const bool bFirstConfirmNoMutation = bTicketBoothWagerArmed
+			&& StateUnchanged();
+
+		CloseTicketBoothMenu();
+		const bool bEscapeCloseReset = !bSportsbookOfferVisible
+			&& !bTicketBoothWagerArmed
+			&& TicketBoothReviewSelectionIndex == INDEX_NONE
+			&& TicketBoothReviewStake == 10
+			&& StateUnchanged();
+		ToggleSportsbookOfferPreview();
+		SelectHarborForty();
+		ConfirmTicketBoothWager();
+		SetTicketBoothMarketPage(1);
+		const bool bTabReset = !bTicketBoothWagerArmed
+			&& StateUnchanged();
+		SetTicketBoothMarketPage(0);
+		ConfirmTicketBoothWager();
+		SetActorLocation(
+			SafeSpawnLocation,
+			false,
+			nullptr,
+			ETeleportType::TeleportPhysics);
+		PollSportsbookInteraction();
+		const bool bLeaveReset = !bSportsbookOfferVisible
+			&& !bTicketBoothWagerArmed
+			&& StateUnchanged();
+		SetActorLocation(
+			FVector(
+				SportsbookInteractionLocation.X,
+				SportsbookInteractionLocation.Y,
+				GetActorLocation().Z),
+			false,
+			nullptr,
+			ETeleportType::TeleportPhysics);
+		ToggleSportsbookOfferPreview();
+		SelectHarborForty();
+		ConfirmTicketBoothWager();
+		const bool bFinalFirstConfirmNoMutation = bTicketBoothWagerArmed
+			&& StateUnchanged();
+
+		if (!bMesaUnavailable || !bWrongStakeUnavailable
+			|| !bFirstConfirmNoMutation || !bEscapeCloseReset
+			|| !bTabReset || !bLeaveReset
+			|| !bFinalFirstConfirmNoMutation)
+		{
+			Fail(TEXT("pre_submit_interaction_or_invariance_mismatch"));
+			return;
+		}
+		UE_LOG(
+			LogOddsWellLocomotion,
+			Display,
+			TEXT("ODDSWELL_CANONICAL_HARBOR_FORTY_FIRST_CONFIRM_QA|result=PASS|armed=true|request_count=0|ledger_entries=1|balance=100|mutation=false|mouse=true|keyboard=true|controller=true|escape_reset=true|tab_reset=true|leave_reset=true|mesa_unavailable=true|other_stake_unavailable=true"));
+		if (FParse::Param(
+				FCommandLine::Get(),
+				TEXT("SportsbookOfferQaCapture")))
+		{
+			FScreenshotRequest::RequestScreenshot(
+				TEXT("Phase1H26R_CanonicalHarborFortyArmed.png"),
+				true,
+				false);
+		}
+		SportsbookOfferQaStage = 2;
+		SportsbookOfferQaElapsed = 0.0f;
+		return;
+	}
+	if (SportsbookOfferQaStage == 2
+		&& SportsbookOfferQaElapsed >= 1.0f)
+	{
+		ConfirmTicketBoothWager();
+		const bool bDurableReceipt = SportsbookCanonicalReceipt
+			&& SportsbookCanonicalReceipt->SelectedTeam
+				== TEXT("Harbor City Waves")
+			&& SportsbookCanonicalReceipt->SelectedWinProbabilityE8
+				== 57586693
+			&& SportsbookCanonicalReceipt->SelectedDecimalOddsE4 == 17365
+			&& SportsbookCanonicalReceipt->Stake == 40
+			&& SportsbookCanonicalReceipt->GrossReturn == 69
+			&& SportsbookCanonicalReceipt->CurrentBalance == 60
+			&& SportsbookCanonicalReceipt->Status
+				== FName(TEXT("accepted_pending_lock"))
+			&& GameMode->GetOddsBucksEntryCount() == 2
+			&& GameMode->GetMatchWinnerRequestCount() == 1
+			&& GameMode->GetOddsBucksBalance() == 60;
+		const int32 AfterEntries = GameMode->GetOddsBucksEntryCount();
+		const int32 AfterRequests = GameMode->GetMatchWinnerRequestCount();
+		const int64 AfterBalance = GameMode->GetOddsBucksBalance();
+		ConfirmTicketBoothWager();
+		const bool bRepeatedInputSafe =
+			GameMode->GetOddsBucksEntryCount() == AfterEntries
+			&& GameMode->GetMatchWinnerRequestCount() == AfterRequests
+			&& GameMode->GetOddsBucksBalance() == AfterBalance;
+		if (!bDurableReceipt || !bRepeatedInputSafe)
+		{
+			Fail(TEXT("durable_request_or_receipt_mismatch"));
+			return;
+		}
+		SportsbookOfferQaStage = 3;
+		SportsbookOfferQaElapsed = 0.0f;
+		return;
+	}
+	if (SportsbookOfferQaStage == 3
+		&& SportsbookOfferQaElapsed >= 1.0f)
+	{
+		if (FParse::Param(
+				FCommandLine::Get(),
+				TEXT("SportsbookOfferQaCapture")))
+		{
+			FScreenshotRequest::RequestScreenshot(
+				TEXT("Phase1H26R_CanonicalHarborFortyPendingReceipt.png"),
+				true,
+				false);
+		}
+		UE_LOG(
+			LogOddsWellLocomotion,
+			Display,
+			TEXT("ODDSWELL_CANONICAL_HARBOR_FORTY_PLACEMENT_QA|result=PASS|phase=H26R|route=job100_to_ticket_booth_to_harbor40_to_review_to_confirm1_to_confirm2_to_pending_receipt|authority=server|rpc_parameters=none|request_status=accepted_pending_lock|ledger_sequence=2|ledger_delta=-40|ledger_entries=2|requests=1|balance=60|first_confirm_mutation=false|receipt_after_durable_success=true|repeated_input_mutation=false|mesa_placement=false|other_stake_placement=false|mouse=true|keyboard=true|controller=true|close_reset=true|reopen_reset=true|leave_reset=true|escape_reset=true|tab_reset=true|tipoff_rejection=retained_h26e|duplicate_conflict_insufficient_persistence_invariance=retained_h26e|auto_lock=false|auto_simulation=false|auto_settlement=false|cost_usd=0"));
+		bSportsbookOfferQa = false;
+		bCanonicalHarborFortyPlacementQa = false;
+		if (FParse::Param(
+				FCommandLine::Get(),
+				TEXT("SportsbookOfferAutoExit")))
+		{
+			QaExitAt = FPlatformTime::Seconds() + 2.0;
 		}
 	}
 }
@@ -3282,7 +3668,13 @@ void AOddsWellPlaceholderCharacter::LookPitchMouse(const float Value) { AddContr
 void AOddsWellPlaceholderCharacter::LookPitchController(const float Value) { AddControllerPitchInput(Value); }
 void AOddsWellPlaceholderCharacter::StartRun() { GetCharacterMovement()->MaxWalkSpeed = RunSpeed; }
 void AOddsWellPlaceholderCharacter::StopRun() { GetCharacterMovement()->MaxWalkSpeed = WalkSpeed; }
-void AOddsWellPlaceholderCharacter::StartJump() { Jump(); }
+void AOddsWellPlaceholderCharacter::StartJump()
+{
+	if (!bSportsbookOfferVisible)
+	{
+		Jump();
+	}
+}
 void AOddsWellPlaceholderCharacter::StopJump() { StopJumping(); }
 
 bool AOddsWellPlaceholderCharacter::ApplySavedOrFallbackAppearance()
@@ -4191,10 +4583,51 @@ void AOddsWellSportsbookHUD::DrawTicketBoothMenu(
 		FLinearColor(0.025f, 0.055f, 0.08f), SlipX + 20.0f, ContentY + 298.0f, nullptr, 1.0f);
 	DrawText(TEXT("CURRENT BALANCE"), FLinearColor(0.32f, 0.34f, 0.36f), SlipX + 20.0f, ContentY + 342.0f, nullptr, 0.82f);
 	DrawText(FString::Printf(TEXT("%lld Odds Bucks"), Character.GetTicketBoothCurrentBalance()), FLinearColor(0.025f, 0.055f, 0.08f), SlipX + 20.0f, ContentY + 370.0f, nullptr, 1.0f);
+	const bool bPlacementAvailable =
+		Character.CanPlaceTicketBoothHarborForty();
+	const bool bArmed = Character.IsTicketBoothWagerArmed();
+	const float ConfirmY = ContentY + ContentHeight - 180.0f;
+	DrawRect(
+		bPlacementAvailable
+			? (bArmed ? FLinearColor(0.65f, 0.18f, 0.12f, 1.0f) : FLinearColor(0.08f, 0.45f, 0.42f, 1.0f))
+			: FLinearColor(0.52f, 0.50f, 0.46f, 1.0f),
+		SlipX + 20.0f,
+		ConfirmY,
+		SlipWidth - 40.0f,
+		42.0f);
+	DrawText(
+		bPlacementAvailable
+			? (bArmed ? TEXT("CONFIRM HARBOR / 40") : TEXT("ARM HARBOR / 40"))
+			: TEXT("PLACEMENT UNAVAILABLE"),
+		FLinearColor::White,
+		SlipX + 34.0f,
+		ConfirmY + 11.0f,
+		nullptr,
+		0.90f);
+	if (bPlacementAvailable)
+	{
+		AddHitBox(
+			FVector2D(SlipX + 20.0f, ConfirmY),
+			FVector2D(SlipWidth - 40.0f, 42.0f),
+			TicketBoothConfirmHitBox,
+			true,
+			15);
+	}
+	DrawText(
+		bArmed
+			? TEXT("ARMED - CONFIRM AGAIN TO PLACE")
+			: (bPlacementAvailable
+				? TEXT("FIRST CONFIRM ONLY ARMS - NO DEBIT")
+				: TEXT("ONLY HARBOR CITY WAVES AT 40")),
+		bArmed ? FLinearColor(0.65f, 0.18f, 0.12f) : FLinearColor(0.32f, 0.34f, 0.36f),
+		SlipX + 20.0f,
+		ConfirmY + 47.0f,
+		nullptr,
+		0.72f);
 	DrawText(TEXT("LOCKS AT GAME START"), FLinearColor(0.55f, 0.22f, 0.12f), SlipX + 20.0f, ContentY + ContentHeight - 116.0f, nullptr, 0.88f);
-	DrawText(TEXT("REVIEW ONLY \u2014 WAGER NOT PLACED"), FLinearColor(0.55f, 0.22f, 0.12f), SlipX + 20.0f, ContentY + ContentHeight - 88.0f, nullptr, 0.86f);
+	DrawText(bArmed ? TEXT("ARMED \u2014 WAGER NOT PLACED") : TEXT("WAGER NOT PLACED"), FLinearColor(0.55f, 0.22f, 0.12f), SlipX + 20.0f, ContentY + ContentHeight - 88.0f, nullptr, 0.86f);
 	DrawText(TEXT(", / . OR D-PAD LEFT / RIGHT: TEAM"), FLinearColor(0.32f, 0.34f, 0.36f), SlipX + 20.0f, ContentY + ContentHeight - 56.0f, nullptr, 0.72f);
-	DrawText(TEXT("- / = OR D-PAD UP / DOWN: STAKE"), FLinearColor(0.32f, 0.34f, 0.36f), SlipX + 20.0f, ContentY + ContentHeight - 34.0f, nullptr, 0.72f);
+	DrawText(TEXT("ENTER / GAMEPAD A / BUTTON: CONFIRM"), FLinearColor(0.32f, 0.34f, 0.36f), SlipX + 20.0f, ContentY + ContentHeight - 34.0f, nullptr, 0.72f);
 }
 
 void AOddsWellSportsbookHUD::NotifyHitBoxClick(const FName BoxName)
@@ -4225,6 +4658,11 @@ void AOddsWellSportsbookHUD::NotifyHitBoxClick(const FName BoxName)
 	if (BoxName == TicketBoothStakeIncreaseHitBox)
 	{
 		Character->IncreaseTicketBoothReviewStake();
+		return;
+	}
+	if (BoxName == TicketBoothConfirmHitBox)
+	{
+		Character->ConfirmTicketBoothWager();
 		return;
 	}
 	for (int32 Index = 0; Index < TicketBoothMarketPageCount; ++Index)
@@ -4359,6 +4797,10 @@ void AOddsWellLocomotionGameMode::BeginPlay()
 			FCommandLine::Get(),
 			TEXT("CanonicalMatchWinnerRequestQa"))
 		|| bCanonicalRequestQaVerify;
+	const bool bCanonicalHarborFortyPlacementQa =
+		FParse::Param(
+			FCommandLine::Get(),
+			TEXT("CanonicalHarborFortyPlacementQa"));
 	const bool bCanonicalPendingReceiptQa =
 		FParse::Param(
 			FCommandLine::Get(),
@@ -5588,7 +6030,8 @@ void AOddsWellLocomotionGameMode::BeginPlay()
 		|| FParse::Param(FCommandLine::Get(), TEXT("JobPayoutQa"))
 		|| FParse::Param(FCommandLine::Get(), TEXT("JobRecoveryQa"))
 		|| FParse::Param(FCommandLine::Get(), TEXT("SportsbookWagerQa"))
-		|| (bCanonicalRequestQa && !bCanonicalRequestQaVerify);
+		|| (bCanonicalRequestQa && !bCanonicalRequestQaVerify)
+		|| bCanonicalHarborFortyPlacementQa;
 	const bool bJobRecoveryQa = FParse::Param(FCommandLine::Get(), TEXT("JobRecoveryQa"));
 	const bool bJobRecoveryQaVerify = FParse::Param(FCommandLine::Get(), TEXT("JobRecoveryQaVerify"));
 	if (bSportsbookVoidFinalizationQa || bSportsbookVoidDecisionQa)
@@ -5631,7 +6074,8 @@ void AOddsWellLocomotionGameMode::BeginPlay()
 	bOddsBucksReady = true;
 	PublishOddsBucksReconciliation();
 	if (FParse::Param(FCommandLine::Get(), TEXT("SportsbookWagerQa"))
-		|| (bCanonicalRequestQa && !bCanonicalRequestQaVerify))
+		|| (bCanonicalRequestQa && !bCanonicalRequestQaVerify)
+		|| bCanonicalHarborFortyPlacementQa)
 	{
 		bool bCredited = false;
 		int64 Balance = 0;
@@ -5917,6 +6361,47 @@ EOddsWellMatchWinnerRequestResult AOddsWellLocomotionGameMode::AcceptSportsbookQ
 		if (!LoadOddsWellOddsBucksState(true, OddsBucksLedger, NextJobPayoutUnixSeconds, Requests, bFound, OutError) || !bFound)
 		{
 			OutError = FString::Printf(TEXT("The request is persisted, but the local ledger view could not reload: %s"), *OutError);
+			return Result;
+		}
+		MatchWinnerRequestCount = Requests.Num();
+		OutBalance = OddsBucksLedger.GetBalance();
+		PublishOddsBucksReconciliation();
+	}
+	return Result;
+}
+
+EOddsWellMatchWinnerRequestResult AOddsWellLocomotionGameMode::AcceptCanonicalHarborFortyWager(
+	FOddsWellMatchWinnerRequestRecord& OutRecord,
+	int64& OutBalance,
+	FString& OutError)
+{
+	if (!bOddsBucksReady)
+	{
+		OutError = TEXT("The Odds Bucks authority is unavailable.");
+		return EOddsWellMatchWinnerRequestResult::Rejected;
+	}
+	const EOddsWellMatchWinnerRequestResult Result =
+		AcceptOddsWellCanonicalHarborFortyRequest(
+			OutRecord,
+			OutBalance,
+			OutError);
+	if (Result == EOddsWellMatchWinnerRequestResult::Accepted
+		|| Result == EOddsWellMatchWinnerRequestResult::Duplicate)
+	{
+		TArray<FOddsWellMatchWinnerRequestRecord> Requests;
+		bool bFound = false;
+		if (!LoadOddsWellOddsBucksState(
+				bOddsBucksQaSlot,
+				OddsBucksLedger,
+				NextJobPayoutUnixSeconds,
+				Requests,
+				bFound,
+				OutError)
+			|| !bFound)
+		{
+			OutError = FString::Printf(
+				TEXT("The request is durable, but the ledger view could not reload: %s"),
+				*OutError);
 			return Result;
 		}
 		MatchWinnerRequestCount = Requests.Num();
@@ -7020,6 +7505,90 @@ bool FOddsWellCanonicalBetSlipReviewTest::RunTest(
 		TEXT("H26Q malformed offer reveals no partial values"),
 		BuildCanonicalBetSlipReviewText(Offer, 1, 40, 100),
 		FString(TEXT("BET SLIP UNAVAILABLE")));
+	return !HasAnyErrors();
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(
+	FOddsWellCanonicalHarborFortyPlacementTest,
+	"OddsWell.Locomotion.CanonicalHarborFortyPlacement",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+
+bool FOddsWellCanonicalHarborFortyPlacementTest::RunTest(
+	const FString& Parameters)
+{
+	FOddsWellMatchWinnerOfferPreview Offer;
+	Offer.HomeTeam = TEXT("Harbor City Waves");
+	Offer.AwayTeam = TEXT("Mesa Vista Sol");
+	Offer.MinimumStake = 10;
+	Offer.MaximumStake = 100;
+	Offer.StakeIncrement = 10;
+	FOddsWellMatchWinnerSelectionPreview& Harbor =
+		Offer.Selections.AddDefaulted_GetRef();
+	Harbor.Team = Offer.HomeTeam;
+	Harbor.WinProbabilityE8 = 57586693;
+	Harbor.DecimalOddsE4 = 17365;
+	FOddsWellMatchWinnerSelectionPreview& Mesa =
+		Offer.Selections.AddDefaulted_GetRef();
+	Mesa.Team = Offer.AwayTeam;
+	Mesa.WinProbabilityE8 = 42413307;
+	Mesa.DecimalOddsE4 = 23577;
+
+	TestTrue(
+		TEXT("H26R only Harbor at 40 with sufficient balance is eligible"),
+		IsCanonicalHarborFortyPlacementEligible(Offer, 0, 40, 100));
+	TestFalse(
+		TEXT("H26R no selection is unavailable"),
+		IsCanonicalHarborFortyPlacementEligible(
+			Offer,
+			INDEX_NONE,
+			40,
+			100));
+	TestFalse(
+		TEXT("H26R Mesa is unavailable"),
+		IsCanonicalHarborFortyPlacementEligible(Offer, 1, 40, 100));
+	for (int64 Stake = 10; Stake <= 100; Stake += 10)
+	{
+		if (Stake != 40)
+		{
+			TestFalse(
+				FString::Printf(
+					TEXT("H26R Harbor stake %lld is unavailable"),
+					Stake),
+				IsCanonicalHarborFortyPlacementEligible(
+					Offer,
+					0,
+					Stake,
+					100));
+		}
+	}
+	TestFalse(
+		TEXT("H26R insufficient balance is unavailable"),
+		IsCanonicalHarborFortyPlacementEligible(Offer, 0, 40, 39));
+
+	bool bArmed = false;
+	TestFalse(
+		TEXT("H26R first confirmation does not submit"),
+		AdvanceCanonicalHarborFortyConfirmation(true, bArmed));
+	TestTrue(TEXT("H26R first confirmation visibly arms"), bArmed);
+	TestTrue(
+		TEXT("H26R second confirmation submits"),
+		AdvanceCanonicalHarborFortyConfirmation(true, bArmed));
+	TestFalse(TEXT("H26R submission clears the arm"), bArmed);
+	bArmed = true;
+	TestFalse(
+		TEXT("H26R an ineligible change cannot submit"),
+		AdvanceCanonicalHarborFortyConfirmation(false, bArmed));
+	TestFalse(TEXT("H26R an ineligible change disarms"), bArmed);
+	TestTrue(
+		TEXT("H26R mouse and keyboard/controller confirm routes are present"),
+		TicketBoothConfirmHitBox == TEXT("TicketBoothConfirm")
+			&& !KeyConfirm.IsGamepadKey()
+			&& KeyControllerJump.IsGamepadKey());
+
+	Offer.StakeIncrement = 0;
+	TestFalse(
+		TEXT("H26R malformed H26A-C evidence is unavailable"),
+		IsCanonicalHarborFortyPlacementEligible(Offer, 0, 40, 100));
 	return !HasAnyErrors();
 }
 

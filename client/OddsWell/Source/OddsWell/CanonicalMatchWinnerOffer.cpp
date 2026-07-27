@@ -934,6 +934,27 @@ EOddsWellMatchWinnerRequestResult AcceptOddsWellCanonicalMatchWinnerRequest(
 		OutError);
 }
 
+EOddsWellMatchWinnerRequestResult AcceptOddsWellCanonicalHarborFortyRequest(
+	FOddsWellMatchWinnerRequestRecord& OutRecord,
+	int64& OutBalance,
+	FString& OutError)
+{
+	FOddsWellCanonicalMatchWinnerOfferRecord Offer;
+	if (!LoadOddsWellCanonicalMatchWinnerOffer(Offer, OutError))
+	{
+		OutRecord = {};
+		OutBalance = 0;
+		return EOddsWellMatchWinnerRequestResult::Rejected;
+	}
+	return AcceptOddsWellCanonicalMatchWinnerRequest(
+		Offer.OfferId,
+		TEXT("Harbor City Waves"),
+		40,
+		OutRecord,
+		OutBalance,
+		OutError);
+}
+
 EOddsWellMatchWinnerLockResult LockOddsWellCanonicalMatchWinnerRequestAtGameStart(
 	FOddsWellMatchWinnerLockRecord& OutRecord,
 	FString& OutError)

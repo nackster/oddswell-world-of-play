@@ -80,6 +80,10 @@ ODDSWELL_API EOddsWellMatchWinnerRequestResult AcceptOddsWellCanonicalMatchWinne
 	FOddsWellMatchWinnerRequestRecord& OutRecord,
 	int64& OutBalance,
 	FString& OutError);
+ODDSWELL_API EOddsWellMatchWinnerRequestResult AcceptOddsWellCanonicalHarborFortyRequest(
+	FOddsWellMatchWinnerRequestRecord& OutRecord,
+	int64& OutBalance,
+	FString& OutError);
 ODDSWELL_API EOddsWellMatchWinnerLockResult LockOddsWellCanonicalMatchWinnerRequestAtGameStart(
 	FOddsWellMatchWinnerLockRecord& OutRecord,
 	FString& OutError);
