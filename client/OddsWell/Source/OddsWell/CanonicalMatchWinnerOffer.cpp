@@ -970,7 +970,9 @@ EOddsWellMatchWinnerLockResult LockOddsWellCanonicalMatchWinnerRequestAtGameStar
 	const bool bQaClock =
 		FParse::Param(FCommandLine::Get(), TEXT("CanonicalMatchWinnerLockQa"))
 		|| FParse::Param(FCommandLine::Get(), TEXT("CanonicalMatchWinnerLockQaVerify"))
-		|| FParse::Param(FCommandLine::Get(), TEXT("CanonicalPostLockQa"));
+		|| FParse::Param(FCommandLine::Get(), TEXT("CanonicalPostLockQa"))
+		|| FParse::Param(FCommandLine::Get(), TEXT("CanonicalAutomaticTipoffLockQa"))
+		|| FParse::Param(FCommandLine::Get(), TEXT("CanonicalAutomaticTipoffLockQaVerify"));
 	return LockCanonicalRequestAtGameStart(
 		Schedule,
 		Commitment,

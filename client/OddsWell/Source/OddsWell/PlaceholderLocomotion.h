@@ -7,6 +7,7 @@
 #include "GameFramework/HUD.h"
 #include "OddsBucksLedger.h"
 #include "PublicLeagueView.h"
+#include "TimerManager.h"
 #include "PlaceholderLocomotion.generated.h"
 
 struct FOddsWellResolvedCharacterAppearance;
@@ -86,6 +87,7 @@ public:
 	void ConfirmTicketBoothWager();
 	void SetTicketBoothMarketPage(int32 Page);
 	void CloseTicketBoothMenu();
+	void RefreshTicketBoothAfterCanonicalLock();
 
 protected:
 	virtual void BeginPlay() override;
@@ -303,6 +305,8 @@ private:
 	bool bCanonicalSettledLossReceiptQa = false;
 	bool bCanonicalBetSlipReviewQa = false;
 	bool bCanonicalHarborFortyPlacementQa = false;
+	bool bCanonicalAutomaticTipoffLockQa = false;
+	bool bCanonicalAutomaticTipoffLockQaVerify = false;
 	bool bCanonicalMissingHeldOpenTipoffQa = false;
 	int32 SportsbookMarketPage = 0;
 	int32 TicketBoothReviewSelectionIndex = INDEX_NONE;
@@ -379,6 +383,8 @@ public:
 
 private:
 	void PublishOddsBucksReconciliation();
+	void ScheduleCanonicalMatchWinnerTipoffLock();
+	void RunCanonicalMatchWinnerTipoffLock();
 	void RunSportsbookLockQa();
 	void RunSportsbookCancellationQa();
 	void RunSportsbookVoidDecisionQa();
@@ -418,6 +424,7 @@ private:
 	int32 MatchWinnerRequestCount = 0;
 	int64 NextJobPayoutUnixSeconds = 0;
 	int64 OddsBucksQaNowUnixSeconds = 0;
+	FTimerHandle CanonicalMatchWinnerTipoffLockTimer;
 };
 
 UCLASS()

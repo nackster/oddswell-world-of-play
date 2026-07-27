@@ -238,6 +238,23 @@ void ApplyTicketBoothEvidenceExpiry(
 	}
 }
 
+bool ShouldScheduleCanonicalMatchWinnerTipoffLock(
+	const bool bTimerExists,
+	const int64 ObservedServerUnixSeconds,
+	const int64 TipoffUnixSeconds)
+{
+	return !bTimerExists
+		&& ObservedServerUnixSeconds > 0
+		&& ObservedServerUnixSeconds < TipoffUnixSeconds;
+}
+
+bool IsExactCanonicalMatchWinnerTipoff(
+	const int64 ObservedServerUnixSeconds,
+	const int64 TipoffUnixSeconds)
+{
+	return ObservedServerUnixSeconds == TipoffUnixSeconds;
+}
+
 struct FStudioSurfaceSpec
 {
 	FVector Location;
@@ -570,6 +587,20 @@ void AOddsWellPlaceholderCharacter::BeginPlay()
 		FParse::Param(
 			FCommandLine::Get(),
 			TEXT("CanonicalHarborFortyPlacementQa"));
+	bCanonicalAutomaticTipoffLockQa =
+		FParse::Param(
+			FCommandLine::Get(),
+			TEXT("CanonicalAutomaticTipoffLockQa"))
+		|| FParse::Param(
+			FCommandLine::Get(),
+			TEXT("CanonicalAutomaticTipoffLockQaVerify"));
+	bCanonicalAutomaticTipoffLockQaVerify =
+		FParse::Param(
+			FCommandLine::Get(),
+			TEXT("CanonicalAutomaticTipoffLockQaVerify"));
+	bCanonicalHarborFortyPlacementQa =
+		bCanonicalHarborFortyPlacementQa
+		|| bCanonicalAutomaticTipoffLockQa;
 	bCanonicalMissingHeldOpenTipoffQa =
 		FParse::Param(
 			FCommandLine::Get(),
@@ -1223,6 +1254,15 @@ void AOddsWellPlaceholderCharacter::CloseTicketBoothMenu()
 	ResetTicketBoothReview();
 	SetTicketBoothInputMode(false);
 	ShowSportsbookOfferPreview();
+}
+
+void AOddsWellPlaceholderCharacter::RefreshTicketBoothAfterCanonicalLock()
+{
+	if (IsLocallyControlled() && bSportsbookOfferVisible)
+	{
+		RefreshSportsbookOfferPreview();
+		ShowSportsbookOfferPreview();
+	}
 }
 
 void AOddsWellPlaceholderCharacter::SetTicketBoothInputMode(const bool bMenuOpen)
@@ -2172,10 +2212,15 @@ void AOddsWellPlaceholderCharacter::RunCanonicalHarborFortyPlacementQa(
 		UE_LOG(
 			LogOddsWellLocomotion,
 			Error,
-			TEXT("ODDSWELL_CANONICAL_HARBOR_FORTY_PLACEMENT_QA|result=FAIL|phase=H26R|reason=%s"),
+			TEXT("ODDSWELL_CANONICAL_%s_QA|result=FAIL|phase=%s|reason=%s"),
+			bCanonicalAutomaticTipoffLockQa
+				? TEXT("AUTOMATIC_TIPOFF_LOCK")
+				: TEXT("HARBOR_FORTY_PLACEMENT"),
+			bCanonicalAutomaticTipoffLockQa ? TEXT("H26S") : TEXT("H26R"),
 			Reason);
 		bSportsbookOfferQa = false;
 		bCanonicalHarborFortyPlacementQa = false;
+		bCanonicalAutomaticTipoffLockQa = false;
 		QaExitAt = FPlatformTime::Seconds() + 1.0;
 	};
 	if (!GetWorld()->GetMapName().Contains(TEXT("SundaleGraybox"))
@@ -2194,6 +2239,33 @@ void AOddsWellPlaceholderCharacter::RunCanonicalHarborFortyPlacementQa(
 	}
 	if (SportsbookOfferQaStage == 0)
 	{
+		if (bCanonicalAutomaticTipoffLockQaVerify)
+		{
+			if (GameMode->GetOddsBucksEntryCount() != 2
+				|| GameMode->GetMatchWinnerRequestCount() != 1
+				|| GameMode->GetOddsBucksBalance() != 60)
+			{
+				Fail(TEXT("cold_pending_baseline_mismatch"));
+				return;
+			}
+			SetActorLocation(
+				FVector(
+					SportsbookInteractionLocation.X,
+					SportsbookInteractionLocation.Y,
+					GetActorLocation().Z),
+				false,
+				nullptr,
+				ETeleportType::TeleportPhysics);
+			ToggleSportsbookOfferPreview();
+			if (!bSportsbookOfferVisible || !SportsbookCanonicalReceipt)
+			{
+				Fail(TEXT("cold_pending_receipt_unavailable"));
+				return;
+			}
+			SportsbookOfferQaStage = 4;
+			SportsbookOfferQaElapsed = 0.0f;
+			return;
+		}
 		if (GameMode->GetOddsBucksEntryCount() != 1
 			|| GameMode->GetMatchWinnerRequestCount() != 0
 			|| GameMode->GetOddsBucksBalance() != 100)
@@ -2321,7 +2393,8 @@ void AOddsWellPlaceholderCharacter::RunCanonicalHarborFortyPlacementQa(
 			LogOddsWellLocomotion,
 			Display,
 			TEXT("ODDSWELL_CANONICAL_HARBOR_FORTY_FIRST_CONFIRM_QA|result=PASS|armed=true|request_count=0|ledger_entries=1|balance=100|mutation=false|mouse=true|keyboard=true|controller=true|escape_reset=true|tab_reset=true|leave_reset=true|mesa_unavailable=true|other_stake_unavailable=true"));
-		if (FParse::Param(
+		if (!bCanonicalAutomaticTipoffLockQa
+			&& FParse::Param(
 				FCommandLine::Get(),
 				TEXT("SportsbookOfferQaCapture")))
 		{
@@ -2372,7 +2445,8 @@ void AOddsWellPlaceholderCharacter::RunCanonicalHarborFortyPlacementQa(
 	if (SportsbookOfferQaStage == 3
 		&& SportsbookOfferQaElapsed >= 1.0f)
 	{
-		if (FParse::Param(
+		if (!bCanonicalAutomaticTipoffLockQa
+			&& FParse::Param(
 				FCommandLine::Get(),
 				TEXT("SportsbookOfferQaCapture")))
 		{
@@ -2381,12 +2455,136 @@ void AOddsWellPlaceholderCharacter::RunCanonicalHarborFortyPlacementQa(
 				true,
 				false);
 		}
+		if (bCanonicalAutomaticTipoffLockQa)
+		{
+			UE_LOG(
+				LogOddsWellLocomotion,
+				Display,
+				TEXT("ODDSWELL_CANONICAL_AUTOMATIC_TIPOFF_LOCK_QA|result=PENDING|phase=H26S|route=job100_to_harbor40_to_pending|entries=2|requests=1|locks=0|balance=60"));
+			SportsbookOfferQaStage = 4;
+			SportsbookOfferQaElapsed = 0.0f;
+			return;
+		}
 		UE_LOG(
 			LogOddsWellLocomotion,
 			Display,
 			TEXT("ODDSWELL_CANONICAL_HARBOR_FORTY_PLACEMENT_QA|result=PASS|phase=H26R|route=job100_to_ticket_booth_to_harbor40_to_review_to_confirm1_to_confirm2_to_pending_receipt|authority=server|rpc_parameters=none|request_status=accepted_pending_lock|ledger_sequence=2|ledger_delta=-40|ledger_entries=2|requests=1|balance=60|first_confirm_mutation=false|receipt_after_durable_success=true|repeated_input_mutation=false|mesa_placement=false|other_stake_placement=false|mouse=true|keyboard=true|controller=true|close_reset=true|reopen_reset=true|leave_reset=true|escape_reset=true|tab_reset=true|tipoff_rejection=retained_h26e|duplicate_conflict_insufficient_persistence_invariance=retained_h26e|auto_lock=false|auto_simulation=false|auto_settlement=false|cost_usd=0"));
 		bSportsbookOfferQa = false;
 		bCanonicalHarborFortyPlacementQa = false;
+		if (FParse::Param(
+				FCommandLine::Get(),
+				TEXT("SportsbookOfferAutoExit")))
+		{
+			QaExitAt = FPlatformTime::Seconds() + 2.0;
+		}
+		return;
+	}
+	if (SportsbookOfferQaStage == 4)
+	{
+		FOddsWellOddsBucksLedger Ledger;
+		int64 NextPayout = 0;
+		TArray<FOddsWellMatchWinnerRequestRecord> Requests;
+		TArray<FOddsWellMatchWinnerLockRecord> Locks;
+		TArray<FOddsWellMatchWinnerResultLinkRecord> Results;
+		bool bFound = false;
+		FString Error;
+		const bool bLoaded = LoadOddsWellOddsBucksWagerEvidence(
+			true,
+			Ledger,
+			NextPayout,
+			Requests,
+			Locks,
+			Results,
+			bFound,
+			Error);
+		if ((!bLoaded || !bFound || Locks.IsEmpty())
+			&& SportsbookOfferQaElapsed < 10.0f)
+		{
+			return;
+		}
+		const bool bExact = bLoaded
+			&& bFound
+			&& Ledger.GetEntries().Num() == 2
+			&& Ledger.GetEntries()[0].Delta == 100
+			&& Ledger.GetEntries()[1].Delta == -40
+			&& Ledger.GetBalance() == 60
+			&& Requests.Num() == 1
+			&& Requests[0].OfferedTeam == TEXT("Harbor City Waves")
+			&& Requests[0].Stake == 40
+			&& Requests[0].Status
+				== FName(TEXT("accepted_pending_lock"))
+			&& Locks.Num() == 1
+			&& Locks[0].RequestCommandId == Requests[0].RequestCommandId
+			&& Locks[0].Decision == FName(TEXT("locked"))
+			&& Results.IsEmpty()
+			&& bSportsbookOfferVisible
+			&& !SportsbookOfferPreview
+			&& !SportsbookCanonicalReceipt
+			&& !SportsbookSettledLossReceipt;
+		if (!bExact)
+		{
+			Fail(TEXT("automatic_lock_or_locked_panel_mismatch"));
+			return;
+		}
+		SportsbookOfferQaStage = 5;
+		SportsbookOfferQaElapsed = 0.0f;
+		return;
+	}
+	if (SportsbookOfferQaStage == 5
+		&& SportsbookOfferQaElapsed >= 1.0f)
+	{
+		FOddsWellOddsBucksLedger Ledger;
+		int64 NextPayout = 0;
+		TArray<FOddsWellMatchWinnerRequestRecord> Requests;
+		TArray<FOddsWellMatchWinnerLockRecord> Locks;
+		TArray<FOddsWellMatchWinnerResultLinkRecord> Results;
+		bool bFound = false;
+		FString Error;
+		const bool bStable = LoadOddsWellOddsBucksWagerEvidence(
+			true,
+			Ledger,
+			NextPayout,
+			Requests,
+			Locks,
+			Results,
+			bFound,
+			Error)
+			&& bFound
+			&& Ledger.GetEntries().Num() == 2
+			&& Ledger.GetBalance() == 60
+			&& Requests.Num() == 1
+			&& Locks.Num() == 1
+			&& Results.IsEmpty()
+			&& bSportsbookOfferVisible
+			&& !SportsbookOfferPreview
+			&& !SportsbookCanonicalReceipt;
+		if (!bStable)
+		{
+			Fail(TEXT("repeated_tick_or_reload_mismatch"));
+			return;
+		}
+		if (FParse::Param(
+				FCommandLine::Get(),
+				TEXT("SportsbookOfferQaCapture")))
+		{
+			FScreenshotRequest::RequestScreenshot(
+				TEXT("Phase1H26S_AutomaticCanonicalTipoffLock.png"),
+				true,
+				false);
+		}
+		UE_LOG(
+			LogOddsWellLocomotion,
+			Display,
+			TEXT("ODDSWELL_CANONICAL_AUTOMATIC_TIPOFF_LOCK_QA|result=PASS|phase=H26S|route=%s|timer=one|restart_rescheduled=%s|server_tipoff=exact_h26a|transition=locked|locked_panel=true|request_unchanged=true|ledger=100,-40|entries=2|requests=1|locks=1|balance=60|early_callback_mutation=false|duplicate_timer_mutation=false|reload_mutation=false|repeated_tick_mutation=false|catch_up=false|backdated=false|auto_h26h_to_h26p=false|cost_usd=0"),
+			bCanonicalAutomaticTipoffLockQaVerify
+				? TEXT("cold_pending_to_server_tipoff_to_lock")
+				: TEXT("job100_to_harbor40_to_pending_to_server_tipoff_to_lock"),
+			bCanonicalAutomaticTipoffLockQaVerify
+				? TEXT("true")
+				: TEXT("false"));
+		bSportsbookOfferQa = false;
+		bCanonicalHarborFortyPlacementQa = false;
+		bCanonicalAutomaticTipoffLockQa = false;
 		if (FParse::Param(
 				FCommandLine::Get(),
 				TEXT("SportsbookOfferAutoExit")))
@@ -4801,6 +4999,10 @@ void AOddsWellLocomotionGameMode::BeginPlay()
 		FParse::Param(
 			FCommandLine::Get(),
 			TEXT("CanonicalHarborFortyPlacementQa"));
+	const bool bCanonicalAutomaticTipoffLockQa =
+		FParse::Param(
+			FCommandLine::Get(),
+			TEXT("CanonicalAutomaticTipoffLockQa"));
 	const bool bCanonicalPendingReceiptQa =
 		FParse::Param(
 			FCommandLine::Get(),
@@ -6031,7 +6233,8 @@ void AOddsWellLocomotionGameMode::BeginPlay()
 		|| FParse::Param(FCommandLine::Get(), TEXT("JobRecoveryQa"))
 		|| FParse::Param(FCommandLine::Get(), TEXT("SportsbookWagerQa"))
 		|| (bCanonicalRequestQa && !bCanonicalRequestQaVerify)
-		|| bCanonicalHarborFortyPlacementQa;
+		|| bCanonicalHarborFortyPlacementQa
+		|| bCanonicalAutomaticTipoffLockQa;
 	const bool bJobRecoveryQa = FParse::Param(FCommandLine::Get(), TEXT("JobRecoveryQa"));
 	const bool bJobRecoveryQaVerify = FParse::Param(FCommandLine::Get(), TEXT("JobRecoveryQaVerify"));
 	if (bSportsbookVoidFinalizationQa || bSportsbookVoidDecisionQa)
@@ -6073,9 +6276,11 @@ void AOddsWellLocomotionGameMode::BeginPlay()
 	}
 	bOddsBucksReady = true;
 	PublishOddsBucksReconciliation();
+	ScheduleCanonicalMatchWinnerTipoffLock();
 	if (FParse::Param(FCommandLine::Get(), TEXT("SportsbookWagerQa"))
 		|| (bCanonicalRequestQa && !bCanonicalRequestQaVerify)
-		|| bCanonicalHarborFortyPlacementQa)
+		|| bCanonicalHarborFortyPlacementQa
+		|| bCanonicalAutomaticTipoffLockQa)
 	{
 		bool bCredited = false;
 		int64 Balance = 0;
@@ -6407,8 +6612,156 @@ EOddsWellMatchWinnerRequestResult AOddsWellLocomotionGameMode::AcceptCanonicalHa
 		MatchWinnerRequestCount = Requests.Num();
 		OutBalance = OddsBucksLedger.GetBalance();
 		PublishOddsBucksReconciliation();
+		ScheduleCanonicalMatchWinnerTipoffLock();
 	}
 	return Result;
+}
+
+void AOddsWellLocomotionGameMode::ScheduleCanonicalMatchWinnerTipoffLock()
+{
+	if (!bOddsBucksReady || !GetWorld())
+	{
+		return;
+	}
+	FOddsWellCanonicalPendingMatchWinnerReceipt Receipt;
+	FString Error;
+	if (LoadOddsWellCanonicalPendingMatchWinnerReceipt(Receipt, Error)
+		!= EOddsWellCanonicalPendingReceiptResult::Ready)
+	{
+		return;
+	}
+	const int64 NowUnixSeconds = FDateTime::UtcNow().ToUnixTimestamp();
+	if (!ShouldScheduleCanonicalMatchWinnerTipoffLock(
+			GetWorldTimerManager().TimerExists(
+				CanonicalMatchWinnerTipoffLockTimer),
+			NowUnixSeconds,
+			Receipt.LockUnixSeconds))
+	{
+		return;
+	}
+	const bool bQaDelay =
+		FParse::Param(
+			FCommandLine::Get(),
+			TEXT("CanonicalAutomaticTipoffLockQa"))
+		|| FParse::Param(
+			FCommandLine::Get(),
+			TEXT("CanonicalAutomaticTipoffLockQaVerify"));
+	const double DelaySeconds = bQaDelay
+		? 4.0
+		: (FDateTime::FromUnixTimestamp(Receipt.LockUnixSeconds)
+			- FDateTime::UtcNow()).GetTotalSeconds();
+	if (DelaySeconds <= 0.0)
+	{
+		return;
+	}
+	GetWorldTimerManager().SetTimer(
+		CanonicalMatchWinnerTipoffLockTimer,
+		this,
+		&AOddsWellLocomotionGameMode::RunCanonicalMatchWinnerTipoffLock,
+		static_cast<float>(DelaySeconds),
+		false);
+	UE_LOG(
+		LogOddsWellLocomotion,
+		Display,
+		TEXT("ODDSWELL_CANONICAL_AUTOMATIC_TIPOFF_LOCK|result=SCHEDULED|timer=one|loop=false|tipoff_unix=%lld|qa_delay=%s|caller_time=false|caller_identity=false|catch_up=false"),
+		Receipt.LockUnixSeconds,
+		bQaDelay ? TEXT("true") : TEXT("false"));
+}
+
+void AOddsWellLocomotionGameMode::RunCanonicalMatchWinnerTipoffLock()
+{
+	FOddsWellCanonicalScheduledGameRecord Schedule;
+	FString Error;
+	if (!LoadOddsWellCanonicalLocalBetaScheduledGame(Schedule, Error))
+	{
+		UE_LOG(
+			LogOddsWellLocomotion,
+			Error,
+			TEXT("ODDSWELL_CANONICAL_AUTOMATIC_TIPOFF_LOCK|result=REJECTED|reason=schedule_invalid|mutation=false|detail=%s"),
+			*Error);
+		return;
+	}
+	const bool bQaClock =
+		FParse::Param(
+			FCommandLine::Get(),
+			TEXT("CanonicalAutomaticTipoffLockQa"))
+		|| FParse::Param(
+			FCommandLine::Get(),
+			TEXT("CanonicalAutomaticTipoffLockQaVerify"));
+	const int64 ObservedServerUnixSeconds = bQaClock
+		? Schedule.TipoffUnixSeconds
+		: FDateTime::UtcNow().ToUnixTimestamp();
+	if (!IsExactCanonicalMatchWinnerTipoff(
+			ObservedServerUnixSeconds,
+			Schedule.TipoffUnixSeconds))
+	{
+		UE_LOG(
+			LogOddsWellLocomotion,
+			Error,
+			TEXT("ODDSWELL_CANONICAL_AUTOMATIC_TIPOFF_LOCK|result=REJECTED|reason=not_exact_tipoff|observed_unix=%lld|tipoff_unix=%lld|backdated=false|catch_up=false|mutation=false"),
+			ObservedServerUnixSeconds,
+			Schedule.TipoffUnixSeconds);
+		return;
+	}
+	FOddsWellMatchWinnerLockRecord Lock;
+	const EOddsWellMatchWinnerLockResult Result =
+		LockOddsWellCanonicalMatchWinnerRequestAtGameStart(Lock, Error);
+	FOddsWellOddsBucksLedger PersistedLedger;
+	int64 PersistedNextJobPayoutUnixSeconds = 0;
+	TArray<FOddsWellMatchWinnerRequestRecord> Requests;
+	TArray<FOddsWellMatchWinnerLockRecord> Locks;
+	TArray<FOddsWellMatchWinnerResultLinkRecord> Results;
+	bool bFound = false;
+	const bool bDurable =
+		(Result == EOddsWellMatchWinnerLockResult::Locked
+			|| Result == EOddsWellMatchWinnerLockResult::Duplicate)
+		&& LoadOddsWellOddsBucksWagerEvidence(
+			bOddsBucksQaSlot,
+			PersistedLedger,
+			PersistedNextJobPayoutUnixSeconds,
+			Requests,
+			Locks,
+			Results,
+			bFound,
+			Error)
+		&& bFound
+		&& PersistedLedger.GetEntries().Num() == 2
+		&& PersistedLedger.GetEntries()[0].Delta == 100
+		&& PersistedLedger.GetEntries()[1].Delta == -40
+		&& PersistedLedger.GetBalance() == 60
+		&& Requests.Num() == 1
+		&& Locks.Num() == 1
+		&& Results.IsEmpty()
+		&& Requests[0].RequestCommandId == Lock.RequestCommandId
+		&& Requests[0].OfferedTeam == TEXT("Harbor City Waves")
+		&& Requests[0].Stake == 40
+		&& Requests[0].Status == FName(TEXT("accepted_pending_lock"))
+		&& Locks[0].LockCommandId == Lock.LockCommandId
+		&& Locks[0].Decision == FName(TEXT("locked"));
+	if (!bDurable)
+	{
+		UE_LOG(
+			LogOddsWellLocomotion,
+			Error,
+			TEXT("ODDSWELL_CANONICAL_AUTOMATIC_TIPOFF_LOCK|result=REJECTED|reason=lock_or_reload_failed|mutation=unchanged_or_fail_closed|detail=%s"),
+			*Error);
+		return;
+	}
+	OddsBucksLedger = MoveTemp(PersistedLedger);
+	NextJobPayoutUnixSeconds = PersistedNextJobPayoutUnixSeconds;
+	MatchWinnerRequestCount = Requests.Num();
+	PublishOddsBucksReconciliation();
+	for (TActorIterator<AOddsWellPlaceholderCharacter> It(GetWorld()); It; ++It)
+	{
+		It->RefreshTicketBoothAfterCanonicalLock();
+	}
+	UE_LOG(
+		LogOddsWellLocomotion,
+		Display,
+		TEXT("ODDSWELL_CANONICAL_AUTOMATIC_TIPOFF_LOCK|result=PASS|transition=%s|timer=one|loop=false|clock=exact_h26a_tipoff|locks=1|requests=1|ledger_entries=2|balance=60|request_unchanged=true|ui_refreshed_after_durable_success=true|h26h_to_h26p=false|catch_up=false|backdated=false"),
+		Result == EOddsWellMatchWinnerLockResult::Locked
+			? TEXT("locked")
+			: TEXT("duplicate"));
 }
 
 bool AOddsWellLocomotionGameMode::RunSportsbookQaWagerAudit(
@@ -7589,6 +7942,52 @@ bool FOddsWellCanonicalHarborFortyPlacementTest::RunTest(
 	TestFalse(
 		TEXT("H26R malformed H26A-C evidence is unavailable"),
 		IsCanonicalHarborFortyPlacementEligible(Offer, 0, 40, 100));
+	return !HasAnyErrors();
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(
+	FOddsWellCanonicalAutomaticTipoffLockTest,
+	"OddsWell.Locomotion.CanonicalAutomaticTipoffLock",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+
+bool FOddsWellCanonicalAutomaticTipoffLockTest::RunTest(
+	const FString& Parameters)
+{
+	constexpr int64 CreatedUnix = 2200000000;
+	constexpr int64 TipoffUnix = CreatedUnix + 1800;
+	TestTrue(
+		TEXT("H26S a restored pending request schedules before tipoff"),
+		ShouldScheduleCanonicalMatchWinnerTipoffLock(
+			false,
+			CreatedUnix + 100,
+			TipoffUnix));
+	TestFalse(
+		TEXT("H26S an existing timer prevents a duplicate timer"),
+		ShouldScheduleCanonicalMatchWinnerTipoffLock(
+			true,
+			CreatedUnix + 100,
+			TipoffUnix));
+	TestFalse(
+		TEXT("H26S exact tipoff never schedules a catch-up timer"),
+		ShouldScheduleCanonicalMatchWinnerTipoffLock(
+			false,
+			TipoffUnix,
+			TipoffUnix));
+	TestFalse(
+		TEXT("H26S post-tipoff restore never schedules a catch-up timer"),
+		ShouldScheduleCanonicalMatchWinnerTipoffLock(
+			false,
+			TipoffUnix + 1,
+			TipoffUnix));
+	TestFalse(
+		TEXT("H26S an early callback cannot invoke H26G"),
+		IsExactCanonicalMatchWinnerTipoff(TipoffUnix - 1, TipoffUnix));
+	TestTrue(
+		TEXT("H26S only exact H26A tipoff can invoke H26G"),
+		IsExactCanonicalMatchWinnerTipoff(TipoffUnix, TipoffUnix));
+	TestFalse(
+		TEXT("H26S a late callback cannot backdate H26G"),
+		IsExactCanonicalMatchWinnerTipoff(TipoffUnix + 1, TipoffUnix));
 	return !HasAnyErrors();
 }
 
