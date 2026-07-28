@@ -255,6 +255,15 @@ bool IsExactCanonicalMatchWinnerTipoff(
 	return ObservedServerUnixSeconds == TipoffUnixSeconds;
 }
 
+FString GetCanonicalGameExecutionHandoffPath()
+{
+	return FPaths::Combine(
+		FPaths::ProjectSavedDir(),
+		TEXT("PrivateExecution"),
+		TEXT("Handoff"),
+		TEXT("OddsWellCanonicalActiveGameExecutionHandoff.json"));
+}
+
 struct FStudioSurfaceSpec
 {
 	FVector Location;
@@ -2214,9 +2223,9 @@ void AOddsWellPlaceholderCharacter::RunCanonicalHarborFortyPlacementQa(
 			Error,
 			TEXT("ODDSWELL_CANONICAL_%s_QA|result=FAIL|phase=%s|reason=%s"),
 			bCanonicalAutomaticTipoffLockQa
-				? TEXT("AUTOMATIC_EXECUTION_COMMITMENT")
+				? TEXT("AUTOMATIC_EXECUTION_HANDOFF")
 				: TEXT("HARBOR_FORTY_PLACEMENT"),
-			bCanonicalAutomaticTipoffLockQa ? TEXT("H26T") : TEXT("H26R"),
+			bCanonicalAutomaticTipoffLockQa ? TEXT("H26U") : TEXT("H26R"),
 			Reason);
 		bSportsbookOfferQa = false;
 		bCanonicalHarborFortyPlacementQa = false;
@@ -2464,16 +2473,18 @@ void AOddsWellPlaceholderCharacter::RunCanonicalHarborFortyPlacementQa(
 				FString CommitmentError;
 				if (LoadOddsWellCanonicalActiveGameExecutionCommitment(
 						UnexpectedCommitment,
-						CommitmentError))
+						CommitmentError)
+					|| IFileManager::Get().FileExists(
+						*GetCanonicalGameExecutionHandoffPath()))
 				{
-					Fail(TEXT("commitment_existed_before_lock"));
+					Fail(TEXT("commitment_or_handoff_existed_before_lock"));
 					return;
 				}
 			}
 			UE_LOG(
 				LogOddsWellLocomotion,
 				Display,
-				TEXT("ODDSWELL_CANONICAL_AUTOMATIC_EXECUTION_COMMITMENT_QA|result=PENDING|phase=H26T|route=job100_to_harbor40_to_pending|entries=2|requests=1|locks=0|commitments=0|balance=60"));
+				TEXT("ODDSWELL_CANONICAL_AUTOMATIC_EXECUTION_HANDOFF_QA|result=PENDING|phase=H26U|route=job100_to_harbor40_to_pending|entries=2|requests=1|locks=0|commitments=0|handoffs=0|balance=60"));
 			SportsbookOfferQaStage = 4;
 			SportsbookOfferQaElapsed = 0.0f;
 			return;
@@ -2500,6 +2511,7 @@ void AOddsWellPlaceholderCharacter::RunCanonicalHarborFortyPlacementQa(
 		TArray<FOddsWellMatchWinnerLockRecord> Locks;
 		TArray<FOddsWellMatchWinnerResultLinkRecord> Results;
 		FOddsWellCanonicalActiveGameExecutionCommitmentRecord Commitment;
+		FString Handoff;
 		bool bFound = false;
 		FString Error;
 		const bool bLoaded = LoadOddsWellOddsBucksWagerEvidence(
@@ -2546,13 +2558,22 @@ void AOddsWellPlaceholderCharacter::RunCanonicalHarborFortyPlacementQa(
 			&& Commitment.SeedMaterialSha256.Len() == 64
 			&& Commitment.ExecutionInputSha256.Len() == 64
 			&& Commitment.CommitmentSha256.Len() == 64
+			&& FFileHelper::LoadFileToString(
+				Handoff,
+				*GetCanonicalGameExecutionHandoffPath())
+			&& Handoff.Contains(Commitment.CommitmentJson)
+			&& Handoff.Contains(Commitment.ExecutionInputJson)
+			&& Handoff.Contains(Commitment.SeedMaterialJson)
+			&& Handoff.Contains(Commitment.CommitmentSha256)
+			&& Handoff.Contains(Commitment.ExecutionInputSha256)
+			&& Handoff.Contains(Commitment.SeedMaterialSha256)
 			&& bSportsbookOfferVisible
 			&& !SportsbookOfferPreview
 			&& !SportsbookCanonicalReceipt
 			&& !SportsbookSettledLossReceipt;
 		if (!bExact)
 		{
-			Fail(TEXT("automatic_lock_commitment_or_locked_panel_mismatch"));
+			Fail(TEXT("automatic_lock_commitment_handoff_or_locked_panel_mismatch"));
 			return;
 		}
 		SportsbookOfferQaStage = 5;
@@ -2568,6 +2589,7 @@ void AOddsWellPlaceholderCharacter::RunCanonicalHarborFortyPlacementQa(
 		TArray<FOddsWellMatchWinnerLockRecord> Locks;
 		TArray<FOddsWellMatchWinnerResultLinkRecord> Results;
 		FOddsWellCanonicalActiveGameExecutionCommitmentRecord Commitment;
+		FString Handoff;
 		bool bFound = false;
 		FString Error;
 		const bool bStable = LoadOddsWellOddsBucksWagerEvidence(
@@ -2592,12 +2614,17 @@ void AOddsWellPlaceholderCharacter::RunCanonicalHarborFortyPlacementQa(
 			&& Commitment.SeedMaterialSha256.Len() == 64
 			&& Commitment.ExecutionInputSha256.Len() == 64
 			&& Commitment.CommitmentSha256.Len() == 64
+			&& FFileHelper::LoadFileToString(
+				Handoff,
+				*GetCanonicalGameExecutionHandoffPath())
+			&& Handoff.Contains(Commitment.CommitmentSha256)
+			&& Handoff.Contains(Commitment.ExecutionInputSha256)
 			&& bSportsbookOfferVisible
 			&& !SportsbookOfferPreview
 			&& !SportsbookCanonicalReceipt;
 		if (!bStable)
 		{
-			Fail(TEXT("repeated_tick_commitment_or_reload_mismatch"));
+			Fail(TEXT("repeated_tick_commitment_handoff_or_reload_mismatch"));
 			return;
 		}
 		if (FParse::Param(
@@ -2605,17 +2632,17 @@ void AOddsWellPlaceholderCharacter::RunCanonicalHarborFortyPlacementQa(
 				TEXT("SportsbookOfferQaCapture")))
 		{
 			FScreenshotRequest::RequestScreenshot(
-				TEXT("Phase1H26T_AutomaticCanonicalExecutionCommitment.png"),
+				TEXT("Phase1H26U_AutomaticCanonicalExecutionHandoff.png"),
 				true,
 				false);
 		}
 		UE_LOG(
 			LogOddsWellLocomotion,
 			Display,
-			TEXT("ODDSWELL_CANONICAL_AUTOMATIC_EXECUTION_COMMITMENT_QA|result=PASS|phase=H26T|route=%s|timer=one|restart_rescheduled=%s|server_tipoff=exact_h26a|lock_transition=locked|commitment_transition=durable|locked_panel=true|request_unchanged=true|ledger=100,-40|entries=2|requests=1|locks=1|commitments=1|results=0|balance=60|private_seed=true|private_input=true|public_commitment_surface=false|early_callback_mutation=false|duplicate_timer_mutation=false|reload_mutation=false|repeated_tick_mutation=false|catch_up=false|backdated=false|auto_h26i_to_h26p=false|cost_usd=0"),
+			TEXT("ODDSWELL_CANONICAL_AUTOMATIC_EXECUTION_HANDOFF_QA|result=PASS|phase=H26U|route=%s|timer=one|restart_rescheduled=%s|server_tipoff=exact_h26a|lock_transition=locked|commitment_transition=durable|handoff_transition=durable|locked_panel=true|request_unchanged=true|ledger=100,-40|entries=2|requests=1|locks=1|commitments=1|handoffs=1|results=0|balance=60|private_seed=true|private_input=true|public_handoff_surface=false|early_callback_mutation=false|duplicate_timer_mutation=false|reload_mutation=false|repeated_tick_mutation=false|catch_up=false|backdated=false|python_consumer=false|receipt=false|auto_h26j_to_h26p=false|cost_usd=0"),
 			bCanonicalAutomaticTipoffLockQaVerify
-				? TEXT("cold_pending_to_server_tipoff_to_lock_to_commitment")
-				: TEXT("job100_to_harbor40_to_pending_to_server_tipoff_to_lock_to_commitment"),
+				? TEXT("cold_pending_to_lock_to_commitment_to_handoff")
+				: TEXT("job100_to_harbor40_to_pending_to_lock_to_commitment_to_handoff"),
 			bCanonicalAutomaticTipoffLockQaVerify
 				? TEXT("true")
 				: TEXT("false"));
@@ -5066,10 +5093,15 @@ void AOddsWellLocomotionGameMode::BeginPlay()
 			FCommandLine::Get(),
 			TEXT("CanonicalExecutionCommitmentQa"))
 		|| bCanonicalExecutionCommitmentQaVerify;
+	const bool bCanonicalExecutionHandoffQaVerify =
+		FParse::Param(
+			FCommandLine::Get(),
+			TEXT("CanonicalExecutionHandoffQaVerify"));
 	const bool bCanonicalExecutionHandoffQa =
 		FParse::Param(
 			FCommandLine::Get(),
-			TEXT("CanonicalExecutionHandoffQa"));
+			TEXT("CanonicalExecutionHandoffQa"))
+		|| bCanonicalExecutionHandoffQaVerify;
 	const bool bCanonicalResultLinkQaVerify =
 		FParse::Param(
 			FCommandLine::Get(),
@@ -5895,15 +5927,24 @@ void AOddsWellLocomotionGameMode::BeginPlay()
 				Error);
 		FOddsWellCanonicalActiveGameExecutionCommitmentRecord Commitment;
 		const bool bPassed =
-			Result == EOddsWellCanonicalGameExecutionHandoffResult::Created
+			Result == (
+				bCanonicalExecutionHandoffQaVerify
+					? EOddsWellCanonicalGameExecutionHandoffResult::Duplicate
+					: EOddsWellCanonicalGameExecutionHandoffResult::Created)
 			&& LoadOddsWellCanonicalActiveGameExecutionCommitment(
 				Commitment,
 				Error)
 			&& Commitment.Status == TEXT("committed_for_execution")
 			&& HandoffSha256.Len() == 64;
 		const FString Evidence = FString::Printf(
-			TEXT("ODDSWELL_CANONICAL_EXECUTION_HANDOFF_QA|result=%s|transition=created|schema=oddswell-canonical-active-game-execution-commitment-v1|record_version=1|status=committed_for_execution|commitment_sha256=%s|execution_input_sha256=%s|handoff_sha256=%s|private=true|caller_seed=false|caller_input=false|caller_version=false|caller_team=false|caller_wager=false|caller_time=false|caller_output=false|runtime_python=false|service=false|port=false|simulation=false|result=false|seal=false|settlement=false|detail=%s"),
+			TEXT("ODDSWELL_CANONICAL_EXECUTION_HANDOFF_QA|result=%s|transition=%s|cold_process_restore=%s|schema=oddswell-canonical-active-game-execution-commitment-v1|record_version=1|status=committed_for_execution|commitment_sha256=%s|execution_input_sha256=%s|handoff_sha256=%s|private=true|caller_seed=false|caller_input=false|caller_version=false|caller_team=false|caller_wager=false|caller_time=false|caller_output=false|caller_path=false|runtime_python=false|service=false|port=false|simulation=false|result=false|seal=false|settlement=false|detail=%s"),
 			bPassed ? TEXT("PASS") : TEXT("FAIL"),
+			bCanonicalExecutionHandoffQaVerify
+				? TEXT("duplicate")
+				: TEXT("created"),
+			bCanonicalExecutionHandoffQaVerify
+				? TEXT("true")
+				: TEXT("false"),
 			*Commitment.CommitmentSha256,
 			*Commitment.ExecutionInputSha256,
 			*HandoffSha256,
@@ -6837,9 +6878,41 @@ void AOddsWellLocomotionGameMode::RunCanonicalMatchWinnerTipoffLock()
 	UE_LOG(
 		LogOddsWellLocomotion,
 		Display,
-		TEXT("ODDSWELL_CANONICAL_AUTOMATIC_EXECUTION_COMMITMENT|result=PASS|phase=H26T|transition=%s|trigger=durably_reloaded_h26g|schema=oddswell-canonical-active-game-execution-commitment-v1|record_version=1|status=committed_for_execution|commitments=1|locks=1|requests=1|ledger_entries=2|balance=60|booth=locked|private_seed=true|private_input=true|public_surface=false|caller_seed=false|caller_input=false|caller_time=false|caller_path=false|simulation=false|result_state=false|handoff=false|settlement=false"),
+		TEXT("ODDSWELL_CANONICAL_AUTOMATIC_EXECUTION_COMMITMENT|result=PASS|phase=H26T|transition=%s|trigger=durably_reloaded_h26g|schema=oddswell-canonical-active-game-execution-commitment-v1|record_version=1|status=committed_for_execution|commitments=1|locks=1|requests=1|ledger_entries=2|balance=60|booth=locked|private_seed=true|private_input=true|public_surface=false|caller_seed=false|caller_input=false|caller_time=false|caller_path=false|simulation=false|result_state=false|next=automatic_h26i|settlement=false"),
 		CommitmentResult
 				== EOddsWellCanonicalActiveGameExecutionCommitmentResult::Created
+			? TEXT("created")
+			: TEXT("duplicate"));
+
+	FString HandoffPath;
+	FString HandoffSha256;
+	const EOddsWellCanonicalGameExecutionHandoffResult HandoffResult =
+		WriteOddsWellCanonicalGameExecutionHandoff(
+			HandoffPath,
+			HandoffSha256,
+			Error);
+	const bool bHandoffDurable =
+		(HandoffResult
+				== EOddsWellCanonicalGameExecutionHandoffResult::Created
+			|| HandoffResult
+				== EOddsWellCanonicalGameExecutionHandoffResult::Duplicate)
+		&& HandoffPath == GetCanonicalGameExecutionHandoffPath()
+		&& HandoffSha256.Len() == 64
+		&& IFileManager::Get().FileSize(*HandoffPath) > 0;
+	if (!bHandoffDurable)
+	{
+		UE_LOG(
+			LogOddsWellLocomotion,
+			Error,
+			TEXT("ODDSWELL_CANONICAL_AUTOMATIC_EXECUTION_HANDOFF|result=REJECTED|phase=H26U|reason=create_or_exact_duplicate_failed|lock_retained=true|commitment_retained=true|booth=locked|private=true|public_surface=false|python_consumer=false|receipt=false|h26j_to_h26p=false"));
+		return;
+	}
+	UE_LOG(
+		LogOddsWellLocomotion,
+		Display,
+		TEXT("ODDSWELL_CANONICAL_AUTOMATIC_EXECUTION_HANDOFF|result=PASS|phase=H26U|transition=%s|trigger=durably_reloaded_h26h|handoffs=1|commitments=1|locks=1|requests=1|ledger_entries=2|balance=60|booth=locked|private=true|public_surface=false|fixed_path=true|caller_seed=false|caller_input=false|caller_time=false|caller_path=false|python_consumer=false|process=false|receipt=false|simulation=false|seal=false|result_state=false|settlement=false"),
+		HandoffResult
+				== EOddsWellCanonicalGameExecutionHandoffResult::Created
 			? TEXT("created")
 			: TEXT("duplicate"));
 }
