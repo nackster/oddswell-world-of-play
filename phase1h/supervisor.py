@@ -43,8 +43,10 @@ MODULE = "phase1h.execution"
 TIMEOUT_SECONDS = 120
 OUTPUT_LIMIT = 256
 _SUPERVISOR_FILES = {
+    Path("phase1h/result_supervisor.py"),
     Path("phase1h/seal_supervisor.py"),
     Path("phase1h/supervisor.py"),
+    Path("phase1h/test_result_supervisor.py"),
     Path("phase1h/test_seal_supervisor.py"),
     Path("phase1h/test_supervisor.py"),
 }

@@ -12,7 +12,7 @@ from phase1h import execution, supervisor
 
 SEAL_SUPERVISOR_VERSION = "oddswell-local-seal-supervisor-v1"
 APPROVED_CONTROL_SHA256 = (
-    "5a892d3f045069d6ba3b157203d298c80be95c312687d3cd643e0602cdc99b6a"
+    "5ab65177e9fba3149b014b95ff7cb93b04f07e25028c41abdbe0e73d631686ef"
 )
 UPSTREAM_PRIVATE_ROOT = (
     supervisor.REPOSITORY_ROOT
