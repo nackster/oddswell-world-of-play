@@ -2214,9 +2214,9 @@ void AOddsWellPlaceholderCharacter::RunCanonicalHarborFortyPlacementQa(
 			Error,
 			TEXT("ODDSWELL_CANONICAL_%s_QA|result=FAIL|phase=%s|reason=%s"),
 			bCanonicalAutomaticTipoffLockQa
-				? TEXT("AUTOMATIC_TIPOFF_LOCK")
+				? TEXT("AUTOMATIC_EXECUTION_COMMITMENT")
 				: TEXT("HARBOR_FORTY_PLACEMENT"),
-			bCanonicalAutomaticTipoffLockQa ? TEXT("H26S") : TEXT("H26R"),
+			bCanonicalAutomaticTipoffLockQa ? TEXT("H26T") : TEXT("H26R"),
 			Reason);
 		bSportsbookOfferQa = false;
 		bCanonicalHarborFortyPlacementQa = false;
@@ -2457,10 +2457,23 @@ void AOddsWellPlaceholderCharacter::RunCanonicalHarborFortyPlacementQa(
 		}
 		if (bCanonicalAutomaticTipoffLockQa)
 		{
+			if (!bCanonicalAutomaticTipoffLockQaVerify)
+			{
+				FOddsWellCanonicalActiveGameExecutionCommitmentRecord
+					UnexpectedCommitment;
+				FString CommitmentError;
+				if (LoadOddsWellCanonicalActiveGameExecutionCommitment(
+						UnexpectedCommitment,
+						CommitmentError))
+				{
+					Fail(TEXT("commitment_existed_before_lock"));
+					return;
+				}
+			}
 			UE_LOG(
 				LogOddsWellLocomotion,
 				Display,
-				TEXT("ODDSWELL_CANONICAL_AUTOMATIC_TIPOFF_LOCK_QA|result=PENDING|phase=H26S|route=job100_to_harbor40_to_pending|entries=2|requests=1|locks=0|balance=60"));
+				TEXT("ODDSWELL_CANONICAL_AUTOMATIC_EXECUTION_COMMITMENT_QA|result=PENDING|phase=H26T|route=job100_to_harbor40_to_pending|entries=2|requests=1|locks=0|commitments=0|balance=60"));
 			SportsbookOfferQaStage = 4;
 			SportsbookOfferQaElapsed = 0.0f;
 			return;
@@ -2486,6 +2499,7 @@ void AOddsWellPlaceholderCharacter::RunCanonicalHarborFortyPlacementQa(
 		TArray<FOddsWellMatchWinnerRequestRecord> Requests;
 		TArray<FOddsWellMatchWinnerLockRecord> Locks;
 		TArray<FOddsWellMatchWinnerResultLinkRecord> Results;
+		FOddsWellCanonicalActiveGameExecutionCommitmentRecord Commitment;
 		bool bFound = false;
 		FString Error;
 		const bool bLoaded = LoadOddsWellOddsBucksWagerEvidence(
@@ -2517,13 +2531,28 @@ void AOddsWellPlaceholderCharacter::RunCanonicalHarborFortyPlacementQa(
 			&& Locks[0].RequestCommandId == Requests[0].RequestCommandId
 			&& Locks[0].Decision == FName(TEXT("locked"))
 			&& Results.IsEmpty()
+			&& LoadOddsWellCanonicalActiveGameExecutionCommitment(
+				Commitment,
+				Error)
+			&& Commitment.Schema
+				== TEXT("oddswell-canonical-active-game-execution-commitment-v1")
+			&& Commitment.RecordVersion == 1
+			&& Commitment.SeasonNumber == 1
+			&& Commitment.GameNumber == 1
+			&& Commitment.HomeTeam == TEXT("Harbor City Waves")
+			&& Commitment.AwayTeam == TEXT("Mesa Vista Sol")
+			&& Commitment.Status == TEXT("committed_for_execution")
+			&& Commitment.Environment == TEXT("local_beta")
+			&& Commitment.SeedMaterialSha256.Len() == 64
+			&& Commitment.ExecutionInputSha256.Len() == 64
+			&& Commitment.CommitmentSha256.Len() == 64
 			&& bSportsbookOfferVisible
 			&& !SportsbookOfferPreview
 			&& !SportsbookCanonicalReceipt
 			&& !SportsbookSettledLossReceipt;
 		if (!bExact)
 		{
-			Fail(TEXT("automatic_lock_or_locked_panel_mismatch"));
+			Fail(TEXT("automatic_lock_commitment_or_locked_panel_mismatch"));
 			return;
 		}
 		SportsbookOfferQaStage = 5;
@@ -2538,6 +2567,7 @@ void AOddsWellPlaceholderCharacter::RunCanonicalHarborFortyPlacementQa(
 		TArray<FOddsWellMatchWinnerRequestRecord> Requests;
 		TArray<FOddsWellMatchWinnerLockRecord> Locks;
 		TArray<FOddsWellMatchWinnerResultLinkRecord> Results;
+		FOddsWellCanonicalActiveGameExecutionCommitmentRecord Commitment;
 		bool bFound = false;
 		FString Error;
 		const bool bStable = LoadOddsWellOddsBucksWagerEvidence(
@@ -2555,12 +2585,19 @@ void AOddsWellPlaceholderCharacter::RunCanonicalHarborFortyPlacementQa(
 			&& Requests.Num() == 1
 			&& Locks.Num() == 1
 			&& Results.IsEmpty()
+			&& LoadOddsWellCanonicalActiveGameExecutionCommitment(
+				Commitment,
+				Error)
+			&& Commitment.Status == TEXT("committed_for_execution")
+			&& Commitment.SeedMaterialSha256.Len() == 64
+			&& Commitment.ExecutionInputSha256.Len() == 64
+			&& Commitment.CommitmentSha256.Len() == 64
 			&& bSportsbookOfferVisible
 			&& !SportsbookOfferPreview
 			&& !SportsbookCanonicalReceipt;
 		if (!bStable)
 		{
-			Fail(TEXT("repeated_tick_or_reload_mismatch"));
+			Fail(TEXT("repeated_tick_commitment_or_reload_mismatch"));
 			return;
 		}
 		if (FParse::Param(
@@ -2568,17 +2605,17 @@ void AOddsWellPlaceholderCharacter::RunCanonicalHarborFortyPlacementQa(
 				TEXT("SportsbookOfferQaCapture")))
 		{
 			FScreenshotRequest::RequestScreenshot(
-				TEXT("Phase1H26S_AutomaticCanonicalTipoffLock.png"),
+				TEXT("Phase1H26T_AutomaticCanonicalExecutionCommitment.png"),
 				true,
 				false);
 		}
 		UE_LOG(
 			LogOddsWellLocomotion,
 			Display,
-			TEXT("ODDSWELL_CANONICAL_AUTOMATIC_TIPOFF_LOCK_QA|result=PASS|phase=H26S|route=%s|timer=one|restart_rescheduled=%s|server_tipoff=exact_h26a|transition=locked|locked_panel=true|request_unchanged=true|ledger=100,-40|entries=2|requests=1|locks=1|balance=60|early_callback_mutation=false|duplicate_timer_mutation=false|reload_mutation=false|repeated_tick_mutation=false|catch_up=false|backdated=false|auto_h26h_to_h26p=false|cost_usd=0"),
+			TEXT("ODDSWELL_CANONICAL_AUTOMATIC_EXECUTION_COMMITMENT_QA|result=PASS|phase=H26T|route=%s|timer=one|restart_rescheduled=%s|server_tipoff=exact_h26a|lock_transition=locked|commitment_transition=durable|locked_panel=true|request_unchanged=true|ledger=100,-40|entries=2|requests=1|locks=1|commitments=1|results=0|balance=60|private_seed=true|private_input=true|public_commitment_surface=false|early_callback_mutation=false|duplicate_timer_mutation=false|reload_mutation=false|repeated_tick_mutation=false|catch_up=false|backdated=false|auto_h26i_to_h26p=false|cost_usd=0"),
 			bCanonicalAutomaticTipoffLockQaVerify
-				? TEXT("cold_pending_to_server_tipoff_to_lock")
-				: TEXT("job100_to_harbor40_to_pending_to_server_tipoff_to_lock"),
+				? TEXT("cold_pending_to_server_tipoff_to_lock_to_commitment")
+				: TEXT("job100_to_harbor40_to_pending_to_server_tipoff_to_lock_to_commitment"),
 			bCanonicalAutomaticTipoffLockQaVerify
 				? TEXT("true")
 				: TEXT("false"));
@@ -6758,9 +6795,52 @@ void AOddsWellLocomotionGameMode::RunCanonicalMatchWinnerTipoffLock()
 	UE_LOG(
 		LogOddsWellLocomotion,
 		Display,
-		TEXT("ODDSWELL_CANONICAL_AUTOMATIC_TIPOFF_LOCK|result=PASS|transition=%s|timer=one|loop=false|clock=exact_h26a_tipoff|locks=1|requests=1|ledger_entries=2|balance=60|request_unchanged=true|ui_refreshed_after_durable_success=true|h26h_to_h26p=false|catch_up=false|backdated=false"),
+		TEXT("ODDSWELL_CANONICAL_AUTOMATIC_TIPOFF_LOCK|result=PASS|transition=%s|timer=one|loop=false|clock=exact_h26a_tipoff|locks=1|requests=1|ledger_entries=2|balance=60|request_unchanged=true|ui_refreshed_after_durable_success=true|next=automatic_h26h|catch_up=false|backdated=false"),
 		Result == EOddsWellMatchWinnerLockResult::Locked
 			? TEXT("locked")
+			: TEXT("duplicate"));
+
+	FOddsWellCanonicalActiveGameExecutionCommitmentRecord Commitment;
+	const EOddsWellCanonicalActiveGameExecutionCommitmentResult
+		CommitmentResult =
+			CreateOddsWellCanonicalActiveGameExecutionCommitment(
+				Commitment,
+				Error);
+	FOddsWellCanonicalActiveGameExecutionCommitmentRecord
+		ReloadedCommitment;
+	const bool bCommitmentDurable =
+		(CommitmentResult
+				== EOddsWellCanonicalActiveGameExecutionCommitmentResult::Created
+			|| CommitmentResult
+				== EOddsWellCanonicalActiveGameExecutionCommitmentResult::Duplicate)
+		&& LoadOddsWellCanonicalActiveGameExecutionCommitment(
+			ReloadedCommitment,
+			Error)
+		&& ReloadedCommitment.Schema
+			== TEXT("oddswell-canonical-active-game-execution-commitment-v1")
+		&& ReloadedCommitment.RecordVersion == 1
+		&& ReloadedCommitment.Status == TEXT("committed_for_execution")
+		&& ReloadedCommitment.SeedMaterialSha256
+			== Commitment.SeedMaterialSha256
+		&& ReloadedCommitment.ExecutionInputSha256
+			== Commitment.ExecutionInputSha256
+		&& ReloadedCommitment.CommitmentSha256
+			== Commitment.CommitmentSha256;
+	if (!bCommitmentDurable)
+	{
+		UE_LOG(
+			LogOddsWellLocomotion,
+			Error,
+			TEXT("ODDSWELL_CANONICAL_AUTOMATIC_EXECUTION_COMMITMENT|result=REJECTED|phase=H26T|reason=create_or_reload_failed|lock_retained=true|booth=locked|private_seed=true|private_input=true|public_surface=false|h26i_to_h26p=false"));
+		return;
+	}
+	UE_LOG(
+		LogOddsWellLocomotion,
+		Display,
+		TEXT("ODDSWELL_CANONICAL_AUTOMATIC_EXECUTION_COMMITMENT|result=PASS|phase=H26T|transition=%s|trigger=durably_reloaded_h26g|schema=oddswell-canonical-active-game-execution-commitment-v1|record_version=1|status=committed_for_execution|commitments=1|locks=1|requests=1|ledger_entries=2|balance=60|booth=locked|private_seed=true|private_input=true|public_surface=false|caller_seed=false|caller_input=false|caller_time=false|caller_path=false|simulation=false|result_state=false|handoff=false|settlement=false"),
+		CommitmentResult
+				== EOddsWellCanonicalActiveGameExecutionCommitmentResult::Created
+			? TEXT("created")
 			: TEXT("duplicate"));
 }
 
