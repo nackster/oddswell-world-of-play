@@ -85,3 +85,9 @@ A future implementation phase requires separate approval and must prove:
 ## Deferred production authority
 
 A trusted backend worker remains deferred until the owner separately authorizes backend identity, authentication, queue ownership, deployment, observability, recovery, secrets, clock authority, and operational responsibility. This local supervisor design must not be treated as production wagering infrastructure.
+
+## Phase 1H.26W implementation closure
+
+Phase 1H.26W implements only the approved external local proof. The explicit command is the allowlisted Python `3.12.13` interpreter running `-B -m phase1h.supervisor` with no arguments. The supervisor fixes the H26W private handoff/receipt directories internally, verifies the unchanged `28`-file frozen Python manifest, atomically reserves one commitment-keyed attempt, launches at most one allowlisted `phase1h.execution` child, enforces the `120`-second Windows Job timeout, validates the exact receipt, writes bounded private metadata, and exits.
+
+All twelve pre-registered tests passed. A fresh unchanged packaged client still stopped after H26U with zero Python, process, or receipt; the separate supervisor then created one exact receipt, and cold duplicate returned without child execution or byte/hash/mtime change. No H26J seal, result, settlement, service, watcher, network path, backend, client launcher, or packaged Python was added. See [[Development/Reports/Phase 1H26W External One Shot Local H26I Supervisor Proof]].
