@@ -43,7 +43,9 @@ MODULE = "phase1h.execution"
 TIMEOUT_SECONDS = 120
 OUTPUT_LIMIT = 256
 _SUPERVISOR_FILES = {
+    Path("phase1h/seal_supervisor.py"),
     Path("phase1h/supervisor.py"),
+    Path("phase1h/test_seal_supervisor.py"),
     Path("phase1h/test_supervisor.py"),
 }
 
@@ -119,19 +121,24 @@ def _validated_receipt(
     return expected
 
 
-def _reserve_attempt(commitment_sha256: str) -> tuple[Path, bool]:
-    ATTEMPT_DIRECTORY.mkdir(parents=True, exist_ok=True)
-    claim = ATTEMPT_DIRECTORY / f"{commitment_sha256}.json"
-    claims = sorted(ATTEMPT_DIRECTORY.glob("*.json"))
+def _reserve_claim(
+    directory: Path,
+    commitment_sha256: str,
+    schema: str,
+    supervisor_version: str = SUPERVISOR_VERSION,
+) -> tuple[Path, bool]:
+    directory.mkdir(parents=True, exist_ok=True)
+    claim = directory / f"{commitment_sha256}.json"
+    claims = sorted(directory.glob("*.json"))
     if claims and claims != [claim]:
         raise SupervisorError("attempt_set_conflicts")
     raw = _canonical_json(
         {
             "commitment_sha256": commitment_sha256,
             "record_version": 1,
-            "schema": "oddswell-local-execution-supervisor-attempt-v1",
+            "schema": schema,
             "status": "attempt_reserved",
-            "supervisor_version": SUPERVISOR_VERSION,
+            "supervisor_version": supervisor_version,
         }
     )
     try:
@@ -150,6 +157,14 @@ def _reserve_attempt(commitment_sha256: str) -> tuple[Path, bool]:
     return claim, True
 
 
+def _reserve_attempt(commitment_sha256: str) -> tuple[Path, bool]:
+    return _reserve_claim(
+        ATTEMPT_DIRECTORY,
+        commitment_sha256,
+        "oddswell-local-execution-supervisor-attempt-v1",
+    )
+
+
 def _job_for(process: subprocess.Popen[str]) -> tuple[object, int]:
     kernel32 = ctypes.WinDLL("kernel32", use_last_error=True)
     kernel32.CreateJobObjectW.restype = ctypes.c_void_p
@@ -165,14 +180,17 @@ def _job_for(process: subprocess.Popen[str]) -> tuple[object, int]:
     return kernel32, job
 
 
-def _run_child(receipt_name: str) -> tuple[str, int]:
+def _run_execution_child(
+    directories: tuple[Path, ...],
+    output_name: str,
+    fresh_status: str,
+) -> tuple[str, int]:
     command = [
         str(APPROVED_PYTHON),
         "-B",
         "-m",
         MODULE,
-        str(HANDOFF_DIRECTORY),
-        str(RECEIPT_DIRECTORY),
+        *(str(directory) for directory in directories),
     ]
     environment = {
         "PYTHONDONTWRITEBYTECODE": "1",
@@ -212,10 +230,18 @@ def _run_child(receipt_name: str) -> tuple[str, int]:
     if len(output.encode("utf-8")) > OUTPUT_LIMIT:
         raise SupervisorError("child_output_rejected", process.returncode)
     line = output.strip()
-    allowed = {f"executed: {receipt_name}", f"duplicate: {receipt_name}"}
+    allowed = {f"{fresh_status}: {output_name}", f"duplicate: {output_name}"}
     if line not in allowed:
         raise SupervisorError("child_output_rejected", process.returncode)
     return line.split(":", 1)[0], process.returncode
+
+
+def _run_child(receipt_name: str) -> tuple[str, int]:
+    return _run_execution_child(
+        (HANDOFF_DIRECTORY, RECEIPT_DIRECTORY),
+        receipt_name,
+        "executed",
+    )
 
 
 def _timestamp() -> str:
@@ -230,6 +256,8 @@ def _append_log(
     started_monotonic: float,
     status: str,
     exit_code: int,
+    directory: Path | None = None,
+    supervisor_version: str = SUPERVISOR_VERSION,
 ) -> None:
     record = {
         "commitment_sha256": commitment_sha256,
@@ -241,13 +269,14 @@ def _append_log(
         "module": MODULE,
         "started_utc": started,
         "status": status,
-        "supervisor_version": SUPERVISOR_VERSION,
+        "supervisor_version": supervisor_version,
     }
     raw = _canonical_json(record)
     if len(raw.encode("utf-8")) > 1024:
         raise SupervisorError("audit_log_rejected")
-    LOG_DIRECTORY.mkdir(parents=True, exist_ok=True)
-    path = LOG_DIRECTORY / f"{commitment_sha256}.jsonl"
+    directory = LOG_DIRECTORY if directory is None else directory
+    directory.mkdir(parents=True, exist_ok=True)
+    path = directory / f"{commitment_sha256}.jsonl"
     try:
         with path.open("a", encoding="utf-8", newline="\n") as stream:
             stream.write(raw + "\n")
