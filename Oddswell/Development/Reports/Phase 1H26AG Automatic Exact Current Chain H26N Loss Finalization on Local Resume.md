@@ -37,6 +37,8 @@ Fresh finalization produced the expected `10,082`-byte SaveGame with SHA-256 `4c
 
 The reused H26N loader necessarily regenerates the already existing H26O Match Winner reconciliation projection and the general Odds Bucks reconciliation projection. Fresh and cold checks validated the regenerated JSON semantically against the exact request/result/decision/finalization identity and ledger. No projection byte or mtime stability is claimed. H26AG adds no projection writer, endpoint, Admin card, ticket-booth receipt, or other H26O/H26P work.
 
+Both `Fresh.log` and `Cold.log` also automatically observed the existing H26P read-only marker `ODDSWELL_CANONICAL_SETTLED_LOSS_RECEIPT|result=READY` after exact H26N finalization. That startup observation was unavoidable once the already implemented receipt loader saw the complete chain; it was not deliberately exercised. H26P receipt code and UI were unmodified, and the marker is neither H26AG acceptance evidence nor a new H26P completion claim.
+
 ## Verification
 
 - editor and game builds: PASS;
@@ -57,4 +59,4 @@ For audit transparency, the first Brain Admin attempt used the nonexistent `--se
 
 ## Scope boundary
 
-No timer, poller, watcher, service, backend, deployment, paid API, retraining, new dependency, schema, caller-controlled settlement input, UI, Admin feature, credit, purchase, real-money path, simulator change, or brain change was added. The next implementation requires a fresh Scope Director decision.
+No timer, poller, watcher, service, backend, deployment, paid API, retraining, new dependency, schema, caller-controlled settlement input, UI, Admin feature, credit, purchase, real-money path, simulator change, or brain change was added. The incidental existing H26P READY marker authorizes no follow-up by itself. The next implementation requires a fresh Scope Director decision.
