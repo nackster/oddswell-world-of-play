@@ -280,6 +280,73 @@ bool IsSameCanonicalMatchWinnerResultLink(
 		&& Left.ReplaySealSha256 == Right.ReplaySealSha256;
 }
 
+bool IsExactCurrentCanonicalMatchWinnerResultLink(
+	const FOddsWellMatchWinnerResultLinkRecord& Result)
+{
+	const FString OfferId =
+		TEXT("c929f90b9fe2a7962f34b88819fd5405db1dd400a6d24cd0d7110081c8fb3e5d");
+	return Result.ResultCommandId
+			== TEXT("canonical:h26l:match_winner:result:05a4a2a1488d4852318a398ff6e8eaf4a3cac47257b441feceb7426a4b5b0289")
+		&& Result.RequestCommandId
+			== TEXT("canonical:h26e:match_winner:request:") + OfferId
+		&& Result.LockCommandId
+			== TEXT("canonical:h26g:match_winner:lock:") + OfferId
+		&& Result.ResultSchema
+			== TEXT("oddswell-private-canonical-game-result-v1")
+		&& Result.ResultVersion
+			== TEXT("oddswell-private-game-result-recorder-v1")
+		&& Result.SeasonNumber == 1
+		&& Result.GameNumber == 1
+		&& Result.HomeTeam == TEXT("Harbor City Waves")
+		&& Result.AwayTeam == TEXT("Mesa Vista Sol")
+		&& Result.HomeScore == 79
+		&& Result.AwayScore == 113
+		&& Result.Winner == Result.AwayTeam
+		&& Result.ReplaySealSha256
+			== TEXT("35e604f306b5b2709f2ca8c5a4ad8b892ac6a4012a2c595072f6e326fa4e25db");
+}
+
+bool IsExactCurrentCanonicalMatchWinnerLossDecision(
+	const FOddsWellMatchWinnerSettlementDecisionRecord& Decision)
+{
+	const FString OfferId =
+		TEXT("c929f90b9fe2a7962f34b88819fd5405db1dd400a6d24cd0d7110081c8fb3e5d");
+	const FString ResultSha =
+		TEXT("05a4a2a1488d4852318a398ff6e8eaf4a3cac47257b441feceb7426a4b5b0289");
+	return Decision.DecisionCommandId
+			== TEXT("canonical:h26m:match_winner:decision:") + ResultSha
+		&& Decision.RequestCommandId
+			== TEXT("canonical:h26e:match_winner:request:") + OfferId
+		&& Decision.LockCommandId
+			== TEXT("canonical:h26g:match_winner:lock:") + OfferId
+		&& Decision.ResultCommandId
+			== TEXT("canonical:h26l:match_winner:result:") + ResultSha
+		&& Decision.DecisionSchema
+			== TEXT("oddswell-match-winner-settlement-decision-v1")
+		&& Decision.DecisionVersion
+			== TEXT("match-winner-settlement-decision-v1")
+		&& Decision.OfferId == OfferId
+		&& Decision.OfferVersion
+			== TEXT("basketball-match-winner-odds-v1")
+		&& Decision.SelectedTeam == TEXT("Harbor City Waves")
+		&& Decision.AuthoritativeWinner == TEXT("Mesa Vista Sol")
+		&& Decision.Stake == 40
+		&& Decision.Outcome == FName(TEXT("lost"))
+		&& Decision.GrossReturnDue == 0
+		&& Decision.SelectedWinProbabilityE8 == 0
+		&& Decision.PayoutFormula.IsEmpty()
+		&& Decision.Status == FName(TEXT("decided_pending_apply"));
+}
+
+bool CanResumeCanonicalLossDecisionAfterResultLinkRejection(
+	const FString& Error)
+{
+	return Error
+		== TEXT("Canonical Match Winner result linking requires exact schema-12 H26E/H26G evidence and no downstream state.")
+		|| Error
+			== TEXT("Canonical Match Winner result prerequisites failed exact H26A/B/C/E/G validation.");
+}
+
 FString GetCanonicalGameExecutionHandoffPath()
 {
 	return FPaths::Combine(
@@ -6800,6 +6867,12 @@ void AOddsWellLocomotionGameMode::ResumeCanonicalMatchWinnerResultLink()
 			Error);
 	if (Transition == EOddsWellMatchWinnerResultLinkResult::Rejected)
 	{
+		if (CanResumeCanonicalLossDecisionAfterResultLinkRejection(
+				Error))
+		{
+			ResumeCanonicalMatchWinnerLossDecision(true);
+			return;
+		}
 		bOddsBucksReady = false;
 		UE_LOG(
 			LogOddsWellLocomotion,
@@ -6860,7 +6933,7 @@ void AOddsWellLocomotionGameMode::ResumeCanonicalMatchWinnerResultLink()
 	UE_LOG(
 		LogOddsWellLocomotion,
 		Display,
-		TEXT("ODDSWELL_CANONICAL_AUTOMATIC_RESULT_LINK|result=PASS|phase=H26AE|transition=%s|trigger=authoritative_local_resume|result_command=%s|request_command=%s|lock_command=%s|score=%d-%d|winner=%s|replay_sha256=%s|ledger_entries=2|balance=60|requests=1|locks=1|results=1|h26m_to_h26p=false|booth=locked|polling=false|timer=false|watcher=false|process=false|cost_usd=0"),
+		TEXT("ODDSWELL_CANONICAL_AUTOMATIC_RESULT_LINK|result=PASS|phase=H26AE|transition=%s|trigger=authoritative_local_resume|result_command=%s|request_command=%s|lock_command=%s|score=%d-%d|winner=%s|replay_sha256=%s|ledger_entries=2|balance=60|requests=1|locks=1|results=1|next=automatic_h26m|h26n_to_h26p=false|booth=locked|polling=false|timer=false|watcher=false|process=false|cost_usd=0"),
 		Transition == EOddsWellMatchWinnerResultLinkResult::Linked
 			? TEXT("Linked")
 			: TEXT("Duplicate"),
@@ -6871,6 +6944,100 @@ void AOddsWellLocomotionGameMode::ResumeCanonicalMatchWinnerResultLink()
 		LinkedResult.AwayScore,
 		*LinkedResult.Winner,
 		*LinkedResult.ReplaySealSha256);
+	ResumeCanonicalMatchWinnerLossDecision(false);
+}
+
+bool AOddsWellLocomotionGameMode::ResumeCanonicalMatchWinnerLossDecision(
+	const bool bRequireDuplicate)
+{
+	FOddsWellMatchWinnerSettlementDecisionRecord Decision;
+	FString Error;
+	const EOddsWellMatchWinnerSettlementDecisionResult Transition =
+		DecideOddsWellCanonicalMatchWinnerLossDecision(
+			Decision,
+			Error);
+	if (Transition == EOddsWellMatchWinnerSettlementDecisionResult::Rejected
+		|| (bRequireDuplicate
+			&& Transition
+				!= EOddsWellMatchWinnerSettlementDecisionResult::Duplicate)
+		|| !IsExactCurrentCanonicalMatchWinnerLossDecision(Decision))
+	{
+		bOddsBucksReady = false;
+		UE_LOG(
+			LogOddsWellLocomotion,
+			Error,
+			TEXT("ODDSWELL_CANONICAL_AUTOMATIC_LOSS_DECISION|result=REJECTED|phase=H26AF|reason=decision_rejected_or_non_exact|booth=locked|mutation=unchanged_or_fail_closed|h26n_to_h26p=false|polling=false|timer=false|watcher=false|process=false|detail=%s"),
+			*Error);
+		return false;
+	}
+
+	FOddsWellOddsBucksLedger PersistedLedger;
+	int64 PersistedNextJobPayoutUnixSeconds = 0;
+	TArray<FOddsWellMatchWinnerRequestRecord> PersistedRequests;
+	TArray<FOddsWellMatchWinnerLockRecord> PersistedLocks;
+	TArray<FOddsWellMatchWinnerResultLinkRecord> PersistedResults;
+	TArray<FOddsWellMatchWinnerSettlementDecisionRecord> PersistedDecisions;
+	TArray<FOddsWellMatchWinnerLossFinalizationRecord>
+		PersistedLossFinalizations;
+	TArray<FOddsWellMatchWinnerWinFinalizationRecord>
+		PersistedWinFinalizations;
+	bool bPersistedFound = false;
+	const bool bDurable =
+		LoadOddsWellOddsBucksWagerFinalizationState(
+			bOddsBucksQaSlot,
+			PersistedLedger,
+			PersistedNextJobPayoutUnixSeconds,
+			PersistedRequests,
+			PersistedLocks,
+			PersistedResults,
+			PersistedDecisions,
+			PersistedLossFinalizations,
+			PersistedWinFinalizations,
+			bPersistedFound,
+			Error)
+		&& bPersistedFound
+		&& PersistedLedger.GetEntries().Num() == 2
+		&& PersistedLedger.GetBalance() == 60
+		&& PersistedRequests.Num() == 1
+		&& PersistedLocks.Num() == 1
+		&& PersistedResults.Num() == 1
+		&& PersistedDecisions.Num() == 1
+		&& PersistedLossFinalizations.IsEmpty()
+		&& PersistedWinFinalizations.IsEmpty()
+		&& IsExactCurrentCanonicalMatchWinnerResultLink(
+			PersistedResults[0])
+		&& IsExactCurrentCanonicalMatchWinnerLossDecision(
+			PersistedDecisions[0]);
+	if (!bDurable)
+	{
+		bOddsBucksReady = false;
+		UE_LOG(
+			LogOddsWellLocomotion,
+			Error,
+			TEXT("ODDSWELL_CANONICAL_AUTOMATIC_LOSS_DECISION|result=REJECTED|phase=H26AF|reason=durable_reload_failed|booth=locked|mutation=unchanged_or_fail_closed|h26n_to_h26p=false|polling=false|timer=false|watcher=false|process=false|detail=%s"),
+			*Error);
+		return false;
+	}
+
+	OddsBucksLedger = MoveTemp(PersistedLedger);
+	NextJobPayoutUnixSeconds = PersistedNextJobPayoutUnixSeconds;
+	MatchWinnerRequestCount = PersistedRequests.Num();
+	UE_LOG(
+		LogOddsWellLocomotion,
+		Display,
+		TEXT("ODDSWELL_CANONICAL_AUTOMATIC_LOSS_DECISION|result=PASS|phase=H26AF|transition=%s|trigger=durable_h26l_local_resume|decision_command=%s|result_command=%s|selected_team=%s|winner=%s|stake=%lld|outcome=%s|gross_return_due=%lld|status=%s|ledger_entries=2|balance=60|requests=1|locks=1|results=1|decisions=1|loss_finalizations=0|win_finalizations=0|h26n_to_h26p=false|booth=locked|polling=false|timer=false|watcher=false|process=false|cost_usd=0"),
+		Transition == EOddsWellMatchWinnerSettlementDecisionResult::Decided
+			? TEXT("Decided")
+			: TEXT("Duplicate"),
+		*Decision.DecisionCommandId,
+		*Decision.ResultCommandId,
+		*Decision.SelectedTeam,
+		*Decision.AuthoritativeWinner,
+		Decision.Stake,
+		*Decision.Outcome.ToString(),
+		Decision.GrossReturnDue,
+		*Decision.Status.ToString());
+	return true;
 }
 
 void AOddsWellLocomotionGameMode::ScheduleCanonicalMatchWinnerTipoffLock()
@@ -8345,7 +8512,7 @@ bool FOddsWellCanonicalAutomaticResultLinkTest::RunTest(
 	Linked.RequestCommandId = TEXT("canonical:h26e:match_winner:request:offer");
 	Linked.LockCommandId = TEXT("canonical:h26g:match_winner:lock:offer");
 	Linked.ResultSchema = TEXT("oddswell-private-canonical-game-result-v1");
-	Linked.ResultVersion = TEXT("oddswell-private-result-recorder-v1");
+	Linked.ResultVersion = TEXT("oddswell-private-game-result-recorder-v1");
 	Linked.SeasonNumber = 1;
 	Linked.GameNumber = 1;
 	Linked.HomeTeam = TEXT("Harbor City Waves");
@@ -8362,6 +8529,87 @@ bool FOddsWellCanonicalAutomaticResultLinkTest::RunTest(
 	TestFalse(
 		TEXT("H26AE rejects a conflicting durable reload"),
 		IsSameCanonicalMatchWinnerResultLink(Linked, Conflicting));
+	return !HasAnyErrors();
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(
+	FOddsWellCanonicalAutomaticLossDecisionTest,
+	"OddsWell.Locomotion.CanonicalAutomaticLossDecision",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+
+bool FOddsWellCanonicalAutomaticLossDecisionTest::RunTest(
+	const FString& Parameters)
+{
+	FOddsWellMatchWinnerResultLinkRecord Result;
+	Result.ResultCommandId =
+		TEXT("canonical:h26l:match_winner:result:05a4a2a1488d4852318a398ff6e8eaf4a3cac47257b441feceb7426a4b5b0289");
+	Result.RequestCommandId =
+		TEXT("canonical:h26e:match_winner:request:c929f90b9fe2a7962f34b88819fd5405db1dd400a6d24cd0d7110081c8fb3e5d");
+	Result.LockCommandId =
+		TEXT("canonical:h26g:match_winner:lock:c929f90b9fe2a7962f34b88819fd5405db1dd400a6d24cd0d7110081c8fb3e5d");
+	Result.ResultSchema =
+		TEXT("oddswell-private-canonical-game-result-v1");
+	Result.ResultVersion =
+		TEXT("oddswell-private-game-result-recorder-v1");
+	Result.SeasonNumber = 1;
+	Result.GameNumber = 1;
+	Result.HomeTeam = TEXT("Harbor City Waves");
+	Result.AwayTeam = TEXT("Mesa Vista Sol");
+	Result.HomeScore = 79;
+	Result.AwayScore = 113;
+	Result.Winner = Result.AwayTeam;
+	Result.ReplaySealSha256 =
+		TEXT("35e604f306b5b2709f2ca8c5a4ad8b892ac6a4012a2c595072f6e326fa4e25db");
+	TestTrue(
+		TEXT("H26AF durable reload requires the exact current H26L result"),
+		IsExactCurrentCanonicalMatchWinnerResultLink(Result));
+	Result.HomeScore += 1;
+	TestFalse(
+		TEXT("H26AF rejects a changed current result"),
+		IsExactCurrentCanonicalMatchWinnerResultLink(Result));
+
+	FOddsWellMatchWinnerSettlementDecisionRecord Decision;
+	Decision.DecisionCommandId =
+		TEXT("canonical:h26m:match_winner:decision:05a4a2a1488d4852318a398ff6e8eaf4a3cac47257b441feceb7426a4b5b0289");
+	Decision.RequestCommandId =
+		TEXT("canonical:h26e:match_winner:request:c929f90b9fe2a7962f34b88819fd5405db1dd400a6d24cd0d7110081c8fb3e5d");
+	Decision.LockCommandId =
+		TEXT("canonical:h26g:match_winner:lock:c929f90b9fe2a7962f34b88819fd5405db1dd400a6d24cd0d7110081c8fb3e5d");
+	Decision.ResultCommandId =
+		TEXT("canonical:h26l:match_winner:result:05a4a2a1488d4852318a398ff6e8eaf4a3cac47257b441feceb7426a4b5b0289");
+	Decision.DecisionSchema =
+		TEXT("oddswell-match-winner-settlement-decision-v1");
+	Decision.DecisionVersion =
+		TEXT("match-winner-settlement-decision-v1");
+	Decision.OfferId =
+		TEXT("c929f90b9fe2a7962f34b88819fd5405db1dd400a6d24cd0d7110081c8fb3e5d");
+	Decision.OfferVersion = TEXT("basketball-match-winner-odds-v1");
+	Decision.SelectedTeam = TEXT("Harbor City Waves");
+	Decision.AuthoritativeWinner = TEXT("Mesa Vista Sol");
+	Decision.Stake = 40;
+	Decision.Outcome = FName(TEXT("lost"));
+	Decision.GrossReturnDue = 0;
+	Decision.Status = FName(TEXT("decided_pending_apply"));
+	TestTrue(
+		TEXT("H26AF accepts only the exact current loss decision"),
+		IsExactCurrentCanonicalMatchWinnerLossDecision(Decision));
+	Decision.Status = FName(TEXT("settled_lost"));
+	TestFalse(
+		TEXT("H26AF rejects later decision state"),
+		IsExactCurrentCanonicalMatchWinnerLossDecision(Decision));
+
+	TestTrue(
+		TEXT("H26AF cold duplicate follows only exact H26L downstream rejection"),
+		CanResumeCanonicalLossDecisionAfterResultLinkRejection(
+			TEXT("Canonical Match Winner result linking requires exact schema-12 H26E/H26G evidence and no downstream state.")));
+	TestTrue(
+		TEXT("H26AF cold duplicate can pass the parameterless H26L prerequisite boundary"),
+		CanResumeCanonicalLossDecisionAfterResultLinkRejection(
+			TEXT("Canonical Match Winner result prerequisites failed exact H26A/B/C/E/G validation.")));
+	TestFalse(
+		TEXT("H26AF malformed private evidence cannot use cold duplicate resume"),
+		CanResumeCanonicalLossDecisionAfterResultLinkRejection(
+			TEXT("The private H26K result conflicts with exact H26H/H26J evidence.")));
 	return !HasAnyErrors();
 }
 
