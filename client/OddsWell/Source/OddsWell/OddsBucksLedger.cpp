@@ -3488,13 +3488,20 @@ LoadOddsWellCanonicalSettledLossReceiptEvidence(
 		|| !CanceledGames.IsEmpty()
 		|| !VoidDecisions.IsEmpty()
 		|| !Record->MatchWinnerVoidFinalizations.IsEmpty()
-		|| !IsExactRetainedCanonicalLossReconciliation(
-			Ledger,
-			Requests[0],
-			Locks[0],
-			Results[0],
-			Decisions[0],
-			LossFinalizations[0]))
+		|| (!IsExactRetainedCanonicalLossReconciliation(
+				Ledger,
+				Requests[0],
+				Locks[0],
+				Results[0],
+				Decisions[0],
+				LossFinalizations[0])
+			&& !IsExactCurrentCanonicalLossReconciliation(
+				Ledger,
+				Requests[0],
+				Locks[0],
+				Results[0],
+				Decisions[0],
+				LossFinalizations[0])))
 	{
 		OutReceipt = {};
 		OutError = TEXT("The exact canonical settled-loss receipt is unavailable.");
@@ -9205,20 +9212,25 @@ bool FOddsWellCanonicalMatchWinnerLossReconciliationTest::RunTest(
 			OddsBucksUserIndex));
 	FOddsWellCanonicalSettledLossReceipt CurrentReceipt;
 	TestEqual(
-		TEXT("H26P remains old-chain-only for the current H26AB source"),
+		TEXT("H26AD exact current H26AB source exposes one settled-loss receipt"),
 		LoadOddsWellCanonicalSettledLossReceiptEvidence(
 			true,
 			CurrentReceipt,
 			Error),
-		EOddsWellCanonicalSettledLossReceiptResult::Rejected);
+		EOddsWellCanonicalSettledLossReceiptResult::Ready);
 	TestTrue(
-		TEXT("H26P exposes no current-chain receipt"),
-		CurrentReceipt.SelectedTeam.IsEmpty()
-			&& CurrentReceipt.HomeTeam.IsEmpty()
-			&& CurrentReceipt.AwayTeam.IsEmpty()
-			&& CurrentReceipt.Winner.IsEmpty()
-			&& CurrentReceipt.Stake == 0
-			&& CurrentReceipt.CurrentBalance == 0);
+		TEXT("H26AD current receipt contains only the exact player-facing result"),
+		CurrentReceipt.SelectedTeam == SealedResultHomeTeam
+			&& CurrentReceipt.Stake == 40
+			&& CurrentReceipt.HomeTeam == SealedResultHomeTeam
+			&& CurrentReceipt.AwayTeam == SealedResultAwayTeam
+			&& CurrentReceipt.HomeScore == 79
+			&& CurrentReceipt.AwayScore == 113
+			&& CurrentReceipt.Winner == SealedResultAwayTeam
+			&& CurrentReceipt.Returned == 0
+			&& CurrentReceipt.Net == -40
+			&& CurrentReceipt.LedgerEntryCount == 2
+			&& CurrentReceipt.CurrentBalance == 60);
 	TestTrue(
 		TEXT("H26AC exact current H26AB chain publishes"),
 		WriteOddsWellCanonicalMatchWinnerLossReconciliation(
@@ -9276,6 +9288,26 @@ bool FOddsWellCanonicalMatchWinnerLossReconciliationTest::RunTest(
 		TestTrue(
 			FString::Printf(TEXT("%s bytes read"), Label),
 			UGameplayStatics::SaveGameToMemory(Mutated, Before));
+		FOddsWellCanonicalSettledLossReceipt RejectedReceipt;
+		TestEqual(
+			FString::Printf(TEXT("%s player receipt rejects"), Label),
+			LoadOddsWellCanonicalSettledLossReceiptEvidence(
+				true,
+				RejectedReceipt,
+				Error),
+			EOddsWellCanonicalSettledLossReceiptResult::Rejected);
+		TestTrue(
+			FString::Printf(TEXT("%s exposes no partial player receipt"), Label),
+			RejectedReceipt.SelectedTeam.IsEmpty()
+				&& RejectedReceipt.HomeTeam.IsEmpty()
+				&& RejectedReceipt.AwayTeam.IsEmpty()
+				&& RejectedReceipt.Winner.IsEmpty()
+				&& RejectedReceipt.Stake == 0
+				&& RejectedReceipt.HomeScore == 0
+				&& RejectedReceipt.AwayScore == 0
+				&& RejectedReceipt.Returned == 0
+				&& RejectedReceipt.Net == 0
+				&& RejectedReceipt.CurrentBalance == 0);
 		TestFalse(
 			Label,
 			WriteOddsWellCanonicalMatchWinnerLossReconciliation(
@@ -9297,17 +9329,30 @@ bool FOddsWellCanonicalMatchWinnerLossReconciliationTest::RunTest(
 			FString::Printf(TEXT("%s is source byte-stable"), Label),
 			Before == After);
 	};
-	RejectCurrent(TEXT("H26AC current partial chain rejects"), [](UOddsWellOddsBucksSaveGame& State)
+	RejectCurrent(TEXT("H26AD current partial chain rejects"), [](UOddsWellOddsBucksSaveGame& State)
 	{
 		State.MatchWinnerLossFinalizations.Reset();
 	});
-	RejectCurrent(TEXT("H26AC current tampered result rejects"), [](UOddsWellOddsBucksSaveGame& State)
+	RejectCurrent(TEXT("H26AD current tampered result rejects"), [](UOddsWellOddsBucksSaveGame& State)
 	{
 		State.MatchWinnerResultLinks[0].ReplaySealSha256 = FString::ChrN(64, TCHAR('f'));
 	});
-	RejectCurrent(TEXT("H26AC mixed old/current chain rejects"), [](UOddsWellOddsBucksSaveGame& State)
+	RejectCurrent(TEXT("H26AD mixed old/current chain rejects"), [](UOddsWellOddsBucksSaveGame& State)
 	{
 		State.MatchWinnerLossFinalizations[0].OfferId = RetainedCanonicalOfferId;
+	});
+	RejectCurrent(TEXT("H26AD current Season 99 cannot substitute"), [](UOddsWellOddsBucksSaveGame& State)
+	{
+		State.MatchWinnerRequests[0].SeasonNumber = 99;
+	});
+	RejectCurrent(TEXT("H26AD current Season 100 cannot substitute"), [](UOddsWellOddsBucksSaveGame& State)
+	{
+		State.MatchWinnerRequests[0].SeasonNumber = 100;
+	});
+	RejectCurrent(TEXT("H26AD current archived result cannot substitute"), [](UOddsWellOddsBucksSaveGame& State)
+	{
+		State.MatchWinnerResultLinks[0].ResultSchema =
+			TEXT("oddswell-sealed-match-winner-result-v1");
 	});
 	TestTrue(TEXT("H26O QA cleanup succeeds"), ResetOddsWellQaOddsBucksAndVerify(Error));
 	FOddsWellCanonicalSettledLossReceipt MissingPlayerReceipt;
