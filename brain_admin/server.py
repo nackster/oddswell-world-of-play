@@ -375,8 +375,24 @@ def validated_match_winner_reconciliation(path: Path) -> dict[str, object]:
         "decision_status": "decided_pending_apply",
     }
     if canonical_loss:
-        result_sha = "e4b8b4e26126612e1173b4509c67666df44cfcf7082b51051e9de0097f45d0c6"
-        offer_id = "1b5c696d7f9fd63a01e4f7d611d77834c4cccf23a97e811ac8d0f887c9183631"
+        canonical_variants = {
+            "1b5c696d7f9fd63a01e4f7d611d77834c4cccf23a97e811ac8d0f887c9183631": (
+                "e4b8b4e26126612e1173b4509c67666df44cfcf7082b51051e9de0097f45d0c6",
+                "efe7575962c88e9b8b4fcfcb6357c5307c6eeedd828b4b8f532c6e5eae985f62",
+                97,
+                101,
+            ),
+            "c929f90b9fe2a7962f34b88819fd5405db1dd400a6d24cd0d7110081c8fb3e5d": (
+                "05a4a2a1488d4852318a398ff6e8eaf4a3cac47257b441feceb7426a4b5b0289",
+                "35e604f306b5b2709f2ca8c5a4ad8b892ac6a4012a2c595072f6e326fa4e25db",
+                79,
+                113,
+            ),
+        }
+        offer_id = data.get("offer_id")
+        if offer_id not in canonical_variants:
+            raise ValueError("invalid canonical loss identity")
+        result_sha, replay_sha, home_score, away_score = canonical_variants[offer_id]
         request_id = f"canonical:h26e:match_winner:request:{offer_id}"
         lock_id = f"canonical:h26g:match_winner:lock:{offer_id}"
         result_id = f"canonical:h26l:match_winner:result:{result_sha}"
@@ -393,9 +409,9 @@ def validated_match_winner_reconciliation(path: Path) -> dict[str, object]:
             "result_lock_command_id": lock_id,
             "result_schema": "oddswell-private-canonical-game-result-v1",
             "result_version": "oddswell-private-game-result-recorder-v1",
-            "home_score": 97,
-            "away_score": 101,
-            "replay_seal_sha256": "efe7575962c88e9b8b4fcfcb6357c5307c6eeedd828b4b8f532c6e5eae985f62",
+            "home_score": home_score,
+            "away_score": away_score,
+            "replay_seal_sha256": replay_sha,
             "decision_command_id": decision_id,
             "decision_request_command_id": request_id,
             "decision_lock_command_id": lock_id,
@@ -2050,6 +2066,56 @@ def self_check() -> None:
         rejected_mixed_canonical = match_winner_reconciliation_payload(wager_path)
         assert rejected_mixed_canonical["available"] is False
         assert not {"selected_team", "balance", "command_linkage"}.intersection(rejected_mixed_canonical)
+        current_result_sha = "05a4a2a1488d4852318a398ff6e8eaf4a3cac47257b441feceb7426a4b5b0289"
+        current_offer_id = "c929f90b9fe2a7962f34b88819fd5405db1dd400a6d24cd0d7110081c8fb3e5d"
+        current_request_id = f"canonical:h26e:match_winner:request:{current_offer_id}"
+        current_lock_id = f"canonical:h26g:match_winner:lock:{current_offer_id}"
+        current_result_id = f"canonical:h26l:match_winner:result:{current_result_sha}"
+        current_decision_id = f"canonical:h26m:match_winner:decision:{current_result_sha}"
+        current_projection = {
+            **canonical_projection,
+            "offer_id": current_offer_id,
+            "request_command_id": current_request_id,
+            "stake_ledger_command_id": current_request_id,
+            "lock_command_id": current_lock_id,
+            "lock_request_command_id": current_request_id,
+            "result_command_id": current_result_id,
+            "result_request_command_id": current_request_id,
+            "result_lock_command_id": current_lock_id,
+            "home_score": 79,
+            "away_score": 113,
+            "replay_seal_sha256": "35e604f306b5b2709f2ca8c5a4ad8b892ac6a4012a2c595072f6e326fa4e25db",
+            "decision_command_id": current_decision_id,
+            "decision_request_command_id": current_request_id,
+            "decision_lock_command_id": current_lock_id,
+            "decision_result_command_id": current_result_id,
+            "decision_offer_id": current_offer_id,
+            "finalization_command_id": f"canonical:h26n:match_winner:finalization:{current_result_sha}",
+            "finalization_decision_command_id": current_decision_id,
+            "finalization_request_command_id": current_request_id,
+            "finalization_lock_command_id": current_lock_id,
+            "finalization_result_command_id": current_result_id,
+            "finalization_offer_id": current_offer_id,
+        }
+        wager_path.write_text(json.dumps(current_projection), encoding="utf-8")
+        current_wager = match_winner_reconciliation_payload(wager_path)
+        assert current_wager["available"] is True
+        assert current_wager["score"] == "79-113"
+        assert current_wager["probability_e8"] == 57_586_693
+        assert current_wager["decimal_odds_e4"] == 17_365
+        assert current_wager["potential_return"] == 69
+        assert current_wager["return"] == 0 and current_wager["net"] == -40
+        for field, invalid_value in (
+            ("result_command_id", canonical_result_id),
+            ("replay_seal_sha256", canonical_projection["replay_seal_sha256"]),
+            ("home_score", 97),
+            ("finalization_request_command_id", canonical_request_id),
+        ):
+            invalid_current = {**current_projection, field: invalid_value}
+            wager_path.write_text(json.dumps(invalid_current), encoding="utf-8")
+            rejected_current = match_winner_reconciliation_payload(wager_path)
+            assert rejected_current["available"] is False
+            assert not {"selected_team", "balance", "command_linkage"}.intersection(rejected_current)
         wager_projection["final_balance"] = 61
         wager_path.write_text(json.dumps(wager_projection), encoding="utf-8")
         invalid_wager = match_winner_reconciliation_payload(wager_path)

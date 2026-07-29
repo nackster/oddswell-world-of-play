@@ -5168,11 +5168,29 @@ void AOddsWellLocomotionGameMode::BeginPlay()
 			&& bSourceMtimeStable
 			&& FFileHelper::LoadFileToString(
 				Projection,
-				*ProjectionPath)
-			&& Projection.Contains(
-				TEXT("\"schema\": \"oddswell-match-winner-reconciliation-v1\""))
+				*ProjectionPath);
+		const bool bRetainedProjection = bPassed
 			&& Projection.Contains(
 				TEXT("\"offer_id\": \"1b5c696d7f9fd63a01e4f7d611d77834c4cccf23a97e811ac8d0f887c9183631\""))
+			&& Projection.Contains(
+				TEXT("\"result_command_id\": \"canonical:h26l:match_winner:result:e4b8b4e26126612e1173b4509c67666df44cfcf7082b51051e9de0097f45d0c6\""))
+			&& Projection.Contains(
+				TEXT("\"replay_seal_sha256\": \"efe7575962c88e9b8b4fcfcb6357c5307c6eeedd828b4b8f532c6e5eae985f62\""))
+			&& Projection.Contains(TEXT("\"home_score\": 97"))
+			&& Projection.Contains(TEXT("\"away_score\": 101"));
+		const bool bCurrentProjection = bPassed
+			&& Projection.Contains(
+				TEXT("\"offer_id\": \"c929f90b9fe2a7962f34b88819fd5405db1dd400a6d24cd0d7110081c8fb3e5d\""))
+			&& Projection.Contains(
+				TEXT("\"result_command_id\": \"canonical:h26l:match_winner:result:05a4a2a1488d4852318a398ff6e8eaf4a3cac47257b441feceb7426a4b5b0289\""))
+			&& Projection.Contains(
+				TEXT("\"replay_seal_sha256\": \"35e604f306b5b2709f2ca8c5a4ad8b892ac6a4012a2c595072f6e326fa4e25db\""))
+			&& Projection.Contains(TEXT("\"home_score\": 79"))
+			&& Projection.Contains(TEXT("\"away_score\": 113"));
+		bPassed = bPassed
+			&& (bRetainedProjection || bCurrentProjection)
+			&& Projection.Contains(
+				TEXT("\"schema\": \"oddswell-match-winner-reconciliation-v1\""))
 			&& Projection.Contains(
 				TEXT("\"selected_team\": \"Harbor City Waves\""))
 			&& Projection.Contains(
@@ -5181,8 +5199,6 @@ void AOddsWellLocomotionGameMode::BeginPlay()
 				TEXT("\"selected_decimal_odds_e4\": 17365"))
 			&& Projection.Contains(
 				TEXT("\"potential_gross_return\": 69"))
-			&& Projection.Contains(TEXT("\"home_score\": 97"))
-			&& Projection.Contains(TEXT("\"away_score\": 101"))
 			&& Projection.Contains(
 				TEXT("\"winner\": \"Mesa Vista Sol\""))
 			&& Projection.Contains(TEXT("\"outcome\": \"lost\""))
@@ -5194,6 +5210,13 @@ void AOddsWellLocomotionGameMode::BeginPlay()
 			&& Projection.Contains(TEXT("\"ledger_entry_count\": 2"))
 			&& Projection.Contains(TEXT("\"final_balance\": 60"))
 			&& Projection.Contains(TEXT("\"net\": -40"));
+		const FString OfferId = bCurrentProjection
+			? TEXT("c929f90b9fe2a7962f34b88819fd5405db1dd400a6d24cd0d7110081c8fb3e5d")
+			: TEXT("1b5c696d7f9fd63a01e4f7d611d77834c4cccf23a97e811ac8d0f887c9183631");
+		const FString ResultSha = bCurrentProjection
+			? TEXT("05a4a2a1488d4852318a398ff6e8eaf4a3cac47257b441feceb7426a4b5b0289")
+			: TEXT("e4b8b4e26126612e1173b4509c67666df44cfcf7082b51051e9de0097f45d0c6");
+		const FString FinalScore = bCurrentProjection ? TEXT("79-113") : TEXT("97-101");
 		bool bCleanup = false;
 		if (bPassed && bCanonicalLossReconciliationQaVerify)
 		{
@@ -5201,8 +5224,11 @@ void AOddsWellLocomotionGameMode::BeginPlay()
 			bPassed = bCleanup;
 		}
 		const FString Evidence = FString::Printf(
-			TEXT("ODDSWELL_CANONICAL_MATCH_WINNER_LOSS_RECONCILIATION_QA|result=%s|schema=oddswell-match-winner-reconciliation-v1|offer_id=1b5c696d7f9fd63a01e4f7d611d77834c4cccf23a97e811ac8d0f887c9183631|selected_team=Harbor_City_Waves|probability_e8=57586693|decimal_odds_e4=17365|stake=40|potential_return=69|final_score=97-101|winner=Mesa_Vista_Sol|outcome=lost|gross_return_due=0|gross_return_applied=0|decision_status=decided_pending_apply|finalization_status=settled_lost|ledger_entries=2|final_balance=60|net=-40|read_only=true|source_bytes_stable=%s|source_mtime_stable=%s|controls=false|mutation=false|payout=false|refund=false|cleanup=%s|detail=%s"),
+			TEXT("ODDSWELL_CANONICAL_MATCH_WINNER_LOSS_RECONCILIATION_QA|result=%s|schema=oddswell-match-winner-reconciliation-v1|offer_id=%s|result_sha=%s|selected_team=Harbor_City_Waves|probability_e8=57586693|decimal_odds_e4=17365|stake=40|potential_return=69|final_score=%s|winner=Mesa_Vista_Sol|outcome=lost|gross_return_due=0|gross_return_applied=0|decision_status=decided_pending_apply|finalization_status=settled_lost|ledger_entries=2|final_balance=60|net=-40|read_only=true|source_bytes_stable=%s|source_mtime_stable=%s|controls=false|mutation=false|payout=false|refund=false|cleanup=%s|detail=%s"),
 			bPassed ? TEXT("PASS") : TEXT("FAIL"),
+			*OfferId,
+			*ResultSha,
+			*FinalScore,
 			bSourceBytesStable ? TEXT("true") : TEXT("false"),
 			bSourceMtimeStable ? TEXT("true") : TEXT("false"),
 			bCleanup ? TEXT("true") : TEXT("false"),
