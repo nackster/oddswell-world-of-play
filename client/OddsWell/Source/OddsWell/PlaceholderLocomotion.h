@@ -383,6 +383,7 @@ public:
 
 private:
 	void PublishOddsBucksReconciliation();
+	void ResumeCanonicalMatchWinnerResultLink();
 	void ScheduleCanonicalMatchWinnerTipoffLock();
 	void RunCanonicalMatchWinnerTipoffLock();
 	void RunSportsbookLockQa();
