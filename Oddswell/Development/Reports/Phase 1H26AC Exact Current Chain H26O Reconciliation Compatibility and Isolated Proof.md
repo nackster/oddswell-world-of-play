@@ -24,7 +24,7 @@ The projection exposes only the existing approved fields: Harbor selected, proba
 
 Ponytail added one exact native predicate and one exact Admin variant. It did not add an endpoint, card, schema, framework, generalized history, automatic H26O chain, service, backend, simulator change, brain change, paid API, credit purchase, real-money path, retraining, payout, or refund.
 
-H26P deliberately remains tied to the original `97`–`101` chain. The current H26AB clone produces no player receipt and the packaged proof log contains no H26P marker. A current-chain player receipt requires a separate Scope Director decision.
+H26P deliberately remains tied to the original `97`–`101` chain. The current H26AB clone produces no successful H26P receipt or partial receipt evidence; the packaged log truthfully records the existing H26P `REJECTED` / `unavailable=true` availability marker. A current-chain player receipt requires a separate Scope Director decision.
 
 Partial, tampered, mixed old/current, malformed, and missing evidence fails closed. Rejection removes stale projection output and exposes no partial values. The existing archived win/loss/void consumers remain unchanged.
 
