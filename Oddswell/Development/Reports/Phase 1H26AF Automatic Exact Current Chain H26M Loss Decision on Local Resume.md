@@ -32,6 +32,18 @@ The fresh path runs only after H26AE durably proves the fixed H26L result. The c
 
 Missing result evidence is a locked no-op. Tampered result evidence is rejected. Altered identity, conflicting decision, downstream state, third ledger entry, nonzero return, winning outcome, and failed persistence remain covered by the retained H26M transition tests and cannot update GameMode memory. H26N–H26P remain separate gates.
 
+## Corrective evidence retained
+
+Three preliminary rejected logs are retained for audit and are not the final accepted proof:
+
+- `Accepted/H26AF-Accepted.log` records the first packaged attempt. H26AE linked the exact result and H26M persisted the exact decision, but H26AF reported `durable_reload_failed` because the new exact-result helper and fixture used `oddswell-private-result-recorder-v1` while the persisted record correctly used `oddswell-private-game-result-recorder-v1`. Local Odds Bucks authority failed closed; H26N–H26P did not run.
+- `Accepted/H26AF-Accepted-Final2.log` records the same rejection after an editor-only rebuild accidentally left the packaged game executable on the preliminary binary. The persisted H26M SaveGame was still the exact expected `8,332`-byte artifact, H26AF rejected authority, H26P stayed unavailable, and no H26N or later mutation occurred.
+- `Accepted/H26AF-ColdDuplicate.log` records the next cold-restart boundary discovery. The parameterless H26L wrapper returned its generic exact-prerequisite rejection before the narrower downstream-state error, so the preliminary fallback did not invoke H26M `Duplicate`. The SaveGame bytes, SHA-256, and mtime remained unchanged; no H26AF acceptance or H26N–H26P mutation occurred.
+
+The first correction changed only the helper/fixture literal to the persisted `oddswell-private-game-result-recorder-v1`, rebuilt both editor and game targets, and repackaged. The second correction recognizes the wrapper's existing exact generic prerequisite error only as permission to attempt the already-strict H26M duplicate check; it still requires H26M to return `Duplicate`, the exact current decision fields, and a successful durable-chain reload. A missing result exits before the wrapper, and tampered private evidence returns a different error and never enters this fallback.
+
+The final accepted evidence is `Accepted/H26AF-Accepted-SourceFinal.log` and `Accepted/H26AF-ColdDuplicate-SourceFinal.log`. Those source-final runs prove `Decided` and byte/hash/mtime-stable `Duplicate` respectively, with zero H26N finalizations and no H26P success.
+
 ## Packaged proof
 
 - Final Windows package: `50` files, `1,048,153,214` bytes, zero Python files. The source-clean build/package passed in `146.01s`; the final scoped archive refresh passed in `45.42s`.
