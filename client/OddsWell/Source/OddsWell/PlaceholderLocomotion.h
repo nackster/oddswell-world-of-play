@@ -351,6 +351,7 @@ public:
 private:
 	AOddsWellPlaceholderCharacter* GetOddsWellCharacter() const;
 	void DrawTicketBoothPrompt();
+	void DrawSettledLossHandoffCue(const AOddsWellPlaceholderCharacter& Character);
 	void DrawTicketBoothUnavailableMenu();
 	void DrawTicketBoothSettledLossReceipt(const FOddsWellCanonicalSettledLossReceipt& Receipt);
 	void DrawTicketBoothMenu(const AOddsWellPlaceholderCharacter& Character, const FOddsWellMatchWinnerOfferPreview& Offer);

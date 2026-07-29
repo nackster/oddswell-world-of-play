@@ -123,6 +123,47 @@ FString BuildCanonicalSettledLossReceiptText(
 		Receipt.CurrentBalance);
 }
 
+bool BuildSettledLossHandoffCue(
+	const bool bReceiptValid,
+	const FString& MapName,
+	const FVector& PlayerLocation,
+	const float FacingYaw,
+	const bool bMenuOpen,
+	const bool bInStudio,
+	const bool bInStadium,
+	FString& OutCue)
+{
+	OutCue.Reset();
+	const FVector2D ToBooth(
+		SportsbookInteractionLocation.X - PlayerLocation.X,
+		SportsbookInteractionLocation.Y - PlayerLocation.Y);
+	const float Distance = ToBooth.Size();
+	if (!bReceiptValid
+		|| !MapName.Contains(TEXT("SundaleGraybox"))
+		|| bMenuOpen
+		|| bInStudio
+		|| bInStadium
+		|| Distance <= SportsbookInteractionRadius)
+	{
+		return false;
+	}
+
+	const float FacingRadians = FMath::DegreesToRadians(FacingYaw);
+	const FVector2D Forward(FMath::Cos(FacingRadians), FMath::Sin(FacingRadians));
+	const FVector2D Right(-Forward.Y, Forward.X);
+	const FVector2D Direction = ToBooth / Distance;
+	const float ForwardDot = FVector2D::DotProduct(Direction, Forward);
+	const float RightDot = FVector2D::DotProduct(Direction, Right);
+	const TCHAR* RelativeDirection = FMath::Abs(ForwardDot) >= FMath::Abs(RightDot)
+		? (ForwardDot >= 0.0f ? TEXT("AHEAD") : TEXT("BEHIND"))
+		: (RightDot >= 0.0f ? TEXT("RIGHT") : TEXT("LEFT"));
+	OutCue = FString::Printf(
+		TEXT("SETTLED BET READY \u2014 TICKET BOOTH: %s \u2014 %d m"),
+		RelativeDirection,
+		FMath::RoundToInt(Distance / 100.0f));
+	return true;
+}
+
 bool IsCanonicalBetSlipOfferUsable(
 	const FOddsWellMatchWinnerOfferPreview& Offer)
 {
@@ -4665,6 +4706,35 @@ void AOddsWellSportsbookHUD::DrawHUD()
 	{
 		DrawTicketBoothPrompt();
 	}
+	else
+	{
+		DrawSettledLossHandoffCue(*Character);
+	}
+}
+
+void AOddsWellSportsbookHUD::DrawSettledLossHandoffCue(
+	const AOddsWellPlaceholderCharacter& Character)
+{
+	FString Cue;
+	if (!BuildSettledLossHandoffCue(
+			Character.GetTicketBoothSettledLossReceipt() != nullptr,
+			GetWorld()->GetMapName(),
+			Character.GetActorLocation(),
+			Character.GetControlRotation().Yaw,
+			Character.IsTicketBoothMenuVisible(),
+			GetWorld()->GetAuthGameMode<AOddsWellStudioGameMode>() != nullptr,
+			GetWorld()->GetAuthGameMode<AOddsWellStadiumGameMode>() != nullptr,
+			Cue))
+	{
+		return;
+	}
+	const float Width = FMath::Min(850.0f, Canvas->SizeX - 32.0f);
+	const float Height = 52.0f;
+	const float X = (Canvas->SizeX - Width) * 0.5f;
+	const float Y = 24.0f;
+	DrawRect(FLinearColor(0.025f, 0.055f, 0.08f, 0.94f), X, Y, Width, Height);
+	DrawRect(FLinearColor(0.96f, 0.78f, 0.30f, 1.0f), X, Y, Width, 4.0f);
+	DrawText(Cue, FLinearColor::White, X + 20.0f, Y + 16.0f, nullptr, 1.0f);
 }
 
 void AOddsWellSportsbookHUD::DrawTicketBoothPrompt()
@@ -8408,6 +8478,63 @@ bool FOddsWellCanonicalSettledLossReceiptPresentationTest::RunTest(
 			|| Lower.Contains(TEXT("athlete"))
 			|| Lower.Contains(TEXT("offer"))
 			|| Lower.Contains(TEXT("request")));
+	return !HasAnyErrors();
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(
+	FOddsWellCanonicalSettledLossHandoffCueTest,
+	"OddsWell.Locomotion.CanonicalSettledLossHandoffCue",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+
+bool FOddsWellCanonicalSettledLossHandoffCueTest::RunTest(
+	const FString& Parameters)
+{
+	const FString MapName(TEXT("UEDPIE_0_SundaleGraybox"));
+	FString Cue;
+	const auto BuildsCue = [&](const FVector& Location, const float Yaw)
+	{
+		return BuildSettledLossHandoffCue(
+			true,
+			MapName,
+			Location,
+			Yaw,
+			false,
+			false,
+			false,
+			Cue);
+	};
+
+	TestTrue(TEXT("H26AH.1 hands a valid H26P receipt to the city cue"), BuildsCue(SafeSpawnLocation, 0.0f));
+	TestEqual(
+		TEXT("H26AH.1 start cue derives right and 180 meters"),
+		Cue,
+		FString(TEXT("SETTLED BET READY \u2014 TICKET BOOTH: RIGHT \u2014 180 m")));
+	TestTrue(TEXT("H26AH.1 derives ahead"), BuildsCue(SportsbookInteractionLocation - FVector(10000.0f, 0.0f, 0.0f), 0.0f));
+	TestTrue(TEXT("H26AH.1 ahead cue keeps 100 meter distance"), Cue.Contains(TEXT("AHEAD \u2014 100 m")));
+	TestTrue(TEXT("H26AH.1 derives behind"), BuildsCue(SportsbookInteractionLocation + FVector(10000.0f, 0.0f, 0.0f), 0.0f));
+	TestTrue(TEXT("H26AH.1 behind cue keeps 100 meter distance"), Cue.Contains(TEXT("BEHIND \u2014 100 m")));
+	TestTrue(TEXT("H26AH.1 derives right"), BuildsCue(SportsbookInteractionLocation - FVector(0.0f, 10000.0f, 0.0f), 0.0f));
+	TestTrue(TEXT("H26AH.1 right cue keeps 100 meter distance"), Cue.Contains(TEXT("RIGHT \u2014 100 m")));
+	TestTrue(TEXT("H26AH.1 derives left"), BuildsCue(SportsbookInteractionLocation + FVector(0.0f, 10000.0f, 0.0f), 0.0f));
+	TestTrue(TEXT("H26AH.1 left cue keeps 100 meter distance"), Cue.Contains(TEXT("LEFT \u2014 100 m")));
+
+	TestFalse(TEXT("H26AH.1 invalid receipt exposes no cue"), BuildSettledLossHandoffCue(false, MapName, SafeSpawnLocation, 0.0f, false, false, false, Cue));
+	TestTrue(TEXT("H26AH.1 invalid receipt clears handoff text"), Cue.IsEmpty());
+	TestFalse(TEXT("H26AH.1 wrong map exposes no cue"), BuildSettledLossHandoffCue(true, TEXT("Bootstrap"), SafeSpawnLocation, 0.0f, false, false, false, Cue));
+	TestFalse(TEXT("H26AH.1 hides while receipt menu is open"), BuildSettledLossHandoffCue(true, MapName, SafeSpawnLocation, 0.0f, true, false, false, Cue));
+	TestFalse(TEXT("H26AH.1 hides inside Studio"), BuildSettledLossHandoffCue(true, MapName, SafeSpawnLocation, 0.0f, false, true, false, Cue));
+	TestFalse(TEXT("H26AH.1 hides inside stadium"), BuildSettledLossHandoffCue(true, MapName, SafeSpawnLocation, 0.0f, false, false, true, Cue));
+	TestFalse(
+		TEXT("H26AH.1 yields to the existing booth-radius prompt"),
+		BuildSettledLossHandoffCue(
+			true,
+			MapName,
+			SportsbookInteractionLocation + FVector(SportsbookInteractionRadius, 0.0f, 0.0f),
+			0.0f,
+			false,
+			false,
+			false,
+			Cue));
 	return !HasAnyErrors();
 }
 
