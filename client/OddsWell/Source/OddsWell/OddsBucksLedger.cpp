@@ -79,6 +79,10 @@ const FString RetainedCanonicalReplaySha(TEXT("efe7575962c88e9b8b4fcfcb6357c5307
 const FString CurrentCanonicalOfferId(TEXT("c929f90b9fe2a7962f34b88819fd5405db1dd400a6d24cd0d7110081c8fb3e5d"));
 const FString CurrentCanonicalResultSha(TEXT("05a4a2a1488d4852318a398ff6e8eaf4a3cac47257b441feceb7426a4b5b0289"));
 const FString CurrentCanonicalReplaySha(TEXT("35e604f306b5b2709f2ca8c5a4ad8b892ac6a4012a2c595072f6e326fa4e25db"));
+const FString CurrentCanonicalCommitmentSha(TEXT("898e89ef142f884fe2514bc55a65b91c80a5bf25d068467b2ddbfe25569ea98f"));
+constexpr int64 CurrentCanonicalAwayProbabilityE8 = 42413307;
+constexpr int64 CurrentCanonicalAwayDecimalOddsE4 = 23577;
+constexpr int64 CurrentCanonicalAwayGrossReturn40 = 94;
 const FString MatchWinnerCanceledGameSchema(TEXT("oddswell-match-winner-canceled-game-v1"));
 const FString MatchWinnerCanceledGameVersion(TEXT("match-winner-canceled-game-v1"));
 const FName MatchWinnerCanceledGameReason(TEXT("game_canceled"));
@@ -508,6 +512,62 @@ bool IsExactPrivateCanonicalMatchWinnerResult(
 		&& Result.HomeScore != Result.AwayScore
 		&& Result.Winner == DerivedWinner
 		&& IsLowerHexHash(Result.ReplaySealSha256);
+}
+
+bool IsExactCurrentCanonicalMesaWinEvidence(
+	const FOddsWellMatchWinnerRequestRecord& Request,
+	const FOddsWellMatchWinnerLockRecord& Lock,
+	const FOddsWellMatchWinnerResultLinkRecord& Result)
+{
+	const FString RequestId =
+		TEXT("canonical:h26e:match_winner:request:")
+		+ CurrentCanonicalOfferId;
+	const FString LockId =
+		TEXT("canonical:h26g:match_winner:lock:")
+		+ CurrentCanonicalOfferId;
+	return Request.RequestCommandId == RequestId
+		&& Request.StakeLedgerCommandId == RequestId
+		&& Request.OfferId == CurrentCanonicalOfferId
+		&& Request.OfferSchema == MatchWinnerOfferSchema
+		&& Request.OfferVersion == MatchWinnerOfferVersion
+		&& Request.Market == MatchWinnerMarket
+		&& Request.Currency == OddsBucksCurrency
+		&& Request.SourcePredictionVersion == MatchWinnerPredictionVersion
+		&& Request.SourceSnapshotVersion == MatchWinnerSnapshotVersion
+		&& Request.SourceModel == MatchWinnerSourceModel
+		&& Request.SourceCommitmentSha256 == CurrentCanonicalCommitmentSha
+		&& Request.SeasonNumber == 1
+		&& Request.GameNumber == 1
+		&& Request.HomeTeam == SealedResultHomeTeam
+		&& Request.AwayTeam == SealedResultAwayTeam
+		&& Request.OfferedTeam == SealedResultAwayTeam
+		&& Request.SelectedWinProbabilityE8 == CurrentCanonicalAwayProbabilityE8
+		&& Request.SelectedDecimalOddsE4 == CurrentCanonicalAwayDecimalOddsE4
+		&& Request.Stake == 40
+		&& Request.PayoutFormula == MatchWinnerPayoutFormula
+		&& Request.GrossReturn == CurrentCanonicalAwayGrossReturn40
+		&& Request.Status == AcceptedPendingLockStatus
+		&& Lock.LockCommandId == LockId
+		&& Lock.RequestCommandId == RequestId
+		&& Lock.SeasonNumber == 1
+		&& Lock.GameNumber == 1
+		&& Lock.AuthoritativeGameStartUnixSeconds == Request.LockUnixSeconds
+		&& Lock.LockUnixSeconds == Request.LockUnixSeconds
+		&& Lock.Decision == MatchWinnerLockedDecision
+		&& Result.ResultCommandId
+			== PrivateCanonicalResultCommandPrefix + CurrentCanonicalResultSha
+		&& Result.RequestCommandId == RequestId
+		&& Result.LockCommandId == LockId
+		&& Result.ResultSchema == PrivateCanonicalResultSchema
+		&& Result.ResultVersion == PrivateCanonicalResultRecorderVersion
+		&& Result.SeasonNumber == 1
+		&& Result.GameNumber == 1
+		&& Result.HomeTeam == SealedResultHomeTeam
+		&& Result.AwayTeam == SealedResultAwayTeam
+		&& Result.HomeScore == 79
+		&& Result.AwayScore == 113
+		&& Result.Winner == SealedResultAwayTeam
+		&& Result.ReplaySealSha256 == CurrentCanonicalReplaySha;
 }
 
 bool IsSameMatchWinnerResultLink(
@@ -1146,8 +1206,24 @@ bool ValidateMatchWinnerSettlementDecisions(
 			? MatchWinnerWonOutcome
 			: MatchWinnerLostOutcome;
 		const bool bExactWin = DerivedOutcome == MatchWinnerWonOutcome;
-		const int64 ExpectedWinProbabilityE8 = bExactWin ? 40000000 : 0;
-		const int64 ExpectedGrossReturnDue = bExactWin && Request
+		const bool bApprovedLegacyWin = bExactWin
+			&& Request
+			&& Request->OfferId == ExactMatchWinnerOfferId
+			&& Request->OfferedTeam == SealedResultAwayTeam
+			&& Request->Stake == 40;
+		const bool bApprovedCurrentWin = bExactWin
+			&& Request
+			&& Lock
+			&& Result
+			&& IsExactCurrentCanonicalMesaWinEvidence(*Request, *Lock, *Result);
+		const int64 ExpectedWinProbabilityE8 = bApprovedLegacyWin
+			? 40000000
+			: bApprovedCurrentWin
+				? CurrentCanonicalAwayProbabilityE8
+				: 0;
+		const int64 ExpectedGrossReturnDue = bExactWin
+			&& Request
+			&& ExpectedWinProbabilityE8 > 0
 			? Request->Stake * MatchWinnerProbabilityScale / ExpectedWinProbabilityE8
 			: 0;
 		if (Decision.DecisionCommandId.TrimStartAndEnd().IsEmpty()
@@ -1173,7 +1249,7 @@ bool ValidateMatchWinnerSettlementDecisions(
 			|| Decision.AuthoritativeWinner != Result->Winner
 			|| Decision.Stake != Request->Stake
 			|| Decision.Outcome != DerivedOutcome
-			|| (bExactWin && (Request->OfferId != ExactMatchWinnerOfferId || Request->OfferedTeam != SealedResultAwayTeam || Request->Stake != 40))
+			|| (bExactWin && !bApprovedLegacyWin && !bApprovedCurrentWin)
 			|| Decision.GrossReturnDue != ExpectedGrossReturnDue
 			|| Decision.SelectedWinProbabilityE8 != ExpectedWinProbabilityE8
 			|| Decision.PayoutFormula != (bExactWin ? MatchWinnerPayoutFormula : FString())
@@ -5837,10 +5913,26 @@ EOddsWellMatchWinnerSettlementDecisionResult DecideOddsWellMatchWinnerSettlement
 					return Selection.Team == Request->OfferedTeam;
 				})
 			: nullptr;
+		const bool bApprovedLegacyWin = ExactOffer
+			&& Request
+			&& Lock
+			&& Result
+			&& ExactOffer->OfferId == ExactMatchWinnerOfferId
+			&& Request->OfferedTeam == SealedResultAwayTeam
+			&& Request->Stake == 40
+			&& SelectedOffer
+			&& SelectedOffer->WinProbabilityE8 == 40000000;
+		const bool bApprovedCurrentWin = ExactOffer
+			&& Request
+			&& Lock
+			&& Result
+			&& ExactOffer->OfferId == CurrentCanonicalOfferId
+			&& SelectedOffer
+			&& SelectedOffer->WinProbabilityE8 == CurrentCanonicalAwayProbabilityE8
+			&& IsExactCurrentCanonicalMesaWinEvidence(*Request, *Lock, *Result);
 		if (!ExactOffer
 			|| !ValidateMatchWinnerOffer(*ExactOffer, OutError)
 			|| ExactOffer->OfferId != Request->OfferId
-			|| ExactOffer->OfferId != ExactMatchWinnerOfferId
 			|| ExactOffer->OfferVersion != Request->OfferVersion
 			|| ExactOffer->SeasonNumber != Request->SeasonNumber
 			|| ExactOffer->GameNumber != Request->GameNumber
@@ -5851,7 +5943,7 @@ EOddsWellMatchWinnerSettlementDecisionResult DecideOddsWellMatchWinnerSettlement
 			|| Request->OfferedTeam != SealedResultAwayTeam
 			|| Request->Stake != 40
 			|| !SelectedOffer
-			|| SelectedOffer->WinProbabilityE8 != 40000000)
+			|| (!bApprovedLegacyWin && !bApprovedCurrentWin))
 		{
 			if (OutError.IsEmpty())
 			{
@@ -5862,9 +5954,12 @@ EOddsWellMatchWinnerSettlementDecisionResult DecideOddsWellMatchWinnerSettlement
 		SelectedWinProbabilityE8 = SelectedOffer->WinProbabilityE8;
 		GrossReturnDue = Request->Stake * MatchWinnerProbabilityScale / SelectedWinProbabilityE8;
 		BoundPayoutFormula = ExactOffer->PayoutFormula;
-		if (GrossReturnDue != 100)
+		const int64 ExpectedGrossReturnDue = bApprovedCurrentWin
+			? CurrentCanonicalAwayGrossReturn40
+			: 100;
+		if (GrossReturnDue != ExpectedGrossReturnDue)
 		{
-			OutError = TEXT("The exact winning return does not recompute to 100 Odds Bucks.");
+			OutError = TEXT("The exact winning return does not match the approved offer.");
 			return EOddsWellMatchWinnerSettlementDecisionResult::Rejected;
 		}
 	}

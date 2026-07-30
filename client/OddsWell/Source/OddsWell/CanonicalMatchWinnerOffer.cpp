@@ -3085,6 +3085,264 @@ bool FOddsWellCanonicalMatchWinnerLossDecisionTest::RunTest(
 }
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
+	FOddsWellCanonicalMatchWinnerCurrentMesaWinDecisionTest,
+	"OddsWell.League.CanonicalMatchWinnerCurrentMesaWinDecision",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+
+bool FOddsWellCanonicalMatchWinnerCurrentMesaWinDecisionTest::RunTest(
+	const FString& Parameters)
+{
+	FString Error;
+	TestTrue(TEXT("H26AI QA ledger starts clean"), ResetOddsWellQaOddsBucksAndVerify(Error));
+	UGameplayStatics::DeleteGameInSlot(CanonicalRequestQaOfferSlot, CanonicalOfferUserIndex);
+	FOddsWellCanonicalScheduledGameRecord Schedule = TestSchedule();
+	Schedule.SeasonCreatedUnixSeconds = 1785271449;
+	Schedule.TipoffUnixSeconds = 1785273249;
+	Schedule.OfferEligibleUnixSeconds = 1785271449;
+	FOddsWellCanonicalPregameCommitmentRecord Commitment = TestCommitment();
+	Commitment.ScheduleCreatedUnixSeconds = Schedule.SeasonCreatedUnixSeconds;
+	Commitment.ScheduleTipoffUnixSeconds = Schedule.TipoffUnixSeconds;
+	FOddsWellCanonicalMatchWinnerOfferRecord OfferRecord;
+	TestEqual(
+		TEXT("H26AI exact H26C fixture creates"),
+		PersistOffer(
+			Schedule,
+			Commitment,
+			CanonicalRequestQaOfferSlot,
+			Schedule.SeasonCreatedUnixSeconds + 100,
+			OfferRecord,
+			Error),
+		EOddsWellCanonicalMatchWinnerOfferResult::Created);
+	FOddsWellMatchWinnerOffer ExactOffer;
+	FString ExactOfferJson;
+	TestTrue(
+		TEXT("H26AI exact current offer rebuilds"),
+		BuildExpectedOffer(Schedule, Commitment, ExactOffer, ExactOfferJson, Error));
+	TestEqual(
+		TEXT("H26AI current offer identity is fixed"),
+		ExactOffer.OfferId,
+		FString(TEXT("c929f90b9fe2a7962f34b88819fd5405db1dd400a6d24cd0d7110081c8fb3e5d")));
+
+	FOddsWellOddsBucksLedger Funded;
+	TestEqual(
+		TEXT("H26AI job credit applies"),
+		Funded.Append(GetOddsWellFirstJobCommandId(), GetOddsWellFirstJobPayout(), GetOddsWellFirstJobReason()),
+		EOddsWellOddsBucksAppendResult::Applied);
+	TestTrue(TEXT("H26AI funded profile persists"), SaveOddsWellOddsBucksLedger(Funded, 2200086400, true, Error));
+	const FString RequestId = TEXT("canonical:h26e:match_winner:request:") + ExactOffer.OfferId;
+	const FString LockId = TEXT("canonical:h26g:match_winner:lock:") + ExactOffer.OfferId;
+	const FString ResultSha(TEXT("05a4a2a1488d4852318a398ff6e8eaf4a3cac47257b441feceb7426a4b5b0289"));
+	const FString ResultId = TEXT("canonical:h26l:match_winner:result:") + ResultSha;
+	const FString DecisionId = TEXT("canonical:h26ai:match_winner:win-decision:") + ResultSha;
+	FOddsWellMatchWinnerRequestRecord Request;
+	int64 Balance = 0;
+	TestEqual(
+		TEXT("H26AI exact Mesa 40 request accepts in isolation"),
+		AcceptOddsWellMatchWinnerRequest(
+			ExactOffer,
+			RequestId,
+			ExactOffer.AwayTeam,
+			40,
+			Schedule.SeasonCreatedUnixSeconds + 100,
+			true,
+			Request,
+			Balance,
+			Error),
+		EOddsWellMatchWinnerRequestResult::Accepted);
+	TestEqual(TEXT("H26AI stake leaves balance 60"), Balance, int64{60});
+	TestEqual(TEXT("H26AI Mesa probability is exact"), Request.SelectedWinProbabilityE8, int64{42413307});
+	TestEqual(TEXT("H26AI Mesa review return is 94"), Request.GrossReturn, int64{94});
+	FOddsWellMatchWinnerLockRecord Lock;
+	TestEqual(
+		TEXT("H26AI exact request locks"),
+		LockOddsWellMatchWinnerRequest(
+			RequestId,
+			LockId,
+			1,
+			1,
+			Schedule.TipoffUnixSeconds,
+			true,
+			Lock,
+			Error),
+		EOddsWellMatchWinnerLockResult::Locked);
+	FOddsWellMatchWinnerResultLinkRecord Result;
+	TestEqual(
+		TEXT("H26AI exact current Mesa result links"),
+		LinkOddsWellMatchWinnerResult(
+			ResultId,
+			RequestId,
+			LockId,
+			TEXT("oddswell-private-canonical-game-result-v1"),
+			TEXT("oddswell-private-game-result-recorder-v1"),
+			1,
+			1,
+			ExactOffer.HomeTeam,
+			ExactOffer.AwayTeam,
+			79,
+			113,
+			ExactOffer.AwayTeam,
+			TEXT("35e604f306b5b2709f2ca8c5a4ad8b892ac6a4012a2c595072f6e326fa4e25db"),
+			true,
+			Result,
+			Error),
+		EOddsWellMatchWinnerResultLinkResult::Linked);
+
+	const FString QaLedgerPath = FPaths::Combine(
+		FPaths::ProjectSavedDir(), TEXT("SaveGames"), TEXT("OddsWellOddsBucksQA.sav"));
+	TArray<uint8> ExactEvidenceBytes;
+	TestTrue(TEXT("H26AI exact evidence bytes read"), FFileHelper::LoadFileToArray(ExactEvidenceBytes, *QaLedgerPath));
+	TArray<uint8> ExactEvidenceMemory;
+	TestTrue(
+		TEXT("H26AI exact evidence serializes"),
+		UGameplayStatics::SaveGameToMemory(
+			UGameplayStatics::LoadGameFromSlot(TEXT("OddsWellOddsBucksQA"), 0),
+			ExactEvidenceMemory));
+	auto RestoreExactEvidence = [this, &ExactEvidenceMemory]()
+	{
+		USaveGame* State = UGameplayStatics::LoadGameFromMemory(ExactEvidenceMemory);
+		TestTrue(
+			TEXT("H26AI exact evidence restores"),
+			State && UGameplayStatics::SaveGameToSlot(State, TEXT("OddsWellOddsBucksQA"), 0));
+	};
+	auto TestUnchanged = [this, &QaLedgerPath](const FString& Label, const TArray<uint8>& Before)
+	{
+		TArray<uint8> After;
+		TestTrue(Label + TEXT(" remains readable"), FFileHelper::LoadFileToArray(After, *QaLedgerPath));
+		TestTrue(Label + TEXT(" causes zero mutation"), After == Before);
+	};
+
+	FOddsWellMatchWinnerSettlementDecisionRecord Rejected;
+	TestEqual(
+		TEXT("H26AI missing exact offer rejects"),
+		DecideOddsWellMatchWinnerSettlement(DecisionId, RequestId, LockId, ResultId, true, Rejected, Error),
+		EOddsWellMatchWinnerSettlementDecisionResult::Rejected);
+	TestUnchanged(TEXT("H26AI missing exact offer"), ExactEvidenceBytes);
+	FOddsWellMatchWinnerOffer TamperedOffer = ExactOffer;
+	TamperedOffer.Selections[1].WinProbabilityE8++;
+	TestEqual(
+		TEXT("H26AI tampered offer rejects"),
+		DecideOddsWellMatchWinnerSettlement(TamperedOffer, DecisionId, RequestId, LockId, ResultId, true, Rejected, Error),
+		EOddsWellMatchWinnerSettlementDecisionResult::Rejected);
+	TestUnchanged(TEXT("H26AI tampered offer"), ExactEvidenceBytes);
+	UOddsWellOddsBucksSaveGame* MissingResultState = Cast<UOddsWellOddsBucksSaveGame>(
+		UGameplayStatics::LoadGameFromMemory(ExactEvidenceMemory));
+	TestNotNull(TEXT("H26AI missing-result fixture loads"), MissingResultState);
+	if (MissingResultState)
+	{
+		MissingResultState->MatchWinnerResultLinks.Reset();
+		TestTrue(TEXT("H26AI missing-result fixture persists"), UGameplayStatics::SaveGameToSlot(MissingResultState, TEXT("OddsWellOddsBucksQA"), 0));
+		TArray<uint8> MissingBytes;
+		TestTrue(TEXT("H26AI missing-result bytes read"), FFileHelper::LoadFileToArray(MissingBytes, *QaLedgerPath));
+		TestEqual(
+			TEXT("H26AI missing result rejects"),
+			DecideOddsWellMatchWinnerSettlement(ExactOffer, DecisionId, RequestId, LockId, ResultId, true, Rejected, Error),
+			EOddsWellMatchWinnerSettlementDecisionResult::Rejected);
+		TestUnchanged(TEXT("H26AI missing result"), MissingBytes);
+		RestoreExactEvidence();
+	}
+	UOddsWellOddsBucksSaveGame* TamperedRequestState = Cast<UOddsWellOddsBucksSaveGame>(
+		UGameplayStatics::LoadGameFromMemory(ExactEvidenceMemory));
+	TestNotNull(TEXT("H26AI tampered-request fixture loads"), TamperedRequestState);
+	if (TamperedRequestState)
+	{
+		FOddsWellMatchWinnerRequestRecord& TamperedRequest = TamperedRequestState->MatchWinnerRequests[0];
+		TamperedRequest.SelectedWinProbabilityE8++;
+		TamperedRequest.SelectedDecimalOddsE4 = 100000000LL * 10000 / TamperedRequest.SelectedWinProbabilityE8;
+		TamperedRequest.GrossReturn = TamperedRequest.Stake * 100000000LL / TamperedRequest.SelectedWinProbabilityE8;
+		TestTrue(TEXT("H26AI tampered-request fixture persists"), UGameplayStatics::SaveGameToSlot(TamperedRequestState, TEXT("OddsWellOddsBucksQA"), 0));
+		TArray<uint8> TamperedRequestBytes;
+		TestTrue(TEXT("H26AI tampered-request bytes read"), FFileHelper::LoadFileToArray(TamperedRequestBytes, *QaLedgerPath));
+		TestEqual(
+			TEXT("H26AI tampered request price rejects"),
+			DecideOddsWellMatchWinnerSettlement(ExactOffer, DecisionId, RequestId, LockId, ResultId, true, Rejected, Error),
+			EOddsWellMatchWinnerSettlementDecisionResult::Rejected);
+		TestUnchanged(TEXT("H26AI tampered request"), TamperedRequestBytes);
+		RestoreExactEvidence();
+	}
+
+	UOddsWellOddsBucksSaveGame* ForeignState = Cast<UOddsWellOddsBucksSaveGame>(
+		UGameplayStatics::LoadGameFromMemory(ExactEvidenceMemory));
+	TestNotNull(TEXT("H26AI foreign-result fixture loads"), ForeignState);
+	if (ForeignState)
+	{
+		FOddsWellMatchWinnerResultLinkRecord& ForeignResult = ForeignState->MatchWinnerResultLinks[0];
+		ForeignResult.ResultCommandId = TEXT("canonical:h26l:match_winner:result:e4b8b4e26126612e1173b4509c67666df44cfcf7082b51051e9de0097f45d0c6");
+		ForeignResult.HomeScore = 97;
+		ForeignResult.AwayScore = 101;
+		ForeignResult.ReplaySealSha256 = TEXT("efe7575962c88e9b8b4fcfcb6357c5307c6eeedd828b4b8f532c6e5eae985f62");
+		TestTrue(TEXT("H26AI foreign-result fixture persists"), UGameplayStatics::SaveGameToSlot(ForeignState, TEXT("OddsWellOddsBucksQA"), 0));
+		TArray<uint8> ForeignBytes;
+		TestTrue(TEXT("H26AI foreign-result bytes read"), FFileHelper::LoadFileToArray(ForeignBytes, *QaLedgerPath));
+		TestEqual(
+			TEXT("H26AI foreign result rejects"),
+			DecideOddsWellMatchWinnerSettlement(ExactOffer, DecisionId, RequestId, LockId, ForeignResult.ResultCommandId, true, Rejected, Error),
+			EOddsWellMatchWinnerSettlementDecisionResult::Rejected);
+		TestUnchanged(TEXT("H26AI foreign result"), ForeignBytes);
+		RestoreExactEvidence();
+	}
+
+	FOddsWellMatchWinnerSettlementDecisionRecord Decision;
+	TestEqual(
+		TEXT("H26AI exact Mesa decision persists"),
+		DecideOddsWellMatchWinnerSettlement(ExactOffer, DecisionId, RequestId, LockId, ResultId, true, Decision, Error),
+		EOddsWellMatchWinnerSettlementDecisionResult::Decided);
+	TestEqual(TEXT("H26AI selected team is Mesa"), Decision.SelectedTeam, ExactOffer.AwayTeam);
+	TestEqual(TEXT("H26AI authoritative winner is Mesa"), Decision.AuthoritativeWinner, ExactOffer.AwayTeam);
+	TestEqual(TEXT("H26AI outcome is won"), Decision.Outcome, FName(TEXT("won")));
+	TestEqual(TEXT("H26AI return due is 94"), Decision.GrossReturnDue, int64{94});
+	TestEqual(TEXT("H26AI probability remains exact"), Decision.SelectedWinProbabilityE8, int64{42413307});
+	TestEqual(TEXT("H26AI formula remains approved"), Decision.PayoutFormula, ExactOffer.PayoutFormula);
+	TestEqual(TEXT("H26AI remains pending application"), Decision.Status, FName(TEXT("decided_pending_apply")));
+
+	FOddsWellOddsBucksLedger AfterLedger;
+	int64 NextJobPayout = 0;
+	TArray<FOddsWellMatchWinnerRequestRecord> Requests;
+	TArray<FOddsWellMatchWinnerLockRecord> Locks;
+	TArray<FOddsWellMatchWinnerResultLinkRecord> Results;
+	TArray<FOddsWellMatchWinnerSettlementDecisionRecord> Decisions;
+	TArray<FOddsWellMatchWinnerLossFinalizationRecord> LossFinalizations;
+	TArray<FOddsWellMatchWinnerWinFinalizationRecord> WinFinalizations;
+	bool bFound = false;
+	TestTrue(
+		TEXT("H26AI cold decision state reloads"),
+		LoadOddsWellOddsBucksWagerFinalizationState(
+			true,
+			AfterLedger,
+			NextJobPayout,
+			Requests,
+			Locks,
+			Results,
+			Decisions,
+			LossFinalizations,
+			WinFinalizations,
+			bFound,
+			Error));
+	TestEqual(TEXT("H26AI keeps two ledger entries"), AfterLedger.GetEntries().Num(), 2);
+	TestEqual(TEXT("H26AI keeps balance 60"), AfterLedger.GetBalance(), int64{60});
+	TestEqual(TEXT("H26AI keeps one decision"), Decisions.Num(), 1);
+	TestTrue(TEXT("H26AI applies no payout or finalization"), LossFinalizations.IsEmpty() && WinFinalizations.IsEmpty());
+	TArray<uint8> DecidedBytes;
+	TestTrue(TEXT("H26AI decided bytes read"), FFileHelper::LoadFileToArray(DecidedBytes, *QaLedgerPath));
+	FOddsWellMatchWinnerSettlementDecisionRecord Duplicate;
+	TestEqual(
+		TEXT("H26AI exact retry is duplicate"),
+		DecideOddsWellMatchWinnerSettlement(ExactOffer, DecisionId, RequestId, LockId, ResultId, true, Duplicate, Error),
+		EOddsWellMatchWinnerSettlementDecisionResult::Duplicate);
+	TestUnchanged(TEXT("H26AI duplicate"), DecidedBytes);
+	TestEqual(
+		TEXT("H26AI conflicting second decision rejects"),
+		DecideOddsWellMatchWinnerSettlement(ExactOffer, DecisionId + TEXT(":conflict"), RequestId, LockId, ResultId, true, Rejected, Error),
+		EOddsWellMatchWinnerSettlementDecisionResult::Rejected);
+	TestUnchanged(TEXT("H26AI conflicting decision"), DecidedBytes);
+
+	TestTrue(TEXT("H26AI QA ledger cleanup succeeds"), ResetOddsWellQaOddsBucksAndVerify(Error));
+	TestTrue(
+		TEXT("H26AI offer fixture cleanup succeeds"),
+		UGameplayStatics::DeleteGameInSlot(CanonicalRequestQaOfferSlot, CanonicalOfferUserIndex));
+	return !HasAnyErrors();
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(
 	FOddsWellCanonicalMatchWinnerLossFinalizationTest,
 	"OddsWell.League.CanonicalMatchWinnerLossFinalization",
 	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
