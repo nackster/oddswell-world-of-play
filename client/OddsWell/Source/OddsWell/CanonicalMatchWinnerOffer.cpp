@@ -3342,6 +3342,283 @@ bool FOddsWellCanonicalMatchWinnerCurrentMesaWinDecisionTest::RunTest(
 	return !HasAnyErrors();
 }
 
+bool SeedCurrentMesaWinDecision(
+	FString& OutDecisionId,
+	FString& OutError)
+{
+	if (!ResetOddsWellQaOddsBucksAndVerify(OutError))
+	{
+		return false;
+	}
+	UGameplayStatics::DeleteGameInSlot(
+		CanonicalRequestQaOfferSlot,
+		CanonicalOfferUserIndex);
+	FOddsWellCanonicalScheduledGameRecord Schedule = TestSchedule();
+	Schedule.SeasonCreatedUnixSeconds = 1785271449;
+	Schedule.TipoffUnixSeconds = 1785273249;
+	Schedule.OfferEligibleUnixSeconds = 1785271449;
+	FOddsWellCanonicalPregameCommitmentRecord Commitment = TestCommitment();
+	Commitment.ScheduleCreatedUnixSeconds = Schedule.SeasonCreatedUnixSeconds;
+	Commitment.ScheduleTipoffUnixSeconds = Schedule.TipoffUnixSeconds;
+	FOddsWellCanonicalMatchWinnerOfferRecord OfferRecord;
+	FOddsWellMatchWinnerOffer ExactOffer;
+	FString ExactOfferJson;
+	FOddsWellOddsBucksLedger Funded;
+	if (PersistOffer(
+			Schedule,
+			Commitment,
+			CanonicalRequestQaOfferSlot,
+			Schedule.SeasonCreatedUnixSeconds + 100,
+			OfferRecord,
+			OutError) != EOddsWellCanonicalMatchWinnerOfferResult::Created
+		|| !BuildExpectedOffer(
+			Schedule,
+			Commitment,
+			ExactOffer,
+			ExactOfferJson,
+			OutError)
+		|| ExactOffer.OfferId
+			!= TEXT("c929f90b9fe2a7962f34b88819fd5405db1dd400a6d24cd0d7110081c8fb3e5d")
+		|| Funded.Append(
+			GetOddsWellFirstJobCommandId(),
+			GetOddsWellFirstJobPayout(),
+			GetOddsWellFirstJobReason()) != EOddsWellOddsBucksAppendResult::Applied
+		|| !SaveOddsWellOddsBucksLedger(Funded, 2200086400, true, OutError))
+	{
+		return false;
+	}
+
+	const FString RequestId =
+		TEXT("canonical:h26e:match_winner:request:") + ExactOffer.OfferId;
+	const FString LockId =
+		TEXT("canonical:h26g:match_winner:lock:") + ExactOffer.OfferId;
+	const FString ResultSha(
+		TEXT("05a4a2a1488d4852318a398ff6e8eaf4a3cac47257b441feceb7426a4b5b0289"));
+	const FString ResultId =
+		TEXT("canonical:h26l:match_winner:result:") + ResultSha;
+	OutDecisionId =
+		TEXT("canonical:h26ai:match_winner:win-decision:") + ResultSha;
+	FOddsWellMatchWinnerRequestRecord Request;
+	FOddsWellMatchWinnerLockRecord Lock;
+	FOddsWellMatchWinnerResultLinkRecord Result;
+	FOddsWellMatchWinnerSettlementDecisionRecord Decision;
+	int64 Balance = 0;
+	return AcceptOddsWellMatchWinnerRequest(
+			ExactOffer,
+			RequestId,
+			ExactOffer.AwayTeam,
+			40,
+			Schedule.SeasonCreatedUnixSeconds + 100,
+			true,
+			Request,
+			Balance,
+			OutError) == EOddsWellMatchWinnerRequestResult::Accepted
+		&& Balance == 60
+		&& LockOddsWellMatchWinnerRequest(
+			RequestId,
+			LockId,
+			1,
+			1,
+			Schedule.TipoffUnixSeconds,
+			true,
+			Lock,
+			OutError) == EOddsWellMatchWinnerLockResult::Locked
+		&& LinkOddsWellMatchWinnerResult(
+			ResultId,
+			RequestId,
+			LockId,
+			TEXT("oddswell-private-canonical-game-result-v1"),
+			TEXT("oddswell-private-game-result-recorder-v1"),
+			1,
+			1,
+			ExactOffer.HomeTeam,
+			ExactOffer.AwayTeam,
+			79,
+			113,
+			ExactOffer.AwayTeam,
+			TEXT("35e604f306b5b2709f2ca8c5a4ad8b892ac6a4012a2c595072f6e326fa4e25db"),
+			true,
+			Result,
+			OutError) == EOddsWellMatchWinnerResultLinkResult::Linked
+		&& DecideOddsWellMatchWinnerSettlement(
+			ExactOffer,
+			OutDecisionId,
+			RequestId,
+			LockId,
+			ResultId,
+			true,
+			Decision,
+			OutError) == EOddsWellMatchWinnerSettlementDecisionResult::Decided
+		&& Decision.GrossReturnDue == 94;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(
+	FOddsWellCanonicalMatchWinnerCurrentMesaWinFinalizationTest,
+	"OddsWell.League.CanonicalMatchWinnerCurrentMesaWinFinalization",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+
+bool FOddsWellCanonicalMatchWinnerCurrentMesaWinFinalizationTest::RunTest(
+	const FString& Parameters)
+{
+	FString Error;
+	FString DecisionId;
+	const bool bSeeded = SeedCurrentMesaWinDecision(DecisionId, Error);
+	TestTrue(TEXT("H26AJ exact H26AI pending win seeds"), bSeeded);
+	if (!bSeeded)
+	{
+		ResetOddsWellQaOddsBucksAndVerify(Error);
+		UGameplayStatics::DeleteGameInSlot(
+			CanonicalRequestQaOfferSlot,
+			CanonicalOfferUserIndex);
+		return false;
+	}
+
+	const FString FinalizationId =
+		FString(TEXT("canonical:h26aj:match_winner:win-finalization:"))
+		+ TEXT("05a4a2a1488d4852318a398ff6e8eaf4a3cac47257b441feceb7426a4b5b0289");
+	const FString QaLedgerPath = FPaths::Combine(
+		FPaths::ProjectSavedDir(),
+		TEXT("SaveGames"),
+		TEXT("OddsWellOddsBucksQA.sav"));
+	TArray<uint8> PendingMemory;
+	TestTrue(
+		TEXT("H26AJ pending evidence serializes"),
+		UGameplayStatics::SaveGameToMemory(
+			UGameplayStatics::LoadGameFromSlot(TEXT("OddsWellOddsBucksQA"), 0),
+			PendingMemory));
+	UOddsWellOddsBucksSaveGame* Tampered = Cast<UOddsWellOddsBucksSaveGame>(
+		UGameplayStatics::LoadGameFromMemory(PendingMemory));
+	TestNotNull(TEXT("H26AJ tamper fixture loads"), Tampered);
+	if (Tampered)
+	{
+		Tampered->MatchWinnerSettlementDecisions[0].GrossReturnDue = 95;
+		TestTrue(
+			TEXT("H26AJ tampered pending evidence persists"),
+			UGameplayStatics::SaveGameToSlot(
+				Tampered,
+				TEXT("OddsWellOddsBucksQA"),
+				0));
+		TArray<uint8> TamperedBytes;
+		TestTrue(
+			TEXT("H26AJ tampered bytes read"),
+			FFileHelper::LoadFileToArray(TamperedBytes, *QaLedgerPath));
+		FOddsWellMatchWinnerWinFinalizationRecord Rejected;
+		TestEqual(
+			TEXT("H26AJ altered return rejects"),
+			FinalizeOddsWellMatchWinnerWin(
+				FinalizationId,
+				DecisionId,
+				true,
+				Rejected,
+				Error),
+			EOddsWellMatchWinnerWinFinalizationResult::Rejected);
+		TArray<uint8> AfterRejected;
+		TestTrue(
+			TEXT("H26AJ rejected bytes remain readable"),
+			FFileHelper::LoadFileToArray(AfterRejected, *QaLedgerPath));
+		TestTrue(
+			TEXT("H26AJ altered return causes zero mutation"),
+			AfterRejected == TamperedBytes);
+		TestTrue(
+			TEXT("H26AJ exact pending evidence restores"),
+			UGameplayStatics::SaveGameToSlot(
+				UGameplayStatics::LoadGameFromMemory(PendingMemory),
+				TEXT("OddsWellOddsBucksQA"),
+				0));
+	}
+
+	FOddsWellMatchWinnerWinFinalizationRecord Finalization;
+	TestEqual(
+		TEXT("H26AJ exact return applies once"),
+		FinalizeOddsWellMatchWinnerWin(
+			FinalizationId,
+			DecisionId,
+			true,
+			Finalization,
+			Error),
+		EOddsWellMatchWinnerWinFinalizationResult::Finalized);
+	TestEqual(TEXT("H26AJ return applied is 94"), Finalization.GrossReturnApplied, int64{94});
+	TestEqual(TEXT("H26AJ status is settled won"), Finalization.Status, FName(TEXT("settled_won")));
+	TestEqual(TEXT("H26AJ final balance is 154"), Finalization.ObservedFinalBalance, int64{154});
+	TestEqual(TEXT("H26AJ ledger count is three"), Finalization.ObservedLedgerEntryCount, 3);
+
+	FOddsWellOddsBucksLedger Ledger;
+	int64 NextJobPayout = 0;
+	TArray<FOddsWellMatchWinnerRequestRecord> Requests;
+	TArray<FOddsWellMatchWinnerLockRecord> Locks;
+	TArray<FOddsWellMatchWinnerResultLinkRecord> Results;
+	TArray<FOddsWellMatchWinnerSettlementDecisionRecord> Decisions;
+	TArray<FOddsWellMatchWinnerLossFinalizationRecord> LossFinalizations;
+	TArray<FOddsWellMatchWinnerWinFinalizationRecord> WinFinalizations;
+	bool bFound = false;
+	TestTrue(
+		TEXT("H26AJ finalized state cold reloads"),
+		LoadOddsWellOddsBucksWagerFinalizationState(
+			true,
+			Ledger,
+			NextJobPayout,
+			Requests,
+			Locks,
+			Results,
+			Decisions,
+			LossFinalizations,
+			WinFinalizations,
+			bFound,
+			Error));
+	TestTrue(TEXT("H26AJ finalized state exists"), bFound);
+	TestEqual(TEXT("H26AJ finalized ledger has three entries"), Ledger.GetEntries().Num(), 3);
+	TestEqual(TEXT("H26AJ payout delta is plus 94"), Ledger.GetEntries()[2].Delta, int64{94});
+	TestEqual(TEXT("H26AJ payout balance is 154"), Ledger.GetEntries()[2].BalanceAfter, int64{154});
+	TestEqual(TEXT("H26AJ final balance reloads as 154"), Ledger.GetBalance(), int64{154});
+	TestEqual(TEXT("H26AJ has one win finalization"), WinFinalizations.Num(), 1);
+	TestTrue(TEXT("H26AJ has no loss finalization"), LossFinalizations.IsEmpty());
+	TestEqual(TEXT("H26AJ decision remains pending apply"), Decisions[0].Status, FName(TEXT("decided_pending_apply")));
+
+	TArray<uint8> FinalizedBytes;
+	TestTrue(TEXT("H26AJ finalized bytes read"), FFileHelper::LoadFileToArray(FinalizedBytes, *QaLedgerPath));
+	FOddsWellMatchWinnerWinFinalizationRecord Duplicate;
+	TestEqual(
+		TEXT("H26AJ exact cold retry is duplicate"),
+		FinalizeOddsWellMatchWinnerWin(
+			FinalizationId,
+			DecisionId,
+			true,
+			Duplicate,
+			Error),
+			EOddsWellMatchWinnerWinFinalizationResult::Duplicate);
+	FOddsWellMatchWinnerWinFinalizationRecord Conflict;
+	TestEqual(
+		TEXT("H26AJ conflicting second finalization rejects"),
+		FinalizeOddsWellMatchWinnerWin(
+			FinalizationId + TEXT(":conflict"),
+			DecisionId,
+			true,
+			Conflict,
+			Error),
+			EOddsWellMatchWinnerWinFinalizationResult::Rejected);
+	TArray<uint8> AfterRetries;
+	TestTrue(TEXT("H26AJ retry bytes read"), FFileHelper::LoadFileToArray(AfterRetries, *QaLedgerPath));
+	TestTrue(TEXT("H26AJ duplicate and conflict are byte stable"), AfterRetries == FinalizedBytes);
+
+	const FString ProjectionPath = FPaths::Combine(
+		FPaths::ProjectSavedDir(),
+		TEXT("Admin"),
+		TEXT("MatchWinnerReconciliationQA.json"));
+	FString ProjectionJson;
+	TestTrue(TEXT("H26AJ existing projection writes"), FFileHelper::LoadFileToString(ProjectionJson, *ProjectionPath));
+	TestTrue(TEXT("H26AJ projection contains probability 42413307"), ProjectionJson.Contains(TEXT("42413307")));
+	TestTrue(TEXT("H26AJ projection contains return 94"), ProjectionJson.Contains(TEXT("\"gross_return_applied\": 94")));
+	TestTrue(TEXT("H26AJ projection contains balance 154"), ProjectionJson.Contains(TEXT("\"final_balance\": 154")));
+
+	TestTrue(TEXT("H26AJ QA cleanup succeeds"), ResetOddsWellQaOddsBucksAndVerify(Error));
+	TestTrue(
+		TEXT("H26AJ offer fixture cleanup succeeds"),
+		UGameplayStatics::DeleteGameInSlot(
+			CanonicalRequestQaOfferSlot,
+			CanonicalOfferUserIndex));
+	return !HasAnyErrors();
+}
+
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
 	FOddsWellCanonicalMatchWinnerLossFinalizationTest,
 	"OddsWell.League.CanonicalMatchWinnerLossFinalization",

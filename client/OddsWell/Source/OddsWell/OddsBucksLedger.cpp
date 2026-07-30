@@ -570,6 +570,47 @@ bool IsExactCurrentCanonicalMesaWinEvidence(
 		&& Result.ReplaySealSha256 == CurrentCanonicalReplaySha;
 }
 
+bool GetApprovedMatchWinnerWinTerms(
+	const FOddsWellMatchWinnerRequestRecord& Request,
+	const FOddsWellMatchWinnerLockRecord& Lock,
+	const FOddsWellMatchWinnerResultLinkRecord& Result,
+	const FOddsWellMatchWinnerSettlementDecisionRecord& Decision,
+	int64& OutProbabilityE8,
+	int64& OutGrossReturn,
+	int64& OutFinalBalance)
+{
+	const bool bLegacy = Request.OfferId == ExactMatchWinnerOfferId
+		&& Request.OfferedTeam == SealedResultAwayTeam
+		&& Request.Stake == 40
+		&& Result.Winner == SealedResultAwayTeam
+		&& Decision.OfferId == ExactMatchWinnerOfferId
+		&& Decision.SelectedTeam == SealedResultAwayTeam
+		&& Decision.AuthoritativeWinner == SealedResultAwayTeam
+		&& Decision.Stake == 40
+		&& Decision.Outcome == MatchWinnerWonOutcome
+		&& Decision.GrossReturnDue == 100
+		&& Decision.SelectedWinProbabilityE8 == 40000000;
+	const bool bCurrent = IsExactCurrentCanonicalMesaWinEvidence(Request, Lock, Result)
+		&& Decision.OfferId == CurrentCanonicalOfferId
+		&& Decision.SelectedTeam == SealedResultAwayTeam
+		&& Decision.AuthoritativeWinner == SealedResultAwayTeam
+		&& Decision.Stake == 40
+		&& Decision.Outcome == MatchWinnerWonOutcome
+		&& Decision.GrossReturnDue == CurrentCanonicalAwayGrossReturn40
+		&& Decision.SelectedWinProbabilityE8 == CurrentCanonicalAwayProbabilityE8;
+	if (!bLegacy && !bCurrent)
+	{
+		OutProbabilityE8 = 0;
+		OutGrossReturn = 0;
+		OutFinalBalance = 0;
+		return false;
+	}
+	OutProbabilityE8 = bCurrent ? CurrentCanonicalAwayProbabilityE8 : 40000000;
+	OutGrossReturn = bCurrent ? CurrentCanonicalAwayGrossReturn40 : 100;
+	OutFinalBalance = 60 + OutGrossReturn;
+	return true;
+}
+
 bool IsSameMatchWinnerResultLink(
 	const FOddsWellMatchWinnerResultLinkRecord& Left,
 	const FOddsWellMatchWinnerResultLinkRecord& Right)
@@ -1385,6 +1426,21 @@ bool ValidateMatchWinnerWinFinalizations(
 			{
 				return Entry.CommandId == Finalization.PayoutLedgerCommandId;
 			});
+		int64 ExpectedProbabilityE8 = 0;
+		int64 ExpectedGrossReturn = 0;
+		int64 ExpectedFinalBalance = 0;
+		const bool bApprovedWin = Decision
+			&& Request
+			&& Lock
+			&& Result
+			&& GetApprovedMatchWinnerWinTerms(
+				*Request,
+				*Lock,
+				*Result,
+				*Decision,
+				ExpectedProbabilityE8,
+				ExpectedGrossReturn,
+				ExpectedFinalBalance);
 		if (Finalization.FinalizationCommandId.TrimStartAndEnd().IsEmpty()
 			|| Finalization.DecisionCommandId.TrimStartAndEnd().IsEmpty()
 			|| Finalization.FinalizationCommandId == Finalization.DecisionCommandId
@@ -1412,10 +1468,10 @@ bool ValidateMatchWinnerWinFinalizations(
 			|| Result->LockCommandId != Finalization.LockCommandId
 			|| Finalization.FinalizationSchema != MatchWinnerWinFinalizationSchema
 			|| Finalization.FinalizationVersion != MatchWinnerWinFinalizationVersion
-			|| Decision->OfferId != ExactMatchWinnerOfferId
+			|| !bApprovedWin
 			|| Decision->Outcome != MatchWinnerWonOutcome
-			|| Decision->GrossReturnDue != 100
-			|| Decision->SelectedWinProbabilityE8 != 40000000
+			|| Decision->GrossReturnDue != ExpectedGrossReturn
+			|| Decision->SelectedWinProbabilityE8 != ExpectedProbabilityE8
 			|| Decision->PayoutFormula != MatchWinnerPayoutFormula
 			|| Decision->Status != MatchWinnerDecidedPendingApplyStatus
 			|| Finalization.OfferId != Decision->OfferId
@@ -1424,18 +1480,18 @@ bool ValidateMatchWinnerWinFinalizations(
 			|| Finalization.AuthoritativeWinner != Decision->AuthoritativeWinner
 			|| Finalization.Stake != Decision->Stake
 			|| Finalization.Outcome != MatchWinnerWonOutcome
-			|| Finalization.GrossReturnApplied != 100
+			|| Finalization.GrossReturnApplied != ExpectedGrossReturn
 			|| Finalization.Status != MatchWinnerSettledWonStatus
 			|| Request->OfferedTeam != SealedResultAwayTeam
 			|| Request->Stake != 40
 			|| Result->Winner != SealedResultAwayTeam
 			|| Payout->Sequence != 3
-			|| Payout->Delta != 100
-			|| Payout->BalanceAfter != 160
+			|| Payout->Delta != ExpectedGrossReturn
+			|| Payout->BalanceAfter != ExpectedFinalBalance
 			|| Payout->Reason != MatchWinnerPayoutReason
 			|| Finalization.ObservedFinalBalance != Ledger.GetBalance()
 			|| Finalization.ObservedLedgerEntryCount != Ledger.GetEntries().Num()
-			|| Finalization.ObservedFinalBalance != 160
+			|| Finalization.ObservedFinalBalance != ExpectedFinalBalance
 			|| Finalization.ObservedLedgerEntryCount != 3)
 		{
 			OutError = FString::Printf(TEXT("Invalid Match Winner win finalization at index %d."), Index);
@@ -3009,6 +3065,18 @@ bool WriteMatchWinnerReconciliationFromValidatedState(
 				Result,
 				Decision,
 				LossFinalizations[0]));
+	int64 ExpectedWinProbabilityE8 = 0;
+	int64 ExpectedWinGrossReturn = 0;
+	int64 ExpectedWinFinalBalance = 0;
+	const bool bApprovedWin = bWin
+		&& GetApprovedMatchWinnerWinTerms(
+			Request,
+			Lock,
+			Result,
+			Decision,
+			ExpectedWinProbabilityE8,
+			ExpectedWinGrossReturn,
+			ExpectedWinFinalBalance);
 	if (!StakeEntry
 		|| Request.Stake != 40
 		|| StakeEntry->Sequence != 2
@@ -3028,21 +3096,22 @@ bool WriteMatchWinnerReconciliationFromValidatedState(
 			|| GrossReturnApplied != 0
 			|| Ledger.GetEntries().Num() != 2
 			|| Ledger.GetBalance() != 60))
-		|| (bWin && (Request.OfferedTeam != SealedResultAwayTeam
+		|| (bWin && (!bApprovedWin
+			|| Request.OfferedTeam != SealedResultAwayTeam
 			|| Decision.Outcome != MatchWinnerWonOutcome
-			|| Decision.SelectedWinProbabilityE8 != 40000000
+			|| Decision.SelectedWinProbabilityE8 != ExpectedWinProbabilityE8
 			|| Decision.PayoutFormula != MatchWinnerPayoutFormula
-			|| Decision.GrossReturnDue != 100
+			|| Decision.GrossReturnDue != ExpectedWinGrossReturn
 			|| FinalizationStatus != MatchWinnerSettledWonStatus
-			|| GrossReturnApplied != 100
+			|| GrossReturnApplied != ExpectedWinGrossReturn
 			|| !PayoutEntry
 			|| PayoutEntry->CommandId != FinalizationCommandId
 			|| PayoutEntry->Sequence != 3
-			|| PayoutEntry->Delta != 100
+			|| PayoutEntry->Delta != ExpectedWinGrossReturn
 			|| PayoutEntry->Reason != MatchWinnerPayoutReason
-			|| PayoutEntry->BalanceAfter != 160
+			|| PayoutEntry->BalanceAfter != ExpectedWinFinalBalance
 			|| Ledger.GetEntries().Num() != 3
-			|| Ledger.GetBalance() != 160)))
+			|| Ledger.GetBalance() != ExpectedWinFinalBalance)))
 	{
 		OutError = TEXT("The Match Winner reconciliation outcome does not match its exact finalization and ledger.");
 		return false;
@@ -6300,8 +6369,6 @@ EOddsWellMatchWinnerWinFinalizationResult FinalizeOddsWellMatchWinnerWin(
 		});
 	if (!Decision
 		|| Decision->Outcome != MatchWinnerWonOutcome
-		|| Decision->GrossReturnDue != 100
-		|| Decision->SelectedWinProbabilityE8 != 40000000
 		|| Decision->PayoutFormula != MatchWinnerPayoutFormula
 		|| Decision->Status != MatchWinnerDecidedPendingApplyStatus
 		|| Ledger.GetBalance() != 60
@@ -6325,16 +6392,32 @@ EOddsWellMatchWinnerWinFinalizationResult FinalizeOddsWellMatchWinnerWin(
 		{
 			return Entry.ResultCommandId == Decision->ResultCommandId;
 		});
+	int64 ExpectedProbabilityE8 = 0;
+	int64 ExpectedGrossReturn = 0;
+	int64 ExpectedFinalBalance = 0;
+	const bool bApprovedWin = Request
+		&& Lock
+		&& Result
+		&& GetApprovedMatchWinnerWinTerms(
+			*Request,
+			*Lock,
+			*Result,
+			*Decision,
+			ExpectedProbabilityE8,
+			ExpectedGrossReturn,
+			ExpectedFinalBalance);
 	if (!Request
 		|| !Lock
 		|| !Result
+		|| !bApprovedWin
+		|| Decision->SelectedWinProbabilityE8 != ExpectedProbabilityE8
+		|| Decision->GrossReturnDue != ExpectedGrossReturn
 		|| FinalizationCommandId == Decision->RequestCommandId
 		|| FinalizationCommandId == Decision->LockCommandId
 		|| FinalizationCommandId == Decision->ResultCommandId
 		|| Lock->RequestCommandId != Decision->RequestCommandId
 		|| Result->RequestCommandId != Decision->RequestCommandId
 		|| Result->LockCommandId != Decision->LockCommandId
-		|| Request->OfferId != ExactMatchWinnerOfferId
 		|| Request->OfferedTeam != SealedResultAwayTeam
 		|| Request->Stake != 40
 		|| Result->Winner != SealedResultAwayTeam
@@ -6348,7 +6431,7 @@ EOddsWellMatchWinnerWinFinalizationResult FinalizeOddsWellMatchWinnerWin(
 	FOddsWellOddsBucksLedger CandidateLedger = Ledger;
 	if (CandidateLedger.Append(FinalizationCommandId, Decision->GrossReturnDue, MatchWinnerPayoutReason) != EOddsWellOddsBucksAppendResult::Applied
 		|| CandidateLedger.GetEntries().Num() != 3
-		|| CandidateLedger.GetBalance() != 160)
+		|| CandidateLedger.GetBalance() != ExpectedFinalBalance)
 	{
 		OutError = TEXT("The exact Match Winner win payout ledger entry could not be applied.");
 		return EOddsWellMatchWinnerWinFinalizationResult::Rejected;
