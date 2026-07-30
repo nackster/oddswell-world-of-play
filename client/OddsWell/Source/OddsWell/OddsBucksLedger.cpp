@@ -838,6 +838,94 @@ bool IsExactCurrentCanonicalLossReconciliation(
 		113);
 }
 
+bool IsExactCurrentCanonicalWinReconciliation(
+	const FOddsWellOddsBucksLedger& Ledger,
+	const FOddsWellMatchWinnerRequestRecord& Request,
+	const FOddsWellMatchWinnerLockRecord& Lock,
+	const FOddsWellMatchWinnerResultLinkRecord& Result,
+	const FOddsWellMatchWinnerSettlementDecisionRecord& Decision,
+	const FOddsWellMatchWinnerWinFinalizationRecord& Finalization)
+{
+	const FString RequestId =
+		TEXT("canonical:h26e:match_winner:request:") + CurrentCanonicalOfferId;
+	const FString LockId =
+		TEXT("canonical:h26g:match_winner:lock:") + CurrentCanonicalOfferId;
+	const FString ResultId =
+		PrivateCanonicalResultCommandPrefix + CurrentCanonicalResultSha;
+	const FString DecisionId =
+		TEXT("canonical:h26ai:match_winner:win-decision:") + CurrentCanonicalResultSha;
+	const FString FinalizationId =
+		TEXT("canonical:h26aj:match_winner:win-finalization:") + CurrentCanonicalResultSha;
+	int64 ExpectedProbabilityE8 = 0;
+	int64 ExpectedGrossReturn = 0;
+	int64 ExpectedFinalBalance = 0;
+	return GetApprovedMatchWinnerWinTerms(
+			Request,
+			Lock,
+			Result,
+			Decision,
+			ExpectedProbabilityE8,
+			ExpectedGrossReturn,
+			ExpectedFinalBalance)
+		&& ExpectedProbabilityE8 == CurrentCanonicalAwayProbabilityE8
+		&& ExpectedGrossReturn == CurrentCanonicalAwayGrossReturn40
+		&& ExpectedFinalBalance == 154
+		&& Ledger.GetEntries().Num() == 3
+		&& Ledger.GetEntries()[0].Sequence == 1
+		&& Ledger.GetEntries()[0].CommandId == FirstJobCommandId
+		&& Ledger.GetEntries()[0].Delta == 100
+		&& Ledger.GetEntries()[0].BalanceAfter == 100
+		&& Ledger.GetEntries()[0].Reason == FirstJobReason
+		&& Ledger.GetEntries()[1].Sequence == 2
+		&& Ledger.GetEntries()[1].CommandId == RequestId
+		&& Ledger.GetEntries()[1].Delta == -40
+		&& Ledger.GetEntries()[1].BalanceAfter == 60
+		&& Ledger.GetEntries()[1].Reason == MatchWinnerStakeReason
+		&& Ledger.GetEntries()[2].Sequence == 3
+		&& Ledger.GetEntries()[2].CommandId == FinalizationId
+		&& Ledger.GetEntries()[2].Delta == CurrentCanonicalAwayGrossReturn40
+		&& Ledger.GetEntries()[2].BalanceAfter == 154
+		&& Ledger.GetEntries()[2].Reason == MatchWinnerPayoutReason
+		&& Ledger.GetBalance() == 154
+		&& Request.RequestCommandId == RequestId
+		&& Lock.LockCommandId == LockId
+		&& Result.ResultCommandId == ResultId
+		&& Decision.DecisionCommandId == DecisionId
+		&& Decision.RequestCommandId == RequestId
+		&& Decision.LockCommandId == LockId
+		&& Decision.ResultCommandId == ResultId
+		&& Decision.DecisionSchema == MatchWinnerSettlementDecisionSchema
+		&& Decision.DecisionVersion == MatchWinnerSettlementDecisionVersion
+		&& Decision.OfferId == CurrentCanonicalOfferId
+		&& Decision.OfferVersion == MatchWinnerOfferVersion
+		&& Decision.SelectedTeam == SealedResultAwayTeam
+		&& Decision.AuthoritativeWinner == SealedResultAwayTeam
+		&& Decision.Stake == 40
+		&& Decision.Outcome == MatchWinnerWonOutcome
+		&& Decision.GrossReturnDue == CurrentCanonicalAwayGrossReturn40
+		&& Decision.SelectedWinProbabilityE8 == CurrentCanonicalAwayProbabilityE8
+		&& Decision.PayoutFormula == MatchWinnerPayoutFormula
+		&& Decision.Status == MatchWinnerDecidedPendingApplyStatus
+		&& Finalization.FinalizationCommandId == FinalizationId
+		&& Finalization.DecisionCommandId == DecisionId
+		&& Finalization.RequestCommandId == RequestId
+		&& Finalization.LockCommandId == LockId
+		&& Finalization.ResultCommandId == ResultId
+		&& Finalization.FinalizationSchema == MatchWinnerWinFinalizationSchema
+		&& Finalization.FinalizationVersion == MatchWinnerWinFinalizationVersion
+		&& Finalization.OfferId == CurrentCanonicalOfferId
+		&& Finalization.OfferVersion == MatchWinnerOfferVersion
+		&& Finalization.SelectedTeam == SealedResultAwayTeam
+		&& Finalization.AuthoritativeWinner == SealedResultAwayTeam
+		&& Finalization.Stake == 40
+		&& Finalization.Outcome == MatchWinnerWonOutcome
+		&& Finalization.GrossReturnApplied == CurrentCanonicalAwayGrossReturn40
+		&& Finalization.PayoutLedgerCommandId == FinalizationId
+		&& Finalization.Status == MatchWinnerSettledWonStatus
+		&& Finalization.ObservedFinalBalance == 154
+		&& Finalization.ObservedLedgerEntryCount == 3;
+}
+
 bool ValidateMatchWinnerResultLinks(
 	const TArray<FOddsWellMatchWinnerRequestRecord>& Requests,
 	const TArray<FOddsWellMatchWinnerLockRecord>& Locks,
@@ -3608,7 +3696,7 @@ LoadOddsWellCanonicalSettledLossReceiptEvidence(
 		OutReceipt = {};
 		if (OutError.IsEmpty())
 		{
-			OutError = TEXT("The canonical settled-loss receipt source is invalid.");
+			OutError = TEXT("The canonical settled receipt source is invalid.");
 		}
 		return EOddsWellCanonicalSettledLossReceiptResult::Rejected;
 	}
@@ -3624,34 +3712,55 @@ LoadOddsWellCanonicalSettledLossReceiptEvidence(
 		OutError.Reset();
 		return EOddsWellCanonicalSettledLossReceiptResult::Missing;
 	}
-	if (Requests.Num() != 1
+	const bool bExactLoss = Requests.Num() == 1
+		&& Locks.Num() == 1
+		&& Results.Num() == 1
+		&& Decisions.Num() == 1
+		&& LossFinalizations.Num() == 1
+		&& WinFinalizations.IsEmpty()
+		&& (IsExactRetainedCanonicalLossReconciliation(
+			Ledger,
+			Requests[0],
+			Locks[0],
+			Results[0],
+			Decisions[0],
+			LossFinalizations[0])
+			|| IsExactCurrentCanonicalLossReconciliation(
+				Ledger,
+				Requests[0],
+				Locks[0],
+				Results[0],
+				Decisions[0],
+				LossFinalizations[0]));
+	const bool bExactCurrentWin = Requests.Num() == 1
+		&& Locks.Num() == 1
+		&& Results.Num() == 1
+		&& Decisions.Num() == 1
+		&& LossFinalizations.IsEmpty()
+		&& WinFinalizations.Num() == 1
+		&& IsExactCurrentCanonicalWinReconciliation(
+			Ledger,
+			Requests[0],
+			Locks[0],
+			Results[0],
+			Decisions[0],
+			WinFinalizations[0]);
+	if ((!bExactLoss && !bExactCurrentWin)
+		|| Requests.Num() != 1
 		|| Locks.Num() != 1
 		|| Results.Num() != 1
 		|| Decisions.Num() != 1
-		|| LossFinalizations.Num() != 1
-		|| !WinFinalizations.IsEmpty()
 		|| !CanceledGames.IsEmpty()
 		|| !VoidDecisions.IsEmpty()
-		|| !Record->MatchWinnerVoidFinalizations.IsEmpty()
-		|| (!IsExactRetainedCanonicalLossReconciliation(
-				Ledger,
-				Requests[0],
-				Locks[0],
-				Results[0],
-				Decisions[0],
-				LossFinalizations[0])
-			&& !IsExactCurrentCanonicalLossReconciliation(
-				Ledger,
-				Requests[0],
-				Locks[0],
-				Results[0],
-				Decisions[0],
-				LossFinalizations[0])))
+		|| !Record->MatchWinnerVoidFinalizations.IsEmpty())
 	{
 		OutReceipt = {};
-		OutError = TEXT("The exact canonical settled-loss receipt is unavailable.");
+		OutError = TEXT("The exact canonical settled receipt is unavailable.");
 		return EOddsWellCanonicalSettledLossReceiptResult::Rejected;
 	}
+	OutReceipt.Outcome = bExactCurrentWin
+		? WinFinalizations[0].Outcome
+		: LossFinalizations[0].Outcome;
 	OutReceipt.SelectedTeam = Requests[0].OfferedTeam;
 	OutReceipt.HomeTeam = Results[0].HomeTeam;
 	OutReceipt.AwayTeam = Results[0].AwayTeam;
@@ -3659,9 +3768,11 @@ LoadOddsWellCanonicalSettledLossReceiptEvidence(
 	OutReceipt.Stake = Requests[0].Stake;
 	OutReceipt.HomeScore = Results[0].HomeScore;
 	OutReceipt.AwayScore = Results[0].AwayScore;
-	OutReceipt.Returned = LossFinalizations[0].GrossReturnApplied;
+	OutReceipt.Returned = bExactCurrentWin
+		? WinFinalizations[0].GrossReturnApplied
+		: LossFinalizations[0].GrossReturnApplied;
 	OutReceipt.Net = Ledger.GetEntries()[1].Delta
-		+ LossFinalizations[0].GrossReturnApplied;
+		+ OutReceipt.Returned;
 	OutReceipt.LedgerEntryCount = Ledger.GetEntries().Num();
 	OutReceipt.CurrentBalance = Ledger.GetBalance();
 	OutError.Reset();

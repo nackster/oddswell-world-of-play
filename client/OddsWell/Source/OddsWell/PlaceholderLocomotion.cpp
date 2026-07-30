@@ -112,7 +112,8 @@ FString BuildCanonicalSettledLossReceiptText(
 	const FOddsWellCanonicalSettledLossReceipt& Receipt)
 {
 	return FString::Printf(
-		TEXT("BET SETTLED \u2014 LOSS\n%s selected\nStake %lld Odds Bucks\nFinal Harbor %d\u2013%d Mesa\nWinner %s\nReturned %lld\nNet %lld\nBalance %lld\nE or ESC: CLOSE"),
+		TEXT("BET SETTLED \u2014 %s\n%s selected\nStake %lld Odds Bucks\nFinal Harbor %d\u2013%d Mesa\nWinner %s\nReturned %lld\nNet %+lld\nBalance %lld\nE or ESC: CLOSE"),
+		Receipt.Outcome == FName(TEXT("won")) ? TEXT("WIN") : TEXT("LOSS"),
 		*Receipt.SelectedTeam,
 		Receipt.Stake,
 		Receipt.HomeScore,
@@ -8432,6 +8433,7 @@ bool FOddsWellCanonicalSettledLossReceiptPresentationTest::RunTest(
 	const FString& Parameters)
 {
 	FOddsWellCanonicalSettledLossReceipt Receipt;
+	Receipt.Outcome = FName(TEXT("lost"));
 	Receipt.SelectedTeam = TEXT("Harbor City Waves");
 	Receipt.HomeTeam = TEXT("Harbor City Waves");
 	Receipt.AwayTeam = TEXT("Mesa Vista Sol");
@@ -8460,6 +8462,23 @@ bool FOddsWellCanonicalSettledLossReceiptPresentationTest::RunTest(
 			&& Text.Contains(TEXT("Returned 0"))
 			&& Text.Contains(TEXT("Net -40"))
 			&& Text.Contains(TEXT("Balance 60")));
+	Receipt.Outcome = FName(TEXT("won"));
+	Receipt.SelectedTeam = TEXT("Mesa Vista Sol");
+	Receipt.HomeScore = 79;
+	Receipt.AwayScore = 113;
+	Receipt.Returned = 94;
+	Receipt.Net = 54;
+	Receipt.LedgerEntryCount = 3;
+	Receipt.CurrentBalance = 154;
+	const FString WinText = BuildCanonicalSettledLossReceiptText(Receipt);
+	TestTrue(
+		TEXT("H26AL receipt reuses the same surface for the exact current win"),
+		WinText.Contains(TEXT("BET SETTLED \u2014 WIN"))
+			&& WinText.Contains(TEXT("Mesa Vista Sol selected"))
+			&& WinText.Contains(TEXT("Final Harbor 79\u2013113 Mesa"))
+			&& WinText.Contains(TEXT("Returned 94"))
+			&& WinText.Contains(TEXT("Net +54"))
+			&& WinText.Contains(TEXT("Balance 154")));
 	const int32 FirstClose = Text.Find(TEXT("CLOSE"));
 	TestTrue(
 		TEXT("H26P receipt contains exactly one close instruction"),

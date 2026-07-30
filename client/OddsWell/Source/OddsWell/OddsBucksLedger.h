@@ -263,6 +263,7 @@ enum class EOddsWellCanonicalSettledLossReceiptResult : uint8
 
 struct FOddsWellCanonicalSettledLossReceipt
 {
+	FName Outcome;
 	FString SelectedTeam;
 	FString HomeTeam;
 	FString AwayTeam;

@@ -3480,6 +3480,14 @@ bool FOddsWellCanonicalMatchWinnerCurrentMesaWinFinalizationTest::RunTest(
 		FPaths::ProjectSavedDir(),
 		TEXT("SaveGames"),
 		TEXT("OddsWellOddsBucksQA.sav"));
+	FOddsWellCanonicalSettledLossReceipt PendingReceipt;
+	TestEqual(
+		TEXT("H26AL pending win exposes no settled receipt"),
+		LoadOddsWellCanonicalSettledLossReceiptEvidence(
+			true,
+			PendingReceipt,
+			Error),
+		EOddsWellCanonicalSettledLossReceiptResult::Rejected);
 	TArray<uint8> PendingMemory;
 	TestTrue(
 		TEXT("H26AJ pending evidence serializes"),
@@ -3541,6 +3549,39 @@ bool FOddsWellCanonicalMatchWinnerCurrentMesaWinFinalizationTest::RunTest(
 	TestEqual(TEXT("H26AJ status is settled won"), Finalization.Status, FName(TEXT("settled_won")));
 	TestEqual(TEXT("H26AJ final balance is 154"), Finalization.ObservedFinalBalance, int64{154});
 	TestEqual(TEXT("H26AJ ledger count is three"), Finalization.ObservedLedgerEntryCount, 3);
+	TArray<uint8> BeforeReceiptRead;
+	TestTrue(
+		TEXT("H26AL exact finalized source bytes read"),
+		FFileHelper::LoadFileToArray(BeforeReceiptRead, *QaLedgerPath));
+	FOddsWellCanonicalSettledLossReceipt PlayerReceipt;
+	TestEqual(
+		TEXT("H26AL exact current win exposes one settled receipt"),
+		LoadOddsWellCanonicalSettledLossReceiptEvidence(
+			true,
+			PlayerReceipt,
+			Error),
+		EOddsWellCanonicalSettledLossReceiptResult::Ready);
+	TestTrue(
+		TEXT("H26AL receipt exposes only exact player-facing win values"),
+		PlayerReceipt.Outcome == FName(TEXT("won"))
+			&& PlayerReceipt.SelectedTeam == TEXT("Mesa Vista Sol")
+			&& PlayerReceipt.HomeTeam == TEXT("Harbor City Waves")
+			&& PlayerReceipt.AwayTeam == TEXT("Mesa Vista Sol")
+			&& PlayerReceipt.Winner == TEXT("Mesa Vista Sol")
+			&& PlayerReceipt.Stake == 40
+			&& PlayerReceipt.HomeScore == 79
+			&& PlayerReceipt.AwayScore == 113
+			&& PlayerReceipt.Returned == 94
+			&& PlayerReceipt.Net == 54
+			&& PlayerReceipt.LedgerEntryCount == 3
+			&& PlayerReceipt.CurrentBalance == 154);
+	TArray<uint8> AfterReceiptRead;
+	TestTrue(
+		TEXT("H26AL source bytes reread"),
+		FFileHelper::LoadFileToArray(AfterReceiptRead, *QaLedgerPath));
+	TestTrue(
+		TEXT("H26AL receipt read is byte stable"),
+		AfterReceiptRead == BeforeReceiptRead);
 
 	FOddsWellOddsBucksLedger Ledger;
 	int64 NextJobPayout = 0;
