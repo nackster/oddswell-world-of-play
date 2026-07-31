@@ -1943,7 +1943,8 @@ bool UseOddsWellOddsBucksQaSlot()
 	const bool bDevelopmentSignalJacketQa =
 #if UE_BUILD_DEVELOPMENT
 		FParse::Param(FCommandLine::Get(), TEXT("SignalJacketPurchaseQa"))
-		|| FParse::Param(FCommandLine::Get(), TEXT("SignalJacketPurchaseQaVerify"));
+		|| FParse::Param(FCommandLine::Get(), TEXT("SignalJacketPurchaseQaVerify"))
+		|| FParse::Param(FCommandLine::Get(), TEXT("SignalJacketEquipQa"));
 #else
 		false;
 #endif

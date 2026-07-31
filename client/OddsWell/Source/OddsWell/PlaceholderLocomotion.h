@@ -34,6 +34,9 @@ struct FOddsWellSharedCityAppearance
 
 	UPROPERTY()
 	bool bOwnerSubmitted = false;
+
+	UPROPERTY()
+	bool bSignalJacketEquipped = false;
 };
 
 class FOddsWellStarterOutfitState
@@ -70,6 +73,7 @@ public:
 	const FOddsWellSharedCityAppearance& GetSharedCityAppearance() const { return SharedCityAppearance; }
 	bool HasValidSharedCityAppearance() const;
 	bool HasSubmittedSharedCityAppearance() const { return SharedCityAppearance.bOwnerSubmitted; }
+	bool IsSignalJacketEquipped() const { return SharedCityAppearance.bSignalJacketEquipped; }
 	bool IsTicketBoothPromptVisible() const;
 	bool IsTicketBoothMenuVisible() const { return bSportsbookOfferVisible; }
 	int32 GetTicketBoothMarketPage() const { return SportsbookMarketPage; }
@@ -153,6 +157,7 @@ private:
 	void SetCanonicalAutomaticReceiptHeldInput(uint8 DesiredInputMask);
 	void FinishCanonicalAutomaticReceiptHeldInputDriver(bool bPassed, const TCHAR* Reason);
 	void RunSignalJacketPurchaseQa(float DeltaSeconds);
+	void RunSignalJacketEquipQa(float DeltaSeconds);
 #endif
 	bool ApplySavedOrFallbackAppearance();
 	bool ResolveLocalAppearance(FOddsWellResolvedCharacterAppearance& OutAppearance, FString& OutSource, FString& OutError) const;
@@ -188,6 +193,12 @@ private:
 	void ClientConfirmSignalJacketPurchase(bool bHandled, bool bPurchased, bool bOwned, int64 Balance, const FString& Error);
 
 	UFUNCTION(Server, Reliable)
+	void ServerEquipSignalJacket();
+
+	UFUNCTION(Client, Reliable)
+	void ClientConfirmSignalJacketEquip(bool bHandled, bool bEquipped, const FString& Error);
+
+	UFUNCTION(Server, Reliable)
 	void ServerConfirmSportsbookQaWager(const FString& OfferedTeam, int64 Stake);
 
 	UFUNCTION(Client, Reliable)
@@ -211,8 +222,17 @@ private:
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UStaticMeshComponent> StarterOutfitBottom;
 
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<UStaticMeshComponent> SignalJacketAccent;
+
 	UPROPERTY(Transient)
 	TObjectPtr<UMaterialInstanceDynamic> StarterOutfitMaterial;
+
+	UPROPERTY(Transient)
+	TObjectPtr<UMaterialInstanceDynamic> SignalJacketMaterial;
+
+	UPROPERTY(Transient)
+	TObjectPtr<UMaterialInstanceDynamic> SignalJacketAccentMaterial;
 
 	UPROPERTY(Transient)
 	TObjectPtr<UMaterialInstanceDynamic> PrimitiveSkinMaterial;
@@ -286,6 +306,8 @@ private:
 	bool bClothingStoreInteractionArmed = false;
 	bool bSignalJacketPurchaseConfirm = false;
 	bool bSignalJacketPurchaseSubmitting = false;
+	bool bSignalJacketOwned = false;
+	bool bSignalJacketEquipSubmitting = false;
 	bool bJobQa = false;
 	bool bJobQaRejectionProven = false;
 	bool bJobQaFirstCreditProven = false;
@@ -374,6 +396,10 @@ private:
 	int32 SignalJacketPurchaseQaStage = 0;
 	bool bSignalJacketPurchaseQa = false;
 	bool bSignalJacketPurchaseQaVerify = false;
+	float SignalJacketEquipQaElapsed = 0.0f;
+	int32 SignalJacketEquipQaStage = 0;
+	bool bSignalJacketEquipQa = false;
+	bool bSignalJacketEquipQaLogged = false;
 #endif
 };
 
@@ -410,6 +436,7 @@ public:
 	virtual APawn* SpawnDefaultPawnAtTransform_Implementation(AController* NewPlayer, const FTransform&) override;
 	bool TryCreditPlaceholderJob(bool& bOutCredited, int64& OutBalance, int64& OutRetryAfterSeconds, FString& OutCommandId, FString& OutError);
 	bool TryPurchaseSignalJacket(bool& bOutPurchased, bool& bOutOwned, int64& OutBalance, FString& OutError);
+	bool OwnsSignalJacket() const { return bOddsBucksReady && OwnsOddsWellSignalJacket(OddsBucksLedger); }
 	EOddsWellMatchWinnerRequestResult AcceptSportsbookQaWager(const FString& OfferedTeam, int64 Stake, FOddsWellMatchWinnerRequestRecord& OutRecord, int64& OutBalance, FString& OutError);
 	EOddsWellMatchWinnerRequestResult AcceptCanonicalFortyWager(bool bMesaSelected, FOddsWellMatchWinnerRequestRecord& OutRecord, int64& OutBalance, FString& OutError);
 	bool RunSportsbookQaWagerAudit(int32& OutLedgerEntries, int32& OutRequests, int64& OutBalance, FString& OutError);

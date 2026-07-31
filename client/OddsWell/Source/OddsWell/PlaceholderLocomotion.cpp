@@ -72,8 +72,11 @@ constexpr bool AllowSwimming = false;
 constexpr bool UseCameraCollision = true;
 const FVector SafeSpawnLocation(0.0, 0.0, 220.0);
 const FLinearColor StarterOffWhite(0.92f, 0.90f, 0.82f);
+const FLinearColor SignalJacketSlate(0.12f, 0.18f, 0.22f);
+const FLinearColor SignalJacketTeal(0.08f, 0.72f, 0.68f);
 const FName TopComponentName(TEXT("StarterOutfitTop"));
 const FName BottomComponentName(TEXT("StarterOutfitBottom"));
+const FName SignalJacketAccentComponentName(TEXT("SignalJacketAccent"));
 constexpr float SundaleRouteDistance = 80000.0f;
 constexpr float SundaleWaypointTolerance = 75.0f;
 constexpr float JobInteractionRadius = 350.0f;
@@ -107,6 +110,7 @@ constexpr TCHAR CanonicalAutomaticReceiptHeldInputFlag[] =
 	TEXT("CanonicalAutomaticReceiptHeldInputDriver");
 constexpr TCHAR SignalJacketPurchaseQaFlag[] = TEXT("SignalJacketPurchaseQa");
 constexpr TCHAR SignalJacketPurchaseQaVerifyFlag[] = TEXT("SignalJacketPurchaseQaVerify");
+constexpr TCHAR SignalJacketEquipQaFlag[] = TEXT("SignalJacketEquipQa");
 constexpr uint8 CanonicalHeldInputW = 1 << 0;
 constexpr uint8 CanonicalHeldInputA = 1 << 1;
 constexpr uint8 CanonicalHeldInputD = 1 << 2;
@@ -720,7 +724,33 @@ bool MatchesSharedCityReconnectAppearance(
 		&& Actual.bOwnerSubmitted
 		&& Expected.PresetId == Actual.PresetId
 		&& Expected.TopItemId == Actual.TopItemId
-		&& Expected.BottomItemId == Actual.BottomItemId;
+		&& Expected.BottomItemId == Actual.BottomItemId
+		&& Expected.bSignalJacketEquipped == Actual.bSignalJacketEquipped;
+}
+
+bool CanEquipSignalJacket(
+	const bool bOwnsJacket,
+	const bool bAtApprovedStore,
+	const bool bLocalAuthoritativeProfile,
+	FString& OutError)
+{
+	if (!bOwnsJacket)
+	{
+		OutError = TEXT("Buy the Sundale Signal Jacket before equipping it.");
+		return false;
+	}
+	if (!bAtApprovedStore)
+	{
+		OutError = TEXT("Return to the Sundale clothing store.");
+		return false;
+	}
+	if (!bLocalAuthoritativeProfile)
+	{
+		OutError = TEXT("This local beta profile does not own the jacket.");
+		return false;
+	}
+	OutError.Reset();
+	return true;
 }
 
 int32 GetSharedCityQaTargetClients()
@@ -902,6 +932,14 @@ AOddsWellPlaceholderCharacter::AOddsWellPlaceholderCharacter()
 	StarterOutfitBottom->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	StarterOutfitBottom->SetVisibility(false);
 
+	SignalJacketAccent = CreateDefaultSubobject<UStaticMeshComponent>(SignalJacketAccentComponentName);
+	SignalJacketAccent->SetupAttachment(GetCapsuleComponent());
+	SignalJacketAccent->SetStaticMesh(Cube);
+	SignalJacketAccent->SetRelativeLocation(FVector(0.0, 0.0, 15.0));
+	SignalJacketAccent->SetRelativeScale3D(FVector(0.70, 0.58, 0.14));
+	SignalJacketAccent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	SignalJacketAccent->SetVisibility(false);
+
 	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("ThirdPersonCameraBoom"));
 	CameraBoom->SetupAttachment(GetCapsuleComponent());
 	CameraBoom->SetRelativeLocation(FVector(0.0, 0.0, 65.0));
@@ -950,6 +988,8 @@ void AOddsWellPlaceholderCharacter::BeginPlay()
 		FParse::Param(FCommandLine::Get(), SignalJacketPurchaseQaFlag);
 	bSignalJacketPurchaseQaVerify =
 		FParse::Param(FCommandLine::Get(), SignalJacketPurchaseQaVerifyFlag);
+	bSignalJacketEquipQa =
+		FParse::Param(FCommandLine::Get(), SignalJacketEquipQaFlag);
 #endif
 	bQaEnabled = FParse::Param(FCommandLine::Get(), TEXT("LocomotionQa"));
 	bQaAutoExit = FParse::Param(FCommandLine::Get(), TEXT("LocomotionAutoExit"));
@@ -958,7 +998,8 @@ void AOddsWellPlaceholderCharacter::BeginPlay()
 	bAppearanceQaCleanup = FParse::Param(FCommandLine::Get(), TEXT("AppearanceQaCleanup"));
 	bSundaleRouteQa = FParse::Param(FCommandLine::Get(), TEXT("SundaleRouteQa"));
 	bSundaleRouteRun = FParse::Param(FCommandLine::Get(), TEXT("SundaleRouteRun"));
-	bSharedCityQa = FParse::Param(FCommandLine::Get(), TEXT("SharedCityQa"));
+	bSharedCityQa = FParse::Param(FCommandLine::Get(), TEXT("SharedCityQa"))
+		|| bSignalJacketEquipQa;
 	bSharedCityCapacityQa = FParse::Param(FCommandLine::Get(), TEXT("SharedCityCapacityQa"));
 	bStudioPersistenceQa = FParse::Param(FCommandLine::Get(), TEXT("StudioPersistenceQa"));
 	bStudioPersistenceQaVerify = FParse::Param(FCommandLine::Get(), TEXT("StudioPersistenceQaVerify"));
@@ -1042,8 +1083,10 @@ void AOddsWellPlaceholderCharacter::BeginPlay()
 	else
 	{
 		StarterOutfitMaterial = UMaterialInstanceDynamic::Create(BasicShapeMaterial, this);
+		SignalJacketMaterial = UMaterialInstanceDynamic::Create(BasicShapeMaterial, this);
+		SignalJacketAccentMaterial = UMaterialInstanceDynamic::Create(BasicShapeMaterial, this);
 		PrimitiveSkinMaterial = UMaterialInstanceDynamic::Create(BasicShapeMaterial, this);
-		if (!StarterOutfitMaterial || !PrimitiveSkinMaterial)
+		if (!StarterOutfitMaterial || !SignalJacketMaterial || !SignalJacketAccentMaterial || !PrimitiveSkinMaterial)
 		{
 			ReportAppearanceError(TEXT("The native placeholder material instances could not be created."));
 			bOutfitQaEnabled = false;
@@ -1051,8 +1094,11 @@ void AOddsWellPlaceholderCharacter::BeginPlay()
 		else
 		{
 			StarterOutfitMaterial->SetVectorParameterValue(TEXT("Color"), StarterOffWhite);
+			SignalJacketMaterial->SetVectorParameterValue(TEXT("Color"), SignalJacketSlate);
+			SignalJacketAccentMaterial->SetVectorParameterValue(TEXT("Color"), SignalJacketTeal);
 			StarterOutfitTop->SetMaterial(0, StarterOutfitMaterial);
 			StarterOutfitBottom->SetMaterial(0, StarterOutfitMaterial);
+			SignalJacketAccent->SetMaterial(0, SignalJacketAccentMaterial);
 			PrimitiveBody->SetMaterial(0, PrimitiveSkinMaterial);
 			PrimitiveHead->SetMaterial(0, PrimitiveSkinMaterial);
 		}
@@ -1080,6 +1126,14 @@ void AOddsWellPlaceholderCharacter::BeginPlay()
 	if (GetNetMode() == NM_ListenServer && IsLocallyControlled())
 	{
 		SubmitLocalSharedCityAppearance();
+	}
+	if (HasAuthority() && IsLocallyControlled())
+	{
+		if (const AOddsWellLocomotionGameMode* GameMode =
+			GetWorld()->GetAuthGameMode<AOddsWellLocomotionGameMode>())
+		{
+			bSignalJacketOwned = GameMode->OwnsSignalJacket();
+		}
 	}
 	if (!bAppearanceReady)
 	{
@@ -2076,6 +2130,10 @@ void AOddsWellPlaceholderCharacter::Tick(const float DeltaSeconds)
 	{
 		RunSignalJacketPurchaseQa(DeltaSeconds);
 	}
+	if (bSignalJacketEquipQa)
+	{
+		RunSignalJacketEquipQa(DeltaSeconds);
+	}
 #endif
 	if (bPublicLeagueQa && !bPublicLeagueQaCaptured && (PublicLeagueQaElapsed += DeltaSeconds) >= 1.0f)
 	{
@@ -2214,10 +2272,185 @@ void AOddsWellPlaceholderCharacter::RunSignalJacketPurchaseQa(
 	}
 }
 
+void AOddsWellPlaceholderCharacter::RunSignalJacketEquipQa(
+	const float DeltaSeconds)
+{
+	if (!IsLocallyControlled() || bSignalJacketEquipQaLogged)
+	{
+		return;
+	}
+	SignalJacketEquipQaElapsed += DeltaSeconds;
+	auto Finish = [this](const bool bPassed, const TCHAR* QaRole, const TCHAR* Reason)
+	{
+		if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
+		{
+			PlayerController->InputKey(
+				FInputKeyEventArgs::CreateSimulated(KeyInteract, IE_Released, 0.0f));
+		}
+		AOddsWellLocomotionGameMode* GameMode =
+			GetWorld()->GetAuthGameMode<AOddsWellLocomotionGameMode>();
+		const int32 Entries = GameMode ? GameMode->GetOddsBucksEntryCount() : -1;
+		const int64 Balance = GameMode ? GameMode->GetOddsBucksBalance() : -1;
+		const bool bObserver = FCString::Strcmp(QaRole, TEXT("observer")) == 0;
+		const bool bVisibleJacket = bObserver
+			? bPassed
+			: SharedCityAppearance.bSignalJacketEquipped;
+		const bool bVisibleAccent = bObserver
+			? bPassed
+			: SignalJacketAccent && SignalJacketAccent->IsVisible();
+		const FString Evidence = FString::Printf(
+			TEXT("ODDSWELL_SIGNAL_JACKET_EQUIP_QA|result=%s|role=%s|normal_e_path=true|physical_store=true|explicit_equip=true|owned=true|equipped=%s|slot=outfit|slate_teal_graybox=%s|replicated=%s|other_client_visible=%s|entries=%d|balance=%lld|additional_debit=%s|auto_equip=false|detail=%s"),
+			bPassed ? TEXT("PASS") : TEXT("FAIL"),
+			QaRole,
+			bVisibleJacket ? TEXT("true") : TEXT("false"),
+			bVisibleAccent ? TEXT("true") : TEXT("false"),
+			GetNetMode() == NM_Client ? TEXT("received") : TEXT("published"),
+			GetNetMode() == NM_Client ? TEXT("true") : TEXT("awaiting_observer"),
+			Entries,
+			Balance,
+			GameMode ? TEXT("false") : TEXT("not_observed"),
+			Reason);
+		if (bPassed)
+		{
+			UE_LOG(LogOddsWellLocomotion, Display, TEXT("%s"), *Evidence);
+		}
+		else
+		{
+			UE_LOG(LogOddsWellLocomotion, Error, TEXT("%s"), *Evidence);
+		}
+		bSignalJacketEquipQaLogged = true;
+		if (GetNetMode() == NM_Client)
+		{
+			if (bPassed)
+			{
+				FScreenshotRequest::RequestScreenshot(
+					TEXT("Phase1I3_SharedSignalJacket.png"),
+					true,
+					false);
+			}
+			QaExitAt = FPlatformTime::Seconds() + (bPassed ? 2.0 : 1.0);
+		}
+	};
+
+	if (!GetWorld()->GetMapName().Contains(TEXT("SundaleGraybox")))
+	{
+		Finish(false, TEXT("unknown"), TEXT("wrong_map"));
+		return;
+	}
+	if (SignalJacketEquipQaElapsed > 25.0f)
+	{
+		Finish(
+			false,
+			GetNetMode() == NM_Client ? TEXT("observer") : TEXT("owner"),
+			TEXT("timeout"));
+		return;
+	}
+	if (GetNetMode() == NM_Client)
+	{
+		for (TActorIterator<AOddsWellPlaceholderCharacter> It(GetWorld()); It; ++It)
+		{
+			if (*It != this
+				&& It->SharedCityAppearance.bSignalJacketEquipped
+				&& It->SignalJacketAccent
+				&& It->SignalJacketAccent->IsVisible())
+			{
+				if (SignalJacketEquipQaStage == 0)
+				{
+					SignalJacketEquipQaStage = 1;
+					SignalJacketEquipQaElapsed = 0.0f;
+					return;
+				}
+				if (SignalJacketEquipQaElapsed >= 2.0f)
+				{
+					Finish(true, TEXT("observer"), TEXT("remote_visible"));
+				}
+				return;
+			}
+		}
+		return;
+	}
+	if (GetNetMode() != NM_ListenServer || !HasAuthority())
+	{
+		Finish(false, TEXT("owner"), TEXT("listen_server_required"));
+		return;
+	}
+	AOddsWellLocomotionGameMode* GameMode =
+		GetWorld()->GetAuthGameMode<AOddsWellLocomotionGameMode>();
+	APlayerController* PlayerController = Cast<APlayerController>(Controller);
+	if (!GameMode
+		|| !PlayerController
+		|| !PlayerController->IsLocalController()
+		|| !GetCharacterMovement()->IsMovingOnGround())
+	{
+		return;
+	}
+	switch (SignalJacketEquipQaStage)
+	{
+	case 0:
+		if (!GameMode->OwnsSignalJacket()
+			|| GameMode->GetOddsBucksEntryCount() != 2
+			|| GameMode->GetOddsBucksBalance() != 40
+			|| SharedCityAppearance.bSignalJacketEquipped)
+		{
+			Finish(false, TEXT("owner"), TEXT("unexpected_starting_state"));
+			return;
+		}
+		bSignalJacketOwned = true;
+		SetActorLocation(
+			FVector(
+				ClothingStoreInteractionLocation.X,
+				ClothingStoreInteractionLocation.Y,
+				GetActorLocation().Z),
+			false,
+			nullptr,
+			ETeleportType::TeleportPhysics);
+		++SignalJacketEquipQaStage;
+		return;
+	case 1:
+		PlayerController->InputKey(
+			FInputKeyEventArgs::CreateSimulated(KeyInteract, IE_Pressed, 1.0f));
+		++SignalJacketEquipQaStage;
+		return;
+	case 2:
+		PlayerController->InputKey(
+			FInputKeyEventArgs::CreateSimulated(KeyInteract, IE_Released, 0.0f));
+		++SignalJacketEquipQaStage;
+		return;
+	case 3:
+		if (SharedCityAppearance.bSignalJacketEquipped)
+		{
+			SetActorLocation(
+				SafeSpawnLocation + FVector(300.0, 0.0, 0.0),
+				false,
+				nullptr,
+				ETeleportType::TeleportPhysics);
+			Finish(
+				GameMode->GetOddsBucksEntryCount() == 2
+					&& GameMode->GetOddsBucksBalance() == 40
+					&& SignalJacketAccent
+					&& SignalJacketAccent->IsVisible(),
+				TEXT("owner"),
+				TEXT("replicated_state_published"));
+		}
+		return;
+	default:
+		Finish(false, TEXT("owner"), TEXT("invalid_stage"));
+		return;
+	}
+}
+
 void AOddsWellPlaceholderCharacter::EndPlay(
 	const EEndPlayReason::Type EndPlayReason)
 {
 	SetCanonicalAutomaticReceiptHeldInput(0);
+	if (bSignalJacketEquipQa)
+	{
+		if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
+		{
+			PlayerController->InputKey(
+				FInputKeyEventArgs::CreateSimulated(KeyInteract, IE_Released, 0.0f));
+		}
+	}
 	Super::EndPlay(EndPlayReason);
 }
 
@@ -2632,6 +2865,7 @@ void AOddsWellPlaceholderCharacter::PollClothingStoreInteraction()
 		bClothingStoreInteractionArmed = false;
 		bSignalJacketPurchaseConfirm = false;
 		bSignalJacketPurchaseSubmitting = false;
+		bSignalJacketEquipSubmitting = false;
 		return;
 	}
 	if (GEngine)
@@ -2640,7 +2874,11 @@ void AOddsWellPlaceholderCharacter::PollClothingStoreInteraction()
 			912017,
 			0.0f,
 			FColor::Cyan,
-			bSignalJacketPurchaseConfirm
+			SharedCityAppearance.bSignalJacketEquipped
+				? TEXT("Sundale Signal Jacket equipped")
+				: bSignalJacketOwned
+					? TEXT("Press E to equip owned Sundale Signal Jacket")
+					: bSignalJacketPurchaseConfirm
 				? TEXT("Press E again to buy Sundale Signal Jacket for 60 Odds Bucks")
 				: TEXT("Press E to review Sundale Signal Jacket (60 Odds Bucks)"));
 	}
@@ -2649,11 +2887,21 @@ void AOddsWellPlaceholderCharacter::PollClothingStoreInteraction()
 	{
 		bClothingStoreInteractionArmed = true;
 	}
-	if (!bPressed || !bClothingStoreInteractionArmed || bSignalJacketPurchaseSubmitting)
+	if (!bPressed
+		|| !bClothingStoreInteractionArmed
+		|| bSignalJacketPurchaseSubmitting
+		|| bSignalJacketEquipSubmitting
+		|| SharedCityAppearance.bSignalJacketEquipped)
 	{
 		return;
 	}
 	bClothingStoreInteractionArmed = false;
+	if (bSignalJacketOwned)
+	{
+		bSignalJacketEquipSubmitting = true;
+		ServerEquipSignalJacket();
+		return;
+	}
 	if (!bSignalJacketPurchaseConfirm)
 	{
 		bSignalJacketPurchaseConfirm = true;
@@ -2719,6 +2967,7 @@ void AOddsWellPlaceholderCharacter::ClientConfirmSignalJacketPurchase_Implementa
 {
 	bSignalJacketPurchaseSubmitting = false;
 	bSignalJacketPurchaseConfirm = false;
+	bSignalJacketOwned = bOwned;
 	const FString Message = bPurchased
 		? FString::Printf(
 			TEXT("Sundale Signal Jacket purchased | Balance: %lld Odds Bucks"),
@@ -2746,6 +2995,67 @@ void AOddsWellPlaceholderCharacter::ClientConfirmSignalJacketPurchase_Implementa
 		bPurchased ? TEXT("true") : TEXT("false"),
 		bOwned ? TEXT("true") : TEXT("false"),
 		Balance);
+}
+
+void AOddsWellPlaceholderCharacter::ServerEquipSignalJacket_Implementation()
+{
+	AOddsWellLocomotionGameMode* GameMode =
+		GetWorld()->GetAuthGameMode<AOddsWellLocomotionGameMode>();
+	const bool bAtApprovedStore = GameMode
+		&& GetWorld()->GetMapName().Contains(TEXT("SundaleGraybox"))
+		&& FVector::Dist2D(GetActorLocation(), ClothingStoreInteractionLocation)
+			<= ClothingStoreInteractionRadius;
+	FString Error;
+	if (!CanEquipSignalJacket(
+			GameMode && GameMode->OwnsSignalJacket(),
+			bAtApprovedStore,
+			Controller && Controller->IsLocalController(),
+			Error))
+	{
+		UE_LOG(LogOddsWellLocomotion, Warning, TEXT("ODDSWELL_SIGNAL_JACKET_EQUIP|result=REJECTED|server_validated=true|debit=0|detail=%s"), *Error);
+		ClientConfirmSignalJacketEquip(false, false, Error);
+		return;
+	}
+	SharedCityAppearance.bSignalJacketEquipped = true;
+	SyncOutfitComponents();
+	ForceNetUpdate();
+	UE_LOG(
+		LogOddsWellLocomotion,
+		Display,
+		TEXT("ODDSWELL_SIGNAL_JACKET_EQUIP|result=EQUIPPED|item_id=%s|slot=outfit|server_validated=true|owned=true|debit=0|replicated=true|visual=slate_teal_graybox"),
+		*GetOddsWellSignalJacketItemId());
+	ClientConfirmSignalJacketEquip(true, true, FString());
+}
+
+void AOddsWellPlaceholderCharacter::ClientConfirmSignalJacketEquip_Implementation(
+	const bool bHandled,
+	const bool bEquipped,
+	const FString& Error)
+{
+	bSignalJacketEquipSubmitting = false;
+	if (bEquipped)
+	{
+		bSignalJacketOwned = true;
+		SharedCityAppearance.bSignalJacketEquipped = true;
+		SyncOutfitComponents();
+	}
+	if (GEngine)
+	{
+		GEngine->AddOnScreenDebugMessage(
+			912019,
+			5.0f,
+			bEquipped ? FColor::Green : FColor::Red,
+			bEquipped
+				? TEXT("Sundale Signal Jacket equipped")
+				: Error);
+	}
+	UE_LOG(
+		LogOddsWellLocomotion,
+		Display,
+		TEXT("ODDSWELL_SIGNAL_JACKET_EQUIP_FEEDBACK|handled=%s|equipped=%s|client_visible=true|detail=%s"),
+		bHandled ? TEXT("true") : TEXT("false"),
+		bEquipped ? TEXT("true") : TEXT("false"),
+		Error.IsEmpty() ? TEXT("none") : *Error);
 }
 
 void AOddsWellPlaceholderCharacter::RunJobQa(const float DeltaSeconds)
@@ -4959,7 +5269,13 @@ void AOddsWellPlaceholderCharacter::RunSharedCityQa(const float DeltaSeconds)
 			SharedCityQaExitAt = FPlatformTime::Seconds() + 3.0;
 		}
 	}
-	if (GetNetMode() == NM_Client && bSharedCityQaVisibleLogged)
+	bool bMoveSharedCityQaClient = true;
+#if UE_BUILD_DEVELOPMENT
+	bMoveSharedCityQaClient = !bSignalJacketEquipQa;
+#endif
+	if (GetNetMode() == NM_Client
+		&& bSharedCityQaVisibleLogged
+		&& bMoveSharedCityQaClient)
 	{
 		AddMovementInput(FVector::ForwardVector, 1.0f);
 	}
@@ -5207,8 +5523,15 @@ void AOddsWellPlaceholderCharacter::SetAuthoritativeSharedCityAppearance(
 
 void AOddsWellPlaceholderCharacter::SyncOutfitComponents()
 {
+	const bool bJacketEquipped = SharedCityAppearance.bSignalJacketEquipped;
+	StarterOutfitTop->SetMaterial(
+		0,
+		bJacketEquipped && SignalJacketMaterial
+			? SignalJacketMaterial.Get()
+			: StarterOutfitMaterial.Get());
 	StarterOutfitTop->SetVisibility(!StarterOutfitState.GetEquipped(EOddsWellStarterEquipmentSlot::Top).IsNone(), true);
 	StarterOutfitBottom->SetVisibility(!StarterOutfitState.GetEquipped(EOddsWellStarterEquipmentSlot::Bottom).IsNone(), true);
+	SignalJacketAccent->SetVisibility(bJacketEquipped && StarterOutfitTop->IsVisible(), true);
 }
 
 void AOddsWellPlaceholderCharacter::RunOutfitQa(const float DeltaSeconds)
@@ -6048,7 +6371,11 @@ AOddsWellLocomotionGameMode::AOddsWellLocomotionGameMode()
 	PrimaryActorTick.bCanEverTick = true;
 	DefaultPawnClass = AOddsWellPlaceholderCharacter::StaticClass();
 	HUDClass = AOddsWellSportsbookHUD::StaticClass();
-	bSharedCityQa = FParse::Param(FCommandLine::Get(), TEXT("SharedCityQa"));
+	bSharedCityQa = FParse::Param(FCommandLine::Get(), TEXT("SharedCityQa"))
+#if UE_BUILD_DEVELOPMENT
+		|| FParse::Param(FCommandLine::Get(), SignalJacketEquipQaFlag)
+#endif
+		;
 	bSharedCityReconnectQa = FParse::Param(FCommandLine::Get(), TEXT("SharedCityReconnectQa"));
 	bSharedCityCapacityQa = FParse::Param(FCommandLine::Get(), TEXT("SharedCityCapacityQa"));
 	SharedCityQaTargetClients = GetSharedCityQaTargetClients();
@@ -7452,6 +7779,7 @@ void AOddsWellLocomotionGameMode::BeginPlay()
 		|| bCanonicalAutomaticTipoffLockQa
 #if UE_BUILD_DEVELOPMENT
 		|| FParse::Param(FCommandLine::Get(), SignalJacketPurchaseQaFlag)
+		|| FParse::Param(FCommandLine::Get(), SignalJacketEquipQaFlag)
 #endif
 		;
 	const bool bJobRecoveryQa = FParse::Param(FCommandLine::Get(), TEXT("JobRecoveryQa"));
@@ -7508,6 +7836,7 @@ void AOddsWellLocomotionGameMode::BeginPlay()
 		|| bCanonicalAutomaticTipoffLockQa
 #if UE_BUILD_DEVELOPMENT
 		|| FParse::Param(FCommandLine::Get(), SignalJacketPurchaseQaFlag)
+		|| FParse::Param(FCommandLine::Get(), SignalJacketEquipQaFlag)
 #endif
 		)
 	{
@@ -7524,6 +7853,25 @@ void AOddsWellLocomotionGameMode::BeginPlay()
 			return;
 		}
 	}
+#if UE_BUILD_DEVELOPMENT
+	if (FParse::Param(FCommandLine::Get(), SignalJacketEquipQaFlag))
+	{
+		bool bPurchased = false;
+		bool bOwned = false;
+		int64 Balance = 0;
+		if (!TryPurchaseSignalJacket(bPurchased, bOwned, Balance, Error)
+			|| !bPurchased
+			|| !bOwned
+			|| GetOddsBucksEntryCount() != 2
+			|| Balance != 40)
+		{
+			bOddsBucksReady = false;
+			UE_LOG(LogOddsWellLocomotion, Error, TEXT("ODDSWELL_SIGNAL_JACKET_EQUIP_QA_SETUP|result=FAIL|detail=%s"), *Error);
+			return;
+		}
+		UE_LOG(LogOddsWellLocomotion, Display, TEXT("ODDSWELL_SIGNAL_JACKET_EQUIP_QA_SETUP|result=PASS|owned=true|entries=2|balance=40|equipped=false|test_setup=true"));
+	}
+#endif
 	if (bCanonicalRequestQa)
 	{
 		FOddsWellCanonicalMatchWinnerOfferRecord Offer;
@@ -9157,6 +9505,29 @@ void AOddsWellLocomotionGameMode::Logout(AController* Exiting)
 			*SharedCityReconnectExpectedAppearance.TopItemId.ToString(),
 			*SharedCityReconnectExpectedAppearance.BottomItemId.ToString());
 	}
+#if UE_BUILD_DEVELOPMENT
+	if (FParse::Param(FCommandLine::Get(), SignalJacketEquipQaFlag)
+		&& Exiting
+		&& !Exiting->IsLocalController())
+	{
+		FString Error;
+		const bool bCleanup = ResetOddsWellQaOddsBucksAndVerify(Error);
+		const FString Evidence = FString::Printf(
+			TEXT("ODDSWELL_SIGNAL_JACKET_EQUIP_QA_CLEANUP|result=%s|slot=qa|exists=%s|detail=%s"),
+			bCleanup ? TEXT("PASS") : TEXT("FAIL"),
+			bCleanup ? TEXT("false") : TEXT("unknown"),
+			Error.IsEmpty() ? TEXT("none") : *Error);
+		if (bCleanup)
+		{
+			UE_LOG(LogOddsWellLocomotion, Display, TEXT("%s"), *Evidence);
+		}
+		else
+		{
+			UE_LOG(LogOddsWellLocomotion, Error, TEXT("%s"), *Evidence);
+		}
+		SharedCityQaExitAt = FPlatformTime::Seconds() + 1.0;
+	}
+#endif
 	Super::Logout(Exiting);
 	if (GetNetMode() != NM_Standalone)
 	{
@@ -10432,6 +10803,11 @@ bool FOddsWellLocomotionDefaultsTest::RunTest(const FString& Parameters)
 	ReconnectAfter = ReconnectBefore;
 	ReconnectAfter.bOwnerSubmitted = false;
 	TestFalse(TEXT("Reconnect rejects an unsubmitted fallback"), MatchesSharedCityReconnectAppearance(ReconnectBefore, ReconnectAfter));
+	ReconnectBefore.bSignalJacketEquipped = true;
+	ReconnectAfter = ReconnectBefore;
+	TestTrue(TEXT("Reconnect accepts the same equipped jacket state"), MatchesSharedCityReconnectAppearance(ReconnectBefore, ReconnectAfter));
+	ReconnectAfter.bSignalJacketEquipped = false;
+	TestFalse(TEXT("Reconnect rejects a changed equipped jacket state"), MatchesSharedCityReconnectAppearance(ReconnectBefore, ReconnectAfter));
 
 	const TArray<FKey> KeyboardMoveKeys = {KeyForward, KeyBackward, KeyLeft, KeyRight};
 	const TArray<FKey> MouseLookKeys = {KeyMouseYaw, KeyMousePitch};
@@ -10536,6 +10912,58 @@ bool FOddsWellStarterOutfitTest::RunTest(const FString& Parameters)
 	TestEqual(TEXT("Walk calibration is unchanged"), WalkSpeed, 260.0f);
 	TestEqual(TEXT("Run calibration is unchanged"), RunSpeed, 520.0f);
 	TestEqual(TEXT("Jump calibration is unchanged"), JumpVelocity, 520.0f);
+	return !HasAnyErrors();
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(
+	FOddsWellSignalJacketEquipTest,
+	"OddsWell.Character.SignalJacketEquip",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+
+bool FOddsWellSignalJacketEquipTest::RunTest(const FString& Parameters)
+{
+	FString Error;
+	TestFalse(
+		TEXT("An unowned Signal Jacket cannot equip"),
+		CanEquipSignalJacket(false, true, true, Error));
+	TestFalse(TEXT("Unowned rejection reports a reason"), Error.IsEmpty());
+	TestFalse(
+		TEXT("An owned Signal Jacket cannot equip outside its store"),
+		CanEquipSignalJacket(true, false, true, Error));
+	TestFalse(
+		TEXT("A remote placeholder cannot claim the local profile jacket"),
+		CanEquipSignalJacket(true, true, false, Error));
+	TestTrue(
+		TEXT("The owned local-profile jacket equips at the physical store"),
+		CanEquipSignalJacket(true, true, true, Error));
+	TestTrue(TEXT("Accepted equip clears the error"), Error.IsEmpty());
+
+	FOddsWellOddsBucksLedger Ledger;
+	TestEqual(
+		TEXT("Equip test seeds the existing job payout"),
+		Ledger.Append(
+			GetOddsWellFirstJobCommandId(),
+			GetOddsWellFirstJobPayout(),
+			GetOddsWellFirstJobReason()),
+		EOddsWellOddsBucksAppendResult::Applied);
+	TestEqual(
+		TEXT("Equip test acquires the exact approved jacket"),
+		AppendOddsWellSignalJacketPurchase(Ledger),
+		EOddsWellOddsBucksAppendResult::Applied);
+	const int32 EntriesBeforeEquip = Ledger.GetEntries().Num();
+	const int64 BalanceBeforeEquip = Ledger.GetBalance();
+	TestTrue(TEXT("Purchase command proves jacket ownership"), OwnsOddsWellSignalJacket(Ledger));
+	TestTrue(
+		TEXT("Owned ledger passes the exact equip gate"),
+		CanEquipSignalJacket(
+			OwnsOddsWellSignalJacket(Ledger),
+			true,
+			true,
+			Error));
+	TestEqual(TEXT("Equip adds no ledger entry"), Ledger.GetEntries().Num(), EntriesBeforeEquip);
+	TestEqual(TEXT("Equip charges no Odds Bucks"), Ledger.GetBalance(), BalanceBeforeEquip);
+	TestTrue(TEXT("Slate and teal remain visibly distinct"), SignalJacketSlate != SignalJacketTeal);
+	TestTrue(TEXT("Jacket accent has a distinct component identity"), SignalJacketAccentComponentName != TopComponentName);
 	return !HasAnyErrors();
 }
 #endif
