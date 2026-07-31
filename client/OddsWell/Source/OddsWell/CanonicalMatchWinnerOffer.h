@@ -100,6 +100,9 @@ ODDSWELL_API bool ValidateOddsWellCanonicalMatchWinnerResultLinkPrerequisites(
 ODDSWELL_API EOddsWellMatchWinnerSettlementDecisionResult DecideOddsWellCanonicalMatchWinnerLossDecision(
 	FOddsWellMatchWinnerSettlementDecisionRecord& OutRecord,
 	FString& OutError);
+ODDSWELL_API EOddsWellMatchWinnerSettlementDecisionResult DecideOddsWellCanonicalMatchWinnerCurrentMesaWinDecision(
+	FOddsWellMatchWinnerSettlementDecisionRecord& OutRecord,
+	FString& OutError);
 ODDSWELL_API EOddsWellMatchWinnerLossFinalizationResult FinalizeOddsWellCanonicalMatchWinnerLoss(
 	FOddsWellMatchWinnerLossFinalizationRecord& OutRecord,
 	FString& OutError);

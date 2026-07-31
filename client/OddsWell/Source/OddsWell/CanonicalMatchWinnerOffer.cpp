@@ -449,6 +449,53 @@ EOddsWellMatchWinnerSettlementDecisionResult DecideCanonicalMatchWinnerLoss(
 		OutError);
 }
 
+EOddsWellMatchWinnerSettlementDecisionResult DecideCanonicalMatchWinnerCurrentMesaWin(
+	const FOddsWellCanonicalScheduledGameRecord& Schedule,
+	const FOddsWellCanonicalPregameCommitmentRecord& Commitment,
+	const FString& OfferSlot,
+	const bool bOddsBucksQaSlot,
+	FOddsWellMatchWinnerSettlementDecisionRecord& OutRecord,
+	FString& OutError)
+{
+	OutRecord = {};
+	FOddsWellMatchWinnerOffer ExactOffer;
+	FString ExactCanonicalJson;
+	FOddsWellCanonicalMatchWinnerOfferRecord PersistedOffer;
+	if (!BuildExpectedOffer(
+			Schedule,
+			Commitment,
+			ExactOffer,
+			ExactCanonicalJson,
+			OutError)
+		|| !UGameplayStatics::DoesSaveGameExist(
+			OfferSlot,
+			CanonicalOfferUserIndex)
+		|| !RestoreExactOffer(
+			UGameplayStatics::LoadGameFromSlot(
+				OfferSlot,
+				CanonicalOfferUserIndex),
+			ExactOffer,
+			ExactCanonicalJson,
+			PersistedOffer,
+			OutError))
+	{
+		OutError =
+			TEXT("Canonical Match Winner Mesa decision failed exact H26A/B/C validation.");
+		return EOddsWellMatchWinnerSettlementDecisionResult::Rejected;
+	}
+	const FString ResultSha =
+		TEXT("05a4a2a1488d4852318a398ff6e8eaf4a3cac47257b441feceb7426a4b5b0289");
+	return DecideOddsWellMatchWinnerSettlement(
+		ExactOffer,
+		TEXT("canonical:h26an:match_winner:win-decision:") + ResultSha,
+		TEXT("canonical:h26e:match_winner:request:") + ExactOffer.OfferId,
+		TEXT("canonical:h26g:match_winner:lock:") + ExactOffer.OfferId,
+		TEXT("canonical:h26l:match_winner:result:") + ResultSha,
+		bOddsBucksQaSlot,
+		OutRecord,
+		OutError);
+}
+
 EOddsWellMatchWinnerLossFinalizationResult FinalizeCanonicalMatchWinnerLoss(
 	const FOddsWellCanonicalScheduledGameRecord& Schedule,
 	const FOddsWellCanonicalPregameCommitmentRecord& Commitment,
@@ -870,6 +917,31 @@ EOddsWellMatchWinnerSettlementDecisionResult DecideOddsWellCanonicalMatchWinnerL
 		return EOddsWellMatchWinnerSettlementDecisionResult::Rejected;
 	}
 	return DecideCanonicalMatchWinnerLoss(
+		Schedule,
+		Commitment,
+		CanonicalOfferSlot,
+		UseOddsWellOddsBucksQaSlot(),
+		OutRecord,
+		OutError);
+}
+
+EOddsWellMatchWinnerSettlementDecisionResult DecideOddsWellCanonicalMatchWinnerCurrentMesaWinDecision(
+	FOddsWellMatchWinnerSettlementDecisionRecord& OutRecord,
+	FString& OutError)
+{
+	FOddsWellCanonicalScheduledGameRecord Schedule;
+	FOddsWellCanonicalPregameCommitmentRecord Commitment;
+	if (!LoadOddsWellCanonicalLocalBetaScheduledGame(
+			Schedule,
+			OutError)
+		|| !LoadOddsWellCanonicalPregameCommitment(
+			Commitment,
+			OutError))
+	{
+		OutRecord = {};
+		return EOddsWellMatchWinnerSettlementDecisionResult::Rejected;
+	}
+	return DecideCanonicalMatchWinnerCurrentMesaWin(
 		Schedule,
 		Commitment,
 		CanonicalOfferSlot,
@@ -3261,6 +3333,22 @@ bool FOddsWellCanonicalMatchWinnerCurrentMesaWinDecisionTest::RunTest(
 		TestUnchanged(TEXT("H26AI missing result"), MissingBytes);
 		RestoreExactEvidence();
 	}
+	UOddsWellOddsBucksSaveGame* MissingLockState = Cast<UOddsWellOddsBucksSaveGame>(
+		UGameplayStatics::LoadGameFromMemory(ExactEvidenceMemory));
+	TestNotNull(TEXT("H26AN missing-lock fixture loads"), MissingLockState);
+	if (MissingLockState)
+	{
+		MissingLockState->MatchWinnerLocks.Reset();
+		TestTrue(TEXT("H26AN missing-lock fixture persists"), UGameplayStatics::SaveGameToSlot(MissingLockState, TEXT("OddsWellOddsBucksQA"), 0));
+		TArray<uint8> MissingLockBytes;
+		TestTrue(TEXT("H26AN missing-lock bytes read"), FFileHelper::LoadFileToArray(MissingLockBytes, *QaLedgerPath));
+		TestEqual(
+			TEXT("H26AN partial chain rejects"),
+			DecideOddsWellMatchWinnerSettlement(ExactOffer, DecisionId, RequestId, LockId, ResultId, true, Rejected, Error),
+			EOddsWellMatchWinnerSettlementDecisionResult::Rejected);
+		TestUnchanged(TEXT("H26AN partial chain"), MissingLockBytes);
+		RestoreExactEvidence();
+	}
 	UOddsWellOddsBucksSaveGame* TamperedRequestState = Cast<UOddsWellOddsBucksSaveGame>(
 		UGameplayStatics::LoadGameFromMemory(ExactEvidenceMemory));
 	TestNotNull(TEXT("H26AI tampered-request fixture loads"), TamperedRequestState);
@@ -3301,6 +3389,66 @@ bool FOddsWellCanonicalMatchWinnerCurrentMesaWinDecisionTest::RunTest(
 		TestUnchanged(TEXT("H26AI foreign result"), ForeignBytes);
 		RestoreExactEvidence();
 	}
+	UOddsWellOddsBucksSaveGame* MixedState = Cast<UOddsWellOddsBucksSaveGame>(
+		UGameplayStatics::LoadGameFromMemory(ExactEvidenceMemory));
+	TestNotNull(TEXT("H26AN mixed-chain fixture loads"), MixedState);
+	if (MixedState)
+	{
+		MixedState->MatchWinnerRequests[0].OfferId =
+			TEXT("5473d2345a9d45193c4e622302148082db3b0b00b78c1c19154e7ec5ce8d84cc");
+		TestTrue(TEXT("H26AN mixed-chain fixture persists"), UGameplayStatics::SaveGameToSlot(MixedState, TEXT("OddsWellOddsBucksQA"), 0));
+		TArray<uint8> MixedBytes;
+		TestTrue(TEXT("H26AN mixed-chain bytes read"), FFileHelper::LoadFileToArray(MixedBytes, *QaLedgerPath));
+		TestEqual(
+			TEXT("H26AN mixed current and foreign evidence rejects"),
+			DecideOddsWellMatchWinnerSettlement(ExactOffer, DecisionId, RequestId, LockId, ResultId, true, Rejected, Error),
+			EOddsWellMatchWinnerSettlementDecisionResult::Rejected);
+		TestUnchanged(TEXT("H26AN mixed chain"), MixedBytes);
+		RestoreExactEvidence();
+	}
+	UOddsWellOddsBucksSaveGame* WrongResultState = Cast<UOddsWellOddsBucksSaveGame>(
+		UGameplayStatics::LoadGameFromMemory(ExactEvidenceMemory));
+	TestNotNull(TEXT("H26AN wrong-result fixture loads"), WrongResultState);
+	if (WrongResultState)
+	{
+		WrongResultState->MatchWinnerResultLinks[0].Winner =
+			TEXT("Harbor City Waves");
+		TestTrue(TEXT("H26AN wrong-result fixture persists"), UGameplayStatics::SaveGameToSlot(WrongResultState, TEXT("OddsWellOddsBucksQA"), 0));
+		TArray<uint8> WrongResultBytes;
+		TestTrue(TEXT("H26AN wrong-result bytes read"), FFileHelper::LoadFileToArray(WrongResultBytes, *QaLedgerPath));
+		TestEqual(
+			TEXT("H26AN wrong authoritative result rejects"),
+			DecideOddsWellMatchWinnerSettlement(ExactOffer, DecisionId, RequestId, LockId, ResultId, true, Rejected, Error),
+			EOddsWellMatchWinnerSettlementDecisionResult::Rejected);
+		TestUnchanged(TEXT("H26AN wrong result"), WrongResultBytes);
+		RestoreExactEvidence();
+	}
+
+	TestTrue(
+		TEXT("H26AN atomic failure fixture becomes read-only"),
+		FPlatformFileManager::Get().GetPlatformFile().SetReadOnly(
+			*QaLedgerPath,
+			true));
+	const EOddsWellMatchWinnerSettlementDecisionResult FailedWriteResult =
+		DecideOddsWellMatchWinnerSettlement(
+			ExactOffer,
+			DecisionId,
+			RequestId,
+			LockId,
+			ResultId,
+			true,
+			Rejected,
+			Error);
+	TestTrue(
+		TEXT("H26AN atomic failure fixture returns writable"),
+		FPlatformFileManager::Get().GetPlatformFile().SetReadOnly(
+			*QaLedgerPath,
+			false));
+	TestEqual(
+		TEXT("H26AN failed write rejects"),
+		FailedWriteResult,
+		EOddsWellMatchWinnerSettlementDecisionResult::Rejected);
+	TestUnchanged(TEXT("H26AN failed write"), ExactEvidenceBytes);
 
 	FOddsWellMatchWinnerSettlementDecisionRecord Decision;
 	TestEqual(

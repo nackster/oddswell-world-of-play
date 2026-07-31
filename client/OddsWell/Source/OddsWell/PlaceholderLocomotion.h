@@ -386,7 +386,8 @@ public:
 private:
 	void PublishOddsBucksReconciliation();
 	void ResumeCanonicalMatchWinnerResultLink();
-	bool ResumeCanonicalMatchWinnerLossDecision(bool bRequireDuplicate);
+	bool ResumeCanonicalMatchWinnerDecision(bool bRequireDuplicate);
+	bool ResumeCanonicalMatchWinnerMesaWinDecision(bool bRequireDuplicate);
 	bool ResumeCanonicalMatchWinnerLossFinalization(bool bRequireDuplicate);
 	void ScheduleCanonicalMatchWinnerTipoffLock();
 	void RunCanonicalMatchWinnerTipoffLock();
