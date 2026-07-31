@@ -77,6 +77,7 @@ const FName BottomComponentName(TEXT("StarterOutfitBottom"));
 constexpr float SundaleRouteDistance = 80000.0f;
 constexpr float SundaleWaypointTolerance = 75.0f;
 constexpr float JobInteractionRadius = 350.0f;
+constexpr float ClothingStoreInteractionRadius = 350.0f;
 constexpr float StudioEntryRadius = 350.0f;
 constexpr float StudioQaWalkDistance = 200.0f;
 constexpr float StadiumEntryRadius = 350.0f;
@@ -88,6 +89,7 @@ const FName StudioFurnitureTag(TEXT("OddsWellStudioFurniture"));
 const FName StadiumStructureTag(TEXT("OddsWellStadiumStructure"));
 const FName StadiumZoneTag(TEXT("OddsWellStadiumZone"));
 const FVector JobInteractionLocation(9500.0, 0.0, 0.0);
+const FVector ClothingStoreInteractionLocation(12500.0, 9000.0, 0.0);
 const FVector StadiumEntranceThreshold(7000.0, 18000.0, 0.0);
 const FVector SportsbookInteractionLocation(1000.0, 18000.0, 0.0);
 const TCHAR* TicketBoothOpenPrompt = TEXT("Press E to open betting odds");
@@ -103,6 +105,8 @@ int32 StadiumQaProcessStage = 0;
 #if UE_BUILD_DEVELOPMENT
 constexpr TCHAR CanonicalAutomaticReceiptHeldInputFlag[] =
 	TEXT("CanonicalAutomaticReceiptHeldInputDriver");
+constexpr TCHAR SignalJacketPurchaseQaFlag[] = TEXT("SignalJacketPurchaseQa");
+constexpr TCHAR SignalJacketPurchaseQaVerifyFlag[] = TEXT("SignalJacketPurchaseQaVerify");
 constexpr uint8 CanonicalHeldInputW = 1 << 0;
 constexpr uint8 CanonicalHeldInputA = 1 << 1;
 constexpr uint8 CanonicalHeldInputD = 1 << 2;
@@ -731,7 +735,7 @@ const TArray<FVector>& GetSundaleRouteWaypoints()
 	static const TArray<FVector> Waypoints = {
 		JobInteractionLocation,
 		FVector(12500.0, 0.0, 0.0),
-		FVector(12500.0, 9000.0, 0.0),
+		ClothingStoreInteractionLocation,
 		FVector(12500.0, 18000.0, 0.0),
 		StadiumEntranceThreshold,
 		SportsbookInteractionLocation,
@@ -942,6 +946,10 @@ void AOddsWellPlaceholderCharacter::BeginPlay()
 		FParse::Param(
 			FCommandLine::Get(),
 			CanonicalAutomaticReceiptHeldInputFlag);
+	bSignalJacketPurchaseQa =
+		FParse::Param(FCommandLine::Get(), SignalJacketPurchaseQaFlag);
+	bSignalJacketPurchaseQaVerify =
+		FParse::Param(FCommandLine::Get(), SignalJacketPurchaseQaVerifyFlag);
 #endif
 	bQaEnabled = FParse::Param(FCommandLine::Get(), TEXT("LocomotionQa"));
 	bQaAutoExit = FParse::Param(FCommandLine::Get(), TEXT("LocomotionAutoExit"));
@@ -2003,6 +2011,7 @@ void AOddsWellPlaceholderCharacter::Tick(const float DeltaSeconds)
 	Super::Tick(DeltaSeconds);
 	PollKeyboardMovement();
 	PollJobInteraction();
+	PollClothingStoreInteraction();
 	PollStudioInteraction();
 	PollStadiumInteraction();
 	PollSportsbookInteraction();
@@ -2063,6 +2072,10 @@ void AOddsWellPlaceholderCharacter::Tick(const float DeltaSeconds)
 	{
 		RunCanonicalAutomaticReceiptHeldInputDriver(DeltaSeconds);
 	}
+	if (bSignalJacketPurchaseQa || bSignalJacketPurchaseQaVerify)
+	{
+		RunSignalJacketPurchaseQa(DeltaSeconds);
+	}
 #endif
 	if (bPublicLeagueQa && !bPublicLeagueQaCaptured && (PublicLeagueQaElapsed += DeltaSeconds) >= 1.0f)
 	{
@@ -2078,6 +2091,129 @@ void AOddsWellPlaceholderCharacter::Tick(const float DeltaSeconds)
 }
 
 #if UE_BUILD_DEVELOPMENT
+void AOddsWellPlaceholderCharacter::RunSignalJacketPurchaseQa(
+	const float DeltaSeconds)
+{
+	SignalJacketPurchaseQaElapsed += DeltaSeconds;
+	auto Finish = [this](const bool bPassed, const TCHAR* Reason)
+	{
+		if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
+		{
+			PlayerController->InputKey(
+				FInputKeyEventArgs::CreateSimulated(
+					KeyInteract,
+					IE_Released,
+					0.0f));
+		}
+		AOddsWellLocomotionGameMode* GameMode =
+			GetWorld()->GetAuthGameMode<AOddsWellLocomotionGameMode>();
+		const int32 Entries = GameMode ? GameMode->GetOddsBucksEntryCount() : -1;
+		const int64 Balance = GameMode ? GameMode->GetOddsBucksBalance() : -1;
+		bool bCleanup = true;
+		FString CleanupError;
+		if (bSignalJacketPurchaseQaVerify)
+		{
+			bCleanup = ResetOddsWellQaOddsBucksAndVerify(CleanupError);
+		}
+		const bool bFinalPass = bPassed && bCleanup;
+		UE_LOG(
+			LogOddsWellLocomotion,
+			Display,
+			TEXT("ODDSWELL_SIGNAL_JACKET_PURCHASE_QA|result=%s|process=%s|normal_e_path=true|physical_store=true|two_step_confirmation=true|entries=%d|balance=%lld|owned=%s|duplicate_debit=false|cold_restore=%s|auto_equip=false|cleanup=%s|reason=%s|detail=%s"),
+			bFinalPass ? TEXT("PASS") : TEXT("FAIL"),
+			bSignalJacketPurchaseQaVerify ? TEXT("cold_verify") : TEXT("fresh_purchase"),
+			Entries,
+			Balance,
+			Entries == 2 && Balance == 40 ? TEXT("true") : TEXT("false"),
+			bSignalJacketPurchaseQaVerify ? TEXT("true") : TEXT("deferred"),
+			bSignalJacketPurchaseQaVerify
+				? (bCleanup ? TEXT("true") : TEXT("false"))
+				: TEXT("deferred"),
+			Reason,
+			CleanupError.IsEmpty() ? TEXT("none") : *CleanupError);
+		bSignalJacketPurchaseQa = false;
+		bSignalJacketPurchaseQaVerify = false;
+		QaExitAt = FPlatformTime::Seconds() + 1.0;
+	};
+
+	if (SignalJacketPurchaseQaElapsed > 15.0f)
+	{
+		Finish(false, TEXT("timeout"));
+		return;
+	}
+	if (!GetWorld()->GetMapName().Contains(TEXT("SundaleGraybox")))
+	{
+		Finish(false, TEXT("wrong_map"));
+		return;
+	}
+	AOddsWellLocomotionGameMode* GameMode =
+		GetWorld()->GetAuthGameMode<AOddsWellLocomotionGameMode>();
+	APlayerController* PlayerController = Cast<APlayerController>(Controller);
+	if (!GameMode || !PlayerController || !GetCharacterMovement()->IsMovingOnGround())
+	{
+		return;
+	}
+
+	switch (SignalJacketPurchaseQaStage)
+	{
+	case 0:
+	{
+		const bool bExpectedStartingState = bSignalJacketPurchaseQaVerify
+			? GameMode->WasOddsBucksLoadedFromDisk()
+				&& GameMode->GetOddsBucksEntryCount() == 2
+				&& GameMode->GetOddsBucksBalance() == 40
+			: GameMode->GetOddsBucksEntryCount() == 1
+				&& GameMode->GetOddsBucksBalance() == 100;
+		if (!bExpectedStartingState)
+		{
+			Finish(false, TEXT("unexpected_starting_ledger"));
+			return;
+		}
+		SetActorLocation(
+			FVector(
+				ClothingStoreInteractionLocation.X,
+				ClothingStoreInteractionLocation.Y,
+				GetActorLocation().Z),
+			false,
+			nullptr,
+			ETeleportType::TeleportPhysics);
+		++SignalJacketPurchaseQaStage;
+		return;
+	}
+	case 1:
+		PlayerController->InputKey(
+			FInputKeyEventArgs::CreateSimulated(KeyInteract, IE_Pressed, 1.0f));
+		++SignalJacketPurchaseQaStage;
+		return;
+	case 2:
+		PlayerController->InputKey(
+			FInputKeyEventArgs::CreateSimulated(KeyInteract, IE_Released, 0.0f));
+		++SignalJacketPurchaseQaStage;
+		return;
+	case 3:
+		PlayerController->InputKey(
+			FInputKeyEventArgs::CreateSimulated(KeyInteract, IE_Pressed, 1.0f));
+		++SignalJacketPurchaseQaStage;
+		return;
+	case 4:
+		PlayerController->InputKey(
+			FInputKeyEventArgs::CreateSimulated(KeyInteract, IE_Released, 0.0f));
+		++SignalJacketPurchaseQaStage;
+		return;
+	case 5:
+		Finish(
+			GameMode->GetOddsBucksEntryCount() == 2
+				&& GameMode->GetOddsBucksBalance() == 40,
+			bSignalJacketPurchaseQaVerify
+				? TEXT("cold_duplicate_verified")
+				: TEXT("purchase_verified"));
+		return;
+	default:
+		Finish(false, TEXT("invalid_stage"));
+		return;
+	}
+}
+
 void AOddsWellPlaceholderCharacter::EndPlay(
 	const EEndPlayReason::Type EndPlayReason)
 {
@@ -2479,6 +2615,137 @@ void AOddsWellPlaceholderCharacter::ClientConfirmPlaceholderJob_Implementation(c
 	{
 		GEngine->AddOnScreenDebugMessage(912016, 5.0f, bCompleted ? FColor::Green : FColor::Red, Message);
 	}
+}
+
+void AOddsWellPlaceholderCharacter::PollClothingStoreInteraction()
+{
+	if (!IsLocallyControlled()
+		|| !GetWorld()->GetMapName().Contains(TEXT("SundaleGraybox")))
+	{
+		return;
+	}
+	const APlayerController* PlayerController = Cast<APlayerController>(Controller);
+	if (!PlayerController
+		|| FVector::Dist2D(GetActorLocation(), ClothingStoreInteractionLocation)
+			> ClothingStoreInteractionRadius)
+	{
+		bClothingStoreInteractionArmed = false;
+		bSignalJacketPurchaseConfirm = false;
+		bSignalJacketPurchaseSubmitting = false;
+		return;
+	}
+	if (GEngine)
+	{
+		GEngine->AddOnScreenDebugMessage(
+			912017,
+			0.0f,
+			FColor::Cyan,
+			bSignalJacketPurchaseConfirm
+				? TEXT("Press E again to buy Sundale Signal Jacket for 60 Odds Bucks")
+				: TEXT("Press E to review Sundale Signal Jacket (60 Odds Bucks)"));
+	}
+	const bool bPressed = PlayerController->IsInputKeyDown(KeyInteract);
+	if (!bPressed)
+	{
+		bClothingStoreInteractionArmed = true;
+	}
+	if (!bPressed || !bClothingStoreInteractionArmed || bSignalJacketPurchaseSubmitting)
+	{
+		return;
+	}
+	bClothingStoreInteractionArmed = false;
+	if (!bSignalJacketPurchaseConfirm)
+	{
+		bSignalJacketPurchaseConfirm = true;
+		return;
+	}
+	bSignalJacketPurchaseSubmitting = true;
+	ServerPurchaseSignalJacket();
+}
+
+void AOddsWellPlaceholderCharacter::ServerPurchaseSignalJacket_Implementation()
+{
+	AOddsWellLocomotionGameMode* GameMode =
+		GetWorld()->GetAuthGameMode<AOddsWellLocomotionGameMode>();
+	const bool bAtApprovedStore = GameMode
+		&& GetWorld()->GetMapName().Contains(TEXT("SundaleGraybox"))
+		&& FVector::Dist2D(GetActorLocation(), ClothingStoreInteractionLocation)
+			<= ClothingStoreInteractionRadius;
+	if (!bAtApprovedStore)
+	{
+		UE_LOG(LogOddsWellLocomotion, Warning, TEXT("ODDSWELL_SIGNAL_JACKET_PURCHASE|result=REJECTED|reason=outside_clothing_store|server_validated=true|debit=0|ownership=false"));
+		ClientConfirmSignalJacketPurchase(
+			false,
+			false,
+			false,
+			GameMode ? GameMode->GetOddsBucksBalance() : 0,
+			TEXT("Return to the Sundale clothing store."));
+		return;
+	}
+	bool bPurchased = false;
+	bool bOwned = false;
+	int64 Balance = GameMode->GetOddsBucksBalance();
+	FString Error;
+	const bool bHandled = GameMode->TryPurchaseSignalJacket(
+		bPurchased,
+		bOwned,
+		Balance,
+		Error);
+	UE_LOG(
+		LogOddsWellLocomotion,
+		Display,
+		TEXT("ODDSWELL_SIGNAL_JACKET_PURCHASE|result=%s|item_id=%s|price=%lld|purchased=%s|owned=%s|balance=%lld|server_validated=true|auto_equip=false|detail=%s"),
+		bPurchased ? TEXT("PURCHASED") : bOwned ? TEXT("ALREADY_OWNED") : TEXT("REJECTED"),
+		*GetOddsWellSignalJacketItemId(),
+		GetOddsWellSignalJacketPrice(),
+		bPurchased ? TEXT("true") : TEXT("false"),
+		bOwned ? TEXT("true") : TEXT("false"),
+		Balance,
+		Error.IsEmpty() ? TEXT("none") : *Error);
+	ClientConfirmSignalJacketPurchase(
+		bHandled,
+		bPurchased,
+		bOwned,
+		Balance,
+		Error);
+}
+
+void AOddsWellPlaceholderCharacter::ClientConfirmSignalJacketPurchase_Implementation(
+	const bool bHandled,
+	const bool bPurchased,
+	const bool bOwned,
+	const int64 Balance,
+	const FString& Error)
+{
+	bSignalJacketPurchaseSubmitting = false;
+	bSignalJacketPurchaseConfirm = false;
+	const FString Message = bPurchased
+		? FString::Printf(
+			TEXT("Sundale Signal Jacket purchased | Balance: %lld Odds Bucks"),
+			Balance)
+		: bOwned
+			? FString::Printf(
+				TEXT("Sundale Signal Jacket already owned | Balance: %lld Odds Bucks"),
+				Balance)
+			: Error.IsEmpty()
+				? TEXT("Signal Jacket purchase rejected")
+				: Error;
+	if (GEngine)
+	{
+		GEngine->AddOnScreenDebugMessage(
+			912018,
+			5.0f,
+			bPurchased || bOwned ? FColor::Green : FColor::Red,
+			Message);
+	}
+	UE_LOG(
+		LogOddsWellLocomotion,
+		Display,
+		TEXT("ODDSWELL_SIGNAL_JACKET_FEEDBACK|handled=%s|purchased=%s|owned=%s|balance=%lld|client_visible=true"),
+		bHandled ? TEXT("true") : TEXT("false"),
+		bPurchased ? TEXT("true") : TEXT("false"),
+		bOwned ? TEXT("true") : TEXT("false"),
+		Balance);
 }
 
 void AOddsWellPlaceholderCharacter::RunJobQa(const float DeltaSeconds)
@@ -7182,7 +7449,11 @@ void AOddsWellLocomotionGameMode::BeginPlay()
 		|| (bCanonicalRequestQa && !bCanonicalRequestQaVerify)
 		|| bCanonicalHarborFortyPlacementQa
 		|| bCanonicalMesaFortyPlacementQa
-		|| bCanonicalAutomaticTipoffLockQa;
+		|| bCanonicalAutomaticTipoffLockQa
+#if UE_BUILD_DEVELOPMENT
+		|| FParse::Param(FCommandLine::Get(), SignalJacketPurchaseQaFlag)
+#endif
+		;
 	const bool bJobRecoveryQa = FParse::Param(FCommandLine::Get(), TEXT("JobRecoveryQa"));
 	const bool bJobRecoveryQaVerify = FParse::Param(FCommandLine::Get(), TEXT("JobRecoveryQaVerify"));
 	if (bSportsbookVoidFinalizationQa || bSportsbookVoidDecisionQa)
@@ -7234,7 +7505,11 @@ void AOddsWellLocomotionGameMode::BeginPlay()
 		|| (bCanonicalRequestQa && !bCanonicalRequestQaVerify)
 		|| bCanonicalHarborFortyPlacementQa
 		|| bCanonicalMesaFortyPlacementQa
-		|| bCanonicalAutomaticTipoffLockQa)
+		|| bCanonicalAutomaticTipoffLockQa
+#if UE_BUILD_DEVELOPMENT
+		|| FParse::Param(FCommandLine::Get(), SignalJacketPurchaseQaFlag)
+#endif
+		)
 	{
 		bool bCredited = false;
 		int64 Balance = 0;
@@ -7484,6 +7759,58 @@ bool AOddsWellLocomotionGameMode::TryCreditPlaceholderJob(bool& bOutCredited, in
 	PublishOddsBucksReconciliation();
 	bOutCredited = true;
 	OutBalance = OddsBucksLedger.GetBalance();
+	return true;
+}
+
+bool AOddsWellLocomotionGameMode::TryPurchaseSignalJacket(
+	bool& bOutPurchased,
+	bool& bOutOwned,
+	int64& OutBalance,
+	FString& OutError)
+{
+	bOutPurchased = false;
+	bOutOwned = false;
+	OutBalance = OddsBucksLedger.GetBalance();
+	if (!bOddsBucksReady)
+	{
+		OutError = TEXT("The authoritative Odds Bucks ledger is not ready.");
+		return false;
+	}
+	bOutOwned = OwnsOddsWellSignalJacket(OddsBucksLedger);
+	if (bOutOwned)
+	{
+		OutError.Reset();
+		return true;
+	}
+	FOddsWellOddsBucksLedger Candidate = OddsBucksLedger;
+	const EOddsWellOddsBucksAppendResult Result =
+		AppendOddsWellSignalJacketPurchase(Candidate);
+	if (Result == EOddsWellOddsBucksAppendResult::Rejected)
+	{
+		OutError = FString::Printf(
+			TEXT("You need %lld Odds Bucks to buy the Sundale Signal Jacket."),
+			GetOddsWellSignalJacketPrice());
+		return true;
+	}
+	if (Result == EOddsWellOddsBucksAppendResult::Duplicate)
+	{
+		bOutOwned = true;
+		OutError.Reset();
+		return true;
+	}
+	if (!SaveOddsWellOddsBucksLedger(
+			Candidate,
+			NextJobPayoutUnixSeconds,
+			bOddsBucksQaSlot,
+			OutError))
+	{
+		return false;
+	}
+	OddsBucksLedger = MoveTemp(Candidate);
+	bOutPurchased = true;
+	bOutOwned = true;
+	OutBalance = OddsBucksLedger.GetBalance();
+	PublishOddsBucksReconciliation();
 	return true;
 }
 

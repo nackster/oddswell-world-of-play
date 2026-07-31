@@ -28,6 +28,7 @@ constexpr int32 OddsBucksSchemaVersion = 12;
 constexpr int32 MatchWinnerRequestEvidenceVersion = 1;
 constexpr int32 OddsBucksUserIndex = 0;
 constexpr int64 FirstJobPayout = 100;
+constexpr int64 SignalJacketPrice = 60;
 constexpr int64 JobPayoutIntervalSeconds = 24 * 60 * 60;
 constexpr int64 MatchWinnerProbabilityScale = 100000000;
 constexpr int64 MatchWinnerMinimumStake = 10;
@@ -41,6 +42,9 @@ const FString MatchWinnerReconciliationFile(TEXT("MatchWinnerReconciliation.json
 const FString MatchWinnerQaReconciliationFile(TEXT("MatchWinnerReconciliationQA.json"));
 const FString FirstJobCommandId(TEXT("job:placeholder_shift:first_payout:v1"));
 const FName FirstJobReason(TEXT("placeholder_job_payout"));
+const FString SignalJacketItemId(TEXT("sundale_signal_jacket"));
+const FString SignalJacketPurchaseCommandId(TEXT("store:sundale:signal_jacket:purchase:v1"));
+const FName ClothingPurchaseReason(TEXT("clothing_purchase"));
 const FName MatchWinnerStakeReason(TEXT("match_winner_stake"));
 const FName MatchWinnerPayoutReason(TEXT("match_winner_payout"));
 const FName AcceptedPendingLockStatus(TEXT("accepted_pending_lock"));
@@ -1898,6 +1902,29 @@ FName GetOddsWellFirstJobReason()
 	return FirstJobReason;
 }
 
+const FString& GetOddsWellSignalJacketItemId()
+{
+	return SignalJacketItemId;
+}
+
+int64 GetOddsWellSignalJacketPrice()
+{
+	return SignalJacketPrice;
+}
+
+EOddsWellOddsBucksAppendResult AppendOddsWellSignalJacketPurchase(FOddsWellOddsBucksLedger& Ledger)
+{
+	return Ledger.Append(
+		SignalJacketPurchaseCommandId,
+		-SignalJacketPrice,
+		ClothingPurchaseReason);
+}
+
+bool OwnsOddsWellSignalJacket(const FOddsWellOddsBucksLedger& Ledger)
+{
+	return Ledger.HasCommand(SignalJacketPurchaseCommandId);
+}
+
 bool FinalizeOddsWellMatchWinnerOfferIdentity(
 	FOddsWellMatchWinnerOffer& InOutOffer,
 	FString& OutCanonicalJson,
@@ -1913,7 +1940,15 @@ bool FinalizeOddsWellMatchWinnerOfferIdentity(
 
 bool UseOddsWellOddsBucksQaSlot()
 {
-	return FParse::Param(FCommandLine::Get(), TEXT("JobQa"))
+	const bool bDevelopmentSignalJacketQa =
+#if UE_BUILD_DEVELOPMENT
+		FParse::Param(FCommandLine::Get(), TEXT("SignalJacketPurchaseQa"))
+		|| FParse::Param(FCommandLine::Get(), TEXT("SignalJacketPurchaseQaVerify"));
+#else
+		false;
+#endif
+	return bDevelopmentSignalJacketQa
+		|| FParse::Param(FCommandLine::Get(), TEXT("JobQa"))
 		|| FParse::Param(FCommandLine::Get(), TEXT("JobPayoutQa"))
 		|| FParse::Param(FCommandLine::Get(), TEXT("JobPayoutQaVerify"))
 		|| FParse::Param(FCommandLine::Get(), TEXT("JobRecoveryQa"))
@@ -7992,6 +8027,64 @@ bool FOddsWellOddsBucksLedgerTest::RunTest(const FString& Parameters)
 	TestEqual(TEXT("Exact win remains three ledger entries"), WinLedger.GetEntries().Num(), 3);
 	TestEqual(TEXT("Exact win balance remains 160"), WinLedger.GetBalance(), int64{160});
 	TestTrue(TEXT("Final wager QA cleanup succeeds"), ResetOddsWellQaOddsBucksAndVerify(Error));
+	return !HasAnyErrors();
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(
+	FOddsWellSignalJacketPurchaseTest,
+	"OddsWell.Economy.SignalJacketPurchase",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+
+bool FOddsWellSignalJacketPurchaseTest::RunTest(const FString& Parameters)
+{
+	FString Error;
+	TestTrue(TEXT("Signal Jacket QA starts clean"), ResetOddsWellQaOddsBucksAndVerify(Error));
+	FOddsWellOddsBucksLedger Ledger;
+	TestEqual(TEXT("Signal Jacket has the frozen item id"), GetOddsWellSignalJacketItemId(), FString(TEXT("sundale_signal_jacket")));
+	TestEqual(TEXT("Signal Jacket has the frozen price"), GetOddsWellSignalJacketPrice(), int64{60});
+	TestEqual(TEXT("Underfunded purchase is rejected"), AppendOddsWellSignalJacketPurchase(Ledger), EOddsWellOddsBucksAppendResult::Rejected);
+	TestFalse(TEXT("Rejected purchase grants no ownership"), OwnsOddsWellSignalJacket(Ledger));
+	TestEqual(TEXT("Rejected purchase changes no balance"), Ledger.GetBalance(), int64{0});
+	TestEqual(TEXT("Rejected purchase appends no entry"), Ledger.GetEntries().Num(), 0);
+
+	TestEqual(
+		TEXT("Existing job payout funds the purchase"),
+		Ledger.Append(
+			GetOddsWellFirstJobCommandId(),
+			GetOddsWellFirstJobPayout(),
+			GetOddsWellFirstJobReason()),
+		EOddsWellOddsBucksAppendResult::Applied);
+	TestEqual(TEXT("Funded purchase applies once"), AppendOddsWellSignalJacketPurchase(Ledger), EOddsWellOddsBucksAppendResult::Applied);
+	TestTrue(TEXT("Applied purchase grants exact ownership"), OwnsOddsWellSignalJacket(Ledger));
+	TestEqual(TEXT("Applied purchase leaves 40 Odds Bucks"), Ledger.GetBalance(), int64{40});
+	TestEqual(TEXT("Applied purchase appends one debit after the credit"), Ledger.GetEntries().Num(), 2);
+	if (Ledger.GetEntries().Num() == 2)
+	{
+		const FOddsWellOddsBucksEntry& Purchase = Ledger.GetEntries()[1];
+		TestEqual(TEXT("Purchase sequence is exact"), Purchase.Sequence, int64{2});
+		TestEqual(TEXT("Purchase command is immutable"), Purchase.CommandId, FString(TEXT("store:sundale:signal_jacket:purchase:v1")));
+		TestEqual(TEXT("Purchase debit is exact"), Purchase.Delta, int64{-60});
+		TestEqual(TEXT("Purchase running balance is exact"), Purchase.BalanceAfter, int64{40});
+		TestEqual(TEXT("Purchase reason is exact"), Purchase.Reason, FName(TEXT("clothing_purchase")));
+	}
+	TestEqual(TEXT("Exact retry is idempotent"), AppendOddsWellSignalJacketPurchase(Ledger), EOddsWellOddsBucksAppendResult::Duplicate);
+	TestEqual(TEXT("Retry appends no second purchase"), Ledger.GetEntries().Num(), 2);
+	TestEqual(TEXT("Retry debits nothing"), Ledger.GetBalance(), int64{40});
+
+	const int64 NextJobPayout = 2000000000 + GetOddsWellJobPayoutIntervalSeconds();
+	TestTrue(TEXT("Purchased ownership persists to the isolated QA slot"), SaveOddsWellOddsBucksLedger(Ledger, NextJobPayout, true, Error));
+	FOddsWellOddsBucksLedger Restored;
+	int64 RestoredNextJobPayout = 0;
+	bool bFound = false;
+	TestTrue(TEXT("Purchased ownership cold-loads"), LoadOddsWellOddsBucksLedger(true, Restored, RestoredNextJobPayout, bFound, Error));
+	TestTrue(TEXT("Cold load found the isolated profile"), bFound);
+	TestTrue(TEXT("Cold load preserves ownership"), OwnsOddsWellSignalJacket(Restored));
+	TestEqual(TEXT("Cold load preserves the exact balance"), Restored.GetBalance(), int64{40});
+	TestEqual(TEXT("Cold load preserves exactly two entries"), Restored.GetEntries().Num(), 2);
+	TestEqual(TEXT("Cold load preserves the job cooldown"), RestoredNextJobPayout, NextJobPayout);
+	TestEqual(TEXT("Cold retry stays idempotent"), AppendOddsWellSignalJacketPurchase(Restored), EOddsWellOddsBucksAppendResult::Duplicate);
+	TestEqual(TEXT("Cold retry keeps 40 Odds Bucks"), Restored.GetBalance(), int64{40});
+	TestTrue(TEXT("Signal Jacket QA cleanup succeeds"), ResetOddsWellQaOddsBucksAndVerify(Error));
 	return !HasAnyErrors();
 }
 

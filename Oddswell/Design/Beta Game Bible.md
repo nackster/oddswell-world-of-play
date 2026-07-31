@@ -139,6 +139,7 @@ The presets must not attach ability, wealth, intelligence, behavior, or athlete 
 - **LOCKED:** a basic clothing store lets the player buy improvements with Odds Bucks.
 - **LOCKED:** purchasable clothing has durable city origin and is sold through its origin city's catalog; beta clothing merchandise is Sundale-specific under [[Design/Decisions/DEC-009 City-Origin Clothing and Furniture]]. The shared worn starter outfit is an onboarding exception.
 - **LOCKED FOR THE FIRST BETA PURCHASE:** the minimum catalog contains only the `60`-Odds-Bucks Sundale Signal Jacket, a modern slate-and-teal upgrade using one `outfit` slot. No other purchasable clothing is approved yet.
+- **IMPLEMENTED LOCAL-BETA PURCHASE:** at the physical Sundale clothing-store waypoint, two E presses review and confirm the exact Signal Jacket purchase. The server owns item identity and price; one immutable `-60` Odds Bucks command is durable ownership evidence and exact retry or cold restart cannot debit twice. Purchase does not auto-equip the jacket.
 - **BETA TARGET:** purchased clothing visibly changes the avatar.
 - **OPEN:** final character proportions, animation set, sizing/body compatibility, changing-room flow, and later catalog expansion.
 - **LATER:** a clothing-design brain may propose new concepts, but it has no runtime, catalog, pricing, inventory, or publishing authority and every item still requires owner approval.

@@ -112,6 +112,7 @@ private:
 	void FinishSundaleRouteQa(bool bPassed);
 	void RunSharedCityQa(float DeltaSeconds);
 	void PollJobInteraction();
+	void PollClothingStoreInteraction();
 	void PollStudioInteraction();
 	void PollStadiumInteraction();
 	void PollSportsbookInteraction();
@@ -151,6 +152,7 @@ private:
 	void RunCanonicalAutomaticReceiptHeldInputDriver(float DeltaSeconds);
 	void SetCanonicalAutomaticReceiptHeldInput(uint8 DesiredInputMask);
 	void FinishCanonicalAutomaticReceiptHeldInputDriver(bool bPassed, const TCHAR* Reason);
+	void RunSignalJacketPurchaseQa(float DeltaSeconds);
 #endif
 	bool ApplySavedOrFallbackAppearance();
 	bool ResolveLocalAppearance(FOddsWellResolvedCharacterAppearance& OutAppearance, FString& OutSource, FString& OutError) const;
@@ -178,6 +180,12 @@ private:
 
 	UFUNCTION(Client, Reliable)
 	void ClientConfirmPlaceholderJob(bool bCompleted, bool bCredited, bool bPayoutReady, int64 Balance, int64 RetryAfterSeconds);
+
+	UFUNCTION(Server, Reliable)
+	void ServerPurchaseSignalJacket();
+
+	UFUNCTION(Client, Reliable)
+	void ClientConfirmSignalJacketPurchase(bool bHandled, bool bPurchased, bool bOwned, int64 Balance, const FString& Error);
 
 	UFUNCTION(Server, Reliable)
 	void ServerConfirmSportsbookQaWager(const FString& OfferedTeam, int64 Stake);
@@ -275,6 +283,9 @@ private:
 	float JobQaElapsed = 0.0f;
 	bool bPlaceholderShiftCompleted = false;
 	bool bJobInteractionArmed = false;
+	bool bClothingStoreInteractionArmed = false;
+	bool bSignalJacketPurchaseConfirm = false;
+	bool bSignalJacketPurchaseSubmitting = false;
 	bool bJobQa = false;
 	bool bJobQaRejectionProven = false;
 	bool bJobQaFirstCreditProven = false;
@@ -359,6 +370,10 @@ private:
 	uint8 CanonicalAutomaticReceiptHeldInputMask = 0;
 	bool bCanonicalAutomaticReceiptHeldInputDriver = false;
 	bool bCanonicalAutomaticReceiptHeldInputStarted = false;
+	float SignalJacketPurchaseQaElapsed = 0.0f;
+	int32 SignalJacketPurchaseQaStage = 0;
+	bool bSignalJacketPurchaseQa = false;
+	bool bSignalJacketPurchaseQaVerify = false;
 #endif
 };
 
@@ -394,6 +409,7 @@ public:
 	virtual void Logout(AController* Exiting) override;
 	virtual APawn* SpawnDefaultPawnAtTransform_Implementation(AController* NewPlayer, const FTransform&) override;
 	bool TryCreditPlaceholderJob(bool& bOutCredited, int64& OutBalance, int64& OutRetryAfterSeconds, FString& OutCommandId, FString& OutError);
+	bool TryPurchaseSignalJacket(bool& bOutPurchased, bool& bOutOwned, int64& OutBalance, FString& OutError);
 	EOddsWellMatchWinnerRequestResult AcceptSportsbookQaWager(const FString& OfferedTeam, int64 Stake, FOddsWellMatchWinnerRequestRecord& OutRecord, int64& OutBalance, FString& OutError);
 	EOddsWellMatchWinnerRequestResult AcceptCanonicalFortyWager(bool bMesaSelected, FOddsWellMatchWinnerRequestRecord& OutRecord, int64& OutBalance, FString& OutError);
 	bool RunSportsbookQaWagerAudit(int32& OutLedgerEntries, int32& OutRequests, int64& OutBalance, FString& OutError);
