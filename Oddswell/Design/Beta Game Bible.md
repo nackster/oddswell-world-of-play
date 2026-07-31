@@ -138,8 +138,10 @@ The presets must not attach ability, wealth, intelligence, behavior, or athlete 
 - **LOCKED:** third-person trailing camera; keyboard/mouse and controller walk, run, and jump; no beta combat, crouching, parkour, or vehicles. The beta starter top and bottom are replaceable equipment; see [[Design/Decisions/DEC-007 Phase 1B Character Defaults|DEC-007]].
 - **LOCKED:** a basic clothing store lets the player buy improvements with Odds Bucks.
 - **LOCKED:** purchasable clothing has durable city origin and is sold through its origin city's catalog; beta clothing merchandise is Sundale-specific under [[Design/Decisions/DEC-009 City-Origin Clothing and Furniture]]. The shared worn starter outfit is an onboarding exception.
+- **LOCKED FOR THE FIRST BETA PURCHASE:** the minimum catalog contains only the `60`-Odds-Bucks Sundale Signal Jacket, a modern slate-and-teal upgrade using one `outfit` slot. No other purchasable clothing is approved yet.
 - **BETA TARGET:** purchased clothing visibly changes the avatar.
-- **OPEN:** final character proportions, animation set, exact store clothing count, sizing/body compatibility, changing-room flow, and whether later store items are individual garments or complete outfits.
+- **OPEN:** final character proportions, animation set, sizing/body compatibility, changing-room flow, and later catalog expansion.
+- **LATER:** a clothing-design brain may propose new concepts, but it has no runtime, catalog, pricing, inventory, or publishing authority and every item still requires owner approval.
 - **LATER:** a deep character creator, large cosmetic catalog, premium cosmetics, player marketplace, and user-generated items.
 
 ## Housing and furniture
@@ -157,9 +159,10 @@ The presets must not attach ability, wealth, intelligence, behavior, or athlete 
 - **LOCKED FOR BETA:** the first furniture-placement interaction uses predefined snap points after a valid purchase and ownership record exists. See [[Design/Decisions/DEC-012 Phase 1E Apartment Defaults]].
 - **LOCKED:** a very basic furniture store sells items for Odds Bucks.
 - **LOCKED:** purchasable furniture has durable city origin and is sold through its origin city's catalog; beta furniture merchandise is Sundale-specific under [[Design/Decisions/DEC-009 City-Origin Clothing and Furniture]].
+- **LOCKED FOR THE FIRST BETA PURCHASE:** the minimum catalog contains only the `100`-Odds-Bucks Sundale Modular Chair, a modern gray-and-teal item using one predefined `studio_primary` snap point.
 - **LOCKED:** furniture is associated with the player's apartment progression.
 - **BETA TARGET:** the player can acquire and see at least a small approved set of furniture in the owned apartment.
-- **OPEN:** exact catalog, snap-point count and locations, rotation, storage, collision rules, room restrictions, refunds, and whether apartment layouts are separate interiors or upgrades of one interior.
+- **OPEN:** later catalog expansion, collision details, room restrictions, and whether apartment layouts are separate interiors or upgrades of one interior. Rotation, storage, refunds, and unrestricted placement are absent from the beta starter path.
 
 ## Basketball and wagering
 

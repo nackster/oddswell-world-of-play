@@ -14,6 +14,7 @@ status: active
 - [[Design/Version 1 Game Bible|OddsWell Version 1 Game Bible]] is a future boundary only until the owner approves beta exit and a Version 1 scope freeze.
 - **LOCKED** and **BETA TARGET** describe product intent, not proof that a feature exists.
 - Work depending on an **OPEN** decision stops for the owner; **LATER** items are not scheduled beta work.
+- Codex owns playable and manual-path verification whenever the Development client can exercise it safely. Ask the owner only for subjective approval or an interaction that cannot be automated truthfully; label automated proof as automated rather than manual-player usability.
 - This plan and phase reports remain the implementation truth.
 
 ## Phase 0: Simulation foundation
@@ -1478,6 +1479,14 @@ Build the one-city scope defined in [[Design/Decisions/DEC-002 First Playable Sc
 - **Authority and persistence:** both commands omit QA and teleport flags; the driver marker proves `PlayerController.InputKey`, existing movement/proximity/interaction, no transform or direct receipt action, and no source write. Before, between, and after the processes, the authoritative SaveGame remained exactly `10,658` bytes, SHA-256 `78c3e43ddc4c0e63e671187dc2b81a35e633ef6de2bddd5a6bf25871bbbfdc29`, UTC mtime `2026-07-31T04:21:47.1328700Z`.
 - **Validation:** both packaged processes exited `0` with zero residue; focused native `1/1`, full native `43/43`, canonical Python timing guard `1/1` in `17.929s`, full Python `105/105` in `138.442s`, Brain Admin `--check`, Python compilation, package/source/direct-action audits, screenshot inspection, whitespace, and cleanup passed. The unchanged package remains `50` files, `1,048,675,951` bytes, and zero Python files. Cost was `$0.00`. See [[Development/Reports/Phase 1H26AR2 Automated Normal Path and Cold Process Exact Automatic Mesa Win Receipt Lifecycle Proof]].
 - **Boundary and next gate:** this is automated normal-path proof, not manual-player usability proof. No production code changed. Stop for fresh Scope Director review before any further implementation.
+
+### Phase 1I.1 Exact Sundale Starter Catalog Freeze status
+
+- **Status:** COMPLETE AS OWNER-APPROVED DESIGN AUTHORITY on `agent/phase-0d`; the minimum beta catalog is frozen before any purchase or inventory implementation.
+- **Catalog:** `sundale_signal_jacket` is the only approved clothing item, costs `60` Odds Bucks, uses the single `outfit` slot, and follows a modern slate-and-teal Sundale direction. `sundale_modular_chair` is the only approved furniture item, costs `100` Odds Bucks, and uses the single predefined `studio_primary` Studio snap point.
+- **Boundaries:** the starter outfit remains free onboarding equipment and the Studio remains empty. No item, purchase, debit, ownership, inventory, equip, replication, placement, refund, selling, storage, rotation, trading, marketplace, real-money path, or design brain was implemented. A future clothing-design brain may propose concepts only after a separate phase and owner approval; it has no production authority.
+- **Verification:** decision, Bible, Roadmap, Current Plan, report, and the affected clean Beta Delivery Roadmap and Multi-Brain Architecture canvases agree on the exact two-item catalog and future brain boundary. Markdown links, canvas JSON/references/containment, whitespace, worktree, and process hygiene pass. Cost was `$0.00`. See [[Development/Reports/Phase 1I1 Exact Sundale Starter Catalog Freeze]].
+- **Boundary and next gate:** Phase 1I.2 may implement one idempotent Odds Bucks purchase command for the exact Signal Jacket only. It must not auto-equip, grant free inventory, or start the furniture path.
 
 ## Future shared simulation layer
 

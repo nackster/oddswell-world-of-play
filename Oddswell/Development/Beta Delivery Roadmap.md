@@ -142,7 +142,8 @@ The roadmap is intentionally made of measurable product gates, not hundreds of s
 - Phase 1H.26AQ read-only exact automatic Mesa win receipt compatibility: **COMPLETE FOR THE SAME FIXED H26AM-H26AO CHAIN ONLY**; see [[Development/Reports/Phase 1H26AQ Read Only Player Facing Exact Automatic Mesa Win Receipt Compatibility]]. The existing authoritative ticket-booth receipt now shows `WIN`, Mesa selected and winner, stake `40`, final `79-113`, returned `94`, net `+54`, ledger count `3`, balance `154`, and one close instruction only when the entire automatic chain is exact. Invalid evidence exposes no receipt or partial fields, the authoritative source remains stable, and the retained isolated win and approved losses remain exact.
 - Phase 1H.26AR.1 Development-only held-input receipt lifecycle driver: **COMPLETE FOR ONE FIXED H26AQ DEVELOPMENT PROOF MODE ONLY**; see [[Development/Reports/Phase 1H26AR1 Development Only Held Input Receipt Lifecycle Driver]]. One explicit Development flag sends native held `W` / `A` / `D` and `E` press/release input through the existing movement and booth paths. The accepted package walked from `17,986 cm` away into the `350 cm` radius, opened, closed, left to `652 cm`, returned, and reopened the exact receipt while the authoritative SaveGame stayed byte/hash/mtime exact. Test and Shipping omit the driver; there is no transform, direct receipt/economy action, persistence write, fallback, or generalized navigation.
 - Phase 1H.26AR.2 automated normal-path and cold-process exact automatic Mesa win receipt lifecycle proof: **COMPLETE FOR THE SAME FIXED H26AQ DEVELOPMENT PROOF ONLY**; see [[Development/Reports/Phase 1H26AR2 Automated Normal Path and Cold Process Exact Automatic Mesa Win Receipt Lifecycle Proof]]. Process A used the committed native held-input driver to open, close, leave, return, and reopen the exact receipt, then fully terminated. Process B cold-launched afterward against the same unchanged user directory and repeated it. Both readable game-native captures show the identical receipt and one close instruction; the authoritative SaveGame stayed exact before, between, and after. No QA/teleport/direct action or production change was used.
-- Next gate: **FRESH SCOPE DIRECTOR REVIEW** before any further implementation. H26AR.2 is automated normal-path proof, not manual-player usability proof. Generalized history, variable stakes, multiple wagers, correction, later markets, online authority, or brain/simulator change remains separate and unauthorized. Sundale remains a working name.
+- Phase 1I.1 exact Sundale starter catalog freeze: **COMPLETE AS OWNER-APPROVED DESIGN AUTHORITY ONLY**; see [[Design/Decisions/DEC-009 City-Origin Clothing and Furniture]] and [[Development/Reports/Phase 1I1 Exact Sundale Starter Catalog Freeze]]. The beta catalog contains exactly one `60`-Odds-Bucks Sundale Signal Jacket in the single `outfit` slot and one `100`-Odds-Bucks Sundale Modular Chair at the single `studio_primary` snap point. No item, purchase, ownership, equip, replication, placement, refund, trading, or design brain was implemented.
+- Next gate: **PHASE 1I.2 OWNER-APPROVED CLOTHING PURCHASE IMPLEMENTATION**. Add one idempotent Odds Bucks purchase command for the exact Signal Jacket only; do not grant or equip it yet. H26AR.2 remains automated normal-path proof, not manual-player usability proof. Generalized wagers, later catalogs, online authority, and brain/simulator changes remain separate and unauthorized. Sundale remains a working name.
 - Current prerequisite note: UE 5.8, the aligned x64 runtime and .NET Framework 4.8 SDK, portable project, reproducible local Windows package, empty-map launch, LFS, generated-file ignores, primitive block/court iteration, collision, cold-process reopen, direct recorded-replay rendering, deterministic packaged traces, and local resource sampling are verified. UE 5.8 is now the approved beta client engine.
 
 No later roadmap phase is authorized merely because it appears below.
@@ -158,8 +159,8 @@ No later roadmap phase is authorized merely because it appears below.
 | 5 | 1E — Studio and apartment progression | Enter a persistent home and see the six-tier goal | FOUNDATION COMPLETE / FURNITURE IN 1I |
 | 6 | 1F — League, stadium, and match viewing | Research and watch authoritative basketball | COMPLETE FOR CURRENT ARCHIVED GAME |
 | 7 | 1G — Odds Bucks and work recovery | Earn, persist, audit, and recover virtual currency | COMPLETE FOR CURRENT LOCAL PROFILE |
-| 8 | 1H — Wager locking and settlement | Reach the physical booth, inspect approved odds, place approved wagers, and receive exact outcomes | ACTIVE — CANONICAL OFFER, INTERACTIVE PRE-COMMIT REVIEW, EXACT HARBOR/40 OR MESA/40 REQUEST/DEBIT, COLD PENDING RECEIPT, AUTOMATIC EXACT-TIPOFF H26G LOCK, H26H EXECUTION COMMITMENT, PRIVATE H26I HANDOFF, EXTERNAL ONE-SHOT H26I RECEIPT, H26J SEAL, H26K RESULT, AUTOMATIC EXACT CURRENT-CHAIN H26L LOCAL RESUME, H26M LOSS DECISION, AND H26N LOSS FINALIZATION, PLUS EXACT CURRENT-CHAIN H26O/H26P READ-ONLY PROOFS COMPLETE / OTHER STAKES, MULTIPLE WAGERS, CORRECTION, BROADER HISTORY, AND LATER MARKET PROOFS UNPROVEN |
-| 9 | 1I — Stores and lifestyle upgrades | Buy, equip, display, and place basic items | PENDING |
+| 8 | 1H — Wager locking and settlement | Reach the physical booth, inspect approved odds, place approved wagers, and receive exact outcomes | COMPLETE FOR THE FIXED HARBOR/MESA `40` MATCH WINNER SLICE / GENERALIZATION UNPROVEN |
+| 9 | 1I — Stores and lifestyle upgrades | Buy, equip, display, and place basic items | ACTIVE — EXACT STARTER CATALOG FROZEN / PURCHASE NOT IMPLEMENTED |
 | 10 | 1J — Athlete life and league storytelling | Understand athletes, availability, and consequences | PENDING |
 | 11 | 1K — First-hour integration | Complete the entire beta promise in one session | PENDING |
 | 12 | 1L — Content, presentation, and accessibility | The slice feels coherent and readable | PENDING |
@@ -449,7 +450,7 @@ Every accepted wager has one immutable request, balance entry, lock decision, au
 
 ### Smallest delivery path
 
-1. Freeze one tiny approved clothing set and one tiny furniture set. Both sets are Sundale-origin catalogs under [[Design/Decisions/DEC-009 City-Origin Clothing and Furniture]]; later cities receive separate catalogs rather than sharing one universal store inventory.
+1. **COMPLETE:** freeze one tiny approved clothing set and one tiny furniture set. The exact Sundale-origin catalog is the `60`-Odds-Bucks Signal Jacket and `100`-Odds-Bucks Modular Chair under [[Design/Decisions/DEC-009 City-Origin Clothing and Furniture]]. Later cities receive separate catalogs rather than sharing one universal store inventory.
 2. Buy one clothing item with an idempotent Odds Bucks command.
 3. Equip it and show it to another city client.
 4. Buy one furniture item and show it in the Studio.
@@ -457,7 +458,7 @@ Every accepted wager has one immutable request, balance entry, lock decision, au
 
 ### Owner gates
 
-- Initial catalog counts, prices, art approvals, equipment slots, placement rules, and refund policy.
+- **RESOLVED FOR THE TWO STARTER ITEMS ONLY:** exact counts, prices, visual direction, one `outfit` slot, one `studio_primary` snap point, and no refunds under [[Design/Decisions/DEC-009 City-Origin Clothing and Furniture]]. Later items remain a new owner gate.
 
 ### Exit evidence
 

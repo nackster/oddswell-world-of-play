@@ -24,12 +24,27 @@ For beta, Sundale is the only city, so every beta store item is Sundale-origin m
 - Once legitimately owned, an item remains owned. City origin describes where it is sold, not a rule that destroys, disables, or unequips it outside that city.
 - Future players should be able to show clothing or furniture obtained in another city, making city origin visible progression and identity.
 
+## Approved beta starter catalog
+
+The owner approved the smallest Phase 1I catalog on July 31, 2026:
+
+| Item ID | Player-facing name | Type | Price | Beta behavior |
+| --- | --- | --- | ---: | --- |
+| `sundale_signal_jacket` | Sundale Signal Jacket | Clothing | `60` Odds Bucks | One modern slate-and-teal Sundale outfit upgrade using the single `outfit` slot. |
+| `sundale_modular_chair` | Sundale Modular Chair | Furniture | `100` Odds Bucks | One modern gray-and-teal chair using the single predefined `studio_primary` snap point. |
+
+The shared worn off-white starter outfit remains onboarding equipment and is not a store item. The Studio still starts completely empty. Beta provides no refunds, selling, storage, rotation, free placement, gifting, marketplace, or trading.
+
 ## Beta boundary
 
-- Beta needs only the Sundale origin value and tiny approved Sundale clothing/furniture catalogs.
+- Beta needs only these two Sundale-origin catalog records.
 - Do not build a generalized multi-city catalog service, travel system, cross-city store, marketplace, item transfer, gifting, auction, or trading system for this rule.
-- Exact item counts, designs, prices, rarity, equipment slots, placement rules, refunds, and catalog implementation remain later owner gates.
+- Purchasing, ownership, equipping, replication, and placement remain separate implementation phases; this decision does not grant either item.
 - City origin never changes athlete decisions, game outcomes, Odds Bucks settlement, or player ability.
+
+## Future clothing-design brain
+
+A future clothing-design brain may propose new visual concepts after the first item is proven. It is not implemented, trained, or authorized to publish merchandise, set prices, modify catalogs, grant inventory, or change player state. Every proposed item still requires owner art approval and a separately versioned catalog decision before implementation.
 
 ## Future boundary
 
