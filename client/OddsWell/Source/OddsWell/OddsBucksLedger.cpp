@@ -852,8 +852,13 @@ bool IsExactCurrentCanonicalWinReconciliation(
 		TEXT("canonical:h26g:match_winner:lock:") + CurrentCanonicalOfferId;
 	const FString ResultId =
 		PrivateCanonicalResultCommandPrefix + CurrentCanonicalResultSha;
-	const FString DecisionId =
+	const FString IsolatedDecisionId =
 		TEXT("canonical:h26ai:match_winner:win-decision:") + CurrentCanonicalResultSha;
+	const FString AutomaticDecisionId =
+		TEXT("canonical:h26an:match_winner:win-decision:") + CurrentCanonicalResultSha;
+	const bool bApprovedDecisionId =
+		Decision.DecisionCommandId == IsolatedDecisionId
+		|| Decision.DecisionCommandId == AutomaticDecisionId;
 	const FString FinalizationId =
 		TEXT("canonical:h26aj:match_winner:win-finalization:") + CurrentCanonicalResultSha;
 	int64 ExpectedProbabilityE8 = 0;
@@ -890,7 +895,7 @@ bool IsExactCurrentCanonicalWinReconciliation(
 		&& Request.RequestCommandId == RequestId
 		&& Lock.LockCommandId == LockId
 		&& Result.ResultCommandId == ResultId
-		&& Decision.DecisionCommandId == DecisionId
+		&& bApprovedDecisionId
 		&& Decision.RequestCommandId == RequestId
 		&& Decision.LockCommandId == LockId
 		&& Decision.ResultCommandId == ResultId
@@ -907,7 +912,7 @@ bool IsExactCurrentCanonicalWinReconciliation(
 		&& Decision.PayoutFormula == MatchWinnerPayoutFormula
 		&& Decision.Status == MatchWinnerDecidedPendingApplyStatus
 		&& Finalization.FinalizationCommandId == FinalizationId
-		&& Finalization.DecisionCommandId == DecisionId
+		&& Finalization.DecisionCommandId == Decision.DecisionCommandId
 		&& Finalization.RequestCommandId == RequestId
 		&& Finalization.LockCommandId == LockId
 		&& Finalization.ResultCommandId == ResultId

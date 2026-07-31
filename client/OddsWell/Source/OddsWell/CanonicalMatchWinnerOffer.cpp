@@ -3856,6 +3856,212 @@ bool FOddsWellCanonicalMatchWinnerCurrentMesaWinFinalizationTest::RunTest(
 	TestTrue(TEXT("H26AJ projection contains return 94"), ProjectionJson.Contains(TEXT("\"gross_return_applied\": 94")));
 	TestTrue(TEXT("H26AJ projection contains balance 154"), ProjectionJson.Contains(TEXT("\"final_balance\": 154")));
 
+	UOddsWellOddsBucksSaveGame* Automatic =
+		Cast<UOddsWellOddsBucksSaveGame>(
+			UGameplayStatics::LoadGameFromSlot(
+				TEXT("OddsWellOddsBucksQA"),
+				0));
+	TestNotNull(TEXT("H26AQ automatic finalized source loads"), Automatic);
+	if (Automatic)
+	{
+		const FString AutomaticDecisionId =
+			FString(TEXT("canonical:h26an:match_winner:win-decision:"))
+			+ TEXT("05a4a2a1488d4852318a398ff6e8eaf4a3cac47257b441feceb7426a4b5b0289");
+		Automatic->MatchWinnerSettlementDecisions[0].DecisionCommandId =
+			AutomaticDecisionId;
+		Automatic->MatchWinnerWinFinalizations[0].DecisionCommandId =
+			AutomaticDecisionId;
+		TestTrue(
+			TEXT("H26AQ exact automatic source persists"),
+			UGameplayStatics::SaveGameToSlot(
+				Automatic,
+				TEXT("OddsWellOddsBucksQA"),
+				0));
+		TArray<uint8> AutomaticMemory;
+		TestTrue(
+			TEXT("H26AQ exact automatic source serializes"),
+			UGameplayStatics::SaveGameToMemory(
+				Automatic,
+				AutomaticMemory));
+		TestTrue(
+			TEXT("H26AQ removes the H26AP projection dependency"),
+			IFileManager::Get().Delete(*ProjectionPath));
+		TestFalse(
+			TEXT("H26AQ projection is absent before receipt read"),
+			IFileManager::Get().FileExists(*ProjectionPath));
+		TArray<uint8> BeforeAutomaticRead;
+		const FDateTime BeforeAutomaticMtime =
+			IFileManager::Get().GetTimeStamp(*QaLedgerPath);
+		TestTrue(
+			TEXT("H26AQ automatic source bytes read"),
+			FFileHelper::LoadFileToArray(
+				BeforeAutomaticRead,
+				*QaLedgerPath));
+		FOddsWellCanonicalSettledLossReceipt AutomaticReceipt;
+		TestEqual(
+			TEXT("H26AQ exact automatic win exposes one settled receipt"),
+			LoadOddsWellCanonicalSettledLossReceiptEvidence(
+				true,
+				AutomaticReceipt,
+				Error),
+			EOddsWellCanonicalSettledLossReceiptResult::Ready);
+		TestTrue(
+			TEXT("H26AQ receipt exposes only exact automatic player values"),
+			AutomaticReceipt.Outcome == FName(TEXT("won"))
+				&& AutomaticReceipt.SelectedTeam == TEXT("Mesa Vista Sol")
+				&& AutomaticReceipt.HomeTeam == TEXT("Harbor City Waves")
+				&& AutomaticReceipt.AwayTeam == TEXT("Mesa Vista Sol")
+				&& AutomaticReceipt.Winner == TEXT("Mesa Vista Sol")
+				&& AutomaticReceipt.Stake == 40
+				&& AutomaticReceipt.HomeScore == 79
+				&& AutomaticReceipt.AwayScore == 113
+				&& AutomaticReceipt.Returned == 94
+				&& AutomaticReceipt.Net == 54
+				&& AutomaticReceipt.LedgerEntryCount == 3
+				&& AutomaticReceipt.CurrentBalance == 154);
+		TArray<uint8> AfterAutomaticRead;
+		TestTrue(
+			TEXT("H26AQ automatic source bytes reread"),
+			FFileHelper::LoadFileToArray(
+				AfterAutomaticRead,
+				*QaLedgerPath));
+		TestTrue(
+			TEXT("H26AQ receipt read preserves bytes and mtime"),
+			AfterAutomaticRead == BeforeAutomaticRead
+				&& IFileManager::Get().GetTimeStamp(*QaLedgerPath)
+					== BeforeAutomaticMtime);
+		TestFalse(
+			TEXT("H26AQ receipt read does not recreate reconciliation"),
+			IFileManager::Get().FileExists(*ProjectionPath));
+
+		auto RejectAutomatic =
+			[this, &AutomaticMemory, &QaLedgerPath, &Error](
+				const TCHAR* Label,
+				TFunctionRef<void(UOddsWellOddsBucksSaveGame&)> Mutate)
+		{
+			UOddsWellOddsBucksSaveGame* Changed =
+				Cast<UOddsWellOddsBucksSaveGame>(
+					UGameplayStatics::LoadGameFromMemory(
+						AutomaticMemory));
+			TestNotNull(
+				FString::Printf(TEXT("%s fixture loads"), Label),
+				Changed);
+			if (!Changed)
+			{
+				return;
+			}
+			Mutate(*Changed);
+			TestTrue(
+				FString::Printf(TEXT("%s fixture persists"), Label),
+				UGameplayStatics::SaveGameToSlot(
+					Changed,
+					TEXT("OddsWellOddsBucksQA"),
+					0));
+			TArray<uint8> Before;
+			const FDateTime BeforeMtime =
+				IFileManager::Get().GetTimeStamp(*QaLedgerPath);
+			TestTrue(
+				FString::Printf(TEXT("%s bytes read"), Label),
+				FFileHelper::LoadFileToArray(Before, *QaLedgerPath));
+			FOddsWellCanonicalSettledLossReceipt RejectedReceipt;
+			TestEqual(
+				FString::Printf(TEXT("%s receipt rejects"), Label),
+				LoadOddsWellCanonicalSettledLossReceiptEvidence(
+					true,
+					RejectedReceipt,
+					Error),
+				EOddsWellCanonicalSettledLossReceiptResult::Rejected);
+			TestTrue(
+				FString::Printf(TEXT("%s exposes no partial receipt"), Label),
+				RejectedReceipt.Outcome.IsNone()
+					&& RejectedReceipt.SelectedTeam.IsEmpty()
+					&& RejectedReceipt.HomeTeam.IsEmpty()
+					&& RejectedReceipt.AwayTeam.IsEmpty()
+					&& RejectedReceipt.Winner.IsEmpty()
+					&& RejectedReceipt.Stake == 0
+					&& RejectedReceipt.HomeScore == 0
+					&& RejectedReceipt.AwayScore == 0
+					&& RejectedReceipt.Returned == 0
+					&& RejectedReceipt.Net == 0
+					&& RejectedReceipt.LedgerEntryCount == 0
+					&& RejectedReceipt.CurrentBalance == 0);
+			TArray<uint8> After;
+			TestTrue(
+				FString::Printf(TEXT("%s bytes reread"), Label),
+				FFileHelper::LoadFileToArray(After, *QaLedgerPath));
+			TestTrue(
+				FString::Printf(TEXT("%s read preserves source"), Label),
+				After == Before
+					&& IFileManager::Get().GetTimeStamp(*QaLedgerPath)
+						== BeforeMtime);
+		};
+		RejectAutomatic(
+			TEXT("H26AQ pending H26AN without H26AO"),
+			[](UOddsWellOddsBucksSaveGame& State)
+			{
+				State.MatchWinnerWinFinalizations.Reset();
+				State.Entries.SetNum(2);
+			});
+		RejectAutomatic(
+			TEXT("H26AQ partial automatic chain"),
+			[](UOddsWellOddsBucksSaveGame& State)
+			{
+				State.MatchWinnerWinFinalizations.Reset();
+			});
+		RejectAutomatic(
+			TEXT("H26AQ mixed isolated automatic chain"),
+			[](UOddsWellOddsBucksSaveGame& State)
+			{
+				State.MatchWinnerWinFinalizations[0].DecisionCommandId =
+					TEXT("canonical:h26ai:match_winner:win-decision:05a4a2a1488d4852318a398ff6e8eaf4a3cac47257b441feceb7426a4b5b0289");
+			});
+		RejectAutomatic(
+			TEXT("H26AQ altered automatic return"),
+			[](UOddsWellOddsBucksSaveGame& State)
+			{
+				State.MatchWinnerWinFinalizations[0].GrossReturnApplied = 95;
+			});
+		RejectAutomatic(
+			TEXT("H26AQ altered payout linkage"),
+			[](UOddsWellOddsBucksSaveGame& State)
+			{
+				State.MatchWinnerWinFinalizations[0].PayoutLedgerCommandId +=
+					TEXT(":foreign");
+			});
+		RejectAutomatic(
+			TEXT("H26AQ altered payout ledger"),
+			[](UOddsWellOddsBucksSaveGame& State)
+			{
+				State.Entries[2].Delta = 93;
+			});
+		RejectAutomatic(
+			TEXT("H26AQ altered final balance"),
+			[](UOddsWellOddsBucksSaveGame& State)
+			{
+				State.MatchWinnerWinFinalizations[0].ObservedFinalBalance = 153;
+			});
+		RejectAutomatic(
+			TEXT("H26AQ altered result"),
+			[](UOddsWellOddsBucksSaveGame& State)
+			{
+				State.MatchWinnerResultLinks[0].HomeScore = 80;
+			});
+		RejectAutomatic(
+			TEXT("H26AQ altered replay seal"),
+			[](UOddsWellOddsBucksSaveGame& State)
+			{
+				State.MatchWinnerResultLinks[0].ReplaySealSha256 =
+					FString::ChrN(64, TCHAR('f'));
+			});
+		RejectAutomatic(
+			TEXT("H26AQ altered decision link"),
+			[](UOddsWellOddsBucksSaveGame& State)
+			{
+				State.MatchWinnerSettlementDecisions[0].ResultCommandId +=
+					TEXT(":foreign");
+			});
+	}
+
 	TestTrue(TEXT("H26AJ QA cleanup succeeds"), ResetOddsWellQaOddsBucksAndVerify(Error));
 	TestTrue(
 		TEXT("H26AJ offer fixture cleanup succeeds"),
