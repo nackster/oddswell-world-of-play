@@ -26,6 +26,9 @@
 #include "HAL/PlatformMisc.h"
 #include "HousingTierCatalog.h"
 #include "InputCoreTypes.h"
+#if UE_BUILD_DEVELOPMENT
+#include "InputKeyEventArgs.h"
+#endif
 #include "Kismet/GameplayStatics.h"
 #include "Engine/Engine.h"
 #include "Engine/PointLight.h"
@@ -96,6 +99,130 @@ constexpr float StadiumReplayScale = 0.15f;
 constexpr int64 JobRecoveryQaStartUnixSeconds = 2000000000;
 int32 StudioQaProcessStage = 0;
 int32 StadiumQaProcessStage = 0;
+
+#if UE_BUILD_DEVELOPMENT
+constexpr TCHAR CanonicalAutomaticReceiptHeldInputFlag[] =
+	TEXT("CanonicalAutomaticReceiptHeldInputDriver");
+constexpr uint8 CanonicalHeldInputW = 1 << 0;
+constexpr uint8 CanonicalHeldInputA = 1 << 1;
+constexpr uint8 CanonicalHeldInputD = 1 << 2;
+constexpr uint8 CanonicalHeldInputE = 1 << 3;
+constexpr uint8 CanonicalHeldInputAllowed =
+	CanonicalHeldInputW
+	| CanonicalHeldInputA
+	| CanonicalHeldInputD
+	| CanonicalHeldInputE;
+constexpr float CanonicalHeldInputAxisTolerance = 80.0f;
+constexpr float CanonicalHeldInputLeaveDistance =
+	SportsbookInteractionRadius + 300.0f;
+constexpr float CanonicalHeldInputStallSeconds = 3.0f;
+constexpr float CanonicalHeldInputStallDistance = 25.0f;
+constexpr float CanonicalHeldInputTimeoutSeconds = 110.0f;
+constexpr TCHAR CanonicalAutomaticDecisionId[] =
+	TEXT("canonical:h26an:match_winner:win-decision:05a4a2a1488d4852318a398ff6e8eaf4a3cac47257b441feceb7426a4b5b0289");
+
+enum class ECanonicalAutomaticReceiptHeldInputStage : uint8
+{
+	Validate,
+	Navigate,
+	PressOpen,
+	ReleaseOpen,
+	PressClose,
+	ReleaseClose,
+	Leave,
+	Return,
+	PressReopen,
+	ReleaseReopen,
+	Finished,
+};
+
+struct FCanonicalHeldInputChanges
+{
+	uint8 Pressed = 0;
+	uint8 Repeated = 0;
+	uint8 Released = 0;
+};
+
+FCanonicalHeldInputChanges BuildCanonicalHeldInputChanges(
+	const uint8 Current,
+	const uint8 Desired)
+{
+	return {
+		static_cast<uint8>(Desired & ~Current),
+		static_cast<uint8>(Desired & Current),
+		static_cast<uint8>(Current & ~Desired),
+	};
+}
+
+uint8 BuildCanonicalBoothNavigationInput(
+	const FVector& PlayerLocation,
+	const float FacingYaw)
+{
+	const FVector2D ToBooth(
+		SportsbookInteractionLocation.X - PlayerLocation.X,
+		SportsbookInteractionLocation.Y - PlayerLocation.Y);
+	const float FacingRadians = FMath::DegreesToRadians(FacingYaw);
+	const FVector2D Forward(FMath::Cos(FacingRadians), FMath::Sin(FacingRadians));
+	const FVector2D Right(-Forward.Y, Forward.X);
+	const float ForwardDistance = FVector2D::DotProduct(ToBooth, Forward);
+	const float RightDistance = FVector2D::DotProduct(ToBooth, Right);
+	uint8 Input = ForwardDistance > CanonicalHeldInputAxisTolerance
+		? CanonicalHeldInputW
+		: 0;
+	if (RightDistance > CanonicalHeldInputAxisTolerance)
+	{
+		Input |= CanonicalHeldInputD;
+	}
+	else if (RightDistance < -CanonicalHeldInputAxisTolerance)
+	{
+		Input |= CanonicalHeldInputA;
+	}
+	return Input;
+}
+
+bool ShouldFailCanonicalHeldInputProgress(
+	const float Elapsed,
+	const float StallElapsed)
+{
+	return Elapsed >= CanonicalHeldInputTimeoutSeconds
+		|| StallElapsed >= CanonicalHeldInputStallSeconds;
+}
+
+bool IsExactH26AQReceipt(
+	const FOddsWellCanonicalSettledLossReceipt* Receipt)
+{
+	return Receipt
+		&& Receipt->Outcome == FName(TEXT("won"))
+		&& Receipt->SelectedTeam == TEXT("Mesa Vista Sol")
+		&& Receipt->HomeTeam == TEXT("Harbor City Waves")
+		&& Receipt->AwayTeam == TEXT("Mesa Vista Sol")
+		&& Receipt->Winner == TEXT("Mesa Vista Sol")
+		&& Receipt->Stake == 40
+		&& Receipt->HomeScore == 79
+		&& Receipt->AwayScore == 113
+		&& Receipt->Returned == 94
+		&& Receipt->Net == 54
+		&& Receipt->LedgerEntryCount == 3
+		&& Receipt->CurrentBalance == 154;
+}
+
+bool HasExactH26AQAutomaticSource()
+{
+	const UOddsWellOddsBucksSaveGame* State =
+		Cast<UOddsWellOddsBucksSaveGame>(
+			UGameplayStatics::LoadGameFromSlot(
+				TEXT("OddsWellOddsBucks"),
+				0));
+	return State
+		&& State->MatchWinnerSettlementDecisions.Num() == 1
+		&& State->MatchWinnerWinFinalizations.Num() == 1
+		&& State->MatchWinnerLossFinalizations.IsEmpty()
+		&& State->MatchWinnerSettlementDecisions[0].DecisionCommandId
+			== CanonicalAutomaticDecisionId
+		&& State->MatchWinnerWinFinalizations[0].DecisionCommandId
+			== CanonicalAutomaticDecisionId;
+}
+#endif
 
 const TArray<FString>& GetTicketBoothMarketLabels()
 {
@@ -810,6 +937,12 @@ AOddsWellPlaceholderCharacter::AOddsWellPlaceholderCharacter()
 void AOddsWellPlaceholderCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+#if UE_BUILD_DEVELOPMENT
+	bCanonicalAutomaticReceiptHeldInputDriver =
+		FParse::Param(
+			FCommandLine::Get(),
+			CanonicalAutomaticReceiptHeldInputFlag);
+#endif
 	bQaEnabled = FParse::Param(FCommandLine::Get(), TEXT("LocomotionQa"));
 	bQaAutoExit = FParse::Param(FCommandLine::Get(), TEXT("LocomotionAutoExit"));
 	bOutfitQaEnabled = FParse::Param(FCommandLine::Get(), TEXT("OutfitQa"));
@@ -1925,6 +2058,12 @@ void AOddsWellPlaceholderCharacter::Tick(const float DeltaSeconds)
 	{
 		RunCameraOrbitQa(DeltaSeconds);
 	}
+#if UE_BUILD_DEVELOPMENT
+	if (bCanonicalAutomaticReceiptHeldInputDriver)
+	{
+		RunCanonicalAutomaticReceiptHeldInputDriver(DeltaSeconds);
+	}
+#endif
 	if (bPublicLeagueQa && !bPublicLeagueQaCaptured && (PublicLeagueQaElapsed += DeltaSeconds) >= 1.0f)
 	{
 		bPublicLeagueQaCaptured = true;
@@ -1937,6 +2076,329 @@ void AOddsWellPlaceholderCharacter::Tick(const float DeltaSeconds)
 		FPlatformMisc::RequestExit(false);
 	}
 }
+
+#if UE_BUILD_DEVELOPMENT
+void AOddsWellPlaceholderCharacter::EndPlay(
+	const EEndPlayReason::Type EndPlayReason)
+{
+	SetCanonicalAutomaticReceiptHeldInput(0);
+	Super::EndPlay(EndPlayReason);
+}
+
+void AOddsWellPlaceholderCharacter::SetCanonicalAutomaticReceiptHeldInput(
+	const uint8 DesiredInputMask)
+{
+	ensureAlwaysMsgf(
+		(DesiredInputMask & ~CanonicalHeldInputAllowed) == 0,
+		TEXT("H26AR.1 may inject only W, A, D, and E."));
+	const uint8 SafeDesired = DesiredInputMask & CanonicalHeldInputAllowed;
+	const FCanonicalHeldInputChanges Changes =
+		BuildCanonicalHeldInputChanges(
+			CanonicalAutomaticReceiptHeldInputMask,
+			SafeDesired);
+	APlayerController* PlayerController =
+		CanonicalAutomaticReceiptHeldInputController.Get();
+	if (!PlayerController)
+	{
+		PlayerController = Cast<APlayerController>(Controller);
+	}
+	if (PlayerController)
+	{
+		const auto Send = [PlayerController](
+			const uint8 Changed,
+			const uint8 Input,
+			const FKey& Key,
+			const EInputEvent Event)
+		{
+			if ((Changed & Input) != 0)
+			{
+				PlayerController->InputKey(
+					FInputKeyEventArgs::CreateSimulated(
+						Key,
+						Event,
+						Event == IE_Pressed ? 1.0f : 0.0f));
+			}
+		};
+		Send(Changes.Released, CanonicalHeldInputW, KeyForward, IE_Released);
+		Send(Changes.Released, CanonicalHeldInputA, KeyLeft, IE_Released);
+		Send(Changes.Released, CanonicalHeldInputD, KeyRight, IE_Released);
+		Send(Changes.Released, CanonicalHeldInputE, KeyInteract, IE_Released);
+		Send(Changes.Pressed, CanonicalHeldInputW, KeyForward, IE_Pressed);
+		Send(Changes.Pressed, CanonicalHeldInputA, KeyLeft, IE_Pressed);
+		Send(Changes.Pressed, CanonicalHeldInputD, KeyRight, IE_Pressed);
+		Send(Changes.Pressed, CanonicalHeldInputE, KeyInteract, IE_Pressed);
+		Send(Changes.Repeated, CanonicalHeldInputW, KeyForward, IE_Repeat);
+		Send(Changes.Repeated, CanonicalHeldInputA, KeyLeft, IE_Repeat);
+		Send(Changes.Repeated, CanonicalHeldInputD, KeyRight, IE_Repeat);
+		Send(Changes.Repeated, CanonicalHeldInputE, KeyInteract, IE_Repeat);
+	}
+	CanonicalAutomaticReceiptHeldInputMask = SafeDesired;
+}
+
+void AOddsWellPlaceholderCharacter::FinishCanonicalAutomaticReceiptHeldInputDriver(
+	const bool bPassed,
+	const TCHAR* Reason)
+{
+	SetCanonicalAutomaticReceiptHeldInput(0);
+	CanonicalAutomaticReceiptHeldInputStage =
+		static_cast<uint8>(
+			ECanonicalAutomaticReceiptHeldInputStage::Finished);
+	bCanonicalAutomaticReceiptHeldInputDriver = false;
+	const float TravelDistance = FVector::Dist2D(
+		CanonicalAutomaticReceiptHeldInputStart,
+		GetActorLocation());
+	const FString Evidence = FString::Printf(
+		TEXT("ODDSWELL_H26AR1_HELD_INPUT_DRIVER|result=%s|reason=%s|build=Development|map=SundaleGraybox|standalone=true|local=true|receipt=H26AQ|input=PlayerController.InputKey|movement=PollKeyboardMovement_AddMovementInput|interaction=PollSportsbookInteraction|keys=W_A_D_E|start_distance_cm=%.0f|nearest_distance_cm=%.0f|leave_distance_cm=%.0f|travel_cm=%.0f|menu_open=%s|source_write=false|transform_write=false|direct_receipt_action=false|full_H26AR_lifecycle=false"),
+		bPassed ? TEXT("PASS") : TEXT("FAIL"),
+		Reason,
+		CanonicalAutomaticReceiptHeldInputStartDistance,
+		CanonicalAutomaticReceiptHeldInputNearestDistance,
+		CanonicalAutomaticReceiptHeldInputLeaveDistance,
+		TravelDistance,
+		bSportsbookOfferVisible ? TEXT("true") : TEXT("false"));
+	if (bPassed)
+	{
+		UE_LOG(LogOddsWellLocomotion, Display, TEXT("%s"), *Evidence);
+	}
+	else
+	{
+		UE_LOG(LogOddsWellLocomotion, Error, TEXT("%s"), *Evidence);
+	}
+	if (bPassed)
+	{
+		FScreenshotRequest::RequestScreenshot(
+			TEXT("Phase1H26AR1_HeldInputReopen.png"),
+			true,
+			false);
+	}
+	QaExitAt = FPlatformTime::Seconds() + (bPassed ? 2.0 : 1.0);
+}
+
+void AOddsWellPlaceholderCharacter::RunCanonicalAutomaticReceiptHeldInputDriver(
+	const float DeltaSeconds)
+{
+	const auto Fail = [this](const TCHAR* Reason)
+	{
+		FinishCanonicalAutomaticReceiptHeldInputDriver(false, Reason);
+	};
+	const auto SetStage = [this](
+		const ECanonicalAutomaticReceiptHeldInputStage Stage)
+	{
+		CanonicalAutomaticReceiptHeldInputStage = static_cast<uint8>(Stage);
+		CanonicalAutomaticReceiptHeldInputStallElapsed = 0.0f;
+		CanonicalAutomaticReceiptHeldInputStallStart = GetActorLocation();
+	};
+
+	APlayerController* PlayerController = Cast<APlayerController>(Controller);
+	if (!bCanonicalAutomaticReceiptHeldInputStarted)
+	{
+		if (!GetWorld()
+			|| !GetWorld()->GetMapName().Contains(TEXT("SundaleGraybox")))
+		{
+			Fail(TEXT("wrong_map"));
+			return;
+		}
+		if (GetNetMode() != NM_Standalone)
+		{
+			Fail(TEXT("non_standalone"));
+			return;
+		}
+		if (!PlayerController
+			|| !PlayerController->IsLocalController()
+			|| !IsLocallyControlled())
+		{
+			Fail(TEXT("nonlocal_controller"));
+			return;
+		}
+		if (UseOddsWellOddsBucksQaSlot()
+			|| !IsExactH26AQReceipt(SportsbookSettledLossReceipt.Get())
+			|| !HasExactH26AQAutomaticSource()
+			|| SportsbookOfferPreview
+			|| SportsbookCanonicalReceipt
+			|| bSportsbookOfferVisible)
+		{
+			Fail(TEXT("missing_or_invalid_H26AQ_receipt"));
+			return;
+		}
+
+		CanonicalAutomaticReceiptHeldInputController = PlayerController;
+		CanonicalAutomaticReceiptHeldInputStart = GetActorLocation();
+		CanonicalAutomaticReceiptHeldInputStartDistance = FVector::Dist2D(
+			GetActorLocation(),
+			SportsbookInteractionLocation);
+		CanonicalAutomaticReceiptHeldInputNearestDistance =
+			CanonicalAutomaticReceiptHeldInputStartDistance;
+		bCanonicalAutomaticReceiptHeldInputStarted = true;
+		SetStage(ECanonicalAutomaticReceiptHeldInputStage::Navigate);
+		UE_LOG(
+			LogOddsWellLocomotion,
+			Display,
+			TEXT("ODDSWELL_H26AR1_HELD_INPUT_DRIVER|result=READY|build=Development|receipt=H26AQ|start_distance_cm=%.0f|input=PlayerController.InputKey|source_write=false|transform_write=false"),
+			CanonicalAutomaticReceiptHeldInputStartDistance);
+		return;
+	}
+
+	if (!PlayerController
+		|| PlayerController != CanonicalAutomaticReceiptHeldInputController.Get()
+		|| !PlayerController->IsLocalController()
+		|| GetNetMode() != NM_Standalone
+		|| !GetWorld()
+		|| !GetWorld()->GetMapName().Contains(TEXT("SundaleGraybox")))
+	{
+		Fail(TEXT("runtime_boundary_changed"));
+		return;
+	}
+
+	CanonicalAutomaticReceiptHeldInputElapsed += DeltaSeconds;
+	const float DistanceToBooth = FVector::Dist2D(
+		GetActorLocation(),
+		SportsbookInteractionLocation);
+	CanonicalAutomaticReceiptHeldInputNearestDistance = FMath::Min(
+		CanonicalAutomaticReceiptHeldInputNearestDistance,
+		DistanceToBooth);
+	const bool bMovementHeld =
+		(CanonicalAutomaticReceiptHeldInputMask
+			& (CanonicalHeldInputW | CanonicalHeldInputA | CanonicalHeldInputD))
+		!= 0;
+	if (bMovementHeld)
+	{
+		CanonicalAutomaticReceiptHeldInputStallElapsed += DeltaSeconds;
+		if (FVector::Dist2D(
+				GetActorLocation(),
+				CanonicalAutomaticReceiptHeldInputStallStart)
+			>= CanonicalHeldInputStallDistance)
+		{
+			CanonicalAutomaticReceiptHeldInputStallElapsed = 0.0f;
+			CanonicalAutomaticReceiptHeldInputStallStart = GetActorLocation();
+		}
+	}
+	if (ShouldFailCanonicalHeldInputProgress(
+			CanonicalAutomaticReceiptHeldInputElapsed,
+			CanonicalAutomaticReceiptHeldInputStallElapsed))
+	{
+		Fail(
+			CanonicalAutomaticReceiptHeldInputElapsed
+				>= CanonicalHeldInputTimeoutSeconds
+				? TEXT("timeout")
+				: TEXT("movement_stall"));
+		return;
+	}
+
+	const ECanonicalAutomaticReceiptHeldInputStage Stage =
+		static_cast<ECanonicalAutomaticReceiptHeldInputStage>(
+			CanonicalAutomaticReceiptHeldInputStage);
+	switch (Stage)
+	{
+	case ECanonicalAutomaticReceiptHeldInputStage::Navigate:
+	case ECanonicalAutomaticReceiptHeldInputStage::Return:
+	{
+		if (bSportsbookOfferVisible)
+		{
+			Fail(TEXT("unexpected_menu_while_navigating"));
+			return;
+		}
+		if (DistanceToBooth <= SportsbookInteractionRadius
+			&& bAtSportsbookInteraction)
+		{
+			SetCanonicalAutomaticReceiptHeldInput(0);
+			SetStage(
+				Stage == ECanonicalAutomaticReceiptHeldInputStage::Navigate
+					? ECanonicalAutomaticReceiptHeldInputStage::PressOpen
+					: ECanonicalAutomaticReceiptHeldInputStage::PressReopen);
+			return;
+		}
+		const uint8 Input = BuildCanonicalBoothNavigationInput(
+			GetActorLocation(),
+			PlayerController->GetControlRotation().Yaw);
+		if (Input == 0)
+		{
+			Fail(TEXT("unsupported_booth_direction"));
+			return;
+		}
+		SetCanonicalAutomaticReceiptHeldInput(Input);
+		return;
+	}
+	case ECanonicalAutomaticReceiptHeldInputStage::PressOpen:
+		if (bSportsbookOfferVisible || !bAtSportsbookInteraction)
+		{
+			Fail(TEXT("unexpected_open_precondition"));
+			return;
+		}
+		SetCanonicalAutomaticReceiptHeldInput(CanonicalHeldInputE);
+		SetStage(ECanonicalAutomaticReceiptHeldInputStage::ReleaseOpen);
+		return;
+	case ECanonicalAutomaticReceiptHeldInputStage::ReleaseOpen:
+		SetCanonicalAutomaticReceiptHeldInput(0);
+		if (!bSportsbookOfferVisible
+			|| !IsExactH26AQReceipt(SportsbookSettledLossReceipt.Get()))
+		{
+			Fail(TEXT("open_not_observed"));
+			return;
+		}
+		SetStage(ECanonicalAutomaticReceiptHeldInputStage::PressClose);
+		return;
+	case ECanonicalAutomaticReceiptHeldInputStage::PressClose:
+		if (!bSportsbookOfferVisible)
+		{
+			Fail(TEXT("unexpected_closed_receipt"));
+			return;
+		}
+		SetCanonicalAutomaticReceiptHeldInput(CanonicalHeldInputE);
+		SetStage(ECanonicalAutomaticReceiptHeldInputStage::ReleaseClose);
+		return;
+	case ECanonicalAutomaticReceiptHeldInputStage::ReleaseClose:
+		SetCanonicalAutomaticReceiptHeldInput(0);
+		if (bSportsbookOfferVisible)
+		{
+			Fail(TEXT("close_not_observed"));
+			return;
+		}
+		SetStage(ECanonicalAutomaticReceiptHeldInputStage::Leave);
+		return;
+	case ECanonicalAutomaticReceiptHeldInputStage::Leave:
+		if (bSportsbookOfferVisible)
+		{
+			Fail(TEXT("unexpected_menu_while_leaving"));
+			return;
+		}
+		CanonicalAutomaticReceiptHeldInputLeaveDistance = FMath::Max(
+			CanonicalAutomaticReceiptHeldInputLeaveDistance,
+			DistanceToBooth);
+		if (DistanceToBooth >= CanonicalHeldInputLeaveDistance)
+		{
+			SetCanonicalAutomaticReceiptHeldInput(0);
+			SetStage(ECanonicalAutomaticReceiptHeldInputStage::Return);
+			return;
+		}
+		SetCanonicalAutomaticReceiptHeldInput(CanonicalHeldInputA);
+		return;
+	case ECanonicalAutomaticReceiptHeldInputStage::PressReopen:
+		if (bSportsbookOfferVisible || !bAtSportsbookInteraction)
+		{
+			Fail(TEXT("unexpected_reopen_precondition"));
+			return;
+		}
+		SetCanonicalAutomaticReceiptHeldInput(CanonicalHeldInputE);
+		SetStage(ECanonicalAutomaticReceiptHeldInputStage::ReleaseReopen);
+		return;
+	case ECanonicalAutomaticReceiptHeldInputStage::ReleaseReopen:
+		SetCanonicalAutomaticReceiptHeldInput(0);
+		if (!bSportsbookOfferVisible
+			|| !IsExactH26AQReceipt(SportsbookSettledLossReceipt.Get()))
+		{
+			Fail(TEXT("reopen_not_observed"));
+			return;
+		}
+		FinishCanonicalAutomaticReceiptHeldInputDriver(true, TEXT("completed"));
+		return;
+	case ECanonicalAutomaticReceiptHeldInputStage::Validate:
+	case ECanonicalAutomaticReceiptHeldInputStage::Finished:
+	default:
+		Fail(TEXT("invalid_state"));
+		return;
+	}
+}
+#endif
 
 void AOddsWellPlaceholderCharacter::PollJobInteraction()
 {
@@ -8975,6 +9437,94 @@ bool FOddsWellCanonicalSettledLossHandoffCueTest::RunTest(
 			Cue));
 	return !HasAnyErrors();
 }
+
+#if UE_BUILD_DEVELOPMENT
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(
+	FOddsWellCanonicalAutomaticReceiptHeldInputDriverTest,
+	"OddsWell.Locomotion.CanonicalAutomaticReceiptHeldInputDriver",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+
+bool FOddsWellCanonicalAutomaticReceiptHeldInputDriverTest::RunTest(
+	const FString& Parameters)
+{
+	TestTrue(
+		TEXT("H26AR.1 driver requires its one explicit Development flag"),
+		FParse::Param(
+			TEXT("-CanonicalAutomaticReceiptHeldInputDriver"),
+			CanonicalAutomaticReceiptHeldInputFlag));
+	TestFalse(
+		TEXT("H26AR.1 driver stays absent without its exact flag"),
+		FParse::Param(
+			TEXT("-CanonicalAutomaticReceiptHeldInput"),
+			CanonicalAutomaticReceiptHeldInputFlag));
+
+	const uint8 Navigation = BuildCanonicalBoothNavigationInput(
+		SafeSpawnLocation,
+		0.0f);
+	TestEqual(
+		TEXT("H26AR.1 fixed start requests held W and D"),
+		Navigation,
+		static_cast<uint8>(CanonicalHeldInputW | CanonicalHeldInputD));
+	TestEqual(
+		TEXT("H26AR.1 navigation can emit only W, A, or D"),
+		static_cast<uint8>(Navigation & ~CanonicalHeldInputAllowed),
+		static_cast<uint8>(0));
+
+	const FCanonicalHeldInputChanges Press =
+		BuildCanonicalHeldInputChanges(0, Navigation);
+	TestEqual(TEXT("H26AR.1 presses requested held keys once"), Press.Pressed, Navigation);
+	TestEqual(TEXT("H26AR.1 first press repeats nothing"), Press.Repeated, static_cast<uint8>(0));
+	TestEqual(TEXT("H26AR.1 first press releases nothing"), Press.Released, static_cast<uint8>(0));
+	const FCanonicalHeldInputChanges Held =
+		BuildCanonicalHeldInputChanges(Navigation, Navigation);
+	TestEqual(TEXT("H26AR.1 held input repeats no press"), Held.Pressed, static_cast<uint8>(0));
+	TestEqual(TEXT("H26AR.1 held input repeats every held key"), Held.Repeated, Navigation);
+	TestEqual(TEXT("H26AR.1 held input repeats no release"), Held.Released, static_cast<uint8>(0));
+	const uint8 EveryInput = CanonicalHeldInputAllowed;
+	const FCanonicalHeldInputChanges Cleanup =
+		BuildCanonicalHeldInputChanges(EveryInput, 0);
+	TestEqual(TEXT("H26AR.1 cleanup releases every injected key"), Cleanup.Released, EveryInput);
+	TestEqual(TEXT("H26AR.1 cleanup presses nothing"), Cleanup.Pressed, static_cast<uint8>(0));
+	TestEqual(TEXT("H26AR.1 cleanup repeats nothing"), Cleanup.Repeated, static_cast<uint8>(0));
+
+	TestFalse(
+		TEXT("H26AR.1 progress inside both limits continues"),
+		ShouldFailCanonicalHeldInputProgress(
+			CanonicalHeldInputTimeoutSeconds - 1.0f,
+			CanonicalHeldInputStallSeconds - 1.0f));
+	TestTrue(
+		TEXT("H26AR.1 total timeout fails closed"),
+		ShouldFailCanonicalHeldInputProgress(
+			CanonicalHeldInputTimeoutSeconds,
+			0.0f));
+	TestTrue(
+		TEXT("H26AR.1 movement stall fails closed"),
+		ShouldFailCanonicalHeldInputProgress(
+			0.0f,
+			CanonicalHeldInputStallSeconds));
+
+	FOddsWellCanonicalSettledLossReceipt Receipt;
+	Receipt.Outcome = FName(TEXT("won"));
+	Receipt.SelectedTeam = TEXT("Mesa Vista Sol");
+	Receipt.HomeTeam = TEXT("Harbor City Waves");
+	Receipt.AwayTeam = TEXT("Mesa Vista Sol");
+	Receipt.Winner = TEXT("Mesa Vista Sol");
+	Receipt.Stake = 40;
+	Receipt.HomeScore = 79;
+	Receipt.AwayScore = 113;
+	Receipt.Returned = 94;
+	Receipt.Net = 54;
+	Receipt.LedgerEntryCount = 3;
+	Receipt.CurrentBalance = 154;
+	TestTrue(TEXT("H26AR.1 requires exact H26AQ receipt values"), IsExactH26AQReceipt(&Receipt));
+	Receipt.Returned = 95;
+	TestFalse(TEXT("H26AR.1 rejects altered receipt values"), IsExactH26AQReceipt(&Receipt));
+	TestTrue(
+		TEXT("H26AR.1 policy exposes input bits only, never a direct world action"),
+		(Navigation & ~CanonicalHeldInputAllowed) == 0);
+	return !HasAnyErrors();
+}
+#endif
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
 	FOddsWellCanonicalBetSlipReviewTest,

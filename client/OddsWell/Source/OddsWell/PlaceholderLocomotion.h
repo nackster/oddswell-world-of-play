@@ -58,6 +58,9 @@ class ODDSWELL_API AOddsWellPlaceholderCharacter final : public ACharacter
 public:
 	AOddsWellPlaceholderCharacter();
 	virtual void Tick(float DeltaSeconds) override;
+#if UE_BUILD_DEVELOPMENT
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+#endif
 	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
 	virtual void PossessedBy(AController* NewController) override;
 	virtual void PawnClientRestart() override;
@@ -144,6 +147,11 @@ private:
 	void RunSportsbookReceiptQa(float DeltaSeconds);
 	void RunJobQa(float DeltaSeconds);
 	void RunCameraOrbitQa(float DeltaSeconds);
+#if UE_BUILD_DEVELOPMENT
+	void RunCanonicalAutomaticReceiptHeldInputDriver(float DeltaSeconds);
+	void SetCanonicalAutomaticReceiptHeldInput(uint8 DesiredInputMask);
+	void FinishCanonicalAutomaticReceiptHeldInputDriver(bool bPassed, const TCHAR* Reason);
+#endif
 	bool ApplySavedOrFallbackAppearance();
 	bool ResolveLocalAppearance(FOddsWellResolvedCharacterAppearance& OutAppearance, FString& OutSource, FString& OutError) const;
 	bool ApplyResolvedAppearance(const FOddsWellResolvedCharacterAppearance& Appearance, const FString& Source);
@@ -338,6 +346,20 @@ private:
 	float CameraOrbitQaSweep = 0.0f;
 	bool bCameraOrbitQa = false;
 	bool bCameraOrbitQaStarted = false;
+#if UE_BUILD_DEVELOPMENT
+	TWeakObjectPtr<APlayerController> CanonicalAutomaticReceiptHeldInputController;
+	FVector CanonicalAutomaticReceiptHeldInputStart = FVector::ZeroVector;
+	FVector CanonicalAutomaticReceiptHeldInputStallStart = FVector::ZeroVector;
+	float CanonicalAutomaticReceiptHeldInputElapsed = 0.0f;
+	float CanonicalAutomaticReceiptHeldInputStallElapsed = 0.0f;
+	float CanonicalAutomaticReceiptHeldInputStartDistance = 0.0f;
+	float CanonicalAutomaticReceiptHeldInputNearestDistance = 0.0f;
+	float CanonicalAutomaticReceiptHeldInputLeaveDistance = 0.0f;
+	uint8 CanonicalAutomaticReceiptHeldInputStage = 0;
+	uint8 CanonicalAutomaticReceiptHeldInputMask = 0;
+	bool bCanonicalAutomaticReceiptHeldInputDriver = false;
+	bool bCanonicalAutomaticReceiptHeldInputStarted = false;
+#endif
 };
 
 UCLASS()
