@@ -350,6 +350,8 @@ def validated_match_winner_reconciliation(path: Path) -> dict[str, object]:
     canonical_result = data.get("result_schema") == "oddswell-private-canonical-game-result-v1"
     canonical_loss = data.get("outcome") == "lost" and canonical_result
     canonical_win = data.get("outcome") == "won" and canonical_result
+    automatic_win_decision = "canonical:h26an:match_winner:win-decision:05a4a2a1488d4852318a398ff6e8eaf4a3cac47257b441feceb7426a4b5b0289"
+    automatic_canonical_win = canonical_win and data.get("decision_command_id") == automatic_win_decision
     expected = {
         "schema": "oddswell-match-winner-reconciliation-v1",
         "authority": "server",
@@ -397,7 +399,7 @@ def validated_match_winner_reconciliation(path: Path) -> dict[str, object]:
         request_id = f"canonical:h26e:match_winner:request:{offer_id}"
         lock_id = f"canonical:h26g:match_winner:lock:{offer_id}"
         result_id = f"canonical:h26l:match_winner:result:{result_sha}"
-        decision_id = f"canonical:h26m:match_winner:decision:{result_sha}"
+        decision_id = automatic_win_decision if automatic_canonical_win else f"canonical:h26m:match_winner:decision:{result_sha}"
         expected.update({
             "offer_id": offer_id,
             "request_command_id": request_id,
@@ -429,6 +431,8 @@ def validated_match_winner_reconciliation(path: Path) -> dict[str, object]:
             "finalization_result_command_id": result_id,
             "finalization_offer_id": offer_id,
         })
+        if automatic_canonical_win:
+            expected["qa"] = False
         if canonical_loss:
             expected.update({
                 "selected_win_probability_e8": 57_586_693,
@@ -544,6 +548,9 @@ def validated_match_winner_reconciliation(path: Path) -> dict[str, object]:
         "selected_decimal_odds_e4", "potential_gross_return", "refund_due", "refund_applied",
     }.intersection(data):
         raise ValueError("canonical win contains unprojected price or refund evidence")
+    if canonical_win:
+        data["selected_decimal_odds_e4"] = 100_000_000 * 10_000 // data["selected_win_probability_e8"]
+        data["potential_gross_return"] = data["stake"] * 100_000_000 // data["selected_win_probability_e8"]
     return data
 
 
@@ -617,6 +624,10 @@ def match_winner_reconciliation_payload(path: Path | None = None) -> dict[str, o
         data["outcome"] == "lost"
         and data["result_schema"] == "oddswell-private-canonical-game-result-v1"
     )
+    canonical_win = (
+        data["outcome"] == "won"
+        and data["result_schema"] == "oddswell-private-canonical-game-result-v1"
+    )
     if canonical_loss:
         payload.update({
             "outcome": "lost",
@@ -631,7 +642,11 @@ def match_winner_reconciliation_payload(path: Path | None = None) -> dict[str, o
         })
     if data["outcome"] == "won":
         payload.update({
-            "status": "VALIDATED QA FINALIZED WIN" if data["qa"] else "VALIDATED FINALIZED WIN",
+            "status": (
+                "VALIDATED AUTOMATIC FINALIZED WIN"
+                if data["decision_command_id"].startswith("canonical:h26an:")
+                else "VALIDATED QA FINALIZED WIN" if data["qa"] else "VALIDATED FINALIZED WIN"
+            ),
             "outcome": data["outcome"],
             "probability_e8": data["selected_win_probability_e8"],
             "payout_formula": data["payout_formula"],
@@ -643,6 +658,17 @@ def match_winner_reconciliation_payload(path: Path | None = None) -> dict[str, o
             )),
             "boundary": "Immutable read-only server evidence. The prior decision remains decided_pending_apply; one exact payout entry and a separate settled_won finalization expose no mutation control.",
         })
+        if canonical_win:
+            payload.update({
+                "decimal_odds_e4": data["selected_decimal_odds_e4"],
+                "potential_return": data["potential_gross_return"],
+                "boundary": (
+                    "Immutable read-only exact H26AM-H26AO automatic evidence. "
+                    "No payout, correction, deletion, or admin mutation control is exposed."
+                    if data["decision_command_id"].startswith("canonical:h26an:")
+                    else payload["boundary"]
+                ),
+            })
     return payload
 
 
@@ -2167,6 +2193,8 @@ def self_check() -> None:
         assert current_win_wager["selected_team"] == "Mesa Vista Sol"
         assert current_win_wager["winner"] == "Mesa Vista Sol"
         assert current_win_wager["probability_e8"] == 42_413_307
+        assert current_win_wager["decimal_odds_e4"] == 23_577
+        assert current_win_wager["potential_return"] == 94
         assert current_win_wager["score"] == "79-113"
         assert current_win_wager["stake"] == 40 and current_win_wager["return"] == 94
         assert current_win_wager["net"] == 54 and current_win_wager["balance"] == 154
@@ -2199,6 +2227,59 @@ def self_check() -> None:
         rejected_partial_current_win = match_winner_reconciliation_payload(wager_path)
         assert rejected_partial_current_win["available"] is False
         assert not {"selected_team", "balance", "command_linkage"}.intersection(rejected_partial_current_win)
+        automatic_decision_id = f"canonical:h26an:match_winner:win-decision:{current_result_sha}"
+        automatic_win_projection = {
+            **current_win_projection,
+            "qa": False,
+            "decision_command_id": automatic_decision_id,
+            "finalization_decision_command_id": automatic_decision_id,
+        }
+        wager_path.write_text(json.dumps(automatic_win_projection), encoding="utf-8")
+        automatic_bytes = wager_path.read_bytes()
+        automatic_mtime = wager_path.stat().st_mtime_ns
+        automatic_wager = match_winner_reconciliation_payload(wager_path)
+        assert automatic_wager["available"] is True
+        assert automatic_wager["status"] == "VALIDATED AUTOMATIC FINALIZED WIN"
+        assert automatic_wager["selected_team"] == automatic_wager["winner"] == "Mesa Vista Sol"
+        assert automatic_wager["probability_e8"] == 42_413_307
+        assert automatic_wager["decimal_odds_e4"] == 23_577
+        assert automatic_wager["potential_return"] == automatic_wager["return"] == 94
+        assert automatic_wager["score"] == "79-113"
+        assert automatic_wager["stake"] == 40 and automatic_wager["net"] == 54
+        assert automatic_wager["balance"] == 154 and automatic_wager["ledger_entry_count"] == 3
+        assert automatic_wager["finalization_status"] == "settled_won"
+        assert automatic_decision_id in automatic_wager["command_linkage"]
+        assert automatic_wager["ledger_linkage"].endswith(
+            f"3:{current_win_finalization_id}:match_winner_payout:+94->154"
+        )
+        assert wager_path.read_bytes() == automatic_bytes
+        assert wager_path.stat().st_mtime_ns == automatic_mtime
+        for field, invalid_value in (
+            ("qa", True),
+            ("decision_command_id", current_decision_id),
+            ("finalization_decision_command_id", current_decision_id),
+            ("decision_command_id", f"canonical:h26ao:match_winner:win-decision:{current_result_sha}"),
+            ("gross_return_due", 93),
+            ("payout_delta", 93),
+            ("ledger_entry_count", 2),
+            ("payout_balance_after", 153),
+            ("final_balance", 153),
+            ("result_command_id", canonical_result_id),
+            ("replay_seal_sha256", "f" * 64),
+        ):
+            invalid_automatic = {**automatic_win_projection, field: invalid_value}
+            wager_path.write_text(json.dumps(invalid_automatic), encoding="utf-8")
+            rejected_automatic = match_winner_reconciliation_payload(wager_path)
+            assert rejected_automatic["available"] is False
+            assert not {"selected_team", "balance", "command_linkage"}.intersection(rejected_automatic)
+        partial_automatic = {
+            key: value for key, value in automatic_win_projection.items()
+            if key != "finalization_command_id"
+        }
+        wager_path.write_text(json.dumps(partial_automatic), encoding="utf-8")
+        rejected_partial_automatic = match_winner_reconciliation_payload(wager_path)
+        assert rejected_partial_automatic["available"] is False
+        assert not {"selected_team", "balance", "command_linkage"}.intersection(rejected_partial_automatic)
         wager_projection["final_balance"] = 61
         wager_path.write_text(json.dumps(wager_projection), encoding="utf-8")
         invalid_wager = match_winner_reconciliation_payload(wager_path)
