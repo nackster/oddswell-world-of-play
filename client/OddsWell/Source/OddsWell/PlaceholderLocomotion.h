@@ -388,6 +388,7 @@ private:
 	void ResumeCanonicalMatchWinnerResultLink();
 	bool ResumeCanonicalMatchWinnerDecision(bool bRequireDuplicate);
 	bool ResumeCanonicalMatchWinnerMesaWinDecision(bool bRequireDuplicate);
+	bool ResumeCanonicalMatchWinnerMesaWinFinalization();
 	bool ResumeCanonicalMatchWinnerLossFinalization(bool bRequireDuplicate);
 	void ScheduleCanonicalMatchWinnerTipoffLock();
 	void RunCanonicalMatchWinnerTipoffLock();

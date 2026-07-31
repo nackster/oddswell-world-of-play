@@ -3704,6 +3704,42 @@ bool FOddsWellCanonicalMatchWinnerCurrentMesaWinFinalizationTest::RunTest(
 				0));
 	}
 
+	TArray<uint8> PendingBytes;
+	TestTrue(
+		TEXT("H26AO pending bytes read before failed write"),
+		FFileHelper::LoadFileToArray(PendingBytes, *QaLedgerPath));
+	TestTrue(
+		TEXT("H26AO pending fixture becomes read-only"),
+		FPlatformFileManager::Get().GetPlatformFile().SetReadOnly(
+			*QaLedgerPath,
+			true));
+	FOddsWellMatchWinnerWinFinalizationRecord FailedWrite;
+	const EOddsWellMatchWinnerWinFinalizationResult FailedWriteResult =
+		FinalizeOddsWellMatchWinnerWin(
+			FinalizationId,
+			DecisionId,
+			true,
+			FailedWrite,
+			Error);
+	TestTrue(
+		TEXT("H26AO pending fixture returns writable"),
+		FPlatformFileManager::Get().GetPlatformFile().SetReadOnly(
+			*QaLedgerPath,
+			false));
+	TestEqual(
+		TEXT("H26AO failed write rejects"),
+		FailedWriteResult,
+		EOddsWellMatchWinnerWinFinalizationResult::Rejected);
+	TArray<uint8> AfterFailedWrite;
+	TestTrue(
+		TEXT("H26AO failed-write bytes reread"),
+		FFileHelper::LoadFileToArray(
+			AfterFailedWrite,
+			*QaLedgerPath));
+	TestTrue(
+		TEXT("H26AO failed write causes zero mutation"),
+		AfterFailedWrite == PendingBytes);
+
 	FOddsWellMatchWinnerWinFinalizationRecord Finalization;
 	TestEqual(
 		TEXT("H26AJ exact return applies once"),

@@ -414,6 +414,42 @@ bool IsExactCurrentCanonicalMatchWinnerMesaWinDecision(
 		&& Decision.Status == FName(TEXT("decided_pending_apply"));
 }
 
+bool IsExactCurrentCanonicalMatchWinnerMesaWinFinalization(
+	const FOddsWellMatchWinnerWinFinalizationRecord& Finalization)
+{
+	const FString OfferId =
+		TEXT("c929f90b9fe2a7962f34b88819fd5405db1dd400a6d24cd0d7110081c8fb3e5d");
+	const FString ResultSha =
+		TEXT("05a4a2a1488d4852318a398ff6e8eaf4a3cac47257b441feceb7426a4b5b0289");
+	const FString FinalizationId =
+		TEXT("canonical:h26aj:match_winner:win-finalization:") + ResultSha;
+	return Finalization.FinalizationCommandId == FinalizationId
+		&& Finalization.DecisionCommandId
+			== TEXT("canonical:h26an:match_winner:win-decision:") + ResultSha
+		&& Finalization.RequestCommandId
+			== TEXT("canonical:h26e:match_winner:request:") + OfferId
+		&& Finalization.LockCommandId
+			== TEXT("canonical:h26g:match_winner:lock:") + OfferId
+		&& Finalization.ResultCommandId
+			== TEXT("canonical:h26l:match_winner:result:") + ResultSha
+		&& Finalization.FinalizationSchema
+			== TEXT("oddswell-match-winner-win-finalization-v1")
+		&& Finalization.FinalizationVersion
+			== TEXT("match-winner-win-finalization-v1")
+		&& Finalization.OfferId == OfferId
+		&& Finalization.OfferVersion
+			== TEXT("basketball-match-winner-odds-v1")
+		&& Finalization.SelectedTeam == TEXT("Mesa Vista Sol")
+		&& Finalization.AuthoritativeWinner == TEXT("Mesa Vista Sol")
+		&& Finalization.Stake == 40
+		&& Finalization.Outcome == FName(TEXT("won"))
+		&& Finalization.GrossReturnApplied == 94
+		&& Finalization.PayoutLedgerCommandId == FinalizationId
+		&& Finalization.Status == FName(TEXT("settled_won"))
+		&& Finalization.ObservedFinalBalance == 154
+		&& Finalization.ObservedLedgerEntryCount == 3;
+}
+
 bool CanResumeCanonicalLossDecisionAfterResultLinkRejection(
 	const FString& Error)
 {
@@ -7299,6 +7335,10 @@ bool AOddsWellLocomotionGameMode::ResumeCanonicalMatchWinnerMesaWinDecision(
 			*Error);
 		return false;
 	}
+	if (bRequireDuplicate)
+	{
+		return ResumeCanonicalMatchWinnerMesaWinFinalization();
+	}
 
 	FOddsWellOddsBucksLedger PersistedLedger;
 	int64 PersistedNextJobPayoutUnixSeconds = 0;
@@ -7357,7 +7397,7 @@ bool AOddsWellLocomotionGameMode::ResumeCanonicalMatchWinnerMesaWinDecision(
 	UE_LOG(
 		LogOddsWellLocomotion,
 		Display,
-		TEXT("ODDSWELL_CANONICAL_AUTOMATIC_MESA_WIN_DECISION|result=PASS|phase=H26AN|transition=%s|trigger=durable_h26l_local_resume|decision_command=%s|result_command=%s|selected_team=%s|winner=%s|stake=%lld|outcome=%s|probability_e8=%lld|gross_return_due=%lld|status=%s|ledger_entries=2|ledger_delta=-40|balance=60|requests=1|locks=1|results=1|decisions=1|loss_finalizations=0|win_finalizations=0|payout=false|reconciliation=false|receipt=false|booth=locked|polling=false|timer=false|watcher=false|process=false|cost_usd=0"),
+		TEXT("ODDSWELL_CANONICAL_AUTOMATIC_MESA_WIN_DECISION|result=PASS|phase=H26AN|transition=%s|trigger=durable_h26l_local_resume|decision_command=%s|result_command=%s|selected_team=%s|winner=%s|stake=%lld|outcome=%s|probability_e8=%lld|gross_return_due=%lld|status=%s|ledger_entries=2|ledger_delta=-40|balance=60|requests=1|locks=1|results=1|decisions=1|loss_finalizations=0|win_finalizations=0|next=automatic_h26aj_finalization|payout=false|reconciliation=false|receipt=false|booth=locked|polling=false|timer=false|watcher=false|process=false|cost_usd=0"),
 		Transition == EOddsWellMatchWinnerSettlementDecisionResult::Decided
 			? TEXT("Decided")
 			: TEXT("Duplicate"),
@@ -7370,6 +7410,121 @@ bool AOddsWellLocomotionGameMode::ResumeCanonicalMatchWinnerMesaWinDecision(
 		Decision.SelectedWinProbabilityE8,
 		Decision.GrossReturnDue,
 		*Decision.Status.ToString());
+	return ResumeCanonicalMatchWinnerMesaWinFinalization();
+}
+
+bool AOddsWellLocomotionGameMode::ResumeCanonicalMatchWinnerMesaWinFinalization()
+{
+	const FString ResultSha =
+		TEXT("05a4a2a1488d4852318a398ff6e8eaf4a3cac47257b441feceb7426a4b5b0289");
+	FOddsWellMatchWinnerWinFinalizationRecord Finalization;
+	FString Error;
+	const EOddsWellMatchWinnerWinFinalizationResult Transition =
+		FinalizeOddsWellMatchWinnerWin(
+			TEXT("canonical:h26aj:match_winner:win-finalization:")
+				+ ResultSha,
+			TEXT("canonical:h26an:match_winner:win-decision:")
+				+ ResultSha,
+			bOddsBucksQaSlot,
+			Finalization,
+			Error);
+	if (Transition == EOddsWellMatchWinnerWinFinalizationResult::Rejected
+		|| !IsExactCurrentCanonicalMatchWinnerMesaWinFinalization(
+			Finalization))
+	{
+		bOddsBucksReady = false;
+		UE_LOG(
+			LogOddsWellLocomotion,
+			Error,
+			TEXT("ODDSWELL_CANONICAL_AUTOMATIC_MESA_WIN_FINALIZATION|result=REJECTED|phase=H26AO|reason=finalization_rejected_or_non_exact|booth=locked|mutation=unchanged_or_fail_closed|history=retained_only|receipt=unclaimed|polling=false|timer=false|watcher=false|process=false|detail=%s"),
+			*Error);
+		return false;
+	}
+
+	FOddsWellOddsBucksLedger PersistedLedger;
+	int64 PersistedNextJobPayoutUnixSeconds = 0;
+	TArray<FOddsWellMatchWinnerRequestRecord> PersistedRequests;
+	TArray<FOddsWellMatchWinnerLockRecord> PersistedLocks;
+	TArray<FOddsWellMatchWinnerResultLinkRecord> PersistedResults;
+	TArray<FOddsWellMatchWinnerSettlementDecisionRecord> PersistedDecisions;
+	TArray<FOddsWellMatchWinnerLossFinalizationRecord>
+		PersistedLossFinalizations;
+	TArray<FOddsWellMatchWinnerWinFinalizationRecord>
+		PersistedWinFinalizations;
+	bool bPersistedFound = false;
+	const FString ExpectedFinalizationId =
+		TEXT("canonical:h26aj:match_winner:win-finalization:")
+		+ ResultSha;
+	const bool bDurable =
+		LoadOddsWellOddsBucksWagerFinalizationState(
+			bOddsBucksQaSlot,
+			PersistedLedger,
+			PersistedNextJobPayoutUnixSeconds,
+			PersistedRequests,
+			PersistedLocks,
+			PersistedResults,
+			PersistedDecisions,
+			PersistedLossFinalizations,
+			PersistedWinFinalizations,
+			bPersistedFound,
+			Error)
+		&& bPersistedFound
+		&& PersistedLedger.GetEntries().Num() == 3
+		&& PersistedLedger.GetEntries()[0].Sequence == 1
+		&& PersistedLedger.GetEntries()[0].Delta == 100
+		&& PersistedLedger.GetEntries()[0].BalanceAfter == 100
+		&& PersistedLedger.GetEntries()[1].Sequence == 2
+		&& PersistedLedger.GetEntries()[1].Delta == -40
+		&& PersistedLedger.GetEntries()[1].BalanceAfter == 60
+		&& PersistedLedger.GetEntries()[2].Sequence == 3
+		&& PersistedLedger.GetEntries()[2].CommandId
+			== ExpectedFinalizationId
+		&& PersistedLedger.GetEntries()[2].Delta == 94
+		&& PersistedLedger.GetEntries()[2].Reason
+			== FName(TEXT("match_winner_payout"))
+		&& PersistedLedger.GetEntries()[2].BalanceAfter == 154
+		&& PersistedLedger.GetBalance() == 154
+		&& PersistedRequests.Num() == 1
+		&& PersistedLocks.Num() == 1
+		&& PersistedResults.Num() == 1
+		&& PersistedDecisions.Num() == 1
+		&& PersistedLossFinalizations.IsEmpty()
+		&& PersistedWinFinalizations.Num() == 1
+		&& IsExactCurrentCanonicalMatchWinnerResultLink(
+			PersistedResults[0])
+		&& IsExactCurrentCanonicalMatchWinnerMesaWinDecision(
+			PersistedDecisions[0])
+		&& IsExactCurrentCanonicalMatchWinnerMesaWinFinalization(
+			PersistedWinFinalizations[0]);
+	if (!bDurable)
+	{
+		bOddsBucksReady = false;
+		UE_LOG(
+			LogOddsWellLocomotion,
+			Error,
+			TEXT("ODDSWELL_CANONICAL_AUTOMATIC_MESA_WIN_FINALIZATION|result=REJECTED|phase=H26AO|reason=durable_reload_failed|booth=locked|mutation=unchanged_or_fail_closed|history=retained_only|receipt=unclaimed|polling=false|timer=false|watcher=false|process=false|detail=%s"),
+			*Error);
+		return false;
+	}
+
+	OddsBucksLedger = MoveTemp(PersistedLedger);
+	NextJobPayoutUnixSeconds = PersistedNextJobPayoutUnixSeconds;
+	MatchWinnerRequestCount = PersistedRequests.Num();
+	UE_LOG(
+		LogOddsWellLocomotion,
+		Display,
+		TEXT("ODDSWELL_CANONICAL_AUTOMATIC_MESA_WIN_FINALIZATION|result=PASS|phase=H26AO|transition=%s|trigger=durable_h26an_local_resume|finalization_command=%s|decision_command=%s|selected_team=%s|winner=%s|stake=%lld|outcome=%s|gross_return_applied=%lld|status=%s|ledger_entries=3|payout_sequence=3|payout_delta=94|payout_reason=match_winner_payout|balance=154|requests=1|locks=1|results=1|decisions=1|loss_finalizations=0|win_finalizations=1|decision_immutable=decided_pending_apply|history=retained_only|receipt=unclaimed|booth=settled|polling=false|timer=false|watcher=false|process=false|cost_usd=0"),
+		Transition == EOddsWellMatchWinnerWinFinalizationResult::Finalized
+			? TEXT("Finalized")
+			: TEXT("Duplicate"),
+		*Finalization.FinalizationCommandId,
+		*Finalization.DecisionCommandId,
+		*Finalization.SelectedTeam,
+		*Finalization.AuthoritativeWinner,
+		Finalization.Stake,
+		*Finalization.Outcome.ToString(),
+		Finalization.GrossReturnApplied,
+		*Finalization.Status.ToString());
 	return true;
 }
 
@@ -9179,6 +9334,77 @@ bool FOddsWellCanonicalAutomaticMesaWinDecisionTest::RunTest(
 	TestFalse(
 		TEXT("H26AN rejects foreign result identity"),
 		IsExactCurrentCanonicalMatchWinnerMesaWinDecision(Changed));
+	return !HasAnyErrors();
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(
+	FOddsWellCanonicalAutomaticMesaWinFinalizationTest,
+	"OddsWell.Locomotion.CanonicalAutomaticMesaWinFinalization",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+
+bool FOddsWellCanonicalAutomaticMesaWinFinalizationTest::RunTest(
+	const FString& Parameters)
+{
+	FOddsWellMatchWinnerWinFinalizationRecord Finalization;
+	Finalization.FinalizationCommandId =
+		TEXT("canonical:h26aj:match_winner:win-finalization:05a4a2a1488d4852318a398ff6e8eaf4a3cac47257b441feceb7426a4b5b0289");
+	Finalization.DecisionCommandId =
+		TEXT("canonical:h26an:match_winner:win-decision:05a4a2a1488d4852318a398ff6e8eaf4a3cac47257b441feceb7426a4b5b0289");
+	Finalization.RequestCommandId =
+		TEXT("canonical:h26e:match_winner:request:c929f90b9fe2a7962f34b88819fd5405db1dd400a6d24cd0d7110081c8fb3e5d");
+	Finalization.LockCommandId =
+		TEXT("canonical:h26g:match_winner:lock:c929f90b9fe2a7962f34b88819fd5405db1dd400a6d24cd0d7110081c8fb3e5d");
+	Finalization.ResultCommandId =
+		TEXT("canonical:h26l:match_winner:result:05a4a2a1488d4852318a398ff6e8eaf4a3cac47257b441feceb7426a4b5b0289");
+	Finalization.FinalizationSchema =
+		TEXT("oddswell-match-winner-win-finalization-v1");
+	Finalization.FinalizationVersion =
+		TEXT("match-winner-win-finalization-v1");
+	Finalization.OfferId =
+		TEXT("c929f90b9fe2a7962f34b88819fd5405db1dd400a6d24cd0d7110081c8fb3e5d");
+	Finalization.OfferVersion =
+		TEXT("basketball-match-winner-odds-v1");
+	Finalization.SelectedTeam = TEXT("Mesa Vista Sol");
+	Finalization.AuthoritativeWinner = TEXT("Mesa Vista Sol");
+	Finalization.Stake = 40;
+	Finalization.Outcome = FName(TEXT("won"));
+	Finalization.GrossReturnApplied = 94;
+	Finalization.PayoutLedgerCommandId =
+		Finalization.FinalizationCommandId;
+	Finalization.Status = FName(TEXT("settled_won"));
+	Finalization.ObservedFinalBalance = 154;
+	Finalization.ObservedLedgerEntryCount = 3;
+	TestTrue(
+		TEXT("H26AO accepts only the exact automatic Mesa finalization"),
+		IsExactCurrentCanonicalMatchWinnerMesaWinFinalization(
+			Finalization));
+
+	FOddsWellMatchWinnerWinFinalizationRecord Changed = Finalization;
+	Changed.DecisionCommandId =
+		TEXT("canonical:h26ai:match_winner:win-decision:05a4a2a1488d4852318a398ff6e8eaf4a3cac47257b441feceb7426a4b5b0289");
+	TestFalse(
+		TEXT("H26AO rejects the isolated decision identity"),
+		IsExactCurrentCanonicalMatchWinnerMesaWinFinalization(Changed));
+	Changed = Finalization;
+	Changed.GrossReturnApplied++;
+	TestFalse(
+		TEXT("H26AO rejects an altered return"),
+		IsExactCurrentCanonicalMatchWinnerMesaWinFinalization(Changed));
+	Changed = Finalization;
+	Changed.PayoutLedgerCommandId += TEXT(":foreign");
+	TestFalse(
+		TEXT("H26AO rejects foreign payout linkage"),
+		IsExactCurrentCanonicalMatchWinnerMesaWinFinalization(Changed));
+	Changed = Finalization;
+	Changed.ObservedFinalBalance--;
+	TestFalse(
+		TEXT("H26AO rejects an anomalous balance"),
+		IsExactCurrentCanonicalMatchWinnerMesaWinFinalization(Changed));
+	Changed = Finalization;
+	Changed.ObservedLedgerEntryCount--;
+	TestFalse(
+		TEXT("H26AO rejects an anomalous ledger count"),
+		IsExactCurrentCanonicalMatchWinnerMesaWinFinalization(Changed));
 	return !HasAnyErrors();
 }
 
