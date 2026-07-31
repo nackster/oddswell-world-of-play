@@ -79,7 +79,7 @@ public:
 	int64 GetTicketBoothReviewGrossReturn() const;
 	int64 GetTicketBoothCurrentBalance() const;
 	FString GetTicketBoothReviewText() const;
-	bool CanPlaceTicketBoothHarborForty() const;
+	bool CanPlaceTicketBoothCanonicalForty() const;
 	bool IsTicketBoothWagerArmed() const { return bTicketBoothWagerArmed; }
 	void SelectTicketBoothReviewTeam(int32 SelectionIndex);
 	void DecreaseTicketBoothReviewStake();
@@ -139,7 +139,7 @@ private:
 	void RunStudioQa(float DeltaSeconds);
 	void RunStadiumQa(float DeltaSeconds);
 	void RunSportsbookOfferQa(float DeltaSeconds);
-	void RunCanonicalHarborFortyPlacementQa(float DeltaSeconds);
+	void RunCanonicalFortyPlacementQa(float DeltaSeconds);
 	void RunSportsbookWagerQa(float DeltaSeconds);
 	void RunSportsbookReceiptQa(float DeltaSeconds);
 	void RunJobQa(float DeltaSeconds);
@@ -178,10 +178,10 @@ private:
 	void ClientConfirmSportsbookQaWager(bool bAccepted, bool bDuplicate, const FString& RequestId, const FString& OfferedTeam, int64 Stake, int64 Balance, const FString& Error);
 
 	UFUNCTION(Server, Reliable)
-	void ServerPlaceCanonicalHarborFortyWager();
+	void ServerPlaceCanonicalFortyWager(bool bMesaSelected);
 
 	UFUNCTION(Client, Reliable)
-	void ClientConfirmCanonicalHarborFortyWager(bool bAccepted, bool bDuplicate, const FString& Error);
+	void ClientConfirmCanonicalFortyWager(bool bAccepted, bool bDuplicate, const FString& Error);
 
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UStaticMeshComponent> PrimitiveBody;
@@ -305,6 +305,7 @@ private:
 	bool bCanonicalSettledLossReceiptQa = false;
 	bool bCanonicalBetSlipReviewQa = false;
 	bool bCanonicalHarborFortyPlacementQa = false;
+	bool bCanonicalMesaFortyPlacementQa = false;
 	bool bCanonicalAutomaticTipoffLockQa = false;
 	bool bCanonicalAutomaticTipoffLockQaVerify = false;
 	bool bCanonicalMissingHeldOpenTipoffQa = false;
@@ -372,7 +373,7 @@ public:
 	virtual APawn* SpawnDefaultPawnAtTransform_Implementation(AController* NewPlayer, const FTransform&) override;
 	bool TryCreditPlaceholderJob(bool& bOutCredited, int64& OutBalance, int64& OutRetryAfterSeconds, FString& OutCommandId, FString& OutError);
 	EOddsWellMatchWinnerRequestResult AcceptSportsbookQaWager(const FString& OfferedTeam, int64 Stake, FOddsWellMatchWinnerRequestRecord& OutRecord, int64& OutBalance, FString& OutError);
-	EOddsWellMatchWinnerRequestResult AcceptCanonicalHarborFortyWager(FOddsWellMatchWinnerRequestRecord& OutRecord, int64& OutBalance, FString& OutError);
+	EOddsWellMatchWinnerRequestResult AcceptCanonicalFortyWager(bool bMesaSelected, FOddsWellMatchWinnerRequestRecord& OutRecord, int64& OutBalance, FString& OutError);
 	bool RunSportsbookQaWagerAudit(int32& OutLedgerEntries, int32& OutRequests, int64& OutBalance, FString& OutError);
 	bool AdvanceOddsBucksQaClock(int64 Seconds);
 	int32 GetOddsBucksEntryCount() const { return OddsBucksLedger.GetEntries().Num(); }

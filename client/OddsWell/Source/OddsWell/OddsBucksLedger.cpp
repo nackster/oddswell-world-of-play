@@ -1759,7 +1759,12 @@ bool HasExactCanonicalRequestEvidence(
 	const FOddsWellOddsBucksEntry& Credit = Ledger.GetEntries()[0];
 	const FOddsWellOddsBucksEntry& Debit = Ledger.GetEntries()[1];
 	const FOddsWellMatchWinnerRequestRecord& Request = Requests[0];
-	const FOddsWellMatchWinnerSelection& Selection = ExactOffer.Selections[0];
+	const FOddsWellMatchWinnerSelection* Selection =
+		ExactOffer.Selections.FindByPredicate(
+			[&Request](const FOddsWellMatchWinnerSelection& Candidate)
+			{
+				return Candidate.Team == Request.OfferedTeam;
+			});
 	const FString ExpectedRequestId =
 		TEXT("canonical:h26e:match_winner:request:") + ExactOffer.OfferId;
 	const FString ExpectedLockId =
@@ -1774,7 +1779,8 @@ bool HasExactCanonicalRequestEvidence(
 			&& Locks[0].AuthoritativeGameStartUnixSeconds == ExactOffer.LockUnixSeconds
 			&& Locks[0].LockUnixSeconds == ExactOffer.LockUnixSeconds
 			&& Locks[0].Decision == MatchWinnerLockedDecision);
-	return bLockEvidenceExact
+	return Selection
+		&& bLockEvidenceExact
 		&& Credit.Sequence == 1
 		&& Credit.CommandId == FirstJobCommandId
 		&& Credit.Delta == 100
@@ -1801,13 +1807,13 @@ bool HasExactCanonicalRequestEvidence(
 		&& Request.GameNumber == ExactOffer.GameNumber
 		&& Request.HomeTeam == ExactOffer.HomeTeam
 		&& Request.AwayTeam == ExactOffer.AwayTeam
-		&& Request.OfferedTeam == ExactOffer.HomeTeam
-		&& Request.OfferedTeam == Selection.Team
-		&& Request.SelectedWinProbabilityE8 == Selection.WinProbabilityE8
-		&& Request.SelectedDecimalOddsE4 == Selection.DecimalOddsE4
+		&& Request.OfferedTeam == Selection->Team
+		&& Request.SelectedWinProbabilityE8 == Selection->WinProbabilityE8
+		&& Request.SelectedDecimalOddsE4 == Selection->DecimalOddsE4
 		&& Request.Stake == 40
 		&& Request.PayoutFormula == ExactOffer.PayoutFormula
-		&& Request.GrossReturn == 69
+		&& Request.GrossReturn
+			== Request.Stake * 100000000 / Selection->WinProbabilityE8
 		&& Request.AcceptedUnixSeconds >= OfferEligibleUnixSeconds
 		&& Request.AcceptedUnixSeconds <= ObservedServerUnixSeconds
 		&& Request.AcceptedUnixSeconds < Request.LockUnixSeconds
@@ -1921,6 +1927,7 @@ bool UseOddsWellOddsBucksQaSlot()
 		|| FParse::Param(FCommandLine::Get(), TEXT("CanonicalMatchWinnerRequestQa"))
 		|| FParse::Param(FCommandLine::Get(), TEXT("CanonicalMatchWinnerRequestQaVerify"))
 		|| FParse::Param(FCommandLine::Get(), TEXT("CanonicalHarborFortyPlacementQa"))
+		|| FParse::Param(FCommandLine::Get(), TEXT("CanonicalMesaFortyPlacementQa"))
 		|| FParse::Param(FCommandLine::Get(), TEXT("CanonicalAutomaticTipoffLockQa"))
 		|| FParse::Param(FCommandLine::Get(), TEXT("CanonicalAutomaticTipoffLockQaVerify"))
 		|| FParse::Param(FCommandLine::Get(), TEXT("CanonicalPendingReceiptQa"))

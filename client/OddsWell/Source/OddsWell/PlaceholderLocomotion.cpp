@@ -197,20 +197,21 @@ bool ShouldShowCanonicalBetSlipReview(
 	return bHasOffer && !bHasPendingReceipt && !bHasSettledReceipt;
 }
 
-bool IsCanonicalHarborFortyPlacementEligible(
+bool IsCanonicalFortyPlacementEligible(
 	const FOddsWellMatchWinnerOfferPreview& Offer,
 	const int32 SelectionIndex,
 	const int64 Stake,
 	const int64 Balance)
 {
 	return IsCanonicalBetSlipOfferUsable(Offer)
-		&& SelectionIndex == 0
-		&& Offer.Selections[0].Team == TEXT("Harbor City Waves")
+		&& Offer.Selections.IsValidIndex(SelectionIndex)
+		&& (Offer.Selections[SelectionIndex].Team == TEXT("Harbor City Waves")
+			|| Offer.Selections[SelectionIndex].Team == TEXT("Mesa Vista Sol"))
 		&& Stake == 40
 		&& Balance >= Stake;
 }
 
-bool AdvanceCanonicalHarborFortyConfirmation(
+bool AdvanceCanonicalFortyConfirmation(
 	const bool bEligible,
 	bool& bArmed)
 {
@@ -771,6 +772,10 @@ void AOddsWellPlaceholderCharacter::BeginPlay()
 		FParse::Param(
 			FCommandLine::Get(),
 			TEXT("CanonicalHarborFortyPlacementQa"));
+	bCanonicalMesaFortyPlacementQa =
+		FParse::Param(
+			FCommandLine::Get(),
+			TEXT("CanonicalMesaFortyPlacementQa"));
 	bCanonicalAutomaticTipoffLockQa =
 		FParse::Param(
 			FCommandLine::Get(),
@@ -796,6 +801,7 @@ void AOddsWellPlaceholderCharacter::BeginPlay()
 		|| bCanonicalSettledLossReceiptQa
 		|| bCanonicalBetSlipReviewQa
 		|| bCanonicalHarborFortyPlacementQa
+		|| bCanonicalMesaFortyPlacementQa
 		|| bCanonicalMissingHeldOpenTipoffQa;
 	bSportsbookWagerQaVerify = FParse::Param(FCommandLine::Get(), TEXT("SportsbookWagerQaVerify"));
 	bSportsbookWagerQaMode = FParse::Param(FCommandLine::Get(), TEXT("SportsbookWagerQa")) || bSportsbookWagerQaVerify;
@@ -1332,12 +1338,12 @@ FString AOddsWellPlaceholderCharacter::GetTicketBoothReviewText() const
 		: FString(TEXT("BET SLIP UNAVAILABLE"));
 }
 
-bool AOddsWellPlaceholderCharacter::CanPlaceTicketBoothHarborForty() const
+bool AOddsWellPlaceholderCharacter::CanPlaceTicketBoothCanonicalForty() const
 {
 	return CanReviewTicketBoothBetSlip()
 		&& SportsbookMarketPage == 0
 		&& !bTicketBoothWagerSubmitting
-		&& IsCanonicalHarborFortyPlacementEligible(
+		&& IsCanonicalFortyPlacementEligible(
 			*SportsbookOfferPreview,
 			TicketBoothReviewSelectionIndex,
 			TicketBoothReviewStake,
@@ -1407,14 +1413,20 @@ void AOddsWellPlaceholderCharacter::IncreaseTicketBoothReviewStake()
 
 void AOddsWellPlaceholderCharacter::ConfirmTicketBoothWager()
 {
-	if (!AdvanceCanonicalHarborFortyConfirmation(
-			CanPlaceTicketBoothHarborForty(),
+	if (!AdvanceCanonicalFortyConfirmation(
+			CanPlaceTicketBoothCanonicalForty(),
 			bTicketBoothWagerArmed))
 	{
 		return;
 	}
 	bTicketBoothWagerSubmitting = true;
-	ServerPlaceCanonicalHarborFortyWager();
+	ServerPlaceCanonicalFortyWager(
+		SportsbookOfferPreview
+			&& SportsbookOfferPreview->Selections.IsValidIndex(
+				TicketBoothReviewSelectionIndex)
+			&& SportsbookOfferPreview->Selections[
+				TicketBoothReviewSelectionIndex].Team
+				== TEXT("Mesa Vista Sol"));
 }
 
 void AOddsWellPlaceholderCharacter::ResetTicketBoothReview()
@@ -1709,7 +1721,8 @@ void AOddsWellPlaceholderCharacter::ClientConfirmSportsbookQaWager_Implementatio
 	}
 }
 
-void AOddsWellPlaceholderCharacter::ServerPlaceCanonicalHarborFortyWager_Implementation()
+void AOddsWellPlaceholderCharacter::ServerPlaceCanonicalFortyWager_Implementation(
+	const bool bMesaSelected)
 {
 	AOddsWellLocomotionGameMode* GameMode =
 		GetWorld()->GetAuthGameMode<AOddsWellLocomotionGameMode>();
@@ -1722,7 +1735,8 @@ void AOddsWellPlaceholderCharacter::ServerPlaceCanonicalHarborFortyWager_Impleme
 			GetActorLocation(),
 			SportsbookInteractionLocation) <= SportsbookInteractionRadius;
 	const EOddsWellMatchWinnerRequestResult Result = GameMode && bAtSportsbook
-		? GameMode->AcceptCanonicalHarborFortyWager(
+		? GameMode->AcceptCanonicalFortyWager(
+			bMesaSelected,
 			Record,
 			Balance,
 			Error)
@@ -1738,18 +1752,19 @@ void AOddsWellPlaceholderCharacter::ServerPlaceCanonicalHarborFortyWager_Impleme
 	UE_LOG(
 		LogOddsWellLocomotion,
 		Display,
-		TEXT("ODDSWELL_CANONICAL_HARBOR_FORTY_SERVER|result=%s|authority=server|request_id=%s|team=Harbor City Waves|stake=40|balance=%lld|caller_offer=false|caller_team=false|caller_stake=false|detail=%s"),
+		TEXT("ODDSWELL_CANONICAL_FORTY_SERVER|result=%s|authority=server|request_id=%s|team=%s|stake=40|balance=%lld|caller_offer=false|caller_selection=true|caller_team=false|caller_stake=false|detail=%s"),
 		bAccepted ? TEXT("ACCEPTED") : bDuplicate ? TEXT("DUPLICATE") : TEXT("REJECTED"),
 		*Record.RequestCommandId,
+		bMesaSelected ? TEXT("Mesa Vista Sol") : TEXT("Harbor City Waves"),
 		Balance,
 		*Error);
-	ClientConfirmCanonicalHarborFortyWager(
+	ClientConfirmCanonicalFortyWager(
 		bAccepted,
 		bDuplicate,
 		Error);
 }
 
-void AOddsWellPlaceholderCharacter::ClientConfirmCanonicalHarborFortyWager_Implementation(
+void AOddsWellPlaceholderCharacter::ClientConfirmCanonicalFortyWager_Implementation(
 	const bool bAccepted,
 	const bool bDuplicate,
 	const FString& Error)
@@ -1812,9 +1827,10 @@ void AOddsWellPlaceholderCharacter::Tick(const float DeltaSeconds)
 	}
 	if (bSportsbookOfferQa)
 	{
-		if (bCanonicalHarborFortyPlacementQa)
+		if (bCanonicalHarborFortyPlacementQa
+			|| bCanonicalMesaFortyPlacementQa)
 		{
-			RunCanonicalHarborFortyPlacementQa(DeltaSeconds);
+			RunCanonicalFortyPlacementQa(DeltaSeconds);
 		}
 		else
 		{
@@ -2381,7 +2397,7 @@ void AOddsWellPlaceholderCharacter::PollSportsbookInteraction()
 	}
 }
 
-void AOddsWellPlaceholderCharacter::RunCanonicalHarborFortyPlacementQa(
+void AOddsWellPlaceholderCharacter::RunCanonicalFortyPlacementQa(
 	const float DeltaSeconds)
 {
 	if (!IsLocallyControlled() || GetNetMode() != NM_Standalone)
@@ -2391,6 +2407,7 @@ void AOddsWellPlaceholderCharacter::RunCanonicalHarborFortyPlacementQa(
 	SportsbookOfferQaElapsed += DeltaSeconds;
 	AOddsWellLocomotionGameMode* GameMode =
 		GetWorld()->GetAuthGameMode<AOddsWellLocomotionGameMode>();
+	const bool bMesaQa = bCanonicalMesaFortyPlacementQa;
 	auto Fail = [this](const TCHAR* Reason)
 	{
 		UE_LOG(
@@ -2399,11 +2416,16 @@ void AOddsWellPlaceholderCharacter::RunCanonicalHarborFortyPlacementQa(
 			TEXT("ODDSWELL_CANONICAL_%s_QA|result=FAIL|phase=%s|reason=%s"),
 			bCanonicalAutomaticTipoffLockQa
 				? TEXT("AUTOMATIC_EXECUTION_HANDOFF")
-				: TEXT("HARBOR_FORTY_PLACEMENT"),
-			bCanonicalAutomaticTipoffLockQa ? TEXT("H26U") : TEXT("H26R"),
+				: bCanonicalMesaFortyPlacementQa
+					? TEXT("MESA_FORTY_PLACEMENT")
+					: TEXT("HARBOR_FORTY_PLACEMENT"),
+			bCanonicalAutomaticTipoffLockQa
+				? TEXT("H26U")
+				: bCanonicalMesaFortyPlacementQa ? TEXT("H26AM") : TEXT("H26R"),
 			Reason);
 		bSportsbookOfferQa = false;
 		bCanonicalHarborFortyPlacementQa = false;
+		bCanonicalMesaFortyPlacementQa = false;
 		bCanonicalAutomaticTipoffLockQa = false;
 		QaExitAt = FPlatformTime::Seconds() + 1.0;
 	};
@@ -2499,29 +2521,29 @@ void AOddsWellPlaceholderCharacter::RunCanonicalHarborFortyPlacementQa(
 				&& GameMode->GetOddsBucksBalance()
 					== SportsbookOfferQaBalance;
 		};
-		auto SelectHarborForty = [this]()
+		auto SelectTargetForty = [this, bMesaQa]()
 		{
-			SelectTicketBoothReviewTeam(0);
+			SelectTicketBoothReviewTeam(bMesaQa ? 1 : 0);
 			while (TicketBoothReviewStake < 40)
 			{
 				IncreaseTicketBoothReviewStake();
 			}
 		};
 
-		SelectTicketBoothReviewTeam(1);
+		SelectTicketBoothReviewTeam(bMesaQa ? 0 : 1);
 		while (TicketBoothReviewStake < 40)
 		{
 			IncreaseTicketBoothReviewStake();
 		}
 		ConfirmTicketBoothWager();
-		const bool bMesaUnavailable = !bTicketBoothWagerArmed
-			&& !CanPlaceTicketBoothHarborForty()
+		const bool bOtherTeamFirstConfirmNoMutation = bTicketBoothWagerArmed
+			&& CanPlaceTicketBoothCanonicalForty()
 			&& StateUnchanged();
-		SelectTicketBoothReviewTeam(0);
+		SelectTargetForty();
 		DecreaseTicketBoothReviewStake();
 		ConfirmTicketBoothWager();
 		const bool bWrongStakeUnavailable = !bTicketBoothWagerArmed
-			&& !CanPlaceTicketBoothHarborForty()
+			&& !CanPlaceTicketBoothCanonicalForty()
 			&& StateUnchanged();
 		IncreaseTicketBoothReviewStake();
 		ConfirmTicketBoothWager();
@@ -2535,7 +2557,7 @@ void AOddsWellPlaceholderCharacter::RunCanonicalHarborFortyPlacementQa(
 			&& TicketBoothReviewStake == 10
 			&& StateUnchanged();
 		ToggleSportsbookOfferPreview();
-		SelectHarborForty();
+		SelectTargetForty();
 		ConfirmTicketBoothWager();
 		SetTicketBoothMarketPage(1);
 		const bool bTabReset = !bTicketBoothWagerArmed
@@ -2560,12 +2582,12 @@ void AOddsWellPlaceholderCharacter::RunCanonicalHarborFortyPlacementQa(
 			nullptr,
 			ETeleportType::TeleportPhysics);
 		ToggleSportsbookOfferPreview();
-		SelectHarborForty();
+		SelectTargetForty();
 		ConfirmTicketBoothWager();
 		const bool bFinalFirstConfirmNoMutation = bTicketBoothWagerArmed
 			&& StateUnchanged();
 
-		if (!bMesaUnavailable || !bWrongStakeUnavailable
+		if (!bOtherTeamFirstConfirmNoMutation || !bWrongStakeUnavailable
 			|| !bFirstConfirmNoMutation || !bEscapeCloseReset
 			|| !bTabReset || !bLeaveReset
 			|| !bFinalFirstConfirmNoMutation)
@@ -2576,14 +2598,18 @@ void AOddsWellPlaceholderCharacter::RunCanonicalHarborFortyPlacementQa(
 		UE_LOG(
 			LogOddsWellLocomotion,
 			Display,
-			TEXT("ODDSWELL_CANONICAL_HARBOR_FORTY_FIRST_CONFIRM_QA|result=PASS|armed=true|request_count=0|ledger_entries=1|balance=100|mutation=false|mouse=true|keyboard=true|controller=true|escape_reset=true|tab_reset=true|leave_reset=true|mesa_unavailable=true|other_stake_unavailable=true"));
+			TEXT("ODDSWELL_CANONICAL_FORTY_FIRST_CONFIRM_QA|result=PASS|phase=%s|team=%s|armed=true|request_count=0|ledger_entries=1|balance=100|mutation=false|both_teams_available=true|other_stake_unavailable=true|mouse=true|keyboard=true|controller=true|escape_reset=true|tab_reset=true|leave_reset=true"),
+			bMesaQa ? TEXT("H26AM") : TEXT("H26R"),
+			bMesaQa ? TEXT("Mesa Vista Sol") : TEXT("Harbor City Waves"));
 		if (!bCanonicalAutomaticTipoffLockQa
 			&& FParse::Param(
 				FCommandLine::Get(),
 				TEXT("SportsbookOfferQaCapture")))
 		{
 			FScreenshotRequest::RequestScreenshot(
-				TEXT("Phase1H26R_CanonicalHarborFortyArmed.png"),
+				bMesaQa
+					? TEXT("Phase1H26AM_CanonicalMesaFortyArmed.png")
+					: TEXT("Phase1H26R_CanonicalHarborFortyArmed.png"),
 				true,
 				false);
 		}
@@ -2597,12 +2623,16 @@ void AOddsWellPlaceholderCharacter::RunCanonicalHarborFortyPlacementQa(
 		ConfirmTicketBoothWager();
 		const bool bDurableReceipt = SportsbookCanonicalReceipt
 			&& SportsbookCanonicalReceipt->SelectedTeam
-				== TEXT("Harbor City Waves")
+				== (bMesaQa
+					? TEXT("Mesa Vista Sol")
+					: TEXT("Harbor City Waves"))
 			&& SportsbookCanonicalReceipt->SelectedWinProbabilityE8
-				== 57586693
-			&& SportsbookCanonicalReceipt->SelectedDecimalOddsE4 == 17365
+				== (bMesaQa ? 42413307 : 57586693)
+			&& SportsbookCanonicalReceipt->SelectedDecimalOddsE4
+				== (bMesaQa ? 23577 : 17365)
 			&& SportsbookCanonicalReceipt->Stake == 40
-			&& SportsbookCanonicalReceipt->GrossReturn == 69
+			&& SportsbookCanonicalReceipt->GrossReturn
+				== (bMesaQa ? 94 : 69)
 			&& SportsbookCanonicalReceipt->CurrentBalance == 60
 			&& SportsbookCanonicalReceipt->Status
 				== FName(TEXT("accepted_pending_lock"))
@@ -2635,7 +2665,9 @@ void AOddsWellPlaceholderCharacter::RunCanonicalHarborFortyPlacementQa(
 				TEXT("SportsbookOfferQaCapture")))
 		{
 			FScreenshotRequest::RequestScreenshot(
-				TEXT("Phase1H26R_CanonicalHarborFortyPendingReceipt.png"),
+				bMesaQa
+					? TEXT("Phase1H26AM_CanonicalMesaFortyPendingReceipt.png")
+					: TEXT("Phase1H26R_CanonicalHarborFortyPendingReceipt.png"),
 				true,
 				false);
 		}
@@ -2667,9 +2699,14 @@ void AOddsWellPlaceholderCharacter::RunCanonicalHarborFortyPlacementQa(
 		UE_LOG(
 			LogOddsWellLocomotion,
 			Display,
-			TEXT("ODDSWELL_CANONICAL_HARBOR_FORTY_PLACEMENT_QA|result=PASS|phase=H26R|route=job100_to_ticket_booth_to_harbor40_to_review_to_confirm1_to_confirm2_to_pending_receipt|authority=server|rpc_parameters=none|request_status=accepted_pending_lock|ledger_sequence=2|ledger_delta=-40|ledger_entries=2|requests=1|balance=60|first_confirm_mutation=false|receipt_after_durable_success=true|repeated_input_mutation=false|mesa_placement=false|other_stake_placement=false|mouse=true|keyboard=true|controller=true|close_reset=true|reopen_reset=true|leave_reset=true|escape_reset=true|tab_reset=true|tipoff_rejection=retained_h26e|duplicate_conflict_insufficient_persistence_invariance=retained_h26e|auto_lock=false|auto_simulation=false|auto_settlement=false|cost_usd=0"));
+			TEXT("ODDSWELL_CANONICAL_FORTY_PLACEMENT_QA|result=PASS|phase=%s|route=job100_to_ticket_booth_to_%s40_to_review_to_confirm1_to_confirm2_to_pending_receipt|selected_team=%s|authority=server|rpc_parameter=bounded_selection|request_status=accepted_pending_lock|ledger_sequence=2|ledger_delta=-40|ledger_entries=2|requests=1|balance=60|gross_return=%lld|first_confirm_mutation=false|receipt_after_durable_success=true|repeated_input_mutation=false|both_teams_available=true|other_stake_placement=false|mouse=true|keyboard=true|controller=true|close_reset=true|reopen_reset=true|leave_reset=true|escape_reset=true|tab_reset=true|tipoff_rejection=retained_h26e|duplicate_conflict_insufficient_persistence_invariance=retained_h26e|auto_lock=false|auto_simulation=false|auto_settlement=false|cost_usd=0"),
+			bMesaQa ? TEXT("H26AM") : TEXT("H26R"),
+			bMesaQa ? TEXT("mesa") : TEXT("harbor"),
+			bMesaQa ? TEXT("Mesa Vista Sol") : TEXT("Harbor City Waves"),
+			bMesaQa ? 94 : 69);
 		bSportsbookOfferQa = false;
 		bCanonicalHarborFortyPlacementQa = false;
+		bCanonicalMesaFortyPlacementQa = false;
 		if (FParse::Param(
 				FCommandLine::Get(),
 				TEXT("SportsbookOfferAutoExit")))
@@ -5065,8 +5102,9 @@ void AOddsWellSportsbookHUD::DrawTicketBoothMenu(
 	DrawText(TEXT("CURRENT BALANCE"), FLinearColor(0.32f, 0.34f, 0.36f), SlipX + 20.0f, ContentY + 342.0f, nullptr, 0.82f);
 	DrawText(FString::Printf(TEXT("%lld Odds Bucks"), Character.GetTicketBoothCurrentBalance()), FLinearColor(0.025f, 0.055f, 0.08f), SlipX + 20.0f, ContentY + 370.0f, nullptr, 1.0f);
 	const bool bPlacementAvailable =
-		Character.CanPlaceTicketBoothHarborForty();
+		Character.CanPlaceTicketBoothCanonicalForty();
 	const bool bArmed = Character.IsTicketBoothWagerArmed();
+	const FString SelectedTeam = Selection ? Selection->Team : FString();
 	const float ConfirmY = ContentY + ContentHeight - 180.0f;
 	DrawRect(
 		bPlacementAvailable
@@ -5078,7 +5116,9 @@ void AOddsWellSportsbookHUD::DrawTicketBoothMenu(
 		42.0f);
 	DrawText(
 		bPlacementAvailable
-			? (bArmed ? TEXT("CONFIRM HARBOR / 40") : TEXT("ARM HARBOR / 40"))
+			? (bArmed
+				? FString::Printf(TEXT("CONFIRM %s / 40"), *SelectedTeam)
+				: FString::Printf(TEXT("ARM %s / 40"), *SelectedTeam))
 			: TEXT("PLACEMENT UNAVAILABLE"),
 		FLinearColor::White,
 		SlipX + 34.0f,
@@ -5099,7 +5139,7 @@ void AOddsWellSportsbookHUD::DrawTicketBoothMenu(
 			? TEXT("ARMED - CONFIRM AGAIN TO PLACE")
 			: (bPlacementAvailable
 				? TEXT("FIRST CONFIRM ONLY ARMS - NO DEBIT")
-				: TEXT("ONLY HARBOR CITY WAVES AT 40")),
+				: TEXT("SELECT HARBOR OR MESA AT 40")),
 		bArmed ? FLinearColor(0.65f, 0.18f, 0.12f) : FLinearColor(0.32f, 0.34f, 0.36f),
 		SlipX + 20.0f,
 		ConfirmY + 47.0f,
@@ -5282,6 +5322,10 @@ void AOddsWellLocomotionGameMode::BeginPlay()
 		FParse::Param(
 			FCommandLine::Get(),
 			TEXT("CanonicalHarborFortyPlacementQa"));
+	const bool bCanonicalMesaFortyPlacementQa =
+		FParse::Param(
+			FCommandLine::Get(),
+			TEXT("CanonicalMesaFortyPlacementQa"));
 	const bool bCanonicalAutomaticTipoffLockQa =
 		FParse::Param(
 			FCommandLine::Get(),
@@ -6557,6 +6601,7 @@ void AOddsWellLocomotionGameMode::BeginPlay()
 		|| FParse::Param(FCommandLine::Get(), TEXT("SportsbookWagerQa"))
 		|| (bCanonicalRequestQa && !bCanonicalRequestQaVerify)
 		|| bCanonicalHarborFortyPlacementQa
+		|| bCanonicalMesaFortyPlacementQa
 		|| bCanonicalAutomaticTipoffLockQa;
 	const bool bJobRecoveryQa = FParse::Param(FCommandLine::Get(), TEXT("JobRecoveryQa"));
 	const bool bJobRecoveryQaVerify = FParse::Param(FCommandLine::Get(), TEXT("JobRecoveryQaVerify"));
@@ -6608,6 +6653,7 @@ void AOddsWellLocomotionGameMode::BeginPlay()
 	if (FParse::Param(FCommandLine::Get(), TEXT("SportsbookWagerQa"))
 		|| (bCanonicalRequestQa && !bCanonicalRequestQaVerify)
 		|| bCanonicalHarborFortyPlacementQa
+		|| bCanonicalMesaFortyPlacementQa
 		|| bCanonicalAutomaticTipoffLockQa)
 	{
 		bool bCredited = false;
@@ -6903,7 +6949,8 @@ EOddsWellMatchWinnerRequestResult AOddsWellLocomotionGameMode::AcceptSportsbookQ
 	return Result;
 }
 
-EOddsWellMatchWinnerRequestResult AOddsWellLocomotionGameMode::AcceptCanonicalHarborFortyWager(
+EOddsWellMatchWinnerRequestResult AOddsWellLocomotionGameMode::AcceptCanonicalFortyWager(
+	const bool bMesaSelected,
 	FOddsWellMatchWinnerRequestRecord& OutRecord,
 	int64& OutBalance,
 	FString& OutError)
@@ -6914,10 +6961,15 @@ EOddsWellMatchWinnerRequestResult AOddsWellLocomotionGameMode::AcceptCanonicalHa
 		return EOddsWellMatchWinnerRequestResult::Rejected;
 	}
 	const EOddsWellMatchWinnerRequestResult Result =
-		AcceptOddsWellCanonicalHarborFortyRequest(
-			OutRecord,
-			OutBalance,
-			OutError);
+		bMesaSelected
+			? AcceptOddsWellCanonicalMesaFortyRequest(
+				OutRecord,
+				OutBalance,
+				OutError)
+			: AcceptOddsWellCanonicalHarborFortyRequest(
+				OutRecord,
+				OutBalance,
+				OutError);
 	if (Result == EOddsWellMatchWinnerRequestResult::Accepted
 		|| Result == EOddsWellMatchWinnerRequestResult::Duplicate)
 	{
@@ -8663,11 +8715,11 @@ bool FOddsWellCanonicalBetSlipReviewTest::RunTest(
 }
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
-	FOddsWellCanonicalHarborFortyPlacementTest,
-	"OddsWell.Locomotion.CanonicalHarborFortyPlacement",
+	FOddsWellCanonicalFortyPlacementTest,
+	"OddsWell.Locomotion.CanonicalFortyPlacement",
 	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
 
-bool FOddsWellCanonicalHarborFortyPlacementTest::RunTest(
+bool FOddsWellCanonicalFortyPlacementTest::RunTest(
 	const FString& Parameters)
 {
 	FOddsWellMatchWinnerOfferPreview Offer;
@@ -8688,18 +8740,18 @@ bool FOddsWellCanonicalHarborFortyPlacementTest::RunTest(
 	Mesa.DecimalOddsE4 = 23577;
 
 	TestTrue(
-		TEXT("H26R only Harbor at 40 with sufficient balance is eligible"),
-		IsCanonicalHarborFortyPlacementEligible(Offer, 0, 40, 100));
+		TEXT("H26AM Harbor at 40 with sufficient balance remains eligible"),
+		IsCanonicalFortyPlacementEligible(Offer, 0, 40, 100));
 	TestFalse(
 		TEXT("H26R no selection is unavailable"),
-		IsCanonicalHarborFortyPlacementEligible(
+		IsCanonicalFortyPlacementEligible(
 			Offer,
 			INDEX_NONE,
 			40,
 			100));
-	TestFalse(
-		TEXT("H26R Mesa is unavailable"),
-		IsCanonicalHarborFortyPlacementEligible(Offer, 1, 40, 100));
+	TestTrue(
+		TEXT("H26AM Mesa at 40 with sufficient balance is eligible"),
+		IsCanonicalFortyPlacementEligible(Offer, 1, 40, 100));
 	for (int64 Stake = 10; Stake <= 100; Stake += 10)
 	{
 		if (Stake != 40)
@@ -8708,7 +8760,7 @@ bool FOddsWellCanonicalHarborFortyPlacementTest::RunTest(
 				FString::Printf(
 					TEXT("H26R Harbor stake %lld is unavailable"),
 					Stake),
-				IsCanonicalHarborFortyPlacementEligible(
+				IsCanonicalFortyPlacementEligible(
 					Offer,
 					0,
 					Stake,
@@ -8717,21 +8769,21 @@ bool FOddsWellCanonicalHarborFortyPlacementTest::RunTest(
 	}
 	TestFalse(
 		TEXT("H26R insufficient balance is unavailable"),
-		IsCanonicalHarborFortyPlacementEligible(Offer, 0, 40, 39));
+		IsCanonicalFortyPlacementEligible(Offer, 0, 40, 39));
 
 	bool bArmed = false;
 	TestFalse(
 		TEXT("H26R first confirmation does not submit"),
-		AdvanceCanonicalHarborFortyConfirmation(true, bArmed));
+		AdvanceCanonicalFortyConfirmation(true, bArmed));
 	TestTrue(TEXT("H26R first confirmation visibly arms"), bArmed);
 	TestTrue(
 		TEXT("H26R second confirmation submits"),
-		AdvanceCanonicalHarborFortyConfirmation(true, bArmed));
+		AdvanceCanonicalFortyConfirmation(true, bArmed));
 	TestFalse(TEXT("H26R submission clears the arm"), bArmed);
 	bArmed = true;
 	TestFalse(
 		TEXT("H26R an ineligible change cannot submit"),
-		AdvanceCanonicalHarborFortyConfirmation(false, bArmed));
+		AdvanceCanonicalFortyConfirmation(false, bArmed));
 	TestFalse(TEXT("H26R an ineligible change disarms"), bArmed);
 	TestTrue(
 		TEXT("H26R mouse and keyboard/controller confirm routes are present"),
@@ -8742,7 +8794,7 @@ bool FOddsWellCanonicalHarborFortyPlacementTest::RunTest(
 	Offer.StakeIncrement = 0;
 	TestFalse(
 		TEXT("H26R malformed H26A-C evidence is unavailable"),
-		IsCanonicalHarborFortyPlacementEligible(Offer, 0, 40, 100));
+		IsCanonicalFortyPlacementEligible(Offer, 0, 40, 100));
 	return !HasAnyErrors();
 }
 
