@@ -18,6 +18,34 @@ constexpr int64 ExpectedLockUnix = 2000000000;
 const FString ExpectedOfferId(TEXT("29d3ab7c4fd2858b4cfa80f1f413a77aaa30fbdde1ca593b477d82f2e726617e"));
 const FString ExpectedCommitment(TEXT("898e89ef142f884fe2514bc55a65b91c80a5bf25d068467b2ddbfe25569ea98f"));
 
+int32 GetAthleteCount(const FOddsWellPublicLeagueSnapshot& Snapshot)
+{
+	int32 Count = 0;
+	for (const FOddsWellPublicTeam& Team : Snapshot.Teams)
+	{
+		Count += Team.Athletes.Num();
+	}
+	return Count;
+}
+
+const FOddsWellPublicAthlete* FindAthlete(
+	const FOddsWellPublicLeagueSnapshot& Snapshot,
+	int32 AthleteIndex,
+	const FOddsWellPublicTeam*& OutTeam)
+{
+	for (const FOddsWellPublicTeam& Team : Snapshot.Teams)
+	{
+		if (AthleteIndex < Team.Athletes.Num())
+		{
+			OutTeam = &Team;
+			return &Team.Athletes[AthleteIndex];
+		}
+		AthleteIndex -= Team.Athletes.Num();
+	}
+	OutTeam = nullptr;
+	return nullptr;
+}
+
 bool LoadPublicLeagueRoot(TSharedPtr<FJsonObject>& OutRoot, FString& OutError)
 {
 	const FString Path = FPaths::Combine(FPaths::ProjectContentDir(), TEXT("League/PublicSeason1.json"));
@@ -247,6 +275,7 @@ bool LoadOddsWellPublicLeagueSnapshot(FOddsWellPublicLeagueSnapshot& OutSnapshot
 	const TArray<TSharedPtr<FJsonValue>>* Standings = nullptr;
 	const TArray<TSharedPtr<FJsonValue>>* Teams = nullptr;
 	const TArray<TSharedPtr<FJsonValue>>* Games = nullptr;
+	const TArray<TSharedPtr<FJsonValue>>* AthleteStories = nullptr;
 	if (!Root->TryGetStringField(TEXT("schema"), Schema)
 		|| Schema != TEXT("oddswell-public-league-v1")
 		|| !Root->TryGetBoolField(TEXT("public_only"), bPublicOnly)
@@ -256,11 +285,33 @@ bool LoadOddsWellPublicLeagueSnapshot(FOddsWellPublicLeagueSnapshot& OutSnapshot
 		|| !Root->TryGetArrayField(TEXT("standings"), Standings)
 		|| !Root->TryGetArrayField(TEXT("teams"), Teams)
 		|| !Root->TryGetArrayField(TEXT("games"), Games)
+		|| !Root->TryGetArrayField(TEXT("athlete_stories"), AthleteStories)
 		|| !ReadInt(*Season, TEXT("number"), OutSnapshot.SeasonNumber)
 		|| !(*Season)->TryGetStringField(TEXT("status"), OutSnapshot.SeasonStatus))
 	{
 		OutError = TEXT("Public league snapshot schema is incomplete or private.");
 		return false;
+	}
+
+	const TArray<FString> StoryFields = {
+		TEXT("name"), TEXT("team"), TEXT("talent_tier"), TEXT("specialty"), TEXT("consistency"),
+		TEXT("offensive_role"), TEXT("form"), TEXT("season_points_per_game"),
+		TEXT("recent_points_per_game"), TEXT("recent_minutes_per_game"), TEXT("available"),
+		TEXT("life_choice"), TEXT("life_game"), TEXT("life_brain_version")};
+	TMap<FString, TSharedPtr<FJsonObject>> StoriesByAthlete;
+	for (const TSharedPtr<FJsonValue>& Value : *AthleteStories)
+	{
+		const TSharedPtr<FJsonObject> Story = Value->AsObject();
+		FString Name;
+		if (!HasExactFields(Story, StoryFields)
+			|| !Story->TryGetStringField(TEXT("name"), Name)
+			|| Name.IsEmpty()
+			|| StoriesByAthlete.Contains(Name))
+		{
+			OutError = TEXT("Public league snapshot has invalid athlete-story evidence.");
+			return false;
+		}
+		StoriesByAthlete.Add(Name, Story);
 	}
 
 	for (const TSharedPtr<FJsonValue>& Value : *Standings)
@@ -295,12 +346,55 @@ bool LoadOddsWellPublicLeagueSnapshot(FOddsWellPublicLeagueSnapshot& OutSnapshot
 		{
 			const TSharedPtr<FJsonObject> Player = PlayerValue->AsObject();
 			FOddsWellPublicAthlete Athlete;
+			const TSharedPtr<FJsonObject>* Story = nullptr;
+			FString StoryName;
+			FString StoryTeam;
+			bool bStoryAvailable = false;
 			if (!Player.IsValid()
 				|| !Player->TryGetStringField(TEXT("name"), Athlete.Name)
 				|| !ReadInt(Player, TEXT("overall"), Athlete.Overall)
-				|| !Player->TryGetBoolField(TEXT("available"), Athlete.bAvailable))
+				|| !ReadInt(Player, TEXT("shooting"), Athlete.Shooting)
+				|| !ReadInt(Player, TEXT("passing"), Athlete.Passing)
+				|| !ReadInt(Player, TEXT("defense"), Athlete.Defense)
+				|| !ReadInt(Player, TEXT("rebounding"), Athlete.Rebounding)
+				|| !ReadInt(Player, TEXT("stamina"), Athlete.Stamina)
+				|| !Player->TryGetBoolField(TEXT("available"), Athlete.bAvailable)
+				|| !(Story = StoriesByAthlete.Find(Athlete.Name))
+				|| !(*Story)->TryGetStringField(TEXT("name"), StoryName)
+				|| !(*Story)->TryGetStringField(TEXT("team"), StoryTeam)
+				|| !(*Story)->TryGetStringField(TEXT("talent_tier"), Athlete.TalentTier)
+				|| !(*Story)->TryGetStringField(TEXT("specialty"), Athlete.Specialty)
+				|| !(*Story)->TryGetStringField(TEXT("consistency"), Athlete.Consistency)
+				|| !(*Story)->TryGetStringField(TEXT("offensive_role"), Athlete.OffensiveRole)
+				|| !(*Story)->TryGetStringField(TEXT("form"), Athlete.Form)
+				|| !(*Story)->TryGetNumberField(TEXT("season_points_per_game"), Athlete.SeasonPointsPerGame)
+				|| !(*Story)->TryGetNumberField(TEXT("recent_points_per_game"), Athlete.RecentPointsPerGame)
+				|| !(*Story)->TryGetNumberField(TEXT("recent_minutes_per_game"), Athlete.RecentMinutesPerGame)
+				|| !(*Story)->TryGetBoolField(TEXT("available"), bStoryAvailable)
+				|| !(*Story)->TryGetStringField(TEXT("life_choice"), Athlete.LifeChoice)
+				|| !ReadInt(*Story, TEXT("life_game"), Athlete.LifeGame)
+				|| !(*Story)->TryGetStringField(TEXT("life_brain_version"), Athlete.LifeBrainVersion)
+				|| StoryName != Athlete.Name
+				|| StoryTeam != Team.Name
+				|| bStoryAvailable != Athlete.bAvailable
+				|| Athlete.Overall < 0 || Athlete.Overall > 100
+				|| Athlete.Shooting < 0 || Athlete.Shooting > 100
+				|| Athlete.Passing < 0 || Athlete.Passing > 100
+				|| Athlete.Defense < 0 || Athlete.Defense > 100
+				|| Athlete.Rebounding < 0 || Athlete.Rebounding > 100
+				|| Athlete.Stamina < 0 || Athlete.Stamina > 100
+				|| !FMath::IsFinite(Athlete.SeasonPointsPerGame) || Athlete.SeasonPointsPerGame < 0.0
+				|| !FMath::IsFinite(Athlete.RecentPointsPerGame) || Athlete.RecentPointsPerGame < 0.0
+				|| !FMath::IsFinite(Athlete.RecentMinutesPerGame) || Athlete.RecentMinutesPerGame < 0.0
+				|| !TArray<FString>{TEXT("Star"), TEXT("Featured starter"), TEXT("Core starter"), TEXT("Rotation contributor"), TEXT("Developmental")}.Contains(Athlete.TalentTier)
+				|| !TArray<FString>{TEXT("elite"), TEXT("steady"), TEXT("normal"), TEXT("volatile")}.Contains(Athlete.Consistency)
+				|| !TArray<FString>{TEXT("featured"), TEXT("standard"), TEXT("low")}.Contains(Athlete.OffensiveRole)
+				|| !TArray<FString>{TEXT("RISING"), TEXT("STEADY"), TEXT("COOLING")}.Contains(Athlete.Form)
+				|| !TArray<FString>{TEXT("TRAIN"), TEXT("REST"), TEXT("RECOVER"), TEXT("SOCIALIZE")}.Contains(Athlete.LifeChoice)
+				|| Athlete.LifeGame != 20
+				|| Athlete.LifeBrainVersion != TEXT("athlete-life-v4"))
 			{
-				OutError = TEXT("Public league snapshot has an invalid athlete.");
+				OutError = TEXT("Public league snapshot has an invalid athlete or public story.");
 				return false;
 			}
 			Team.Athletes.Add(MoveTemp(Athlete));
@@ -338,6 +432,7 @@ bool LoadOddsWellPublicLeagueSnapshot(FOddsWellPublicLeagueSnapshot& OutSnapshot
 		|| OutSnapshot.Standings.Num() != 2
 		|| OutSnapshot.Teams.Num() != 2
 		|| AthleteCount != 12
+		|| StoriesByAthlete.Num() != AthleteCount
 		|| OutSnapshot.Games.Num() != 20)
 	{
 		OutError = TEXT("Public league snapshot does not match the frozen two-team development season.");
@@ -349,7 +444,8 @@ bool LoadOddsWellPublicLeagueSnapshot(FOddsWellPublicLeagueSnapshot& OutSnapshot
 
 int32 GetOddsWellPublicLeaguePageCount(const FOddsWellPublicLeagueSnapshot& Snapshot)
 {
-	return 1 + Snapshot.Teams.Num() + FMath::DivideAndRoundUp(Snapshot.Games.Num(), GamesPerPage);
+	return 1 + Snapshot.Teams.Num() + GetAthleteCount(Snapshot)
+		+ FMath::DivideAndRoundUp(Snapshot.Games.Num(), GamesPerPage);
 }
 
 FString BuildOddsWellPublicLeaguePage(const FOddsWellPublicLeagueSnapshot& Snapshot, const int32 PageIndex)
@@ -395,9 +491,51 @@ FString BuildOddsWellPublicLeaguePage(const FOddsWellPublicLeagueSnapshot& Snaps
 				Athlete.bAvailable ? TEXT("AVAILABLE") : TEXT("OUT"));
 		}
 	}
+	else if (PageIndex < 1 + Snapshot.Teams.Num() + GetAthleteCount(Snapshot))
+	{
+		const FOddsWellPublicTeam* Team = nullptr;
+		const FOddsWellPublicAthlete* Athlete = FindAthlete(
+			Snapshot,
+			PageIndex - 1 - Snapshot.Teams.Num(),
+			Team);
+		if (!Athlete || !Team)
+		{
+			return TEXT("ATHLETE STORY UNAVAILABLE");
+		}
+		Text += FString::Printf(
+			TEXT("ATHLETE STORY | PUBLIC ARCHIVE\n")
+			TEXT("%s | %s\n\n")
+			TEXT("TALENT: %s | OVR %d | CONSISTENCY %s\n")
+			TEXT("SPECIALTY: %s | OFFENSIVE ROLE: %s\n")
+			TEXT("RATINGS: SHO %d | PAS %d | DEF %d | REB %d | STA %d\n\n")
+			TEXT("FORM: %s | SEASON %.2f PPG | RECENT %.2f PPG\n")
+			TEXT("STATUS: %s | PUBLIC WORKLOAD: %.2f MPG\n")
+			TEXT("LIFE BRAIN: %s | GAME %d: %s\n\n")
+			TEXT("HIDDEN FATIGUE, RECOVERY TIMERS, INJURY DETAILS, RNG, AND RESOLVER STATE ARE NOT PUBLISHED."),
+			*Athlete->Name,
+			*Team->Name,
+			*Athlete->TalentTier.ToUpper(),
+			Athlete->Overall,
+			*Athlete->Consistency.ToUpper(),
+			*Athlete->Specialty.ToUpper(),
+			*Athlete->OffensiveRole.ToUpper(),
+			Athlete->Shooting,
+			Athlete->Passing,
+			Athlete->Defense,
+			Athlete->Rebounding,
+			Athlete->Stamina,
+			*Athlete->Form,
+			Athlete->SeasonPointsPerGame,
+			Athlete->RecentPointsPerGame,
+			Athlete->bAvailable ? TEXT("AVAILABLE") : TEXT("OUT"),
+			Athlete->RecentMinutesPerGame,
+			*Athlete->LifeBrainVersion,
+			Athlete->LifeGame,
+			*Athlete->LifeChoice);
+	}
 	else
 	{
-		const int32 SchedulePage = PageIndex - 1 - Snapshot.Teams.Num();
+		const int32 SchedulePage = PageIndex - 1 - Snapshot.Teams.Num() - GetAthleteCount(Snapshot);
 		const int32 Start = SchedulePage * GamesPerPage;
 		Text += TEXT("SCHEDULE / IMMUTABLE COMPLETED HISTORY\n");
 		for (int32 Index = Start; Index < FMath::Min(Start + GamesPerPage, Snapshot.Games.Num()); ++Index)
@@ -482,10 +620,17 @@ bool FOddsWellPublicLeagueViewTest::RunTest(const FString& Parameters)
 	TestTrue(TEXT("Frozen public league snapshot loads"), LoadOddsWellPublicLeagueSnapshot(Snapshot, Error));
 	TestEqual(TEXT("Two public teams"), Snapshot.Teams.Num(), 2);
 	TestEqual(TEXT("Twenty completed games"), Snapshot.Games.Num(), 20);
-	TestEqual(TEXT("Seven readable pages"), GetOddsWellPublicLeaguePageCount(Snapshot), 7);
+	TestEqual(TEXT("Nineteen readable pages"), GetOddsWellPublicLeaguePageCount(Snapshot), 19);
 	TestTrue(TEXT("Standings page names Harbor City"), BuildOddsWellPublicLeaguePage(Snapshot, 0).Contains(TEXT("Harbor City Waves")));
 	TestTrue(TEXT("Roster exposes availability"), BuildOddsWellPublicLeaguePage(Snapshot, 2).Contains(TEXT("OUT")));
-	TestTrue(TEXT("History exposes the final game"), BuildOddsWellPublicLeaguePage(Snapshot, 6).Contains(TEXT("G20")));
+	const FString JalenStory = BuildOddsWellPublicLeaguePage(Snapshot, 3);
+	TestTrue(TEXT("Athlete story exposes durable specialty"), JalenStory.Contains(TEXT("SCORING CREATOR")));
+	TestTrue(TEXT("Athlete story exposes public form"), JalenStory.Contains(TEXT("FORM: COOLING")));
+	TestTrue(TEXT("Athlete story exposes the bounded current choice"), JalenStory.Contains(TEXT("GAME 20: REST")));
+	TestTrue(TEXT("Athlete story keeps private state hidden"), JalenStory.Contains(TEXT("HIDDEN FATIGUE, RECOVERY TIMERS, INJURY DETAILS, RNG, AND RESOLVER STATE ARE NOT PUBLISHED")));
+	TestTrue(TEXT("Roman athlete story remains available"), BuildOddsWellPublicLeaguePage(Snapshot, 12).Contains(TEXT("Roman Voss")));
+	TestTrue(TEXT("Last athlete story exposes Mateo"), BuildOddsWellPublicLeaguePage(Snapshot, 14).Contains(TEXT("Mateo Cruz")));
+	TestTrue(TEXT("History exposes the final game"), BuildOddsWellPublicLeaguePage(Snapshot, 18).Contains(TEXT("G20")));
 
 	FOddsWellMatchWinnerOfferPreview Offer;
 	TestTrue(TEXT("Exact public Match Winner offer loads"), LoadOddsWellMatchWinnerOfferPreview(Offer, Error));

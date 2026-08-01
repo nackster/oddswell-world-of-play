@@ -6,7 +6,23 @@ struct FOddsWellPublicAthlete
 {
 	FString Name;
 	int32 Overall = 0;
+	int32 Shooting = 0;
+	int32 Passing = 0;
+	int32 Defense = 0;
+	int32 Rebounding = 0;
+	int32 Stamina = 0;
 	bool bAvailable = false;
+	FString TalentTier;
+	FString Specialty;
+	FString Consistency;
+	FString OffensiveRole;
+	FString Form;
+	double SeasonPointsPerGame = 0.0;
+	double RecentPointsPerGame = 0.0;
+	double RecentMinutesPerGame = 0.0;
+	FString LifeChoice;
+	int32 LifeGame = 0;
+	FString LifeBrainVersion;
 };
 
 struct FOddsWellPublicTeam

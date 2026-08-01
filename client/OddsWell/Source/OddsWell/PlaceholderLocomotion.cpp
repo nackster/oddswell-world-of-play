@@ -1114,7 +1114,8 @@ void AOddsWellPlaceholderCharacter::BeginPlay()
 	bStudioPersistenceQaVerify = FParse::Param(FCommandLine::Get(), TEXT("StudioPersistenceQaVerify"));
 	bStudioQa = FParse::Param(FCommandLine::Get(), TEXT("StudioQa")) || bStudioPersistenceQa || bStudioPersistenceQaVerify;
 	bCameraOrbitQa = FParse::Param(FCommandLine::Get(), TEXT("CameraOrbitQa"));
-	bPublicLeagueQa = FParse::Param(FCommandLine::Get(), TEXT("PublicLeagueQa"));
+	bAthleteStoryQa = FParse::Param(FCommandLine::Get(), TEXT("AthleteStoryQa"));
+	bPublicLeagueQa = FParse::Param(FCommandLine::Get(), TEXT("PublicLeagueQa")) || bAthleteStoryQa;
 	bStadiumQa = FParse::Param(FCommandLine::Get(), TEXT("StadiumQa"));
 	bCanonicalPendingReceiptQa =
 		FParse::Param(FCommandLine::Get(), TEXT("CanonicalPendingReceiptQa"));
@@ -1284,7 +1285,9 @@ void AOddsWellPlaceholderCharacter::BeginPlay()
 			if (bPublicLeagueQa)
 			{
 				bPublicLeagueVisible = true;
-				PublicLeaguePage = GetOddsWellPublicLeaguePageCount(*PublicLeagueSnapshot) - 1;
+				PublicLeaguePage = bAthleteStoryQa
+					? 3
+					: GetOddsWellPublicLeaguePageCount(*PublicLeagueSnapshot) - 1;
 				ShowLeaguePage();
 				if (FParse::Param(FCommandLine::Get(), TEXT("PublicLeagueAutoExit")))
 				{
@@ -2267,8 +2270,16 @@ void AOddsWellPlaceholderCharacter::Tick(const float DeltaSeconds)
 	if (bPublicLeagueQa && !bPublicLeagueQaCaptured && (PublicLeagueQaElapsed += DeltaSeconds) >= 1.0f)
 	{
 		bPublicLeagueQaCaptured = true;
-		FScreenshotRequest::RequestScreenshot(TEXT("Phase1F1_PublicLeague.png"), true, false);
-		UE_LOG(LogOddsWellLocomotion, Display, TEXT("ODDSWELL_PUBLIC_LEAGUE_CAPTURE|result=PASS|page=%d"), PublicLeaguePage + 1);
+		FScreenshotRequest::RequestScreenshot(
+			bAthleteStoryQa ? TEXT("Phase1J1_AthleteStory.png") : TEXT("Phase1F1_PublicLeague.png"),
+			true,
+			false);
+		UE_LOG(
+			LogOddsWellLocomotion,
+			Display,
+			TEXT("ODDSWELL_PUBLIC_LEAGUE_CAPTURE|result=PASS|page=%d|athlete_story=%s|public_only=true|hidden_state=false"),
+			PublicLeaguePage + 1,
+			bAthleteStoryQa ? TEXT("true") : TEXT("false"));
 	}
 	if (QaExitAt > 0.0 && FPlatformTime::Seconds() >= QaExitAt)
 	{

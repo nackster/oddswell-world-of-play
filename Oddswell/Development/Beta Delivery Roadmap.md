@@ -146,7 +146,8 @@ The roadmap is intentionally made of measurable product gates, not hundreds of s
 - Phase 1I.3 owned Signal Jacket equip and shared-city visibility: **COMPLETE FOR THE LOCAL AUTHORITATIVE PROFILE AND ONE OTHER LOCAL SUNDALE CLIENT**; see [[Design/Decisions/DEC-009 City-Origin Clothing and Furniture]] and [[Development/Reports/Phase 1I3 Owned Signal Jacket Equip and Shared City Visibility]]. One E press at the physical clothing-store waypoint explicitly equips the restored owned item in the single `outfit` slot. No second ledger entry or debit occurs, purchase and restart do not auto-equip, and another packaged local client receives and renders the slate-and-teal graybox appearance.
 - Phase 1I.4 exact Sundale Modular Chair purchase and Studio display: **COMPLETE FOR THE LOCAL AUTHORITATIVE PROFILE AND OWNED STUDIO**; see [[Design/Decisions/DEC-009 City-Origin Clothing and Furniture]], [[Design/Decisions/DEC-012 Phase 1E Apartment Defaults]], and [[Development/Reports/Phase 1I4 Exact Sundale Modular Chair Purchase and Studio Display]]. At the physical furniture-store waypoint, two E presses buy the exact `100`-Odds-Bucks chair once. Its immutable debit is durable ownership evidence, and the owned Studio shows the three-part gray-and-teal placeholder at `studio_primary` after fresh entry and cold restart.
 - Phase 1I.5 exact One-bedroom upgrade purchase and in-place interior: **COMPLETE FOR THE LOCAL AUTHORITATIVE PROFILE AND OWNED STUDIO**; see [[Design/Decisions/DEC-020 First One Bedroom Apartment Upgrade]] and [[Development/Reports/Phase 1I5 Exact One Bedroom Upgrade Purchase and In Place Interior]]. At the physical apartment-management kiosk, two E presses buy the exact `500`-Odds-Bucks first upgrade once. Studio ownership is required, the existing interior gains a partition and doorway, and the owned chair remains at `studio_primary` after fresh entry and cold restart.
-- Next gate: **PHASE 1J.1 EXISTING ATHLETE EVIDENCE PRESENTATION**. Present the already-authoritative talent, specialties, form, fatigue, injury, availability, and bounded Life Brain evidence without changing the frozen brains or exposing hidden resolver state.
+- Phase 1J.1 public athlete story pages: **COMPLETE FOR THE EXISTING PUBLIC SEASON 1 ARCHIVE**; see [[Development/Reports/Phase 1J1 Public Athlete Story Pages]]. The existing `L` league viewer now has one read-only page for each of twelve fictional athletes. It presents durable talent, ratings, specialty, consistency, role, form, scoring, public workload, availability, and the latest recorded Life Brain choice while explicitly withholding hidden fatigue, recovery, injury-risk, RNG, resolver, and private-effect values.
+- Next gate: **PHASE 1J.2 VISIBLE CAUSAL EXPLANATION**. Explain performance and availability differences from safe public evidence without exposing hidden state, inventing a cause, or changing the frozen brains.
 - Current prerequisite note: UE 5.8, the aligned x64 runtime and .NET Framework 4.8 SDK, portable project, reproducible local Windows package, empty-map launch, LFS, generated-file ignores, primitive block/court iteration, collision, cold-process reopen, direct recorded-replay rendering, deterministic packaged traces, and local resource sampling are verified. UE 5.8 is now the approved beta client engine.
 
 No later roadmap phase is authorized merely because it appears below.
@@ -164,7 +165,7 @@ No later roadmap phase is authorized merely because it appears below.
 | 7 | 1G — Odds Bucks and work recovery | Earn, persist, audit, and recover virtual currency | COMPLETE FOR CURRENT LOCAL PROFILE |
 | 8 | 1H — Wager locking and settlement | Reach the physical booth, inspect approved odds, place approved wagers, and receive exact outcomes | COMPLETE FOR THE FIXED HARBOR/MESA `40` MATCH WINNER SLICE / GENERALIZATION UNPROVEN |
 | 9 | 1I — Stores and lifestyle upgrades | Buy, equip, display, and place basic items | COMPLETE FOR ONE JACKET + ONE CHAIR + ONE-BEDROOM LOCAL PATH |
-| 10 | 1J — Athlete life and league storytelling | Understand athletes, availability, and consequences | PENDING |
+| 10 | 1J — Athlete life and league storytelling | Understand athletes, availability, and consequences | ACTIVE — 1J.1 PUBLIC ATHLETE STORIES COMPLETE |
 | 11 | 1K — First-hour integration | Complete the entire beta promise in one session | PENDING |
 | 12 | 1L — Content, presentation, and accessibility | The slice feels coherent and readable | PENDING |
 | 13 | 1M — Reliability, compliance, and beta exit | The owner can truthfully approve beta release | BETA EXIT |
@@ -478,8 +479,8 @@ Ownership, balance, appearance, and apartment state reconcile across reconnect a
 
 ### Smallest delivery path
 
-1. **NEXT:** present durable talent differences, specialties, form, fatigue, injuries, availability, and current Life Brain choices using existing authoritative evidence.
-2. Show a visible causal explanation without exposing hidden RNG or private resolver state.
+1. **COMPLETE — 1J.1:** present durable talent differences, specialties, form, public workload, availability, and current Life Brain choices using existing authoritative evidence. Hidden fatigue, recovery, injury-risk, RNG, resolver, and private-effect values remain unpublished; see [[Development/Reports/Phase 1J1 Public Athlete Story Pages]].
+2. **NEXT — 1J.2:** show a visible causal explanation from safe public evidence without exposing hidden RNG or private resolver state.
 3. Test whether players can understand why a fictional athlete may perform differently.
 4. Reopen frozen brain scope only if first-playable testing identifies a named missing experience that existing fields cannot represent.
 

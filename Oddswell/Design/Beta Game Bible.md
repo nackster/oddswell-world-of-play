@@ -242,6 +242,12 @@ The data flow is one way. Wagers, stakes, Odds Bucks balances, purchases, and di
 
 The Basketball Brain chooses legal intents. The authoritative rules engine resolves outcomes. The Athlete Life Brain controls bounded off-court choices and consequences. Neither brain silently rewrites match history.
 
+### Implemented local-beta presentation
+
+The existing public Season 1 archive now feeds twelve read-only athlete story pages inside the in-world league viewer. Each page identifies a fictional athlete's durable talent tier, specialty, consistency, offensive role, ratings, current form, season and recent scoring, recent public workload, availability, and latest recorded Athlete Life Brain choice. This is presentation of versioned authoritative evidence, not a new brain decision, retraining process, or claim of human-level realism.
+
+Hidden fatigue values, recovery timers, injury-risk calculations, random state, resolver state, and private life-effect magnitudes remain unpublished. The player sees only public workload and availability in this first slice; a later measured Phase 1J gate must supply any causal health or life explanation without leaking private inputs or changing archived history.
+
 ### Beta life behavior target
 
 - Training, rest, recovery, and social choices.

@@ -355,6 +355,7 @@ private:
 	int32 PublicLeaguePage = 0;
 	bool bPublicLeagueVisible = false;
 	bool bPublicLeagueQa = false;
+	bool bAthleteStoryQa = false;
 	bool bPublicLeagueQaCaptured = false;
 	float PublicLeagueQaElapsed = 0.0f;
 	float SportsbookOfferQaElapsed = 0.0f;
