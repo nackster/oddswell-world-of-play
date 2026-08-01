@@ -68,6 +68,8 @@ bool UseOddsWellStudioHomeQaSlot()
 #if UE_BUILD_DEVELOPMENT
 		|| FParse::Param(FCommandLine::Get(), TEXT("ModularChairPurchaseQa"))
 		|| FParse::Param(FCommandLine::Get(), TEXT("ModularChairPurchaseQaVerify"))
+		|| FParse::Param(FCommandLine::Get(), TEXT("OneBedroomUpgradeQa"))
+		|| FParse::Param(FCommandLine::Get(), TEXT("OneBedroomUpgradeQaVerify"))
 #endif
 		;
 }

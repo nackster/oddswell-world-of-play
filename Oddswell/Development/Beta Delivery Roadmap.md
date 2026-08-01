@@ -145,7 +145,8 @@ The roadmap is intentionally made of measurable product gates, not hundreds of s
 - Phase 1I.2 exact Sundale Signal Jacket purchase: **COMPLETE FOR THE LOCAL AUTHORITATIVE PROFILE**; see [[Design/Decisions/DEC-009 City-Origin Clothing and Furniture]] and [[Development/Reports/Phase 1I2 Exact Sundale Signal Jacket Purchase]]. At the physical Sundale clothing-store waypoint, the player reviews and confirms the one fixed `60`-Odds-Bucks purchase with two E presses. One immutable ledger debit is the durable ownership record; exact retry and cold restart debit nothing. No generalized inventory service, free grant, auto-equip, chair path, refund, trading, real-money path, or brain behavior was added.
 - Phase 1I.3 owned Signal Jacket equip and shared-city visibility: **COMPLETE FOR THE LOCAL AUTHORITATIVE PROFILE AND ONE OTHER LOCAL SUNDALE CLIENT**; see [[Design/Decisions/DEC-009 City-Origin Clothing and Furniture]] and [[Development/Reports/Phase 1I3 Owned Signal Jacket Equip and Shared City Visibility]]. One E press at the physical clothing-store waypoint explicitly equips the restored owned item in the single `outfit` slot. No second ledger entry or debit occurs, purchase and restart do not auto-equip, and another packaged local client receives and renders the slate-and-teal graybox appearance.
 - Phase 1I.4 exact Sundale Modular Chair purchase and Studio display: **COMPLETE FOR THE LOCAL AUTHORITATIVE PROFILE AND OWNED STUDIO**; see [[Design/Decisions/DEC-009 City-Origin Clothing and Furniture]], [[Design/Decisions/DEC-012 Phase 1E Apartment Defaults]], and [[Development/Reports/Phase 1I4 Exact Sundale Modular Chair Purchase and Studio Display]]. At the physical furniture-store waypoint, two E presses buy the exact `100`-Odds-Bucks chair once. Its immutable debit is durable ownership evidence, and the owned Studio shows the three-part gray-and-teal placeholder at `studio_primary` after fresh entry and cold restart.
-- Next gate: **OWNER GATE BEFORE PHASE 1I.5 APARTMENT-UPGRADE PURCHASE PATH**. The owner must approve the exact first purchasable tier, Odds Bucks price, prerequisites, and whether it uses a separate interior or an upgrade of the Studio before implementation. Do not invent layouts or prices, build unavailable interiors, or add trading, real-money behavior, another catalog item, online authority, or brain/simulator changes.
+- Phase 1I.5 exact One-bedroom upgrade purchase and in-place interior: **COMPLETE FOR THE LOCAL AUTHORITATIVE PROFILE AND OWNED STUDIO**; see [[Design/Decisions/DEC-020 First One Bedroom Apartment Upgrade]] and [[Development/Reports/Phase 1I5 Exact One Bedroom Upgrade Purchase and In Place Interior]]. At the physical apartment-management kiosk, two E presses buy the exact `500`-Odds-Bucks first upgrade once. Studio ownership is required, the existing interior gains a partition and doorway, and the owned chair remains at `studio_primary` after fresh entry and cold restart.
+- Next gate: **PHASE 1J.1 EXISTING ATHLETE EVIDENCE PRESENTATION**. Present the already-authoritative talent, specialties, form, fatigue, injury, availability, and bounded Life Brain evidence without changing the frozen brains or exposing hidden resolver state.
 - Current prerequisite note: UE 5.8, the aligned x64 runtime and .NET Framework 4.8 SDK, portable project, reproducible local Windows package, empty-map launch, LFS, generated-file ignores, primitive block/court iteration, collision, cold-process reopen, direct recorded-replay rendering, deterministic packaged traces, and local resource sampling are verified. UE 5.8 is now the approved beta client engine.
 
 No later roadmap phase is authorized merely because it appears below.
@@ -158,11 +159,11 @@ No later roadmap phase is authorized merely because it appears below.
 | 2 | 1B — Character selection and movement | Choose a default avatar and enter the world | COMPLETE |
 | 3 | 1C — First-city identity and graybox | Walk between every required beta location | COMPLETE |
 | 4 | 1D — Shared-city presence | Players see one another and equipped clothing | COMPLETE |
-| 5 | 1E — Studio and apartment progression | Enter a persistent home and see the six-tier goal | FOUNDATION + FIRST PURCHASED CHAIR COMPLETE |
+| 5 | 1E — Studio and apartment progression | Enter a persistent home and see the six-tier goal | FOUNDATION + FIRST ONE-BEDROOM UPGRADE COMPLETE |
 | 6 | 1F — League, stadium, and match viewing | Research and watch authoritative basketball | COMPLETE FOR CURRENT ARCHIVED GAME |
 | 7 | 1G — Odds Bucks and work recovery | Earn, persist, audit, and recover virtual currency | COMPLETE FOR CURRENT LOCAL PROFILE |
 | 8 | 1H — Wager locking and settlement | Reach the physical booth, inspect approved odds, place approved wagers, and receive exact outcomes | COMPLETE FOR THE FIXED HARBOR/MESA `40` MATCH WINNER SLICE / GENERALIZATION UNPROVEN |
-| 9 | 1I — Stores and lifestyle upgrades | Buy, equip, display, and place basic items | ACTIVE — JACKET + CHAIR COMPLETE / APARTMENT UPGRADE OWNER GATE |
+| 9 | 1I — Stores and lifestyle upgrades | Buy, equip, display, and place basic items | COMPLETE FOR ONE JACKET + ONE CHAIR + ONE-BEDROOM LOCAL PATH |
 | 10 | 1J — Athlete life and league storytelling | Understand athletes, availability, and consequences | PENDING |
 | 11 | 1K — First-hour integration | Complete the entire beta promise in one session | PENDING |
 | 12 | 1L — Content, presentation, and accessibility | The slice feels coherent and readable | PENDING |
@@ -285,19 +286,20 @@ The owner selected Concept B — Daymark / Sundale on July 20, 2026. The theme, 
 3. **1E.3 COMPLETE:** represent the six locked tiers in validated data—Studio, 1BR, 2BR, 3BR, 4BR, and Penthouse—while only Studio is available; see [[Development/Reports/Phase 1E3 Six-Tier Housing Progression Catalog]].
 4. **1E.4 COMPLETE:** show one player-visible text status for all six tiers without building five unavailable interiors or inventing prices; see [[Development/Reports/Phase 1E4 Player-Visible Locked Housing Goals]].
 5. **COMPLETE FOR ONE PURCHASED ITEM:** Phase 1I.4 activates only `studio_primary` after the exact Modular Chair purchase and durable ownership record; no free demonstration furniture or unrestricted placement exists.
+6. **COMPLETE FOR THE FIRST PURCHASED TIER:** Phase 1I.5 buys the `500`-Odds-Bucks One-bedroom once, upgrades the existing Studio in place with a partition and doorway, and preserves the owned chair at `studio_primary` after cold restart.
 
 ### Owner gates
 
 - **RESOLVED:** the starting Studio contains no free furniture or decoration; see [[Design/Decisions/DEC-011 Empty Starter Studio]].
 - **RESOLVED FOR BETA:** interiors are private and other-player apartment visits are excluded; see [[Design/Decisions/DEC-012 Phase 1E Apartment Defaults]].
 - **RESOLVED FOR FIRST PLACEMENT:** use `studio_primary` after the exact chair purchase; any additional point count or location remains later content work.
-- **OPEN BEFORE BUILDING LARGER INTERIORS:** whether tiers use separate interiors or upgrades of one interior.
+- **RESOLVED FOR ONE-BEDROOM ONLY:** use an in-place Studio upgrade; see [[Design/Decisions/DEC-020 First One Bedroom Apartment Upgrade]]. Every later tier's price, prerequisite, and layout remains open.
 
 ### Exit evidence
 
 The player can return to the same owned Studio; all six tiers exist as truthful progression data while unbuilt interiors are clearly unavailable. A fresh Studio starts empty, and the first furniture appears only after a legitimate Phase 1I purchase, never as a free Phase 1E prop.
 
-**FOUNDATION PASSED THROUGH CURRENT DEPENDENCIES:** ownership, return persistence, the initially empty Studio, all six tier records, visible locked/unbuilt statuses, and one purchase-backed fixed furniture display are proven. Larger apartment layouts, prices, requirements, and additional placement points remain unimplemented owner gates.
+**FOUNDATION PASSED THROUGH CURRENT DEPENDENCIES:** ownership, return persistence, the initially empty Studio, all six tier records, visible locked/unbuilt statuses, one purchase-backed fixed furniture display, and one purchase-backed in-place One-bedroom graybox are proven. Later apartment layouts, prices, requirements, and additional placement points remain unimplemented owner gates.
 
 ## Phase 1F — League, stadium, and match viewing
 
@@ -456,12 +458,12 @@ Every accepted wager has one immutable request, balance entry, lock decision, au
 2. **COMPLETE:** buy the exact Signal Jacket at the physical clothing store with one idempotent server-authoritative Odds Bucks command. The immutable `store:sundale:signal_jacket:purchase:v1` debit is the local durable ownership record; purchase does not equip the item.
 3. **COMPLETE:** explicitly equip the owned Signal Jacket at the physical clothing store and show the replicated slate-and-teal graybox appearance to another packaged local Sundale client. Equip adds no debit and does not auto-equip on purchase or restart.
 4. **COMPLETE:** buy the exact Modular Chair at the physical furniture store with one idempotent server-authoritative `-100` Odds Bucks command, then derive and show its three-part gray-and-teal placeholder at `studio_primary` in the owned Studio after fresh entry and cold restart.
-5. **OWNER GATE:** prove one apartment-upgrade purchase path only after the owner approves the exact first tier, price, requirements, and truthful layout availability.
+5. **COMPLETE:** buy the exact One-bedroom at the physical apartment-management kiosk with one idempotent server-authoritative `-500` Odds Bucks command after Studio ownership. Upgrade the Studio in place, preserve the owned chair at `studio_primary`, and restore the exact state after a cold process restart.
 
 ### Owner gates
 
 - **RESOLVED FOR THE TWO STARTER ITEMS ONLY:** exact counts, prices, visual direction, one `outfit` slot, one `studio_primary` snap point, and no refunds under [[Design/Decisions/DEC-009 City-Origin Clothing and Furniture]]. Later items remain a new owner gate.
-- **OPEN BEFORE 1I.5:** exact first purchasable apartment tier, price, prerequisites, and separate-interior-versus-upgraded-Studio layout model.
+- **RESOLVED FOR 1I.5 ONLY:** One-bedroom, `500` Odds Bucks, Studio prerequisite, in-place Studio upgrade, physical kiosk, and two E presses; see [[Design/Decisions/DEC-020 First One Bedroom Apartment Upgrade]]. Later tiers remain owner gates.
 
 ### Exit evidence
 
@@ -476,7 +478,7 @@ Ownership, balance, appearance, and apartment state reconcile across reconnect a
 
 ### Smallest delivery path
 
-1. Present durable talent differences, specialties, form, fatigue, injuries, availability, and current Life Brain choices using existing authoritative evidence.
+1. **NEXT:** present durable talent differences, specialties, form, fatigue, injuries, availability, and current Life Brain choices using existing authoritative evidence.
 2. Show a visible causal explanation without exposing hidden RNG or private resolver state.
 3. Test whether players can understand why a fictional athlete may perform differently.
 4. Reopen frozen brain scope only if first-playable testing identifies a named missing experience that existing fields cannot represent.
@@ -555,7 +557,7 @@ A Beta Exit Report states **READY**, **BLOCKED WITH MEASURED CAUSE**, or **NOT R
 2. **RESOLVED FOR PHASE 1B:** camera, movement, and minimum placeholder presets; see [[Design/Decisions/DEC-007 Phase 1B Character Defaults]]. Final art remains later.
 3. **RESOLVED FOR PHASE 1C:** Daymark / Sundale supplies the approved modern civic-commons direction; the primitive packaged `800 m` route passed Phase 1C exit. Sundale remains a working name and final art remains open; see [[Design/Decisions/DEC-008 Beta First City Direction]], [[Design/Sundale Art Direction and Core Loop]], and [[Development/Reports/Phase 1C2 Primitive Sundale Graybox and Packaged Route Measurement]].
 4. **CURRENT OWNER GATE:** shared-city instance capacity, regions, collision, names, and minimal safety surface.
-5. Apartment instancing, layouts, visits, and decorating controls.
+5. **RESOLVED FOR THE FIRST UPGRADE ONLY:** One-bedroom costs `500`, requires Studio ownership, and upgrades the Studio in place. Later layouts, visits, and decorating controls remain open; see [[Design/Decisions/DEC-020 First One Bedroom Apartment Upgrade]].
 6. 82-game schedule variety, team count, calendar, and presentation cadence.
 7. **PARTIALLY RESOLVED:** current placeholder fidelity, fixed camera, text-only callouts, three-minute full-watch duration, and result-invariant player skip; see [[Design/Decisions/DEC-013 Phase 1F4 Presentation Defaults]] and [[Development/Reports/Phase 1F5 Replay View Result Invariance]]. Final content treatment remains later.
 8. **RESOLVED FOR LOCAL BETA RECOVERY:** start at `0`, earn `100` from the placeholder job on a rolling `24`-hour cooldown, accumulate balances, and use no separate allowance or catch-up payout. Production account/time authority, post-wager recovery-floor behavior, prices, and broader limits remain open.

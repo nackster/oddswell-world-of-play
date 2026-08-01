@@ -118,6 +118,7 @@ private:
 	void PollJobInteraction();
 	void PollClothingStoreInteraction();
 	void PollFurnitureStoreInteraction();
+	void PollApartmentManagementInteraction();
 	void PollStudioInteraction();
 	void PollStadiumInteraction();
 	void PollSportsbookInteraction();
@@ -160,6 +161,7 @@ private:
 	void RunSignalJacketPurchaseQa(float DeltaSeconds);
 	void RunSignalJacketEquipQa(float DeltaSeconds);
 	void RunModularChairPurchaseQa(float DeltaSeconds);
+	void RunOneBedroomUpgradeQa(float DeltaSeconds);
 #endif
 	bool ApplySavedOrFallbackAppearance();
 	bool ResolveLocalAppearance(FOddsWellResolvedCharacterAppearance& OutAppearance, FString& OutSource, FString& OutError) const;
@@ -205,6 +207,12 @@ private:
 
 	UFUNCTION(Client, Reliable)
 	void ClientConfirmModularChairPurchase(bool bHandled, bool bPurchased, bool bOwned, int64 Balance, const FString& Error);
+
+	UFUNCTION(Server, Reliable)
+	void ServerPurchaseOneBedroomUpgrade();
+
+	UFUNCTION(Client, Reliable)
+	void ClientConfirmOneBedroomUpgradePurchase(bool bHandled, bool bPurchased, bool bOwned, int64 Balance, const FString& Error);
 
 	UFUNCTION(Server, Reliable)
 	void ServerConfirmSportsbookQaWager(const FString& OfferedTeam, int64 Stake);
@@ -320,6 +328,10 @@ private:
 	bool bModularChairPurchaseConfirm = false;
 	bool bModularChairPurchaseSubmitting = false;
 	bool bModularChairOwned = false;
+	bool bApartmentManagementInteractionArmed = false;
+	bool bOneBedroomUpgradeConfirm = false;
+	bool bOneBedroomUpgradeSubmitting = false;
+	bool bOwnsOneBedroom = false;
 	bool bJobQa = false;
 	bool bJobQaRejectionProven = false;
 	bool bJobQaFirstCreditProven = false;
@@ -417,6 +429,11 @@ private:
 	bool bModularChairPurchaseQa = false;
 	bool bModularChairPurchaseQaVerify = false;
 	bool bModularChairPurchaseQaLogged = false;
+	float OneBedroomUpgradeQaElapsed = 0.0f;
+	int32 OneBedroomUpgradeQaStage = 0;
+	bool bOneBedroomUpgradeQa = false;
+	bool bOneBedroomUpgradeQaVerify = false;
+	bool bOneBedroomUpgradeQaLogged = false;
 #endif
 };
 
@@ -456,6 +473,8 @@ public:
 	bool OwnsSignalJacket() const { return bOddsBucksReady && OwnsOddsWellSignalJacket(OddsBucksLedger); }
 	bool TryPurchaseModularChair(bool& bOutPurchased, bool& bOutOwned, int64& OutBalance, FString& OutError);
 	bool OwnsModularChair() const { return bOddsBucksReady && OwnsOddsWellModularChair(OddsBucksLedger); }
+	bool TryPurchaseOneBedroomUpgrade(bool& bOutPurchased, bool& bOutOwned, int64& OutBalance, FString& OutError);
+	bool OwnsOneBedroomUpgrade() const { return bOddsBucksReady && OwnsOddsWellOneBedroomUpgrade(OddsBucksLedger); }
 	EOddsWellMatchWinnerRequestResult AcceptSportsbookQaWager(const FString& OfferedTeam, int64 Stake, FOddsWellMatchWinnerRequestRecord& OutRecord, int64& OutBalance, FString& OutError);
 	EOddsWellMatchWinnerRequestResult AcceptCanonicalFortyWager(bool bMesaSelected, FOddsWellMatchWinnerRequestRecord& OutRecord, int64& OutBalance, FString& OutError);
 	bool RunSportsbookQaWagerAudit(int32& OutLedgerEntries, int32& OutRequests, int64& OutBalance, FString& OutError);

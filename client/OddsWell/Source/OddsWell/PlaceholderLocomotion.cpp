@@ -82,6 +82,7 @@ constexpr float SundaleWaypointTolerance = 75.0f;
 constexpr float JobInteractionRadius = 350.0f;
 constexpr float ClothingStoreInteractionRadius = 350.0f;
 constexpr float FurnitureStoreInteractionRadius = 350.0f;
+constexpr float ApartmentManagementInteractionRadius = 350.0f;
 constexpr float StudioEntryRadius = 350.0f;
 constexpr float StudioQaWalkDistance = 200.0f;
 constexpr float StadiumEntryRadius = 350.0f;
@@ -90,11 +91,14 @@ constexpr int64 CanonicalProbabilityScale = 100000000;
 constexpr float StadiumQaWaypointTolerance = 75.0f;
 const FName StudioStructureTag(TEXT("OddsWellStudioStructure"));
 const FName StudioFurnitureTag(TEXT("OddsWellStudioFurniture"));
+const FName OneBedroomStructureTag(TEXT("OddsWellOneBedroomStructure"));
+const FName ApartmentManagementKioskTag(TEXT("OddsWellApartmentManagementKiosk"));
 const FName StadiumStructureTag(TEXT("OddsWellStadiumStructure"));
 const FName StadiumZoneTag(TEXT("OddsWellStadiumZone"));
 const FVector JobInteractionLocation(9500.0, 0.0, 0.0);
 const FVector ClothingStoreInteractionLocation(12500.0, 9000.0, 0.0);
 const FVector FurnitureStoreInteractionLocation(-9500.0, 5000.0, 0.0);
+const FVector ApartmentManagementInteractionLocation(0.0, 800.0, 0.0);
 const FVector StudioPrimarySnapPoint(250.0, 0.0, 0.0);
 const FName StudioPrimarySnapPointId(TEXT("studio_primary"));
 const FLinearColor ModularChairGray(0.22f, 0.25f, 0.28f);
@@ -119,6 +123,8 @@ constexpr TCHAR SignalJacketPurchaseQaVerifyFlag[] = TEXT("SignalJacketPurchaseQ
 constexpr TCHAR SignalJacketEquipQaFlag[] = TEXT("SignalJacketEquipQa");
 constexpr TCHAR ModularChairPurchaseQaFlag[] = TEXT("ModularChairPurchaseQa");
 constexpr TCHAR ModularChairPurchaseQaVerifyFlag[] = TEXT("ModularChairPurchaseQaVerify");
+constexpr TCHAR OneBedroomUpgradeQaFlag[] = TEXT("OneBedroomUpgradeQa");
+constexpr TCHAR OneBedroomUpgradeQaVerifyFlag[] = TEXT("OneBedroomUpgradeQaVerify");
 constexpr uint8 CanonicalHeldInputW = 1 << 0;
 constexpr uint8 CanonicalHeldInputA = 1 << 1;
 constexpr uint8 CanonicalHeldInputD = 1 << 2;
@@ -678,6 +684,32 @@ const TArray<FStudioSurfaceSpec>& GetEmptyStudioSurfaces()
 	return Surfaces;
 }
 
+const TArray<FStudioSurfaceSpec>& GetOneBedroomUpgradeSurfaces()
+{
+	static const TArray<FStudioSurfaceSpec> Surfaces = {
+		{FVector(-150.0, -205.0, 145.0), FVector(0.2, 1.9, 2.9)},
+		{FVector(-150.0, 205.0, 145.0), FVector(0.2, 1.9, 2.9)},
+		{FVector(-150.0, 0.0, 255.0), FVector(0.2, 2.2, 0.9)},
+	};
+	return Surfaces;
+}
+
+struct FApartmentManagementKioskPartSpec
+{
+	FVector Location;
+	FVector Scale;
+	FLinearColor Color;
+};
+
+const TArray<FApartmentManagementKioskPartSpec>& GetApartmentManagementKioskParts()
+{
+	static const TArray<FApartmentManagementKioskPartSpec> Parts = {
+		{ApartmentManagementInteractionLocation + FVector(0.0, 0.0, 55.0), FVector(1.8, 0.65, 1.1), FLinearColor(0.16f, 0.24f, 0.28f)},
+		{ApartmentManagementInteractionLocation + FVector(0.0, 0.0, 165.0), FVector(1.4, 0.20, 0.45), FLinearColor(0.08f, 0.72f, 0.68f)},
+	};
+	return Parts;
+}
+
 const TArray<FStudioFurniturePartSpec>& GetModularChairParts()
 {
 	static const TArray<FStudioFurniturePartSpec> Parts = {
@@ -791,6 +823,31 @@ bool CanPurchaseModularChair(
 	if (!bLocalAuthoritativeProfile)
 	{
 		OutError = TEXT("This local beta profile cannot buy furniture.");
+		return false;
+	}
+	OutError.Reset();
+	return true;
+}
+
+bool CanPurchaseOneBedroomUpgrade(
+	const bool bAtApprovedKiosk,
+	const bool bLocalAuthoritativeProfile,
+	const bool bOwnsStudio,
+	FString& OutError)
+{
+	if (!bAtApprovedKiosk)
+	{
+		OutError = TEXT("Return to the apartment-management kiosk beside your entrance.");
+		return false;
+	}
+	if (!bLocalAuthoritativeProfile)
+	{
+		OutError = TEXT("This local beta profile cannot upgrade housing.");
+		return false;
+	}
+	if (!bOwnsStudio)
+	{
+		OutError = TEXT("Enter and own your Studio before upgrading to One-bedroom.");
 		return false;
 	}
 	OutError.Reset();
@@ -1038,6 +1095,10 @@ void AOddsWellPlaceholderCharacter::BeginPlay()
 		FParse::Param(FCommandLine::Get(), ModularChairPurchaseQaFlag);
 	bModularChairPurchaseQaVerify =
 		FParse::Param(FCommandLine::Get(), ModularChairPurchaseQaVerifyFlag);
+	bOneBedroomUpgradeQa =
+		FParse::Param(FCommandLine::Get(), OneBedroomUpgradeQaFlag);
+	bOneBedroomUpgradeQaVerify =
+		FParse::Param(FCommandLine::Get(), OneBedroomUpgradeQaVerifyFlag);
 #endif
 	bQaEnabled = FParse::Param(FCommandLine::Get(), TEXT("LocomotionQa"));
 	bQaAutoExit = FParse::Param(FCommandLine::Get(), TEXT("LocomotionAutoExit"));
@@ -1121,6 +1182,14 @@ void AOddsWellPlaceholderCharacter::BeginPlay()
 		FOddsWellStudioHomeState Home;
 		FString Error;
 		bOwnsStudio = LoadOwnedOddsWellStudio(UseOddsWellStudioHomeQaSlot(), Home, Error) && Home.bOwnsStudio;
+		FOddsWellOddsBucksLedger Ledger;
+		int64 NextJobPayoutUnixSeconds = 0;
+		bool bFound = false;
+		if (LoadOddsWellOddsBucksLedger(UseOddsWellOddsBucksQaSlot(), Ledger, NextJobPayoutUnixSeconds, bFound, Error) && bFound)
+		{
+			bModularChairOwned = OwnsOddsWellModularChair(Ledger);
+			bOwnsOneBedroom = OwnsOddsWellOneBedroomUpgrade(Ledger);
+		}
 	}
 	UMaterialInterface* BasicShapeMaterial = LoadObject<UMaterialInterface>(nullptr, TEXT("/Engine/BasicShapes/BasicShapeMaterial.BasicShapeMaterial"));
 	if (!BasicShapeMaterial)
@@ -1182,6 +1251,7 @@ void AOddsWellPlaceholderCharacter::BeginPlay()
 		{
 			bSignalJacketOwned = GameMode->OwnsSignalJacket();
 			bModularChairOwned = GameMode->OwnsModularChair();
+			bOwnsOneBedroom = GameMode->OwnsOneBedroomUpgrade();
 		}
 	}
 	if (!bAppearanceReady)
@@ -2116,6 +2186,7 @@ void AOddsWellPlaceholderCharacter::Tick(const float DeltaSeconds)
 	PollJobInteraction();
 	PollClothingStoreInteraction();
 	PollFurnitureStoreInteraction();
+	PollApartmentManagementInteraction();
 	PollStudioInteraction();
 	PollStadiumInteraction();
 	PollSportsbookInteraction();
@@ -2187,6 +2258,10 @@ void AOddsWellPlaceholderCharacter::Tick(const float DeltaSeconds)
 	if (bModularChairPurchaseQa || bModularChairPurchaseQaVerify)
 	{
 		RunModularChairPurchaseQa(DeltaSeconds);
+	}
+	if (bOneBedroomUpgradeQa || bOneBedroomUpgradeQaVerify)
+	{
+		RunOneBedroomUpgradeQa(DeltaSeconds);
 	}
 #endif
 	if (bPublicLeagueQa && !bPublicLeagueQaCaptured && (PublicLeagueQaElapsed += DeltaSeconds) >= 1.0f)
@@ -2695,11 +2770,210 @@ void AOddsWellPlaceholderCharacter::RunModularChairPurchaseQa(
 	}
 }
 
+void AOddsWellPlaceholderCharacter::RunOneBedroomUpgradeQa(
+	const float DeltaSeconds)
+{
+	if (!IsLocallyControlled() || bOneBedroomUpgradeQaLogged)
+	{
+		return;
+	}
+	OneBedroomUpgradeQaElapsed += DeltaSeconds;
+	const bool bInStudio =
+		GetWorld()->GetAuthGameMode<AOddsWellStudioGameMode>() != nullptr;
+	if (bInStudio)
+	{
+		if (OneBedroomUpgradeQaElapsed < 1.0f)
+		{
+			SetActorLocation(
+				FVector(160.0, 80.0, CapsuleHalfHeight),
+				false,
+				nullptr,
+				ETeleportType::TeleportPhysics);
+			SetActorHiddenInGame(true);
+			if (Controller)
+			{
+				Controller->SetControlRotation(FRotator(-8.0f, 180.0f, 0.0f));
+			}
+			return;
+		}
+		int32 UpgradeSurfaces = 0;
+		int32 ChairParts = 0;
+		for (TActorIterator<AStaticMeshActor> It(GetWorld()); It; ++It)
+		{
+			UpgradeSurfaces += It->ActorHasTag(OneBedroomStructureTag) ? 1 : 0;
+			ChairParts += It->ActorHasTag(StudioFurnitureTag)
+				&& It->ActorHasTag(FName(*GetOddsWellModularChairItemId()))
+					? 1
+					: 0;
+		}
+		if ((UpgradeSurfaces != GetOneBedroomUpgradeSurfaces().Num()
+			|| ChairParts != GetModularChairParts().Num()
+			|| OneBedroomUpgradeQaElapsed < 4.0f)
+			&& OneBedroomUpgradeQaElapsed <= 15.0f)
+		{
+			return;
+		}
+		FOddsWellOddsBucksLedger Ledger;
+		int64 NextJobPayoutUnixSeconds = 0;
+		bool bLedgerFound = false;
+		FOddsWellStudioHomeState Home;
+		FString Error;
+		const bool bStateValid =
+			LoadOddsWellOddsBucksLedger(
+				true,
+				Ledger,
+				NextJobPayoutUnixSeconds,
+				bLedgerFound,
+				Error)
+			&& bLedgerFound
+			&& Ledger.GetEntries().Num() == 3
+			&& Ledger.GetBalance() == 0
+			&& OwnsOddsWellModularChair(Ledger)
+			&& OwnsOddsWellOneBedroomUpgrade(Ledger)
+			&& LoadOwnedOddsWellStudio(true, Home, Error)
+			&& Home.bOwnsStudio
+			&& UpgradeSurfaces == GetOneBedroomUpgradeSurfaces().Num()
+			&& ChairParts == GetModularChairParts().Num();
+		bool bCleanup = true;
+		if (bOneBedroomUpgradeQaVerify)
+		{
+			bCleanup = ResetOddsWellQaOddsBucksAndVerify(Error)
+				&& DeleteOddsWellQaStudioHomeAndVerify(Error);
+		}
+		const bool bPassed = bStateValid && bCleanup;
+		const TCHAR* PriorInteractionEvidence =
+			bOneBedroomUpgradeQaVerify ? TEXT("previous_process_verified") : TEXT("true");
+		const FString Evidence = FString::Printf(
+			TEXT("ODDSWELL_ONE_BEDROOM_QA|result=%s|process=%s|normal_e_path=%s|physical_kiosk=%s|confirmation_presses=2|studio_prerequisite=true|tier_id=one_bedroom|price=500|entries=%d|balance=%lld|cold_restore=%s|in_place=true|partition_surfaces=%d|doorway=true|chair_preserved=%s|chair_parts=%d|snap_point=studio_primary|cleanup=%s|detail=%s"),
+			bPassed ? TEXT("PASS") : TEXT("FAIL"),
+			bOneBedroomUpgradeQaVerify ? TEXT("cold_verify") : TEXT("fresh_purchase"),
+			PriorInteractionEvidence,
+			PriorInteractionEvidence,
+			Ledger.GetEntries().Num(),
+			Ledger.GetBalance(),
+			bOneBedroomUpgradeQaVerify ? TEXT("true") : TEXT("deferred"),
+			UpgradeSurfaces,
+			ChairParts == GetModularChairParts().Num() ? TEXT("true") : TEXT("false"),
+			ChairParts,
+			bOneBedroomUpgradeQaVerify
+				? (bCleanup ? TEXT("true") : TEXT("false"))
+				: TEXT("deferred"),
+			Error.IsEmpty() ? TEXT("none") : *Error);
+		if (bPassed)
+		{
+			UE_LOG(LogOddsWellLocomotion, Display, TEXT("%s"), *Evidence);
+			FScreenshotRequest::RequestScreenshot(
+				bOneBedroomUpgradeQaVerify
+					? TEXT("Phase1I5_OneBedroomCold.png")
+					: TEXT("Phase1I5_OneBedroomFresh.png"),
+				true,
+				false);
+		}
+		else
+		{
+			UE_LOG(LogOddsWellLocomotion, Error, TEXT("%s"), *Evidence);
+		}
+		bOneBedroomUpgradeQaLogged = true;
+		bOneBedroomUpgradeQa = false;
+		bOneBedroomUpgradeQaVerify = false;
+		QaExitAt = FPlatformTime::Seconds() + (bPassed ? 2.0 : 1.0);
+		return;
+	}
+
+	if (bOneBedroomUpgradeQaVerify
+		|| !GetWorld()->GetMapName().Contains(TEXT("SundaleGraybox")))
+	{
+		UE_LOG(LogOddsWellLocomotion, Error, TEXT("ODDSWELL_ONE_BEDROOM_QA|result=FAIL|reason=wrong_map"));
+		bOneBedroomUpgradeQaLogged = true;
+		QaExitAt = FPlatformTime::Seconds() + 1.0;
+		return;
+	}
+	AOddsWellLocomotionGameMode* GameMode =
+		GetWorld()->GetAuthGameMode<AOddsWellLocomotionGameMode>();
+	APlayerController* PlayerController = Cast<APlayerController>(Controller);
+	if (!GameMode
+		|| !PlayerController
+		|| !PlayerController->IsLocalController()
+		|| !GetCharacterMovement()->IsMovingOnGround())
+	{
+		return;
+	}
+	if (OneBedroomUpgradeQaElapsed > 30.0f)
+	{
+		UE_LOG(LogOddsWellLocomotion, Error, TEXT("ODDSWELL_ONE_BEDROOM_QA|result=FAIL|reason=city_timeout"));
+		bOneBedroomUpgradeQaLogged = true;
+		QaExitAt = FPlatformTime::Seconds() + 1.0;
+		return;
+	}
+	switch (OneBedroomUpgradeQaStage)
+	{
+	case 0:
+	{
+		FString Error;
+		if (GameMode->GetOddsBucksEntryCount() != 1
+			|| GameMode->GetOddsBucksBalance() != 600
+			|| GameMode->OwnsModularChair()
+			|| GameMode->OwnsOneBedroomUpgrade()
+			|| !SaveOwnedOddsWellStudio(SafeSpawnLocation, true, Error))
+		{
+			UE_LOG(LogOddsWellLocomotion, Error, TEXT("ODDSWELL_ONE_BEDROOM_QA|result=FAIL|reason=unexpected_starting_state|detail=%s"), *Error);
+			bOneBedroomUpgradeQaLogged = true;
+			QaExitAt = FPlatformTime::Seconds() + 1.0;
+			return;
+		}
+		SetActorLocation(FVector(FurnitureStoreInteractionLocation.X, FurnitureStoreInteractionLocation.Y, GetActorLocation().Z), false, nullptr, ETeleportType::TeleportPhysics);
+		++OneBedroomUpgradeQaStage;
+		return;
+	}
+	case 1:
+	case 3:
+	case 6:
+	case 8:
+	case 11:
+		PlayerController->InputKey(FInputKeyEventArgs::CreateSimulated(KeyInteract, IE_Pressed, 1.0f));
+		++OneBedroomUpgradeQaStage;
+		return;
+	case 2:
+	case 4:
+	case 7:
+	case 9:
+		PlayerController->InputKey(FInputKeyEventArgs::CreateSimulated(KeyInteract, IE_Released, 0.0f));
+		++OneBedroomUpgradeQaStage;
+		return;
+	case 5:
+		if (!GameMode->OwnsModularChair()
+			|| GameMode->GetOddsBucksEntryCount() != 2
+			|| GameMode->GetOddsBucksBalance() != 500)
+		{
+			return;
+		}
+		SetActorLocation(FVector(ApartmentManagementInteractionLocation.X, ApartmentManagementInteractionLocation.Y, GetActorLocation().Z), false, nullptr, ETeleportType::TeleportPhysics);
+		++OneBedroomUpgradeQaStage;
+		return;
+	case 10:
+		if (!GameMode->OwnsOneBedroomUpgrade()
+			|| GameMode->GetOddsBucksEntryCount() != 3
+			|| GameMode->GetOddsBucksBalance() != 0)
+		{
+			return;
+		}
+		SetActorLocation(SafeSpawnLocation, false, nullptr, ETeleportType::TeleportPhysics);
+		++OneBedroomUpgradeQaStage;
+		return;
+	default:
+		return;
+	}
+}
+
 void AOddsWellPlaceholderCharacter::EndPlay(
 	const EEndPlayReason::Type EndPlayReason)
 {
 	SetCanonicalAutomaticReceiptHeldInput(0);
-	if (bSignalJacketEquipQa || bModularChairPurchaseQa || bModularChairPurchaseQaVerify)
+	if (bSignalJacketEquipQa
+		|| bModularChairPurchaseQa
+		|| bModularChairPurchaseQaVerify
+		|| bOneBedroomUpgradeQa
+		|| bOneBedroomUpgradeQaVerify)
 	{
 		if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
 		{
@@ -3455,6 +3729,147 @@ void AOddsWellPlaceholderCharacter::ClientConfirmModularChairPurchase_Implementa
 		Balance);
 }
 
+void AOddsWellPlaceholderCharacter::PollApartmentManagementInteraction()
+{
+	if (!IsLocallyControlled()
+		|| !GetWorld()->GetMapName().Contains(TEXT("SundaleGraybox")))
+	{
+		return;
+	}
+	const APlayerController* PlayerController = Cast<APlayerController>(Controller);
+	if (!PlayerController
+		|| FVector::Dist2D(GetActorLocation(), ApartmentManagementInteractionLocation)
+			> ApartmentManagementInteractionRadius)
+	{
+		bApartmentManagementInteractionArmed = false;
+		bOneBedroomUpgradeConfirm = false;
+		bOneBedroomUpgradeSubmitting = false;
+		return;
+	}
+	if (GEngine)
+	{
+		GEngine->AddOnScreenDebugMessage(
+			912025,
+			0.0f,
+			FColor::Cyan,
+			bOwnsOneBedroom
+				? TEXT("One-bedroom owned - enter at your apartment door")
+				: bOneBedroomUpgradeConfirm
+					? TEXT("Press E again to upgrade to One-bedroom for 500 Odds Bucks")
+					: TEXT("Press E to review One-bedroom upgrade (500 Odds Bucks)"));
+	}
+	const bool bPressed = PlayerController->IsInputKeyDown(KeyInteract);
+	if (!bPressed)
+	{
+		bApartmentManagementInteractionArmed = true;
+	}
+	if (!bPressed
+		|| !bApartmentManagementInteractionArmed
+		|| bOneBedroomUpgradeSubmitting
+		|| bOwnsOneBedroom)
+	{
+		return;
+	}
+	bApartmentManagementInteractionArmed = false;
+	if (!bOneBedroomUpgradeConfirm)
+	{
+		bOneBedroomUpgradeConfirm = true;
+		return;
+	}
+	bOneBedroomUpgradeSubmitting = true;
+	ServerPurchaseOneBedroomUpgrade();
+}
+
+void AOddsWellPlaceholderCharacter::ServerPurchaseOneBedroomUpgrade_Implementation()
+{
+	AOddsWellLocomotionGameMode* GameMode =
+		GetWorld()->GetAuthGameMode<AOddsWellLocomotionGameMode>();
+	const bool bAtApprovedKiosk = GameMode
+		&& GetWorld()->GetMapName().Contains(TEXT("SundaleGraybox"))
+		&& FVector::Dist2D(GetActorLocation(), ApartmentManagementInteractionLocation)
+			<= ApartmentManagementInteractionRadius;
+	FOddsWellStudioHomeState Home;
+	FString Error;
+	const bool bStudioOwned =
+		LoadOwnedOddsWellStudio(UseOddsWellStudioHomeQaSlot(), Home, Error)
+		&& Home.bOwnsStudio;
+	if (!CanPurchaseOneBedroomUpgrade(
+			bAtApprovedKiosk,
+			Controller && Controller->IsLocalController(),
+			bStudioOwned,
+			Error))
+	{
+		UE_LOG(LogOddsWellLocomotion, Warning, TEXT("ODDSWELL_ONE_BEDROOM_UPGRADE|result=REJECTED|server_validated=true|debit=0|ownership=false|detail=%s"), *Error);
+		ClientConfirmOneBedroomUpgradePurchase(
+			false,
+			false,
+			false,
+			GameMode ? GameMode->GetOddsBucksBalance() : 0,
+			Error);
+		return;
+	}
+	bool bPurchased = false;
+	bool bOwned = false;
+	int64 Balance = GameMode->GetOddsBucksBalance();
+	const bool bHandled = GameMode->TryPurchaseOneBedroomUpgrade(
+		bPurchased,
+		bOwned,
+		Balance,
+		Error);
+	UE_LOG(
+		LogOddsWellLocomotion,
+		Display,
+		TEXT("ODDSWELL_ONE_BEDROOM_UPGRADE|result=%s|tier_id=%s|price=%lld|prerequisite=studio_owned|purchase_location=apartment_management_kiosk|confirmation_presses=2|purchased=%s|owned=%s|balance=%lld|server_validated=true|interior=in_place_partition|detail=%s"),
+		bPurchased ? TEXT("PURCHASED") : bOwned ? TEXT("ALREADY_OWNED") : TEXT("REJECTED"),
+		*GetOddsWellOneBedroomTierId(),
+		GetOddsWellOneBedroomUpgradePrice(),
+		bPurchased ? TEXT("true") : TEXT("false"),
+		bOwned ? TEXT("true") : TEXT("false"),
+		Balance,
+		Error.IsEmpty() ? TEXT("none") : *Error);
+	ClientConfirmOneBedroomUpgradePurchase(
+		bHandled,
+		bPurchased,
+		bOwned,
+		Balance,
+		Error);
+}
+
+void AOddsWellPlaceholderCharacter::ClientConfirmOneBedroomUpgradePurchase_Implementation(
+	const bool bHandled,
+	const bool bPurchased,
+	const bool bOwned,
+	const int64 Balance,
+	const FString& Error)
+{
+	bOneBedroomUpgradeSubmitting = false;
+	bOneBedroomUpgradeConfirm = false;
+	bOwnsOneBedroom = bOwned;
+	const FString Message = bPurchased
+		? FString::Printf(TEXT("One-bedroom upgrade purchased | Balance: %lld Odds Bucks"), Balance)
+		: bOwned
+			? FString::Printf(TEXT("One-bedroom already owned | Balance: %lld Odds Bucks"), Balance)
+			: Error.IsEmpty()
+				? TEXT("One-bedroom upgrade rejected")
+				: Error;
+	if (GEngine)
+	{
+		GEngine->AddOnScreenDebugMessage(
+			912026,
+			5.0f,
+			bPurchased || bOwned ? FColor::Green : FColor::Red,
+			Message);
+	}
+	UE_LOG(
+		LogOddsWellLocomotion,
+		Display,
+		TEXT("ODDSWELL_ONE_BEDROOM_FEEDBACK|handled=%s|purchased=%s|owned=%s|balance=%lld|client_visible=true"),
+		bHandled ? TEXT("true") : TEXT("false"),
+		bPurchased ? TEXT("true") : TEXT("false"),
+		bOwned ? TEXT("true") : TEXT("false"),
+		Balance);
+}
+
 void AOddsWellPlaceholderCharacter::RunJobQa(const float DeltaSeconds)
 {
 	if (!IsLocallyControlled() || !HasAuthority())
@@ -3691,18 +4106,20 @@ void AOddsWellPlaceholderCharacter::PollStudioInteraction()
 			0.0f,
 			FColor::White,
 			bInStudio
-				? TEXT("Press E to leave your Studio")
-				: bModularChairOwned
-					? TEXT("Press E to enter your Studio")
-					: TEXT("Press E to enter your empty Studio"));
+				? (bOwnsOneBedroom ? TEXT("Press E to leave your One-bedroom") : TEXT("Press E to leave your Studio"))
+				: bOwnsOneBedroom
+					? TEXT("Press E to enter your One-bedroom")
+					: bModularChairOwned
+						? TEXT("Press E to enter your Studio")
+						: TEXT("Press E to enter your empty Studio"));
 	}
 	if (GEngine && bInStudio && bOwnsStudio)
 	{
-		GEngine->AddOnScreenDebugMessage(912012, 0.0f, FColor::Cyan, BuildOddsWellHousingProgressionText(true));
+		GEngine->AddOnScreenDebugMessage(912012, 0.0f, FColor::Cyan, BuildOddsWellHousingProgressionText(true, bOwnsOneBedroom));
 		if (!bHousingGoalsLogged)
 		{
 			bHousingGoalsLogged = true;
-			UE_LOG(LogOddsWellLocomotion, Display, TEXT("ODDSWELL_HOUSING_GOALS|result=PASS|player_visible=true|studio=owned_available|locked=5|unbuilt=5|prices=false|requirements=false|text_statuses=true"));
+			UE_LOG(LogOddsWellLocomotion, Display, TEXT("ODDSWELL_HOUSING_GOALS|result=PASS|player_visible=true|studio=owned_available|one_bedroom=%s|one_bedroom_price=500|one_bedroom_requirement=studio_owned|locked=4|unbuilt=4|later_prices=false|text_statuses=true"), bOwnsOneBedroom ? TEXT("owned_available") : TEXT("available_for_purchase"));
 		}
 	}
 	if (bStudioQa)
@@ -6785,6 +7202,53 @@ AOddsWellLocomotionGameMode::AOddsWellLocomotionGameMode()
 void AOddsWellLocomotionGameMode::BeginPlay()
 {
 	Super::BeginPlay();
+	if (GetWorld()->GetMapName().Contains(TEXT("SundaleGraybox")))
+	{
+		UStaticMesh* Cube = LoadObject<UStaticMesh>(nullptr, TEXT("/Engine/BasicShapes/Cube.Cube"));
+		UMaterialInterface* BasicShapeMaterial = LoadObject<UMaterialInterface>(
+			nullptr,
+			TEXT("/Engine/BasicShapes/BasicShapeMaterial.BasicShapeMaterial"));
+		FActorSpawnParameters Parameters;
+		Parameters.ObjectFlags |= RF_Transient;
+		int32 KioskParts = 0;
+		for (const FApartmentManagementKioskPartSpec& Part : GetApartmentManagementKioskParts())
+		{
+			AStaticMeshActor* Actor = GetWorld()->SpawnActor<AStaticMeshActor>(
+				AStaticMeshActor::StaticClass(),
+				FTransform(FRotator::ZeroRotator, Part.Location, Part.Scale),
+				Parameters);
+			if (!Actor || !Cube)
+			{
+				continue;
+			}
+			Actor->SetReplicates(true);
+			Actor->GetStaticMeshComponent()->SetStaticMesh(Cube);
+			Actor->GetStaticMeshComponent()->SetCollisionProfileName(TEXT("BlockAll"));
+			if (BasicShapeMaterial)
+			{
+				if (UMaterialInstanceDynamic* Material = UMaterialInstanceDynamic::Create(BasicShapeMaterial, Actor))
+				{
+					Material->SetVectorParameterValue(TEXT("Color"), Part.Color);
+					Material->SetVectorParameterValue(TEXT("BaseColor"), Part.Color);
+					Actor->GetStaticMeshComponent()->SetMaterial(0, Material);
+				}
+			}
+			Actor->Tags.Add(ApartmentManagementKioskTag);
+			++KioskParts;
+		}
+		const FString Evidence = FString::Printf(
+			TEXT("ODDSWELL_APARTMENT_MANAGEMENT_KIOSK|result=%s|physical=true|beside_entrance=true|parts=%d|interaction_radius=350|prompt=press_e|confirmation_presses=2"),
+			KioskParts == GetApartmentManagementKioskParts().Num() ? TEXT("PASS") : TEXT("FAIL"),
+			KioskParts);
+		if (KioskParts == GetApartmentManagementKioskParts().Num())
+		{
+			UE_LOG(LogOddsWellLocomotion, Display, TEXT("%s"), *Evidence);
+		}
+		else
+		{
+			UE_LOG(LogOddsWellLocomotion, Error, TEXT("%s"), *Evidence);
+		}
+	}
 	FOddsWellCanonicalScheduledGameRecord CanonicalScheduledGame;
 	FString CanonicalScheduleError;
 	const EOddsWellCanonicalScheduledGameResult CanonicalScheduleResult =
@@ -8182,6 +8646,7 @@ void AOddsWellLocomotionGameMode::BeginPlay()
 		|| FParse::Param(FCommandLine::Get(), SignalJacketPurchaseQaFlag)
 		|| FParse::Param(FCommandLine::Get(), SignalJacketEquipQaFlag)
 		|| FParse::Param(FCommandLine::Get(), ModularChairPurchaseQaFlag)
+		|| FParse::Param(FCommandLine::Get(), OneBedroomUpgradeQaFlag)
 #endif
 		;
 	const bool bJobRecoveryQa = FParse::Param(FCommandLine::Get(), TEXT("JobRecoveryQa"));
@@ -8257,6 +8722,25 @@ void AOddsWellLocomotionGameMode::BeginPlay()
 		}
 	}
 #if UE_BUILD_DEVELOPMENT
+	if (FParse::Param(FCommandLine::Get(), OneBedroomUpgradeQaFlag))
+	{
+		FOddsWellOddsBucksLedger Candidate = OddsBucksLedger;
+		if (Candidate.Append(TEXT("qa:phase1i5:funding:v1"), 600, FName(TEXT("qa_funding")))
+				!= EOddsWellOddsBucksAppendResult::Applied
+			|| !SaveOddsWellOddsBucksLedger(
+				Candidate,
+				NextJobPayoutUnixSeconds,
+				bOddsBucksQaSlot,
+				Error))
+		{
+			bOddsBucksReady = false;
+			UE_LOG(LogOddsWellLocomotion, Error, TEXT("ODDSWELL_ONE_BEDROOM_QA_SETUP|result=FAIL|detail=%s"), *Error);
+			return;
+		}
+		OddsBucksLedger = MoveTemp(Candidate);
+		PublishOddsBucksReconciliation();
+		UE_LOG(LogOddsWellLocomotion, Display, TEXT("ODDSWELL_ONE_BEDROOM_QA_SETUP|result=PASS|qa_funding=600|production_funding=false|entries=1|balance=600"));
+	}
 	if (FParse::Param(FCommandLine::Get(), SignalJacketEquipQaFlag))
 	{
 		bool bPurchased = false;
@@ -8593,6 +9077,58 @@ bool AOddsWellLocomotionGameMode::TryPurchaseModularChair(
 		OutError = FString::Printf(
 			TEXT("You need %lld Odds Bucks to buy the Sundale Modular Chair."),
 			GetOddsWellModularChairPrice());
+		return true;
+	}
+	if (Result == EOddsWellOddsBucksAppendResult::Duplicate)
+	{
+		bOutOwned = true;
+		OutError.Reset();
+		return true;
+	}
+	if (!SaveOddsWellOddsBucksLedger(
+			Candidate,
+			NextJobPayoutUnixSeconds,
+			bOddsBucksQaSlot,
+			OutError))
+	{
+		return false;
+	}
+	OddsBucksLedger = MoveTemp(Candidate);
+	bOutPurchased = true;
+	bOutOwned = true;
+	OutBalance = OddsBucksLedger.GetBalance();
+	PublishOddsBucksReconciliation();
+	return true;
+}
+
+bool AOddsWellLocomotionGameMode::TryPurchaseOneBedroomUpgrade(
+	bool& bOutPurchased,
+	bool& bOutOwned,
+	int64& OutBalance,
+	FString& OutError)
+{
+	bOutPurchased = false;
+	bOutOwned = false;
+	OutBalance = OddsBucksLedger.GetBalance();
+	if (!bOddsBucksReady)
+	{
+		OutError = TEXT("The authoritative Odds Bucks ledger is not ready.");
+		return false;
+	}
+	bOutOwned = OwnsOddsWellOneBedroomUpgrade(OddsBucksLedger);
+	if (bOutOwned)
+	{
+		OutError.Reset();
+		return true;
+	}
+	FOddsWellOddsBucksLedger Candidate = OddsBucksLedger;
+	const EOddsWellOddsBucksAppendResult Result =
+		AppendOddsWellOneBedroomUpgradePurchase(Candidate);
+	if (Result == EOddsWellOddsBucksAppendResult::Rejected)
+	{
+		OutError = FString::Printf(
+			TEXT("You need %lld Odds Bucks to upgrade to One-bedroom."),
+			GetOddsWellOneBedroomUpgradePrice());
 		return true;
 	}
 	if (Result == EOddsWellOddsBucksAppendResult::Duplicate)
@@ -10220,6 +10756,10 @@ void AOddsWellStudioGameMode::BeginPlay()
 		&& bLedgerLoaded
 		&& bLedgerFound
 		&& OwnsOddsWellModularChair(Ledger);
+	const bool bOneBedroomOwned = bOwnsStudio
+		&& bLedgerLoaded
+		&& bLedgerFound
+		&& OwnsOddsWellOneBedroomUpgrade(Ledger);
 	FString CatalogError;
 	if (!ValidateOddsWellHousingTiers(CatalogError))
 	{
@@ -10237,7 +10777,8 @@ void AOddsWellStudioGameMode::BeginPlay()
 	UE_LOG(
 		LogOddsWellLocomotion,
 		Display,
-		TEXT("ODDSWELL_HOUSING_TIERS|result=PASS|tiers=6|available=studio|locked=%s|larger_interiors=false|upgrade_ui=false"),
+		TEXT("ODDSWELL_HOUSING_TIERS|result=PASS|tiers=6|built=studio,one_bedroom|active=%s|locked=%s|one_bedroom_price=500|one_bedroom_requirement=studio_owned|larger_interiors=false"),
+		bOneBedroomOwned ? TEXT("one_bedroom") : TEXT("studio"),
 		*FString::Join(LockedTierIds, TEXT(",")));
 	UStaticMesh* Cube = LoadObject<UStaticMesh>(nullptr, TEXT("/Engine/BasicShapes/Cube.Cube"));
 	if (!Cube)
@@ -10256,6 +10797,33 @@ void AOddsWellStudioGameMode::BeginPlay()
 			Actor->GetStaticMeshComponent()->SetCollisionProfileName(TEXT("BlockAll"));
 			Actor->Tags.Add(StudioStructureTag);
 		}
+	}
+	int32 UpgradeSurfaces = 0;
+	if (bOneBedroomOwned)
+	{
+		for (const FStudioSurfaceSpec& Surface : GetOneBedroomUpgradeSurfaces())
+		{
+			AStaticMeshActor* Actor = GetWorld()->SpawnActor<AStaticMeshActor>(
+				AStaticMeshActor::StaticClass(),
+				FTransform(FRotator::ZeroRotator, Surface.Location, Surface.Scale),
+				Parameters);
+			if (!Actor)
+			{
+				continue;
+			}
+			Actor->GetStaticMeshComponent()->SetStaticMesh(Cube);
+			Actor->GetStaticMeshComponent()->SetCollisionProfileName(TEXT("BlockAll"));
+			Actor->Tags.Add(StudioStructureTag);
+			Actor->Tags.Add(OneBedroomStructureTag);
+			++UpgradeSurfaces;
+		}
+		UE_LOG(
+			LogOddsWellLocomotion,
+			Display,
+			TEXT("ODDSWELL_ONE_BEDROOM_INTERIOR|result=%s|tier_id=one_bedroom|owned=true|in_place=true|partition_surfaces=%d|doorway=true|living_zone=positive_x|bedroom_zone=negative_x|existing_furniture_preserved=%s"),
+			UpgradeSurfaces == GetOneBedroomUpgradeSurfaces().Num() ? TEXT("PASS") : TEXT("FAIL"),
+			UpgradeSurfaces,
+			bChairOwned ? TEXT("true") : TEXT("not_owned"));
 	}
 	int32 FurnitureParts = 0;
 	if (bChairOwned)
@@ -10317,8 +10885,10 @@ void AOddsWellStudioGameMode::BeginPlay()
 	UE_LOG(
 		LogOddsWellLocomotion,
 		Display,
-		TEXT("ODDSWELL_STUDIO_READY|result=PASS|private=true|visits=false|structure=%d|furniture=%d|furniture_parts=%d|decorations=0|snap_points=1"),
-		GetEmptyStudioSurfaces().Num(),
+		TEXT("ODDSWELL_STUDIO_READY|result=PASS|private=true|visits=false|active_tier=%s|structure=%d|upgrade_surfaces=%d|furniture=%d|furniture_parts=%d|decorations=0|snap_points=1"),
+		bOneBedroomOwned ? TEXT("one_bedroom") : TEXT("studio"),
+		GetEmptyStudioSurfaces().Num() + UpgradeSurfaces,
+		UpgradeSurfaces,
 		bChairOwned && FurnitureParts == GetModularChairParts().Num() ? 1 : 0,
 		FurnitureParts);
 }
@@ -11521,6 +12091,41 @@ bool FOddsWellModularChairPurchaseGateTest::RunTest(const FString& Parameters)
 	TestEqual(TEXT("The fixed Studio snap id remains exact"), StudioPrimarySnapPointId, FName(TEXT("studio_primary")));
 	TestEqual(TEXT("The Modular Chair remains one three-part graybox item"), GetModularChairParts().Num(), 3);
 	TestTrue(TEXT("Chair gray and teal remain visibly distinct"), ModularChairGray != ModularChairTeal);
+	return !HasAnyErrors();
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(
+	FOddsWellOneBedroomUpgradeGateTest,
+	"OddsWell.Character.OneBedroomUpgradeGate",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+
+bool FOddsWellOneBedroomUpgradeGateTest::RunTest(const FString& Parameters)
+{
+	FString Error;
+	TestFalse(
+		TEXT("One-bedroom cannot be bought outside apartment management"),
+		CanPurchaseOneBedroomUpgrade(false, true, true, Error));
+	TestFalse(
+		TEXT("A remote placeholder cannot spend the local housing balance"),
+		CanPurchaseOneBedroomUpgrade(true, false, true, Error));
+	TestFalse(
+		TEXT("One-bedroom requires existing Studio ownership"),
+		CanPurchaseOneBedroomUpgrade(true, true, false, Error));
+	TestTrue(
+		TEXT("The owned local Studio may upgrade at apartment management"),
+		CanPurchaseOneBedroomUpgrade(true, true, true, Error));
+	TestTrue(TEXT("Accepted housing gate clears the error"), Error.IsEmpty());
+	TestTrue(
+		TEXT("Kiosk and apartment-door prompts do not overlap"),
+		FVector::Dist2D(ApartmentManagementInteractionLocation, SafeSpawnLocation)
+			> ApartmentManagementInteractionRadius + StudioEntryRadius);
+	TestEqual(TEXT("Apartment management remains a two-part graybox kiosk"), GetApartmentManagementKioskParts().Num(), 2);
+	TestEqual(TEXT("One-bedroom adds only three partition surfaces"), GetOneBedroomUpgradeSurfaces().Num(), 3);
+	for (const FStudioSurfaceSpec& Surface : GetOneBedroomUpgradeSurfaces())
+	{
+		TestEqual(TEXT("Every partition part shares the same room divider X"), Surface.Location.X, -150.0);
+	}
+	TestTrue(TEXT("The existing chair remains on the living-room side"), StudioPrimarySnapPoint.X > -150.0);
 	return !HasAnyErrors();
 }
 #endif

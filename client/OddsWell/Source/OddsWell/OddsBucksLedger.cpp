@@ -30,6 +30,7 @@ constexpr int32 OddsBucksUserIndex = 0;
 constexpr int64 FirstJobPayout = 100;
 constexpr int64 SignalJacketPrice = 60;
 constexpr int64 ModularChairPrice = 100;
+constexpr int64 OneBedroomUpgradePrice = 500;
 constexpr int64 JobPayoutIntervalSeconds = 24 * 60 * 60;
 constexpr int64 MatchWinnerProbabilityScale = 100000000;
 constexpr int64 MatchWinnerMinimumStake = 10;
@@ -47,8 +48,11 @@ const FString SignalJacketItemId(TEXT("sundale_signal_jacket"));
 const FString SignalJacketPurchaseCommandId(TEXT("store:sundale:signal_jacket:purchase:v1"));
 const FString ModularChairItemId(TEXT("sundale_modular_chair"));
 const FString ModularChairPurchaseCommandId(TEXT("store:sundale:modular_chair:purchase:v1"));
+const FString OneBedroomTierId(TEXT("one_bedroom"));
+const FString OneBedroomUpgradePurchaseCommandId(TEXT("housing:sundale:one_bedroom:upgrade:v1"));
 const FName ClothingPurchaseReason(TEXT("clothing_purchase"));
 const FName FurniturePurchaseReason(TEXT("furniture_purchase"));
+const FName HousingUpgradeReason(TEXT("housing_upgrade"));
 const FName MatchWinnerStakeReason(TEXT("match_winner_stake"));
 const FName MatchWinnerPayoutReason(TEXT("match_winner_payout"));
 const FName AcceptedPendingLockStatus(TEXT("accepted_pending_lock"));
@@ -1952,6 +1956,29 @@ bool OwnsOddsWellModularChair(const FOddsWellOddsBucksLedger& Ledger)
 	return Ledger.HasCommand(ModularChairPurchaseCommandId);
 }
 
+const FString& GetOddsWellOneBedroomTierId()
+{
+	return OneBedroomTierId;
+}
+
+int64 GetOddsWellOneBedroomUpgradePrice()
+{
+	return OneBedroomUpgradePrice;
+}
+
+EOddsWellOddsBucksAppendResult AppendOddsWellOneBedroomUpgradePurchase(FOddsWellOddsBucksLedger& Ledger)
+{
+	return Ledger.Append(
+		OneBedroomUpgradePurchaseCommandId,
+		-OneBedroomUpgradePrice,
+		HousingUpgradeReason);
+}
+
+bool OwnsOddsWellOneBedroomUpgrade(const FOddsWellOddsBucksLedger& Ledger)
+{
+	return Ledger.HasCommand(OneBedroomUpgradePurchaseCommandId);
+}
+
 bool FinalizeOddsWellMatchWinnerOfferIdentity(
 	FOddsWellMatchWinnerOffer& InOutOffer,
 	FString& OutCanonicalJson,
@@ -1973,7 +2000,9 @@ bool UseOddsWellOddsBucksQaSlot()
 		|| FParse::Param(FCommandLine::Get(), TEXT("SignalJacketPurchaseQaVerify"))
 		|| FParse::Param(FCommandLine::Get(), TEXT("SignalJacketEquipQa"))
 		|| FParse::Param(FCommandLine::Get(), TEXT("ModularChairPurchaseQa"))
-		|| FParse::Param(FCommandLine::Get(), TEXT("ModularChairPurchaseQaVerify"));
+		|| FParse::Param(FCommandLine::Get(), TEXT("ModularChairPurchaseQaVerify"))
+		|| FParse::Param(FCommandLine::Get(), TEXT("OneBedroomUpgradeQa"))
+		|| FParse::Param(FCommandLine::Get(), TEXT("OneBedroomUpgradeQaVerify"));
 #else
 		false;
 #endif
@@ -8166,6 +8195,56 @@ bool FOddsWellModularChairPurchaseTest::RunTest(const FString& Parameters)
 	TestEqual(TEXT("Cold chair load preserves two entries"), Restored.GetEntries().Num(), 2);
 	TestEqual(TEXT("Cold chair retry stays idempotent"), AppendOddsWellModularChairPurchase(Restored), EOddsWellOddsBucksAppendResult::Duplicate);
 	TestTrue(TEXT("Modular Chair QA cleanup succeeds"), ResetOddsWellQaOddsBucksAndVerify(Error));
+	return !HasAnyErrors();
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(
+	FOddsWellOneBedroomUpgradePurchaseTest,
+	"OddsWell.Economy.OneBedroomUpgradePurchase",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+
+bool FOddsWellOneBedroomUpgradePurchaseTest::RunTest(const FString& Parameters)
+{
+	FString Error;
+	TestTrue(TEXT("One-bedroom QA starts clean"), ResetOddsWellQaOddsBucksAndVerify(Error));
+	FOddsWellOddsBucksLedger Ledger;
+	TestEqual(TEXT("One-bedroom keeps the approved tier id"), GetOddsWellOneBedroomTierId(), FString(TEXT("one_bedroom")));
+	TestEqual(TEXT("One-bedroom keeps the approved price"), GetOddsWellOneBedroomUpgradePrice(), int64{500});
+	TestEqual(TEXT("Underfunded upgrade is rejected"), AppendOddsWellOneBedroomUpgradePurchase(Ledger), EOddsWellOddsBucksAppendResult::Rejected);
+	TestFalse(TEXT("Rejected upgrade grants no ownership"), OwnsOddsWellOneBedroomUpgrade(Ledger));
+	TestEqual(TEXT("Rejected upgrade appends nothing"), Ledger.GetEntries().Num(), 0);
+
+	TestEqual(
+		TEXT("Isolated QA funding covers the exact upgrade"),
+		Ledger.Append(TEXT("qa:phase1i5:funding:v1"), 500, FName(TEXT("qa_funding"))),
+		EOddsWellOddsBucksAppendResult::Applied);
+	TestEqual(TEXT("Funded upgrade applies once"), AppendOddsWellOneBedroomUpgradePurchase(Ledger), EOddsWellOddsBucksAppendResult::Applied);
+	TestTrue(TEXT("Applied upgrade grants exact ownership"), OwnsOddsWellOneBedroomUpgrade(Ledger));
+	TestEqual(TEXT("Upgrade spends the exact 500 balance"), Ledger.GetBalance(), int64{0});
+	TestEqual(TEXT("Upgrade appends one debit after funding"), Ledger.GetEntries().Num(), 2);
+	if (Ledger.GetEntries().Num() == 2)
+	{
+		const FOddsWellOddsBucksEntry& Purchase = Ledger.GetEntries()[1];
+		TestEqual(TEXT("Upgrade command is immutable"), Purchase.CommandId, FString(TEXT("housing:sundale:one_bedroom:upgrade:v1")));
+		TestEqual(TEXT("Upgrade debit is exact"), Purchase.Delta, int64{-500});
+		TestEqual(TEXT("Upgrade running balance is exact"), Purchase.BalanceAfter, int64{0});
+		TestEqual(TEXT("Upgrade reason is exact"), Purchase.Reason, FName(TEXT("housing_upgrade")));
+	}
+	TestEqual(TEXT("Exact upgrade retry is idempotent"), AppendOddsWellOneBedroomUpgradePurchase(Ledger), EOddsWellOddsBucksAppendResult::Duplicate);
+	TestEqual(TEXT("Upgrade retry appends no second purchase"), Ledger.GetEntries().Num(), 2);
+
+	const int64 NextJobPayout = 0;
+	TestTrue(TEXT("Upgrade ownership persists to the isolated QA slot"), SaveOddsWellOddsBucksLedger(Ledger, NextJobPayout, true, Error));
+	FOddsWellOddsBucksLedger Restored;
+	int64 RestoredNextJobPayout = 0;
+	bool bFound = false;
+	TestTrue(TEXT("Upgrade ownership cold-loads"), LoadOddsWellOddsBucksLedger(true, Restored, RestoredNextJobPayout, bFound, Error));
+	TestTrue(TEXT("Cold upgrade load found the isolated profile"), bFound);
+	TestTrue(TEXT("Cold upgrade load preserves ownership"), OwnsOddsWellOneBedroomUpgrade(Restored));
+	TestEqual(TEXT("Cold upgrade load preserves balance"), Restored.GetBalance(), int64{0});
+	TestEqual(TEXT("Cold QA funding keeps no production job cooldown"), RestoredNextJobPayout, int64{0});
+	TestEqual(TEXT("Cold upgrade retry stays idempotent"), AppendOddsWellOneBedroomUpgradePurchase(Restored), EOddsWellOddsBucksAppendResult::Duplicate);
+	TestTrue(TEXT("One-bedroom QA cleanup succeeds"), ResetOddsWellQaOddsBucksAndVerify(Error));
 	return !HasAnyErrors();
 }
 

@@ -152,6 +152,8 @@ The presets must not attach ability, wealth, intelligence, behavior, or athlete 
 - **LOCKED:** studio apartment is the starting home.
 - **LOCKED:** the beta needs a visible ladder of larger apartments purchased with substantial amounts of Odds Bucks.
 - **LOCKED:** there are six named tiers: Studio, One-bedroom, Two-bedroom, Three-bedroom, Four-bedroom, and Penthouse.
+- **LOCKED FOR THE FIRST UPGRADE:** the One-bedroom is the first purchasable tier, costs `500` Odds Bucks, requires Studio ownership, and upgrades the existing Studio interior in place. The player reviews and confirms it with two E presses at the apartment-management kiosk beside the Sundale apartment entrance; see [[Design/Decisions/DEC-020 First One Bedroom Apartment Upgrade]].
+- **IMPLEMENTED LOCAL-BETA UPGRADE:** one immutable `-500` ledger command is durable One-bedroom ownership evidence. The graybox Studio gains a partition and open doorway after fresh purchase and cold restart, while an already-owned Modular Chair remains at `studio_primary` in the living area.
 - **LATER:** detached houses and mansions.
 
 ### Furniture
@@ -164,7 +166,7 @@ The presets must not attach ability, wealth, intelligence, behavior, or athlete 
 - **IMPLEMENTED LOCAL-BETA PURCHASE AND DISPLAY:** at the physical Sundale furniture-store waypoint, two E presses review and confirm the exact Modular Chair purchase. The server owns item identity and price; one immutable `-100` Odds Bucks command is durable ownership evidence and exact retry cannot debit twice. An owned Studio derives the chair from that record and shows one three-part gray-and-teal placeholder at `studio_primary` after fresh entry and cold restart.
 - **LOCKED:** furniture is associated with the player's apartment progression.
 - **BETA TARGET:** the player can acquire and see at least a small approved set of furniture in the owned apartment.
-- **OPEN:** later catalog expansion, additional snap points, collision details, room restrictions, apartment-upgrade prices and requirements, and whether apartment layouts are separate interiors or upgrades of one interior. Rotation, storage, refunds, and unrestricted placement are absent from the beta starter path.
+- **OPEN:** later catalog expansion, additional snap points, collision details, room restrictions, and every later apartment tier's price, requirement, and layout. Rotation, storage, refunds, and unrestricted placement are absent from the beta starter path.
 
 ## Basketball and wagering
 
