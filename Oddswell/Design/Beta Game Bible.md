@@ -244,9 +244,9 @@ The Basketball Brain chooses legal intents. The authoritative rules engine resol
 
 ### Implemented local-beta presentation
 
-The existing public Season 1 archive now feeds twelve read-only athlete story pages inside the in-world league viewer. Each page identifies a fictional athlete's durable talent tier, specialty, consistency, offensive role, ratings, current form, season and recent scoring, recent public workload, availability, and latest recorded Athlete Life Brain choice. This is presentation of versioned authoritative evidence, not a new brain decision, retraining process, or claim of human-level realism.
+The existing public Season 1 archive now feeds twelve read-only athlete story pages inside the in-world league viewer. Each page identifies a fictional athlete's durable talent tier, specialty, consistency, offensive role, ratings, current form, season and recent scoring, recent public workload, availability, and latest recorded Athlete Life Brain choice. It also explains the public baseline and recent scoring difference in plain language. This is presentation of versioned authoritative evidence, not a new brain decision, retraining process, diagnosis, or claim of human-level realism.
 
-Hidden fatigue values, recovery timers, injury-risk calculations, random state, resolver state, and private life-effect magnitudes remain unpublished. The player sees only public workload and availability in this first slice; a later measured Phase 1J gate must supply any causal health or life explanation without leaking private inputs or changing archived history.
+Hidden fatigue values, recovery timers, injury-risk calculations, random state, resolver state, and private life-effect magnitudes remain unpublished. A recorded life choice is labeled as context rather than a proven cause. Availability may be shown as `AVAILABLE` or `OUT`, but the viewer publishes no cause when the public archive contains none. This safe explanation layer does not change archived history.
 
 ### Beta life behavior target
 

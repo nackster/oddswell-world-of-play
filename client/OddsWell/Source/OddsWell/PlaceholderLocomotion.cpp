@@ -1114,7 +1114,8 @@ void AOddsWellPlaceholderCharacter::BeginPlay()
 	bStudioPersistenceQaVerify = FParse::Param(FCommandLine::Get(), TEXT("StudioPersistenceQaVerify"));
 	bStudioQa = FParse::Param(FCommandLine::Get(), TEXT("StudioQa")) || bStudioPersistenceQa || bStudioPersistenceQaVerify;
 	bCameraOrbitQa = FParse::Param(FCommandLine::Get(), TEXT("CameraOrbitQa"));
-	bAthleteStoryQa = FParse::Param(FCommandLine::Get(), TEXT("AthleteStoryQa"));
+	bAthleteStoryQa = FParse::Param(FCommandLine::Get(), TEXT("AthleteStoryQa"))
+		|| FParse::Param(FCommandLine::Get(), TEXT("AthleteExplanationQa"));
 	bPublicLeagueQa = FParse::Param(FCommandLine::Get(), TEXT("PublicLeagueQa")) || bAthleteStoryQa;
 	bStadiumQa = FParse::Param(FCommandLine::Get(), TEXT("StadiumQa"));
 	bCanonicalPendingReceiptQa =
@@ -2270,16 +2271,20 @@ void AOddsWellPlaceholderCharacter::Tick(const float DeltaSeconds)
 	if (bPublicLeagueQa && !bPublicLeagueQaCaptured && (PublicLeagueQaElapsed += DeltaSeconds) >= 1.0f)
 	{
 		bPublicLeagueQaCaptured = true;
+		const bool bAthleteExplanationQa = FParse::Param(FCommandLine::Get(), TEXT("AthleteExplanationQa"));
 		FScreenshotRequest::RequestScreenshot(
-			bAthleteStoryQa ? TEXT("Phase1J1_AthleteStory.png") : TEXT("Phase1F1_PublicLeague.png"),
+			bAthleteExplanationQa
+				? TEXT("Phase1J2_AthleteExplanation.png")
+				: bAthleteStoryQa ? TEXT("Phase1J1_AthleteStory.png") : TEXT("Phase1F1_PublicLeague.png"),
 			true,
 			false);
 		UE_LOG(
 			LogOddsWellLocomotion,
 			Display,
-			TEXT("ODDSWELL_PUBLIC_LEAGUE_CAPTURE|result=PASS|page=%d|athlete_story=%s|public_only=true|hidden_state=false"),
+			TEXT("ODDSWELL_PUBLIC_LEAGUE_CAPTURE|result=PASS|page=%d|athlete_story=%s|causal_explanation=%s|public_only=true|hidden_state=false"),
 			PublicLeaguePage + 1,
-			bAthleteStoryQa ? TEXT("true") : TEXT("false"));
+			bAthleteStoryQa ? TEXT("true") : TEXT("false"),
+			bAthleteExplanationQa ? TEXT("true") : TEXT("false"));
 	}
 	if (QaExitAt > 0.0 && FPlatformTime::Seconds() >= QaExitAt)
 	{

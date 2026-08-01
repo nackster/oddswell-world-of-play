@@ -46,6 +46,38 @@ const FOddsWellPublicAthlete* FindAthlete(
 	return nullptr;
 }
 
+FString BuildPublicAthleteExplanation(const FOddsWellPublicAthlete& Athlete)
+{
+	const double ScoringDelta = Athlete.RecentPointsPerGame - Athlete.SeasonPointsPerGame;
+	const FString RecentScoring = FMath::IsNearlyZero(ScoringDelta, 0.005)
+		? FString::Printf(TEXT("RECENT: %.2f PPG matches the season rate; archive label %s."), Athlete.RecentPointsPerGame, *Athlete.Form)
+		: FString::Printf(
+			TEXT("RECENT: %.2f PPG is %.2f %s season %.2f; archive label %s."),
+			Athlete.RecentPointsPerGame,
+			FMath::Abs(ScoringDelta),
+			ScoringDelta > 0.0 ? TEXT("above") : TEXT("below"),
+			Athlete.SeasonPointsPerGame,
+			*Athlete.Form);
+	const FString PublicStatus = Athlete.bAvailable
+		? TEXT("STATUS: AVAILABLE; no hidden health conclusion is published.")
+		: TEXT("STATUS: OUT; the archive does not publish a cause.");
+	return FString::Printf(
+		TEXT("PUBLIC EXPLANATION | EVIDENCE, NOT DIAGNOSIS\n")
+		TEXT("BASELINE: %s / %s; %s role, %s consistency, %.2f public MPG.\n")
+		TEXT("%s\n")
+		TEXT("LIFE: Game %d %s is recorded context, not a proven cause.\n")
+		TEXT("%s"),
+		*Athlete.TalentTier.ToUpper(),
+		*Athlete.Specialty.ToUpper(),
+		*Athlete.OffensiveRole.ToUpper(),
+		*Athlete.Consistency.ToUpper(),
+		Athlete.RecentMinutesPerGame,
+		*RecentScoring,
+		Athlete.LifeGame,
+		*Athlete.LifeChoice,
+		*PublicStatus);
+}
+
 bool LoadPublicLeagueRoot(TSharedPtr<FJsonObject>& OutRoot, FString& OutError)
 {
 	const FString Path = FPaths::Combine(FPaths::ProjectContentDir(), TEXT("League/PublicSeason1.json"));
@@ -502,6 +534,7 @@ FString BuildOddsWellPublicLeaguePage(const FOddsWellPublicLeagueSnapshot& Snaps
 		{
 			return TEXT("ATHLETE STORY UNAVAILABLE");
 		}
+		const FString Explanation = BuildPublicAthleteExplanation(*Athlete);
 		Text += FString::Printf(
 			TEXT("ATHLETE STORY | PUBLIC ARCHIVE\n")
 			TEXT("%s | %s\n\n")
@@ -511,7 +544,8 @@ FString BuildOddsWellPublicLeaguePage(const FOddsWellPublicLeagueSnapshot& Snaps
 			TEXT("FORM: %s | SEASON %.2f PPG | RECENT %.2f PPG\n")
 			TEXT("STATUS: %s | PUBLIC WORKLOAD: %.2f MPG\n")
 			TEXT("LIFE BRAIN: %s | GAME %d: %s\n\n")
-			TEXT("HIDDEN FATIGUE, RECOVERY TIMERS, INJURY DETAILS, RNG, AND RESOLVER STATE ARE NOT PUBLISHED."),
+			TEXT("%s\n\n")
+			TEXT("PRIVATE: fatigue, recovery, injury details, RNG, and resolver state are withheld."),
 			*Athlete->Name,
 			*Team->Name,
 			*Athlete->TalentTier.ToUpper(),
@@ -531,7 +565,8 @@ FString BuildOddsWellPublicLeaguePage(const FOddsWellPublicLeagueSnapshot& Snaps
 			Athlete->RecentMinutesPerGame,
 			*Athlete->LifeBrainVersion,
 			Athlete->LifeGame,
-			*Athlete->LifeChoice);
+			*Athlete->LifeChoice,
+			*Explanation);
 	}
 	else
 	{
@@ -627,9 +662,16 @@ bool FOddsWellPublicLeagueViewTest::RunTest(const FString& Parameters)
 	TestTrue(TEXT("Athlete story exposes durable specialty"), JalenStory.Contains(TEXT("SCORING CREATOR")));
 	TestTrue(TEXT("Athlete story exposes public form"), JalenStory.Contains(TEXT("FORM: COOLING")));
 	TestTrue(TEXT("Athlete story exposes the bounded current choice"), JalenStory.Contains(TEXT("GAME 20: REST")));
-	TestTrue(TEXT("Athlete story keeps private state hidden"), JalenStory.Contains(TEXT("HIDDEN FATIGUE, RECOVERY TIMERS, INJURY DETAILS, RNG, AND RESOLVER STATE ARE NOT PUBLISHED")));
+	TestTrue(TEXT("Athlete story explains durable public baseline"), JalenStory.Contains(TEXT("BASELINE: CORE STARTER / SCORING CREATOR; FEATURED role, STEADY consistency, 43.10 public MPG.")));
+	TestTrue(TEXT("Athlete story explains recent scoring difference"), JalenStory.Contains(TEXT("RECENT: 20.20 PPG is 3.30 below season 23.50; archive label COOLING.")));
+	TestTrue(TEXT("Athlete story does not claim the life choice caused performance"), JalenStory.Contains(TEXT("Game 20 REST is recorded context, not a proven cause.")));
+	TestTrue(TEXT("Athlete story keeps private state hidden"), JalenStory.Contains(TEXT("PRIVATE: fatigue, recovery, injury details, RNG, and resolver state are withheld.")));
+	const FString CalStory = BuildOddsWellPublicLeaguePage(Snapshot, 13);
+	TestTrue(TEXT("Unavailable athlete avoids an invented cause"), CalStory.Contains(TEXT("STATUS: OUT; the archive does not publish a cause.")));
 	TestTrue(TEXT("Roman athlete story remains available"), BuildOddsWellPublicLeaguePage(Snapshot, 12).Contains(TEXT("Roman Voss")));
-	TestTrue(TEXT("Last athlete story exposes Mateo"), BuildOddsWellPublicLeaguePage(Snapshot, 14).Contains(TEXT("Mateo Cruz")));
+	const FString MateoStory = BuildOddsWellPublicLeaguePage(Snapshot, 14);
+	TestTrue(TEXT("Last athlete story exposes Mateo"), MateoStory.Contains(TEXT("Mateo Cruz")));
+	TestTrue(TEXT("Rising athlete explanation uses the public delta"), MateoStory.Contains(TEXT("RECENT: 14.40 PPG is 3.05 above season 11.35; archive label RISING.")));
 	TestTrue(TEXT("History exposes the final game"), BuildOddsWellPublicLeaguePage(Snapshot, 18).Contains(TEXT("G20")));
 
 	FOddsWellMatchWinnerOfferPreview Offer;
