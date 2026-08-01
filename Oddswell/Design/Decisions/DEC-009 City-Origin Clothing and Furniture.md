@@ -41,6 +41,7 @@ The shared worn off-white starter outfit remains onboarding equipment and is not
 - Do not build a generalized multi-city catalog service, travel system, cross-city store, marketplace, item transfer, gifting, auction, or trading system for this rule.
 - Phase 1I.2 implements the exact Signal Jacket purchase. Its immutable `store:sundale:signal_jacket:purchase:v1` ledger command encodes the Sundale item identity and is the local durable ownership record.
 - Phase 1I.3 adds one explicit owned-item equip at the physical clothing store and replicates the slate-and-teal graybox outfit to another local Sundale client. Equip adds no debit, does not auto-equip on purchase or restart, and does not grant the chair or activate furniture placement.
+- Phase 1I.4 implements the exact Modular Chair purchase at the physical furniture store. Its immutable `store:sundale:modular_chair:purchase:v1` ledger command is the local durable ownership record; the owned Studio derives one gray-and-teal placeholder at `studio_primary` from that record after fresh entry and cold restart. No inventory database or general placement system was added.
 - City origin never changes athlete decisions, game outcomes, Odds Bucks settlement, or player ability.
 
 ## Future clothing-design brain

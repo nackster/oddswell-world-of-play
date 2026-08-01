@@ -117,6 +117,7 @@ private:
 	void RunSharedCityQa(float DeltaSeconds);
 	void PollJobInteraction();
 	void PollClothingStoreInteraction();
+	void PollFurnitureStoreInteraction();
 	void PollStudioInteraction();
 	void PollStadiumInteraction();
 	void PollSportsbookInteraction();
@@ -158,6 +159,7 @@ private:
 	void FinishCanonicalAutomaticReceiptHeldInputDriver(bool bPassed, const TCHAR* Reason);
 	void RunSignalJacketPurchaseQa(float DeltaSeconds);
 	void RunSignalJacketEquipQa(float DeltaSeconds);
+	void RunModularChairPurchaseQa(float DeltaSeconds);
 #endif
 	bool ApplySavedOrFallbackAppearance();
 	bool ResolveLocalAppearance(FOddsWellResolvedCharacterAppearance& OutAppearance, FString& OutSource, FString& OutError) const;
@@ -197,6 +199,12 @@ private:
 
 	UFUNCTION(Client, Reliable)
 	void ClientConfirmSignalJacketEquip(bool bHandled, bool bEquipped, const FString& Error);
+
+	UFUNCTION(Server, Reliable)
+	void ServerPurchaseModularChair();
+
+	UFUNCTION(Client, Reliable)
+	void ClientConfirmModularChairPurchase(bool bHandled, bool bPurchased, bool bOwned, int64 Balance, const FString& Error);
 
 	UFUNCTION(Server, Reliable)
 	void ServerConfirmSportsbookQaWager(const FString& OfferedTeam, int64 Stake);
@@ -308,6 +316,10 @@ private:
 	bool bSignalJacketPurchaseSubmitting = false;
 	bool bSignalJacketOwned = false;
 	bool bSignalJacketEquipSubmitting = false;
+	bool bFurnitureStoreInteractionArmed = false;
+	bool bModularChairPurchaseConfirm = false;
+	bool bModularChairPurchaseSubmitting = false;
+	bool bModularChairOwned = false;
 	bool bJobQa = false;
 	bool bJobQaRejectionProven = false;
 	bool bJobQaFirstCreditProven = false;
@@ -400,6 +412,11 @@ private:
 	int32 SignalJacketEquipQaStage = 0;
 	bool bSignalJacketEquipQa = false;
 	bool bSignalJacketEquipQaLogged = false;
+	float ModularChairPurchaseQaElapsed = 0.0f;
+	int32 ModularChairPurchaseQaStage = 0;
+	bool bModularChairPurchaseQa = false;
+	bool bModularChairPurchaseQaVerify = false;
+	bool bModularChairPurchaseQaLogged = false;
 #endif
 };
 
@@ -437,6 +454,8 @@ public:
 	bool TryCreditPlaceholderJob(bool& bOutCredited, int64& OutBalance, int64& OutRetryAfterSeconds, FString& OutCommandId, FString& OutError);
 	bool TryPurchaseSignalJacket(bool& bOutPurchased, bool& bOutOwned, int64& OutBalance, FString& OutError);
 	bool OwnsSignalJacket() const { return bOddsBucksReady && OwnsOddsWellSignalJacket(OddsBucksLedger); }
+	bool TryPurchaseModularChair(bool& bOutPurchased, bool& bOutOwned, int64& OutBalance, FString& OutError);
+	bool OwnsModularChair() const { return bOddsBucksReady && OwnsOddsWellModularChair(OddsBucksLedger); }
 	EOddsWellMatchWinnerRequestResult AcceptSportsbookQaWager(const FString& OfferedTeam, int64 Stake, FOddsWellMatchWinnerRequestRecord& OutRecord, int64& OutBalance, FString& OutError);
 	EOddsWellMatchWinnerRequestResult AcceptCanonicalFortyWager(bool bMesaSelected, FOddsWellMatchWinnerRequestRecord& OutRecord, int64& OutBalance, FString& OutError);
 	bool RunSportsbookQaWagerAudit(int32& OutLedgerEntries, int32& OutRequests, int64& OutBalance, FString& OutError);

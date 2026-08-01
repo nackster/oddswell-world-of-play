@@ -29,6 +29,7 @@ constexpr int32 MatchWinnerRequestEvidenceVersion = 1;
 constexpr int32 OddsBucksUserIndex = 0;
 constexpr int64 FirstJobPayout = 100;
 constexpr int64 SignalJacketPrice = 60;
+constexpr int64 ModularChairPrice = 100;
 constexpr int64 JobPayoutIntervalSeconds = 24 * 60 * 60;
 constexpr int64 MatchWinnerProbabilityScale = 100000000;
 constexpr int64 MatchWinnerMinimumStake = 10;
@@ -44,7 +45,10 @@ const FString FirstJobCommandId(TEXT("job:placeholder_shift:first_payout:v1"));
 const FName FirstJobReason(TEXT("placeholder_job_payout"));
 const FString SignalJacketItemId(TEXT("sundale_signal_jacket"));
 const FString SignalJacketPurchaseCommandId(TEXT("store:sundale:signal_jacket:purchase:v1"));
+const FString ModularChairItemId(TEXT("sundale_modular_chair"));
+const FString ModularChairPurchaseCommandId(TEXT("store:sundale:modular_chair:purchase:v1"));
 const FName ClothingPurchaseReason(TEXT("clothing_purchase"));
+const FName FurniturePurchaseReason(TEXT("furniture_purchase"));
 const FName MatchWinnerStakeReason(TEXT("match_winner_stake"));
 const FName MatchWinnerPayoutReason(TEXT("match_winner_payout"));
 const FName AcceptedPendingLockStatus(TEXT("accepted_pending_lock"));
@@ -1925,6 +1929,29 @@ bool OwnsOddsWellSignalJacket(const FOddsWellOddsBucksLedger& Ledger)
 	return Ledger.HasCommand(SignalJacketPurchaseCommandId);
 }
 
+const FString& GetOddsWellModularChairItemId()
+{
+	return ModularChairItemId;
+}
+
+int64 GetOddsWellModularChairPrice()
+{
+	return ModularChairPrice;
+}
+
+EOddsWellOddsBucksAppendResult AppendOddsWellModularChairPurchase(FOddsWellOddsBucksLedger& Ledger)
+{
+	return Ledger.Append(
+		ModularChairPurchaseCommandId,
+		-ModularChairPrice,
+		FurniturePurchaseReason);
+}
+
+bool OwnsOddsWellModularChair(const FOddsWellOddsBucksLedger& Ledger)
+{
+	return Ledger.HasCommand(ModularChairPurchaseCommandId);
+}
+
 bool FinalizeOddsWellMatchWinnerOfferIdentity(
 	FOddsWellMatchWinnerOffer& InOutOffer,
 	FString& OutCanonicalJson,
@@ -1940,15 +1967,17 @@ bool FinalizeOddsWellMatchWinnerOfferIdentity(
 
 bool UseOddsWellOddsBucksQaSlot()
 {
-	const bool bDevelopmentSignalJacketQa =
+	const bool bDevelopmentStoreQa =
 #if UE_BUILD_DEVELOPMENT
 		FParse::Param(FCommandLine::Get(), TEXT("SignalJacketPurchaseQa"))
 		|| FParse::Param(FCommandLine::Get(), TEXT("SignalJacketPurchaseQaVerify"))
-		|| FParse::Param(FCommandLine::Get(), TEXT("SignalJacketEquipQa"));
+		|| FParse::Param(FCommandLine::Get(), TEXT("SignalJacketEquipQa"))
+		|| FParse::Param(FCommandLine::Get(), TEXT("ModularChairPurchaseQa"))
+		|| FParse::Param(FCommandLine::Get(), TEXT("ModularChairPurchaseQaVerify"));
 #else
 		false;
 #endif
-	return bDevelopmentSignalJacketQa
+	return bDevelopmentStoreQa
 		|| FParse::Param(FCommandLine::Get(), TEXT("JobQa"))
 		|| FParse::Param(FCommandLine::Get(), TEXT("JobPayoutQa"))
 		|| FParse::Param(FCommandLine::Get(), TEXT("JobPayoutQaVerify"))
@@ -8086,6 +8115,57 @@ bool FOddsWellSignalJacketPurchaseTest::RunTest(const FString& Parameters)
 	TestEqual(TEXT("Cold retry stays idempotent"), AppendOddsWellSignalJacketPurchase(Restored), EOddsWellOddsBucksAppendResult::Duplicate);
 	TestEqual(TEXT("Cold retry keeps 40 Odds Bucks"), Restored.GetBalance(), int64{40});
 	TestTrue(TEXT("Signal Jacket QA cleanup succeeds"), ResetOddsWellQaOddsBucksAndVerify(Error));
+	return !HasAnyErrors();
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(
+	FOddsWellModularChairPurchaseTest,
+	"OddsWell.Economy.ModularChairPurchase",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+
+bool FOddsWellModularChairPurchaseTest::RunTest(const FString& Parameters)
+{
+	FString Error;
+	TestTrue(TEXT("Modular Chair QA starts clean"), ResetOddsWellQaOddsBucksAndVerify(Error));
+	FOddsWellOddsBucksLedger Ledger;
+	TestEqual(TEXT("Modular Chair has the frozen item id"), GetOddsWellModularChairItemId(), FString(TEXT("sundale_modular_chair")));
+	TestEqual(TEXT("Modular Chair has the frozen price"), GetOddsWellModularChairPrice(), int64{100});
+	TestEqual(TEXT("Underfunded chair purchase is rejected"), AppendOddsWellModularChairPurchase(Ledger), EOddsWellOddsBucksAppendResult::Rejected);
+	TestFalse(TEXT("Rejected chair purchase grants no ownership"), OwnsOddsWellModularChair(Ledger));
+	TestEqual(TEXT("Rejected chair purchase appends nothing"), Ledger.GetEntries().Num(), 0);
+
+	TestEqual(
+		TEXT("Existing job payout funds the chair"),
+		Ledger.Append(GetOddsWellFirstJobCommandId(), GetOddsWellFirstJobPayout(), GetOddsWellFirstJobReason()),
+		EOddsWellOddsBucksAppendResult::Applied);
+	TestEqual(TEXT("Funded chair purchase applies once"), AppendOddsWellModularChairPurchase(Ledger), EOddsWellOddsBucksAppendResult::Applied);
+	TestTrue(TEXT("Applied chair purchase grants exact ownership"), OwnsOddsWellModularChair(Ledger));
+	TestEqual(TEXT("Chair purchase spends the exact 100 balance"), Ledger.GetBalance(), int64{0});
+	TestEqual(TEXT("Chair purchase appends one debit after the credit"), Ledger.GetEntries().Num(), 2);
+	if (Ledger.GetEntries().Num() == 2)
+	{
+		const FOddsWellOddsBucksEntry& Purchase = Ledger.GetEntries()[1];
+		TestEqual(TEXT("Chair command is immutable"), Purchase.CommandId, FString(TEXT("store:sundale:modular_chair:purchase:v1")));
+		TestEqual(TEXT("Chair debit is exact"), Purchase.Delta, int64{-100});
+		TestEqual(TEXT("Chair running balance is exact"), Purchase.BalanceAfter, int64{0});
+		TestEqual(TEXT("Chair reason is exact"), Purchase.Reason, FName(TEXT("furniture_purchase")));
+	}
+	TestEqual(TEXT("Exact chair retry is idempotent"), AppendOddsWellModularChairPurchase(Ledger), EOddsWellOddsBucksAppendResult::Duplicate);
+	TestEqual(TEXT("Chair retry appends no second purchase"), Ledger.GetEntries().Num(), 2);
+	TestEqual(TEXT("Chair retry debits nothing"), Ledger.GetBalance(), int64{0});
+
+	const int64 NextJobPayout = 2000000000 + GetOddsWellJobPayoutIntervalSeconds();
+	TestTrue(TEXT("Chair ownership persists to the isolated QA slot"), SaveOddsWellOddsBucksLedger(Ledger, NextJobPayout, true, Error));
+	FOddsWellOddsBucksLedger Restored;
+	int64 RestoredNextJobPayout = 0;
+	bool bFound = false;
+	TestTrue(TEXT("Chair ownership cold-loads"), LoadOddsWellOddsBucksLedger(true, Restored, RestoredNextJobPayout, bFound, Error));
+	TestTrue(TEXT("Cold chair load found the isolated profile"), bFound);
+	TestTrue(TEXT("Cold chair load preserves ownership"), OwnsOddsWellModularChair(Restored));
+	TestEqual(TEXT("Cold chair load preserves balance"), Restored.GetBalance(), int64{0});
+	TestEqual(TEXT("Cold chair load preserves two entries"), Restored.GetEntries().Num(), 2);
+	TestEqual(TEXT("Cold chair retry stays idempotent"), AppendOddsWellModularChairPurchase(Restored), EOddsWellOddsBucksAppendResult::Duplicate);
+	TestTrue(TEXT("Modular Chair QA cleanup succeeds"), ResetOddsWellQaOddsBucksAndVerify(Error));
 	return !HasAnyErrors();
 }
 

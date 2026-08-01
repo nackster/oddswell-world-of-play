@@ -64,7 +64,12 @@ bool ValidateStudioHomeSave(const UObject* SaveObject, FOddsWellStudioHomeState&
 bool UseOddsWellStudioHomeQaSlot()
 {
 	return FParse::Param(FCommandLine::Get(), TEXT("StudioPersistenceQa"))
-		|| FParse::Param(FCommandLine::Get(), TEXT("StudioPersistenceQaVerify"));
+		|| FParse::Param(FCommandLine::Get(), TEXT("StudioPersistenceQaVerify"))
+#if UE_BUILD_DEVELOPMENT
+		|| FParse::Param(FCommandLine::Get(), TEXT("ModularChairPurchaseQa"))
+		|| FParse::Param(FCommandLine::Get(), TEXT("ModularChairPurchaseQaVerify"))
+#endif
+		;
 }
 
 bool SaveOwnedOddsWellStudio(const FVector& SundaleReturnLocation, const bool bQaSlot, FString& OutError)

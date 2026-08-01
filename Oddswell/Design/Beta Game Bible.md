@@ -161,9 +161,10 @@ The presets must not attach ability, wealth, intelligence, behavior, or athlete 
 - **LOCKED:** a very basic furniture store sells items for Odds Bucks.
 - **LOCKED:** purchasable furniture has durable city origin and is sold through its origin city's catalog; beta furniture merchandise is Sundale-specific under [[Design/Decisions/DEC-009 City-Origin Clothing and Furniture]].
 - **LOCKED FOR THE FIRST BETA PURCHASE:** the minimum catalog contains only the `100`-Odds-Bucks Sundale Modular Chair, a modern gray-and-teal item using one predefined `studio_primary` snap point.
+- **IMPLEMENTED LOCAL-BETA PURCHASE AND DISPLAY:** at the physical Sundale furniture-store waypoint, two E presses review and confirm the exact Modular Chair purchase. The server owns item identity and price; one immutable `-100` Odds Bucks command is durable ownership evidence and exact retry cannot debit twice. An owned Studio derives the chair from that record and shows one three-part gray-and-teal placeholder at `studio_primary` after fresh entry and cold restart.
 - **LOCKED:** furniture is associated with the player's apartment progression.
 - **BETA TARGET:** the player can acquire and see at least a small approved set of furniture in the owned apartment.
-- **OPEN:** later catalog expansion, collision details, room restrictions, and whether apartment layouts are separate interiors or upgrades of one interior. Rotation, storage, refunds, and unrestricted placement are absent from the beta starter path.
+- **OPEN:** later catalog expansion, additional snap points, collision details, room restrictions, apartment-upgrade prices and requirements, and whether apartment layouts are separate interiors or upgrades of one interior. Rotation, storage, refunds, and unrestricted placement are absent from the beta starter path.
 
 ## Basketball and wagering
 

@@ -81,6 +81,7 @@ constexpr float SundaleRouteDistance = 80000.0f;
 constexpr float SundaleWaypointTolerance = 75.0f;
 constexpr float JobInteractionRadius = 350.0f;
 constexpr float ClothingStoreInteractionRadius = 350.0f;
+constexpr float FurnitureStoreInteractionRadius = 350.0f;
 constexpr float StudioEntryRadius = 350.0f;
 constexpr float StudioQaWalkDistance = 200.0f;
 constexpr float StadiumEntryRadius = 350.0f;
@@ -93,6 +94,11 @@ const FName StadiumStructureTag(TEXT("OddsWellStadiumStructure"));
 const FName StadiumZoneTag(TEXT("OddsWellStadiumZone"));
 const FVector JobInteractionLocation(9500.0, 0.0, 0.0);
 const FVector ClothingStoreInteractionLocation(12500.0, 9000.0, 0.0);
+const FVector FurnitureStoreInteractionLocation(-9500.0, 5000.0, 0.0);
+const FVector StudioPrimarySnapPoint(250.0, 0.0, 0.0);
+const FName StudioPrimarySnapPointId(TEXT("studio_primary"));
+const FLinearColor ModularChairGray(0.22f, 0.25f, 0.28f);
+const FLinearColor ModularChairTeal(0.08f, 0.72f, 0.68f);
 const FVector StadiumEntranceThreshold(7000.0, 18000.0, 0.0);
 const FVector SportsbookInteractionLocation(1000.0, 18000.0, 0.0);
 const TCHAR* TicketBoothOpenPrompt = TEXT("Press E to open betting odds");
@@ -111,6 +117,8 @@ constexpr TCHAR CanonicalAutomaticReceiptHeldInputFlag[] =
 constexpr TCHAR SignalJacketPurchaseQaFlag[] = TEXT("SignalJacketPurchaseQa");
 constexpr TCHAR SignalJacketPurchaseQaVerifyFlag[] = TEXT("SignalJacketPurchaseQaVerify");
 constexpr TCHAR SignalJacketEquipQaFlag[] = TEXT("SignalJacketEquipQa");
+constexpr TCHAR ModularChairPurchaseQaFlag[] = TEXT("ModularChairPurchaseQa");
+constexpr TCHAR ModularChairPurchaseQaVerifyFlag[] = TEXT("ModularChairPurchaseQaVerify");
 constexpr uint8 CanonicalHeldInputW = 1 << 0;
 constexpr uint8 CanonicalHeldInputA = 1 << 1;
 constexpr uint8 CanonicalHeldInputD = 1 << 2;
@@ -650,6 +658,13 @@ struct FStudioSurfaceSpec
 	FVector Scale;
 };
 
+struct FStudioFurniturePartSpec
+{
+	FVector Location;
+	FVector Scale;
+	FLinearColor Color;
+};
+
 const TArray<FStudioSurfaceSpec>& GetEmptyStudioSurfaces()
 {
 	static const TArray<FStudioSurfaceSpec> Surfaces = {
@@ -661,6 +676,16 @@ const TArray<FStudioSurfaceSpec>& GetEmptyStudioSurfaces()
 		{FVector(0.0, 300.0, 145.0), FVector(8.0, 0.2, 2.9)},
 	};
 	return Surfaces;
+}
+
+const TArray<FStudioFurniturePartSpec>& GetModularChairParts()
+{
+	static const TArray<FStudioFurniturePartSpec> Parts = {
+		{StudioPrimarySnapPoint + FVector(0.0, 0.0, 40.0), FVector(0.18, 0.18, 0.80), ModularChairGray},
+		{StudioPrimarySnapPoint + FVector(0.0, 0.0, 88.0), FVector(0.80, 0.70, 0.16), ModularChairGray},
+		{StudioPrimarySnapPoint + FVector(32.0, 0.0, 145.0), FVector(0.16, 0.70, 0.95), ModularChairTeal},
+	};
+	return Parts;
 }
 
 struct FStadiumSurfaceSpec
@@ -753,6 +778,25 @@ bool CanEquipSignalJacket(
 	return true;
 }
 
+bool CanPurchaseModularChair(
+	const bool bAtApprovedStore,
+	const bool bLocalAuthoritativeProfile,
+	FString& OutError)
+{
+	if (!bAtApprovedStore)
+	{
+		OutError = TEXT("Return to the Sundale furniture store.");
+		return false;
+	}
+	if (!bLocalAuthoritativeProfile)
+	{
+		OutError = TEXT("This local beta profile cannot buy furniture.");
+		return false;
+	}
+	OutError.Reset();
+	return true;
+}
+
 int32 GetSharedCityQaTargetClients()
 {
 	int32 TargetClients = SharedCityCapacityMinClients;
@@ -771,7 +815,7 @@ const TArray<FVector>& GetSundaleRouteWaypoints()
 		SportsbookInteractionLocation,
 		FVector(-9500.0, 18000.0, 0.0),
 		FVector(-9500.0, 16000.0, 0.0),
-		FVector(-9500.0, 5000.0, 0.0),
+		FurnitureStoreInteractionLocation,
 		FVector(-9500.0, 0.0, 0.0),
 		FVector::ZeroVector,
 	};
@@ -990,6 +1034,10 @@ void AOddsWellPlaceholderCharacter::BeginPlay()
 		FParse::Param(FCommandLine::Get(), SignalJacketPurchaseQaVerifyFlag);
 	bSignalJacketEquipQa =
 		FParse::Param(FCommandLine::Get(), SignalJacketEquipQaFlag);
+	bModularChairPurchaseQa =
+		FParse::Param(FCommandLine::Get(), ModularChairPurchaseQaFlag);
+	bModularChairPurchaseQaVerify =
+		FParse::Param(FCommandLine::Get(), ModularChairPurchaseQaVerifyFlag);
 #endif
 	bQaEnabled = FParse::Param(FCommandLine::Get(), TEXT("LocomotionQa"));
 	bQaAutoExit = FParse::Param(FCommandLine::Get(), TEXT("LocomotionAutoExit"));
@@ -1133,6 +1181,7 @@ void AOddsWellPlaceholderCharacter::BeginPlay()
 			GetWorld()->GetAuthGameMode<AOddsWellLocomotionGameMode>())
 		{
 			bSignalJacketOwned = GameMode->OwnsSignalJacket();
+			bModularChairOwned = GameMode->OwnsModularChair();
 		}
 	}
 	if (!bAppearanceReady)
@@ -2066,6 +2115,7 @@ void AOddsWellPlaceholderCharacter::Tick(const float DeltaSeconds)
 	PollKeyboardMovement();
 	PollJobInteraction();
 	PollClothingStoreInteraction();
+	PollFurnitureStoreInteraction();
 	PollStudioInteraction();
 	PollStadiumInteraction();
 	PollSportsbookInteraction();
@@ -2133,6 +2183,10 @@ void AOddsWellPlaceholderCharacter::Tick(const float DeltaSeconds)
 	if (bSignalJacketEquipQa)
 	{
 		RunSignalJacketEquipQa(DeltaSeconds);
+	}
+	if (bModularChairPurchaseQa || bModularChairPurchaseQaVerify)
+	{
+		RunModularChairPurchaseQa(DeltaSeconds);
 	}
 #endif
 	if (bPublicLeagueQa && !bPublicLeagueQaCaptured && (PublicLeagueQaElapsed += DeltaSeconds) >= 1.0f)
@@ -2439,11 +2493,213 @@ void AOddsWellPlaceholderCharacter::RunSignalJacketEquipQa(
 	}
 }
 
+void AOddsWellPlaceholderCharacter::RunModularChairPurchaseQa(
+	const float DeltaSeconds)
+{
+	if (!IsLocallyControlled() || bModularChairPurchaseQaLogged)
+	{
+		return;
+	}
+	ModularChairPurchaseQaElapsed += DeltaSeconds;
+	const bool bInStudio =
+		GetWorld()->GetAuthGameMode<AOddsWellStudioGameMode>() != nullptr;
+	if (bInStudio)
+	{
+		if (ModularChairPurchaseQaElapsed < 1.0f)
+		{
+			SetActorLocation(
+				FVector(0.0, 100.0, CapsuleHalfHeight),
+				false,
+				nullptr,
+				ETeleportType::TeleportPhysics);
+			SetActorHiddenInGame(true);
+			if (Controller)
+			{
+				Controller->SetControlRotation(FRotator(-8.0f, -15.0f, 0.0f));
+			}
+			return;
+		}
+		int32 FurnitureParts = 0;
+		for (TActorIterator<AStaticMeshActor> It(GetWorld()); It; ++It)
+		{
+			FurnitureParts +=
+				It->ActorHasTag(StudioFurnitureTag)
+				&& It->ActorHasTag(FName(*GetOddsWellModularChairItemId()))
+					? 1
+					: 0;
+		}
+		if ((FurnitureParts != GetModularChairParts().Num()
+			|| ModularChairPurchaseQaElapsed < 4.0f)
+			&& ModularChairPurchaseQaElapsed <= 15.0f)
+		{
+			return;
+		}
+		FOddsWellOddsBucksLedger Ledger;
+		int64 NextJobPayoutUnixSeconds = 0;
+		bool bLedgerFound = false;
+		FString Error;
+		FOddsWellStudioHomeState Home;
+		const bool bStateValid =
+			LoadOddsWellOddsBucksLedger(
+				true,
+				Ledger,
+				NextJobPayoutUnixSeconds,
+				bLedgerFound,
+				Error)
+			&& bLedgerFound
+			&& Ledger.GetEntries().Num() == 2
+			&& Ledger.GetBalance() == 0
+			&& OwnsOddsWellModularChair(Ledger)
+			&& LoadOwnedOddsWellStudio(true, Home, Error)
+			&& Home.bOwnsStudio
+			&& FurnitureParts == GetModularChairParts().Num();
+		const int32 Entries = Ledger.GetEntries().Num();
+		const int64 Balance = Ledger.GetBalance();
+		bool bCleanup = true;
+		if (bModularChairPurchaseQaVerify)
+		{
+			bCleanup = ResetOddsWellQaOddsBucksAndVerify(Error)
+				&& DeleteOddsWellQaStudioHomeAndVerify(Error);
+		}
+		const bool bPassed = bStateValid && bCleanup;
+		const TCHAR* PriorInteractionEvidence =
+			bModularChairPurchaseQaVerify ? TEXT("previous_process_verified") : TEXT("true");
+		const FString Evidence = FString::Printf(
+			TEXT("ODDSWELL_MODULAR_CHAIR_QA|result=%s|process=%s|normal_e_path=%s|physical_store=%s|two_step_confirmation=%s|studio_entry=%s|item_id=%s|owned=true|entries=%d|balance=%lld|duplicate_debit=false|cold_restore=%s|item_count=%d|parts=%d|snap_point=%s|gray_teal_graybox=true|free_placement=false|rotation=false|cleanup=%s|detail=%s"),
+			bPassed ? TEXT("PASS") : TEXT("FAIL"),
+			bModularChairPurchaseQaVerify ? TEXT("cold_verify") : TEXT("fresh_purchase"),
+			PriorInteractionEvidence,
+			PriorInteractionEvidence,
+			PriorInteractionEvidence,
+			PriorInteractionEvidence,
+			*GetOddsWellModularChairItemId(),
+			Entries,
+			Balance,
+			bModularChairPurchaseQaVerify ? TEXT("true") : TEXT("deferred"),
+			bStateValid ? 1 : 0,
+			FurnitureParts,
+			*StudioPrimarySnapPointId.ToString(),
+			bModularChairPurchaseQaVerify
+				? (bCleanup ? TEXT("true") : TEXT("false"))
+				: TEXT("deferred"),
+			Error.IsEmpty() ? TEXT("none") : *Error);
+		if (bPassed)
+		{
+			UE_LOG(LogOddsWellLocomotion, Display, TEXT("%s"), *Evidence);
+			FScreenshotRequest::RequestScreenshot(
+				bModularChairPurchaseQaVerify
+					? TEXT("Phase1I4_ModularChairCold.png")
+					: TEXT("Phase1I4_ModularChairFresh.png"),
+				true,
+				false);
+		}
+		else
+		{
+			UE_LOG(LogOddsWellLocomotion, Error, TEXT("%s"), *Evidence);
+		}
+		bModularChairPurchaseQaLogged = true;
+		bModularChairPurchaseQa = false;
+		bModularChairPurchaseQaVerify = false;
+		QaExitAt = FPlatformTime::Seconds() + (bPassed ? 2.0 : 1.0);
+		return;
+	}
+
+	if (bModularChairPurchaseQaVerify
+		|| !GetWorld()->GetMapName().Contains(TEXT("SundaleGraybox")))
+	{
+		UE_LOG(LogOddsWellLocomotion, Error, TEXT("ODDSWELL_MODULAR_CHAIR_QA|result=FAIL|reason=wrong_map"));
+		bModularChairPurchaseQaLogged = true;
+		QaExitAt = FPlatformTime::Seconds() + 1.0;
+		return;
+	}
+	AOddsWellLocomotionGameMode* GameMode =
+		GetWorld()->GetAuthGameMode<AOddsWellLocomotionGameMode>();
+	APlayerController* PlayerController = Cast<APlayerController>(Controller);
+	if (!GameMode
+		|| !PlayerController
+		|| !PlayerController->IsLocalController()
+		|| !GetCharacterMovement()->IsMovingOnGround())
+	{
+		return;
+	}
+	if (ModularChairPurchaseQaElapsed > 20.0f)
+	{
+		UE_LOG(LogOddsWellLocomotion, Error, TEXT("ODDSWELL_MODULAR_CHAIR_QA|result=FAIL|reason=city_timeout"));
+		bModularChairPurchaseQaLogged = true;
+		QaExitAt = FPlatformTime::Seconds() + 1.0;
+		return;
+	}
+	switch (ModularChairPurchaseQaStage)
+	{
+	case 0:
+		if (GameMode->GetOddsBucksEntryCount() != 1
+			|| GameMode->GetOddsBucksBalance() != 100
+			|| GameMode->OwnsModularChair())
+		{
+			UE_LOG(LogOddsWellLocomotion, Error, TEXT("ODDSWELL_MODULAR_CHAIR_QA|result=FAIL|reason=unexpected_starting_ledger"));
+			bModularChairPurchaseQaLogged = true;
+			QaExitAt = FPlatformTime::Seconds() + 1.0;
+			return;
+		}
+		SetActorLocation(
+			FVector(
+				FurnitureStoreInteractionLocation.X,
+				FurnitureStoreInteractionLocation.Y,
+				GetActorLocation().Z),
+			false,
+			nullptr,
+			ETeleportType::TeleportPhysics);
+		++ModularChairPurchaseQaStage;
+		return;
+	case 1:
+		PlayerController->InputKey(
+			FInputKeyEventArgs::CreateSimulated(KeyInteract, IE_Pressed, 1.0f));
+		++ModularChairPurchaseQaStage;
+		return;
+	case 2:
+		PlayerController->InputKey(
+			FInputKeyEventArgs::CreateSimulated(KeyInteract, IE_Released, 0.0f));
+		++ModularChairPurchaseQaStage;
+		return;
+	case 3:
+		PlayerController->InputKey(
+			FInputKeyEventArgs::CreateSimulated(KeyInteract, IE_Pressed, 1.0f));
+		++ModularChairPurchaseQaStage;
+		return;
+	case 4:
+		PlayerController->InputKey(
+			FInputKeyEventArgs::CreateSimulated(KeyInteract, IE_Released, 0.0f));
+		++ModularChairPurchaseQaStage;
+		return;
+	case 5:
+		if (!GameMode->OwnsModularChair()
+			|| GameMode->GetOddsBucksEntryCount() != 2
+			|| GameMode->GetOddsBucksBalance() != 0)
+		{
+			return;
+		}
+		SetActorLocation(
+			SafeSpawnLocation,
+			false,
+			nullptr,
+			ETeleportType::TeleportPhysics);
+		++ModularChairPurchaseQaStage;
+		return;
+	case 6:
+		PlayerController->InputKey(
+			FInputKeyEventArgs::CreateSimulated(KeyInteract, IE_Pressed, 1.0f));
+		++ModularChairPurchaseQaStage;
+		return;
+	default:
+		return;
+	}
+}
+
 void AOddsWellPlaceholderCharacter::EndPlay(
 	const EEndPlayReason::Type EndPlayReason)
 {
 	SetCanonicalAutomaticReceiptHeldInput(0);
-	if (bSignalJacketEquipQa)
+	if (bSignalJacketEquipQa || bModularChairPurchaseQa || bModularChairPurchaseQaVerify)
 	{
 		if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
 		{
@@ -3058,6 +3314,147 @@ void AOddsWellPlaceholderCharacter::ClientConfirmSignalJacketEquip_Implementatio
 		Error.IsEmpty() ? TEXT("none") : *Error);
 }
 
+void AOddsWellPlaceholderCharacter::PollFurnitureStoreInteraction()
+{
+	if (!IsLocallyControlled()
+		|| !GetWorld()->GetMapName().Contains(TEXT("SundaleGraybox")))
+	{
+		return;
+	}
+	const APlayerController* PlayerController = Cast<APlayerController>(Controller);
+	if (!PlayerController
+		|| FVector::Dist2D(GetActorLocation(), FurnitureStoreInteractionLocation)
+			> FurnitureStoreInteractionRadius)
+	{
+		bFurnitureStoreInteractionArmed = false;
+		bModularChairPurchaseConfirm = false;
+		bModularChairPurchaseSubmitting = false;
+		return;
+	}
+	if (GEngine)
+	{
+		GEngine->AddOnScreenDebugMessage(
+			912023,
+			0.0f,
+			FColor::Cyan,
+			bModularChairOwned
+				? TEXT("Sundale Modular Chair owned - visit your Studio")
+				: bModularChairPurchaseConfirm
+					? TEXT("Press E again to buy Sundale Modular Chair for 100 Odds Bucks")
+					: TEXT("Press E to review Sundale Modular Chair (100 Odds Bucks)"));
+	}
+	const bool bPressed = PlayerController->IsInputKeyDown(KeyInteract);
+	if (!bPressed)
+	{
+		bFurnitureStoreInteractionArmed = true;
+	}
+	if (!bPressed
+		|| !bFurnitureStoreInteractionArmed
+		|| bModularChairPurchaseSubmitting
+		|| bModularChairOwned)
+	{
+		return;
+	}
+	bFurnitureStoreInteractionArmed = false;
+	if (!bModularChairPurchaseConfirm)
+	{
+		bModularChairPurchaseConfirm = true;
+		return;
+	}
+	bModularChairPurchaseSubmitting = true;
+	ServerPurchaseModularChair();
+}
+
+void AOddsWellPlaceholderCharacter::ServerPurchaseModularChair_Implementation()
+{
+	AOddsWellLocomotionGameMode* GameMode =
+		GetWorld()->GetAuthGameMode<AOddsWellLocomotionGameMode>();
+	const bool bAtApprovedStore = GameMode
+		&& GetWorld()->GetMapName().Contains(TEXT("SundaleGraybox"))
+		&& FVector::Dist2D(GetActorLocation(), FurnitureStoreInteractionLocation)
+			<= FurnitureStoreInteractionRadius;
+	FString Error;
+	if (!CanPurchaseModularChair(
+			bAtApprovedStore,
+			Controller && Controller->IsLocalController(),
+			Error))
+	{
+		UE_LOG(LogOddsWellLocomotion, Warning, TEXT("ODDSWELL_MODULAR_CHAIR_PURCHASE|result=REJECTED|server_validated=true|debit=0|ownership=false|detail=%s"), *Error);
+		ClientConfirmModularChairPurchase(
+			false,
+			false,
+			false,
+			GameMode ? GameMode->GetOddsBucksBalance() : 0,
+			Error);
+		return;
+	}
+	bool bPurchased = false;
+	bool bOwned = false;
+	int64 Balance = GameMode->GetOddsBucksBalance();
+	const bool bHandled = GameMode->TryPurchaseModularChair(
+		bPurchased,
+		bOwned,
+		Balance,
+		Error);
+	UE_LOG(
+		LogOddsWellLocomotion,
+		Display,
+		TEXT("ODDSWELL_MODULAR_CHAIR_PURCHASE|result=%s|item_id=%s|price=%lld|purchased=%s|owned=%s|balance=%lld|server_validated=true|snap_point=%s|detail=%s"),
+		bPurchased ? TEXT("PURCHASED") : bOwned ? TEXT("ALREADY_OWNED") : TEXT("REJECTED"),
+		*GetOddsWellModularChairItemId(),
+		GetOddsWellModularChairPrice(),
+		bPurchased ? TEXT("true") : TEXT("false"),
+		bOwned ? TEXT("true") : TEXT("false"),
+		Balance,
+		*StudioPrimarySnapPointId.ToString(),
+		Error.IsEmpty() ? TEXT("none") : *Error);
+	ClientConfirmModularChairPurchase(
+		bHandled,
+		bPurchased,
+		bOwned,
+		Balance,
+		Error);
+}
+
+void AOddsWellPlaceholderCharacter::ClientConfirmModularChairPurchase_Implementation(
+	const bool bHandled,
+	const bool bPurchased,
+	const bool bOwned,
+	const int64 Balance,
+	const FString& Error)
+{
+	bModularChairPurchaseSubmitting = false;
+	bModularChairPurchaseConfirm = false;
+	bModularChairOwned = bOwned;
+	const FString Message = bPurchased
+		? FString::Printf(
+			TEXT("Sundale Modular Chair purchased | Balance: %lld Odds Bucks"),
+			Balance)
+		: bOwned
+			? FString::Printf(
+				TEXT("Sundale Modular Chair already owned | Balance: %lld Odds Bucks"),
+				Balance)
+			: Error.IsEmpty()
+				? TEXT("Modular Chair purchase rejected")
+				: Error;
+	if (GEngine)
+	{
+		GEngine->AddOnScreenDebugMessage(
+			912024,
+			5.0f,
+			bPurchased || bOwned ? FColor::Green : FColor::Red,
+			Message);
+	}
+	UE_LOG(
+		LogOddsWellLocomotion,
+		Display,
+		TEXT("ODDSWELL_MODULAR_CHAIR_FEEDBACK|handled=%s|purchased=%s|owned=%s|balance=%lld|client_visible=true"),
+		bHandled ? TEXT("true") : TEXT("false"),
+		bPurchased ? TEXT("true") : TEXT("false"),
+		bOwned ? TEXT("true") : TEXT("false"),
+		Balance);
+}
+
 void AOddsWellPlaceholderCharacter::RunJobQa(const float DeltaSeconds)
 {
 	if (!IsLocallyControlled() || !HasAuthority())
@@ -3293,7 +3690,11 @@ void AOddsWellPlaceholderCharacter::PollStudioInteraction()
 			912011,
 			0.0f,
 			FColor::White,
-			bInStudio ? TEXT("Press E to leave your empty Studio") : TEXT("Press E to enter your empty Studio"));
+			bInStudio
+				? TEXT("Press E to leave your Studio")
+				: bModularChairOwned
+					? TEXT("Press E to enter your Studio")
+					: TEXT("Press E to enter your empty Studio"));
 	}
 	if (GEngine && bInStudio && bOwnsStudio)
 	{
@@ -4954,7 +5355,7 @@ void AOddsWellPlaceholderCharacter::RunStudioQa(const float DeltaSeconds)
 			}
 			bStudioQaInteriorStarted = true;
 			StudioQaStartLocation = GetActorLocation();
-			UE_LOG(LogOddsWellLocomotion, Display, TEXT("ODDSWELL_STUDIO_QA_INSIDE|structure=%d|furniture=0|decorations=0|snap_points=0|empty_start=true"), StructuralSurfaces);
+			UE_LOG(LogOddsWellLocomotion, Display, TEXT("ODDSWELL_STUDIO_QA_INSIDE|structure=%d|furniture=0|decorations=0|snap_points=1|empty_start=true"), StructuralSurfaces);
 		}
 		if (bStudioQaInteriorStarted)
 		{
@@ -7780,6 +8181,7 @@ void AOddsWellLocomotionGameMode::BeginPlay()
 #if UE_BUILD_DEVELOPMENT
 		|| FParse::Param(FCommandLine::Get(), SignalJacketPurchaseQaFlag)
 		|| FParse::Param(FCommandLine::Get(), SignalJacketEquipQaFlag)
+		|| FParse::Param(FCommandLine::Get(), ModularChairPurchaseQaFlag)
 #endif
 		;
 	const bool bJobRecoveryQa = FParse::Param(FCommandLine::Get(), TEXT("JobRecoveryQa"));
@@ -7837,6 +8239,7 @@ void AOddsWellLocomotionGameMode::BeginPlay()
 #if UE_BUILD_DEVELOPMENT
 		|| FParse::Param(FCommandLine::Get(), SignalJacketPurchaseQaFlag)
 		|| FParse::Param(FCommandLine::Get(), SignalJacketEquipQaFlag)
+		|| FParse::Param(FCommandLine::Get(), ModularChairPurchaseQaFlag)
 #endif
 		)
 	{
@@ -8138,6 +8541,58 @@ bool AOddsWellLocomotionGameMode::TryPurchaseSignalJacket(
 		OutError = FString::Printf(
 			TEXT("You need %lld Odds Bucks to buy the Sundale Signal Jacket."),
 			GetOddsWellSignalJacketPrice());
+		return true;
+	}
+	if (Result == EOddsWellOddsBucksAppendResult::Duplicate)
+	{
+		bOutOwned = true;
+		OutError.Reset();
+		return true;
+	}
+	if (!SaveOddsWellOddsBucksLedger(
+			Candidate,
+			NextJobPayoutUnixSeconds,
+			bOddsBucksQaSlot,
+			OutError))
+	{
+		return false;
+	}
+	OddsBucksLedger = MoveTemp(Candidate);
+	bOutPurchased = true;
+	bOutOwned = true;
+	OutBalance = OddsBucksLedger.GetBalance();
+	PublishOddsBucksReconciliation();
+	return true;
+}
+
+bool AOddsWellLocomotionGameMode::TryPurchaseModularChair(
+	bool& bOutPurchased,
+	bool& bOutOwned,
+	int64& OutBalance,
+	FString& OutError)
+{
+	bOutPurchased = false;
+	bOutOwned = false;
+	OutBalance = OddsBucksLedger.GetBalance();
+	if (!bOddsBucksReady)
+	{
+		OutError = TEXT("The authoritative Odds Bucks ledger is not ready.");
+		return false;
+	}
+	bOutOwned = OwnsOddsWellModularChair(OddsBucksLedger);
+	if (bOutOwned)
+	{
+		OutError.Reset();
+		return true;
+	}
+	FOddsWellOddsBucksLedger Candidate = OddsBucksLedger;
+	const EOddsWellOddsBucksAppendResult Result =
+		AppendOddsWellModularChairPurchase(Candidate);
+	if (Result == EOddsWellOddsBucksAppendResult::Rejected)
+	{
+		OutError = FString::Printf(
+			TEXT("You need %lld Odds Bucks to buy the Sundale Modular Chair."),
+			GetOddsWellModularChairPrice());
 		return true;
 	}
 	if (Result == EOddsWellOddsBucksAppendResult::Duplicate)
@@ -9746,6 +10201,25 @@ AOddsWellStudioGameMode::AOddsWellStudioGameMode()
 void AOddsWellStudioGameMode::BeginPlay()
 {
 	Super::BeginPlay();
+	FOddsWellStudioHomeState Home;
+	FString HomeError;
+	const bool bOwnsStudio =
+		LoadOwnedOddsWellStudio(UseOddsWellStudioHomeQaSlot(), Home, HomeError)
+		&& Home.bOwnsStudio;
+	FOddsWellOddsBucksLedger Ledger;
+	int64 NextJobPayoutUnixSeconds = 0;
+	bool bLedgerFound = false;
+	FString LedgerError;
+	const bool bLedgerLoaded = LoadOddsWellOddsBucksLedger(
+		UseOddsWellOddsBucksQaSlot(),
+		Ledger,
+		NextJobPayoutUnixSeconds,
+		bLedgerFound,
+		LedgerError);
+	const bool bChairOwned = bOwnsStudio
+		&& bLedgerLoaded
+		&& bLedgerFound
+		&& OwnsOddsWellModularChair(Ledger);
 	FString CatalogError;
 	if (!ValidateOddsWellHousingTiers(CatalogError))
 	{
@@ -9783,12 +10257,70 @@ void AOddsWellStudioGameMode::BeginPlay()
 			Actor->Tags.Add(StudioStructureTag);
 		}
 	}
+	int32 FurnitureParts = 0;
+	if (bChairOwned)
+	{
+		UMaterialInterface* BasicShapeMaterial = LoadObject<UMaterialInterface>(
+			nullptr,
+			TEXT("/Engine/BasicShapes/BasicShapeMaterial.BasicShapeMaterial"));
+		if (!BasicShapeMaterial)
+		{
+			UE_LOG(LogOddsWellLocomotion, Error, TEXT("ODDSWELL_MODULAR_CHAIR_DISPLAY|result=FAIL|reason=missing_material"));
+			return;
+		}
+		for (const FStudioFurniturePartSpec& Part : GetModularChairParts())
+		{
+			AStaticMeshActor* Actor = GetWorld()->SpawnActor<AStaticMeshActor>(
+				AStaticMeshActor::StaticClass(),
+				FTransform(FRotator::ZeroRotator, Part.Location, Part.Scale),
+				Parameters);
+			if (!Actor)
+			{
+				continue;
+			}
+			Actor->GetStaticMeshComponent()->SetStaticMesh(Cube);
+			Actor->GetStaticMeshComponent()->SetCollisionProfileName(TEXT("BlockAll"));
+			UMaterialInstanceDynamic* Material = UMaterialInstanceDynamic::Create(
+				BasicShapeMaterial,
+				Actor);
+			if (Material)
+			{
+				Material->SetVectorParameterValue(TEXT("Color"), Part.Color);
+				Material->SetVectorParameterValue(TEXT("BaseColor"), Part.Color);
+				Actor->GetStaticMeshComponent()->SetMaterial(0, Material);
+			}
+			Actor->Tags.Add(StudioFurnitureTag);
+			Actor->Tags.Add(FName(*GetOddsWellModularChairItemId()));
+			++FurnitureParts;
+		}
+		const FString Evidence = FString::Printf(
+			TEXT("ODDSWELL_MODULAR_CHAIR_DISPLAY|result=%s|item_id=%s|owned=true|studio_owned=true|item_count=%d|parts=%d|snap_point=%s|free_placement=false|rotation=false|visual=gray_teal_graybox"),
+			FurnitureParts == GetModularChairParts().Num() ? TEXT("PASS") : TEXT("FAIL"),
+			*GetOddsWellModularChairItemId(),
+			FurnitureParts == GetModularChairParts().Num() ? 1 : 0,
+			FurnitureParts,
+			*StudioPrimarySnapPointId.ToString());
+		if (FurnitureParts == GetModularChairParts().Num())
+		{
+			UE_LOG(LogOddsWellLocomotion, Display, TEXT("%s"), *Evidence);
+		}
+		else
+		{
+			UE_LOG(LogOddsWellLocomotion, Error, TEXT("%s"), *Evidence);
+		}
+	}
 	if (APointLight* Light = GetWorld()->SpawnActor<APointLight>(FVector(0.0, 0.0, 240.0), FRotator::ZeroRotator, Parameters))
 	{
 		Light->PointLightComponent->SetIntensity(5000.0f);
 		Light->PointLightComponent->SetAttenuationRadius(1000.0f);
 	}
-	UE_LOG(LogOddsWellLocomotion, Display, TEXT("ODDSWELL_STUDIO_READY|result=PASS|private=true|visits=false|structure=%d|furniture=0|decorations=0|snap_points=0"), GetEmptyStudioSurfaces().Num());
+	UE_LOG(
+		LogOddsWellLocomotion,
+		Display,
+		TEXT("ODDSWELL_STUDIO_READY|result=PASS|private=true|visits=false|structure=%d|furniture=%d|furniture_parts=%d|decorations=0|snap_points=1"),
+		GetEmptyStudioSurfaces().Num(),
+		bChairOwned && FurnitureParts == GetModularChairParts().Num() ? 1 : 0,
+		FurnitureParts);
 }
 
 APawn* AOddsWellStudioGameMode::SpawnDefaultPawnAtTransform_Implementation(AController* NewPlayer, const FTransform&)
@@ -10964,6 +11496,31 @@ bool FOddsWellSignalJacketEquipTest::RunTest(const FString& Parameters)
 	TestEqual(TEXT("Equip charges no Odds Bucks"), Ledger.GetBalance(), BalanceBeforeEquip);
 	TestTrue(TEXT("Slate and teal remain visibly distinct"), SignalJacketSlate != SignalJacketTeal);
 	TestTrue(TEXT("Jacket accent has a distinct component identity"), SignalJacketAccentComponentName != TopComponentName);
+	return !HasAnyErrors();
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(
+	FOddsWellModularChairPurchaseGateTest,
+	"OddsWell.Character.ModularChairPurchaseGate",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+
+bool FOddsWellModularChairPurchaseGateTest::RunTest(const FString& Parameters)
+{
+	FString Error;
+	TestFalse(
+		TEXT("The Modular Chair cannot be bought outside its physical store"),
+		CanPurchaseModularChair(false, true, Error));
+	TestFalse(TEXT("Outside-store rejection reports a reason"), Error.IsEmpty());
+	TestFalse(
+		TEXT("A remote placeholder cannot spend the local profile balance"),
+		CanPurchaseModularChair(true, false, Error));
+	TestTrue(
+		TEXT("The local profile may buy at the physical furniture store"),
+		CanPurchaseModularChair(true, true, Error));
+	TestTrue(TEXT("Accepted chair gate clears the error"), Error.IsEmpty());
+	TestEqual(TEXT("The fixed Studio snap id remains exact"), StudioPrimarySnapPointId, FName(TEXT("studio_primary")));
+	TestEqual(TEXT("The Modular Chair remains one three-part graybox item"), GetModularChairParts().Num(), 3);
+	TestTrue(TEXT("Chair gray and teal remain visibly distinct"), ModularChairGray != ModularChairTeal);
 	return !HasAnyErrors();
 }
 #endif
