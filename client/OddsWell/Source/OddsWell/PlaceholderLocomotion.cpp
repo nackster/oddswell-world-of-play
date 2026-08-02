@@ -1107,8 +1107,10 @@ void AOddsWellPlaceholderCharacter::BeginPlay()
 	bAppearanceQaCleanup = FParse::Param(FCommandLine::Get(), TEXT("AppearanceQaCleanup"));
 	bSundaleRouteQa = FParse::Param(FCommandLine::Get(), TEXT("SundaleRouteQa"));
 	bSundaleRouteRun = FParse::Param(FCommandLine::Get(), TEXT("SundaleRouteRun"));
-	bSharedCityQa = FParse::Param(FCommandLine::Get(), TEXT("SharedCityQa"))
-		|| bSignalJacketEquipQa;
+	bSharedCityQa = FParse::Param(FCommandLine::Get(), TEXT("SharedCityQa"));
+#if UE_BUILD_DEVELOPMENT
+	bSharedCityQa = bSharedCityQa || bSignalJacketEquipQa;
+#endif
 	bSharedCityCapacityQa = FParse::Param(FCommandLine::Get(), TEXT("SharedCityCapacityQa"));
 	bStudioPersistenceQa = FParse::Param(FCommandLine::Get(), TEXT("StudioPersistenceQa"));
 	bStudioPersistenceQaVerify = FParse::Param(FCommandLine::Get(), TEXT("StudioPersistenceQaVerify"));
@@ -1116,6 +1118,10 @@ void AOddsWellPlaceholderCharacter::BeginPlay()
 	bCameraOrbitQa = FParse::Param(FCommandLine::Get(), TEXT("CameraOrbitQa"));
 	bAthleteStoryQa = FParse::Param(FCommandLine::Get(), TEXT("AthleteStoryQa"))
 		|| FParse::Param(FCommandLine::Get(), TEXT("AthleteExplanationQa"));
+#if UE_BUILD_DEVELOPMENT
+	bAthleteComprehensionQa = FParse::Param(FCommandLine::Get(), TEXT("AthleteComprehensionQa"));
+	bAthleteStoryQa = bAthleteStoryQa || bAthleteComprehensionQa;
+#endif
 	bPublicLeagueQa = FParse::Param(FCommandLine::Get(), TEXT("PublicLeagueQa")) || bAthleteStoryQa;
 	bStadiumQa = FParse::Param(FCommandLine::Get(), TEXT("StadiumQa"));
 	bCanonicalPendingReceiptQa =
@@ -1512,7 +1518,14 @@ void AOddsWellPlaceholderCharacter::ShowLeaguePage()
 	GEngine->RemoveOnScreenDebugMessage(912013);
 	if (bPublicLeagueVisible && PublicLeagueSnapshot)
 	{
-		GEngine->AddOnScreenDebugMessage(912013, 3600.0f, FColor::White, BuildOddsWellPublicLeaguePage(*PublicLeagueSnapshot, PublicLeaguePage));
+		FString Page = BuildOddsWellPublicLeaguePage(*PublicLeagueSnapshot, PublicLeaguePage);
+#if UE_BUILD_DEVELOPMENT
+		if (bAthleteComprehensionQa)
+		{
+			Page = BuildOddsWellAthleteComprehensionCheck(*PublicLeagueSnapshot);
+		}
+#endif
+		GEngine->AddOnScreenDebugMessage(912013, 3600.0f, FColor::White, Page);
 	}
 }
 
@@ -2272,12 +2285,28 @@ void AOddsWellPlaceholderCharacter::Tick(const float DeltaSeconds)
 	{
 		bPublicLeagueQaCaptured = true;
 		const bool bAthleteExplanationQa = FParse::Param(FCommandLine::Get(), TEXT("AthleteExplanationQa"));
+		FString ScreenshotName = bAthleteExplanationQa
+			? TEXT("Phase1J2_AthleteExplanation.png")
+			: bAthleteStoryQa ? TEXT("Phase1J1_AthleteStory.png") : TEXT("Phase1F1_PublicLeague.png");
+#if UE_BUILD_DEVELOPMENT
+		if (bAthleteComprehensionQa)
+		{
+			ScreenshotName = TEXT("Phase1J3a_AthleteComprehension.png");
+		}
+#endif
 		FScreenshotRequest::RequestScreenshot(
-			bAthleteExplanationQa
-				? TEXT("Phase1J2_AthleteExplanation.png")
-				: bAthleteStoryQa ? TEXT("Phase1J1_AthleteStory.png") : TEXT("Phase1F1_PublicLeague.png"),
+			ScreenshotName,
 			true,
 			false);
+#if UE_BUILD_DEVELOPMENT
+		if (bAthleteComprehensionQa)
+		{
+			UE_LOG(
+				LogOddsWellLocomotion,
+				Display,
+				TEXT("ODDSWELL_ATHLETE_COMPREHENSION|result=PASS|items=6|expected_key=ABBAAB|public_fixture_only=true|hidden_values=false|human_comprehension=false|development_only=true"));
+		}
+#endif
 		UE_LOG(
 			LogOddsWellLocomotion,
 			Display,

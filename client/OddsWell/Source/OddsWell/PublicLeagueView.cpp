@@ -590,6 +590,47 @@ FString BuildOddsWellPublicLeaguePage(const FOddsWellPublicLeagueSnapshot& Snaps
 	return Text + TEXT("\n[L] CLOSE   [,] PREVIOUS   [.] NEXT");
 }
 
+#if UE_BUILD_DEVELOPMENT
+FString BuildOddsWellAthleteComprehensionCheck(const FOddsWellPublicLeagueSnapshot& Snapshot)
+{
+	const FOddsWellPublicTeam* JalenTeam = nullptr;
+	const FOddsWellPublicTeam* CalTeam = nullptr;
+	const FOddsWellPublicAthlete* Jalen = FindAthlete(Snapshot, 0, JalenTeam);
+	const FOddsWellPublicAthlete* Cal = FindAthlete(Snapshot, 10, CalTeam);
+	if (!Jalen || !Cal || !JalenTeam || !CalTeam || Snapshot.Games.IsEmpty()
+		|| Jalen->Name != TEXT("Jalen Cross") || Cal->Name != TEXT("Cal Brooks")
+		|| Jalen->RecentPointsPerGame >= Jalen->SeasonPointsPerGame || Cal->bAvailable)
+	{
+		return TEXT("DEVELOPMENT ATHLETE COMPREHENSION CHECK UNAVAILABLE");
+	}
+	const FOddsWellPublicGame& RecentGame = Snapshot.Games.Last();
+	return FString::Printf(
+		TEXT("DEVELOPMENT QA | ATHLETE STORY COMPREHENSION | FIXED 6 ITEMS\n")
+		TEXT("INSTRUMENT VALIDATION ONLY - NOT HUMAN COMPREHENSION\n\n")
+		TEXT("1 DURABLE ABILITY?  A %s  B G%d TEAM RESULT %d-%d  | EXPECT A\n")
+		TEXT("2 SPECIALTY FIELD?  A OVR %d  B %s  | EXPECT B\n")
+		TEXT("3 %s + %.2f MPG MEANS?  A GUARANTEED POINTS  B OPPORTUNITY  | EXPECT B\n")
+		TEXT("4 %.2f RECENT vs %.2f SEASON + %s?  A BELOW BASELINE  B ABOVE  | EXPECT A\n")
+		TEXT("5 G%d %s MEANS?  A RECORDED CONTEXT  B PROVEN CAUSE  | EXPECT A\n")
+		TEXT("6 %s OUT MEANS?  A DIAGNOSIS  B PUBLIC UNAVAILABILITY ONLY  | EXPECT B\n\n")
+		TEXT("EXPECTED KEY: A B B A A B | PUBLIC FIXTURE ONLY | NO HIDDEN VALUES USED"),
+		*Jalen->TalentTier.ToUpper(),
+		RecentGame.Number,
+		RecentGame.AwayScore,
+		RecentGame.HomeScore,
+		Jalen->Overall,
+		*Jalen->Specialty.ToUpper(),
+		*Jalen->OffensiveRole.ToUpper(),
+		Jalen->RecentMinutesPerGame,
+		Jalen->RecentPointsPerGame,
+		Jalen->SeasonPointsPerGame,
+		*Jalen->Form,
+		Jalen->LifeGame,
+		*Jalen->LifeChoice,
+		*Cal->Name);
+}
+#endif
+
 bool LoadOddsWellMatchWinnerOfferPreview(FOddsWellMatchWinnerOfferPreview& OutPreview, FString& OutError)
 {
 	TSharedPtr<FJsonObject> Root;
@@ -673,6 +714,21 @@ bool FOddsWellPublicLeagueViewTest::RunTest(const FString& Parameters)
 	TestTrue(TEXT("Last athlete story exposes Mateo"), MateoStory.Contains(TEXT("Mateo Cruz")));
 	TestTrue(TEXT("Rising athlete explanation uses the public delta"), MateoStory.Contains(TEXT("RECENT: 14.40 PPG is 3.05 above season 11.35; archive label RISING.")));
 	TestTrue(TEXT("History exposes the final game"), BuildOddsWellPublicLeaguePage(Snapshot, 18).Contains(TEXT("G20")));
+#if UE_BUILD_DEVELOPMENT
+	const FString ComprehensionCheck = BuildOddsWellAthleteComprehensionCheck(Snapshot);
+	TestTrue(TEXT("Comprehension instrument labels its six fixed items"), ComprehensionCheck.Contains(TEXT("FIXED 6 ITEMS")));
+	TArray<FString> ComprehensionAnswers;
+	ComprehensionCheck.ParseIntoArray(ComprehensionAnswers, TEXT("| EXPECT"));
+	TestEqual(TEXT("Comprehension instrument has six expected answers"), ComprehensionAnswers.Num() - 1, 6);
+	TestTrue(TEXT("Comprehension instrument distinguishes durable ability from a recent game"), ComprehensionCheck.Contains(TEXT("1 DURABLE ABILITY?  A CORE STARTER  B G20 TEAM RESULT 88-72  | EXPECT A")));
+	TestTrue(TEXT("Comprehension instrument distinguishes specialty from overall quality"), ComprehensionCheck.Contains(TEXT("2 SPECIALTY FIELD?  A OVR 76  B SCORING CREATOR  | EXPECT B")));
+	TestTrue(TEXT("Comprehension instrument distinguishes opportunity from guaranteed production"), ComprehensionCheck.Contains(TEXT("3 FEATURED + 43.10 MPG MEANS?  A GUARANTEED POINTS  B OPPORTUNITY  | EXPECT B")));
+	TestTrue(TEXT("Comprehension instrument distinguishes recent form from season baseline"), ComprehensionCheck.Contains(TEXT("4 20.20 RECENT vs 23.50 SEASON + COOLING?  A BELOW BASELINE  B ABOVE  | EXPECT A")));
+	TestTrue(TEXT("Comprehension instrument treats life choice as context"), ComprehensionCheck.Contains(TEXT("5 G20 REST MEANS?  A RECORDED CONTEXT  B PROVEN CAUSE  | EXPECT A")));
+	TestTrue(TEXT("Comprehension instrument avoids diagnosis and hidden state"), ComprehensionCheck.Contains(TEXT("6 Cal Brooks OUT MEANS?  A DIAGNOSIS  B PUBLIC UNAVAILABILITY ONLY  | EXPECT B")));
+	TestFalse(TEXT("Comprehension instrument contains no hidden field names"), ComprehensionCheck.Contains(TEXT("FATIGUE")) || ComprehensionCheck.Contains(TEXT("RECOVERY")) || ComprehensionCheck.Contains(TEXT("INJURY RISK")) || ComprehensionCheck.Contains(TEXT("RNG")) || ComprehensionCheck.Contains(TEXT("RESOLVER")));
+	TestTrue(TEXT("Comprehension instrument does not claim human comprehension"), ComprehensionCheck.Contains(TEXT("NOT HUMAN COMPREHENSION")));
+#endif
 
 	FOddsWellMatchWinnerOfferPreview Offer;
 	TestTrue(TEXT("Exact public Match Winner offer loads"), LoadOddsWellMatchWinnerOfferPreview(Offer, Error));

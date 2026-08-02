@@ -248,6 +248,8 @@ The existing public Season 1 archive now feeds twelve read-only athlete story pa
 
 Hidden fatigue values, recovery timers, injury-risk calculations, random state, resolver state, and private life-effect magnitudes remain unpublished. A recorded life choice is labeled as context rather than a proven cause. Availability may be shown as `AVAILABLE` or `OUT`, but the viewer publishes no cause when the public archive contains none. This safe explanation layer does not change archived history.
 
+One explicit Development-only QA flag now opens a fixed six-item comprehension instrument derived from that same public fixture. Its answer key checks durable ability versus one recent game result, specialty versus overall quality, role and minutes as opportunity rather than guaranteed production, recent form versus season baseline, a recorded life choice as context rather than proven cause, and `OUT` as public availability without an invented diagnosis. The instrument and its automated validation are absent from Shipping. Passing the instrument's software checks does not prove human player comprehension; observed-player evidence is still required.
+
 ### Beta life behavior target
 
 - Training, rest, recovery, and social choices.

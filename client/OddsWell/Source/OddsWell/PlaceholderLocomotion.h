@@ -356,6 +356,9 @@ private:
 	bool bPublicLeagueVisible = false;
 	bool bPublicLeagueQa = false;
 	bool bAthleteStoryQa = false;
+#if UE_BUILD_DEVELOPMENT
+	bool bAthleteComprehensionQa = false;
+#endif
 	bool bPublicLeagueQaCaptured = false;
 	float PublicLeagueQaElapsed = 0.0f;
 	float SportsbookOfferQaElapsed = 0.0f;
