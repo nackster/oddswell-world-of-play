@@ -78,6 +78,59 @@ FString BuildPublicAthleteExplanation(const FOddsWellPublicAthlete& Athlete)
 		*PublicStatus);
 }
 
+#if UE_BUILD_DEVELOPMENT
+struct FOddsWellAthleteComprehensionItem
+{
+	FString Text;
+	TCHAR Expected = TEXT('?');
+};
+
+const FString AthleteComprehensionKey(TEXT("ABBAAB"));
+
+bool BuildAthleteComprehensionItems(
+	const FOddsWellPublicLeagueSnapshot& Snapshot,
+	TArray<FOddsWellAthleteComprehensionItem>& OutItems)
+{
+	OutItems.Reset();
+	const FOddsWellPublicTeam* JalenTeam = nullptr;
+	const FOddsWellPublicTeam* CalTeam = nullptr;
+	const FOddsWellPublicAthlete* Jalen = FindAthlete(Snapshot, 0, JalenTeam);
+	const FOddsWellPublicAthlete* Cal = FindAthlete(Snapshot, 10, CalTeam);
+	if (!Jalen || !Cal || !JalenTeam || !CalTeam || Snapshot.Games.IsEmpty()
+		|| Jalen->Name != TEXT("Jalen Cross") || Cal->Name != TEXT("Cal Brooks")
+		|| Jalen->RecentPointsPerGame >= Jalen->SeasonPointsPerGame || Cal->bAvailable)
+	{
+		return false;
+	}
+	const FOddsWellPublicGame& RecentGame = Snapshot.Games.Last();
+	OutItems = {
+		{FString::Printf(TEXT("DURABLE ABILITY?  A %s  B G%d TEAM RESULT %d-%d"), *Jalen->TalentTier.ToUpper(), RecentGame.Number, RecentGame.AwayScore, RecentGame.HomeScore), TEXT('A')},
+		{FString::Printf(TEXT("SPECIALTY FIELD?  A OVR %d  B %s"), Jalen->Overall, *Jalen->Specialty.ToUpper()), TEXT('B')},
+		{FString::Printf(TEXT("%s + %.2f MPG MEANS?  A GUARANTEED POINTS  B OPPORTUNITY"), *Jalen->OffensiveRole.ToUpper(), Jalen->RecentMinutesPerGame), TEXT('B')},
+		{FString::Printf(TEXT("%.2f RECENT vs %.2f SEASON + %s?  A BELOW BASELINE  B ABOVE"), Jalen->RecentPointsPerGame, Jalen->SeasonPointsPerGame, *Jalen->Form), TEXT('A')},
+		{FString::Printf(TEXT("G%d %s MEANS?  A RECORDED CONTEXT  B PROVEN CAUSE"), Jalen->LifeGame, *Jalen->LifeChoice), TEXT('A')},
+		{FString::Printf(TEXT("%s OUT MEANS?  A DIAGNOSIS  B PUBLIC UNAVAILABILITY ONLY"), *Cal->Name), TEXT('B')},
+	};
+	return true;
+}
+
+bool HasAthleteComprehensionKeyParity(const TArray<FOddsWellAthleteComprehensionItem>& Items)
+{
+	if (Items.Num() != AthleteComprehensionKey.Len())
+	{
+		return false;
+	}
+	for (int32 Index = 0; Index < Items.Num(); ++Index)
+	{
+		if (Items[Index].Expected != AthleteComprehensionKey[Index])
+		{
+			return false;
+		}
+	}
+	return true;
+}
+#endif
+
 bool LoadPublicLeagueRoot(TSharedPtr<FJsonObject>& OutRoot, FString& OutError)
 {
 	const FString Path = FPaths::Combine(FPaths::ProjectContentDir(), TEXT("League/PublicSeason1.json"));
@@ -593,41 +646,100 @@ FString BuildOddsWellPublicLeaguePage(const FOddsWellPublicLeagueSnapshot& Snaps
 #if UE_BUILD_DEVELOPMENT
 FString BuildOddsWellAthleteComprehensionCheck(const FOddsWellPublicLeagueSnapshot& Snapshot)
 {
-	const FOddsWellPublicTeam* JalenTeam = nullptr;
-	const FOddsWellPublicTeam* CalTeam = nullptr;
-	const FOddsWellPublicAthlete* Jalen = FindAthlete(Snapshot, 0, JalenTeam);
-	const FOddsWellPublicAthlete* Cal = FindAthlete(Snapshot, 10, CalTeam);
-	if (!Jalen || !Cal || !JalenTeam || !CalTeam || Snapshot.Games.IsEmpty()
-		|| Jalen->Name != TEXT("Jalen Cross") || Cal->Name != TEXT("Cal Brooks")
-		|| Jalen->RecentPointsPerGame >= Jalen->SeasonPointsPerGame || Cal->bAvailable)
+	TArray<FOddsWellAthleteComprehensionItem> Items;
+	if (!BuildAthleteComprehensionItems(Snapshot, Items))
 	{
 		return TEXT("DEVELOPMENT ATHLETE COMPREHENSION CHECK UNAVAILABLE");
 	}
-	const FOddsWellPublicGame& RecentGame = Snapshot.Games.Last();
+	FString Text = TEXT("DEVELOPMENT QA | ATHLETE STORY COMPREHENSION | FIXED 6 ITEMS\nINSTRUMENT VALIDATION ONLY - NOT HUMAN COMPREHENSION\n\n");
+	for (int32 Index = 0; Index < Items.Num(); ++Index)
+	{
+		Text += FString::Printf(TEXT("%d %s  | EXPECT %c\n"), Index + 1, *Items[Index].Text, Items[Index].Expected);
+	}
+	return Text + TEXT("\nEXPECTED KEY: A B B A A B | PUBLIC FIXTURE ONLY | NO HIDDEN VALUES USED");
+}
+
+int32 GetOddsWellAthleteComprehensionItemCount()
+{
+	return AthleteComprehensionKey.Len();
+}
+
+bool SubmitOddsWellAthleteComprehensionAnswer(
+	const FOddsWellPublicLeagueSnapshot& Snapshot,
+	FString& Answers,
+	const TCHAR Answer,
+	FString& OutError)
+{
+	TArray<FOddsWellAthleteComprehensionItem> Items;
+	if (!BuildAthleteComprehensionItems(Snapshot, Items) || Items.Num() != AthleteComprehensionKey.Len())
+	{
+		OutError = TEXT("The fixed public comprehension fixture is unavailable.");
+		return false;
+	}
+	if (Answer != TEXT('A') && Answer != TEXT('B'))
+	{
+		OutError = TEXT("Answer must be A or B.");
+		return false;
+	}
+	if (Answers.Len() >= Items.Num())
+	{
+		OutError = TEXT("The six-item session is already complete.");
+		return false;
+	}
+	Answers.AppendChar(Answer);
+	OutError.Reset();
+	return true;
+}
+
+int32 ScoreOddsWellAthleteComprehensionAnswers(const FString& Answers)
+{
+	if (Answers.Len() != AthleteComprehensionKey.Len())
+	{
+		return INDEX_NONE;
+	}
+	int32 Score = 0;
+	for (int32 Index = 0; Index < Answers.Len(); ++Index)
+	{
+		if (Answers[Index] != TEXT('A') && Answers[Index] != TEXT('B'))
+		{
+			return INDEX_NONE;
+		}
+		Score += Answers[Index] == AthleteComprehensionKey[Index] ? 1 : 0;
+	}
+	return Score;
+}
+
+FString BuildOddsWellAthleteComprehensionSessionPage(
+	const FOddsWellPublicLeagueSnapshot& Snapshot,
+	const FString& Answers)
+{
+	TArray<FOddsWellAthleteComprehensionItem> Items;
+	if (!BuildAthleteComprehensionItems(Snapshot, Items) || Answers.Len() > Items.Num())
+	{
+		return TEXT("DEVELOPMENT PLAYER-BLIND COMPREHENSION SESSION UNAVAILABLE");
+	}
+	if (Answers.Len() == Items.Num())
+	{
+		const int32 Score = ScoreOddsWellAthleteComprehensionAnswers(Answers);
+		return Score == INDEX_NONE
+			? TEXT("DEVELOPMENT PLAYER-BLIND COMPREHENSION SESSION UNAVAILABLE")
+			: FString::Printf(
+				TEXT("DEVELOPMENT QA | PLAYER-BLIND ATHLETE STORY SESSION\nSESSION COMPLETE\n\nSUBMITTED: %s\nSCORE: %d/6\n\nPUBLIC FIXTURE ONLY | NO HIDDEN VALUES USED\nMECHANISM VALIDATION ONLY - HUMAN COMPREHENSION UNPROVEN"),
+				*Answers,
+				Score);
+	}
+	for (const TCHAR Answer : Answers)
+	{
+		if (Answer != TEXT('A') && Answer != TEXT('B'))
+		{
+			return TEXT("DEVELOPMENT PLAYER-BLIND COMPREHENSION SESSION UNAVAILABLE");
+		}
+	}
 	return FString::Printf(
-		TEXT("DEVELOPMENT QA | ATHLETE STORY COMPREHENSION | FIXED 6 ITEMS\n")
-		TEXT("INSTRUMENT VALIDATION ONLY - NOT HUMAN COMPREHENSION\n\n")
-		TEXT("1 DURABLE ABILITY?  A %s  B G%d TEAM RESULT %d-%d  | EXPECT A\n")
-		TEXT("2 SPECIALTY FIELD?  A OVR %d  B %s  | EXPECT B\n")
-		TEXT("3 %s + %.2f MPG MEANS?  A GUARANTEED POINTS  B OPPORTUNITY  | EXPECT B\n")
-		TEXT("4 %.2f RECENT vs %.2f SEASON + %s?  A BELOW BASELINE  B ABOVE  | EXPECT A\n")
-		TEXT("5 G%d %s MEANS?  A RECORDED CONTEXT  B PROVEN CAUSE  | EXPECT A\n")
-		TEXT("6 %s OUT MEANS?  A DIAGNOSIS  B PUBLIC UNAVAILABILITY ONLY  | EXPECT B\n\n")
-		TEXT("EXPECTED KEY: A B B A A B | PUBLIC FIXTURE ONLY | NO HIDDEN VALUES USED"),
-		*Jalen->TalentTier.ToUpper(),
-		RecentGame.Number,
-		RecentGame.AwayScore,
-		RecentGame.HomeScore,
-		Jalen->Overall,
-		*Jalen->Specialty.ToUpper(),
-		*Jalen->OffensiveRole.ToUpper(),
-		Jalen->RecentMinutesPerGame,
-		Jalen->RecentPointsPerGame,
-		Jalen->SeasonPointsPerGame,
-		*Jalen->Form,
-		Jalen->LifeGame,
-		*Jalen->LifeChoice,
-		*Cal->Name);
+		TEXT("DEVELOPMENT QA | PLAYER-BLIND ATHLETE STORY SESSION\n")
+		TEXT("ITEM %d/6\n\n%s\n\nPRESS A OR B ONCE\nNO CORRECTNESS FEEDBACK UNTIL ALL SIX ITEMS\nPUBLIC FIXTURE ONLY | NO HIDDEN VALUES USED"),
+		Answers.Len() + 1,
+		*Items[Answers.Len()].Text);
 }
 #endif
 
@@ -728,6 +840,30 @@ bool FOddsWellPublicLeagueViewTest::RunTest(const FString& Parameters)
 	TestTrue(TEXT("Comprehension instrument avoids diagnosis and hidden state"), ComprehensionCheck.Contains(TEXT("6 Cal Brooks OUT MEANS?  A DIAGNOSIS  B PUBLIC UNAVAILABILITY ONLY  | EXPECT B")));
 	TestFalse(TEXT("Comprehension instrument contains no hidden field names"), ComprehensionCheck.Contains(TEXT("FATIGUE")) || ComprehensionCheck.Contains(TEXT("RECOVERY")) || ComprehensionCheck.Contains(TEXT("INJURY RISK")) || ComprehensionCheck.Contains(TEXT("RNG")) || ComprehensionCheck.Contains(TEXT("RESOLVER")));
 	TestTrue(TEXT("Comprehension instrument does not claim human comprehension"), ComprehensionCheck.Contains(TEXT("NOT HUMAN COMPREHENSION")));
+	TArray<FOddsWellAthleteComprehensionItem> SessionItems;
+	TestTrue(TEXT("Blind session key matches all six instrument answers"), BuildAthleteComprehensionItems(Snapshot, SessionItems) && HasAthleteComprehensionKeyParity(SessionItems));
+	TestEqual(TEXT("Blind session reuses all six instrument items"), GetOddsWellAthleteComprehensionItemCount(), 6);
+	FString SessionAnswers;
+	const FString FirstQuestion = BuildOddsWellAthleteComprehensionSessionPage(Snapshot, SessionAnswers);
+	TestTrue(TEXT("Blind session starts at one item"), FirstQuestion.Contains(TEXT("ITEM 1/6")) && FirstQuestion.Contains(TEXT("DURABLE ABILITY?")));
+	TestFalse(TEXT("Blind session leaks no expected answer before completion"), FirstQuestion.Contains(TEXT("EXPECT")) || FirstQuestion.Contains(TEXT("KEY")) || FirstQuestion.Contains(TEXT("SCORE")) || FirstQuestion.Contains(TEXT("SUBMITTED")));
+	TestFalse(TEXT("Blind session rejects a non A/B response"), SubmitOddsWellAthleteComprehensionAnswer(Snapshot, SessionAnswers, TEXT('C'), Error));
+	TestEqual(TEXT("Rejected blind response does not advance"), SessionAnswers, FString());
+	TestTrue(TEXT("Blind session accepts first ordered response"), SubmitOddsWellAthleteComprehensionAnswer(Snapshot, SessionAnswers, TEXT('A'), Error));
+	const FString SecondQuestion = BuildOddsWellAthleteComprehensionSessionPage(Snapshot, SessionAnswers);
+	TestTrue(TEXT("Blind session advances exactly one item"), SecondQuestion.Contains(TEXT("ITEM 2/6")) && SecondQuestion.Contains(TEXT("SPECIALTY FIELD?")));
+	TestFalse(TEXT("Blind session shows only the current item"), SecondQuestion.Contains(TEXT("DURABLE ABILITY?")) || SecondQuestion.Contains(TEXT("EXPECT")) || SecondQuestion.Contains(TEXT("KEY")));
+	for (const TCHAR Answer : FString(TEXT("BBAAB")))
+	{
+		TestTrue(TEXT("Blind session accepts one bounded A/B response"), SubmitOddsWellAthleteComprehensionAnswer(Snapshot, SessionAnswers, Answer, Error));
+	}
+	TestEqual(TEXT("Blind session preserves submitted order"), SessionAnswers, FString(TEXT("ABBAAB")));
+	const FString CompletedSession = BuildOddsWellAthleteComprehensionSessionPage(Snapshot, SessionAnswers);
+	TestTrue(TEXT("Blind session reveals only submitted answers and score after completion"), CompletedSession.Contains(TEXT("SUBMITTED: ABBAAB")) && CompletedSession.Contains(TEXT("SCORE: 6/6")));
+	TestFalse(TEXT("Completed blind session still withholds the expected key"), CompletedSession.Contains(TEXT("EXPECT")) || CompletedSession.Contains(TEXT("KEY")));
+	TestFalse(TEXT("Blind session rejects a seventh response"), SubmitOddsWellAthleteComprehensionAnswer(Snapshot, SessionAnswers, TEXT('A'), Error));
+	TestEqual(TEXT("Rejected seventh response does not mutate answers"), SessionAnswers, FString(TEXT("ABBAAB")));
+	TestEqual(TEXT("Blind session scores responses in fixed order"), ScoreOddsWellAthleteComprehensionAnswers(TEXT("BBBBBB")), 3);
 #endif
 
 	FOddsWellMatchWinnerOfferPreview Offer;

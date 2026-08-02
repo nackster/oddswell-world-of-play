@@ -250,6 +250,8 @@ Hidden fatigue values, recovery timers, injury-risk calculations, random state, 
 
 One explicit Development-only QA flag now opens a fixed six-item comprehension instrument derived from that same public fixture. Its answer key checks durable ability versus one recent game result, specialty versus overall quality, role and minutes as opportunity rather than guaranteed production, recent form versus season baseline, a recorded life choice as context rather than proven cause, and `OUT` as public availability without an invented diagnosis. The instrument and its automated validation are absent from Shipping. Passing the instrument's software checks does not prove human player comprehension; observed-player evidence is still required.
 
+The Development-only player-blind session mode now presents those exact six items one at a time and accepts one A/B response for each. It withholds expected answers, the key, submitted answers, and correctness feedback until completion, then shows only the submitted sequence and score. It uses the unchanged `A B B A A B` key and the same approved public fixture, stores nothing, sends nothing, and remains absent from Shipping. This validates the session mechanism; it still does not prove that an observed player understands the athlete stories.
+
 ### Beta life behavior target
 
 - Training, rest, recovery, and social choices.

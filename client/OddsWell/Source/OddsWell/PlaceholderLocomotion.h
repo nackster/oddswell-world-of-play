@@ -126,6 +126,11 @@ private:
 	void PreviousLeaguePage();
 	void NextLeaguePage();
 	void ShowLeaguePage();
+#if UE_BUILD_DEVELOPMENT
+	void SubmitAthleteComprehensionA();
+	void SubmitAthleteComprehensionB();
+	void SubmitAthleteComprehensionAnswer(TCHAR Answer);
+#endif
 	void RefreshSportsbookOfferPreview();
 	void ToggleSportsbookOfferPreview();
 	void ShowSportsbookOfferPreview();
@@ -358,6 +363,8 @@ private:
 	bool bAthleteStoryQa = false;
 #if UE_BUILD_DEVELOPMENT
 	bool bAthleteComprehensionQa = false;
+	bool bAthleteComprehensionSessionQa = false;
+	FString AthleteComprehensionAnswers;
 #endif
 	bool bPublicLeagueQaCaptured = false;
 	float PublicLeagueQaElapsed = 0.0f;

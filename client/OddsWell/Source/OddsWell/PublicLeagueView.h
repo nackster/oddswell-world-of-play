@@ -93,6 +93,10 @@ ODDSWELL_API int32 GetOddsWellPublicLeaguePageCount(const FOddsWellPublicLeagueS
 ODDSWELL_API FString BuildOddsWellPublicLeaguePage(const FOddsWellPublicLeagueSnapshot& Snapshot, int32 PageIndex);
 #if UE_BUILD_DEVELOPMENT
 ODDSWELL_API FString BuildOddsWellAthleteComprehensionCheck(const FOddsWellPublicLeagueSnapshot& Snapshot);
+ODDSWELL_API int32 GetOddsWellAthleteComprehensionItemCount();
+ODDSWELL_API bool SubmitOddsWellAthleteComprehensionAnswer(const FOddsWellPublicLeagueSnapshot& Snapshot, FString& Answers, TCHAR Answer, FString& OutError);
+ODDSWELL_API int32 ScoreOddsWellAthleteComprehensionAnswers(const FString& Answers);
+ODDSWELL_API FString BuildOddsWellAthleteComprehensionSessionPage(const FOddsWellPublicLeagueSnapshot& Snapshot, const FString& Answers);
 #endif
 ODDSWELL_API bool LoadOddsWellMatchWinnerOfferPreview(FOddsWellMatchWinnerOfferPreview& OutPreview, FString& OutError);
 ODDSWELL_API FString BuildOddsWellMatchWinnerOfferPreview(const FOddsWellMatchWinnerOfferPreview& Preview);

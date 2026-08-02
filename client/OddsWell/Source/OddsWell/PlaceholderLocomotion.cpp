@@ -1120,7 +1120,8 @@ void AOddsWellPlaceholderCharacter::BeginPlay()
 		|| FParse::Param(FCommandLine::Get(), TEXT("AthleteExplanationQa"));
 #if UE_BUILD_DEVELOPMENT
 	bAthleteComprehensionQa = FParse::Param(FCommandLine::Get(), TEXT("AthleteComprehensionQa"));
-	bAthleteStoryQa = bAthleteStoryQa || bAthleteComprehensionQa;
+	bAthleteComprehensionSessionQa = FParse::Param(FCommandLine::Get(), TEXT("AthleteComprehensionSessionQa"));
+	bAthleteStoryQa = bAthleteStoryQa || bAthleteComprehensionQa || bAthleteComprehensionSessionQa;
 #endif
 	bPublicLeagueQa = FParse::Param(FCommandLine::Get(), TEXT("PublicLeagueQa")) || bAthleteStoryQa;
 	bStadiumQa = FParse::Param(FCommandLine::Get(), TEXT("StadiumQa"));
@@ -1455,6 +1456,10 @@ void AOddsWellPlaceholderCharacter::SetupPlayerInputComponent(UInputComponent* P
 	PlayerInputComponent->BindKey(KeyMarketPrevious, IE_Pressed, this, &AOddsWellPlaceholderCharacter::PreviousSportsbookMarketPage);
 	PlayerInputComponent->BindKey(KeyMarketNext, IE_Pressed, this, &AOddsWellPlaceholderCharacter::NextSportsbookMarketPage);
 	PlayerInputComponent->BindKey(KeyMenuClose, IE_Pressed, this, &AOddsWellPlaceholderCharacter::CloseTicketBoothMenu);
+#if UE_BUILD_DEVELOPMENT
+	PlayerInputComponent->BindKey(KeyLeft, IE_Pressed, this, &AOddsWellPlaceholderCharacter::SubmitAthleteComprehensionA);
+	PlayerInputComponent->BindKey(EKeys::B, IE_Pressed, this, &AOddsWellPlaceholderCharacter::SubmitAthleteComprehensionB);
+#endif
 
 	PlayerInputComponent->BindAxisKey(KeyControllerMoveY, this, &AOddsWellPlaceholderCharacter::MoveForward);
 	PlayerInputComponent->BindAxisKey(KeyControllerMoveX, this, &AOddsWellPlaceholderCharacter::MoveRight);
@@ -1520,7 +1525,11 @@ void AOddsWellPlaceholderCharacter::ShowLeaguePage()
 	{
 		FString Page = BuildOddsWellPublicLeaguePage(*PublicLeagueSnapshot, PublicLeaguePage);
 #if UE_BUILD_DEVELOPMENT
-		if (bAthleteComprehensionQa)
+		if (bAthleteComprehensionSessionQa)
+		{
+			Page = BuildOddsWellAthleteComprehensionSessionPage(*PublicLeagueSnapshot, AthleteComprehensionAnswers);
+		}
+		else if (bAthleteComprehensionQa)
 		{
 			Page = BuildOddsWellAthleteComprehensionCheck(*PublicLeagueSnapshot);
 		}
@@ -1528,6 +1537,41 @@ void AOddsWellPlaceholderCharacter::ShowLeaguePage()
 		GEngine->AddOnScreenDebugMessage(912013, 3600.0f, FColor::White, Page);
 	}
 }
+
+#if UE_BUILD_DEVELOPMENT
+void AOddsWellPlaceholderCharacter::SubmitAthleteComprehensionA()
+{
+	SubmitAthleteComprehensionAnswer(TEXT('A'));
+}
+
+void AOddsWellPlaceholderCharacter::SubmitAthleteComprehensionB()
+{
+	SubmitAthleteComprehensionAnswer(TEXT('B'));
+}
+
+void AOddsWellPlaceholderCharacter::SubmitAthleteComprehensionAnswer(const TCHAR Answer)
+{
+	if (!bAthleteComprehensionSessionQa || !bPublicLeagueVisible || !PublicLeagueSnapshot)
+	{
+		return;
+	}
+	FString Error;
+	if (!SubmitOddsWellAthleteComprehensionAnswer(*PublicLeagueSnapshot, AthleteComprehensionAnswers, Answer, Error))
+	{
+		return;
+	}
+	ShowLeaguePage();
+	if (AthleteComprehensionAnswers.Len() == GetOddsWellAthleteComprehensionItemCount())
+	{
+		UE_LOG(
+			LogOddsWellLocomotion,
+			Display,
+			TEXT("ODDSWELL_ATHLETE_COMPREHENSION_SESSION_COMPLETE|result=PASS|submitted=%s|score=%d|items=6|public_fixture_only=true|hidden_values=false|feedback_before_completion=false|development_only=true|human_comprehension=false"),
+			*AthleteComprehensionAnswers,
+			ScoreOddsWellAthleteComprehensionAnswers(AthleteComprehensionAnswers));
+	}
+}
+#endif
 
 void AOddsWellPlaceholderCharacter::RefreshSportsbookOfferPreview()
 {
@@ -2289,7 +2333,11 @@ void AOddsWellPlaceholderCharacter::Tick(const float DeltaSeconds)
 			? TEXT("Phase1J2_AthleteExplanation.png")
 			: bAthleteStoryQa ? TEXT("Phase1J1_AthleteStory.png") : TEXT("Phase1F1_PublicLeague.png");
 #if UE_BUILD_DEVELOPMENT
-		if (bAthleteComprehensionQa)
+		if (bAthleteComprehensionSessionQa)
+		{
+			ScreenshotName = TEXT("Phase1J3b0_AthleteComprehensionSession.png");
+		}
+		else if (bAthleteComprehensionQa)
 		{
 			ScreenshotName = TEXT("Phase1J3a_AthleteComprehension.png");
 		}
@@ -2299,6 +2347,15 @@ void AOddsWellPlaceholderCharacter::Tick(const float DeltaSeconds)
 			true,
 			false);
 #if UE_BUILD_DEVELOPMENT
+		if (bAthleteComprehensionSessionQa)
+		{
+			UE_LOG(
+				LogOddsWellLocomotion,
+				Display,
+				TEXT("ODDSWELL_ATHLETE_COMPREHENSION_SESSION|result=PASS|items=6|submitted=%d|complete=%s|answer_leak=false|key_leak=false|public_fixture_only=true|hidden_values=false|development_only=true|human_comprehension=false"),
+				AthleteComprehensionAnswers.Len(),
+				AthleteComprehensionAnswers.Len() == GetOddsWellAthleteComprehensionItemCount() ? TEXT("true") : TEXT("false"));
+		}
 		if (bAthleteComprehensionQa)
 		{
 			UE_LOG(
