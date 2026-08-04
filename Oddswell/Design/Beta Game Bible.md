@@ -262,6 +262,8 @@ A fresh post-clarification Development-only blind form now provides that prerequ
 
 The fresh unseen and uncoached owner session is now complete as one post-clarification human sample. The participant answered all six items and scored `5/6`. The four concepts missed in the initial session were answered correctly; the only measured miss in this fresh form was specialty versus overall quality. This is evidence of a much stronger result for one participant, not population comprehension or proof that the clarification alone caused the improvement. Form C is consumed and retired. No answers were persisted or transmitted by the game, and no athlete evidence or brain behavior changed. The next gate is the smallest public specialty clarification before any separately approved fresh retest. See [[Development/Reports/Phase 1J3b1e One Owner Post Clarification Comprehension Session]].
 
+All twelve public athlete pages now give specialty its own compact reading-guide line: the displayed specialty is the athlete's strongest skill category, not overall quality or a guaranteed result. The existing public specialty value remains unchanged; this is presentation only and adds no athlete evidence, brain behavior, or prediction. The next gate is an owner decision: accept the current one-human `5/6` evidence plus the measured correction for beta, or separately approve the cost of creating and administering another fresh blind form. See [[Development/Reports/Phase 1J3b1f Public Specialty Clarification]].
+
 ### Beta life behavior target
 
 - Training, rest, recovery, and social choices.

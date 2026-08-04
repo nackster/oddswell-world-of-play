@@ -51,6 +51,7 @@ FString BuildPublicAthleteExplanation(const FOddsWellPublicAthlete& Athlete)
 	return FString::Printf(
 		TEXT("=== READING GUIDE | MEANS / DOES NOT MEAN ===\n")
 		TEXT("ABILITY | MEANS: %s + PUBLISHED RATINGS (OVR %d) = LONG-TERM ABILITY. | DOES NOT MEAN: ONE RESULT.\n")
+		TEXT("SPECIALTY | MEANS: %s = STRONGEST SKILL CATEGORY. | DOES NOT MEAN: OVERALL QUALITY OR GUARANTEED RESULT.\n")
 		TEXT("BASELINE: %s / %s; %s role, %s consistency, %.2f public MPG.\n")
 		TEXT("FORM | MEANS: %s = %.2f RECENT vs %.2f SEASON PPG. | DOES NOT MEAN: PERMANENT ABILITY.\n")
 		TEXT("LIFE | MEANS: G%d %s = RECORDED CONTEXT. | DOES NOT MEAN: PROOF IT CAUSED PERFORMANCE.\n")
@@ -58,6 +59,7 @@ FString BuildPublicAthleteExplanation(const FOddsWellPublicAthlete& Athlete)
 		TEXT("=== END READING GUIDE ==="),
 		*Athlete.TalentTier.ToUpper(),
 		Athlete.Overall,
+		*Athlete.Specialty.ToUpper(),
 		*Athlete.TalentTier.ToUpper(),
 		*Athlete.Specialty.ToUpper(),
 		*Athlete.OffensiveRole.ToUpper(),
@@ -926,7 +928,12 @@ bool FOddsWellPublicLeagueViewTest::RunTest(const FString& Parameters)
 					*Athlete.TalentTier.ToUpper(),
 					Athlete.Overall)));
 			TestTrue(
-				*FString::Printf(TEXT("%s preserves specialty and opportunity"), *Label),
+				*FString::Printf(TEXT("%s explains exact specialty"), *Label),
+				Guide.Contains(FString::Printf(
+					TEXT("SPECIALTY | MEANS: %s = STRONGEST SKILL CATEGORY. | DOES NOT MEAN: OVERALL QUALITY OR GUARANTEED RESULT."),
+					*Athlete.Specialty.ToUpper())));
+			TestTrue(
+				*FString::Printf(TEXT("%s preserves opportunity"), *Label),
 				Guide.Contains(FString::Printf(
 					TEXT("BASELINE: %s / %s; %s role, %s consistency, %.2f public MPG."),
 					*Athlete.TalentTier.ToUpper(),
