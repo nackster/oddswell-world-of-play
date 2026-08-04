@@ -256,6 +256,8 @@ An equivalent unseen Development-only form now protects the first observed sessi
 
 That first owner session is now complete as one valid unseen and uncoached human sample. The participant answered all six items and scored `2/6`; the measured misses were durable ability, recent form, life context versus causation, and public availability versus diagnosis. The initial comprehension gate therefore does **not** pass. This one-person result proves four presentation gaps only, not population comprehension or a brain defect. The used equivalent form is consumed and retired. No answer persistence, telemetry, network path, personal profile, or brain behavior was added; the next gate is the smallest public-presentation clarification for those four concepts. See [[Development/Reports/Phase 1J3b1b One Owner Observed Comprehension Session]].
 
+The existing twelve athlete pages now answer those four measured gaps with one compact `MEANS / DOES NOT MEAN` reading guide. It states that talent and ratings describe long-term ability rather than one result; recent form compares recent output with the season baseline rather than permanent ability; a recorded life choice is context rather than proof of causation; and `OUT` describes public availability rather than a diagnosis. The existing specialty and opportunity presentation is unchanged. This is a public-presentation clarification only: it does not change athlete evidence, the frozen brains, simulator behavior, or the failed comprehension result. The consumed form remains retired, and any later retest requires a separately approved fresh unseen instrument. See [[Development/Reports/Phase 1J3b1c Four Concept Athlete Reading Guide]].
+
 ### Beta life behavior target
 
 - Training, rest, recovery, and social choices.
