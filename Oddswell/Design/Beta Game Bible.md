@@ -254,6 +254,8 @@ The Development-only player-blind session mode now presents those exact six item
 
 An equivalent unseen Development-only form now protects the first observed session from prior Form A exposure. It covers the same six distinctions with changed public athletes, examples, wording, and independently arranged A/B sides while retaining an internal one-to-one concept map for later miss reporting. It starts unanswered, exposes no expected answer, key, score, correctness, or concept label before completion, persists and transmits nothing, and is absent from Shipping. The owner approved one uncoached participant for the initial beta evidence gate; no human result is claimed until that session is actually observed.
 
+That first owner session is now complete as one valid unseen and uncoached human sample. The participant answered all six items and scored `2/6`; the measured misses were durable ability, recent form, life context versus causation, and public availability versus diagnosis. The initial comprehension gate therefore does **not** pass. This one-person result proves four presentation gaps only, not population comprehension or a brain defect. The used equivalent form is consumed and retired. No answer persistence, telemetry, network path, personal profile, or brain behavior was added; the next gate is the smallest public-presentation clarification for those four concepts. See [[Development/Reports/Phase 1J3b1b One Owner Observed Comprehension Session]].
+
 ### Beta life behavior target
 
 - Training, rest, recovery, and social choices.
