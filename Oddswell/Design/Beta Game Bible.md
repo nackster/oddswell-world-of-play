@@ -252,6 +252,8 @@ One explicit Development-only QA flag now opens a fixed six-item comprehension i
 
 The Development-only player-blind session mode now presents those exact six items one at a time and accepts one A/B response for each. It withholds expected answers, the key, submitted answers, and correctness feedback until completion, then shows only the submitted sequence and score. It uses the unchanged `A B B A A B` key and the same approved public fixture, stores nothing, sends nothing, and remains absent from Shipping. This validates the session mechanism; it still does not prove that an observed player understands the athlete stories.
 
+An equivalent unseen Development-only form now protects the first observed session from prior Form A exposure. It covers the same six distinctions with changed public athletes, examples, wording, and independently arranged A/B sides while retaining an internal one-to-one concept map for later miss reporting. It starts unanswered, exposes no expected answer, key, score, correctness, or concept label before completion, persists and transmits nothing, and is absent from Shipping. The owner approved one uncoached participant for the initial beta evidence gate; no human result is claimed until that session is actually observed.
+
 ### Beta life behavior target
 
 - Training, rest, recovery, and social choices.

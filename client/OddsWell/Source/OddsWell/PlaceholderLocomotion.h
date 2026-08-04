@@ -364,6 +364,7 @@ private:
 #if UE_BUILD_DEVELOPMENT
 	bool bAthleteComprehensionQa = false;
 	bool bAthleteComprehensionSessionQa = false;
+	bool bAthleteComprehensionFormBQa = false;
 	FString AthleteComprehensionAnswers;
 #endif
 	bool bPublicLeagueQaCaptured = false;

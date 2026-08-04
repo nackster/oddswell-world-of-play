@@ -1120,7 +1120,9 @@ void AOddsWellPlaceholderCharacter::BeginPlay()
 		|| FParse::Param(FCommandLine::Get(), TEXT("AthleteExplanationQa"));
 #if UE_BUILD_DEVELOPMENT
 	bAthleteComprehensionQa = FParse::Param(FCommandLine::Get(), TEXT("AthleteComprehensionQa"));
-	bAthleteComprehensionSessionQa = FParse::Param(FCommandLine::Get(), TEXT("AthleteComprehensionSessionQa"));
+	bAthleteComprehensionFormBQa = FParse::Param(FCommandLine::Get(), TEXT("AthleteComprehensionFormBQa"));
+	bAthleteComprehensionSessionQa = FParse::Param(FCommandLine::Get(), TEXT("AthleteComprehensionSessionQa"))
+		|| bAthleteComprehensionFormBQa;
 	bAthleteStoryQa = bAthleteStoryQa || bAthleteComprehensionQa || bAthleteComprehensionSessionQa;
 #endif
 	bPublicLeagueQa = FParse::Param(FCommandLine::Get(), TEXT("PublicLeagueQa")) || bAthleteStoryQa;
@@ -1527,7 +1529,10 @@ void AOddsWellPlaceholderCharacter::ShowLeaguePage()
 #if UE_BUILD_DEVELOPMENT
 		if (bAthleteComprehensionSessionQa)
 		{
-			Page = BuildOddsWellAthleteComprehensionSessionPage(*PublicLeagueSnapshot, AthleteComprehensionAnswers);
+			Page = BuildOddsWellAthleteComprehensionSessionPage(
+				*PublicLeagueSnapshot,
+				AthleteComprehensionAnswers,
+				bAthleteComprehensionFormBQa);
 		}
 		else if (bAthleteComprehensionQa)
 		{
@@ -1556,19 +1561,27 @@ void AOddsWellPlaceholderCharacter::SubmitAthleteComprehensionAnswer(const TCHAR
 		return;
 	}
 	FString Error;
-	if (!SubmitOddsWellAthleteComprehensionAnswer(*PublicLeagueSnapshot, AthleteComprehensionAnswers, Answer, Error))
+	if (!SubmitOddsWellAthleteComprehensionAnswer(
+		*PublicLeagueSnapshot,
+		AthleteComprehensionAnswers,
+		Answer,
+		Error,
+		bAthleteComprehensionFormBQa))
 	{
 		return;
 	}
 	ShowLeaguePage();
-	if (AthleteComprehensionAnswers.Len() == GetOddsWellAthleteComprehensionItemCount())
+	if (AthleteComprehensionAnswers.Len() == GetOddsWellAthleteComprehensionItemCount(bAthleteComprehensionFormBQa))
 	{
 		UE_LOG(
 			LogOddsWellLocomotion,
 			Display,
-			TEXT("ODDSWELL_ATHLETE_COMPREHENSION_SESSION_COMPLETE|result=PASS|submitted=%s|score=%d|items=6|public_fixture_only=true|hidden_values=false|feedback_before_completion=false|development_only=true|human_comprehension=false"),
+			TEXT("ODDSWELL_ATHLETE_COMPREHENSION_SESSION_COMPLETE|result=PASS|variant=%s|submitted=%s|score=%d|items=6|public_fixture_only=true|hidden_values=false|feedback_before_completion=false|development_only=true|human_comprehension=false"),
+			bAthleteComprehensionFormBQa ? TEXT("equivalent") : TEXT("original"),
 			*AthleteComprehensionAnswers,
-			ScoreOddsWellAthleteComprehensionAnswers(AthleteComprehensionAnswers));
+			ScoreOddsWellAthleteComprehensionAnswers(
+				AthleteComprehensionAnswers,
+				bAthleteComprehensionFormBQa));
 	}
 }
 #endif
@@ -2335,7 +2348,9 @@ void AOddsWellPlaceholderCharacter::Tick(const float DeltaSeconds)
 #if UE_BUILD_DEVELOPMENT
 		if (bAthleteComprehensionSessionQa)
 		{
-			ScreenshotName = TEXT("Phase1J3b0_AthleteComprehensionSession.png");
+			ScreenshotName = bAthleteComprehensionFormBQa
+				? TEXT("Phase1J3b1a_AthleteComprehensionFormB.png")
+				: TEXT("Phase1J3b0_AthleteComprehensionSession.png");
 		}
 		else if (bAthleteComprehensionQa)
 		{
@@ -2352,9 +2367,10 @@ void AOddsWellPlaceholderCharacter::Tick(const float DeltaSeconds)
 			UE_LOG(
 				LogOddsWellLocomotion,
 				Display,
-				TEXT("ODDSWELL_ATHLETE_COMPREHENSION_SESSION|result=PASS|items=6|submitted=%d|complete=%s|answer_leak=false|key_leak=false|public_fixture_only=true|hidden_values=false|development_only=true|human_comprehension=false"),
+				TEXT("ODDSWELL_ATHLETE_COMPREHENSION_SESSION|result=PASS|variant=%s|items=6|submitted=%d|complete=%s|answer_leak=false|key_leak=false|score_leak=false|correctness_leak=false|concept_leak=false|public_fixture_only=true|hidden_values=false|development_only=true|human_comprehension=false"),
+				bAthleteComprehensionFormBQa ? TEXT("equivalent") : TEXT("original"),
 				AthleteComprehensionAnswers.Len(),
-				AthleteComprehensionAnswers.Len() == GetOddsWellAthleteComprehensionItemCount() ? TEXT("true") : TEXT("false"));
+				AthleteComprehensionAnswers.Len() == GetOddsWellAthleteComprehensionItemCount(bAthleteComprehensionFormBQa) ? TEXT("true") : TEXT("false"));
 		}
 		if (bAthleteComprehensionQa)
 		{
