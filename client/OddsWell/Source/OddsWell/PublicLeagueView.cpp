@@ -91,18 +91,54 @@ struct FOddsWellAthleteComprehensionItem
 
 const FString AthleteComprehensionKey(TEXT("ABBAAB"));
 const FString AthleteComprehensionFormBKey(TEXT("BABBAA"));
+const FString AthleteComprehensionFormCKey(TEXT("AABBBA"));
 
-const FString& GetAthleteComprehensionKey(const bool bUseFormB)
+const FString& GetAthleteComprehensionKey(const bool bUseFormB, const bool bUseFormC = false)
 {
-	return bUseFormB ? AthleteComprehensionFormBKey : AthleteComprehensionKey;
+	return bUseFormC ? AthleteComprehensionFormCKey : bUseFormB ? AthleteComprehensionFormBKey : AthleteComprehensionKey;
 }
 
 bool BuildAthleteComprehensionItems(
 	const FOddsWellPublicLeagueSnapshot& Snapshot,
 	const bool bUseFormB,
-	TArray<FOddsWellAthleteComprehensionItem>& OutItems)
+	TArray<FOddsWellAthleteComprehensionItem>& OutItems,
+	const bool bUseFormC = false)
 {
 	OutItems.Reset();
+	if (bUseFormC)
+	{
+		const FOddsWellPublicTeam* MicahTeam = nullptr;
+		const FOddsWellPublicTeam* KellanTeam = nullptr;
+		const FOddsWellPublicTeam* AndreTeam = nullptr;
+		const FOddsWellPublicTeam* NicoTeam = nullptr;
+		const FOddsWellPublicTeam* CalTeam = nullptr;
+		const FOddsWellPublicAthlete* Micah = FindAthlete(Snapshot, 1, MicahTeam);
+		const FOddsWellPublicAthlete* Kellan = FindAthlete(Snapshot, 3, KellanTeam);
+		const FOddsWellPublicAthlete* Andre = FindAthlete(Snapshot, 4, AndreTeam);
+		const FOddsWellPublicAthlete* Nico = FindAthlete(Snapshot, 6, NicoTeam);
+		const FOddsWellPublicAthlete* Cal = FindAthlete(Snapshot, 10, CalTeam);
+		if (!Micah || !Kellan || !Andre || !Nico || !Cal
+			|| !MicahTeam || !KellanTeam || !AndreTeam || !NicoTeam || !CalTeam
+			|| Snapshot.Games.IsEmpty()
+			|| Micah->Name != TEXT("Micah Vale") || Kellan->Name != TEXT("Kellan Shore")
+			|| Andre->Name != TEXT("Andre North") || Nico->Name != TEXT("Nico Reyes")
+			|| Cal->Name != TEXT("Cal Brooks")
+			|| Andre->RecentPointsPerGame >= Andre->SeasonPointsPerGame
+			|| Nico->LifeChoice != TEXT("REST") || Cal->bAvailable)
+		{
+			return false;
+		}
+		const FOddsWellPublicGame& RecentGame = Snapshot.Games.Last();
+		OutItems = {
+			{FString::Printf(TEXT("FOR %s, WHICH PUBLIC LINE IS LONG-TERM ABILITY, NOT ONE RESULT?  A %s + OVR %d  B G%d RESULT %d-%d"), *Micah->Name, *Micah->TalentTier.ToUpper(), Micah->Overall, RecentGame.Number, RecentGame.AwayScore, RecentGame.HomeScore), TEXT('A'), EOddsWellAthleteComprehensionConcept::DurableAbility},
+			{FString::Printf(TEXT("WHICH FIELD SAYS WHAT %s DOES BEST?  A %s  B %s TIER"), *Kellan->Name, *Kellan->Specialty.ToUpper(), *Kellan->TalentTier.ToUpper()), TEXT('A'), EOddsWellAthleteComprehensionConcept::Specialty},
+			{FString::Printf(TEXT("%s ROLE + %.2f PUBLIC MPG DESCRIBES?  A GUARANTEED %.2f PPG  B OPPORTUNITY TO CONTRIBUTE"), *Micah->OffensiveRole.ToUpper(), Micah->RecentMinutesPerGame, Micah->SeasonPointsPerGame), TEXT('B'), EOddsWellAthleteComprehensionConcept::Opportunity},
+			{FString::Printf(TEXT("%s: %.2f RECENT vs %.2f SEASON + %s MEANS?  A PERMANENT ABILITY LOST  B RECENT OUTPUT BELOW SEASON"), *Andre->Name, Andre->RecentPointsPerGame, Andre->SeasonPointsPerGame, *Andre->Form), TEXT('B'), EOddsWellAthleteComprehensionConcept::RecentForm},
+			{FString::Printf(TEXT("%s'S G%d %s RECORD IS?  A PROOF IT CAUSED HIS OUTPUT  B CONTEXT, NOT PROOF OF CAUSE"), *Nico->Name, Nico->LifeGame, *Nico->LifeChoice), TEXT('B'), EOddsWellAthleteComprehensionConcept::LifeContext},
+			{FString::Printf(TEXT("%s OUT PUBLISHES?  A UNAVAILABLE ONLY, NOT A DIAGNOSIS  B A DIAGNOSIS"), *Cal->Name), TEXT('A'), EOddsWellAthleteComprehensionConcept::Availability},
+		};
+		return true;
+	}
 	if (bUseFormB)
 	{
 		const FOddsWellPublicTeam* TariqTeam = nullptr;
@@ -161,9 +197,10 @@ bool BuildAthleteComprehensionItems(
 
 bool HasAthleteComprehensionKeyParity(
 	const TArray<FOddsWellAthleteComprehensionItem>& Items,
-	const bool bUseFormB)
+	const bool bUseFormB,
+	const bool bUseFormC = false)
 {
-	const FString& Key = GetAthleteComprehensionKey(bUseFormB);
+	const FString& Key = GetAthleteComprehensionKey(bUseFormB, bUseFormC);
 	if (Items.Num() != Key.Len())
 	{
 		return false;
@@ -707,9 +744,9 @@ FString BuildOddsWellAthleteComprehensionCheck(const FOddsWellPublicLeagueSnapsh
 	return Text + TEXT("\nEXPECTED KEY: A B B A A B | PUBLIC FIXTURE ONLY | NO HIDDEN VALUES USED");
 }
 
-int32 GetOddsWellAthleteComprehensionItemCount(const bool bUseFormB)
+int32 GetOddsWellAthleteComprehensionItemCount(const bool bUseFormB, const bool bUseFormC)
 {
-	return GetAthleteComprehensionKey(bUseFormB).Len();
+	return GetAthleteComprehensionKey(bUseFormB, bUseFormC).Len();
 }
 
 bool SubmitOddsWellAthleteComprehensionAnswer(
@@ -717,11 +754,12 @@ bool SubmitOddsWellAthleteComprehensionAnswer(
 	FString& Answers,
 	const TCHAR Answer,
 	FString& OutError,
-	const bool bUseFormB)
+	const bool bUseFormB,
+	const bool bUseFormC)
 {
 	TArray<FOddsWellAthleteComprehensionItem> Items;
-	if (!BuildAthleteComprehensionItems(Snapshot, bUseFormB, Items)
-		|| Items.Num() != GetAthleteComprehensionKey(bUseFormB).Len())
+	if (!BuildAthleteComprehensionItems(Snapshot, bUseFormB, Items, bUseFormC)
+		|| Items.Num() != GetAthleteComprehensionKey(bUseFormB, bUseFormC).Len())
 	{
 		OutError = TEXT("The fixed public comprehension fixture is unavailable.");
 		return false;
@@ -741,9 +779,9 @@ bool SubmitOddsWellAthleteComprehensionAnswer(
 	return true;
 }
 
-int32 ScoreOddsWellAthleteComprehensionAnswers(const FString& Answers, const bool bUseFormB)
+int32 ScoreOddsWellAthleteComprehensionAnswers(const FString& Answers, const bool bUseFormB, const bool bUseFormC)
 {
-	const FString& Key = GetAthleteComprehensionKey(bUseFormB);
+	const FString& Key = GetAthleteComprehensionKey(bUseFormB, bUseFormC);
 	if (Answers.Len() != Key.Len())
 	{
 		return INDEX_NONE;
@@ -763,16 +801,17 @@ int32 ScoreOddsWellAthleteComprehensionAnswers(const FString& Answers, const boo
 FString BuildOddsWellAthleteComprehensionSessionPage(
 	const FOddsWellPublicLeagueSnapshot& Snapshot,
 	const FString& Answers,
-	const bool bUseFormB)
+	const bool bUseFormB,
+	const bool bUseFormC)
 {
 	TArray<FOddsWellAthleteComprehensionItem> Items;
-	if (!BuildAthleteComprehensionItems(Snapshot, bUseFormB, Items) || Answers.Len() > Items.Num())
+	if (!BuildAthleteComprehensionItems(Snapshot, bUseFormB, Items, bUseFormC) || Answers.Len() > Items.Num())
 	{
 		return TEXT("DEVELOPMENT PLAYER-BLIND COMPREHENSION SESSION UNAVAILABLE");
 	}
 	if (Answers.Len() == Items.Num())
 	{
-		const int32 Score = ScoreOddsWellAthleteComprehensionAnswers(Answers, bUseFormB);
+		const int32 Score = ScoreOddsWellAthleteComprehensionAnswers(Answers, bUseFormB, bUseFormC);
 		return Score == INDEX_NONE
 			? TEXT("DEVELOPMENT PLAYER-BLIND COMPREHENSION SESSION UNAVAILABLE")
 			: FString::Printf(
@@ -1020,6 +1059,66 @@ bool FOddsWellPublicLeagueViewTest::RunTest(const FString& Parameters)
 	TestTrue(TEXT("Equivalent blind form completes deterministically after six responses"), FormBCompletion.Contains(TEXT("SESSION COMPLETE")) && FormBCompletion.Contains(TEXT("SCORE: 6/6")));
 	TestEqual(TEXT("Equivalent blind form completion is deterministic"), BuildOddsWellAthleteComprehensionSessionPage(Snapshot, FormBAnswers, true), FormBCompletion);
 	TestFalse(TEXT("Equivalent blind form rejects a seventh response"), SubmitOddsWellAthleteComprehensionAnswer(Snapshot, FormBAnswers, TEXT('A'), Error, true));
+
+	TArray<FOddsWellAthleteComprehensionItem> FormCItems;
+	TestTrue(TEXT("Fresh post-clarification form uses the approved public fixture"), BuildAthleteComprehensionItems(Snapshot, false, FormCItems, true));
+	TestEqual(TEXT("Fresh post-clarification form has exactly six items"), FormCItems.Num(), 6);
+	TestTrue(TEXT("Fresh post-clarification form has key parity"), HasAthleteComprehensionKeyParity(FormCItems, false, true));
+	TestEqual(TEXT("Retired original response sequence is unchanged"), GetAthleteComprehensionKey(false), FString(TEXT("ABBAAB")));
+	TestEqual(TEXT("Retired equivalent response sequence is unchanged"), GetAthleteComprehensionKey(true), FString(TEXT("BABBAA")));
+	for (int32 Index = 0; Index < ExpectedConcepts.Num(); ++Index)
+	{
+		const FString ConceptTest = FString::Printf(TEXT("Fresh blind item %d keeps one exact concept mapping"), Index + 1);
+		TestEqual(
+			*ConceptTest,
+			static_cast<uint8>(FormCItems[Index].Concept),
+			static_cast<uint8>(ExpectedConcepts[Index]));
+		const FString FreshWordingTest = FString::Printf(TEXT("Fresh blind item %d differs from both retired forms"), Index + 1);
+		TestTrue(
+			*FreshWordingTest,
+			FormCItems[Index].Text != SessionItems[Index].Text
+			&& FormCItems[Index].Text != FormBItems[Index].Text);
+		const FString PublicOnlyTest = FString::Printf(TEXT("Fresh blind item %d contains public claims only"), Index + 1);
+		TestFalse(
+			*PublicOnlyTest,
+			FormCItems[Index].Text.Contains(TEXT("FATIGUE"))
+			|| FormCItems[Index].Text.Contains(TEXT("RECOVERY"))
+			|| FormCItems[Index].Text.Contains(TEXT("INJURY"))
+			|| FormCItems[Index].Text.Contains(TEXT("RNG"))
+			|| FormCItems[Index].Text.Contains(TEXT("RESOLVER")));
+	}
+	TestTrue(
+		TEXT("Fresh blind form materially changes public examples"),
+		FormCItems[0].Text.Contains(TEXT("Micah Vale"))
+		&& FormCItems[1].Text.Contains(TEXT("Kellan Shore"))
+		&& FormCItems[3].Text.Contains(TEXT("Andre North"))
+		&& FormCItems[4].Text.Contains(TEXT("Nico Reyes")));
+	TestNotEqual(TEXT("Fresh response sequence differs from original"), GetAthleteComprehensionKey(false, true), GetAthleteComprehensionKey(false));
+	TestNotEqual(TEXT("Fresh response sequence differs from equivalent"), GetAthleteComprehensionKey(false, true), GetAthleteComprehensionKey(true));
+	bool bFreshComplementsOriginal = true;
+	bool bFreshComplementsEquivalent = true;
+	for (int32 Index = 0; Index < GetAthleteComprehensionKey(false, true).Len(); ++Index)
+	{
+		bFreshComplementsOriginal &= GetAthleteComprehensionKey(false, true)[Index] != GetAthleteComprehensionKey(false)[Index];
+		bFreshComplementsEquivalent &= GetAthleteComprehensionKey(false, true)[Index] != GetAthleteComprehensionKey(true)[Index];
+	}
+	TestFalse(TEXT("Fresh response sides are not a full inversion of original"), bFreshComplementsOriginal);
+	TestFalse(TEXT("Fresh response sides are not a full inversion of equivalent"), bFreshComplementsEquivalent);
+	FString FormCAnswers;
+	const FString FormCFirstQuestion = BuildOddsWellAthleteComprehensionSessionPage(Snapshot, FormCAnswers, false, true);
+	TestTrue(TEXT("Fresh blind form starts unanswered on one item"), FormCFirstQuestion.Contains(TEXT("ITEM 1/6")) && FormCFirstQuestion.Contains(FormCItems[0].Text));
+	TestFalse(TEXT("Fresh blind form leaks no pre-completion evaluation data"), FormCFirstQuestion.Contains(TEXT("EXPECT")) || FormCFirstQuestion.Contains(TEXT("KEY")) || FormCFirstQuestion.Contains(TEXT("SCORE")) || FormCFirstQuestion.Contains(TEXT("SUBMITTED")) || FormCFirstQuestion.Contains(TEXT("CORRECT:")) || FormCFirstQuestion.Contains(TEXT("INCORRECT")) || FormCFirstQuestion.Contains(TEXT("CONCEPT:")));
+	TestFalse(TEXT("Fresh blind form rejects a non A/B response"), SubmitOddsWellAthleteComprehensionAnswer(Snapshot, FormCAnswers, TEXT('C'), Error, false, true));
+	TestEqual(TEXT("Rejected fresh-form response does not advance"), FormCAnswers, FString());
+	for (const TCHAR Answer : FString(TEXT("AAAAAA")))
+	{
+		TestTrue(TEXT("Fresh blind form accepts one bounded A/B response"), SubmitOddsWellAthleteComprehensionAnswer(Snapshot, FormCAnswers, Answer, Error, false, true));
+	}
+	const FString FormCCompletion = BuildOddsWellAthleteComprehensionSessionPage(Snapshot, FormCAnswers, false, true);
+	TestTrue(TEXT("Fresh blind form completes deterministically after six responses"), FormCCompletion.Contains(TEXT("SESSION COMPLETE")) && FormCCompletion.Contains(TEXT("SUBMITTED: AAAAAA")) && FormCCompletion.Contains(TEXT("SCORE:")));
+	TestEqual(TEXT("Fresh blind form completion is deterministic"), BuildOddsWellAthleteComprehensionSessionPage(Snapshot, FormCAnswers, false, true), FormCCompletion);
+	TestFalse(TEXT("Fresh blind form rejects a seventh response"), SubmitOddsWellAthleteComprehensionAnswer(Snapshot, FormCAnswers, TEXT('A'), Error, false, true));
+	TestEqual(TEXT("Rejected fresh-form seventh response does not mutate answers"), FormCAnswers, FString(TEXT("AAAAAA")));
 #endif
 
 	FOddsWellMatchWinnerOfferPreview Offer;

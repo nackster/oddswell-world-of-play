@@ -365,6 +365,7 @@ private:
 	bool bAthleteComprehensionQa = false;
 	bool bAthleteComprehensionSessionQa = false;
 	bool bAthleteComprehensionFormBQa = false;
+	bool bAthleteComprehensionFormCQa = false;
 	FString AthleteComprehensionAnswers;
 #endif
 	bool bPublicLeagueQaCaptured = false;

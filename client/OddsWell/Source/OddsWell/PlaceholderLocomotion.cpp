@@ -1121,8 +1121,10 @@ void AOddsWellPlaceholderCharacter::BeginPlay()
 #if UE_BUILD_DEVELOPMENT
 	bAthleteComprehensionQa = FParse::Param(FCommandLine::Get(), TEXT("AthleteComprehensionQa"));
 	bAthleteComprehensionFormBQa = FParse::Param(FCommandLine::Get(), TEXT("AthleteComprehensionFormBQa"));
+	bAthleteComprehensionFormCQa = FParse::Param(FCommandLine::Get(), TEXT("AthleteComprehensionFormCQa"));
 	bAthleteComprehensionSessionQa = FParse::Param(FCommandLine::Get(), TEXT("AthleteComprehensionSessionQa"))
-		|| bAthleteComprehensionFormBQa;
+		|| bAthleteComprehensionFormBQa
+		|| bAthleteComprehensionFormCQa;
 	bAthleteStoryQa = bAthleteStoryQa || bAthleteComprehensionQa || bAthleteComprehensionSessionQa;
 #endif
 	bPublicLeagueQa = FParse::Param(FCommandLine::Get(), TEXT("PublicLeagueQa")) || bAthleteStoryQa;
@@ -1532,7 +1534,8 @@ void AOddsWellPlaceholderCharacter::ShowLeaguePage()
 			Page = BuildOddsWellAthleteComprehensionSessionPage(
 				*PublicLeagueSnapshot,
 				AthleteComprehensionAnswers,
-				bAthleteComprehensionFormBQa);
+				bAthleteComprehensionFormBQa,
+				bAthleteComprehensionFormCQa);
 		}
 		else if (bAthleteComprehensionQa)
 		{
@@ -1566,22 +1569,24 @@ void AOddsWellPlaceholderCharacter::SubmitAthleteComprehensionAnswer(const TCHAR
 		AthleteComprehensionAnswers,
 		Answer,
 		Error,
-		bAthleteComprehensionFormBQa))
+		bAthleteComprehensionFormBQa,
+		bAthleteComprehensionFormCQa))
 	{
 		return;
 	}
 	ShowLeaguePage();
-	if (AthleteComprehensionAnswers.Len() == GetOddsWellAthleteComprehensionItemCount(bAthleteComprehensionFormBQa))
+	if (AthleteComprehensionAnswers.Len() == GetOddsWellAthleteComprehensionItemCount(bAthleteComprehensionFormBQa, bAthleteComprehensionFormCQa))
 	{
 		UE_LOG(
 			LogOddsWellLocomotion,
 			Display,
 			TEXT("ODDSWELL_ATHLETE_COMPREHENSION_SESSION_COMPLETE|result=PASS|variant=%s|submitted=%s|score=%d|items=6|public_fixture_only=true|hidden_values=false|feedback_before_completion=false|development_only=true|human_comprehension=false"),
-			bAthleteComprehensionFormBQa ? TEXT("equivalent") : TEXT("original"),
+			bAthleteComprehensionFormCQa ? TEXT("fresh-c") : bAthleteComprehensionFormBQa ? TEXT("equivalent") : TEXT("original"),
 			*AthleteComprehensionAnswers,
 			ScoreOddsWellAthleteComprehensionAnswers(
 				AthleteComprehensionAnswers,
-				bAthleteComprehensionFormBQa));
+				bAthleteComprehensionFormBQa,
+				bAthleteComprehensionFormCQa));
 	}
 }
 #endif
@@ -2348,7 +2353,9 @@ void AOddsWellPlaceholderCharacter::Tick(const float DeltaSeconds)
 #if UE_BUILD_DEVELOPMENT
 		if (bAthleteComprehensionSessionQa)
 		{
-			ScreenshotName = bAthleteComprehensionFormBQa
+			ScreenshotName = bAthleteComprehensionFormCQa
+				? TEXT("Phase1J3b1d_AthleteComprehensionFormC.png")
+				: bAthleteComprehensionFormBQa
 				? TEXT("Phase1J3b1a_AthleteComprehensionFormB.png")
 				: TEXT("Phase1J3b0_AthleteComprehensionSession.png");
 		}
@@ -2368,9 +2375,9 @@ void AOddsWellPlaceholderCharacter::Tick(const float DeltaSeconds)
 				LogOddsWellLocomotion,
 				Display,
 				TEXT("ODDSWELL_ATHLETE_COMPREHENSION_SESSION|result=PASS|variant=%s|items=6|submitted=%d|complete=%s|answer_leak=false|key_leak=false|score_leak=false|correctness_leak=false|concept_leak=false|public_fixture_only=true|hidden_values=false|development_only=true|human_comprehension=false"),
-				bAthleteComprehensionFormBQa ? TEXT("equivalent") : TEXT("original"),
+				bAthleteComprehensionFormCQa ? TEXT("fresh-c") : bAthleteComprehensionFormBQa ? TEXT("equivalent") : TEXT("original"),
 				AthleteComprehensionAnswers.Len(),
-				AthleteComprehensionAnswers.Len() == GetOddsWellAthleteComprehensionItemCount(bAthleteComprehensionFormBQa) ? TEXT("true") : TEXT("false"));
+				AthleteComprehensionAnswers.Len() == GetOddsWellAthleteComprehensionItemCount(bAthleteComprehensionFormBQa, bAthleteComprehensionFormCQa) ? TEXT("true") : TEXT("false"));
 		}
 		if (bAthleteComprehensionQa)
 		{
