@@ -515,9 +515,10 @@ One bounded owner sample, the public presentation corrections it produced, and e
 
 1. **COMPLETE — Phase 1K.0:** the eight existing route components are inventoried and one canonical [[Development/Phase 1K First-Hour Integration Evidence Contract]] defines the required actions, authority, evidence, reset, attempt record, and fail-fast rules.
 2. **COMPLETE — Phase 1K.1 FAILED SETUP MEASUREMENT:** the first packaged technical attempt stopped before `setup_end_utc` because its passive peer listened on `0.0.0.0:7777`, not loopback only. All eight route components are **NOT REACHED**. The owner Bootstrap/chooser condition is retained only as a secondary diagnostic. See [[Development/Reports/Phase 1K1 Canonical Packaged First-Hour Contract Fail-Fast Technical Measurement]].
-3. **NEXT — Phase 1K.2:** select the smallest correction from the measured first failure: establish and verify a loopback-only passive-peer launch before starting any route action. Do not repair or bypass the later chooser observation in the same phase.
-4. **PENDING — later Phase 1K gates:** select only from the next measured fail-fast boundary; do not invent a generalized tutorial, orchestration framework, or new authority.
-5. **CONDITIONAL — reopen Phase 1J:** only if measured first-hour or player evidence shows that required athlete distinctions cannot be represented by existing public fields and clearer presentation.
+3. **COMPLETE — Phase 1K.2 STRICT PROOF FAILED:** native `-multihome=127.0.0.1 -port=17777` proved the exact gameplay endpoint at `127.0.0.1:17777`, but the same OddsWell PID retained Unreal trace-control TCP `0.0.0.0:1985` even with `-notraceserver`. Setup did not complete and all eight route components remain **NOT REACHED**. See [[Development/Reports/Phase 1K2 Loopback Only Passive Peer Launch Correction and Proof]].
+4. **OWNER / SECURITY GATE:** decide whether the beta loopback boundary governs the gameplay `GameNetDriver` or every socket owned by the process. If it remains process-wide, separately approve a package/build/runtime correction before another setup attempt. Do not start the route or repair the chooser yet.
+5. **PENDING — later Phase 1K gates:** select only from the next measured fail-fast boundary; do not invent a generalized tutorial, orchestration framework, or new authority.
+6. **CONDITIONAL — reopen Phase 1J:** only if measured first-hour or player evidence shows that required athlete distinctions cannot be represented by existing public fields and clearer presentation.
 
 ## Phase 1K — First-hour integration
 
@@ -549,9 +550,13 @@ Known evidence boundary: the standalone Phase 1F replay ends `101-104`, while th
 
 **COMPLETE — FAILED DURING SETUP.** Attempt `phase1k1-20260805T004101Z` reused the existing Windows Development package with separate fresh owner and passive-peer profiles. The peer reached Sundale but listened on `0.0.0.0:7777`, violating the loopback-only session boundary before setup ended. All eight route components remain **NOT REACHED**. A later owner launch loaded Bootstrap as `GameModeBase` with a black viewport and no character-selection or save marker; because the earlier setup failure already invalidated the session, this is diagnostic only. The attempt retained logs and hashes, removed only the isolated profiles, left zero OddsWell/Unreal processes, changed no runtime, and did not combine the `101-104` replay with the `79-113` settlement. See [[Development/Reports/Phase 1K1 Canonical Packaged First-Hour Contract Fail-Fast Technical Measurement]].
 
+### Phase 1K.2 measurement
+
+**COMPLETE — TARGET GAMENETDRIVER LOOPBACK PASS; STRICT PID-WIDE PROOF FAILED.** Two isolated launches reused the unchanged package. `-multihome=127.0.0.1 -port=17777` made the packaged peer's one gameplay endpoint exactly `127.0.0.1:17777`, owned by the matching OddsWell PID. The same PID also owned Unreal's in-process trace-control TCP listener at `0.0.0.0:1985`; adding `-notraceserver` did not remove it. Both attempts reached Sundale with `OddsWellLocomotionGameMode`, received zero peer actions, exited normally, retained logs and hashes, removed their isolated profiles, and left zero relevant processes. No owner or route was launched, so setup and all eight components remain **NOT REACHED**. See [[Development/Reports/Phase 1K2 Loopback Only Passive Peer Launch Correction and Proof]].
+
 ### Next measured gate
 
-Phase 1K.2 should establish and verify one loopback-only passive-peer launch, then stop. The owner chooser observation becomes eligible for a later fail-fast gate only after valid setup reaches it.
+Owner/security decision required: either define the loopback boundary as the gameplay `GameNetDriver`, for which Phase 1K.2 has exact proof, or retain the strict all-process-sockets condition and separately approve a package/build/runtime correction for Unreal's trace-control listener. Do not begin the player route or repair the chooser before that decision.
 
 ### Exit evidence
 

@@ -66,6 +66,10 @@ The current standalone stadium replay ends Harbor `101-104` Mesa, while the exac
 
 The first canonical packaged technical attempt stopped during setup. Its passive peer listened on `0.0.0.0:7777` rather than the required loopback-only endpoint, so setup never ended and all eight route components are **NOT REACHED**. A later fresh owner launch also loaded Bootstrap as plain `GameModeBase` and showed no character chooser, but that remains secondary diagnostic evidence rather than a completed component because the earlier setup failure already invalidated the session. No player input, runtime repair, authority mutation, or cross-game evidence splice occurred. See [[Development/Reports/Phase 1K1 Canonical Packaged First-Hour Contract Fail-Fast Technical Measurement]].
 
+### Phase 1K.2 measurement evidence
+
+Two isolated launches proved that Unreal's native `-multihome=127.0.0.1 -port=17777` correction binds the packaged passive peer's one gameplay `GameNetDriver` endpoint exactly to `127.0.0.1:17777`. The stricter process-wide setup proof still failed because the same OddsWell PID also owned Unreal trace-control TCP `0.0.0.0:1985`; `-notraceserver` did not remove that in-process listener. Setup therefore remains incomplete and all eight route components are **NOT REACHED**. No owner, route, authority, UI, package, runtime, or player-state change occurred. See [[Development/Reports/Phase 1K2 Loopback Only Passive Peer Launch Correction and Proof]].
+
 ## First-hour player journey
 
 ### 1. Choose a default character

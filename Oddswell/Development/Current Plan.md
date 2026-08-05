@@ -1639,6 +1639,15 @@ Build the one-city scope defined in [[Design/Decisions/DEC-002 First Playable Sc
 - **Runtime boundary:** documentation only. No C++, Python, Unreal content, package, fixture, schema, save, brain, simulator, ledger, economy, wager, UI, network, inventory, housing, backend, telemetry, or deployment behavior changed.
 - **Next gate:** Phase 1K.2 should establish and verify exactly one loopback-only passive-peer launch before any route input. Do not repair or bypass the secondary owner chooser condition in that same phase. See [[Development/Reports/Phase 1K1 Canonical Packaged First-Hour Contract Fail-Fast Technical Measurement]].
 
+### Phase 1K.2 Loopback-Only Passive-Peer Launch Correction and Proof status
+
+- **Status:** COMPLETE — TARGET GAMENETDRIVER LOOPBACK PASS; STRICT PID-WIDE PROOF FAILED on `agent/phase-0d`.
+- **Gameplay endpoint:** two isolated packaged launches used native `-multihome=127.0.0.1 -port=17777`. Unreal and Windows socket ownership agreed that the matching OddsWell game PID owned exactly one gameplay UDP endpoint at `127.0.0.1:17777`; Sundale and `OddsWellLocomotionGameMode` were proven.
+- **Strict failure:** the same OddsWell PID also owned Unreal trace-control TCP `0.0.0.0:1985`. A second launch added `-notraceserver`, but the wildcard trace-control listener remained. The target gameplay assertion passed; the all-process-sockets assertion failed.
+- **Integrity:** the passive peer received zero player actions. No owner, Bootstrap, chooser, route action, ledger mutation, wager, replay, settlement, store action, hidden state, or component credit occurred. Both processes exited normally; isolated profiles were hashed then removed; retained logs were re-hashed; zero relevant processes remained.
+- **Runtime boundary:** documentation only. No C++, Python, Unreal content, package, configuration, fixture, schema, save, brain, simulator, ledger, economy, wager, UI, network behavior, inventory, housing, backend, telemetry, or deployment changed.
+- **Next gate:** owner/security decision required: treat the loopback condition as a `GameNetDriver` boundary, or retain strict PID-wide scope and separately authorize a package/build/runtime correction for the in-process trace-control listener. Do not start the route or repair the chooser until that decision. See [[Development/Reports/Phase 1K2 Loopback Only Passive Peer Launch Correction and Proof]].
+
 ## Future shared simulation layer
 
 Athlete Life Brain v4 is the default for newly generated train, rest, recover, and socialize decisions. It adds only one bounded, one-decision, same-season recent-scoring response above v3's routine behavior. V1-v4 history remains immutable. Expand into longer memory, traits, relationships, nightlife, media, discipline, career decisions, and other sports only after each smaller input passes its own engineering evaluation.
