@@ -62,6 +62,10 @@ All eight route components have bounded individual proof. No fresh contiguous pa
 
 The current standalone stadium replay ends Harbor `101-104` Mesa, while the exact Mesa wager receipt settles Harbor `79-113` Mesa. They are different game evidence and cannot be stitched into a first-hour claim. A future integrated run must show the same game identity, score, and seal through watch, settlement, and receipt.
 
+### Phase 1K.1 measurement evidence
+
+The first canonical packaged technical attempt stopped during setup. Its passive peer listened on `0.0.0.0:7777` rather than the required loopback-only endpoint, so setup never ended and all eight route components are **NOT REACHED**. A later fresh owner launch also loaded Bootstrap as plain `GameModeBase` and showed no character chooser, but that remains secondary diagnostic evidence rather than a completed component because the earlier setup failure already invalidated the session. No player input, runtime repair, authority mutation, or cross-game evidence splice occurred. See [[Development/Reports/Phase 1K1 Canonical Packaged First-Hour Contract Fail-Fast Technical Measurement]].
+
 ## First-hour player journey
 
 ### 1. Choose a default character

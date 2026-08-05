@@ -155,3 +155,11 @@ Failure at any step stops the attempt. Preserve the failed evidence, name the me
 The current repository contains bounded proof for each of the eight route components and separately accepted public athlete-story evidence under [[Development/Reports/Phase 1J Exit Review]]. It does not contain a fresh contiguous packaged first-hour run proving coexistence, zero post-setup developer intervention, first-time-player comprehension, beta readiness, or production readiness.
 
 Phase 1K.1 may execute this contract as a measurement gate. This document does not begin that run or authorize runtime changes.
+
+## Attempt history
+
+| Attempt | Date | Package / source identity | Outcome | First failure | Report |
+| --- | --- | --- | --- | --- | --- |
+| `phase1k1-20260805T004101Z` | 2026-08-04 local / 2026-08-05 UTC | existing Windows Development package; source baseline `fccfe73`; game executable SHA-256 `13E0E660CF5A086F74F408631F80FC51DCF77488DC8A87CF79D761E59B9E019B` | **FAILED DURING SETUP; COMPONENTS 1-8 NOT REACHED** | passive peer listened on `0.0.0.0:7777` instead of loopback only; `setup_end_utc` was not reached | [[Development/Reports/Phase 1K1 Canonical Packaged First-Hour Contract Fail-Fast Technical Measurement]] |
+
+The same failed setup also produced a secondary owner diagnostic: fresh Bootstrap loaded as plain `GameModeBase`, showed no chooser, emitted no appearance-save marker, and created no owner SaveGame during the bounded observation. It is not component-1 evidence because the earlier peer-bind failure had already invalidated setup.

@@ -514,9 +514,10 @@ One bounded owner sample, the public presentation corrections it produced, and e
 ## Current validation queue
 
 1. **COMPLETE — Phase 1K.0:** the eight existing route components are inventoried and one canonical [[Development/Phase 1K First-Hour Integration Evidence Contract]] defines the required actions, authority, evidence, reset, attempt record, and fail-fast rules.
-2. **NEXT — Phase 1K.1:** run the exact contract from a fresh isolated profile in a packaged Development build, recording every intervention and stopping at the first named failure. Do not repair runtime inside the measurement phase.
-3. **PENDING — later Phase 1K gates:** select only from measured 1K.1 failures; do not invent a generalized tutorial, orchestration framework, or new authority.
-4. **CONDITIONAL — reopen Phase 1J:** only if measured first-hour or player evidence shows that required athlete distinctions cannot be represented by existing public fields and clearer presentation.
+2. **COMPLETE — Phase 1K.1 FAILED SETUP MEASUREMENT:** the first packaged technical attempt stopped before `setup_end_utc` because its passive peer listened on `0.0.0.0:7777`, not loopback only. All eight route components are **NOT REACHED**. The owner Bootstrap/chooser condition is retained only as a secondary diagnostic. See [[Development/Reports/Phase 1K1 Canonical Packaged First-Hour Contract Fail-Fast Technical Measurement]].
+3. **NEXT — Phase 1K.2:** select the smallest correction from the measured first failure: establish and verify a loopback-only passive-peer launch before starting any route action. Do not repair or bypass the later chooser observation in the same phase.
+4. **PENDING — later Phase 1K gates:** select only from the next measured fail-fast boundary; do not invent a generalized tutorial, orchestration framework, or new authority.
+5. **CONDITIONAL — reopen Phase 1J:** only if measured first-hour or player evidence shows that required athlete distinctions cannot be represented by existing public fields and clearer presentation.
 
 ## Phase 1K — First-hour integration
 
@@ -543,6 +544,14 @@ One bounded owner sample, the public presentation corrections it produced, and e
 Each of the eight numbered route components has bounded individual Phase 1B-1J evidence. No fresh contiguous packaged first-hour session currently proves their coexistence. The contract requires identity, time, actions, prompts, confusion, intervention, QA, hashes, ledger, peer, cold-boundary, and no-hidden-data fields; all developer intervention after setup must be disclosed and causes the observed-player gate to fail.
 
 Known evidence boundary: the standalone Phase 1F replay ends `101-104`, while the exact Phase 1H Mesa receipt settles `79-113`. Those different games cannot be spliced. Phase 1K.1 must stop unless one watched game identity, result, and seal match the settlement link and receipt.
+
+### Phase 1K.1 measurement
+
+**COMPLETE — FAILED DURING SETUP.** Attempt `phase1k1-20260805T004101Z` reused the existing Windows Development package with separate fresh owner and passive-peer profiles. The peer reached Sundale but listened on `0.0.0.0:7777`, violating the loopback-only session boundary before setup ended. All eight route components remain **NOT REACHED**. A later owner launch loaded Bootstrap as `GameModeBase` with a black viewport and no character-selection or save marker; because the earlier setup failure already invalidated the session, this is diagnostic only. The attempt retained logs and hashes, removed only the isolated profiles, left zero OddsWell/Unreal processes, changed no runtime, and did not combine the `101-104` replay with the `79-113` settlement. See [[Development/Reports/Phase 1K1 Canonical Packaged First-Hour Contract Fail-Fast Technical Measurement]].
+
+### Next measured gate
+
+Phase 1K.2 should establish and verify one loopback-only passive-peer launch, then stop. The owner chooser observation becomes eligible for a later fail-fast gate only after valid setup reaches it.
 
 ### Exit evidence
 

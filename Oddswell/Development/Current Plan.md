@@ -1629,6 +1629,16 @@ Build the one-city scope defined in [[Design/Decisions/DEC-002 First Playable Sc
 - **Verification:** the `fe5588e` package/build/native/visual evidence was audited and reused. Repository-pinned Python `3.12.13` frozen suites passed `105/105`; Brain Admin `--check`, link/coverage, whitespace, canvas JSON, documentation-only scope, and process-cleanup checks passed. A preliminary Python `3.13` Phase 1H attempt correctly failed the existing interpreter allowlist and is not accepted evidence. See [[Development/Reports/Phase 1K0 First-Hour Integration Baseline and Evidence Contract]].
 - **Next gate:** Phase 1K.1 may execute the contract as a fresh packaged measurement run and stop at the first named failure. This phase does not begin that run or authorize a runtime correction.
 
+### Phase 1K.1 Canonical Packaged First-Hour Contract Fail-Fast Technical Measurement status
+
+- **Status:** COMPLETE — FAILED DURING SETUP; ROUTE NOT STARTED on `agent/phase-0d`.
+- **First measured failure:** attempt `phase1k1-20260805T004101Z` prepared a passive peer in Sundale, but Unreal reported a socket bound to `0.0.0.0:7777`, not the contract-required loopback-only endpoint. `setup_end_utc`, route start, and all eight route components are **NOT REACHED**.
+- **Secondary diagnostic only:** the later fresh owner launch loaded `/Game/Maps/Bootstrap` as plain `GameModeBase`, showed a black viewport during the bounded observation, emitted no character-selection or appearance-save marker, and created no owner SaveGame. It is not promoted as component-1 evidence because the earlier setup failure had already invalidated the session.
+- **Integrity:** zero player inputs; zero post-setup developer interventions because setup never ended; no QA action, teleport, save edit, result injection, hidden-data exposure, ledger mutation, or evidence splice. The `101-104` replay and `79-113` settlement were not used.
+- **Evidence and cleanup:** retained `Owner.log` and `Peer.log` at `C:\tmp\OddsWellPhase1K1-20260805T004101Z\Evidence` have SHA-256 `FF905CE9757676F01F5B3C12E768BCFA7999FB0164B3F0B1E3433E6BCD66DDF6` and `DDFBF030B48CBF5B1E5B8FAEB1E782D31F7B9D9E9A0DE1F56A740019FBEE65C3`. The separate isolated profiles were hashed then removed, and zero OddsWell/Unreal processes remained.
+- **Runtime boundary:** documentation only. No C++, Python, Unreal content, package, fixture, schema, save, brain, simulator, ledger, economy, wager, UI, network, inventory, housing, backend, telemetry, or deployment behavior changed.
+- **Next gate:** Phase 1K.2 should establish and verify exactly one loopback-only passive-peer launch before any route input. Do not repair or bypass the secondary owner chooser condition in that same phase. See [[Development/Reports/Phase 1K1 Canonical Packaged First-Hour Contract Fail-Fast Technical Measurement]].
+
 ## Future shared simulation layer
 
 Athlete Life Brain v4 is the default for newly generated train, rest, recover, and socialize decisions. It adds only one bounded, one-decision, same-season recent-scoring response above v3's routine behavior. V1-v4 history remains immutable. Expand into longer memory, traits, relationships, nightlife, media, discipline, career decisions, and other sports only after each smaller input passes its own engineering evaluation.
