@@ -1668,6 +1668,16 @@ Build the one-city scope defined in [[Design/Decisions/DEC-002 First Playable Sc
 - **Runtime boundary:** measurement and documentation only. No C++, Python, Unreal content, package, configuration, firewall, fixture, schema, brain, simulator, ledger, economy, wager, UI, networking implementation, inventory, housing, backend, telemetry, or deployment change.
 - **Next gate:** Phase 1K.4 should correct only the normal-default Bootstrap/chooser failure, without auto-selection or route work, then require a fresh accepted-network setup proof. See [[Development/Reports/Phase 1K3 Fresh Accepted Network Setup and Default Character Chooser Fail Fast Measurement]].
 
+### Phase 1K.4 Normal Bootstrap Character-Chooser Correction and Fresh Proof status
+
+- **Status:** COMPLETE — NORMAL DEFAULT STARTUP PRESENTS THE APPROVED CHOOSER on `agent/phase-0d`.
+- **Ponytail correction:** one `GlobalDefaultGameMode=/Script/OddsWell.OddsWellCharacterSelectionGameMode` entry connects the existing Bootstrap default map to the existing chooser GameMode and HUD. No new UI, startup framework, input path, or dependency was added.
+- **Fresh proof:** attempt `phase1k4-20260805T142500Z` rebuilt the two-map Windows Development package, passed the accepted gameplay UDP `127.0.0.1:17777` peer boundary, and launched one fresh owner through the normal default package path. Bootstrap loaded `OddsWellCharacterSelectionGameMode` and visibly showed all eight approved cards for `65.610` seconds with zero owner input.
+- **No automatic progress:** no preset was confirmed, `ODDSWELL_APPEARANCE_SAVE` count was `0`, the owner had no SaveGame, and no world handoff or route action occurred. Components 1-8 remain **NOT REACHED**.
+- **Verification:** focused native chooser `1/1`, full native OddsWell `49/49`, frozen Python `105/105`, Brain Admin `--check`, Windows Development BuildCookRun, package audit, screenshots/log hashes, link/whitespace/canvas checks, and process/port cleanup pass. The package contains `50` files totaling `1,049,384,364` bytes and zero Python files.
+- **Security boundary:** gameplay networking is loopback-only under DEC-022. Unreal trace-control TCP `0.0.0.0:1985` remains external-use security debt; whole-process isolation and external safety are not claimed.
+- **Next gate:** Phase 1K.5 should measure one fresh non-default preset selection and one normal confirmation, then stop at the first persistence or handoff failure. Do not preemptively repair the world target or begin the route. See [[Development/Reports/Phase 1K4 Normal Bootstrap Character Chooser Correction and Fresh Proof]].
+
 ## Future shared simulation layer
 
 Athlete Life Brain v4 is the default for newly generated train, rest, recover, and socialize decisions. It adds only one bounded, one-decision, same-season recent-scoring response above v3's routine behavior. V1-v4 history remains immutable. Expand into longer memory, traits, relationships, nightlife, media, discipline, career decisions, and other sports only after each smaller input passes its own engineering evaluation.

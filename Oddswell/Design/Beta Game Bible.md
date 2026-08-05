@@ -78,6 +78,10 @@ The owner selected Option A under [[Design/Decisions/DEC-022 Machine Local Devel
 
 A fresh accepted-network setup attempt passed the machine-local Development `GameNetDriver` prerequisite, then stopped at the next canonical failure. Normal package startup loaded Bootstrap as plain `GameModeBase` and displayed a black viewport with no default character chooser, cards, preset or appearance state, prompt, modal, project UI marker, or owner SaveGame during `60.091` seconds of zero owner input. Setup did not complete and components 1-8 remain **NOT REACHED**. No selection, route action, repair, runtime change, or evidence splice occurred. See [[Development/Reports/Phase 1K3 Fresh Accepted Network Setup and Default Character Chooser Fail Fast Measurement]].
 
+### Phase 1K.4 correction evidence
+
+Normal packaged Bootstrap startup now uses the existing approved `OddsWellCharacterSelectionGameMode`. A fresh accepted-network setup visibly presented all eight approved character cards and remained on the chooser for `65.610` seconds with zero input, no automatic confirmation, no appearance SaveGame, and no world handoff. The correction is one Unreal configuration entry; it adds no new chooser, authority, or framework. Component 1 and components 2-8 remain **NOT REACHED** because no non-default preset was selected, confirmed, persisted, or handed into normal play. See [[Development/Reports/Phase 1K4 Normal Bootstrap Character Chooser Correction and Fresh Proof]].
+
 ## First-hour player journey
 
 ### 1. Choose a default character
