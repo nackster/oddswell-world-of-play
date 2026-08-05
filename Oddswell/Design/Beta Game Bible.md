@@ -54,6 +54,14 @@ The beta succeeds when a new player can complete one understandable loop:
 
 Every required beta feature must support this loop, the credibility of the fictional athletes, or safe operation of the loop.
 
+### Phase 1K.0 implementation evidence
+
+The existing first-hour route is now frozen as one measurable integration contract: fresh profile and preset, Sundale with one passive peer, discovery of the Studio/job/stadium/ticket booth/stores, one `+100` job payout, the approved Mesa/`40` wager, watch or player `S` skip, the exact Mesa-win receipt at balance `154`, Signal Jacket purchase/equip and peer visibility, then cold persistence. See [[Development/Phase 1K First-Hour Integration Evidence Contract]] and [[Development/Reports/Phase 1K0 First-Hour Integration Baseline and Evidence Contract]].
+
+All eight route components have bounded individual proof. No fresh contiguous packaged first-hour session currently proves that they coexist, that a first-time player completes them without intervention, or that the beta is ready. A future attempt must count every developer action after setup, retain failed evidence instead of hiding assistance, and fail closed on partial authority, mismatched hashes, unexpected ledger state, active peer help, or hidden data.
+
+The current standalone stadium replay ends Harbor `101-104` Mesa, while the exact Mesa wager receipt settles Harbor `79-113` Mesa. They are different game evidence and cannot be stitched into a first-hour claim. A future integrated run must show the same game identity, score, and seal through watch, settlement, and receipt.
+
 ## First-hour player journey
 
 ### 1. Choose a default character

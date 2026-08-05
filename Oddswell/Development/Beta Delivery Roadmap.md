@@ -157,7 +157,8 @@ The roadmap is intentionally made of measurable product gates, not hundreds of s
 - Phase 1J.3b.1e one-owner post-clarification comprehension session: **COMPLETE — 5/6 IN ONE FRESH UNSEEN AND UNCOACHED SAMPLE**; see [[Development/Reports/Phase 1J3b1e One Owner Post Clarification Comprehension Session]]. The four concepts missed initially were answered correctly; specialty versus overall quality was the only measured miss. This is one-human evidence, not population comprehension or proof of causation. Form C is consumed and retired.
 - Phase 1J.3b.1f public specialty clarification: **COMPLETE FOR ALL TWELVE EXISTING PUBLIC ATHLETE PAGES**; see [[Development/Reports/Phase 1J3b1f Public Specialty Clarification]]. One compact line explains that specialty is the athlete's strongest skill category, not overall quality or a guaranteed result. No athlete evidence, brain, simulator, form, or production authority changed.
 - Phase 1J exit review: **COMPLETE FOR THE CURRENT BOUNDED BETA MILESTONE**; see [[Design/Decisions/DEC-021 Phase 1J Bounded Athlete Story Evidence Acceptance]] and [[Development/Reports/Phase 1J Exit Review]]. The owner accepts the one-person unseen and uncoached `5/6` result plus the completed specialty clarification. Forms A-C are consumed and retired; no fourth form or retest is authorized for this milestone. Population comprehension remains unproven.
-- Next gate: **PHASE 1K.0 — FIRST-HOUR INTEGRATION BASELINE AND EVIDENCE CONTRACT**. Reopen Phase 1J only if measured first-hour or player evidence shows that required distinctions cannot be represented by existing public fields and clearer presentation.
+- Phase 1K.0 first-hour integration baseline and evidence contract: **COMPLETE — DEFINITION ONLY**; see [[Development/Phase 1K First-Hour Integration Evidence Contract]] and [[Development/Reports/Phase 1K0 First-Hour Integration Baseline and Evidence Contract]]. All eight route components have bounded individual proof, but no fresh contiguous packaged session proves coexistence.
+- Next gate: **PHASE 1K.1 — EXECUTE THE CANONICAL PACKAGED INTEGRATION CONTRACT AS A MEASUREMENT RUN**. No runtime correction is authorized until the attempt records a named failure.
 - Current prerequisite note: UE 5.8, the aligned x64 runtime and .NET Framework 4.8 SDK, portable project, reproducible local Windows package, empty-map launch, LFS, generated-file ignores, primitive block/court iteration, collision, cold-process reopen, direct recorded-replay rendering, deterministic packaged traces, and local resource sampling are verified. UE 5.8 is now the approved beta client engine.
 
 No later roadmap phase is authorized merely because it appears below.
@@ -176,7 +177,7 @@ No later roadmap phase is authorized merely because it appears below.
 | 8 | 1H — Wager locking and settlement | Reach the physical booth, inspect approved odds, place approved wagers, and receive exact outcomes | COMPLETE FOR THE FIXED HARBOR/MESA `40` MATCH WINNER SLICE / GENERALIZATION UNPROVEN |
 | 9 | 1I — Stores and lifestyle upgrades | Buy, equip, display, and place basic items | COMPLETE FOR ONE JACKET + ONE CHAIR + ONE-BEDROOM LOCAL PATH |
 | 10 | 1J — Athlete life and league storytelling | Understand athletes, availability, and consequences | COMPLETE FOR CURRENT BOUNDED MILESTONE — OWNER ACCEPTED ONE-PERSON 5/6 + SPECIALTY CLARIFICATION; NO POPULATION CLAIM |
-| 11 | 1K — First-hour integration | Complete the entire beta promise in one session | ACTIVE — NEXT GATE 1K.0 BASELINE + EVIDENCE CONTRACT |
+| 11 | 1K — First-hour integration | Complete the entire beta promise in one session | ACTIVE — 1K.0 CONTRACT COMPLETE; NEXT GATE 1K.1 MEASUREMENT RUN |
 | 12 | 1L — Content, presentation, and accessibility | The slice feels coherent and readable | PENDING |
 | 13 | 1M — Reliability, compliance, and beta exit | The owner can truthfully approve beta release | BETA EXIT |
 
@@ -512,9 +513,10 @@ One bounded owner sample, the public presentation corrections it produced, and e
 
 ## Current validation queue
 
-1. **NEXT — Phase 1K.0:** inventory the already proven first-hour components and define one bounded integration evidence contract before changing runtime behavior.
-2. **PENDING — later Phase 1K gates:** execute only after 1K.0 is Coordinator-verified; measure first-time-player failures rather than inventing new systems.
-3. **CONDITIONAL — reopen Phase 1J:** only if measured first-hour or player evidence shows that required athlete distinctions cannot be represented by existing public fields and clearer presentation.
+1. **COMPLETE — Phase 1K.0:** the eight existing route components are inventoried and one canonical [[Development/Phase 1K First-Hour Integration Evidence Contract]] defines the required actions, authority, evidence, reset, attempt record, and fail-fast rules.
+2. **NEXT — Phase 1K.1:** run the exact contract from a fresh isolated profile in a packaged Development build, recording every intervention and stopping at the first named failure. Do not repair runtime inside the measurement phase.
+3. **PENDING — later Phase 1K gates:** select only from measured 1K.1 failures; do not invent a generalized tutorial, orchestration framework, or new authority.
+4. **CONDITIONAL — reopen Phase 1J:** only if measured first-hour or player evidence shows that required athlete distinctions cannot be represented by existing public fields and clearer presentation.
 
 ## Phase 1K — First-hour integration
 
@@ -533,6 +535,14 @@ One bounded owner sample, the public presentation corrections it produced, and e
 6. Watch or skip the authoritative game.
 7. Receive exact settlement.
 8. Save or buy one visible clothing, furniture, or apartment progression upgrade.
+
+### Phase 1K.0 baseline
+
+**COMPLETE — CONTRACT ONLY.** The canonical [[Development/Phase 1K First-Hour Integration Evidence Contract]] freezes the minimum route as fresh profile/preset -> Sundale/passive peer -> required locations and Studio -> `+100` job payout -> approved Mesa/`40` wager -> watch or player `S` skip -> exact win receipt/balance `154` -> Signal Jacket purchase/equip/peer visibility -> cold persistence.
+
+Each of the eight numbered route components has bounded individual Phase 1B-1J evidence. No fresh contiguous packaged first-hour session currently proves their coexistence. The contract requires identity, time, actions, prompts, confusion, intervention, QA, hashes, ledger, peer, cold-boundary, and no-hidden-data fields; all developer intervention after setup must be disclosed and causes the observed-player gate to fail.
+
+Known evidence boundary: the standalone Phase 1F replay ends `101-104`, while the exact Phase 1H Mesa receipt settles `79-113`. Those different games cannot be spliced. Phase 1K.1 must stop unless one watched game identity, result, and seal match the settlement link and receipt.
 
 ### Exit evidence
 
