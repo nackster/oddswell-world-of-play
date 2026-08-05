@@ -1678,6 +1678,17 @@ Build the one-city scope defined in [[Design/Decisions/DEC-002 First Playable Sc
 - **Security boundary:** gameplay networking is loopback-only under DEC-022. Unreal trace-control TCP `0.0.0.0:1985` remains external-use security debt; whole-process isolation and external safety are not claimed.
 - **Next gate:** Phase 1K.5 should measure one fresh non-default preset selection and one normal confirmation, then stop at the first persistence or handoff failure. Do not preemptively repair the world target or begin the route. See [[Development/Reports/Phase 1K4 Normal Bootstrap Character Chooser Correction and Fresh Proof]].
 
+### Phase 1K.5 Fresh Non-Default Preset Selection and Handoff Measurement status
+
+- **Status:** COMPLETE — PERSISTENCE PASSED; NORMAL WORLD HANDOFF FAILED on `agent/phase-0d`.
+- **Fresh measurement:** attempt `phase1k5-20260805T173036Z` reused the unchanged Phase 1K.4 package, passed the accepted passive-peer gameplay UDP `127.0.0.1:17777` prerequisite, and launched one fresh owner through the normal default path.
+- **Selection and persistence:** one Right-arrow input selected `masculine_tone_2`; one Enter input produced exactly one successful production save marker for `starter_offwhite_top` and `starter_offwhite_bottom`. The `2,183`-byte appearance SaveGame has SHA-256 `1EBEFEE97CD3DEB7EA19833353747A7121AC361B5476450345EB53A42FD1AF98`.
+- **First failure:** confirmation targeted absent `/Game/Maps/BlockCourtBenchmark?game=/Script/OddsWell.OddsWellLocomotionGameMode`. Unreal emitted `ClientTravelFailure`, returned to Bootstrap, and showed the chooser again instead of entering required `SundaleGraybox`.
+- **Integrity and cleanup:** player inputs were exactly `[Right, Enter]`; peer inputs were `[]`; no route input, QA action, teleport, save edit, hidden authority action, or evidence splice occurred. Both clients exited with status `0`; active profiles were removed from launch use and retained under the evidence root; processes and ports returned to zero.
+- **Verification:** repository-pinned Python `3.12.13` frozen suites passed `9 + 2 + 8 + 46 + 40 = 105/105`; Brain Admin `--check`, evidence hashes, canvas JSON, and cleanup checks pass. The unchanged Phase 1K.4 native `1/1` and `49/49`, BuildCookRun, and package evidence are reused without a no-op rebuild.
+- **Evidence boundary:** component 1 and components 2-8 remain **NOT REACHED**. No shared-city entry, peer appearance agreement, route step, first-time-player comprehension, beta readiness, or production readiness is claimed.
+- **Next gate:** Phase 1K.6 should change only the normal confirmation target to the existing packaged `SundaleGraybox` with `OddsWellLocomotionGameMode`, rebuild, and repeat fresh accepted-network component-1 proof. Stop after successful Sundale entry; do not begin component 2. See [[Development/Reports/Phase 1K5 Fresh Non Default Preset Selection and Handoff Measurement]].
+
 ## Future shared simulation layer
 
 Athlete Life Brain v4 is the default for newly generated train, rest, recover, and socialize decisions. It adds only one bounded, one-decision, same-season recent-scoring response above v3's routine behavior. V1-v4 history remains immutable. Expand into longer memory, traits, relationships, nightlife, media, discipline, career decisions, and other sports only after each smaller input passes its own engineering evaluation.

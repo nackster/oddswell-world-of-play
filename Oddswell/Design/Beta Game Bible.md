@@ -82,6 +82,10 @@ A fresh accepted-network setup attempt passed the machine-local Development `Gam
 
 Normal packaged Bootstrap startup now uses the existing approved `OddsWellCharacterSelectionGameMode`. A fresh accepted-network setup visibly presented all eight approved character cards and remained on the chooser for `65.610` seconds with zero input, no automatic confirmation, no appearance SaveGame, and no world handoff. The correction is one Unreal configuration entry; it adds no new chooser, authority, or framework. Component 1 and components 2-8 remain **NOT REACHED** because no non-default preset was selected, confirmed, persisted, or handed into normal play. See [[Development/Reports/Phase 1K4 Normal Bootstrap Character Chooser Correction and Fresh Proof]].
 
+### Phase 1K.5 measurement evidence
+
+A fresh normal-path owner selected non-default `masculine_tone_2` with one Right-arrow input and confirmed once with Enter. The production appearance save passed exactly once and created a `2,183`-byte record with SHA-256 `1EBEFEE97CD3DEB7EA19833353747A7121AC361B5476450345EB53A42FD1AF98`. The first failure was the existing world handoff: confirmation targeted absent `/Game/Maps/BlockCourtBenchmark`, Unreal emitted `ClientTravelFailure`, and Bootstrap reopened. The accepted passive peer remained in `SundaleGraybox` with zero input. Component 1 and components 2-8 remain **NOT REACHED**; no route action followed the failure. See [[Development/Reports/Phase 1K5 Fresh Non Default Preset Selection and Handoff Measurement]].
+
 ## First-hour player journey
 
 ### 1. Choose a default character
