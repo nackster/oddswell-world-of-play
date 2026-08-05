@@ -1648,6 +1648,16 @@ Build the one-city scope defined in [[Design/Decisions/DEC-002 First Playable Sc
 - **Runtime boundary:** documentation only. No C++, Python, Unreal content, package, configuration, fixture, schema, save, brain, simulator, ledger, economy, wager, UI, network behavior, inventory, housing, backend, telemetry, or deployment changed.
 - **Next gate:** owner/security decision required: treat the loopback condition as a `GameNetDriver` boundary, or retain strict PID-wide scope and separately authorize a package/build/runtime correction for the in-process trace-control listener. Do not start the route or repair the chooser until that decision. See [[Development/Reports/Phase 1K2 Loopback Only Passive Peer Launch Correction and Proof]].
 
+### Phase 1K.2a Owner-Accepted Machine-Local Development GameNetDriver Boundary status
+
+- **Status:** COMPLETE — DECISION AND CONTRACT DISTINCTION ONLY on `agent/phase-0d`.
+- **Owner decision:** `Ok let's do A. Continue`. [[Design/Decisions/DEC-022 Machine Local Development GameNetDriver Boundary]] applies Option A only to current machine-local Windows Development measurement.
+- **Accepted prerequisite:** exact gameplay `GameNetDriver` ownership at `127.0.0.1:17777` satisfies the gameplay-network portion of a fresh Phase 1K setup attempt.
+- **Security debt:** Unreal trace-control TCP `0.0.0.0:1985` remains non-game Development diagnostic debt. It requires removal or containment plus fresh verification before external beta, release, deployment, shared or untrusted network, or production use.
+- **Evidence boundary:** Phase 1K.1 and Phase 1K.2 remain failed measurements. No whole-process loopback or network isolation is proven; `setup_end_utc` and components 1-8 remain **NOT REACHED**.
+- **Runtime boundary:** documentation only. No OddsWell or Unreal runtime launch and no C++, Python, Unreal content, package, configuration, firewall, fixture, schema, save, brain, simulator, ledger, economy, wager, UI, network implementation, inventory, housing, backend, telemetry, or deployment change.
+- **Next gate:** Phase 1K.3 may run one fresh owner/setup measurement under the accepted Development `GameNetDriver` boundary and stop at the first measured contract failure. Phase 1K.2a does not launch it. See [[Development/Reports/Phase 1K2a Owner Accepted Machine Local Development GameNetDriver Boundary]].
+
 ## Future shared simulation layer
 
 Athlete Life Brain v4 is the default for newly generated train, rest, recover, and socialize decisions. It adds only one bounded, one-decision, same-season recent-scoring response above v3's routine behavior. V1-v4 history remains immutable. Expand into longer memory, traits, relationships, nightlife, media, discipline, career decisions, and other sports only after each smaller input passes its own engineering evaluation.

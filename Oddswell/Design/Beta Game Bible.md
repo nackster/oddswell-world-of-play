@@ -70,6 +70,10 @@ The first canonical packaged technical attempt stopped during setup. Its passive
 
 Two isolated launches proved that Unreal's native `-multihome=127.0.0.1 -port=17777` correction binds the packaged passive peer's one gameplay `GameNetDriver` endpoint exactly to `127.0.0.1:17777`. The stricter process-wide setup proof still failed because the same OddsWell PID also owned Unreal trace-control TCP `0.0.0.0:1985`; `-notraceserver` did not remove that in-process listener. Setup therefore remains incomplete and all eight route components are **NOT REACHED**. No owner, route, authority, UI, package, runtime, or player-state change occurred. See [[Development/Reports/Phase 1K2 Loopback Only Passive Peer Launch Correction and Proof]].
 
+### Phase 1K.2a owner decision
+
+The owner selected Option A under [[Design/Decisions/DEC-022 Machine Local Development GameNetDriver Boundary]]. For current machine-local Windows Development measurement only, exact gameplay `GameNetDriver` ownership at `127.0.0.1:17777` satisfies the gameplay-network prerequisite for a fresh setup attempt. Unreal trace-control TCP `0.0.0.0:1985` remains explicit non-game Development diagnostic security debt that must be removed or contained and freshly verified before external beta, release, deployment, shared or untrusted network, or production use. This decision does not prove whole-process loopback or network isolation, does not retroactively pass either failed setup measurement, and gives no credit to components 1-8. See [[Development/Reports/Phase 1K2a Owner Accepted Machine Local Development GameNetDriver Boundary]].
+
 ## First-hour player journey
 
 ### 1. Choose a default character

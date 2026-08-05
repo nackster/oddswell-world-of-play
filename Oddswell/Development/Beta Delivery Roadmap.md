@@ -516,9 +516,10 @@ One bounded owner sample, the public presentation corrections it produced, and e
 1. **COMPLETE — Phase 1K.0:** the eight existing route components are inventoried and one canonical [[Development/Phase 1K First-Hour Integration Evidence Contract]] defines the required actions, authority, evidence, reset, attempt record, and fail-fast rules.
 2. **COMPLETE — Phase 1K.1 FAILED SETUP MEASUREMENT:** the first packaged technical attempt stopped before `setup_end_utc` because its passive peer listened on `0.0.0.0:7777`, not loopback only. All eight route components are **NOT REACHED**. The owner Bootstrap/chooser condition is retained only as a secondary diagnostic. See [[Development/Reports/Phase 1K1 Canonical Packaged First-Hour Contract Fail-Fast Technical Measurement]].
 3. **COMPLETE — Phase 1K.2 STRICT PROOF FAILED:** native `-multihome=127.0.0.1 -port=17777` proved the exact gameplay endpoint at `127.0.0.1:17777`, but the same OddsWell PID retained Unreal trace-control TCP `0.0.0.0:1985` even with `-notraceserver`. Setup did not complete and all eight route components remain **NOT REACHED**. See [[Development/Reports/Phase 1K2 Loopback Only Passive Peer Launch Correction and Proof]].
-4. **OWNER / SECURITY GATE:** decide whether the beta loopback boundary governs the gameplay `GameNetDriver` or every socket owned by the process. If it remains process-wide, separately approve a package/build/runtime correction before another setup attempt. Do not start the route or repair the chooser yet.
-5. **PENDING — later Phase 1K gates:** select only from the next measured fail-fast boundary; do not invent a generalized tutorial, orchestration framework, or new authority.
-6. **CONDITIONAL — reopen Phase 1J:** only if measured first-hour or player evidence shows that required athlete distinctions cannot be represented by existing public fields and clearer presentation.
+4. **COMPLETE — Phase 1K.2a OWNER DECISION:** Option A accepts exact `GameNetDriver` loopback proof for current machine-local Windows Development measurement only. Trace-control TCP `0.0.0.0:1985` remains explicit external-use security debt; no whole-process isolation or external-safety claim exists. See [[Design/Decisions/DEC-022 Machine Local Development GameNetDriver Boundary]] and [[Development/Reports/Phase 1K2a Owner Accepted Machine Local Development GameNetDriver Boundary]].
+5. **NEXT — Phase 1K.3:** run one fresh owner/setup measurement under the accepted Development `GameNetDriver` boundary and stop at the first measured contract failure. Do not launch route, chooser repair, or runtime correction speculatively.
+6. **PENDING — later Phase 1K gates:** select only from the next measured fail-fast boundary; do not invent a generalized tutorial, orchestration framework, or new authority.
+7. **CONDITIONAL — reopen Phase 1J:** only if measured first-hour or player evidence shows that required athlete distinctions cannot be represented by existing public fields and clearer presentation.
 
 ## Phase 1K — First-hour integration
 
@@ -554,9 +555,13 @@ Known evidence boundary: the standalone Phase 1F replay ends `101-104`, while th
 
 **COMPLETE — TARGET GAMENETDRIVER LOOPBACK PASS; STRICT PID-WIDE PROOF FAILED.** Two isolated launches reused the unchanged package. `-multihome=127.0.0.1 -port=17777` made the packaged peer's one gameplay endpoint exactly `127.0.0.1:17777`, owned by the matching OddsWell PID. The same PID also owned Unreal's in-process trace-control TCP listener at `0.0.0.0:1985`; adding `-notraceserver` did not remove it. Both attempts reached Sundale with `OddsWellLocomotionGameMode`, received zero peer actions, exited normally, retained logs and hashes, removed their isolated profiles, and left zero relevant processes. No owner or route was launched, so setup and all eight components remain **NOT REACHED**. See [[Development/Reports/Phase 1K2 Loopback Only Passive Peer Launch Correction and Proof]].
 
+### Phase 1K.2a owner decision
+
+**COMPLETE — OPTION A ACCEPTED FOR MACHINE-LOCAL DEVELOPMENT ONLY.** The exact Phase 1K.2 gameplay `GameNetDriver` endpoint at `127.0.0.1:17777` now satisfies the gameplay-network prerequisite for a fresh Development setup attempt. The owner did not accept a whole-process loopback or isolation claim: Unreal trace-control TCP `0.0.0.0:1985` remains non-game Development diagnostic security debt and blocks external beta, release, deployment, shared or untrusted network, and production-safety claims until removed or contained and freshly verified. Phase 1K.1 and Phase 1K.2 remain failed measurements; setup and components 1-8 remain **NOT REACHED**. See [[Design/Decisions/DEC-022 Machine Local Development GameNetDriver Boundary]] and [[Development/Reports/Phase 1K2a Owner Accepted Machine Local Development GameNetDriver Boundary]].
+
 ### Next measured gate
 
-Owner/security decision required: either define the loopback boundary as the gameplay `GameNetDriver`, for which Phase 1K.2 has exact proof, or retain the strict all-process-sockets condition and separately approve a package/build/runtime correction for Unreal's trace-control listener. Do not begin the player route or repair the chooser before that decision.
+Phase 1K.3 may run one fresh owner/setup measurement under the accepted machine-local Development `GameNetDriver` boundary and stop at the first measured contract failure. Do not launch that attempt, repair the chooser, change runtime, or begin the route in Phase 1K.2a.
 
 ### Exit evidence
 

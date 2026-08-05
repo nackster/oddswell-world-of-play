@@ -150,11 +150,17 @@ An attempt is failed and cannot be partially promoted when any of these occurs:
 
 Failure at any step stops the attempt. Preserve the failed evidence, name the measured cause, reset the isolated profiles, and schedule only the smallest corrective phase. Do not continue merely to produce a complete-looking record.
 
+## Machine-local Development network distinction
+
+Under [[Design/Decisions/DEC-022 Machine Local Development GameNetDriver Boundary]], the owner selected Option A for current machine-local Windows Development measurement only. A passive peer whose exact OddsWell game PID owns one gameplay `GameNetDriver` UDP endpoint at `127.0.0.1:17777` satisfies this contract's gameplay-network prerequisite for a new attempt.
+
+This does not erase the failed Phase 1K.1 or Phase 1K.2 measurements, retroactively complete setup, or grant component credit. Unreal trace-control TCP `0.0.0.0:1985` remains recorded non-game Development diagnostic security debt. Whole-process loopback and network isolation are not proven. Trace control must be removed or contained and freshly verified before any external beta, release, deployment, shared or untrusted network, or production use.
+
 ## Baseline conclusion
 
 The current repository contains bounded proof for each of the eight route components and separately accepted public athlete-story evidence under [[Development/Reports/Phase 1J Exit Review]]. It does not contain a fresh contiguous packaged first-hour run proving coexistence, zero post-setup developer intervention, first-time-player comprehension, beta readiness, or production readiness.
 
-Phase 1K.1 may execute this contract as a measurement gate. This document does not begin that run or authorize runtime changes.
+Phase 1K.3 may execute this contract as one fresh owner/setup measurement under the accepted machine-local Development `GameNetDriver` distinction. This document does not begin that run or authorize runtime, configuration, firewall, route, or chooser changes.
 
 ## Attempt history
 
