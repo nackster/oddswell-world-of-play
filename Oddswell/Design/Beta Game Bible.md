@@ -264,6 +264,8 @@ The fresh unseen and uncoached owner session is now complete as one post-clarifi
 
 All twelve public athlete pages now give specialty its own compact reading-guide line: the displayed specialty is the athlete's strongest skill category, not overall quality or a guaranteed result. The existing public specialty value remains unchanged; this is presentation only and adds no athlete evidence, brain behavior, or prediction. The next gate is an owner decision: accept the current one-human `5/6` evidence plus the measured correction for beta, or separately approve the cost of creating and administering another fresh blind form. See [[Development/Reports/Phase 1J3b1f Public Specialty Clarification]].
 
+The owner now accepts that one-person unseen and uncoached `5/6` result plus the completed specialty clarification as sufficient for the current bounded Phase 1J beta milestone. Forms A, B, and C are consumed and retired; no fourth form or additional retest is authorized for this milestone. This closes the current athlete-story delivery path and hands the critical path to Phase 1K.0. It does not establish population comprehension, prove causality, or claim beta or production readiness. Phase 1J may reopen only if measured first-hour or player evidence shows that a required distinction cannot be represented by the existing public fields and clearer presentation. See [[Design/Decisions/DEC-021 Phase 1J Bounded Athlete Story Evidence Acceptance]] and [[Development/Reports/Phase 1J Exit Review]].
+
 ### Beta life behavior target
 
 - Training, rest, recovery, and social choices.

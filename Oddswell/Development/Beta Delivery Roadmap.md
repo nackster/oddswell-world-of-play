@@ -156,7 +156,8 @@ The roadmap is intentionally made of measurable product gates, not hundreds of s
 - Phase 1J.3b.1d fresh post-clarification blind Form C prerequisite: **COMPLETE FOR ONE DEVELOPMENT-ONLY SIX-ITEM PUBLIC-FIXTURE VARIANT**; see [[Development/Reports/Phase 1J3b1d Fresh Post Clarification Blind Form C Prerequisite]]. It covers each approved concept once with fresh public examples, wording, and independently arranged A/B sides while reusing the existing blind-session path. It starts unanswered, leaks no pre-completion evaluation data, persists and transmits nothing, leaves retired Forms A/B byte-unchanged, and is absent from Shipping. Its prompts and key remain undisclosed.
 - Phase 1J.3b.1e one-owner post-clarification comprehension session: **COMPLETE — 5/6 IN ONE FRESH UNSEEN AND UNCOACHED SAMPLE**; see [[Development/Reports/Phase 1J3b1e One Owner Post Clarification Comprehension Session]]. The four concepts missed initially were answered correctly; specialty versus overall quality was the only measured miss. This is one-human evidence, not population comprehension or proof of causation. Form C is consumed and retired.
 - Phase 1J.3b.1f public specialty clarification: **COMPLETE FOR ALL TWELVE EXISTING PUBLIC ATHLETE PAGES**; see [[Development/Reports/Phase 1J3b1f Public Specialty Clarification]]. One compact line explains that specialty is the athlete's strongest skill category, not overall quality or a guaranteed result. No athlete evidence, brain, simulator, form, or production authority changed.
-- Next gate: **OWNER DECISION — ACCEPT CURRENT BETA EVIDENCE OR APPROVE ANOTHER FRESH BLIND RETEST**. One owner improved from `2/6` to `5/6`, all four initially missed concepts were answered correctly, and the remaining specialty miss is now clarified. Population comprehension remains unproven. Do not reuse Forms A-C.
+- Phase 1J exit review: **COMPLETE FOR THE CURRENT BOUNDED BETA MILESTONE**; see [[Design/Decisions/DEC-021 Phase 1J Bounded Athlete Story Evidence Acceptance]] and [[Development/Reports/Phase 1J Exit Review]]. The owner accepts the one-person unseen and uncoached `5/6` result plus the completed specialty clarification. Forms A-C are consumed and retired; no fourth form or retest is authorized for this milestone. Population comprehension remains unproven.
+- Next gate: **PHASE 1K.0 — FIRST-HOUR INTEGRATION BASELINE AND EVIDENCE CONTRACT**. Reopen Phase 1J only if measured first-hour or player evidence shows that required distinctions cannot be represented by existing public fields and clearer presentation.
 - Current prerequisite note: UE 5.8, the aligned x64 runtime and .NET Framework 4.8 SDK, portable project, reproducible local Windows package, empty-map launch, LFS, generated-file ignores, primitive block/court iteration, collision, cold-process reopen, direct recorded-replay rendering, deterministic packaged traces, and local resource sampling are verified. UE 5.8 is now the approved beta client engine.
 
 No later roadmap phase is authorized merely because it appears below.
@@ -174,8 +175,8 @@ No later roadmap phase is authorized merely because it appears below.
 | 7 | 1G — Odds Bucks and work recovery | Earn, persist, audit, and recover virtual currency | COMPLETE FOR CURRENT LOCAL PROFILE |
 | 8 | 1H — Wager locking and settlement | Reach the physical booth, inspect approved odds, place approved wagers, and receive exact outcomes | COMPLETE FOR THE FIXED HARBOR/MESA `40` MATCH WINNER SLICE / GENERALIZATION UNPROVEN |
 | 9 | 1I — Stores and lifestyle upgrades | Buy, equip, display, and place basic items | COMPLETE FOR ONE JACKET + ONE CHAIR + ONE-BEDROOM LOCAL PATH |
-| 10 | 1J — Athlete life and league storytelling | Understand athletes, availability, and consequences | ACTIVE — STORIES + SAFE EXPLANATIONS + BLIND TOOLS COMPLETE; OWNER RETEST 5/6; SPECIALTY CLARIFIED; OWNER ACCEPT/RETEST DECISION OPEN |
-| 11 | 1K — First-hour integration | Complete the entire beta promise in one session | PENDING |
+| 10 | 1J — Athlete life and league storytelling | Understand athletes, availability, and consequences | COMPLETE FOR CURRENT BOUNDED MILESTONE — OWNER ACCEPTED ONE-PERSON 5/6 + SPECIALTY CLARIFICATION; NO POPULATION CLAIM |
+| 11 | 1K — First-hour integration | Complete the entire beta promise in one session | ACTIVE — NEXT GATE 1K.0 BASELINE + EVIDENCE CONTRACT |
 | 12 | 1L — Content, presentation, and accessibility | The slice feels coherent and readable | PENDING |
 | 13 | 1M — Reliability, compliance, and beta exit | The owner can truthfully approve beta release | BETA EXIT |
 
@@ -498,8 +499,8 @@ Ownership, balance, appearance, and apartment state reconcile across reconnect a
 8. **COMPLETE — 1J.3b.1d:** provide one fresh post-clarification Development-only blind form with exactly one item per approved concept, materially changed public examples and wording, independently arranged A/B sides, unchanged retired forms, and Shipping exclusion; see [[Development/Reports/Phase 1J3b1d Fresh Post Clarification Blind Form C Prerequisite]].
 9. **COMPLETE — 1J.3b.1e / ONE OWNER 5/6:** one fresh unseen and uncoached owner session answered the four previously missed concepts correctly and missed only specialty versus overall quality. Form C is consumed and retired; see [[Development/Reports/Phase 1J3b1e One Owner Post Clarification Comprehension Session]].
 10. **COMPLETE — 1J.3b.1f:** add the smallest public specialty clarification to all twelve athlete pages without changing athlete evidence or brain behavior; see [[Development/Reports/Phase 1J3b1f Public Specialty Clarification]].
-11. **OWNER GATE:** either accept the current one-human `5/6` evidence plus the measured specialty correction for beta, or separately approve another fresh blind form and uncoached retest. Do not reuse Forms A-C or claim population comprehension.
-10. Reopen frozen brain scope only if later evidence identifies a named missing experience that clearer presentation of existing fields cannot represent.
+11. **COMPLETE — PHASE 1J EXIT REVIEW:** the owner accepts the one-human unseen and uncoached `5/6` result plus the completed specialty clarification for the current bounded milestone. Forms A-C are consumed and retired; no fourth form or retest is authorized. See [[Design/Decisions/DEC-021 Phase 1J Bounded Athlete Story Evidence Acceptance]] and [[Development/Reports/Phase 1J Exit Review]].
+12. Reopen Phase 1J only if measured first-hour or player evidence shows that a required distinction cannot be represented by existing public fields and clearer presentation.
 
 ### Owner gates
 
@@ -507,7 +508,13 @@ Ownership, balance, appearance, and apartment state reconcile across reconnect a
 
 ### Exit evidence
 
-Players can distinguish generational stars, specialists, average players, weaker players, health, and bounded life consequences without a false realism, learning, or neural-network claim.
+One bounded owner sample, the public presentation corrections it produced, and explicit owner acceptance close the current milestone without a population-comprehension, causality, realism, learning, neural, beta-readiness, or production-readiness claim.
+
+## Current validation queue
+
+1. **NEXT — Phase 1K.0:** inventory the already proven first-hour components and define one bounded integration evidence contract before changing runtime behavior.
+2. **PENDING — later Phase 1K gates:** execute only after 1K.0 is Coordinator-verified; measure first-time-player failures rather than inventing new systems.
+3. **CONDITIONAL — reopen Phase 1J:** only if measured first-hour or player evidence shows that required athlete distinctions cannot be represented by existing public fields and clearer presentation.
 
 ## Phase 1K — First-hour integration
 
@@ -576,12 +583,13 @@ A Beta Exit Report states **READY**, **BLOCKED WITH MEASURED CAUSE**, or **NOT R
 3. **RESOLVED FOR PHASE 1C:** Daymark / Sundale supplies the approved modern civic-commons direction; the primitive packaged `800 m` route passed Phase 1C exit. Sundale remains a working name and final art remains open; see [[Design/Decisions/DEC-008 Beta First City Direction]], [[Design/Sundale Art Direction and Core Loop]], and [[Development/Reports/Phase 1C2 Primitive Sundale Graybox and Packaged Route Measurement]].
 4. **CURRENT OWNER GATE:** shared-city instance capacity, regions, collision, names, and minimal safety surface.
 5. **RESOLVED FOR THE FIRST UPGRADE ONLY:** One-bedroom costs `500`, requires Studio ownership, and upgrades the Studio in place. Later layouts, visits, and decorating controls remain open; see [[Design/Decisions/DEC-020 First One Bedroom Apartment Upgrade]].
-6. 82-game schedule variety, team count, calendar, and presentation cadence.
-7. **PARTIALLY RESOLVED:** current placeholder fidelity, fixed camera, text-only callouts, three-minute full-watch duration, and result-invariant player skip; see [[Design/Decisions/DEC-013 Phase 1F4 Presentation Defaults]] and [[Development/Reports/Phase 1F5 Replay View Result Invariance]]. Final content treatment remains later.
-8. **RESOLVED FOR LOCAL BETA RECOVERY:** start at `0`, earn `100` from the placeholder job on a rolling `24`-hour cooldown, accumulate balances, and use no separate allowance or catch-up payout. Production account/time authority, post-wager recovery-floor behavior, prices, and broader limits remain open.
-9. Wager markets, odds, payouts, lock, limits, correction, and cancellation.
-10. Clothing/furniture catalog, pricing, equipment, placement, and refunds. City-origin identity is resolved under [[Design/Decisions/DEC-009 City-Origin Clothing and Furniture]].
-11. Minimum PC, accessibility, beta audience, regions, and release channel.
+6. **RESOLVED FOR THE CURRENT PHASE 1J MILESTONE:** accept one unseen and uncoached owner `5/6` result plus the completed specialty clarification; retire Forms A-C and create no fourth form or retest. See [[Design/Decisions/DEC-021 Phase 1J Bounded Athlete Story Evidence Acceptance]].
+7. 82-game schedule variety, team count, calendar, and presentation cadence.
+8. **PARTIALLY RESOLVED:** current placeholder fidelity, fixed camera, text-only callouts, three-minute full-watch duration, and result-invariant player skip; see [[Design/Decisions/DEC-013 Phase 1F4 Presentation Defaults]] and [[Development/Reports/Phase 1F5 Replay View Result Invariance]]. Final content treatment remains later.
+9. **RESOLVED FOR LOCAL BETA RECOVERY:** start at `0`, earn `100` from the placeholder job on a rolling `24`-hour cooldown, accumulate balances, and use no separate allowance or catch-up payout. Production account/time authority, post-wager recovery-floor behavior, prices, and broader limits remain open.
+10. Wager markets, odds, payouts, lock, limits, correction, and cancellation.
+11. Clothing/furniture catalog, pricing, equipment, placement, and refunds. City-origin identity is resolved under [[Design/Decisions/DEC-009 City-Origin Clothing and Furniture]].
+12. Minimum PC, accessibility, beta audience, regions, and release channel.
 
 ## Scope Director operating rules
 
