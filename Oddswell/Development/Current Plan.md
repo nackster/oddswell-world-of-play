@@ -1658,6 +1658,16 @@ Build the one-city scope defined in [[Design/Decisions/DEC-002 First Playable Sc
 - **Runtime boundary:** documentation only. No OddsWell or Unreal runtime launch and no C++, Python, Unreal content, package, configuration, firewall, fixture, schema, save, brain, simulator, ledger, economy, wager, UI, network implementation, inventory, housing, backend, telemetry, or deployment change.
 - **Next gate:** Phase 1K.3 may run one fresh owner/setup measurement under the accepted Development `GameNetDriver` boundary and stop at the first measured contract failure. Phase 1K.2a does not launch it. See [[Development/Reports/Phase 1K2a Owner Accepted Machine Local Development GameNetDriver Boundary]].
 
+### Phase 1K.3 Fresh Accepted-Network Setup and Default Character-Chooser Fail-Fast Measurement status
+
+- **Status:** COMPLETE — ACCEPTED PEER NETWORK PASSED; DEFAULT OWNER CHOOSER FAILED DURING SETUP on `agent/phase-0d`.
+- **Peer boundary:** evidence `phase1k3-20260805T023402Z` proved exact gameplay UDP `127.0.0.1:17777` on peer game PID `28436`; trace-control TCP `0.0.0.0:1985` remained the accepted machine-local Development debt. Peer player inputs: `[]`.
+- **Owner default path:** the fresh owner launched with no map URL, `?game=`, gameplay QA flag, input driver, save, prestate, or hidden intervention. Bootstrap loaded as plain `GameModeBase`.
+- **First failure:** the retained viewport was black, and no chooser, cards, preset/appearance state, prompt, modal, project UI marker, or owner SaveGame appeared during `60.091` seconds of zero owner input. Setup and components 1-8 remain **NOT REACHED**.
+- **Integrity and cleanup:** no selection, route action, authority mutation, hidden data, or evidence splice occurred. Owner and peer exited normally; their profiles were hashed then removed; evidence remains under `C:\tmp\OddsWellPhase1K3-20260805T023402Z\Evidence`; ports and relevant processes returned to zero.
+- **Runtime boundary:** measurement and documentation only. No C++, Python, Unreal content, package, configuration, firewall, fixture, schema, brain, simulator, ledger, economy, wager, UI, networking implementation, inventory, housing, backend, telemetry, or deployment change.
+- **Next gate:** Phase 1K.4 should correct only the normal-default Bootstrap/chooser failure, without auto-selection or route work, then require a fresh accepted-network setup proof. See [[Development/Reports/Phase 1K3 Fresh Accepted Network Setup and Default Character Chooser Fail Fast Measurement]].
+
 ## Future shared simulation layer
 
 Athlete Life Brain v4 is the default for newly generated train, rest, recover, and socialize decisions. It adds only one bounded, one-decision, same-season recent-scoring response above v3's routine behavior. V1-v4 history remains immutable. Expand into longer memory, traits, relationships, nightlife, media, discipline, career decisions, and other sports only after each smaller input passes its own engineering evaluation.

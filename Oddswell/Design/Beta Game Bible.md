@@ -74,6 +74,10 @@ Two isolated launches proved that Unreal's native `-multihome=127.0.0.1 -port=17
 
 The owner selected Option A under [[Design/Decisions/DEC-022 Machine Local Development GameNetDriver Boundary]]. For current machine-local Windows Development measurement only, exact gameplay `GameNetDriver` ownership at `127.0.0.1:17777` satisfies the gameplay-network prerequisite for a fresh setup attempt. Unreal trace-control TCP `0.0.0.0:1985` remains explicit non-game Development diagnostic security debt that must be removed or contained and freshly verified before external beta, release, deployment, shared or untrusted network, or production use. This decision does not prove whole-process loopback or network isolation, does not retroactively pass either failed setup measurement, and gives no credit to components 1-8. See [[Development/Reports/Phase 1K2a Owner Accepted Machine Local Development GameNetDriver Boundary]].
 
+### Phase 1K.3 measurement evidence
+
+A fresh accepted-network setup attempt passed the machine-local Development `GameNetDriver` prerequisite, then stopped at the next canonical failure. Normal package startup loaded Bootstrap as plain `GameModeBase` and displayed a black viewport with no default character chooser, cards, preset or appearance state, prompt, modal, project UI marker, or owner SaveGame during `60.091` seconds of zero owner input. Setup did not complete and components 1-8 remain **NOT REACHED**. No selection, route action, repair, runtime change, or evidence splice occurred. See [[Development/Reports/Phase 1K3 Fresh Accepted Network Setup and Default Character Chooser Fail Fast Measurement]].
+
 ## First-hour player journey
 
 ### 1. Choose a default character
