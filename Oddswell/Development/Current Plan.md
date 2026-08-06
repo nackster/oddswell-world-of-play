@@ -1698,6 +1698,15 @@ Build the one-city scope defined in [[Design/Decisions/DEC-002 First Playable Sc
 - **Verification:** editor build, focused native `1/1`, full native `49/49`, fresh Windows BuildCookRun/package audit, frozen Python `105/105`, Brain Admin `--check`, retained evidence hashes, cleanup, link, whitespace, and canvas checks pass. The package has `50` files, `1,049,392,044` bytes, and zero Python files.
 - **Evidence boundary and next gate:** this automated technical proof is not first-time-player usability or beta readiness. Phase 1K.7 should first measure whether the normal post-chooser owner joins the already-running passive peer and whether both clients agree on the starter appearance. Only after those pass may it exercise the first normal movement required by component 2, then stop before component 3. See [[Development/Reports/Phase 1K6 Sundale Handoff Correction and Fresh Component One Proof]].
 
+### Phase 1K.7 Normal Shared-Session Membership Fail-Fast Measurement status
+
+- **Status:** COMPLETE - COMPONENT 2 FAILED AT SHARED-SESSION MEMBERSHIP; COMPONENTS 3-8 NOT REACHED on `agent/phase-0d`.
+- **Fresh measurement:** attempt `phase1k7-20260806T022019Z` reused the unchanged Phase 1K.6 package and fresh isolated profiles. The owner repeated component 1 with exactly `[Right, Enter]` and entered normal Sundale play.
+- **First failure:** the normal handoff browsed the local `SundaleGraybox` asset and created a separate standalone world. It did not connect to the accepted peer endpoint at `127.0.0.1:17777`; the peer stayed at `clients=1`.
+- **Stop boundary:** owner movement inputs and peer inputs were both `[]`. Mutual visibility, cross-client starter-appearance agreement, replicated movement, and component 3 were not attempted.
+- **Verification:** frozen Python `105/105`, Brain Admin `--check`, retained evidence hashes, cleanup, link, whitespace, and canvas checks pass. Unchanged Phase 1K.6 editor, native `1/1` and `49/49`, BuildCookRun, and package evidence are reused without a no-op rebuild.
+- **Next gate:** Phase 1K.8 should correct only the normal post-confirmation handoff so it joins the accepted machine-local Sundale listen endpoint. Fresh proof must stop first at membership; only after membership passes may it measure mutual visibility, appearance agreement, and one normal movement, then stop before component 3. See [[Development/Reports/Phase 1K7 Normal Shared Session Membership Fail Fast Measurement]].
+
 ## Future shared simulation layer
 
 Athlete Life Brain v4 is the default for newly generated train, rest, recover, and socialize decisions. It adds only one bounded, one-decision, same-season recent-scoring response above v3's routine behavior. V1-v4 history remains immutable. Expand into longer memory, traits, relationships, nightlife, media, discipline, career decisions, and other sports only after each smaller input passes its own engineering evaluation.

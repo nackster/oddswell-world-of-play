@@ -90,6 +90,10 @@ A fresh normal-path owner selected non-default `masculine_tone_2` with one Right
 
 The one production handoff target now points to existing packaged `SundaleGraybox` while retaining `OddsWellLocomotionGameMode`. A fresh owner with no prior SaveGame selected non-default `masculine_tone_2` with exactly one Right-arrow input, confirmed once with Enter, produced exactly one valid production appearance save, and entered Sundale with no travel failure or fallback. Component 1 is **COMPLETE** for this automated technical attempt. The attempt stopped before owner movement; it did not prove shared-session membership, peer appearance agreement, component 2, first-time-player comprehension, beta readiness, or production readiness. See [[Development/Reports/Phase 1K6 Sundale Handoff Correction and Fresh Component One Proof]].
 
+### Phase 1K.7 measurement evidence
+
+A fresh normal-path owner repeated component 1, but the post-confirmation Sundale handoff created a separate standalone world instead of joining the waiting loopback listen server. The peer remained at `clients=1`; neither client recorded mutual visibility or cross-client starter-appearance agreement. The attempt stopped with owner movement inputs `[]` and peer inputs `[]`. Component 2 is incomplete at shared-session membership, and components 3-8 remain **NOT REACHED**. See [[Development/Reports/Phase 1K7 Normal Shared Session Membership Fail Fast Measurement]].
+
 ## First-hour player journey
 
 ### 1. Choose a default character
