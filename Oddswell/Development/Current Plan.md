@@ -15,6 +15,7 @@ status: active
 - **LOCKED** and **BETA TARGET** describe product intent, not proof that a feature exists.
 - Work depending on an **OPEN** decision stops for the owner; **LATER** items are not scheduled beta work.
 - Codex owns playable and manual-path verification whenever the Development client can exercise it safely. Ask the owner only for subjective approval or an interaction that cannot be automated truthfully; label automated proof as automated rather than manual-player usability.
+- The four-role development relay and bounded Cursor delegation policy are fixed in [[Design/Decisions/DEC-023 Four Role Development Relay and Cursor Delegation]]. The Notion Agent syncs verified milestones and creates no more than one duplicate-checked Cursor task per phase, only when the Scope Director identifies suitable low-risk work.
 - This plan and phase reports remain the implementation truth.
 
 ## Phase 0: Simulation foundation
