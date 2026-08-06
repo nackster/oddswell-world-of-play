@@ -2,11 +2,11 @@
 
 ## Outcome
 
-**COMPLETE - FRESH MEASUREMENT FAILED AT THE FIRST COMPONENT-3 STUDIO BOUNDARY.**
+**COMPLETE - THE ATTEMPT FAILED AT MISSING RETAINED COMPONENT-2 MOVEMENT EVIDENCE.**
 
-A fresh no-QA owner and isolated passive peer repeated the accepted components 1-2 path in the unchanged Phase 1K.8a Windows Development package. The owner selected and confirmed non-default `masculine_tone_2`, joined the loopback Sundale listen server, reached `clients=2`, preserved the exact starter appearance, achieved mutual labeled visibility, and moved through normal controls while the peer remained passive.
+A fresh no-QA owner and isolated passive peer used the unchanged Phase 1K.8a Windows Development package. The owner selected and confirmed non-default `masculine_tone_2`, joined the loopback Sundale listen server, reached `clients=2`, preserved the exact starter appearance, and achieved mutual labeled visibility. Normal owner movement inputs were issued while the peer remained passive, but no passive-peer before/after image or authoritative numeric displacement was retained in the evidence root. The fresh attempt therefore did not independently prove the final movement requirement of component 2.
 
-At the Studio spawn doorway, the networked owner never received the required `Press E to enter your empty Studio` prompt. One normal `E` press left the owner in shared `SundaleGraybox`, emitted no Studio-transition marker, and created no housing SaveGame. The attempt stopped there. No other component-3 location, Studio interior, job interaction, ledger mutation, or component 4-8 action followed.
+The same invalidated attempt later observed no `Press E to enter your empty Studio` prompt at the Studio spawn doorway. One normal `E` left the owner in shared `SundaleGraybox`, emitted no Studio-transition marker, and created no housing SaveGame. That is retained secondary diagnostic evidence only: component 3 was not validly reached after the earlier component-2 evidence failure. No other location, Studio interior, job interaction, ledger mutation, or component 4-8 action followed.
 
 This is a Development technical failure measurement. It is not a completed component 3, observed first-time-player result, external-network proof, beta-readiness claim, or production-readiness claim.
 
@@ -29,18 +29,22 @@ This is a Development technical failure measurement. It is not a completed compo
 
 The exact wrapper commands, package identities, setup actions, profiles, processes, endpoint, and setup boundary are retained in `Evidence/setup.json`. Ordered elapsed checkpoints, raw player inputs, prompt result, hashes, authority boundary, and cleanup are retained in `Evidence/session.json`.
 
-## Repeated components 1-2
+## Component 1 and partial component-2 evidence
 
 1. The owner started without an appearance SaveGame and visibly showed the production eight-card chooser.
 2. Normal `Right` selected `masculine_tone_2`; one physical `Return` confirmed exactly once.
 3. The production appearance record saved `masculine_tone_2`, `starter_offwhite_top`, and `starter_offwhite_bottom` as `2,183` bytes with SHA-256 `1EBEFEE97CD3DEB7EA19833353747A7121AC361B5476450345EB53A42FD1AF98`.
 4. The owner client-traveled to the waiting peer; the peer logged `clients=2` and accepted the exact owner-submitted appearance.
-5. Supported Windows Computer Use observations showed both labeled players and the tan owner avatar in the off-white starter clothing. The owner used only normal movement controls; the peer remained an observer.
+5. Supported Windows Computer Use observations showed both labeled players and the tan owner avatar in the off-white starter clothing. The owner used only normal movement controls and the peer remained an observer, but the passive-peer before/after observations existed only in the task transcript. They were not saved or hashed, and neither log contains a numeric position or displacement marker.
 6. No fallback, travel failure, QA action, teleport, save edit, authority repair, or evidence splice occurred.
 
 ## First fail-fast boundary
 
-The first component-3 checkpoint was the Studio door at the normal shared-city spawn. Before `E`, retained `ScreenShot00004.png` shows the shared Sundale world with no required Studio prompt. Its SHA-256 is `B17A2C821A07CC48D69F693E9496889EAADCA61AC04D0B40C534610421FBD820`.
+The first failure is missing retained component-2 movement proof. `OwnerProfile\Saved\Screenshots\Windows\ScreenShot00002.png` and `ScreenShot00003.png` are owner-side captures only. No `PeerProfile\Saved\Screenshots` file exists, and neither `Peer.log` nor `Owner.log` records an authoritative before/after position or displacement. The `Evidence/session.json` component-2 and checkpoint-7 fields are assertions derived from the run, not independent evidence.
+
+## Secondary Studio diagnostic
+
+After the evidence failure, the owner was observed at the Studio door at the normal shared-city spawn. Before `E`, retained `ScreenShot00004.png` shows the shared Sundale world with no required Studio prompt. Its SHA-256 is `B17A2C821A07CC48D69F693E9496889EAADCA61AC04D0B40C534610421FBD820`.
 
 One normal `E` press produced no visible or authoritative change:
 
@@ -51,16 +55,16 @@ One normal `E` press produced no visible or authoritative change:
 - no Studio structure, furniture, decoration, snap-point, or return-error evidence could be reached;
 - no job `E` occurred and no owner Odds Bucks ledger existed.
 
-The measured source boundary explains the runtime result: production `PollStudioInteraction()` returns when `GetNetMode() != NM_Standalone`. The component-2 owner is an `NM_Client` in the shared Sundale session, so the existing private Studio prompt and transition are unreachable on the required contiguous route.
+The source boundary is consistent with the diagnostic: production `PollStudioInteraction()` returns when `GetNetMode() != NM_Standalone`. Because component 2 had already failed its retained-evidence requirement, this observation does not authorize a Studio correction or complete any component-3 checkpoint.
 
 This phase intentionally adds no speculative correction before the measurement.
 
 ## Verification
 
 - Fresh package identity and package inventory: PASS.
-- Fresh components 1-2 setup, normal input, membership, appearance, and passive-peer boundaries: PASS.
-- Focused runtime/source agreement for the missing network-client Studio interaction: PASS.
-- Component 3: FAIL at its first Studio prompt/entry boundary; all later component-3 requirements are **NOT REACHED**.
+- Fresh component 1 and component-2 membership, appearance, mutual visibility, and passive-peer boundaries: PASS.
+- Fresh retained passive-peer movement proof: FAIL; component 2 was not fully repeated in this attempt.
+- Studio prompt/source observation: secondary diagnostic only; component 3 and all later requirements are **NOT REACHED**.
 - Frozen Python suites under repository-pinned Python `3.12.13`: PASS `9 + 2 + 8 + 46 + 40 = 105/105` in `136.3s`.
 - Brain Admin `python -m brain_admin.server --check`: PASS.
 - Fatal, assertion, ensure, and travel-failure matches: `0`.
@@ -74,4 +78,4 @@ No C++, Python, Unreal content, package, fixture, schema, brain, simulator, econ
 
 ## Next gate
 
-Phase 1K.9a should correct only the measured network-client Studio boundary by making the existing empty-Studio prompt and private transition reachable from the normal shared-city owner while preserving the current local housing SaveGame and exact-return authority. It must then rebuild and repeat fresh components 1-2 before re-measuring component 3 only. Stop before any job `E` or ledger mutation.
+This historical attempt remains failed at missing retained component-2 movement evidence. The subsequent fresh corrective run closed that evidence gap, passed components 1-2, and then validly failed at the first networked Studio prompt/entry boundary. See [[Development/Reports/Phase 1K9 Corrective Retained Movement and Networked Studio Fail Fast Measurement]].
