@@ -210,7 +210,7 @@ void AOddsWellCharacterSelectionHUD::ConfirmSelection()
 		bQaSlot ? TEXT("qa") : TEXT("production"));
 	UGameplayStatics::OpenLevel(
 		this,
-		FName(TEXT("/Game/Maps/BlockCourtBenchmark")),
+		FName(TEXT("/Game/Maps/SundaleGraybox")),
 		true,
 		TEXT("game=/Script/OddsWell.OddsWellLocomotionGameMode"));
 }

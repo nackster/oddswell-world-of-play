@@ -1689,6 +1689,15 @@ Build the one-city scope defined in [[Design/Decisions/DEC-002 First Playable Sc
 - **Evidence boundary:** component 1 and components 2-8 remain **NOT REACHED**. No shared-city entry, peer appearance agreement, route step, first-time-player comprehension, beta readiness, or production readiness is claimed.
 - **Next gate:** Phase 1K.6 should change only the normal confirmation target to the existing packaged `SundaleGraybox` with `OddsWellLocomotionGameMode`, rebuild, and repeat fresh accepted-network component-1 proof. Stop after successful Sundale entry; do not begin component 2. See [[Development/Reports/Phase 1K5 Fresh Non Default Preset Selection and Handoff Measurement]].
 
+### Phase 1K.6 Sundale Handoff Correction and Fresh Component-One Proof status
+
+- **Status:** COMPLETE - COMPONENT 1 PASSED; COMPONENTS 2-8 NOT REACHED on `agent/phase-0d`.
+- **Ponytail correction:** the one production chooser-confirmation `FName` now targets existing packaged `/Game/Maps/SundaleGraybox` instead of absent `BlockCourtBenchmark`; the existing `OddsWellLocomotionGameMode` option is unchanged.
+- **Fresh proof:** attempt `phase1k6-20260805T235056Z` used fresh isolated owner/peer profiles. The owner pressed Right once for non-default `masculine_tone_2`, pressed Enter once, emitted exactly one production appearance-save marker, and entered Sundale under `OddsWellLocomotionGameMode` with no `TravelFailure` or fallback.
+- **Stop boundary:** owner inputs were exactly `[Right, Enter]`; owner movement inputs and peer inputs were both `[]`. Shared-session membership, peer appearance agreement, replicated movement, and components 2-8 were not attempted.
+- **Verification:** editor build, focused native `1/1`, full native `49/49`, fresh Windows BuildCookRun/package audit, frozen Python `105/105`, Brain Admin `--check`, retained evidence hashes, cleanup, link, whitespace, and canvas checks pass. The package has `50` files, `1,049,392,044` bytes, and zero Python files.
+- **Evidence boundary and next gate:** this automated technical proof is not first-time-player usability or beta readiness. Phase 1K.7 should first measure whether the normal post-chooser owner joins the already-running passive peer and whether both clients agree on the starter appearance. Only after those pass may it exercise the first normal movement required by component 2, then stop before component 3. See [[Development/Reports/Phase 1K6 Sundale Handoff Correction and Fresh Component One Proof]].
+
 ## Future shared simulation layer
 
 Athlete Life Brain v4 is the default for newly generated train, rest, recover, and socialize decisions. It adds only one bounded, one-decision, same-season recent-scoring response above v3's routine behavior. V1-v4 history remains immutable. Expand into longer memory, traits, relationships, nightlife, media, discipline, career decisions, and other sports only after each smaller input passes its own engineering evaluation.

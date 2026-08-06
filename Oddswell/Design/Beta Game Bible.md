@@ -86,6 +86,10 @@ Normal packaged Bootstrap startup now uses the existing approved `OddsWellCharac
 
 A fresh normal-path owner selected non-default `masculine_tone_2` with one Right-arrow input and confirmed once with Enter. The production appearance save passed exactly once and created a `2,183`-byte record with SHA-256 `1EBEFEE97CD3DEB7EA19833353747A7121AC361B5476450345EB53A42FD1AF98`. The first failure was the existing world handoff: confirmation targeted absent `/Game/Maps/BlockCourtBenchmark`, Unreal emitted `ClientTravelFailure`, and Bootstrap reopened. The accepted passive peer remained in `SundaleGraybox` with zero input. Component 1 and components 2-8 remain **NOT REACHED**; no route action followed the failure. See [[Development/Reports/Phase 1K5 Fresh Non Default Preset Selection and Handoff Measurement]].
 
+### Phase 1K.6 correction evidence
+
+The one production handoff target now points to existing packaged `SundaleGraybox` while retaining `OddsWellLocomotionGameMode`. A fresh owner with no prior SaveGame selected non-default `masculine_tone_2` with exactly one Right-arrow input, confirmed once with Enter, produced exactly one valid production appearance save, and entered Sundale with no travel failure or fallback. Component 1 is **COMPLETE** for this automated technical attempt. The attempt stopped before owner movement; it did not prove shared-session membership, peer appearance agreement, component 2, first-time-player comprehension, beta readiness, or production readiness. See [[Development/Reports/Phase 1K6 Sundale Handoff Correction and Fresh Component One Proof]].
+
 ## First-hour player journey
 
 ### 1. Choose a default character
