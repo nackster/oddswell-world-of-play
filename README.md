@@ -12,7 +12,20 @@ The project is in early concept and pre-production. The immediate development fo
 
 ## Project brain
 
-The canonical local Obsidian vault is [`Oddswell/`](Oddswell/). Start with [`Oddswell/00 Home.md`](Oddswell/00%20Home.md).
+The canonical local Obsidian vault is [`Oddswell/`](Oddswell/). Start with [`Oddswell/00 Home.md`](Oddswell/00%20Home.md). Confirmed decisions, detailed plans, and implementation evidence belong there.
+
+Accessible project overview and task handoff live in Notion:
+
+- [OddsWell project hub](https://app.notion.com/p/3b4f491cd50181d4a138c8341ac0e9a2)
+- [Technologies Used register](https://app.notion.com/p/3b4f491cd5018116912ff02ad8ce583a)
+
+## Collaboration workflow
+
+- **Obsidian** — local source of truth for decisions, plans, phase reports, and detailed implementation evidence.
+- **Notion** — team-facing overview, technology register, and developer task packets.
+- **Cursor** — implements approved, narrowly scoped Notion tasks on isolated branches.
+- **CodeRabbit** — reviews small, non-draft pull requests using the repository's `.coderabbit.yaml`.
+- **Codex** — roadmap control, integration verification, and final acceptance.
 
 ## Production defaults
 
