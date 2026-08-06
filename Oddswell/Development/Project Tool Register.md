@@ -24,7 +24,9 @@ This register is the searchable source of truth for which tools OddsWell uses, w
 | Area | Tool or system | Status | Responsibility |
 | --- | --- | --- | --- |
 | Project knowledge | Obsidian | Primary | Local project brain for decisions, plans, art direction, research, and visual maps. |
+| Team documentation and task handoff | Notion | Active | Accessible project pages, technology registers, developer-ready task packets, ownership, and progress tracking. Git and Obsidian remain the detailed implementation evidence sources. |
 | Development collaboration | Codex | Active | Research, design support, implementation, documentation, testing, and maintaining the project brain during active work. |
+| Assisted implementation | Cursor | Proposed pilot | Execute reviewed, bounded Notion tasks on isolated Git branches; it does not choose roadmap order or change protected architecture independently. |
 | Development method | Ponytail | Active | Adopted full-mode development workflow. |
 | Sports decision AI | Baseline policy → LLM decision policy | Phase 0A active; provider pending | Choose athlete and coach action intents through a strict structured-action contract. |
 | Simulation authority | Deterministic sport rules engines | Phase 0B calibrated baseline | Validate legal actions, resolve consequences, and produce replayable event logs. |
@@ -35,7 +37,8 @@ This register is the searchable source of truth for which tools OddsWell uses, w
 | Local source control | Git 2.49.0 | Active | Local versioning client verified during Phase 1A.0. |
 | Repository administration | GitHub CLI 2.96.0 | Active | Create and administer the project repository from the local workstation. |
 | Large asset versioning | Git LFS 3.6.1 | Active | Version large binary assets through Git using the project tracking policy in `.gitattributes`; the bootstrap and noncanonical block/court benchmark maps are LFS-covered. |
-| Work tracking | GitHub Issues/Projects | Active | Track executable tasks, bugs, pull requests, milestones, and roadmap views without adding another planning service. |
+| Pull-request review | CodeRabbit | 14-day Pro Plus pilot | GitHub App access includes the private OddsWell repository. Automatic non-draft PR review uses the versioned root `.coderabbit.yaml`; the pilot does not auto-request changes. |
+| Work tracking | Notion + GitHub | Active | Notion owns detailed developer task packets and progress; GitHub owns branches, pull requests, review history, and merge evidence. |
 | Build automation | GitHub Actions | Pending tests | Run automated tests and builds; consider a private self-hosted runner on project servers after the repository is secured. |
 | Agent orchestration | Ruflo | Deferred | Revisit after the Phase 0 simulator exists and parallel automation would provide measurable value. |
 | Visual references | Higgsfield | Active subscription | Controlled character and item references, turnarounds, storyboards, and cinematic exploration. |
