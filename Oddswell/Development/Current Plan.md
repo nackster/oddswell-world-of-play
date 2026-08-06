@@ -1716,6 +1716,15 @@ Build the one-city scope defined in [[Design/Decisions/DEC-002 First Playable Sc
 - **Evidence boundary:** Windows Computer Use could identify the two packaged windows but could not send the physical keypresses because its action bridge returned `node_repl exec context not found`. The accepted membership proof used the existing Development chooser driver through the same production save and travel code. Physical-input reproduction, mutual visibility, cross-client appearance agreement, and movement remain unproven.
 - **Next gate:** Phase 1K.8b should use a fresh no-QA owner with exactly `[Right, Enter]`, first reproduce `clients=2`, then—only if membership holds—measure mutual visibility, starter-appearance agreement, and one normal movement. Stop before component 3. See [[Development/Reports/Phase 1K8a Shared Handoff Correction and Automated Membership Proof]].
 
+### Phase 1K.8b Normal Input Control Fail-Fast Attempt status
+
+- **Status:** INCOMPLETE — INPUT BRIDGE FAILED BEFORE PLAYER INPUT; PHASE 1K.8a REMAINS THE LATEST COMPLETED PHASE.
+- **Fresh setup:** the unchanged packaged build launched a passive peer at exact gameplay UDP `127.0.0.1:17777` and a fresh no-QA owner at the normal character chooser. The peer reported `clients=1`; the owner loaded `OddsWellCharacterSelectionGameMode`.
+- **Measured blocker:** Windows Computer Use uniquely identified both windows, but normal observation/action and one required recovery attempt returned `node_repl exec context not found`. No unsupported PowerShell input or unobserved keypress was substituted.
+- **Integrity:** owner and peer inputs were `[]`; no appearance save, handoff, route action, or authority mutation occurred. Retained logs were hashed, and cleanup left zero OddsWell processes and zero UDP `17777` endpoints.
+- **Runtime boundary:** proof attempt and documentation only; game code and package are unchanged.
+- **Next gate:** resume Phase 1K.8b when the supported Windows input bridge can drive a fresh no-QA owner. Use exactly `[Right, Enter]`, first reproduce `clients=2`, then—only if membership holds—measure mutual visibility, appearance agreement, and one normal movement. Stop before component 3. See [[Development/Reports/Phase 1K8b Normal Input Control Fail Fast Attempt]].
+
 ## Future shared simulation layer
 
 Athlete Life Brain v4 is the default for newly generated train, rest, recover, and socialize decisions. It adds only one bounded, one-decision, same-season recent-scoring response above v3's routine behavior. V1-v4 history remains immutable. Expand into longer memory, traits, relationships, nightlife, media, discipline, career decisions, and other sports only after each smaller input passes its own engineering evaluation.
