@@ -8,7 +8,6 @@
 #include "GameFramework/PlayerController.h"
 #include "HAL/PlatformMisc.h"
 #include "InputCoreTypes.h"
-#include "Kismet/GameplayStatics.h"
 #include "Misc/CommandLine.h"
 #include "Misc/Parse.h"
 
@@ -25,6 +24,7 @@ const TArray<FKey> ControllerNavigationKeys = {EKeys::Gamepad_DPad_Left, EKeys::
 const TArray<FKey> KeyboardConfirmKeys = {EKeys::Enter, EKeys::SpaceBar};
 const TArray<FKey> ControllerConfirmKeys = {EKeys::Gamepad_FaceButton_Bottom};
 const FLinearColor OffWhite(0.92f, 0.90f, 0.82f);
+const FString CharacterHandoffEndpoint(TEXT("127.0.0.1:17777"));
 }
 
 FOddsWellCharacterSelectionState::FOddsWellCharacterSelectionState()
@@ -208,11 +208,19 @@ void AOddsWellCharacterSelectionHUD::ConfirmSelection()
 		*Preset->EquippedItemIds[0].ToString(),
 		*Preset->EquippedItemIds[1].ToString(),
 		bQaSlot ? TEXT("qa") : TEXT("production"));
-	UGameplayStatics::OpenLevel(
-		this,
-		FName(TEXT("/Game/Maps/SundaleGraybox")),
-		true,
-		TEXT("game=/Script/OddsWell.OddsWellLocomotionGameMode"));
+	APlayerController* Controller = GetOwningPlayerController();
+	if (!Controller)
+	{
+		HandoffError = TEXT("No local player controller is available for the Sundale handoff.");
+		UE_LOG(LogOddsWellCharacterSelection, Error, TEXT("ODDSWELL_CHARACTER_HANDOFF|result=FAIL|reason=%s"), *HandoffError);
+		return;
+	}
+	UE_LOG(
+		LogOddsWellCharacterSelection,
+		Display,
+		TEXT("ODDSWELL_CHARACTER_HANDOFF|result=START|target=%s|mode=client_travel|boundary=machine_local_development"),
+		*CharacterHandoffEndpoint);
+	Controller->ClientTravel(CharacterHandoffEndpoint, TRAVEL_Absolute);
 }
 
 void AOddsWellCharacterSelectionHUD::DrawCard(const FOddsWellCharacterPreset& Preset, const int32 Index, const float X, const float Y, const float Width, const float Height)
@@ -285,6 +293,10 @@ bool FOddsWellCharacterSelectionTest::RunTest(const FString& Parameters)
 	TestEqual(TEXT("Keyboard confirm routes are represented"), KeyboardConfirmKeys.Num(), 2);
 	TestEqual(TEXT("Controller confirm route is represented"), ControllerConfirmKeys.Num(), 1);
 	TestTrue(TEXT("Controller confirm is a gamepad key"), ControllerConfirmKeys[0].IsGamepadKey());
+	TestEqual(
+		TEXT("Normal character handoff targets the accepted machine-local Sundale listen endpoint"),
+		CharacterHandoffEndpoint,
+		FString(TEXT("127.0.0.1:17777")));
 
 	return !HasAnyErrors();
 }

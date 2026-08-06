@@ -1707,6 +1707,15 @@ Build the one-city scope defined in [[Design/Decisions/DEC-002 First Playable Sc
 - **Verification:** frozen Python `105/105`, Brain Admin `--check`, retained evidence hashes, cleanup, link, whitespace, and canvas checks pass. Unchanged Phase 1K.6 editor, native `1/1` and `49/49`, BuildCookRun, and package evidence are reused without a no-op rebuild.
 - **Next gate:** Phase 1K.8 should correct only the normal post-confirmation handoff so it joins the accepted machine-local Sundale listen endpoint. Fresh proof must stop first at membership; only after membership passes may it measure mutual visibility, appearance agreement, and one normal movement, then stop before component 3. See [[Development/Reports/Phase 1K7 Normal Shared Session Membership Fail Fast Measurement]].
 
+### Phase 1K.8a Shared Handoff Correction and Automated Membership Proof status
+
+- **Status:** COMPLETE — PRODUCTION HANDOFF CORRECTED; AUTOMATED PACKAGED MEMBERSHIP PASSED on `agent/phase-0d`.
+- **Ponytail correction:** the chooser confirmation now uses the existing owning player controller to client-travel to the accepted machine-local Development endpoint `127.0.0.1:17777`. No discovery service, browser, backend, framework, or dependency was added.
+- **Fresh packaged proof:** a passive Sundale listen peer and a fresh packaged owner exercised the production save and handoff path. The owner reached the peer, and the peer logged `clients=2` plus accepted owner-submitted `masculine_tone_2` appearance data.
+- **Verification:** editor and game builds, focused native `1/1`, full native `49/49`, frozen Python `105/105`, Brain Admin `--check`, Windows Development BuildCookRun, package audit, hashes, and cleanup pass. The package contains `50` files, `1,049,384,876` bytes, and zero Python files.
+- **Evidence boundary:** Windows Computer Use could identify the two packaged windows but could not send the physical keypresses because its action bridge returned `node_repl exec context not found`. The accepted membership proof used the existing Development chooser driver through the same production save and travel code. Physical-input reproduction, mutual visibility, cross-client appearance agreement, and movement remain unproven.
+- **Next gate:** Phase 1K.8b should use a fresh no-QA owner with exactly `[Right, Enter]`, first reproduce `clients=2`, then—only if membership holds—measure mutual visibility, starter-appearance agreement, and one normal movement. Stop before component 3. See [[Development/Reports/Phase 1K8a Shared Handoff Correction and Automated Membership Proof]].
+
 ## Future shared simulation layer
 
 Athlete Life Brain v4 is the default for newly generated train, rest, recover, and socialize decisions. It adds only one bounded, one-decision, same-season recent-scoring response above v3's routine behavior. V1-v4 history remains immutable. Expand into longer memory, traits, relationships, nightlife, media, discipline, career decisions, and other sports only after each smaller input passes its own engineering evaluation.

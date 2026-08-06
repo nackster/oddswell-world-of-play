@@ -94,6 +94,10 @@ The one production handoff target now points to existing packaged `SundaleGraybo
 
 A fresh normal-path owner repeated component 1, but the post-confirmation Sundale handoff created a separate standalone world instead of joining the waiting loopback listen server. The peer remained at `clients=1`; neither client recorded mutual visibility or cross-client starter-appearance agreement. The attempt stopped with owner movement inputs `[]` and peer inputs `[]`. Component 2 is incomplete at shared-session membership, and components 3-8 remain **NOT REACHED**. See [[Development/Reports/Phase 1K7 Normal Shared Session Membership Fail Fast Measurement]].
 
+### Phase 1K.8a correction and automated membership evidence
+
+The production character-confirmation handoff now client-travels to the accepted machine-local Sundale listen endpoint instead of opening a standalone duplicate world. A fresh packaged automated owner exercised the production save and travel path, joined the passive peer, and caused the peer to report `clients=2` and accept the selected starter appearance. This proves the correction and automated membership only. Normal physical-input reproduction, mutual visibility, cross-client appearance agreement, one movement, component 2 completion, first-time-player usability, beta readiness, and production readiness remain unproven. See [[Development/Reports/Phase 1K8a Shared Handoff Correction and Automated Membership Proof]].
+
 ## First-hour player journey
 
 ### 1. Choose a default character

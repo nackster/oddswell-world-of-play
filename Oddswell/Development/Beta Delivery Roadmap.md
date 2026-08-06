@@ -585,9 +585,13 @@ Known evidence boundary: the standalone Phase 1F replay ends `101-104`, while th
 
 **COMPLETE - COMPONENT 2 FAILED AT SHARED-SESSION MEMBERSHIP; COMPONENTS 3-8 NOT REACHED.** Attempt `phase1k7-20260806T022019Z` reused the unchanged Phase 1K.6 package and fresh isolated profiles. The normal owner repeated component 1, but the post-confirmation browse opened a separate standalone `SundaleGraybox` world instead of joining the accepted peer endpoint at `127.0.0.1:17777`. The peer stayed at `clients=1`; neither client logged mutual visibility or cross-client appearance agreement. Owner movement inputs and peer inputs were both `[]`. See [[Development/Reports/Phase 1K7 Normal Shared Session Membership Fail Fast Measurement]].
 
+### Phase 1K.8a correction and automated membership proof
+
+**COMPLETE - PRODUCTION HANDOFF CORRECTED; AUTOMATED PACKAGED MEMBERSHIP PASSED; COMPONENT 2 REMAINS INCOMPLETE.** Character confirmation now client-travels to the accepted machine-local Sundale listen endpoint instead of opening a standalone map. A fresh packaged owner exercised the production save and travel path, joined the passive peer, and caused the peer to report `clients=2` and accept owner-submitted `masculine_tone_2` appearance data. The existing Development chooser driver supplied selection inputs because the Windows Computer Use action bridge failed; therefore normal physical-input reproduction, mutual visibility, cross-client appearance agreement, and one movement remain unproven. See [[Development/Reports/Phase 1K8a Shared Handoff Correction and Automated Membership Proof]].
+
 ### Next measured gate
 
-Phase 1K.8 should correct only the normal post-confirmation handoff so the owner joins the accepted machine-local Sundale listen endpoint instead of opening a standalone local map. Rebuild and repeat the fresh component-1 path. Stop first at membership; only if it passes may the phase measure mutual visibility, starter-appearance agreement, and one normal movement. Do not begin component 3.
+Phase 1K.8b should use one fresh no-QA owner with exactly `[Right, Enter]`. It must first reproduce peer `clients=2`. Only if membership holds may it measure mutual visibility, starter-appearance agreement, and one normal movement. Do not begin component 3.
 
 ### Exit evidence
 
