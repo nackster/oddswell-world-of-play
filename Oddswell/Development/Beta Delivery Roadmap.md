@@ -158,8 +158,9 @@ The roadmap is intentionally made of measurable product gates, not hundreds of s
 - Phase 1J.3b.1f public specialty clarification: **COMPLETE FOR ALL TWELVE EXISTING PUBLIC ATHLETE PAGES**; see [[Development/Reports/Phase 1J3b1f Public Specialty Clarification]]. One compact line explains that specialty is the athlete's strongest skill category, not overall quality or a guaranteed result. No athlete evidence, brain, simulator, form, or production authority changed.
 - Phase 1J exit review: **COMPLETE FOR THE CURRENT BOUNDED BETA MILESTONE**; see [[Design/Decisions/DEC-021 Phase 1J Bounded Athlete Story Evidence Acceptance]] and [[Development/Reports/Phase 1J Exit Review]]. The owner accepts the one-person unseen and uncoached `5/6` result plus the completed specialty clarification. Forms A-C are consumed and retired; no fourth form or retest is authorized for this milestone. Population comprehension remains unproven.
 - Phase 1K.0 first-hour integration baseline and evidence contract: **COMPLETE — DEFINITION ONLY**; see [[Development/Phase 1K First-Hour Integration Evidence Contract]] and [[Development/Reports/Phase 1K0 First-Hour Integration Baseline and Evidence Contract]]. All eight route components have bounded individual proof, but no fresh contiguous packaged session proves coexistence.
-- Phase 1K.7 normal shared-session membership measurement: **COMPLETE - COMPONENT 2 FAILED AT MEMBERSHIP; COMPONENTS 3-8 NOT REACHED**; see [[Development/Reports/Phase 1K7 Normal Shared Session Membership Fail Fast Measurement]].
-- Next gate: **PHASE 1K.8 - CORRECT ONLY THE NORMAL HANDOFF TO JOIN THE ACCEPTED SUNDALE LISTEN ENDPOINT**. Reprove component 1, stop first at membership, and never begin component 3 in that phase.
+- Phase 1K.8b normal shared-city proof: **COMPLETE - COMPONENTS 1-2 PASSED**; see [[Development/Reports/Phase 1K8b Normal Input Shared City Component Two Proof]].
+- Phase 1K.9 component-3 measurement: **COMPLETE - NETWORKED STUDIO ENTRY FAILED; COMPONENTS 4-8 NOT REACHED**; see [[Development/Reports/Phase 1K9 Networked Studio Entry Fail Fast Measurement]].
+- Next gate: **PHASE 1K.9a - CORRECT ONLY THE NETWORK-CLIENT STUDIO PROMPT AND PRIVATE TRANSITION**. Preserve the existing housing SaveGame and exact-return authority, rebuild, repeat components 1-2, and re-measure component 3 only. Stop before job `E`.
 - Current prerequisite note: UE 5.8, the aligned x64 runtime and .NET Framework 4.8 SDK, portable project, reproducible local Windows package, empty-map launch, LFS, generated-file ignores, primitive block/court iteration, collision, cold-process reopen, direct recorded-replay rendering, deterministic packaged traces, and local resource sampling are verified. UE 5.8 is now the approved beta client engine.
 
 No later roadmap phase is authorized merely because it appears below.
@@ -178,7 +179,7 @@ No later roadmap phase is authorized merely because it appears below.
 | 8 | 1H — Wager locking and settlement | Reach the physical booth, inspect approved odds, place approved wagers, and receive exact outcomes | COMPLETE FOR THE FIXED HARBOR/MESA `40` MATCH WINNER SLICE / GENERALIZATION UNPROVEN |
 | 9 | 1I — Stores and lifestyle upgrades | Buy, equip, display, and place basic items | COMPLETE FOR ONE JACKET + ONE CHAIR + ONE-BEDROOM LOCAL PATH |
 | 10 | 1J — Athlete life and league storytelling | Understand athletes, availability, and consequences | COMPLETE FOR CURRENT BOUNDED MILESTONE — OWNER ACCEPTED ONE-PERSON 5/6 + SPECIALTY CLARIFICATION; NO POPULATION CLAIM |
-| 11 | 1K — First-hour integration | Complete the entire beta promise in one session | ACTIVE — 1K.0 CONTRACT COMPLETE; NEXT GATE 1K.1 MEASUREMENT RUN |
+| 11 | 1K — First-hour integration | Complete the entire beta promise in one session | ACTIVE — COMPONENTS 1-2 PASS; COMPONENT 3 BLOCKED AT NETWORKED STUDIO ENTRY; NEXT GATE 1K.9a |
 | 12 | 1L — Content, presentation, and accessibility | The slice feels coherent and readable | PENDING |
 | 13 | 1M — Reliability, compliance, and beta exit | The owner can truthfully approve beta release | BETA EXIT |
 
@@ -523,9 +524,11 @@ One bounded owner sample, the public presentation corrections it produced, and e
 7. **COMPLETE — Phase 1K.5 SELECTION/HANDOFF MEASUREMENT:** one Right-arrow input selected `masculine_tone_2`; one Enter confirmation created exactly one valid production appearance save. The normal target `/Game/Maps/BlockCourtBenchmark` was absent, travel failed, and Bootstrap reopened. Components 1-8 remain **NOT REACHED**. See [[Development/Reports/Phase 1K5 Fresh Non Default Preset Selection and Handoff Measurement]].
 8. **COMPLETE - Phase 1K.6 HANDOFF-TARGET CORRECTION:** the one production target now opens existing packaged `SundaleGraybox`. Fresh automated proof selected and saved `masculine_tone_2` once, entered normal play under `OddsWellLocomotionGameMode`, and stopped with zero movement. Component 1 passed; components 2-8 remain **NOT REACHED**. See [[Development/Reports/Phase 1K6 Sundale Handoff Correction and Fresh Component One Proof]].
 9. **COMPLETE - Phase 1K.7 COMPONENT-2 MEASUREMENT:** the fresh normal owner repeated component 1 but opened a separate standalone Sundale world. The accepted peer stayed at `clients=1`; mutual visibility, appearance agreement, and movement were not reached. See [[Development/Reports/Phase 1K7 Normal Shared Session Membership Fail Fast Measurement]].
-10. **NEXT - Phase 1K.8 SHARED-HANDOFF CORRECTION:** change only the normal post-confirmation handoff so the owner joins the accepted machine-local Sundale listen endpoint. Reprove component 1 and stop first at membership; only after membership passes may the phase measure appearance agreement and one movement.
-11. **PENDING - later Phase 1K gates:** select only from the next measured fail-fast boundary; do not invent a generalized tutorial, orchestration framework, or new authority.
-12. **CONDITIONAL — reopen Phase 1J:** only if measured first-hour or player evidence shows that required athlete distinctions cannot be represented by existing public fields and clearer presentation.
+10. **COMPLETE - Phase 1K.8 SHARED-HANDOFF AND NORMAL COMPONENT-2 PROOF:** the owner now joins the accepted machine-local Sundale listen endpoint. Fresh normal input proved `clients=2`, mutual labeled visibility, exact starter-appearance agreement, and owner movement with a passive peer.
+11. **COMPLETE - Phase 1K.9 COMPONENT-3 FAIL-FAST MEASUREMENT:** fresh components 1-2 passed again, then the networked owner received no Studio prompt at the spawn doorway. One normal `E` produced no transition or housing save. The attempt stopped before any job or ledger action. See [[Development/Reports/Phase 1K9 Networked Studio Entry Fail Fast Measurement]].
+12. **NEXT - Phase 1K.9a NETWORK-CLIENT STUDIO CORRECTION:** make only the existing Studio prompt/private transition reachable from the shared-city owner while preserving local housing SaveGame and exact-return authority. Rebuild and freshly re-measure component 3 only; stop before job `E`.
+13. **PENDING - later Phase 1K gates:** select only from the next measured fail-fast boundary; do not invent a generalized tutorial, orchestration framework, or new authority.
+14. **CONDITIONAL — reopen Phase 1J:** only if measured first-hour or player evidence shows that required athlete distinctions cannot be represented by existing public fields and clearer presentation.
 
 ## Phase 1K — First-hour integration
 
@@ -593,9 +596,13 @@ Known evidence boundary: the standalone Phase 1F replay ends `101-104`, while th
 
 **COMPLETE - COMPONENT 2 PASSED; COMPONENTS 3-8 NOT REACHED.** A fresh no-QA owner used Right then Enter through supported Windows Computer Use, saved non-default `masculine_tone_2` once, and joined the accepted machine-local peer. The peer reported `clients=2`, accepted the owner's tan preset and off-white starter items, and visibly showed both labeled players. A normal Shift+A control produced a visible replicated owner-position change in the peer view while world collision remained intact. The peer received zero input. No game or package change was required; the earlier bridge failure was stale Computer Use state crossing Node REPL execution boundaries. See [[Development/Reports/Phase 1K8b Normal Input Shared City Component Two Proof]].
 
+### Phase 1K.9 component-three fail-fast measurement
+
+**COMPLETE - COMPONENTS 1-2 REPEATED; COMPONENT 3 FAILED AT NETWORKED STUDIO ENTRY.** A fresh owner and isolated passive peer repeated normal selection, persistence, loopback membership, starter appearance, visibility, and movement in the unchanged package. At the shared-city Studio spawn doorway, the owner received no `Press E to enter your empty Studio` prompt. One normal `E` produced no transition marker and no housing SaveGame. The production interaction is currently standalone-only, so the route stopped before other locations, Studio interior evidence, job input, or ledger mutation. See [[Development/Reports/Phase 1K9 Networked Studio Entry Fail Fast Measurement]].
+
 ### Next measured gate
 
-Phase 1K.9 should repeat completed components 1-2 with fresh isolated profiles, then measure component 3 only: discover the required Sundale locations through normal movement, enter and move inside the empty Studio, exit to its exact doorway, and stop before component 4's job interaction.
+Phase 1K.9a should change only the measured network-client Studio prompt/private-transition boundary while preserving the existing local housing SaveGame and exact-return authority. It must rebuild and repeat fresh components 1-2 before re-measuring component 3 only, then stop before component 4's job interaction.
 
 ### Exit evidence
 

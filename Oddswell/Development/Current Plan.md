@@ -1736,6 +1736,16 @@ Build the one-city scope defined in [[Design/Decisions/DEC-002 First Playable Sc
 - **Runtime boundary:** technical evidence and documentation only. No C++, Python, Unreal content, package, fixture, schema, brain, simulator, ledger, economy, wager, inventory, housing, backend, telemetry, or deployment behavior changed.
 - **Next gate:** Phase 1K.9 should repeat completed components 1-2 with fresh isolated profiles, then measure component 3 only: normal Sundale location discovery plus empty Studio enter, interior movement, exact-doorway exit, and return. Stop before component 4's job interaction. See [[Development/Reports/Phase 1K8b Normal Input Shared City Component Two Proof]].
 
+### Phase 1K.9 Networked Studio Entry Fail-Fast Measurement status
+
+- **Status:** COMPLETE - FRESH COMPONENTS 1-2 REPEATED; COMPONENT 3 FAILED AT ITS FIRST STUDIO BOUNDARY on `agent/phase-0d`.
+- **Fresh normal path:** attempt `phase1k9-20260806T212425Z` used fresh isolated profiles and the unchanged accepted package. Normal Right/Return selected and saved `masculine_tone_2`; the owner joined the exact loopback peer, reached `clients=2`, preserved the starter appearance, achieved mutual labeled visibility, and used normal movement. Peer gameplay action count was `0`.
+- **First failure:** at the shared-city Studio spawn doorway, the required `Press E to enter your empty Studio` prompt was absent. One normal `E` produced no map transition, no `ODDSWELL_STUDIO_TRANSITION`, and no `OddsWellStudioHome.sav`.
+- **Measured cause:** production `PollStudioInteraction()` returns for every non-standalone net mode. The component-2 owner is an `NM_Client`, so the existing Studio prompt and private transition are unreachable in the contiguous shared-city route.
+- **Stop boundary:** remaining Sundale locations, Studio interior evidence, exact return, and route distance were not reached. The job interaction was never used; owner ledger mutation count remained `0`; components 4-8 were not attempted.
+- **Verification:** package identity/inventory, retained hashes, frozen Python `105/105`, Brain Admin `--check`, zero fatal/assert/ensure/travel-failure matches, and final process/port cleanup pass. Runtime source and package are unchanged, so Phase 1K.8a native `1/1`, full native `49/49`, editor/game builds, and BuildCookRun evidence are reused without a no-op rebuild.
+- **Next gate:** Phase 1K.9a should change only the measured network-client Studio prompt/transition boundary while preserving the existing local housing SaveGame and exact-return authority, rebuild, and repeat fresh components 1-2 before re-measuring component 3 only. Stop before any job `E` or ledger mutation. See [[Development/Reports/Phase 1K9 Networked Studio Entry Fail Fast Measurement]].
+
 ## Future shared simulation layer
 
 Athlete Life Brain v4 is the default for newly generated train, rest, recover, and socialize decisions. It adds only one bounded, one-decision, same-season recent-scoring response above v3's routine behavior. V1-v4 history remains immutable. Expand into longer memory, traits, relationships, nightlife, media, discipline, career decisions, and other sports only after each smaller input passes its own engineering evaluation.

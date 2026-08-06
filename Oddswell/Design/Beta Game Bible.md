@@ -100,6 +100,10 @@ The production character-confirmation handoff now client-travels to the accepted
 
 A fresh no-QA owner then completed the normal-input proof with Right followed by Enter, joined the same machine-local Sundale peer, and preserved non-default `masculine_tone_2` plus the approved off-white starter clothing. Both packaged windows visibly showed the other labeled player, and a normal Shift+A control produced a replicated owner-position change in the peer view while collision remained intact. Component 2 is now **COMPLETE** for packaged technical evidence. Components 3-8, observed first-time-player comprehension, external-network safety, beta readiness, and production readiness remain unproven. See [[Development/Reports/Phase 1K8b Normal Input Shared City Component Two Proof]].
 
+### Phase 1K.9 networked Studio fail-fast evidence
+
+A fresh isolated owner and passive peer repeated components 1-2 in the unchanged accepted package. At the shared-city Studio spawn doorway, the owner received no `Press E to enter your empty Studio` prompt; one normal `E` produced no transition and no housing SaveGame. The existing production Studio interaction currently returns for a network client, so the attempt stopped before other location discovery, Studio interior evidence, exact return, job input, or ledger mutation. Component 3 remains incomplete at its first boundary. The smallest next gate is a network-client Studio prompt/private-transition correction, not a new housing or networking framework. See [[Development/Reports/Phase 1K9 Networked Studio Entry Fail Fast Measurement]].
+
 ## First-hour player journey
 
 ### 1. Choose a default character
