@@ -32,3 +32,61 @@ The first headless basketball simulator lives in [`phase0a/`](phase0a/). It uses
 python phase0a/simulator.py --seed 42 --log phase0a/game-42.jsonl
 python -m unittest discover -s phase0a -p "test_*.py" -v
 ```
+
+Phase 0B analyzes reproducible batches and writes the tracked Obsidian baseline report:
+
+```powershell
+python -m phase0b.analyze --games 1000 --output "Oddswell/Development/Reports/Phase 0B Baseline.md"
+python -m unittest phase0b.test_analyze -v
+```
+
+Phase 0C adds the guarded, provider-neutral LLM action boundary and runs a no-cost offline integration pilot:
+
+```powershell
+python -m phase0c.pilot --games 10 --calibration-games 1000 --fairness-seed-pairs 100 --output "Oddswell/Development/Reports/Phase 0C Offline LLM Policy Pilot.md"
+python -m unittest phase0c.test_policy -v
+```
+
+The offline fixture proves validation, deterministic fallback, telemetry, and replay. It is not a live LLM; a live pilot requires an approved provider and cost/latency budget.
+
+Phase 0D begins the deterministic league layer with a balanced schedule and standings:
+
+```powershell
+python -m phase0d.league --games 20 --start-seed 10000 --output "Oddswell/Development/Reports/Phase 0D Schedule and Standings.md"
+python -m unittest phase0d.test_league -v
+```
+
+Phase 0D.1 established versioned multi-season persistence and bounded fatigue. Its historical evidence remains in [`Phase 0D1 Multi-Season Fatigue.md`](Oddswell/Development/Reports/Phase%200D1%20Multi-Season%20Fatigue.md).
+
+Phase 0D.2 adds one reserve per team, deterministic lineups, authoritative minutes, and minutes-driven workload:
+
+```powershell
+python -m phase0d.league --games 20 --seasons 1 --start-seed 12000 --output "Oddswell/Development/Reports/Phase 0D2 Rotation Minutes and Workload.md"
+python -m unittest phase0a.test_simulator phase0b.test_analyze phase0c.test_policy phase0d.test_league -v
+```
+
+Phase 0D.3 adds deterministic minor injuries, binary availability, scheduled recovery, and replay-bound audit evidence:
+
+```powershell
+python -m phase0d.league --games 20 --seasons 3 --start-seed 13100 --output "Oddswell/Development/Reports/Phase 0D3 Availability and Recovery.md"
+python -m unittest phase0a.test_simulator phase0b.test_analyze phase0c.test_policy phase0d.test_league -v
+```
+
+Phase 0D.4 commits public-only pregame predictions before each authoritative game and scores three fixed models on a locked holdout:
+
+```powershell
+python -m phase0d.prediction --warmup-seasons 15 --holdout-seasons 5 --games 20 --start-seed 14000 --output "Oddswell/Development/Reports/Phase 0D4 Public Prediction Evaluation.md"
+python -m unittest phase0d.test_prediction -v
+```
+
+The evaluation excludes seeds, RNG, hidden fatigue/injury state, results, replay data, economy data, and user data. It is a $0 fictional-simulator study, not a wagering product or real-world prediction claim.
+
+## Local Admin Console
+
+Double-click [`Start Brain Observatory.cmd`](Start%20Brain%20Observatory.cmd) to open the local-only Admin Console. Its Brain Observatory visualizes the six brain/authority components. The Simulation page now provides a Game Theater that runs a real seeded game and animates recorded lineups, passes, shots, rebounds, turnovers, clock, score, and final replay evidence on a symbolic court. General navigation covers Overview, Brains, Simulation, Content, World / League, Operations, and Audit.
+
+Only seeded simulation and status refresh are operational controls today, and successful actions are written to `brain_admin/admin-audit.log`. The World / League page also exposes the current prediction-evaluation version as read-only evidence. Clothing, items, economy, moderation, releases, and other unbuilt systems are clearly locked rather than represented by fake switches. The training preview is explicitly a visual demonstration; it does not claim model weights are changing.
+
+Game Theater scores, clocks, lineups, and play labels come from the authoritative event log. Player-marker coordinates are illustrative because the headless simulator does not yet model physical or 3D court positions.
+
+The server binds only to `127.0.0.1`. It intentionally has no pretend login: authentication, role-based access control, and secure deployment are required before any network exposure.

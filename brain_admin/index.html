@@ -1,0 +1,1903 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OddsWell Admin Console</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --ink: #eef8ff;
+      --muted: #86a1b5;
+      --cyan: #5cecff;
+      --violet: #ad7cff;
+      --green: #7dffb3;
+      --amber: #ffc765;
+      --red: #ff718d;
+      --panel: rgba(7, 18, 33, 0.78);
+      --line: rgba(111, 207, 255, 0.2);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-width: 320px;
+      min-height: 100vh;
+      overflow-x: hidden;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 72% 14%, rgba(81, 43, 152, 0.24), transparent 34%),
+        radial-gradient(circle at 18% 68%, rgba(0, 145, 180, 0.16), transparent 36%),
+        #030812;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.16;
+      background-image:
+        linear-gradient(rgba(105, 205, 255, 0.12) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(105, 205, 255, 0.12) 1px, transparent 1px);
+      background-size: 44px 44px;
+      mask-image: linear-gradient(to bottom, transparent, black 25%, black 75%, transparent);
+    }
+    button, input { font: inherit; }
+    button:focus-visible, input:focus-visible { outline: 2px solid var(--cyan); outline-offset: 3px; }
+    button { color: inherit; }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+    .app-shell { width: min(1740px, 100%); margin: 0 auto; display: grid; grid-template-columns: 218px minmax(0, 1fr); }
+    .rail { min-width: 0; min-height: 100vh; padding: 22px 14px; border-right: 1px solid var(--line); background: rgba(2, 8, 18, 0.76); }
+    .rail-brand { padding: 4px 10px 24px; color: var(--cyan); font-size: 0.78rem; letter-spacing: 0.2em; }
+    .rail-brand strong { display: block; margin-bottom: 5px; color: var(--ink); font-size: 0.92rem; }
+    .nav { display: grid; gap: 5px; }
+    .nav-button {
+      width: 100%; padding: 10px 11px; border: 1px solid transparent; border-radius: 10px;
+      background: transparent; color: var(--muted); text-align: left; cursor: pointer;
+    }
+    .nav-button:hover, .nav-button[aria-current="page"] { color: var(--ink); border-color: var(--line); background: rgba(92, 236, 255, 0.07); }
+    .nav-button[aria-current="page"] { box-shadow: inset 2px 0 var(--cyan); }
+    .nav-state { float: right; color: var(--muted); font-size: 0.56rem; letter-spacing: 0.1em; }
+    .rail-note { margin: 24px 10px 0; color: var(--muted); font-size: 0.68rem; line-height: 1.5; }
+    .workspace { min-width: 0; }
+    .shell { width: 100%; padding: 20px; }
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      margin-bottom: 18px;
+    }
+    .brand { display: flex; align-items: center; gap: 13px; }
+    .mark {
+      width: 48px;
+      aspect-ratio: 1;
+      border: 1px solid rgba(92, 236, 255, 0.55);
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      position: relative;
+      box-shadow: 0 0 30px rgba(92, 236, 255, 0.16), inset 0 0 18px rgba(92, 236, 255, 0.13);
+    }
+    .mark::before, .mark::after {
+      content: "";
+      position: absolute;
+      border: 1px solid rgba(173, 124, 255, 0.55);
+      border-radius: 50%;
+      inset: 6px;
+    }
+    .mark::after { inset: 14px; background: var(--cyan); box-shadow: 0 0 17px var(--cyan); }
+    h1 { margin: 0; font-size: clamp(1rem, 2.5vw, 1.35rem); letter-spacing: 0.16em; font-weight: 650; }
+    .eyebrow { margin: 3px 0 0; color: var(--muted); font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase; }
+    .system-meta { display: flex; align-items: center; justify-content: flex-end; gap: 14px; color: var(--muted); font-size: 0.76rem; letter-spacing: 0.08em; }
+    .online { display: inline-flex; gap: 7px; align-items: center; color: var(--green); }
+    .online::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: currentColor; box-shadow: 0 0 12px currentColor; }
+    .layout { display: grid; grid-template-columns: minmax(0, 1fr) 330px; gap: 16px; }
+    .page[hidden] { display: none; }
+    .page-head { display: flex; justify-content: space-between; align-items: end; gap: 18px; margin: 4px 0 18px; }
+    .page-head h2 { margin: 0; font-size: clamp(1.2rem, 3vw, 1.8rem); font-weight: 500; }
+    .page-head p { margin: 6px 0 0; color: var(--muted); font-size: 0.82rem; }
+    .module-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 13px; }
+    .league-modules { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .module-card { min-height: 150px; padding: 17px; border: 1px solid var(--line); border-radius: 16px; background: var(--panel); }
+    .module-card h3 { margin: 12px 0 7px; font-size: 1rem; font-weight: 500; }
+    .module-card p { margin: 0; color: var(--muted); font-size: 0.79rem; line-height: 1.55; }
+    .module-card.wide { grid-column: span 2; }
+    .evidence-card p { overflow-wrap: anywhere; }
+    .evidence-link { margin-top: 10px !important; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: 0.68rem !important; }
+    .state { display: inline-block; color: var(--green); font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; }
+    .state.locked { color: var(--amber); }
+    .state.read-only { color: var(--cyan); }
+    .module-action { margin-top: 15px; }
+    .security-banner { margin-top: 14px; border-color: rgba(255, 199, 101, 0.26); background: rgba(255, 199, 101, 0.045); }
+    .form-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: end; margin-top: 18px; }
+    .field-label { display: grid; gap: 6px; color: var(--muted); font-size: 0.72rem; }
+    .audit-list { display: grid; gap: 7px; margin-top: 14px; }
+    .audit-entry { display: grid; grid-template-columns: 170px 135px 1fr auto; gap: 12px; align-items: center; padding: 11px 0; border-bottom: 1px solid var(--line); font-size: 0.76rem; }
+    .audit-time, .audit-target { color: var(--muted); font-family: ui-monospace, SFMono-Regular, Consolas, monospace; }
+    .empty { color: var(--muted); padding: 22px 0; }
+    .stage, .panel, .telemetry {
+      border: 1px solid var(--line);
+      background: var(--panel);
+      backdrop-filter: blur(18px);
+      box-shadow: 0 22px 70px rgba(0, 0, 0, 0.35), inset 0 1px rgba(255, 255, 255, 0.025);
+    }
+    .stage { position: relative; overflow: hidden; min-height: 610px; border-radius: 20px; }
+    .stage::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: repeating-linear-gradient(to bottom, transparent 0 4px, rgba(120, 220, 255, 0.025) 5px);
+    }
+    canvas { display: block; width: 100%; height: 610px; }
+    .stage-status { position: absolute; top: 18px; left: 20px; z-index: 2; pointer-events: none; }
+    .mode { color: var(--cyan); font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; text-shadow: 0 0 13px currentColor; }
+    .event-title { margin-top: 8px; max-width: 560px; font-size: clamp(0.98rem, 2vw, 1.35rem); font-weight: 520; }
+    .scoreboard {
+      position: absolute;
+      z-index: 2;
+      right: 20px;
+      top: 18px;
+      display: grid;
+      grid-template-columns: minmax(92px, 1fr) auto minmax(92px, 1fr);
+      align-items: center;
+      gap: 11px;
+      padding: 10px 13px;
+      border: 1px solid rgba(92, 236, 255, 0.18);
+      border-radius: 13px;
+      background: rgba(2, 9, 18, 0.72);
+      font-variant-numeric: tabular-nums;
+    }
+    .team { color: var(--muted); font-size: 0.72rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .team:last-child { text-align: right; }
+    .score { font-size: 1.1rem; color: var(--ink); }
+    .controls {
+      position: absolute;
+      z-index: 3;
+      left: 18px;
+      right: 18px;
+      bottom: 18px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px;
+      align-items: center;
+    }
+    .control {
+      border: 1px solid rgba(92, 236, 255, 0.28);
+      border-radius: 999px;
+      padding: 9px 14px;
+      background: rgba(7, 21, 38, 0.86);
+      cursor: pointer;
+      transition: transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
+    }
+    .control:hover { transform: translateY(-1px); border-color: var(--cyan); box-shadow: 0 0 20px rgba(92, 236, 255, 0.12); }
+    .control.primary { background: linear-gradient(120deg, rgba(35, 155, 189, 0.48), rgba(87, 68, 177, 0.5)); }
+    .control:disabled { opacity: 0.48; cursor: wait; transform: none; }
+    .seed { width: 108px; color: var(--ink); border: 1px solid rgba(92, 236, 255, 0.24); background: rgba(2, 9, 18, 0.74); border-radius: 999px; padding: 9px 13px; }
+    .panel { border-radius: 20px; padding: 15px; }
+    .panel h2, .telemetry h2 { margin: 0 0 11px; color: var(--muted); font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase; font-weight: 600; }
+    .brain-list { display: grid; gap: 8px; }
+    .brain-button {
+      width: 100%;
+      display: grid;
+      grid-template-columns: 10px minmax(0, 1fr) auto;
+      gap: 10px;
+      align-items: center;
+      text-align: left;
+      padding: 11px;
+      border: 1px solid transparent;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.025);
+      cursor: pointer;
+    }
+    .brain-button:hover, .brain-button.selected { border-color: rgba(92, 236, 255, 0.32); background: rgba(92, 236, 255, 0.065); }
+    .brain-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--muted); box-shadow: 0 0 10px currentColor; }
+    .brain-button[data-status*="ACTIVE"] .brain-dot, .brain-button[data-status="AUTHORITATIVE"] .brain-dot { color: var(--green); background: currentColor; }
+    .brain-button[data-status="EVALUATING"] .brain-dot { color: var(--cyan); background: currentColor; }
+    .brain-button[data-status="PLANNED"] .brain-dot { color: var(--muted); background: currentColor; box-shadow: none; }
+    .brain-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 0.87rem; }
+    .brain-state { color: var(--muted); font-size: 0.58rem; letter-spacing: 0.1em; }
+    .selected-brain { margin-top: 13px; padding-top: 13px; border-top: 1px solid var(--line); }
+    .selected-brain h3 { margin: 0 0 6px; font-size: 1.05rem; }
+    .version { color: var(--cyan); font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: 0.72rem; }
+    .detail { color: var(--muted); font-size: 0.81rem; line-height: 1.55; }
+    .truth {
+      margin-top: 13px;
+      padding: 12px;
+      border: 1px solid rgba(255, 199, 101, 0.22);
+      border-radius: 12px;
+      background: rgba(255, 199, 101, 0.045);
+      color: #f8dca9;
+      font-size: 0.74rem;
+      line-height: 1.45;
+    }
+    .telemetry { grid-column: 1 / -1; border-radius: 20px; padding: 15px; display: grid; grid-template-columns: 1fr 1.45fr; gap: 17px; }
+    .metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+    .metric { min-width: 0; padding: 12px; border-left: 2px solid rgba(92, 236, 255, 0.45); background: rgba(255, 255, 255, 0.025); }
+    .metric-label { color: var(--muted); font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; }
+    .metric-value { margin-top: 6px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: 0.83rem; }
+    .log { height: 114px; overflow: auto; padding: 0 4px; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: 0.72rem; line-height: 1.65; scrollbar-color: rgba(92, 236, 255, 0.25) transparent; }
+    .log-line { color: var(--muted); }
+    .log-time { color: var(--violet); margin-right: 8px; }
+    .log-line.demo { color: var(--amber); }
+    .game-theater {
+      margin-top: 16px;
+      overflow: hidden;
+      border: 1px solid rgba(92, 236, 255, 0.25);
+      border-radius: 20px;
+      background: rgba(4, 13, 25, 0.88);
+      box-shadow: 0 26px 80px rgba(0, 0, 0, 0.42), inset 0 1px rgba(255, 255, 255, 0.035);
+    }
+    .game-hud {
+      display: grid;
+      grid-template-columns: minmax(120px, 1fr) auto minmax(120px, 1fr);
+      align-items: center;
+      gap: 14px;
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--line);
+      background: linear-gradient(90deg, rgba(92, 236, 255, 0.08), transparent 38%, transparent 62%, rgba(173, 124, 255, 0.08));
+    }
+    .game-team { min-width: 0; }
+    .game-team:last-child { text-align: right; }
+    .game-team-name { overflow: hidden; color: var(--muted); font-size: 0.72rem; letter-spacing: 0.08em; text-overflow: ellipsis; white-space: nowrap; }
+    .game-team-score { margin-top: 3px; font: 600 1.6rem ui-monospace, SFMono-Regular, Consolas, monospace; }
+    .game-team:last-child .game-team-score { color: #d3b9ff; }
+    .game-team:first-child .game-team-score { color: var(--cyan); }
+    .game-clock { text-align: center; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; }
+    .game-clock strong { display: block; font-size: 1.3rem; font-variant-numeric: tabular-nums; }
+    .game-clock span { color: var(--green); font-size: 0.58rem; letter-spacing: 0.17em; }
+    .court {
+      position: relative;
+      min-height: 520px;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at center, rgba(92, 236, 255, 0.08), transparent 32%),
+        repeating-linear-gradient(90deg, rgba(255,255,255,0.018) 0 56px, rgba(255,255,255,0.04) 57px 58px),
+        linear-gradient(120deg, #0b3b45, #092936 46%, #161f46);
+      isolation: isolate;
+      transition: box-shadow 220ms ease;
+    }
+    .court::before {
+      content: "";
+      position: absolute;
+      z-index: -1;
+      inset: 5%;
+      border: 2px solid rgba(228, 249, 255, 0.44);
+      border-radius: 3px;
+      background:
+        linear-gradient(90deg, transparent calc(50% - 1px), rgba(228,249,255,.38) 50%, transparent calc(50% + 1px));
+      box-shadow: inset 0 0 40px rgba(92, 236, 255, 0.05), 0 0 36px rgba(92, 236, 255, 0.06);
+    }
+    .court::after {
+      content: "";
+      position: absolute;
+      z-index: -1;
+      left: 50%; top: 50%;
+      width: 104px; height: 104px;
+      border: 2px solid rgba(228, 249, 255, 0.42);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+    }
+    .paint, .arc, .hoop { position: absolute; z-index: -1; top: 50%; transform: translateY(-50%); }
+    .paint { width: 16%; height: 48%; border: 2px solid rgba(228,249,255,.36); background: rgba(92,236,255,.025); }
+    .paint.left { left: 5%; border-left: 0; }
+    .paint.right { right: 5%; border-right: 0; }
+    .arc { width: 26%; height: 74%; border: 2px solid rgba(228,249,255,.3); border-radius: 50%; }
+    .arc.left { left: -8%; }
+    .arc.right { right: -8%; }
+    .hoop { width: 13px; height: 38px; border: 3px solid var(--amber); filter: drop-shadow(0 0 8px rgba(255,199,101,.75)); }
+    .hoop.left { left: 8.5%; border-left: 0; }
+    .hoop.right { right: 8.5%; border-right: 0; }
+    .court.made { box-shadow: inset 0 0 95px rgba(125, 255, 179, 0.24); }
+    .court-player {
+      position: absolute;
+      z-index: 4;
+      width: 38px; height: 38px;
+      display: grid;
+      place-items: center;
+      border: 2px solid var(--cyan);
+      border-radius: 50%;
+      background: rgba(5, 17, 30, 0.95);
+      color: var(--ink);
+      font: 700 0.65rem ui-monospace, SFMono-Regular, Consolas, monospace;
+      transform: translate(-50%, -50%);
+      transition: left 300ms ease, top 300ms ease, opacity 200ms ease, box-shadow 200ms ease, transform 200ms ease;
+      box-shadow: 0 0 18px rgba(92, 236, 255, 0.2);
+    }
+    .court-player.away { border-color: var(--violet); box-shadow: 0 0 18px rgba(173,124,255,.22); }
+    .court-player.bench { opacity: 0.32; transform: translate(-50%, -50%) scale(0.72); }
+    .court-player.active { z-index: 6; transform: translate(-50%, -50%) scale(1.22); box-shadow: 0 0 0 6px rgba(255,199,101,.14), 0 0 32px var(--amber); border-color: var(--amber); }
+    .court-player.target { box-shadow: 0 0 0 5px rgba(125,255,179,.12), 0 0 24px var(--green); }
+    .court-player-name {
+      position: absolute;
+      top: 44px; left: 50%;
+      width: max-content; max-width: 120px;
+      padding: 3px 6px;
+      border-radius: 6px;
+      background: rgba(2, 8, 18, 0.82);
+      color: var(--muted);
+      font: 500 0.58rem ui-sans-serif, system-ui;
+      opacity: 0;
+      transform: translateX(-50%);
+      transition: opacity 160ms ease;
+    }
+    .court-player.active .court-player-name, .court-player:hover .court-player-name { opacity: 1; }
+    .basketball {
+      position: absolute;
+      z-index: 8;
+      left: 50%; top: 50%;
+      width: 15px; height: 15px;
+      border: 1px solid #32170a;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 30%, #ffd09a 0 9%, #f19039 12% 58%, #743014 61%);
+      transform: translate(-50%, -50%);
+      transition: left 230ms ease, top 230ms ease, opacity 160ms ease;
+      box-shadow: 0 0 18px rgba(255, 145, 57, 0.9);
+    }
+    .court-callout {
+      position: absolute;
+      z-index: 10;
+      left: 50%; bottom: 25px;
+      min-width: min(520px, 88%);
+      padding: 12px 18px;
+      border: 1px solid rgba(92,236,255,.2);
+      border-radius: 999px;
+      background: rgba(2, 8, 18, 0.84);
+      text-align: center;
+      transform: translateX(-50%);
+      backdrop-filter: blur(12px);
+    }
+    .court-callout strong { display: block; font-size: 0.88rem; font-weight: 550; }
+    .court-callout span { color: var(--muted); font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; }
+    .theater-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; padding: 13px 17px; }
+    .theater-controls label { display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: 0.7rem; }
+    .theater-controls select { color: var(--ink); border: 1px solid var(--line); border-radius: 999px; background: #071526; padding: 8px 12px; }
+    .theater-truth { margin-left: auto; color: var(--muted); font-size: 0.65rem; }
+    .theater-progress { height: 3px; background: rgba(255,255,255,.05); }
+    .theater-progress span { display: block; width: 0; height: 100%; background: linear-gradient(90deg, var(--cyan), var(--violet)); box-shadow: 0 0 15px var(--cyan); transition: width 140ms linear; }
+    .league-viewer {
+      margin-top: 16px;
+      display: grid;
+      gap: 14px;
+    }
+    .league-banner, .league-panel, .standing-card {
+      border: 1px solid var(--line);
+      background: var(--panel);
+      box-shadow: inset 0 1px rgba(255,255,255,.025);
+    }
+    .league-banner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 24px;
+      padding: 18px 20px;
+      border-radius: 18px;
+      background: linear-gradient(100deg, rgba(92,236,255,.09), rgba(7,18,33,.8) 48%, rgba(173,124,255,.08));
+    }
+    .league-kicker { color: var(--cyan); font-size: .62rem; letter-spacing: .17em; text-transform: uppercase; }
+    .league-banner h3 { margin: 6px 0 0; font-size: 1.35rem; font-weight: 520; }
+    .league-boundary { max-width: 670px; color: var(--muted); font-size: .72rem; line-height: 1.55; }
+    .league-standings { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+    .standing-card { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 15px; align-items: center; padding: 15px 17px; border-radius: 15px; }
+    .standing-rank { color: var(--cyan); font: 600 1.35rem ui-monospace, SFMono-Regular, Consolas, monospace; }
+    .standing-team { font-weight: 560; }
+    .standing-detail { margin-top: 4px; color: var(--muted); font-size: .66rem; }
+    .standing-record { text-align: right; font: 600 1.1rem ui-monospace, SFMono-Regular, Consolas, monospace; }
+    .league-grid { display: grid; grid-template-columns: minmax(330px, .8fr) minmax(430px, 1.2fr); gap: 14px; align-items: start; }
+    .league-panel { min-width: 0; padding: 16px; border-radius: 18px; }
+    .league-panel-head { display: flex; justify-content: space-between; gap: 14px; align-items: end; margin-bottom: 13px; }
+    .league-panel-head h3 { margin: 0; font-size: .92rem; font-weight: 560; }
+    .league-panel-head span { color: var(--muted); font-size: .62rem; }
+    .league-games { max-height: 620px; overflow: auto; display: grid; gap: 7px; padding-right: 4px; scrollbar-color: rgba(92,236,255,.25) transparent; }
+    .league-game {
+      width: 100%;
+      display: grid;
+      grid-template-columns: 38px minmax(0, 1fr) auto;
+      gap: 11px;
+      align-items: center;
+      padding: 11px;
+      border: 1px solid transparent;
+      border-radius: 11px;
+      background: rgba(255,255,255,.025);
+      text-align: left;
+      cursor: pointer;
+    }
+    .league-game:hover, .league-game.selected { border-color: rgba(92,236,255,.35); background: rgba(92,236,255,.065); }
+    .league-game.selected { box-shadow: inset 2px 0 var(--cyan); }
+    .league-game-number { color: var(--cyan); font: .65rem ui-monospace, SFMono-Regular, Consolas, monospace; }
+    .league-matchup { overflow: hidden; font-size: .73rem; text-overflow: ellipsis; white-space: nowrap; }
+    .league-matchup small { display: block; margin-top: 3px; color: var(--muted); font-size: .58rem; }
+    .league-game-score { color: var(--ink); font: 600 .84rem ui-monospace, SFMono-Regular, Consolas, monospace; }
+    .league-detail { min-height: 420px; }
+    .league-final { display: grid; grid-template-columns: 1fr auto 1fr; gap: 16px; align-items: center; padding: 18px 0; text-align: center; }
+    .league-final-team { color: var(--muted); font-size: .74rem; }
+    .league-final-team strong { display: block; margin-top: 5px; color: var(--ink); font: 600 1.75rem ui-monospace, SFMono-Regular, Consolas, monospace; }
+    .league-final-mark { color: var(--green); font-size: .59rem; letter-spacing: .15em; text-transform: uppercase; }
+    .league-replay-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin: 0 0 18px; padding: 11px; border: 1px solid rgba(125,255,179,.18); border-radius: 12px; background: rgba(125,255,179,.035); }
+    .league-replay-row span { flex: 1 1 240px; color: var(--muted); font-size: .62rem; line-height: 1.45; }
+    .prediction-grid { display: grid; gap: 9px; margin: 8px 0 17px; }
+    .prediction-row { display: grid; grid-template-columns: 185px minmax(90px, 1fr) 46px; gap: 10px; align-items: center; font-size: .65rem; }
+    .prediction-track { height: 6px; overflow: hidden; border-radius: 99px; background: rgba(255,255,255,.07); }
+    .prediction-fill { height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--cyan), var(--violet)); box-shadow: 0 0 10px rgba(92,236,255,.4); }
+    .prediction-value { text-align: right; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; }
+    .league-evidence { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; margin-bottom: 15px; }
+    .evidence-card { min-width: 0; padding: 10px; border: 1px solid var(--line); border-radius: 10px; background: rgba(255,255,255,.02); }
+    .evidence-card span { display: block; margin-bottom: 5px; color: var(--muted); font-size: .56rem; letter-spacing: .1em; text-transform: uppercase; }
+    .hash { overflow-wrap: anywhere; color: #b8eefa; font: .58rem/1.45 ui-monospace, SFMono-Regular, Consolas, monospace; }
+    .game-rosters { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .game-roster { padding: 11px; border-radius: 11px; background: rgba(255,255,255,.025); }
+    .game-roster h4 { margin: 0 0 8px; font-size: .7rem; font-weight: 560; }
+    .game-player { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; gap: 8px; align-items: center; padding: 5px 0; border-top: 1px solid rgba(111,207,255,.1); font-size: .62rem; }
+    .game-player-status { width: 7px; height: 7px; border-radius: 50%; background: var(--green); box-shadow: 0 0 8px currentColor; }
+    .game-player-status.out { color: var(--red); background: currentColor; }
+    .game-player-minutes { color: var(--muted); font-family: ui-monospace, SFMono-Regular, Consolas, monospace; }
+    .league-rosters { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+    .roster-card { padding: 13px; border: 1px solid var(--line); border-radius: 13px; background: rgba(255,255,255,.022); }
+    .roster-card h4 { margin: 0 0 10px; color: var(--cyan); font-size: .78rem; font-weight: 560; }
+    .roster-player { display: grid; grid-template-columns: minmax(110px, 1fr) auto; gap: 7px 12px; align-items: center; padding: 9px 0; border-top: 1px solid rgba(111,207,255,.1); }
+    .roster-player-name { font-size: .7rem; }
+    .roster-player-name small { display: block; margin-top: 3px; color: var(--muted); font-size: .54rem; }
+    .roster-overall { color: var(--amber); font: 600 .78rem ui-monospace, SFMono-Regular, Consolas, monospace; }
+    .roster-stats { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px; color: var(--muted); font: .54rem ui-monospace, SFMono-Regular, Consolas, monospace; }
+    .career-boundary { margin-bottom: 14px; padding: 13px 16px; border: 1px solid rgba(255,199,101,.22); border-radius: 14px; background: rgba(255,199,101,.045); color: #f8dca9; font-size: .7rem; line-height: 1.5; }
+    .athlete-shell { display: grid; grid-template-columns: 300px minmax(0, 1fr); gap: 14px; align-items: start; }
+    .athlete-directory { position: sticky; top: 12px; }
+    .athlete-list { max-height: 780px; overflow: auto; display: grid; gap: 7px; padding-right: 3px; scrollbar-color: rgba(92,236,255,.25) transparent; }
+    .athlete-button { width: 100%; display: grid; grid-template-columns: 38px minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 10px; border: 1px solid transparent; border-radius: 11px; background: rgba(255,255,255,.025); text-align: left; cursor: pointer; }
+    .athlete-button:hover, .athlete-button.selected { border-color: rgba(92,236,255,.35); background: rgba(92,236,255,.065); }
+    .athlete-button.selected { box-shadow: inset 2px 0 var(--cyan); }
+    .athlete-mini-avatar { width: 38px; height: 38px; display: grid; place-items: center; border: 1px solid var(--cyan); border-radius: 50%; background: rgba(92,236,255,.07); color: var(--cyan); font: 650 .66rem ui-monospace, SFMono-Regular, Consolas, monospace; }
+    .athlete-button:nth-child(n+7) .athlete-mini-avatar { border-color: var(--violet); color: #d3b9ff; background: rgba(173,124,255,.07); }
+    .athlete-list-name { overflow: hidden; font-size: .72rem; text-overflow: ellipsis; white-space: nowrap; }
+    .athlete-list-name small { display: block; margin-top: 3px; overflow: hidden; color: var(--muted); font-size: .54rem; text-overflow: ellipsis; }
+    .athlete-list-overall { color: var(--amber); font: 650 .72rem ui-monospace, SFMono-Regular, Consolas, monospace; }
+    .athlete-profile { min-width: 0; display: grid; gap: 14px; }
+    .career-hero { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 18px; align-items: center; padding: 20px; border: 1px solid var(--line); border-radius: 18px; background: linear-gradient(110deg, rgba(92,236,255,.1), var(--panel) 50%, rgba(173,124,255,.1)); }
+    .career-avatar { width: 74px; height: 74px; display: grid; place-items: center; border: 2px solid var(--cyan); border-radius: 50%; background: rgba(3,12,24,.8); color: var(--cyan); font: 650 1.15rem ui-monospace, SFMono-Regular, Consolas, monospace; box-shadow: 0 0 30px rgba(92,236,255,.15); }
+    .career-identity h3 { margin: 0; font-size: 1.45rem; font-weight: 530; }
+    .career-identity p { margin: 5px 0 9px; color: var(--muted); font-size: .72rem; }
+    .career-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+    .career-tag { padding: 4px 8px; border: 1px solid var(--line); border-radius: 99px; color: #b8eefa; font-size: .55rem; letter-spacing: .07em; text-transform: uppercase; }
+    .career-rating { min-width: 96px; text-align: center; }
+    .career-rating strong { display: block; color: var(--amber); font: 650 2.25rem ui-monospace, SFMono-Regular, Consolas, monospace; }
+    .career-rating span { color: var(--muted); font-size: .57rem; letter-spacing: .15em; text-transform: uppercase; }
+    .career-availability { margin-top: 8px; color: var(--green); font-size: .58rem; letter-spacing: .12em; }
+    .career-availability.out { color: var(--red); }
+    .career-metrics { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 8px; }
+    .career-metric { min-width: 0; padding: 12px; border: 1px solid var(--line); border-radius: 12px; background: rgba(255,255,255,.025); }
+    .career-metric span { display: block; color: var(--muted); font-size: .53rem; letter-spacing: .1em; text-transform: uppercase; }
+    .career-metric strong { display: block; margin-top: 6px; overflow: hidden; color: var(--ink); font: 600 .92rem ui-monospace, SFMono-Regular, Consolas, monospace; text-overflow: ellipsis; white-space: nowrap; }
+    .career-ledger .career-metric { background: linear-gradient(145deg, rgba(92,236,255,.055), rgba(173,124,255,.035)); }
+    .career-ledger .career-metric strong { font-size: .78rem; white-space: normal; }
+    .career-ledger { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .economy-metrics { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .career-season-tabs { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 8px; }
+    .career-season-button { display: grid; grid-template-columns: auto 1fr auto; gap: 10px; align-items: center; padding: 11px 12px; border: 1px solid var(--line); border-radius: 11px; background: rgba(255,255,255,.02); color: var(--ink); cursor: pointer; text-align: left; }
+    .career-season-button:hover, .career-season-button.selected { border-color: rgba(92,236,255,.4); background: rgba(92,236,255,.07); }
+    .career-season-button.selected { box-shadow: inset 2px 0 var(--cyan); }
+    .career-season-button strong { color: var(--cyan); font: 650 .7rem ui-monospace, SFMono-Regular, Consolas, monospace; }
+    .career-season-button span { color: var(--muted); font-size: .58rem; }
+    .career-season-button small { color: var(--amber); font: .58rem ui-monospace, SFMono-Regular, Consolas, monospace; }
+    .life-timeline { display: grid; grid-template-columns: repeat(auto-fit, minmax(185px, 1fr)); gap: 8px; }
+    .life-choice { min-width: 0; padding: 11px; border: 1px solid rgba(173,124,255,.2); border-radius: 11px; background: linear-gradient(145deg, rgba(173,124,255,.07), rgba(92,236,255,.035)); }
+    .life-choice strong { display: block; color: #d9c7ff; font: 650 .66rem ui-monospace, SFMono-Regular, Consolas, monospace; letter-spacing: .08em; }
+    .life-choice span { display: block; margin-top: 6px; color: var(--muted); font-size: .57rem; line-height: 1.45; }
+    .life-choice small { display: block; margin-top: 5px; color: #b8eefa; font-size: .54rem; line-height: 1.4; }
+    .career-profile-grid { display: grid; grid-template-columns: minmax(280px, .9fr) minmax(360px, 1.1fr); gap: 14px; }
+    .career-ratings { display: grid; gap: 10px; }
+    .career-rating-row { display: grid; grid-template-columns: 88px minmax(80px, 1fr) 30px; gap: 9px; align-items: center; color: var(--muted); font-size: .62rem; }
+    .career-rating-track { height: 7px; overflow: hidden; border-radius: 99px; background: rgba(255,255,255,.07); }
+    .career-rating-fill { height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--cyan), var(--violet)); box-shadow: 0 0 10px rgba(92,236,255,.35); }
+    .career-rating-value { text-align: right; color: var(--ink); font-family: ui-monospace, SFMono-Regular, Consolas, monospace; }
+    .career-form { height: 190px; display: flex; gap: 9px; align-items: end; padding: 12px 5px 0; border-bottom: 1px solid var(--line); }
+    .career-form-game { flex: 1; min-width: 34px; display: grid; grid-template-rows: 1fr auto auto; gap: 5px; align-items: end; text-align: center; }
+    .career-form-bar { width: min(34px, 72%); min-height: 4px; justify-self: center; border-radius: 7px 7px 2px 2px; background: linear-gradient(to top, rgba(92,236,255,.35), var(--cyan)); box-shadow: 0 0 14px rgba(92,236,255,.18); }
+    .career-form-game.out .career-form-bar { background: var(--red); opacity: .45; box-shadow: none; }
+    .career-form-game strong { font: 600 .62rem ui-monospace, SFMono-Regular, Consolas, monospace; }
+    .career-form-game span { color: var(--muted); font-size: .52rem; }
+    .career-history-scroll { overflow: auto; }
+    .career-history-table { min-width: 720px; }
+    .career-history-row { display: grid; grid-template-columns: 42px minmax(160px, 1fr) 64px 55px 55px 65px 74px; gap: 10px; align-items: center; padding: 9px 5px; border-top: 1px solid rgba(111,207,255,.1); font-size: .63rem; }
+    .career-history-row.header { color: var(--muted); font-size: .53rem; letter-spacing: .1em; text-transform: uppercase; }
+    .career-history-result { color: var(--green); font-family: ui-monospace, SFMono-Regular, Consolas, monospace; }
+    .career-history-result.loss { color: var(--red); }
+    .history-replay { padding: 5px 8px; font-size: .56rem; }
+    .footer { display: flex; justify-content: space-between; gap: 10px; margin-top: 11px; color: #607a8d; font-size: 0.63rem; letter-spacing: 0.08em; text-transform: uppercase; }
+    @media (max-width: 980px) {
+      .app-shell { grid-template-columns: 1fr; }
+      .rail { min-height: auto; padding: 12px; border-right: 0; border-bottom: 1px solid var(--line); }
+      .rail-brand, .rail-note { display: none; }
+      .nav { grid-template-columns: repeat(8, minmax(max-content, 1fr)); overflow-x: auto; }
+      .nav-button { text-align: center; white-space: nowrap; }
+      .nav-state { display: none; }
+      .layout { grid-template-columns: 1fr; }
+      .panel { order: 2; }
+      .telemetry { grid-column: 1; grid-template-columns: 1fr; order: 3; }
+      .brain-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .module-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .league-grid { grid-template-columns: 1fr; }
+      .league-games { max-height: 360px; }
+      .athlete-shell { grid-template-columns: 1fr; }
+      .athlete-directory { position: static; }
+      .athlete-list { max-height: 320px; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .career-metrics { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    }
+    @media (max-width: 640px) {
+      .shell { padding: 12px; }
+      header { align-items: flex-start; }
+      .system-meta { flex-direction: column; align-items: flex-end; gap: 3px; }
+      .stage, canvas { min-height: 520px; height: 520px; }
+      .scoreboard { top: 78px; left: 18px; right: 18px; }
+      .brain-list, .metrics { grid-template-columns: 1fr; }
+      .controls { align-items: stretch; }
+      .control { flex: 1 1 45%; }
+      .seed { flex: 1 1 100%; width: auto; }
+      .footer { flex-direction: column; }
+      .module-grid { grid-template-columns: 1fr; }
+      .module-card.wide { grid-column: auto; }
+      .audit-entry { grid-template-columns: 1fr auto; }
+      .audit-time, .audit-target { grid-column: 1 / -1; }
+      .court { min-height: 430px; }
+      .game-hud { grid-template-columns: 1fr auto 1fr; padding: 11px; }
+      .game-team-name { font-size: 0.6rem; }
+      .game-team-score { font-size: 1.2rem; }
+      .court-player { width: 31px; height: 31px; }
+      .court-player-name { display: none; }
+      .theater-truth { flex-basis: 100%; margin-left: 0; }
+      .league-banner { display: block; }
+      .league-boundary { margin-top: 11px; }
+      .league-standings, .league-rosters, .game-rosters, .league-evidence { grid-template-columns: 1fr; }
+      .prediction-row { grid-template-columns: 125px minmax(70px, 1fr) 42px; }
+      .career-hero { grid-template-columns: auto 1fr; }
+      .career-rating { grid-column: 1 / -1; display: flex; align-items: center; gap: 10px; text-align: left; }
+      .career-rating strong { font-size: 1.5rem; }
+      .career-availability { margin: 0 0 0 auto; }
+      .career-profile-grid { grid-template-columns: 1fr; }
+      .career-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .career-season-tabs { grid-template-columns: 1fr; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; transition-duration: 0.001ms !important; animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="rail" aria-label="Admin navigation">
+      <div class="rail-brand"><strong>ODDSWELL</strong>ADMIN CONSOLE</div>
+      <nav class="nav">
+        <button class="nav-button" type="button" data-page="overview">Overview <span class="nav-state">LIVE</span></button>
+        <button class="nav-button" type="button" data-page="brains" aria-current="page">Brains <span class="nav-state">CORE</span></button>
+        <button class="nav-button" type="button" data-page="athletes">Athletes <span class="nav-state">READ</span></button>
+        <button class="nav-button" type="button" data-page="simulation">Simulation <span class="nav-state">LIVE</span></button>
+        <button class="nav-button" type="button" data-page="content">Content <span class="nav-state">LOCKED</span></button>
+        <button class="nav-button" type="button" data-page="world">World / League <span class="nav-state">READ</span></button>
+        <button class="nav-button" type="button" data-page="operations">Operations <span class="nav-state">READ</span></button>
+        <button class="nav-button" type="button" data-page="audit">Audit <span class="nav-state">LIVE</span></button>
+      </nav>
+      <p class="rail-note">Local development surface. Authentication and role-based access are not implemented.</p>
+    </aside>
+
+    <div class="workspace">
+      <div class="shell">
+        <header>
+          <div class="brand">
+            <div class="mark" aria-hidden="true"></div>
+            <div>
+              <h1>ODDSWELL // ADMIN CONSOLE</h1>
+              <p class="eyebrow">Brain Observatory + local game control</p>
+            </div>
+          </div>
+          <div class="system-meta">
+            <button class="control" id="refresh-status" type="button">Refresh status</button>
+            <span class="online" id="connection">LOCAL LINK</span>
+            <time id="clock">--:--:--</time>
+          </div>
+        </header>
+
+        <main>
+          <section class="page" data-page-view="overview" hidden>
+            <div class="page-head"><div><h2>System overview</h2><p>Only controls backed by working OddsWell systems are enabled.</p></div></div>
+            <div class="module-grid" id="module-grid"></div>
+            <div class="module-card security-banner">
+              <span class="state locked">Security boundary</span>
+              <h3>Local development only</h3>
+              <p>There is intentionally no login screen. Authentication, role-based access, secure sessions, and deployment hardening are mandatory before this console can be exposed on any network.</p>
+            </div>
+          </section>
+
+          <section class="page" data-page-view="brains">
+            <div class="page-head"><div><h2>Brain Observatory</h2><p>Watch recorded simulator decisions and explicitly labeled training previews.</p></div></div>
+            <div class="layout">
+              <section class="stage" aria-label="Animated brain activity map">
+                <canvas id="network" aria-label="Six OddsWell components connected by animated decision and evidence flows"></canvas>
+                <div class="stage-status">
+                  <div class="mode" id="mode">SYSTEM OBSERVATION</div>
+                  <div class="event-title" id="event-title">Waiting for live simulator activity</div>
+                </div>
+                <div class="scoreboard" aria-live="polite">
+                  <span class="team" id="home-team">Harbor City</span>
+                  <strong class="score" id="score">— : —</strong>
+                  <span class="team" id="away-team">Mesa Vista</span>
+                </div>
+                <div class="controls">
+                  <label><span class="sr-only">Simulation seed</span><input class="seed" id="seed" type="number" min="0" max="2147483647" value="42" aria-label="Simulation seed"></label>
+                  <button class="control primary" id="simulate" type="button">Run real simulation</button>
+                  <button class="control" id="preview" type="button">Preview training visuals</button>
+                  <button class="control" id="fullscreen" type="button">Cinematic view</button>
+                </div>
+              </section>
+
+              <aside class="panel">
+                <h2>Brain network</h2>
+                <div class="brain-list" id="brain-list"></div>
+                <section class="selected-brain" aria-live="polite">
+                  <h3 id="selected-name">Loading…</h3>
+                  <div class="version" id="selected-version"></div>
+                  <p class="detail" id="selected-detail"></p>
+                </section>
+                <div class="truth" id="training-truth">Training telemetry is loading.</div>
+              </aside>
+
+              <section class="telemetry">
+                <div>
+                  <h2>Verified system state</h2>
+                  <div class="metrics">
+                    <div class="metric"><div class="metric-label">Basketball</div><div class="metric-value" id="brain-version">—</div></div>
+                    <div class="metric"><div class="metric-label">Engine</div><div class="metric-value" id="engine-version">—</div></div>
+                    <div class="metric"><div class="metric-label">Training cost</div><div class="metric-value" id="training-cost">—</div></div>
+                  </div>
+                </div>
+                <div><h2>Activity tape</h2><div class="log" id="log" role="log" aria-live="polite"></div></div>
+              </section>
+            </div>
+          </section>
+
+          <section class="page" data-page-view="athletes" hidden>
+            <div class="page-head"><div><h2>Athlete Career Profiles</h2><p>Inspect stable multi-season identity, cumulative totals, season evidence, and the active/retired record boundary.</p></div></div>
+            <div class="career-boundary" id="career-boundary">Loading the athlete truth boundary.</div>
+            <div class="athlete-shell">
+              <section class="league-panel athlete-directory">
+                <div class="league-panel-head"><h3>League athletes</h3><span id="athlete-count">Loading</span></div>
+                <div class="athlete-list" id="athlete-list"></div>
+              </section>
+              <div class="athlete-profile" aria-live="polite">
+                <section class="career-hero">
+                  <div class="career-avatar" id="profile-initials">--</div>
+                  <div class="career-identity">
+                    <h3 id="profile-name">Select an athlete</h3>
+                    <p id="profile-team">Career evidence is loading.</p>
+                    <div class="career-tags"><span class="career-tag" id="profile-status">Status</span><span class="career-tag" id="profile-role">Role</span><span class="career-tag" id="profile-tier">Tier</span><span class="career-tag" id="profile-band">Rating band</span></div>
+                  </div>
+                  <div class="career-rating"><strong id="profile-overall">--</strong><span>Overall</span><div class="career-availability" id="profile-availability">--</div></div>
+                </section>
+                <section class="league-panel">
+                  <div class="league-panel-head"><h3>Career ledger</h3><span id="profile-career-record">Verified cumulative record</span></div>
+                  <div class="career-metrics career-ledger">
+                    <div class="career-metric"><span>Age / seasons</span><strong id="profile-experience">--</strong></div>
+                    <div class="career-metric"><span>Career stage</span><strong id="profile-stage">--</strong></div>
+                    <div class="career-metric"><span>Retirement rule</span><strong id="profile-retirement">--</strong></div>
+                    <div class="career-metric"><span>Games / missed</span><strong id="profile-career-games">--</strong></div>
+                    <div class="career-metric"><span>Career PTS / REB</span><strong id="profile-career-points">--</strong></div>
+                    <div class="career-metric"><span>Career minutes</span><strong id="profile-career-minutes">--</strong></div>
+                  </div>
+                </section>
+                <section class="league-panel">
+                  <div class="league-panel-head"><h3>Season archive</h3><span id="profile-season-label">Select a season</span></div>
+                  <div class="career-season-tabs" id="profile-seasons"></div>
+                </section>
+                <section class="league-panel">
+                  <div class="league-panel-head"><h3 id="profile-life-title">Athlete Life Brain</h3><span id="profile-life-label">Auditable temporary choices</span></div>
+                  <div class="life-timeline" id="profile-life"></div>
+                </section>
+                <div class="career-metrics">
+                  <div class="career-metric"><span>Season PPG</span><strong id="profile-ppg">--</strong></div>
+                  <div class="career-metric"><span>Season RPG</span><strong id="profile-rpg">--</strong></div>
+                  <div class="career-metric"><span>Season MPG</span><strong id="profile-mpg">--</strong></div>
+                  <div class="career-metric"><span>Season field goal</span><strong id="profile-fg">--</strong></div>
+                  <div class="career-metric"><span>Season passes / game</span><strong id="profile-passes">--</strong></div>
+                  <div class="career-metric"><span>Season games / missed</span><strong id="profile-games">--</strong></div>
+                </div>
+                <div class="career-profile-grid">
+                  <section class="league-panel">
+                    <div class="league-panel-head"><h3>Durable basketball ratings</h3><span id="profile-specialty">Specialty</span></div>
+                    <div class="career-ratings" id="profile-ratings"></div>
+                  </section>
+                  <section class="league-panel">
+                    <div class="league-panel-head"><h3>Five-game scoring form</h3><span id="profile-form-label">--</span></div>
+                    <div class="career-form" id="profile-form"></div>
+                  </section>
+                </div>
+                <section class="league-panel">
+                  <div class="league-panel-head"><h3>Verified game history</h3><span id="profile-record">Season record</span></div>
+                  <div class="career-history-scroll">
+                    <div class="career-history-table">
+                      <div class="career-history-row header"><span>Game</span><span>Opponent</span><span>Result</span><span>PTS</span><span>REB</span><span>MIN</span><span>Replay</span></div>
+                      <div id="profile-history"></div>
+                    </div>
+                  </div>
+                </section>
+              </div>
+            </div>
+          </section>
+
+          <section class="page" data-page-view="simulation" hidden>
+            <div class="page-head"><div><h2>Game Theater</h2><p>Run the authoritative simulator, then watch a cinematic replay built from its recorded events.</p></div></div>
+            <div class="module-grid">
+              <div class="module-card wide">
+                <span class="state">Implemented control</span>
+                <h3>Seeded game</h3>
+                <p>The server validates the seed, runs the authoritative simulation, writes the action to the audit trail, and returns a replay-safe activity tape.</p>
+                <div class="form-row">
+                  <label class="field-label" for="simulation-seed">Seed<input class="seed" id="simulation-seed" type="number" min="0" max="2147483647" value="42"></label>
+                  <button class="control primary" id="simulate-page" type="button">Run and watch</button>
+                </div>
+              </div>
+              <div class="module-card"><span class="state read-only">Read only</span><h3>Current versions</h3><p id="simulation-versions">Loading verified versions…</p></div>
+            </div>
+            <section class="game-theater" aria-label="Symbolic recorded basketball game replay">
+              <div class="game-hud" aria-live="polite">
+                <div class="game-team"><div class="game-team-name" id="theater-home">Harbor City Waves</div><div class="game-team-score" id="theater-home-score">0</div></div>
+                <div class="game-clock"><strong id="theater-clock">48:00</strong><span id="theater-status">READY</span></div>
+                <div class="game-team"><div class="game-team-name" id="theater-away">Mesa Vista Sol</div><div class="game-team-score" id="theater-away-score">0</div></div>
+              </div>
+              <div class="court" id="game-court">
+                <span class="paint left"></span><span class="paint right"></span>
+                <span class="arc left"></span><span class="arc right"></span>
+                <span class="hoop left"></span><span class="hoop right"></span>
+                <div id="court-players"></div>
+                <div class="basketball" id="court-ball" aria-hidden="true"></div>
+                <div class="court-callout"><strong id="theater-play">Run a seeded game to begin</strong><span id="theater-detail">Recorded events · symbolic positions</span></div>
+              </div>
+              <div class="theater-progress" aria-hidden="true"><span id="theater-progress"></span></div>
+              <div class="theater-controls">
+                <button class="control" id="replay-game" type="button" disabled>Replay last game</button>
+                <label for="theater-speed">Replay speed
+                  <select id="theater-speed">
+                    <option value="280">Slow</option>
+                    <option value="170" selected>Cinematic</option>
+                    <option value="80">Fast</option>
+                  </select>
+                </label>
+                <span class="theater-truth" id="theater-truth">Real scores and events · illustrative court positions · 96-frame cinematic sample</span>
+              </div>
+            </section>
+          </section>
+
+          <section class="page" data-page-view="content" hidden>
+            <div class="page-head"><div><h2>Content</h2><p>Future availability controls are visible as boundaries, not pretend switches.</p></div></div>
+            <div class="module-grid">
+              <div class="module-card"><span class="state locked">Not implemented</span><h3>Clothing</h3><p>No clothing catalog or activation service exists yet, so this console cannot activate items.</p></div>
+              <div class="module-card"><span class="state locked">Not implemented</span><h3>Items</h3><p>No item inventory or entitlement service exists yet. Controls will appear after an authoritative system does.</p></div>
+              <div class="module-card"><span class="state locked">Not implemented</span><h3>Release windows</h3><p>No content publishing pipeline is connected.</p></div>
+            </div>
+          </section>
+
+          <section class="page" data-page-view="world" hidden>
+            <div class="page-head"><div><h2>League Viewer</h2><p>Inspect a completed deterministic season through the same public-information boundary used by prediction evaluation.</p></div></div>
+            <div class="module-grid league-modules">
+              <div class="module-card"><span class="state read-only">Read only</span><h3>League engine</h3><p id="league-version">Loading verified league version…</p></div>
+              <div class="module-card"><span class="state read-only">Validated</span><h3>Public prediction evidence</h3><p id="prediction-version">Loading evaluation version…</p></div>
+              <div class="module-card"><span class="state locked">Not implemented</span><h3>World state</h3><p>No live world-state administration service exists.</p></div>
+              <div class="module-card"><span class="state locked">Not implemented</span><h3>Season operations</h3><p>Schedule edits, team management, and season intervention remain locked until validated commands exist.</p></div>
+            </div>
+            <section class="league-viewer" aria-label="Read-only archived league season">
+              <div class="league-banner">
+                <div><span class="league-kicker" id="league-state">Loading league evidence</span><h3 id="league-season">Archived development season</h3></div>
+                <div class="league-boundary" id="league-boundary">Preparing the public-only season view.</div>
+              </div>
+              <div class="league-standings" id="league-standings" aria-label="Season standings"></div>
+              <div class="league-grid">
+                <section class="league-panel">
+                  <div class="league-panel-head"><h3>Completed schedule</h3><span id="league-game-count">Loading</span></div>
+                  <div class="league-games" id="league-games"></div>
+                </section>
+                <section class="league-panel league-detail" aria-live="polite">
+                  <div class="league-panel-head"><h3 id="league-detail-title">Game inspection</h3><span>Verified after final result</span></div>
+                  <div class="league-final">
+                    <div class="league-final-team"><span id="league-home">Home</span><strong id="league-home-score">-</strong></div>
+                    <div class="league-final-mark" id="league-winner">Select a game</div>
+                    <div class="league-final-team"><span id="league-away">Away</span><strong id="league-away-score">-</strong></div>
+                  </div>
+                  <div class="league-replay-row">
+                    <button class="control primary" id="watch-league-game" type="button" disabled>Watch exact replay</button>
+                    <span>Reconstruct every recorded play from authoritative pregame state, then verify its score and minutes against the archive.</span>
+                  </div>
+                  <div class="league-panel-head"><h3>Pregame home-win probability</h3><span>Committed before simulation</span></div>
+                  <div class="prediction-grid" id="league-predictions"></div>
+                  <div class="league-evidence" id="league-evidence"></div>
+                  <div class="game-rosters" id="league-game-rosters"></div>
+                </section>
+              </div>
+              <section class="league-panel">
+                <div class="league-panel-head"><h3>End-of-season public rosters</h3><span>Ratings and final published availability</span></div>
+                <div class="league-rosters" id="league-rosters"></div>
+              </section>
+            </section>
+          </section>
+
+          <section class="page" data-page-view="operations" hidden>
+            <div class="page-head"><div><h2>Operations</h2><p>Reconcile the local Odds Bucks projection without exposing economy commands.</p></div><button class="control" id="refresh-economy" type="button">Reload projection</button></div>
+            <div class="module-grid">
+              <div class="module-card"><span class="state read-only" id="economy-status">Loading</span><h3>Odds Bucks reconciliation</h3><p id="economy-detail">Looking for the latest validated local projection.</p></div>
+              <div class="module-card wide evidence-card"><span class="state read-only" id="match-winner-status">Loading</span><h3>Immutable exact wager history</h3><p id="match-winner-detail">Looking for one complete server-authored finalization chain.</p><p class="evidence-link" id="match-winner-linkage"></p></div>
+              <div class="module-card"><span class="state locked">Not implemented</span><h3>Moderation</h3><p>No player moderation or support system is connected.</p></div>
+              <div class="module-card"><span class="state locked">Not implemented</span><h3>Releases</h3><p>No deployment, maintenance, or announcement service is connected.</p></div>
+            </div>
+            <section class="league-viewer" aria-label="Read-only Odds Bucks reconciliation">
+              <div class="career-boundary" id="economy-boundary">No economy commands are available from this console.</div>
+              <div class="career-metrics economy-metrics">
+                <div class="career-metric"><span>Current balance</span><strong id="economy-balance">--</strong></div>
+                <div class="career-metric"><span>Ledger entries</span><strong id="economy-entry-count">--</strong></div>
+                <div class="career-metric"><span>Job eligibility</span><strong id="economy-eligibility">--</strong></div>
+                <div class="career-metric"><span>Next eligible UTC</span><strong id="economy-next">--</strong></div>
+              </div>
+              <section class="league-panel">
+                <div class="league-panel-head"><h3>Append-only ledger projection</h3><span>Read only · no mutation controls</span></div>
+                <div class="audit-list" id="economy-ledger"><div class="empty">No local projection loaded.</div></div>
+              </section>
+            </section>
+          </section>
+
+          <section class="page" data-page-view="audit" hidden>
+            <div class="page-head"><div><h2>Audit trail</h2><p>Persistent local record of successful admin actions. Times are UTC.</p></div><button class="control" id="refresh-audit" type="button">Reload audit</button></div>
+            <div class="module-card"><span class="state">Local evidence</span><div class="audit-list" id="audit-list"><div class="empty">No admin actions recorded yet.</div></div></div>
+          </section>
+        </main>
+
+        <div class="footer">
+          <span>Local only · bound to 127.0.0.1 · no authentication</span>
+          <span>Authentication + RBAC required before network exposure</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('network');
+    const ctx = canvas.getContext('2d');
+    const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const nodeLayout = {
+      project: [0.13, 0.25], athlete: [0.13, 0.53], world: [0.13, 0.81],
+      basketball: [0.48, 0.48], rules: [0.78, 0.48], learning: [0.51, 0.81]
+    };
+    const edges = [
+      ['project', 'basketball'], ['athlete', 'basketball'], ['world', 'basketball'],
+      ['basketball', 'rules'], ['rules', 'learning'], ['learning', 'basketball']
+    ];
+    const stars = Array.from({length: reducedMotion ? 24 : 80}, (_, index) => ({
+      x: ((index * 73) % 997) / 997,
+      y: ((index * 151) % 991) / 991,
+      r: 0.5 + (index % 4) * 0.35,
+      speed: 0.00002 + (index % 5) * 0.000012
+    }));
+    let statusData = null;
+    let selectedId = 'basketball';
+    let activeNodes = new Map();
+    let pulses = [];
+    let lastFrame = performance.now();
+    let playing = false;
+    let lastSimulation = null;
+    let leagueData = null;
+    let leagueLoading = false;
+    let athleteData = null;
+    let athleteLoading = false;
+    let selectedAthleteId = null;
+    let selectedAthleteSeason = null;
+    const courtPlayers = new Map();
+    const courtPositions = new Map();
+
+    const $ = (id) => document.getElementById(id);
+
+    function navigate(page) {
+      const view = document.querySelector(`[data-page-view="${page}"]`);
+      if (!view) return;
+      document.querySelectorAll('[data-page-view]').forEach((item) => { item.hidden = item !== view; });
+      document.querySelectorAll('[data-page]').forEach((button) => {
+        if (button.dataset.page === page) button.setAttribute('aria-current', 'page');
+        else button.removeAttribute('aria-current');
+      });
+      history.replaceState(null, '', `#${page}`);
+      if (page === 'audit') loadAudit();
+      if (page === 'world') loadLeague();
+      if (page === 'athletes') loadAthletes();
+      if (page === 'operations') { loadEconomy(); loadMatchWinnerReconciliation(); }
+      if (page === 'brains') requestAnimationFrame(() => resizeCanvas());
+    }
+
+    function resizeCanvas() {
+      const rect = canvas.getBoundingClientRect();
+      const ratio = Math.min(devicePixelRatio || 1, 2);
+      canvas.width = Math.round(rect.width * ratio);
+      canvas.height = Math.round(rect.height * ratio);
+      ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+    }
+
+    function point(id) {
+      const rect = canvas.getBoundingClientRect();
+      const [x, y] = nodeLayout[id];
+      return {x: x * rect.width, y: y * rect.height};
+    }
+
+    function curvePoint(from, to, progress) {
+      const bend = Math.min(54, Math.abs(to.x - from.x) * 0.18 + Math.abs(to.y - from.y) * 0.1);
+      const control = {x: (from.x + to.x) / 2, y: (from.y + to.y) / 2 - bend};
+      const inverse = 1 - progress;
+      return {
+        x: inverse * inverse * from.x + 2 * inverse * progress * control.x + progress * progress * to.x,
+        y: inverse * inverse * from.y + 2 * inverse * progress * control.y + progress * progress * to.y
+      };
+    }
+
+    function drawEdge(fromId, toId) {
+      const from = point(fromId);
+      const to = point(toId);
+      const bend = Math.min(54, Math.abs(to.x - from.x) * 0.18 + Math.abs(to.y - from.y) * 0.1);
+      ctx.beginPath();
+      ctx.moveTo(from.x, from.y);
+      ctx.quadraticCurveTo((from.x + to.x) / 2, (from.y + to.y) / 2 - bend, to.x, to.y);
+      ctx.strokeStyle = 'rgba(92,236,255,.16)';
+      ctx.lineWidth = 1.2;
+      ctx.stroke();
+    }
+
+    function statusColor(status) {
+      if (status === 'PLANNED') return '#607a8d';
+      if (status === 'EVALUATING') return '#5cecff';
+      if (status === 'AUTHORITATIVE') return '#ffc765';
+      return '#7dffb3';
+    }
+
+    function drawNode(brain, now) {
+      const {x, y} = point(brain.id);
+      const selected = brain.id === selectedId;
+      const activity = Math.max(0, (activeNodes.get(brain.id) || 0) - now) / 1100;
+      const color = statusColor(brain.status);
+      const baseRadius = brain.id === 'basketball' ? 40 : 31;
+      const pulse = reducedMotion ? 0 : Math.sin(now / 420) * 2;
+      const radius = baseRadius + activity * 13 + (selected ? pulse : 0);
+
+      if (activity || selected) {
+        const glow = ctx.createRadialGradient(x, y, 5, x, y, radius * 2.1);
+        glow.addColorStop(0, color + '42');
+        glow.addColorStop(1, color + '00');
+        ctx.fillStyle = glow;
+        ctx.beginPath();
+        ctx.arc(x, y, radius * 2.1, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      ctx.strokeStyle = color;
+      ctx.lineWidth = selected ? 2.2 : 1.1;
+      ctx.globalAlpha = brain.status === 'PLANNED' ? 0.52 : 0.9;
+      ctx.beginPath();
+      ctx.arc(x, y, radius, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.arc(x, y, Math.max(8, radius * 0.28), 0, Math.PI * 2);
+      ctx.fillStyle = color;
+      ctx.shadowColor = color;
+      ctx.shadowBlur = 18 + activity * 22;
+      ctx.fill();
+      ctx.shadowBlur = 0;
+      ctx.globalAlpha = 1;
+
+      ctx.fillStyle = '#eef8ff';
+      ctx.textAlign = 'center';
+      ctx.font = '500 12px system-ui';
+      const words = brain.name.replace(' Brain', '').replace(' + Outcome Engine', ' Engine');
+      ctx.fillText(words, x, y + radius + 20);
+      ctx.fillStyle = color;
+      ctx.font = '10px ui-monospace, monospace';
+      ctx.fillText(brain.status, x, y + radius + 36);
+    }
+
+    function draw(now) {
+      const rect = canvas.getBoundingClientRect();
+      ctx.clearRect(0, 0, rect.width, rect.height);
+      const delta = Math.min(40, now - lastFrame);
+      lastFrame = now;
+
+      for (const star of stars) {
+        if (!reducedMotion) star.y = (star.y + star.speed * delta) % 1;
+        ctx.fillStyle = `rgba(158,224,255,${0.12 + star.r * 0.08})`;
+        ctx.beginPath();
+        ctx.arc(star.x * rect.width, star.y * rect.height, star.r, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      edges.forEach(([from, to]) => drawEdge(from, to));
+
+      pulses = pulses.filter((pulse) => now - pulse.start < pulse.duration);
+      for (const pulse of pulses) {
+        const progress = Math.max(0, Math.min(1, (now - pulse.start) / pulse.duration));
+        const p = curvePoint(point(pulse.source), point(pulse.target), progress);
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, 4.5, 0, Math.PI * 2);
+        ctx.fillStyle = pulse.demo ? '#ffc765' : '#5cecff';
+        ctx.shadowColor = ctx.fillStyle;
+        ctx.shadowBlur = 22;
+        ctx.fill();
+        ctx.shadowBlur = 0;
+      }
+      if (statusData) statusData.brains.forEach((brain) => drawNode(brain, now));
+      if (!reducedMotion) requestAnimationFrame(draw);
+    }
+
+    function activate(source, target, demo = false) {
+      const now = performance.now();
+      activeNodes.set(source, now + 1050);
+      activeNodes.set(target, now + 1050);
+      pulses.push({source, target, start: now, duration: reducedMotion ? 50 : 720, demo});
+      if (reducedMotion) draw(now);
+    }
+
+    function selectBrain(id) {
+      selectedId = id;
+      const brain = statusData?.brains.find((item) => item.id === id);
+      if (!brain) return;
+      document.querySelectorAll('.brain-button').forEach((button) => button.classList.toggle('selected', button.dataset.id === id));
+      $('selected-name').textContent = brain.name;
+      $('selected-version').textContent = brain.version;
+      $('selected-detail').textContent = brain.detail;
+      if (reducedMotion) draw(performance.now());
+    }
+
+    function appendLog(message, demo = false) {
+      const line = document.createElement('div');
+      line.className = 'log-line' + (demo ? ' demo' : '');
+      const time = document.createElement('span');
+      time.className = 'log-time';
+      time.textContent = new Date().toLocaleTimeString([], {hour12: false});
+      line.append(time, document.createTextNode(message));
+      $('log').prepend(line);
+      while ($('log').children.length > 30) $('log').lastChild.remove();
+    }
+
+    function populateStatus(data) {
+      statusData = data;
+      const list = $('brain-list');
+      list.replaceChildren();
+      for (const brain of data.brains) {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'brain-button';
+        button.dataset.id = brain.id;
+        button.dataset.status = brain.status;
+        const dot = document.createElement('span');
+        dot.className = 'brain-dot';
+        dot.setAttribute('aria-hidden', 'true');
+        const name = document.createElement('span');
+        name.className = 'brain-name';
+        name.textContent = brain.name;
+        const state = document.createElement('span');
+        state.className = 'brain-state';
+        state.textContent = brain.status;
+        button.append(dot, name, state);
+        button.addEventListener('click', () => selectBrain(brain.id));
+        list.append(button);
+      }
+      $('brain-version').textContent = data.brain_version;
+      $('engine-version').textContent = data.engine_version;
+      $('league-version').textContent = `${data.league_version}. Status is exposed here without mutation controls.`;
+      $('prediction-version').textContent = `${data.prediction_version}. Locked holdout evidence is recorded in the project brain; no wagering controls exist.`;
+      $('simulation-versions').textContent = `Brain ${data.brain_version} · engine ${data.engine_version}.`;
+      $('training-cost').textContent = `$${data.training.spent_usd.toFixed(2)} / $${data.training.budget_usd.toFixed(2)}`;
+      $('training-truth').textContent = `${data.training.label}. Current motion shows real simulator decisions or an explicitly labeled visual preview.`;
+      const modules = $('module-grid');
+      modules.replaceChildren();
+      for (const module of data.admin_modules) {
+        const card = document.createElement('section');
+        card.className = 'module-card';
+        const state = document.createElement('span');
+        state.className = 'state' + (module.state === 'LOCKED' ? ' locked' : module.state === 'READ ONLY' ? ' read-only' : '');
+        state.textContent = module.state;
+        const heading = document.createElement('h3');
+        heading.textContent = module.name;
+        const detail = document.createElement('p');
+        detail.textContent = module.detail;
+        const action = document.createElement('button');
+        action.type = 'button';
+        action.className = 'control module-action';
+        action.textContent = module.state === 'LOCKED' ? 'View boundary' : 'Open module';
+        action.addEventListener('click', () => navigate(module.id));
+        card.append(state, heading, detail, action);
+        modules.append(card);
+      }
+      selectBrain(selectedId);
+      appendLog(`Connected · ${data.brain_version} · ${data.engine_version}`);
+    }
+
+    async function loadStatus() {
+      try {
+        const response = await fetch('/api/status');
+        if (!response.ok) throw new Error('status unavailable');
+        populateStatus(await response.json());
+      } catch (error) {
+        $('connection').textContent = 'LINK ERROR';
+        $('connection').style.color = 'var(--red)';
+        appendLog(`Error · ${error.message}`);
+      }
+    }
+
+    async function refreshStatus() {
+      const button = $('refresh-status');
+      button.disabled = true;
+      try {
+        const response = await fetch('/api/refresh', {
+          method: 'POST', headers: {'Content-Type': 'application/json'}, body: '{}'
+        });
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error || 'refresh failed');
+        populateStatus(data);
+        appendLog('System status refreshed and audited');
+        loadAudit();
+      } catch (error) {
+        appendLog(`Error · ${error.message}`);
+      } finally {
+        button.disabled = false;
+      }
+    }
+
+    async function loadAudit() {
+      const list = $('audit-list');
+      try {
+        const response = await fetch('/api/audit');
+        if (!response.ok) throw new Error('audit unavailable');
+        const data = await response.json();
+        list.replaceChildren();
+        if (!data.entries.length) {
+          const empty = document.createElement('div');
+          empty.className = 'empty';
+          empty.textContent = 'No admin actions recorded yet.';
+          list.append(empty);
+          return;
+        }
+        for (const entry of data.entries) {
+          const row = document.createElement('div');
+          row.className = 'audit-entry';
+          const time = document.createElement('span');
+          time.className = 'audit-time';
+          time.textContent = entry.timestamp;
+          const action = document.createElement('strong');
+          action.textContent = entry.action;
+          const target = document.createElement('span');
+          target.className = 'audit-target';
+          target.textContent = entry.target;
+          const outcome = document.createElement('span');
+          outcome.className = 'state';
+          outcome.textContent = entry.outcome;
+          row.append(time, action, target, outcome);
+          list.append(row);
+        }
+      } catch (error) {
+        list.textContent = `Audit error: ${error.message}`;
+      }
+    }
+
+    async function loadEconomy() {
+      const list = $('economy-ledger');
+      try {
+        const response = await fetch('/api/economy');
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error || 'economy projection unavailable');
+        $('economy-status').textContent = data.status;
+        $('economy-detail').textContent = data.available
+          ? `Server-owned ${data.profile_scope.replace('_', ' ')} projection · generated ${data.generated_at_utc}`
+          : 'No validated balance is available.';
+        $('economy-boundary').textContent = data.boundary;
+        $('economy-balance').textContent = data.available ? `${data.balance} Odds Bucks` : '--';
+        $('economy-entry-count').textContent = data.available ? data.entry_count : '--';
+        $('economy-eligibility').textContent = !data.available ? '--' : data.eligible_now
+          ? 'ELIGIBLE NOW'
+          : `COOLDOWN · ~${Math.max(1, Math.ceil(data.seconds_until_eligible / 3600))}h`;
+        $('economy-next').textContent = !data.available ? '--' : data.next_job_payout_utc || 'First shift available';
+        list.replaceChildren();
+        if (!data.entries.length) {
+          const empty = document.createElement('div');
+          empty.className = 'empty';
+          empty.textContent = data.available ? 'Validated empty ledger · starting balance is 0.' : 'Launch the OddsWell client to publish the local projection.';
+          list.append(empty);
+          return;
+        }
+        for (const entry of data.entries) {
+          const row = document.createElement('div');
+          row.className = 'audit-entry';
+          const sequence = document.createElement('span');
+          sequence.className = 'audit-time';
+          sequence.textContent = `#${entry.sequence}`;
+          const reason = document.createElement('strong');
+          reason.textContent = entry.reason;
+          const command = document.createElement('span');
+          command.className = 'audit-target';
+          command.textContent = entry.command_id;
+          const outcome = document.createElement('span');
+          outcome.className = 'state';
+          outcome.textContent = `${entry.delta > 0 ? '+' : ''}${entry.delta} → ${entry.balance_after}`;
+          row.append(sequence, reason, command, outcome);
+          list.append(row);
+        }
+      } catch (error) {
+        $('economy-status').textContent = 'PROJECTION ERROR';
+        $('economy-detail').textContent = error.message;
+        list.textContent = `Economy reconciliation error: ${error.message}`;
+      }
+    }
+
+    async function loadMatchWinnerReconciliation() {
+      try {
+        const response = await fetch('/api/match-winner-reconciliation');
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error || 'exact wager reconciliation unavailable');
+        $('match-winner-status').textContent = data.status;
+        $('match-winner-detail').textContent = data.available
+          ? (data.outcome === 'voided'
+            ? `${data.selected_team} selected | ${data.cancellation_reason} / ${data.cancellation_status} | evidence ${data.cancellation_evidence_id} at ${data.cancellation_unix} | stake ${data.stake} | refund due ${data.refund_due} | refund ${data.return} | net ${data.net} | ${data.ledger_entry_count} entries | balance ${data.balance} | ${data.decision_status} → ${data.finalization_status}`
+            : data.outcome === 'won'
+            ? `${data.selected_team} selected | probability ${data.probability_e8}${data.decimal_odds_e4 ? ` | odds ${(data.decimal_odds_e4 / 10000).toFixed(4)} | potential ${data.potential_return}` : ''} | ${data.payout_formula} | sealed score ${data.score} | stake ${data.stake} | return ${data.return} | net +${data.net} | ${data.ledger_entry_count} entries | balance ${data.balance} | ${data.finalization_status} | replay ${data.replay_seal_sha256}`
+            : data.probability_e8
+            ? `${data.selected_team} selected | odds ${(data.decimal_odds_e4 / 10000).toFixed(4)} | potential ${data.potential_return} | final ${data.score} (${data.winner} won) | stake ${data.stake} | return ${data.return} | net ${data.net} | ${data.ledger_entry_count} entries | balance ${data.balance} | ${data.decision_status} → ${data.finalization_status}`
+            : `${data.selected_team} selected · ${data.winner} won · stake ${data.stake} · return ${data.return} · net ${data.net} · balance ${data.balance} · ${data.finalization_status} · replay ${data.replay_seal_sha256}`)
+          : data.boundary;
+        $('match-winner-linkage').textContent = data.available
+          ? [data.command_linkage, data.ledger_linkage].filter(Boolean).join(' | ')
+          : '';
+      } catch (error) {
+        $('match-winner-status').textContent = 'PROJECTION ERROR';
+        $('match-winner-detail').textContent = error.message;
+        $('match-winner-linkage').textContent = '';
+      }
+    }
+
+    function showLeagueGame(game) {
+      document.querySelectorAll('.league-game').forEach((button) => {
+        const selected = Number(button.dataset.game) === game.number;
+        button.classList.toggle('selected', selected);
+        button.setAttribute('aria-pressed', String(selected));
+      });
+      $('league-detail-title').textContent = `Game ${game.number} inspection`;
+      $('league-home').textContent = game.home;
+      $('league-away').textContent = game.away;
+      $('league-home-score').textContent = game.home_score;
+      $('league-away-score').textContent = game.away_score;
+      $('league-winner').textContent = `${game.winner} won`;
+      $('watch-league-game').dataset.game = game.number;
+      $('watch-league-game').textContent = `Watch Game ${game.number} exact replay`;
+      $('watch-league-game').disabled = false;
+
+      const modelLabels = {
+        coin: 'Fixed 50% baseline',
+        public_elo: 'Public-history Elo',
+        public_elo_rotation: 'Elo + public availability'
+      };
+      const predictionList = $('league-predictions');
+      predictionList.replaceChildren();
+      for (const [model, probability] of Object.entries(game.predictions)) {
+        const row = document.createElement('div');
+        row.className = 'prediction-row';
+        const label = document.createElement('span');
+        label.textContent = modelLabels[model] || model;
+        const track = document.createElement('div');
+        track.className = 'prediction-track';
+        const fill = document.createElement('div');
+        fill.className = 'prediction-fill';
+        fill.style.width = `${probability * 100}%`;
+        track.append(fill);
+        const value = document.createElement('span');
+        value.className = 'prediction-value';
+        value.textContent = `${(probability * 100).toFixed(1)}%`;
+        row.append(label, track, value);
+        predictionList.append(row);
+      }
+
+      const evidence = $('league-evidence');
+      evidence.replaceChildren();
+      for (const [label, hash] of [
+        ['Pregame prediction commitment', game.prediction_commitment_sha256],
+        ['Authoritative replay', game.replay_sha256]
+      ]) {
+        const card = document.createElement('div');
+        card.className = 'evidence-card';
+        const heading = document.createElement('span');
+        heading.textContent = label;
+        const value = document.createElement('div');
+        value.className = 'hash';
+        value.textContent = hash;
+        card.append(heading, value);
+        evidence.append(card);
+      }
+
+      const gameRosters = $('league-game-rosters');
+      gameRosters.replaceChildren();
+      for (const teamName of [game.home, game.away]) {
+        const team = leagueData.teams.find((item) => item.name === teamName);
+        const card = document.createElement('div');
+        card.className = 'game-roster';
+        const heading = document.createElement('h4');
+        heading.textContent = teamName;
+        card.append(heading);
+        for (const player of team.players) {
+          const row = document.createElement('div');
+          row.className = 'game-player';
+          const name = document.createElement('span');
+          name.textContent = player.name;
+          const status = document.createElement('span');
+          status.className = 'game-player-status' + (game.availability[player.name] ? '' : ' out');
+          status.title = game.availability[player.name] ? 'Available before game' : 'Unavailable before game';
+          const minutes = document.createElement('span');
+          minutes.className = 'game-player-minutes';
+          minutes.textContent = `${game.minutes[player.name].toFixed(1)} min`;
+          row.append(name, status, minutes);
+          card.append(row);
+        }
+        gameRosters.append(card);
+      }
+    }
+
+    function populateLeague(data) {
+      leagueData = data;
+      $('league-state').textContent = `${data.season.status} / ${data.season.games} verified games`;
+      $('league-season').textContent = `Season ${data.season.number} - ${data.season.label}`;
+      $('league-boundary').textContent = data.boundary;
+      $('league-game-count').textContent = `${data.games.length} final results`;
+
+      const standings = $('league-standings');
+      standings.replaceChildren();
+      data.standings.forEach((standing, index) => {
+        const card = document.createElement('div');
+        card.className = 'standing-card';
+        const rank = document.createElement('span');
+        rank.className = 'standing-rank';
+        rank.textContent = `0${index + 1}`;
+        const summary = document.createElement('div');
+        const team = document.createElement('div');
+        team.className = 'standing-team';
+        team.textContent = standing.team;
+        const detail = document.createElement('div');
+        detail.className = 'standing-detail';
+        const difference = standing.point_difference >= 0 ? `+${standing.point_difference}` : standing.point_difference;
+        detail.textContent = `${standing.points_for} PF / ${standing.points_against} PA / ${difference} differential`;
+        summary.append(team, detail);
+        const record = document.createElement('span');
+        record.className = 'standing-record';
+        record.textContent = `${standing.wins}-${standing.losses}`;
+        card.append(rank, summary, record);
+        standings.append(card);
+      });
+
+      const games = $('league-games');
+      games.replaceChildren();
+      for (const game of data.games) {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'league-game';
+        button.dataset.game = game.number;
+        const number = document.createElement('span');
+        number.className = 'league-game-number';
+        number.textContent = `G${String(game.number).padStart(2, '0')}`;
+        const matchup = document.createElement('span');
+        matchup.className = 'league-matchup';
+        matchup.textContent = `${game.home} vs ${game.away}`;
+        const winner = document.createElement('small');
+        winner.textContent = `${game.winner} won`;
+        matchup.append(winner);
+        const score = document.createElement('span');
+        score.className = 'league-game-score';
+        score.textContent = `${game.home_score}-${game.away_score}`;
+        button.append(number, matchup, score);
+        button.addEventListener('click', () => showLeagueGame(game));
+        games.append(button);
+      }
+
+      const rosters = $('league-rosters');
+      rosters.replaceChildren();
+      for (const team of data.teams) {
+        const card = document.createElement('section');
+        card.className = 'roster-card';
+        const heading = document.createElement('h4');
+        heading.textContent = team.name;
+        card.append(heading);
+        for (const player of team.players) {
+          const row = document.createElement('div');
+          row.className = 'roster-player';
+          const name = document.createElement('div');
+          name.className = 'roster-player-name';
+          name.textContent = player.name;
+          const availability = document.createElement('small');
+          availability.textContent = player.available ? 'AVAILABLE' : 'OUT';
+          availability.style.color = player.available ? 'var(--green)' : 'var(--red)';
+          name.append(availability);
+          const overall = document.createElement('span');
+          overall.className = 'roster-overall';
+          overall.textContent = `OVR ${player.overall}`;
+          const stats = document.createElement('div');
+          stats.className = 'roster-stats';
+          stats.innerHTML = `<span>SHT ${player.shooting}</span><span>PAS ${player.passing}</span><span>DEF ${player.defense}</span><span>REB ${player.rebounding}</span><span>STA ${player.stamina}</span>`;
+          row.append(name, overall, stats);
+          card.append(row);
+        }
+        rosters.append(card);
+      }
+      showLeagueGame(data.games[0]);
+    }
+
+    async function loadLeague() {
+      if (leagueData || leagueLoading) return;
+      leagueLoading = true;
+      try {
+        const response = await fetch('/api/league');
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error || 'league unavailable');
+        populateLeague(data);
+      } catch (error) {
+        $('league-state').textContent = 'LEAGUE ERROR';
+        $('league-boundary').textContent = error.message;
+      } finally {
+        leagueLoading = false;
+      }
+    }
+
+    function athleteInitials(name) {
+      return name.split(' ').map((part) => part[0]).join('').slice(0, 2);
+    }
+
+    function showAthleteProfile(profile, seasonNumber = null) {
+      const latestSeason = profile.seasons[profile.seasons.length - 1];
+      const season = profile.seasons.find((item) => item.number === seasonNumber) || latestSeason;
+      selectedAthleteId = profile.id;
+      selectedAthleteSeason = season.number;
+      document.querySelectorAll('.athlete-button').forEach((button) => {
+        const selected = button.dataset.id === profile.id;
+        button.classList.toggle('selected', selected);
+        button.setAttribute('aria-pressed', String(selected));
+      });
+      $('profile-initials').textContent = athleteInitials(profile.name);
+      $('profile-name').textContent = profile.name;
+      $('profile-team').textContent = `${profile.team} · ${profile.career.specialty} · ${profile.career.game_consistency.tier.toUpperCase()} consistency · ${profile.career.game_consistency.status} (${profile.career.game_consistency.scope.toLowerCase()}) · ${profile.career.offensive_involvement.tier.toUpperCase()} involvement ${profile.career.offensive_involvement.status} (${profile.career.offensive_involvement.scope.toLowerCase()}) · Age ${season.age} ${season.stage} · Athlete Life Brain ${season.life.version}`;
+      $('profile-life-title').textContent = `Athlete Life Brain ${season.life.version}`;
+      $('profile-status').textContent = profile.career.status;
+      $('profile-role').textContent = profile.career.role;
+      $('profile-tier').textContent = profile.career.tier;
+      $('profile-band').textContent = profile.career.rating_band;
+      $('profile-overall').textContent = season.overall;
+      $('profile-availability').textContent = profile.availability.label;
+      $('profile-availability').classList.toggle('out', !profile.availability.available);
+      $('profile-experience').textContent = `${profile.career.current_age} / ${profile.career.seasons}`;
+      $('profile-stage').textContent = profile.career.stage;
+      $('profile-retirement').textContent = profile.career.status === 'RETIRED'
+        ? `After S${profile.career.retired_after_season}`
+        : `Age ${profile.career.retirement_age} · S${profile.career.projected_retirement_season}`;
+      $('profile-career-games').textContent = `${profile.career.totals.games_played} / ${profile.career.totals.missed_games}`;
+      $('profile-career-points').textContent = `${profile.career.totals.total_points.toLocaleString()} / ${profile.career.totals.total_rebounds.toLocaleString()}`;
+      $('profile-career-minutes').textContent = profile.career.totals.total_minutes.toLocaleString(undefined, { maximumFractionDigits: 1 });
+      $('profile-career-record').textContent = `${profile.career.totals.team_record} team record · ${profile.career.status} record`;
+      $('profile-season-label').textContent = `Season ${season.number} selected · ${season.team_record} team record`;
+      const lifeBreakdown = Object.entries(season.life.breakdown)
+        .map(([choice, count]) => `${choice.toLowerCase()} ${count}`)
+        .join(' · ');
+      $('profile-life-label').textContent = `${season.life.choices} choices · ${lifeBreakdown || 'opening game only'}`;
+      $('profile-ppg').textContent = season.points_per_game.toFixed(2);
+      $('profile-rpg').textContent = season.rebounds_per_game.toFixed(2);
+      $('profile-mpg').textContent = season.minutes_per_game.toFixed(2);
+      $('profile-fg').textContent = `${(season.field_goal_percentage * 100).toFixed(1)}%`;
+      $('profile-passes').textContent = season.passes_per_game.toFixed(2);
+      $('profile-games').textContent = `${season.games_played} / ${season.missed_games}`;
+      const ratingChange = season.overall_change > 0 ? `+${season.overall_change}` : season.overall_change;
+      $('profile-specialty').textContent = `Season ${season.number} ratings · OVR ${ratingChange} · ${profile.career.specialty} preserved`;
+      $('profile-form-label').textContent = `${season.form.label} · ${season.form.points_per_game.toFixed(2)} PPG`;
+      $('profile-record').textContent = `${profile.team} ${season.team_record} · Season ${season.number}`;
+
+      const seasons = $('profile-seasons');
+      seasons.replaceChildren();
+      for (const split of profile.seasons) {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'career-season-button' + (split.number === season.number ? ' selected' : '');
+        button.setAttribute('aria-pressed', String(split.number === season.number));
+        const number = document.createElement('strong');
+        number.textContent = `S${split.number}`;
+        const record = document.createElement('span');
+        record.textContent = `Age ${split.age} · ${split.games_played} GP`;
+        const scoring = document.createElement('small');
+        scoring.textContent = `OVR ${split.overall}`;
+        button.append(number, record, scoring);
+        button.addEventListener('click', () => showAthleteProfile(profile, split.number));
+        seasons.append(button);
+      }
+
+      const lifeTimeline = $('profile-life');
+      lifeTimeline.replaceChildren();
+      if (!season.life.recent.length) {
+        const empty = document.createElement('div');
+        empty.className = 'empty';
+        empty.textContent = 'No between-game decision precedes the opening game.';
+        lifeTimeline.append(empty);
+      }
+      for (const decision of season.life.recent) {
+        const card = document.createElement('article');
+        card.className = 'life-choice';
+        const choice = document.createElement('strong');
+        choice.textContent = `G${decision.game} · ${decision.choice}`;
+        const reason = document.createElement('span');
+        reason.textContent = decision.reason;
+        const effect = document.createElement('small');
+        effect.textContent = decision.effect;
+        card.append(choice, reason, effect);
+        lifeTimeline.append(card);
+      }
+
+      const ratings = $('profile-ratings');
+      ratings.replaceChildren();
+      for (const [name, value] of Object.entries(season.ratings)) {
+        const row = document.createElement('div');
+        row.className = 'career-rating-row';
+        const label = document.createElement('span');
+        label.textContent = name;
+        const track = document.createElement('div');
+        track.className = 'career-rating-track';
+        const fill = document.createElement('div');
+        fill.className = 'career-rating-fill';
+        fill.style.width = `${value}%`;
+        track.append(fill);
+        const score = document.createElement('span');
+        score.className = 'career-rating-value';
+        score.textContent = value;
+        row.append(label, track, score);
+        ratings.append(row);
+      }
+
+      const form = $('profile-form');
+      form.replaceChildren();
+      const maxPoints = Math.max(1, ...season.form.games.map((game) => game.points));
+      for (const game of season.form.games) {
+        const column = document.createElement('div');
+        column.className = 'career-form-game' + (game.available ? '' : ' out');
+        const bar = document.createElement('div');
+        bar.className = 'career-form-bar';
+        bar.style.height = `${game.available ? Math.max(5, game.points / maxPoints * 130) : 5}px`;
+        const points = document.createElement('strong');
+        points.textContent = game.available ? `${game.points} PTS` : 'OUT';
+        const label = document.createElement('span');
+        label.textContent = `G${game.game} · ${game.result}`;
+        column.append(bar, points, label);
+        form.append(column);
+      }
+
+      const history = $('profile-history');
+      history.replaceChildren();
+      for (const game of season.history) {
+        const row = document.createElement('div');
+        row.className = 'career-history-row';
+        const number = document.createElement('span');
+        number.textContent = `G${game.game}`;
+        const opponent = document.createElement('span');
+        opponent.textContent = `${game.home ? 'vs' : '@'} ${game.opponent}`;
+        const result = document.createElement('span');
+        result.className = 'career-history-result' + (game.result === 'W' ? '' : ' loss');
+        result.textContent = `${game.result} ${game.score}`;
+        const points = document.createElement('span');
+        points.textContent = game.available ? game.points : 'OUT';
+        const rebounds = document.createElement('span');
+        rebounds.textContent = game.available ? game.rebounds : '—';
+        const minutes = document.createElement('span');
+        minutes.textContent = game.available ? game.minutes.toFixed(1) : '0.0';
+        const replay = document.createElement('button');
+        replay.type = 'button';
+        replay.className = 'control history-replay';
+        replay.textContent = 'Watch';
+        replay.setAttribute('aria-label', `Watch ${profile.name} in Game ${game.game}`);
+        replay.addEventListener('click', () => openArchivedReplay(game.game, replay, game.season));
+        row.append(number, opponent, result, points, rebounds, minutes, replay);
+        history.append(row);
+      }
+    }
+
+    function populateAthletes(data) {
+      athleteData = data;
+      $('career-boundary').textContent = data.boundary;
+      $('athlete-count').textContent = `${data.archive.active_athletes} active · ${data.archive.retired_athletes} retired`;
+      const list = $('athlete-list');
+      list.replaceChildren();
+      for (const profile of data.profiles) {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'athlete-button';
+        button.dataset.id = profile.id;
+        const avatar = document.createElement('span');
+        avatar.className = 'athlete-mini-avatar';
+        avatar.textContent = athleteInitials(profile.name);
+        const name = document.createElement('span');
+        name.className = 'athlete-list-name';
+        name.textContent = profile.name;
+        const detail = document.createElement('small');
+        detail.textContent = `${profile.career.specialty} · ${profile.availability.label}`;
+        name.append(detail);
+        const overall = document.createElement('span');
+        overall.className = 'athlete-list-overall';
+        overall.textContent = profile.overall;
+        button.append(avatar, name, overall);
+        button.addEventListener('click', () => showAthleteProfile(profile, profile.seasons[profile.seasons.length - 1].number));
+        list.append(button);
+      }
+      const selected = data.profiles.find((profile) => profile.id === selectedAthleteId) || data.profiles[0];
+      showAthleteProfile(selected, selected.id === selectedAthleteId ? selectedAthleteSeason : null);
+    }
+
+    async function loadAthletes() {
+      if (athleteData || athleteLoading) return;
+      athleteLoading = true;
+      try {
+        const response = await fetch('/api/athletes');
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error || 'athlete profiles unavailable');
+        populateAthletes(data);
+      } catch (error) {
+        $('career-boundary').textContent = `Athlete profile error: ${error.message}`;
+      } finally {
+        athleteLoading = false;
+      }
+    }
+
+    const sleep = (milliseconds) => new Promise((resolve) => setTimeout(resolve, reducedMotion ? 20 : milliseconds));
+
+    function clockText(seconds) {
+      const minutes = Math.floor(Math.max(0, seconds) / 60);
+      return `${String(minutes).padStart(2, '0')}:${String(Math.max(0, seconds) % 60).padStart(2, '0')}`;
+    }
+
+    function resetCourt(data) {
+      courtPlayers.clear();
+      courtPositions.clear();
+      $('court-players').replaceChildren();
+      const rosters = [
+        ['home', data.summary.home, data.summary.home_players],
+        ['away', data.summary.away, data.summary.away_players]
+      ];
+      for (const [side, team, names] of rosters) {
+        names.forEach((name, index) => {
+          const marker = document.createElement('div');
+          marker.className = `court-player ${side} bench`;
+          marker.dataset.name = name;
+          marker.dataset.team = team;
+          marker.textContent = name.split(' ').map((part) => part[0]).join('').slice(0, 2);
+          const label = document.createElement('span');
+          label.className = 'court-player-name';
+          label.textContent = name;
+          marker.append(label);
+          marker.style.left = side === 'home' ? '3%' : '97%';
+          marker.style.top = `${15 + index * 12}%`;
+          $('court-players').append(marker);
+          courtPlayers.set(name, marker);
+        });
+      }
+      $('theater-home').textContent = data.summary.home;
+      $('theater-away').textContent = data.summary.away;
+      $('theater-home-score').textContent = '0';
+      $('theater-away-score').textContent = '0';
+      $('theater-clock').textContent = '48:00';
+      $('theater-progress').style.width = '0%';
+      $('court-ball').style.left = '50%';
+      $('court-ball').style.top = '50%';
+      $('theater-truth').textContent = `${Math.max(0, data.theater_timeline.length - 1)} recorded play frames · illustrative positions · ${data.archive ? 'complete archived game' : 'cinematic sample'}`;
+    }
+
+    function placeTeam(team, roster, lineup, side, offense) {
+      const base = side === 'home'
+        ? [[18, 50], [28, 20], [28, 80], [40, 34], [40, 66]]
+        : [[82, 50], [72, 20], [72, 80], [60, 34], [60, 66]];
+      const shift = offense === team ? (side === 'home' ? 13 : -13) : 0;
+      roster.forEach((name, rosterIndex) => {
+        const marker = courtPlayers.get(name);
+        const lineupIndex = lineup.indexOf(name);
+        const active = lineupIndex >= 0;
+        const [x, y] = active ? base[lineupIndex] : [side === 'home' ? 3 : 97, 15 + rosterIndex * 12];
+        const position = {x: x + (active ? shift : 0), y};
+        marker.classList.toggle('bench', !active);
+        marker.style.left = `${position.x}%`;
+        marker.style.top = `${position.y}%`;
+        courtPositions.set(name, position);
+      });
+    }
+
+    function showCourtEvent(event, data, index) {
+      const lineups = event.lineups;
+      placeTeam(data.summary.home, data.summary.home_players, lineups[data.summary.home] || [], 'home', event.offense);
+      placeTeam(data.summary.away, data.summary.away_players, lineups[data.summary.away] || [], 'away', event.offense);
+      courtPlayers.forEach((marker) => marker.classList.remove('active', 'target'));
+      courtPlayers.get(event.actor)?.classList.add('active');
+      courtPlayers.get(event.target)?.classList.add('target');
+
+      let ballPosition = courtPositions.get(event.actor) || {x: 50, y: 50};
+      if (event.kind === 'shot_made' || event.kind === 'shot_missed') {
+        ballPosition = {x: event.offense === data.summary.home ? 91 : 9, y: 50};
+      }
+      $('court-ball').style.left = `${ballPosition.x}%`;
+      $('court-ball').style.top = `${ballPosition.y}%`;
+      $('game-court').classList.toggle('made', event.kind === 'shot_made');
+      $('theater-home-score').textContent = event.score[0];
+      $('theater-away-score').textContent = event.score[1];
+      $('theater-clock').textContent = clockText(event.clock_seconds);
+      $('theater-play').textContent = event.label;
+      $('theater-detail').textContent = `Frame ${index + 1} of ${data.theater_timeline.length} · ${event.kind.replaceAll('_', ' ')}`;
+      $('theater-progress').style.width = `${(index + 1) / data.theater_timeline.length * 100}%`;
+    }
+
+    async function playGameTimeline(data) {
+      playing = true;
+      resetCourt(data);
+      $('replay-game').disabled = true;
+      $('theater-status').textContent = data.archive
+        ? `SEASON ${data.archive.season} / GAME ${data.archive.game}`
+        : 'RECORDED REPLAY';
+      for (const [index, event] of data.theater_timeline.entries()) {
+        showCourtEvent(event, data, index);
+        await sleep(Number($('theater-speed').value));
+      }
+      $('theater-status').textContent = data.archive ? 'ARCHIVE VERIFIED' : 'REPLAY SEALED';
+      $('replay-game').disabled = false;
+      playing = false;
+    }
+
+    async function openArchivedReplay(gameNumber, button, seasonNumber = 1) {
+      if (playing) return;
+      if (!Number.isInteger(gameNumber) || !Number.isInteger(seasonNumber)) return;
+      const originalText = button.textContent;
+      button.disabled = true;
+      button.textContent = 'Loading verified replay…';
+      try {
+        const endpoint = seasonNumber === 1
+          ? `/api/league/replay/${gameNumber}`
+          : `/api/career/replay/${seasonNumber}/${gameNumber}`;
+        const response = await fetch(endpoint);
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error || 'archived replay unavailable');
+        lastSimulation = data;
+        $('home-team').textContent = data.summary.home;
+        $('away-team').textContent = data.summary.away;
+        $('score').textContent = '0 : 0';
+        navigate('simulation');
+        appendLog(`Archive replay · season ${data.archive.season} · game ${data.archive.game} · verified`);
+        await playGameTimeline(data);
+      } catch (error) {
+        appendLog(`Replay error · ${error.message}`);
+      } finally {
+        button.textContent = originalText;
+        button.disabled = false;
+      }
+    }
+
+    function watchLeagueGame() {
+      const button = $('watch-league-game');
+      return openArchivedReplay(Number(button.dataset.game), button);
+    }
+
+    async function playTimeline(timeline, demo = false) {
+      playing = true;
+      for (const event of timeline) {
+        activate(event.source, event.target, demo);
+        $('event-title').textContent = event.label;
+        selectBrain(event.target);
+        if (event.score) $('score').textContent = `${event.score[0]} : ${event.score[1]}`;
+        appendLog((demo ? '[VISUAL PREVIEW] ' : '') + event.label, demo);
+        await sleep(demo ? 620 : 480);
+      }
+      playing = false;
+    }
+
+    async function runSimulation(seedInput, button, destination) {
+      if (playing) return;
+      const seed = seedInput.valueAsNumber;
+      const theater = destination === 'simulation';
+      if (!Number.isInteger(seed) || seed < 0 || seed > 2147483647) {
+        navigate(destination);
+        if (theater) {
+          $('theater-status').textContent = 'INPUT ERROR';
+          $('theater-play').textContent = 'Seed must be a whole number from 0 through 2147483647';
+        } else {
+          $('mode').textContent = 'INPUT ERROR';
+          $('event-title').textContent = 'Seed must be a whole number from 0 through 2147483647';
+        }
+        return;
+      }
+      $('seed').value = String(seed);
+      $('simulation-seed').value = String(seed);
+      navigate(destination);
+      button.disabled = true;
+      if (theater) {
+        $('theater-status').textContent = 'SIMULATING';
+        $('theater-play').textContent = 'Authoritative simulator is running…';
+      } else {
+        $('mode').textContent = 'REAL SIMULATION ACTIVITY';
+        $('event-title').textContent = 'Authoritative simulator is running…';
+      }
+      try {
+        const response = await fetch('/api/simulate', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({seed})
+        });
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error || 'simulation failed');
+        lastSimulation = data;
+        $('replay-game').disabled = false;
+        $('home-team').textContent = data.summary.home;
+        $('away-team').textContent = data.summary.away;
+        $('score').textContent = '0 : 0';
+        appendLog(`Simulation seed ${data.summary.seed} · ${data.summary.decisions} decisions`);
+        loadAudit();
+        if (theater) {
+          await playGameTimeline(data);
+        } else {
+          await playTimeline(data.timeline);
+          $('event-title').textContent = `${data.summary.home} ${data.summary.home_score} — ${data.summary.away_score} ${data.summary.away}`;
+          $('mode').textContent = 'REPLAY EVIDENCE SEALED';
+        }
+      } catch (error) {
+        if (theater) {
+          $('theater-status').textContent = 'SIMULATION ERROR';
+          $('theater-play').textContent = error.message;
+        } else {
+          $('mode').textContent = 'SIMULATION ERROR';
+          $('event-title').textContent = error.message;
+        }
+        appendLog(`Error · ${error.message}`);
+      } finally {
+        button.disabled = false;
+      }
+    }
+
+    async function previewTraining() {
+      if (playing) return;
+      $('preview').disabled = true;
+      $('mode').textContent = 'VISUAL PREVIEW — NO TRAINING JOB';
+      const preview = [
+        {source: 'world', target: 'learning', label: 'Historical sports-only evidence enters evaluation'},
+        {source: 'project', target: 'learning', label: 'Approved policy and budget gates loaded'},
+        {source: 'learning', target: 'basketball', label: 'Candidate brain version enters the test arena'},
+        {source: 'basketball', target: 'rules', label: 'Candidate decisions pass through legal-action guards'},
+        {source: 'rules', target: 'learning', label: 'Replay, realism, fairness, cost, and latency measured'},
+        {source: 'learning', target: 'basketball', label: 'Only an approved named version can be promoted'}
+      ];
+      await playTimeline(preview, true);
+      $('mode').textContent = 'TRAINING IDLE';
+      $('event-title').textContent = 'Preview complete · no model weights were changed';
+      $('preview').disabled = false;
+    }
+
+    document.querySelectorAll('[data-page]').forEach((button) => button.addEventListener('click', () => navigate(button.dataset.page)));
+    $('simulate').addEventListener('click', () => runSimulation($('seed'), $('simulate'), 'brains'));
+    $('simulate-page').addEventListener('click', () => runSimulation($('simulation-seed'), $('simulate-page'), 'simulation'));
+    $('replay-game').addEventListener('click', () => { if (lastSimulation && !playing) playGameTimeline(lastSimulation); });
+    $('watch-league-game').addEventListener('click', watchLeagueGame);
+    $('refresh-status').addEventListener('click', refreshStatus);
+    $('refresh-audit').addEventListener('click', loadAudit);
+    $('refresh-economy').addEventListener('click', () => { loadEconomy(); loadMatchWinnerReconciliation(); });
+    $('preview').addEventListener('click', previewTraining);
+    $('fullscreen').addEventListener('click', () => {
+      if (document.fullscreenElement) document.exitFullscreen();
+      else document.documentElement.requestFullscreen?.();
+    });
+    canvas.addEventListener('click', (event) => {
+      if (!statusData) return;
+      const rect = canvas.getBoundingClientRect();
+      let nearest = null;
+      let distance = 54;
+      for (const brain of statusData.brains) {
+        const p = point(brain.id);
+        const candidate = Math.hypot(event.clientX - rect.left - p.x, event.clientY - rect.top - p.y);
+        if (candidate < distance) { distance = candidate; nearest = brain.id; }
+      }
+      if (nearest) selectBrain(nearest);
+    });
+    addEventListener('resize', () => { resizeCanvas(); if (reducedMotion) draw(performance.now()); });
+    setInterval(() => { $('clock').textContent = new Date().toLocaleTimeString([], {hour12: false}); }, 1000);
+
+    const initialPage = location.hash.slice(1);
+    navigate(document.querySelector(`[data-page-view="${initialPage}"]`) ? initialPage : 'brains');
+    resizeCanvas();
+    loadStatus();
+    loadAudit();
+    requestAnimationFrame(draw);
+  </script>
+</body>
+</html>

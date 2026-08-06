@@ -1,6 +1,6 @@
 import unittest
 
-from simulator import Action, default_teams, simulate_game, validate_action
+from phase0a.simulator import Action, default_teams, simulate_game, validate_action
 
 
 class SimulatorTests(unittest.TestCase):
@@ -19,6 +19,132 @@ class SimulatorTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "exactly"):
             Action.from_mapping(
                 {"role": "offense", "kind": "shoot_2", "actor": home.players[0].name, "target": None, "extra": True}
+            )
+
+    def test_pregame_fatigue_is_validated_and_replayable(self) -> None:
+        teams = default_teams()
+        fatigue = {player.name: 0.2 for team in teams for player in team.players}
+        original = simulate_game(43, matchup=teams, initial_fatigue=fatigue)
+        replayed = simulate_game(43, original.action_tape, matchup=teams, initial_fatigue=fatigue)
+        self.assertEqual(original.records, replayed.records)
+        with self.assertRaisesRegex(ValueError, "every matchup player"):
+            simulate_game(43, initial_fatigue={})
+
+    def test_temporary_readiness_is_bounded_and_replayable(self) -> None:
+        teams = default_teams()
+        readiness = {player.name: 0.015 for team in teams for player in team.players}
+        original = simulate_game(46, matchup=teams, initial_readiness=readiness)
+        replayed = simulate_game(
+            46,
+            original.action_tape,
+            matchup=teams,
+            initial_readiness=readiness,
+        )
+        self.assertEqual(original, replayed)
+        readiness[teams[0].players[0].name] = 0.021
+        with self.assertRaisesRegex(ValueError, "readiness"):
+            simulate_game(46, matchup=teams, initial_readiness=readiness)
+
+    def test_game_form_is_opt_in_bounded_and_replayable(self) -> None:
+        teams = default_teams()
+        form = {player.name: 0.01 for team in teams for player in team.players}
+        original = simulate_game(47, matchup=teams, initial_game_form=form)
+        replayed = simulate_game(
+            47,
+            original.action_tape,
+            matchup=teams,
+            initial_game_form=form,
+        )
+        self.assertEqual(original, replayed)
+        self.assertNotEqual(original.records, simulate_game(47, matchup=teams).records)
+        form[teams[0].players[0].name] = 0.016
+        with self.assertRaisesRegex(ValueError, "game form"):
+            simulate_game(47, matchup=teams, initial_game_form=form)
+
+    def test_shooting_consistency_is_opt_in_audited_and_replayable(self) -> None:
+        teams = default_teams()
+        players = [player.name for team in teams for player in team.players]
+        settings = {player: (0.0, 0.0) for player in players}
+        settings["Tariq Stone"] = (0.5, 0.1)
+        original = simulate_game(48, matchup=teams, initial_shooting_consistency=settings)
+        replayed = simulate_game(
+            48,
+            original.action_tape,
+            matchup=teams,
+            initial_shooting_consistency=settings,
+        )
+        self.assertEqual(original, replayed)
+        shot = next(
+            record
+            for record in original.records
+            if record["type"] in {"shot_made", "shot_missed"}
+        )
+        self.assertTrue(
+            {"base_probability", "consistency_correction", "performance_residual"}
+            <= shot.keys()
+        )
+        self.assertTrue(
+            any(
+                record.get("player") == "Tariq Stone"
+                and record.get("consistency_correction") != 0
+                for record in original.records
+            )
+        )
+        with self.assertRaisesRegex(ValueError, "every matchup player"):
+            simulate_game(48, initial_shooting_consistency={})
+        form = {player: 0.0 for player in players}
+        with self.assertRaisesRegex(ValueError, "cannot run together"):
+            simulate_game(
+                48,
+                initial_game_form=form,
+                initial_shooting_consistency=settings,
+            )
+
+    def test_rotation_minutes_drive_workload_and_replay_exactly(self) -> None:
+        teams = default_teams()
+        original = simulate_game(44, matchup=teams)
+        replayed = simulate_game(44, original.action_tape, matchup=teams)
+        self.assertEqual(original, replayed)
+
+        minutes = dict(original.minutes_played)
+        fatigue = dict(original.final_fatigue)
+        overtime = int(original.records[-1]["overtime"])
+        for team in teams:
+            team_minutes = sum(minutes[player.name] for player in team.players)
+            self.assertAlmostEqual(team_minutes, 5 * (48 + 5 * overtime), places=2)
+            reserve = team.players[5].name
+            self.assertTrue(20 <= minutes[reserve] <= 28)
+            self.assertTrue(all(minutes[player.name] > minutes[reserve] for player in team.players[:5]))
+            self.assertLess(fatigue[reserve], max(fatigue[player.name] for player in team.players[:5]))
+
+    def test_unavailable_player_is_excluded_and_replays_exactly(self) -> None:
+        teams = default_teams()
+        unavailable_player = teams[0].players[0].name
+        availability = {player.name: 0 for team in teams for player in team.players}
+        availability[unavailable_player] = 3
+        original = simulate_game(45, matchup=teams, initial_availability=availability)
+        replayed = simulate_game(
+            45,
+            original.action_tape,
+            matchup=teams,
+            initial_availability=availability,
+        )
+        self.assertEqual(original, replayed)
+        self.assertEqual(dict(original.minutes_played)[unavailable_player], 0)
+        self.assertFalse(
+            any(
+                unavailable_player in event.get("players", ())
+                for event in original.records
+                if event["type"] == "lineup_changed"
+            )
+        )
+        with self.assertRaisesRegex(ValueError, "five available"):
+            simulate_game(
+                45,
+                initial_availability={
+                    name: (3 if index < 2 else 0)
+                    for index, name in enumerate(availability)
+                },
             )
 
     def test_one_hundred_games_finish_with_plausible_scores(self) -> None:
