@@ -589,9 +589,13 @@ Known evidence boundary: the standalone Phase 1F replay ends `101-104`, while th
 
 **COMPLETE - PRODUCTION HANDOFF CORRECTED; AUTOMATED PACKAGED MEMBERSHIP PASSED; COMPONENT 2 REMAINS INCOMPLETE.** Character confirmation now client-travels to the accepted machine-local Sundale listen endpoint instead of opening a standalone map. A fresh packaged owner exercised the production save and travel path, joined the passive peer, and caused the peer to report `clients=2` and accept owner-submitted `masculine_tone_2` appearance data. The existing Development chooser driver supplied selection inputs because the Windows Computer Use action bridge failed; therefore normal physical-input reproduction, mutual visibility, cross-client appearance agreement, and one movement remain unproven. See [[Development/Reports/Phase 1K8a Shared Handoff Correction and Automated Membership Proof]].
 
+### Phase 1K.8b normal-input component-two proof
+
+**COMPLETE - COMPONENT 2 PASSED; COMPONENTS 3-8 NOT REACHED.** A fresh no-QA owner used Right then Enter through supported Windows Computer Use, saved non-default `masculine_tone_2` once, and joined the accepted machine-local peer. The peer reported `clients=2`, accepted the owner's tan preset and off-white starter items, and visibly showed both labeled players. A normal Shift+A control produced a visible replicated owner-position change in the peer view while world collision remained intact. The peer received zero input. No game or package change was required; the earlier bridge failure was stale Computer Use state crossing Node REPL execution boundaries. See [[Development/Reports/Phase 1K8b Normal Input Shared City Component Two Proof]].
+
 ### Next measured gate
 
-Phase 1K.8b should use one fresh no-QA owner with exactly `[Right, Enter]`. It must first reproduce peer `clients=2`. Only if membership holds may it measure mutual visibility, starter-appearance agreement, and one normal movement. Do not begin component 3.
+Phase 1K.9 should repeat completed components 1-2 with fresh isolated profiles, then measure component 3 only: discover the required Sundale locations through normal movement, enter and move inside the empty Studio, exit to its exact doorway, and stop before component 4's job interaction.
 
 ### Exit evidence
 

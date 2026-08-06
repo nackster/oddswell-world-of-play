@@ -98,6 +98,8 @@ A fresh normal-path owner repeated component 1, but the post-confirmation Sundal
 
 The production character-confirmation handoff now client-travels to the accepted machine-local Sundale listen endpoint instead of opening a standalone duplicate world. A fresh packaged automated owner exercised the production save and travel path, joined the passive peer, and caused the peer to report `clients=2` and accept the selected starter appearance. This proves the correction and automated membership only. Normal physical-input reproduction, mutual visibility, cross-client appearance agreement, one movement, component 2 completion, first-time-player usability, beta readiness, and production readiness remain unproven. See [[Development/Reports/Phase 1K8a Shared Handoff Correction and Automated Membership Proof]].
 
+A fresh no-QA owner then completed the normal-input proof with Right followed by Enter, joined the same machine-local Sundale peer, and preserved non-default `masculine_tone_2` plus the approved off-white starter clothing. Both packaged windows visibly showed the other labeled player, and a normal Shift+A control produced a replicated owner-position change in the peer view while collision remained intact. Component 2 is now **COMPLETE** for packaged technical evidence. Components 3-8, observed first-time-player comprehension, external-network safety, beta readiness, and production readiness remain unproven. See [[Development/Reports/Phase 1K8b Normal Input Shared City Component Two Proof]].
+
 ## First-hour player journey
 
 ### 1. Choose a default character

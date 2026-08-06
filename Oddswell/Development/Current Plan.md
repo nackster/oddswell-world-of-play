@@ -1726,6 +1726,16 @@ Build the one-city scope defined in [[Design/Decisions/DEC-002 First Playable Sc
 - **Runtime boundary:** proof attempt and documentation only; game code and package are unchanged.
 - **Next gate:** resume Phase 1K.8b when the supported Windows input bridge can drive a fresh no-QA owner. Use exactly `[Right, Enter]`, first reproduce `clients=2`, then—only if membership holds—measure mutual visibility, appearance agreement, and one normal movement. Stop before component 3. See [[Development/Reports/Phase 1K8b Normal Input Control Fail Fast Attempt]].
 
+### Phase 1K.8b Normal-Input Shared-City Component-Two Proof status
+
+- **Status:** COMPLETE - COMPONENT 2 PASSED; COMPONENTS 3-8 NOT REACHED on `agent/phase-0d`.
+- **Control recovery:** the Windows Computer Use failure came from carrying privileged `@oai/sky` objects across Node REPL execution IDs. A fresh kernel plus one uninterrupted import/select/observe/action transaction restored the supported path; no config, OS, game, or package change was needed.
+- **Fresh normal path:** a fresh no-QA owner used Right then Enter to select and confirm `masculine_tone_2`, saved once, and client-traveled to the accepted peer at `127.0.0.1:17777`.
+- **Shared proof:** the peer logged `clients=2` and accepted the owner's tan preset plus both off-white starter items. Both windows visibly showed the other labeled player, and the peer's before/after view showed the owner move under normal Shift+A control while collision remained intact. Peer input count was `0`.
+- **Integrity and cleanup:** no route, teleport, QA action, save edit, authority mutation, or hidden repair occurred. Both clients closed normally; retained logs contain no travel failure, fatal, assertion, or ensure; no OddsWell process or gameplay UDP `17777` endpoint remained.
+- **Runtime boundary:** technical evidence and documentation only. No C++, Python, Unreal content, package, fixture, schema, brain, simulator, ledger, economy, wager, inventory, housing, backend, telemetry, or deployment behavior changed.
+- **Next gate:** Phase 1K.9 should repeat completed components 1-2 with fresh isolated profiles, then measure component 3 only: normal Sundale location discovery plus empty Studio enter, interior movement, exact-doorway exit, and return. Stop before component 4's job interaction. See [[Development/Reports/Phase 1K8b Normal Input Shared City Component Two Proof]].
+
 ## Future shared simulation layer
 
 Athlete Life Brain v4 is the default for newly generated train, rest, recover, and socialize decisions. It adds only one bounded, one-decision, same-season recent-scoring response above v3's routine behavior. V1-v4 history remains immutable. Expand into longer memory, traits, relationships, nightlife, media, discipline, career decisions, and other sports only after each smaller input passes its own engineering evaluation.

@@ -33,3 +33,7 @@ Phase 1K.8a remains the latest completed phase. This attempt gives no new credit
 ## Next gate
 
 Resume Phase 1K.8b only when a supported Windows input path can observe and drive the fresh no-QA owner. Use exactly `[Right, Enter]`, first reproduce peer `clients=2`, then—only if membership holds—measure mutual visibility, starter-appearance agreement, and one normal movement. Stop before component 3.
+
+## Resolution
+
+The control issue was later isolated to stale `@oai/sky` objects crossing Node REPL execution boundaries. Resetting the kernel and performing import, target selection, observation, and action within one fresh execution restored the supported Windows control path. The completed follow-up is [[Development/Reports/Phase 1K8b Normal Input Shared City Component Two Proof]].
