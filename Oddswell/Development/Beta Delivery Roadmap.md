@@ -651,6 +651,14 @@ Fresh verification passed focused native `1/1`, full native `52/52`, frozen Pyth
 
 Normal Studio/start and Arena-return captures are retained, but both are close wall-side views and do not prove all seven identities, prompt readability, subjective wayfinding, manual usability, accessibility, or final art. No authored map value, gameplay coordinate, prompt, threshold, route, session/authority rule, save, brain, ledger, wager, inventory, interior, external asset, plugin, dependency, brand, district, catalog, music, or final lighting changed. Phase 1K remains incomplete, with hands-on held-control and route usability evidence deferred to the MVP playtest but still required before beta exit. See [[Development/Reports/Phase 1L1b Sundale Destination Identity Wayfinding Pass]].
 
+### Phase 1L.1c Sundale late-afternoon atmosphere pass
+
+**COMPLETE FOR ONE BOUNDED EXISTING-LIGHT PASS.** The existing local Sundale directional light, skylight, and height fog receive a fixed `5.0`/`5000 K` warm daylight, `0.8` cool fill, and `0.003` warm-haze spec. No light actor, transform, post-process framework, time-of-day system, weather system, asset, plugin, or dependency was added. The authored map, gameplay, and exact Phase 1L.1a `31`-part and Phase 1L.1b `7`-destination/`16`-part contracts remain unchanged.
+
+Fresh verification passed focused native `1/1`, full native `53/53`, frozen Python `105/105`, Brain Admin self-check, editor/game builds, BuildCookRun, and package audit. The package contains `50` files, `1,049,739,180` bytes, and zero Python files. All three presentation markers appeared exactly once. The automated route passed `11/11` after `154.504s`, returned home with blocking-floor collision, and held vertical range to `1.0 cm`. Forty performance samples averaged `1,531.8 MiB` working set and `3,569.7 MiB` private bytes.
+
+Objective same-view measurements show the intended warmth shift, but normal Studio/start and Arena-return screenshots remain close wall-side views. The Studio's bright-luma share at or above `250` rose from `0.819%` to `4.662%` in the visible sky/horizon; this is disclosed rather than treated as global highlight safety. The evidence does not prove prompt/UI readability, all destinations, accessibility, manual usability, final color grading, or final lighting. Phase 1K remains incomplete, with hands-on held-control and route usability evidence deferred to the MVP playtest but still required before beta exit. See [[Development/Reports/Phase 1L1c Sundale Late Afternoon Atmosphere Pass]].
+
 ### Exit evidence
 
 The complete loop is visually coherent, readable, accessible at the approved baseline, and within measured PC performance targets. Large catalogs and unseen districts remain out of scope.

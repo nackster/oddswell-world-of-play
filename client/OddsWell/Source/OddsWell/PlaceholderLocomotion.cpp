@@ -14,8 +14,11 @@
 #include "Components/StaticMeshComponent.h"
 #include "Components/TextRenderComponent.h"
 #include "Engine/Canvas.h"
+#include "Engine/DirectionalLight.h"
+#include "Engine/ExponentialHeightFog.h"
 #include "Engine/StaticMesh.h"
 #include "Engine/StaticMeshActor.h"
+#include "Engine/SkyLight.h"
 #include "Engine/TextRenderActor.h"
 #include "Engine/World.h"
 #include "EngineUtils.h"
@@ -32,7 +35,10 @@
 #include "Kismet/GameplayStatics.h"
 #include "Engine/Engine.h"
 #include "Engine/PointLight.h"
+#include "Components/ExponentialHeightFogComponent.h"
+#include "Components/LightComponent.h"
 #include "Components/PointLightComponent.h"
+#include "Components/SkyLightComponent.h"
 #include "Materials/MaterialInstanceDynamic.h"
 #include "Materials/MaterialInterface.h"
 #include "Misc/CommandLine.h"
@@ -857,6 +863,92 @@ const TArray<FSundaleDestinationIdentityPartSpec>& GetSundaleDestinationIdentity
 	return Parts;
 }
 
+struct FSundaleAtmosphereSpec
+{
+	float DirectionalIntensity;
+	float DirectionalTemperatureKelvin;
+	float SkyLightIntensity;
+	FLinearColor SkyLightColor;
+	float FogDensity;
+	FLinearColor FogInscatteringColor;
+	int32 ExpectedDirectionalLights;
+	int32 ExpectedSkyLights;
+	int32 ExpectedHeightFogs;
+};
+
+const FSundaleAtmosphereSpec& GetSundaleAtmosphereSpec()
+{
+	static const FSundaleAtmosphereSpec Spec = {
+		5.0f,
+		5000.0f,
+		0.8f,
+		FLinearColor::FromSRGBColor(FColor(0xD8, 0xE4, 0xF0)),
+		0.003f,
+		FLinearColor::FromSRGBColor(FColor(0xE8, 0xC9, 0xA5)),
+		1,
+		1,
+		1,
+	};
+	return Spec;
+}
+
+void ApplySundaleAtmosphere(UWorld* World)
+{
+	const FSundaleAtmosphereSpec& Spec = GetSundaleAtmosphereSpec();
+	int32 DirectionalLights = 0;
+	for (TActorIterator<ADirectionalLight> Light(World); Light; ++Light)
+	{
+		if (ULightComponent* Component = Light->GetLightComponent())
+		{
+			Component->SetIntensity(Spec.DirectionalIntensity);
+			Component->SetUseTemperature(true);
+			Component->SetTemperature(Spec.DirectionalTemperatureKelvin);
+			++DirectionalLights;
+		}
+	}
+	int32 SkyLights = 0;
+	for (TActorIterator<ASkyLight> Light(World); Light; ++Light)
+	{
+		if (USkyLightComponent* Component = Light->GetLightComponent())
+		{
+			Component->SetIntensity(Spec.SkyLightIntensity);
+			Component->SetLightColor(Spec.SkyLightColor);
+			++SkyLights;
+		}
+	}
+	int32 HeightFogs = 0;
+	for (TActorIterator<AExponentialHeightFog> Fog(World); Fog; ++Fog)
+	{
+		if (UExponentialHeightFogComponent* Component = Fog->GetComponent())
+		{
+			Component->SetFogDensity(Spec.FogDensity);
+			Component->SetFogInscatteringColor(Spec.FogInscatteringColor);
+			++HeightFogs;
+		}
+	}
+	const bool bPassed = DirectionalLights == Spec.ExpectedDirectionalLights
+		&& SkyLights == Spec.ExpectedSkyLights
+		&& HeightFogs == Spec.ExpectedHeightFogs;
+	const FString Evidence = FString::Printf(
+		TEXT("ODDSWELL_SUNDALE_ATMOSPHERE|result=%s|directional=%d|skylight=%d|fog=%d|temperature_k=%.0f|directional_intensity=%.2f|skylight_intensity=%.2f|fog_density=%.4f|local_only=true|existing_native_actors=true|post_process=false|time_of_day=false|weather=false|final_lighting=false"),
+		bPassed ? TEXT("PASS") : TEXT("FAIL"),
+		DirectionalLights,
+		SkyLights,
+		HeightFogs,
+		Spec.DirectionalTemperatureKelvin,
+		Spec.DirectionalIntensity,
+		Spec.SkyLightIntensity,
+		Spec.FogDensity);
+	if (bPassed)
+	{
+		UE_LOG(LogOddsWellLocomotion, Display, TEXT("%s"), *Evidence);
+	}
+	else
+	{
+		UE_LOG(LogOddsWellLocomotion, Error, TEXT("%s"), *Evidence);
+	}
+}
+
 void BuildSundalePresentation(UWorld* World)
 {
 	if (!World
@@ -872,6 +964,7 @@ void BuildSundalePresentation(UWorld* World)
 			return;
 		}
 	}
+	ApplySundaleAtmosphere(World);
 
 	UStaticMesh* Cube = LoadObject<UStaticMesh>(nullptr, TEXT("/Engine/BasicShapes/Cube.Cube"));
 	UMaterialInterface* BasicShapeMaterial = LoadObject<UMaterialInterface>(
@@ -12518,6 +12611,26 @@ bool FOddsWellSundaleDestinationIdentityTest::RunTest(const FString& Parameters)
 	TestEqual(TEXT("Sportsbook and Ticket Booth keep their offset-slab identity"), DestinationCounts.FindRef(FName(TEXT("SportsbookTicketBooth"))), 2);
 	TestEqual(TEXT("Public Court keeps its three-part gateway identity"), DestinationCounts.FindRef(FName(TEXT("PublicCourt"))), 3);
 	TestEqual(TEXT("Furniture Store keeps its stacked-shelf identity"), DestinationCounts.FindRef(FName(TEXT("FurnitureStore"))), 2);
+	return !HasAnyErrors();
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(
+	FOddsWellSundaleAtmosphereTest,
+	"OddsWell.Character.SundaleAtmosphere",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+
+bool FOddsWellSundaleAtmosphereTest::RunTest(const FString& Parameters)
+{
+	const FSundaleAtmosphereSpec& Spec = GetSundaleAtmosphereSpec();
+	TestEqual(TEXT("Atmosphere updates exactly one existing directional light"), Spec.ExpectedDirectionalLights, 1);
+	TestEqual(TEXT("Atmosphere updates exactly one existing skylight"), Spec.ExpectedSkyLights, 1);
+	TestEqual(TEXT("Atmosphere updates exactly one existing height fog"), Spec.ExpectedHeightFogs, 1);
+	TestTrue(TEXT("Directional intensity stays bright daytime"), Spec.DirectionalIntensity >= 3.0f && Spec.DirectionalIntensity <= 8.0f);
+	TestTrue(TEXT("Directional temperature stays warm daylight rather than night"), Spec.DirectionalTemperatureKelvin >= 4500.0f && Spec.DirectionalTemperatureKelvin <= 5500.0f);
+	TestTrue(TEXT("Skylight fill remains bounded and readable"), Spec.SkyLightIntensity >= 0.5f && Spec.SkyLightIntensity <= 1.0f);
+	TestTrue(TEXT("Skylight fill remains slightly cool"), Spec.SkyLightColor.B >= Spec.SkyLightColor.R);
+	TestTrue(TEXT("Dry-air haze remains light"), Spec.FogDensity > 0.0f && Spec.FogDensity <= 0.005f);
+	TestTrue(TEXT("Fog inscattering remains warm"), Spec.FogInscatteringColor.R > Spec.FogInscatteringColor.B);
 	return !HasAnyErrors();
 }
 
