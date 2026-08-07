@@ -99,6 +99,7 @@ const FName StudioStructureTag(TEXT("OddsWellStudioStructure"));
 const FName StudioFurnitureTag(TEXT("OddsWellStudioFurniture"));
 const FName OneBedroomStructureTag(TEXT("OddsWellOneBedroomStructure"));
 const FName ApartmentManagementKioskTag(TEXT("OddsWellApartmentManagementKiosk"));
+const FName SundalePresentationTag(TEXT("OddsWellSundalePresentation"));
 const FName StadiumStructureTag(TEXT("OddsWellStadiumStructure"));
 const FName StadiumZoneTag(TEXT("OddsWellStadiumZone"));
 const FVector JobInteractionLocation(9500.0, 0.0, 0.0);
@@ -768,6 +769,127 @@ struct FApartmentManagementKioskPartSpec
 	FLinearColor Color;
 };
 
+struct FSundalePresentationPartSpec
+{
+	FName Id;
+	FName Role;
+	FVector Location;
+	FVector Scale;
+	FLinearColor Color;
+};
+
+const FLinearColor SundaleWarmLimestone = FLinearColor::FromSRGBColor(FColor(0xD8, 0xC8, 0xA9));
+const FLinearColor SundaleMutedTerracotta = FLinearColor::FromSRGBColor(FColor(0xA6, 0x5F, 0x47));
+const FLinearColor SundaleSandConcrete = FLinearColor::FromSRGBColor(FColor(0xB9, 0xA7, 0x83));
+const FLinearColor SundaleSageGreen = FLinearColor::FromSRGBColor(FColor(0x6D, 0x7F, 0x62));
+const FLinearColor SundaleRestrainedCobalt = FLinearColor::FromSRGBColor(FColor(0x31, 0x5F, 0x79));
+const FLinearColor SundaleBurntOrange = FLinearColor::FromSRGBColor(FColor(0xC4, 0x6D, 0x3B));
+const FLinearColor SundaleCharcoalGray = FLinearColor::FromSRGBColor(FColor(0x4D, 0x50, 0x51));
+
+const TArray<FSundalePresentationPartSpec>& GetSundalePresentationParts()
+{
+	static const TArray<FSundalePresentationPartSpec> Parts = {
+		{TEXT("StudioFacade"), TEXT("facade"), FVector(0.0, 5.0, 650.0), FVector(22.0, 0.08, 6.5), SundaleWarmLimestone},
+		{TEXT("JobFacade"), TEXT("facade"), FVector(9500.0, 5.0, 700.0), FVector(20.0, 0.08, 7.0), SundaleMutedTerracotta},
+		{TEXT("ClothingFacade"), TEXT("facade"), FVector(12495.0, 9000.0, 700.0), FVector(0.08, 20.0, 7.0), SundaleWarmLimestone},
+		{TEXT("ArenaFacade"), TEXT("facade"), FVector(7000.0, 17995.0, 900.0), FVector(28.0, 0.08, 9.0), SundaleSandConcrete},
+		{TEXT("SportsbookFacade"), TEXT("facade"), FVector(1000.0, 17995.0, 650.0), FVector(18.0, 0.08, 6.5), SundaleMutedTerracotta},
+		{TEXT("FurnitureFacade"), TEXT("facade"), FVector(-10495.0, 5000.0, 700.0), FVector(0.08, 20.0, 7.0), SundaleWarmLimestone},
+		{TEXT("StudioAwning"), TEXT("awning"), FVector(0.0, 300.0, 380.0), FVector(6.0, 3.0, 0.18), SundaleBurntOrange},
+		{TEXT("JobAwning"), TEXT("awning"), FVector(9500.0, 300.0, 420.0), FVector(7.0, 3.0, 0.18), SundaleBurntOrange},
+		{TEXT("ClothingAwning"), TEXT("awning"), FVector(12200.0, 9000.0, 420.0), FVector(3.0, 7.0, 0.18), SundaleRestrainedCobalt},
+		{TEXT("ArenaAwning"), TEXT("awning"), FVector(7000.0, 17700.0, 520.0), FVector(12.0, 3.0, 0.22), SundaleRestrainedCobalt},
+		{TEXT("SportsbookAwning"), TEXT("awning"), FVector(1000.0, 17700.0, 420.0), FVector(6.0, 3.0, 0.18), SundaleCharcoalGray},
+		{TEXT("FurnitureAwning"), TEXT("awning"), FVector(-10200.0, 5000.0, 420.0), FVector(3.0, 7.0, 0.18), SundaleBurntOrange},
+		{TEXT("RouteMark01"), TEXT("route"), FVector(2500.0, 400.0, 12.0), FVector(5.0, 0.6, 0.03), SundaleRestrainedCobalt},
+		{TEXT("RouteMark02"), TEXT("route"), FVector(4500.0, 400.0, 12.0), FVector(5.0, 0.6, 0.03), SundaleRestrainedCobalt},
+		{TEXT("RouteMark03"), TEXT("route"), FVector(6500.0, 400.0, 12.0), FVector(5.0, 0.6, 0.03), SundaleRestrainedCobalt},
+		{TEXT("RouteMark04"), TEXT("route"), FVector(8500.0, 400.0, 12.0), FVector(5.0, 0.6, 0.03), SundaleRestrainedCobalt},
+		{TEXT("RouteMark05"), TEXT("route"), FVector(10500.0, 400.0, 12.0), FVector(5.0, 0.6, 0.03), SundaleRestrainedCobalt},
+		{TEXT("CourtCenterBand"), TEXT("court"), FVector(-7900.0, 15000.0, 27.0), FVector(0.07, 15.2, 0.04), SundaleRestrainedCobalt},
+		{TEXT("CourtSocialBand"), TEXT("court"), FVector(-7900.0, 15765.0, 27.0), FVector(28.7, 0.07, 0.04), SundaleBurntOrange},
+		{TEXT("CommonsPlanter01"), TEXT("greenery"), FVector(-4500.0, 5500.0, 40.0), FVector(2.5, 2.5, 0.8), SundaleSandConcrete},
+		{TEXT("CommonsTrunk01"), TEXT("greenery"), FVector(-4500.0, 5500.0, 250.0), FVector(0.48, 0.48, 5.0), SundaleCharcoalGray},
+		{TEXT("CommonsCanopy01"), TEXT("greenery"), FVector(-4500.0, 5500.0, 650.0), FVector(3.1, 3.1, 3.1), SundaleSageGreen},
+		{TEXT("CommonsPlanter02"), TEXT("greenery"), FVector(7500.0, 12500.0, 40.0), FVector(2.5, 2.5, 0.8), SundaleSandConcrete},
+		{TEXT("CommonsTrunk02"), TEXT("greenery"), FVector(7500.0, 12500.0, 250.0), FVector(0.48, 0.48, 5.0), SundaleCharcoalGray},
+		{TEXT("CommonsCanopy02"), TEXT("greenery"), FVector(7500.0, 12500.0, 650.0), FVector(3.1, 3.1, 3.1), SundaleSageGreen},
+		{TEXT("StudioWarmDetail"), TEXT("warm_detail"), FVector(0.0, 15.0, 650.0), FVector(7.0, 0.06, 2.0), SundaleBurntOrange},
+		{TEXT("JobWarmDetail"), TEXT("warm_detail"), FVector(9500.0, 15.0, 700.0), FVector(7.0, 0.06, 2.0), SundaleBurntOrange},
+		{TEXT("ClothingWarmDetail"), TEXT("warm_detail"), FVector(12485.0, 9000.0, 700.0), FVector(0.06, 7.0, 2.0), SundaleBurntOrange},
+		{TEXT("ArenaWarmDetail"), TEXT("warm_detail"), FVector(7000.0, 17985.0, 900.0), FVector(9.0, 0.06, 2.0), SundaleBurntOrange},
+		{TEXT("SportsbookWarmDetail"), TEXT("warm_detail"), FVector(1000.0, 17985.0, 650.0), FVector(6.0, 0.06, 2.0), SundaleBurntOrange},
+		{TEXT("FurnitureWarmDetail"), TEXT("warm_detail"), FVector(-10485.0, 5000.0, 700.0), FVector(0.06, 7.0, 2.0), SundaleBurntOrange},
+	};
+	return Parts;
+}
+
+void BuildSundalePresentation(UWorld* World)
+{
+	if (!World
+		|| World->GetNetMode() == NM_DedicatedServer
+		|| !World->GetMapName().Contains(TEXT("SundaleGraybox")))
+	{
+		return;
+	}
+	for (TActorIterator<AStaticMeshActor> Actor(World); Actor; ++Actor)
+	{
+		if (Actor->ActorHasTag(SundalePresentationTag))
+		{
+			return;
+		}
+	}
+
+	UStaticMesh* Cube = LoadObject<UStaticMesh>(nullptr, TEXT("/Engine/BasicShapes/Cube.Cube"));
+	UMaterialInterface* BasicShapeMaterial = LoadObject<UMaterialInterface>(
+		nullptr,
+		TEXT("/Engine/BasicShapes/BasicShapeMaterial.BasicShapeMaterial"));
+	FActorSpawnParameters Parameters;
+	Parameters.ObjectFlags |= RF_Transient;
+	int32 SpawnedParts = 0;
+	for (const FSundalePresentationPartSpec& Part : GetSundalePresentationParts())
+	{
+		AStaticMeshActor* Actor = World->SpawnActor<AStaticMeshActor>(
+			AStaticMeshActor::StaticClass(),
+			FTransform(FRotator::ZeroRotator, Part.Location, Part.Scale),
+			Parameters);
+		if (!Actor || !Cube)
+		{
+			continue;
+		}
+		Actor->SetReplicates(false);
+		Actor->SetActorEnableCollision(false);
+		Actor->GetStaticMeshComponent()->SetStaticMesh(Cube);
+		Actor->GetStaticMeshComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		if (BasicShapeMaterial)
+		{
+			if (UMaterialInstanceDynamic* Material = UMaterialInstanceDynamic::Create(BasicShapeMaterial, Actor))
+			{
+				Material->SetVectorParameterValue(TEXT("Color"), Part.Color);
+				Material->SetVectorParameterValue(TEXT("BaseColor"), Part.Color);
+				Actor->GetStaticMeshComponent()->SetMaterial(0, Material);
+			}
+		}
+		Actor->Tags.Add(SundalePresentationTag);
+		Actor->Tags.Add(Part.Role);
+		Actor->Tags.Add(Part.Id);
+		++SpawnedParts;
+	}
+	const bool bPassed = SpawnedParts == GetSundalePresentationParts().Num();
+	const FString Evidence = FString::Printf(
+		TEXT("ODDSWELL_SUNDALE_PRESENTATION|result=%s|parts=%d|local_only=true|collision=false|native_assets=true|final_art=false"),
+		bPassed ? TEXT("PASS") : TEXT("FAIL"),
+		SpawnedParts);
+	if (bPassed)
+	{
+		UE_LOG(LogOddsWellLocomotion, Display, TEXT("%s"), *Evidence);
+	}
+	else
+	{
+		UE_LOG(LogOddsWellLocomotion, Error, TEXT("%s"), *Evidence);
+	}
+}
+
 const TArray<FApartmentManagementKioskPartSpec>& GetApartmentManagementKioskParts()
 {
 	static const TArray<FApartmentManagementKioskPartSpec> Parts = {
@@ -1152,6 +1274,7 @@ AOddsWellPlaceholderCharacter::AOddsWellPlaceholderCharacter()
 void AOddsWellPlaceholderCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+	BuildSundalePresentation(GetWorld());
 #if UE_BUILD_DEVELOPMENT
 	bCanonicalAutomaticReceiptHeldInputDriver =
 		FParse::Param(
@@ -12241,6 +12364,43 @@ bool FOddsWellLocomotionDefaultsTest::RunTest(const FString& Parameters)
 	TestTrue(TEXT("Approved Job interaction reuses the first route waypoint"), JobInteractionLocation.Equals(SundaleWaypoints[0]));
 	TestEqual(TEXT("First route waypoint remains labeled Job"), GetSundaleRouteWaypointLabels()[0], FString(TEXT("Job")));
 	TestTrue(TEXT("Job interaction radius exceeds the player capsule"), JobInteractionRadius > CapsuleRadius);
+	return !HasAnyErrors();
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(
+	FOddsWellSundaleCoreBlockPresentationTest,
+	"OddsWell.Character.SundaleCoreBlockPresentation",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+
+bool FOddsWellSundaleCoreBlockPresentationTest::RunTest(const FString& Parameters)
+{
+	const TArray<FSundalePresentationPartSpec>& Parts = GetSundalePresentationParts();
+	TestEqual(TEXT("Presentation remains a bounded 31-part pass"), Parts.Num(), 31);
+	TMap<FName, int32> RoleCounts;
+	TSet<FName> Ids;
+	const TArray<FLinearColor> ApprovedPalette = {
+		SundaleWarmLimestone,
+		SundaleMutedTerracotta,
+		SundaleSandConcrete,
+		SundaleSageGreen,
+		SundaleRestrainedCobalt,
+		SundaleBurntOrange,
+		SundaleCharcoalGray,
+	};
+	for (const FSundalePresentationPartSpec& Part : Parts)
+	{
+		++RoleCounts.FindOrAdd(Part.Role);
+		Ids.Add(Part.Id);
+		TestTrue(*FString::Printf(TEXT("%s keeps positive scale"), *Part.Id.ToString()), Part.Scale.GetMin() > 0.0);
+		TestTrue(*FString::Printf(TEXT("%s uses the approved palette"), *Part.Id.ToString()), ApprovedPalette.Contains(Part.Color));
+	}
+	TestEqual(TEXT("Every presentation part id remains unique"), Ids.Num(), Parts.Num());
+	TestEqual(TEXT("Six required facades remain represented"), RoleCounts.FindRef(FName(TEXT("facade"))), 6);
+	TestEqual(TEXT("Six repeated awnings remain represented"), RoleCounts.FindRef(FName(TEXT("awning"))), 6);
+	TestEqual(TEXT("Five south-route marks remain represented"), RoleCounts.FindRef(FName(TEXT("route"))), 5);
+	TestEqual(TEXT("Two court bands remain represented"), RoleCounts.FindRef(FName(TEXT("court"))), 2);
+	TestEqual(TEXT("Two three-part greenery clusters remain represented"), RoleCounts.FindRef(FName(TEXT("greenery"))), 6);
+	TestEqual(TEXT("Six warm late-afternoon details remain represented"), RoleCounts.FindRef(FName(TEXT("warm_detail"))), 6);
 	return !HasAnyErrors();
 }
 

@@ -352,6 +352,12 @@ The owner now accepts that one-person unseen and uncoached `5/6` result plus the
 - **LOCKED:** storytelling is primarily environmental and emergent through exploration, athlete behavior, games, wins, losses, and progression rather than a required linear campaign.
 - **GUARDRAIL:** another AI or artist may later own 3D design. The project brain must distinguish approved assets from concepts and must not treat generated images as production-ready models.
 
+### Implemented local-beta Sundale presentation pass
+
+Phase 1L.1a adds one bounded native-primitive presentation layer to the existing Sundale graybox. Six route-facing facade accents, six repeated awnings, five cobalt route marks, two court bands, two three-part greenery clusters, and six warm facade details use the seven approved planning colors. The layer builds once per local Sundale world, including shared-city clients, and is transient, non-replicated, and non-colliding. It changes no authored map actor, route coordinate, threshold, prompt, gameplay state, authority, save, brain, ledger, inventory, wager, or network rule.
+
+This is a recognizable direction check, not final city art. Existing native directional light, sky, atmosphere, and fog remain unchanged; no new lighting system, calibrated final material, texture, external asset, music, district, or final-art approval is claimed. See [[Development/Reports/Phase 1L1a Sundale Core Block Presentation Pass]].
+
 ## Admin and operations
 
 The local Brain Observatory grows into the game Admin Console only as real systems exist. Beta operations eventually need truthful controls or views for:

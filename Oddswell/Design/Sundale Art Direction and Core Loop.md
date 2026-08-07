@@ -132,3 +132,9 @@ Both shortcuts must preserve the commons as a social space and keep the arena vi
 ## Boundary
 
 Phase 1C.1 changed planning authority only. Phase 1C.2 adds one separate primitive Unreal map and opt-in route evidence. It adds no final art, interior, multiplayer, account, store catalog, inventory, Odds Bucks, wagering logic, deployment, model, training, or retraining behavior.
+
+## Phase 1L.1a presentation pass
+
+The first content pass now overlays only the already-proven route-facing graybox surfaces with `31` transient native-cube parts: six facade accents, six awnings, five cobalt route marks, two court bands, two three-part greenery clusters aligned to existing trees, and six warm facade details. It uses the exact seven-color planning palette above, builds once in each local Sundale world, and remains non-replicated and non-colliding.
+
+The authored `45`-actor map, all building and route transforms, lighting actors, collision, thresholds, prompts, and gameplay systems remain unchanged. This is still placeholder presentation and supplies no final material, texture, mesh, foliage pack, music, external asset, new district, or final-art claim. Automated packaged evidence is recorded in [[Development/Reports/Phase 1L1a Sundale Core Block Presentation Pass]].

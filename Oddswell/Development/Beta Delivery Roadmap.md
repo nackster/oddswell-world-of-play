@@ -635,6 +635,14 @@ Observed first-time players complete the loop without developer intervention. Co
 4. Add scalable graphics, readable UI, input remapping, subtitles/captions where needed, contrast, and motion options.
 5. Benchmark packaged performance after every representative asset family.
 
+### Phase 1L.1a Sundale core-block presentation pass
+
+**COMPLETE FOR ONE BOUNDED NATIVE-PRIMITIVE CITY PASS.** The existing Sundale graybox now receives `31` transient, local-only, non-colliding presentation parts across the six proven route-facing facades, repeated awnings, south-route marks, public-court bands, two existing-tree clusters, and warm facade details. The exact approved seven-color planning palette is used without changing the authored map, lighting actors, collision, route, thresholds, prompts, gameplay, authority, saves, brains, economy, inventory, wagers, or network rules.
+
+Fresh verification passed focused native `1/1`, full native `51/51`, frozen Python `105/105`, Brain Admin self-check, editor/game builds, BuildCookRun, package audit, and an automated packaged `800 m` run at `11/11` points. The package contains `50` files, `1,049,588,652` bytes, and zero Python files. A bounded 20-second resource sample averaged `1,539.9 MiB` working set and `3,585.3 MiB` private bytes. Two automated captures show the Studio/start and Arena-return treatments; both are close wall-side views and do not prove whole-city visual coherence or player usability.
+
+Phase 1K remains incomplete. At the owner's direction, hands-on held-control and route usability evidence is deferred until the MVP playtest; it is still required before beta exit. Phase 1L.1a is not final city art and adds no calibrated lighting, final materials, external assets, music, new district, or accessibility baseline. See [[Development/Reports/Phase 1L1a Sundale Core Block Presentation Pass]].
+
 ### Exit evidence
 
 The complete loop is visually coherent, readable, accessible at the approved baseline, and within measured PC performance targets. Large catalogs and unseen districts remain out of scope.
