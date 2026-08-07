@@ -693,6 +693,14 @@ The authored map, exact `(1000, 18000)` anchor, `350 cm` radius, `Press E to ope
 
 Three automated `888x500` captures document the centered exterior, exact prompt, and existing menu open after a requested `1280x800` launch. The placeholder player stack occludes part of the frontage centerline, the prompt view is close/dark, and lower bet-slip text visibly overlaps/clips in the menu view. They do not prove normal approach, every angle, responsive UI, color/text/menu readability, accessibility, player understanding, subjective usability, final architecture/materials/lighting/brand, minimum-PC performance, or beta readiness. Phase 1K remains incomplete, with hands-on held-control and route usability evidence deferred to the MVP playtest but still required before beta exit. See [[Development/Reports/Phase 1L1g Sundale Ticket Booth Frontage Presentation Pass]].
 
+### Phase 1L.1h Ticket Booth compact-layout correction
+
+**COMPLETE FOR ONE BOUNDED FIXED-VIEW COMPACT-LAYOUT CORRECTION.** The existing native HUD now uses one compact geometry branch at Canvas dimensions at or below `900` wide or `540` high. At the measured `888x500` Canvas, exact vertical bands separate the existing market cards, help, return, input hints, validation footer, selection, stake, potential return, balance, confirmation, and status. Standard `1280x720` Canvas dimensions retain the prior full layout. No widget framework, dependency, new market, or behavior was added.
+
+The exact prompt/radius, open/close/modal/input navigation, tabs/labels/active/locked states, teams/odds/stakes/returns/balance/confirmation wording, receipts, wager command, settlement, ledger, schedule/tipoff, authority/equal-information boundary, saves, brains, simulator, and Phase 1L.1a-g presentation layers remain unchanged. Fresh verification passed focused native `1/1`, full native `58/58`, frozen Python `105/105`, Brain Admin self-check, editor/game builds, BuildCookRun, package audit, and fixed-view packaged QA. The package contains `50` files, `1,049,936,300` bytes, and zero Python files.
+
+Same-size `888x500` before/after captures plus the emitted bounds show no measured overlap/clipping in the accepted fixed after frame. This is not text-readability, comprehension, accessibility, subjective-usability, general responsive-design, every-state/resolution/language, accepted-receipt visual, final-UI, minimum-PC, or beta-readiness evidence. Phase 1K remains incomplete, with hands-on held-control and route usability evidence deferred to the MVP playtest but still required before beta exit. See [[Development/Reports/Phase 1L1h Ticket Booth Compact Layout Correction]].
+
 ### Exit evidence
 
 The complete loop is visually coherent, readable, accessible at the approved baseline, and within measured PC performance targets. Large catalogs and unseen districts remain out of scope.

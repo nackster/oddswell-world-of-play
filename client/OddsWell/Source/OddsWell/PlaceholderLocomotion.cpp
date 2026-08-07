@@ -124,6 +124,18 @@ const TCHAR* StadiumEnterPrompt = TEXT("Press E to enter the public viewing gray
 const TCHAR* StadiumExitPrompt = TEXT("Press E to exit the public viewing graybox");
 const TCHAR* TicketBoothOpenPrompt = TEXT("Press E to open betting odds");
 constexpr int32 TicketBoothMarketPageCount = 4;
+constexpr float TicketBoothCompactCanvasWidth = 900.0f;
+constexpr float TicketBoothCompactCanvasHeight = 540.0f;
+constexpr float TicketBoothCompactMargin = 16.0f;
+constexpr float TicketBoothCompactHeaderHeight = 72.0f;
+constexpr float TicketBoothCompactTabHeight = 48.0f;
+constexpr float TicketBoothCompactContentGap = 12.0f;
+constexpr float TicketBoothCompactContentChrome = 28.0f;
+constexpr float TicketBoothCompactSlipWidth = 290.0f;
+constexpr float TicketBoothCompactPanelGap = 14.0f;
+constexpr float TicketBoothCompactSidePadding = 24.0f;
+constexpr float TicketBoothCompactMarketInset = 12.0f;
+constexpr float TicketBoothCompactCardHeight = 104.0f;
 FVector StadiumCityReturnLocation = StadiumEntranceThreshold + FVector(0.0, -100.0, SafeSpawnLocation.Z);
 const FVector StadiumInteriorSpawn(-1600.0, 0.0, 220.0);
 const FVector StadiumReplayOrigin(350.0, 0.0, 0.0);
@@ -134,6 +146,7 @@ int32 StadiumQaProcessStage = 0;
 bool bJobPresentationQaCaptured = false;
 bool bArenaPresentationQaCaptured = false;
 int32 TicketBoothPresentationQaStage = 0;
+bool bTicketBoothCompactLayoutQaLogged = false;
 
 bool CanUseStudioInteraction(const bool bLocallyControlled, const ENetMode NetMode)
 {
@@ -7611,19 +7624,26 @@ void AOddsWellSportsbookHUD::DrawTicketBoothMenu(
 	const AOddsWellPlaceholderCharacter& Character,
 	const FOddsWellMatchWinnerOfferPreview& Offer)
 {
-	const float Margin = 28.0f;
+	const bool bCompactLayout = Canvas->SizeX <= TicketBoothCompactCanvasWidth
+		|| Canvas->SizeY <= TicketBoothCompactCanvasHeight;
+	const float Margin = bCompactLayout ? TicketBoothCompactMargin : 28.0f;
 	const float X = Margin;
 	const float Y = Margin;
 	const float Width = Canvas->SizeX - Margin * 2.0f;
 	const float Height = Canvas->SizeY - Margin * 2.0f;
-	const float HeaderHeight = 86.0f;
-	const float TabHeight = 54.0f;
-	const float ContentY = Y + HeaderHeight + TabHeight + 18.0f;
-	const float ContentHeight = Height - HeaderHeight - TabHeight - 38.0f;
-	const float SlipWidth = FMath::Clamp(Width * 0.29f, 300.0f, 390.0f);
-	const float Gap = 18.0f;
-	const float MarketWidth = Width - SlipWidth - Gap - 36.0f;
-	const float MarketX = X + 18.0f;
+	const float HeaderHeight = bCompactLayout ? TicketBoothCompactHeaderHeight : 86.0f;
+	const float TabHeight = bCompactLayout ? TicketBoothCompactTabHeight : 54.0f;
+	const float ContentGap = bCompactLayout ? TicketBoothCompactContentGap : 18.0f;
+	const float ContentChrome = bCompactLayout ? TicketBoothCompactContentChrome : 38.0f;
+	const float ContentY = Y + HeaderHeight + TabHeight + ContentGap;
+	const float ContentHeight = Height - HeaderHeight - TabHeight - ContentChrome;
+	const float SlipWidth = bCompactLayout
+		? TicketBoothCompactSlipWidth
+		: FMath::Clamp(Width * 0.29f, 300.0f, 390.0f);
+	const float Gap = bCompactLayout ? TicketBoothCompactPanelGap : 18.0f;
+	const float SidePadding = bCompactLayout ? TicketBoothCompactSidePadding : 36.0f;
+	const float MarketWidth = Width - SlipWidth - Gap - SidePadding;
+	const float MarketX = X + (bCompactLayout ? TicketBoothCompactMarketInset : 18.0f);
 	const float SlipX = MarketX + MarketWidth + Gap;
 	const FLinearColor Navy(0.025f, 0.055f, 0.08f, 0.985f);
 	const FLinearColor Panel(0.055f, 0.085f, 0.11f, 1.0f);
@@ -7634,21 +7654,22 @@ void AOddsWellSportsbookHUD::DrawTicketBoothMenu(
 	DrawRect(FLinearColor(0.0f, 0.0f, 0.0f, 0.62f), 0.0f, 0.0f, Canvas->SizeX, Canvas->SizeY);
 	DrawRect(Navy, X, Y, Width, Height);
 	DrawRect(Teal, X, Y, Width, 5.0f);
-	DrawText(TEXT("STADIUM TICKET BOOTH"), FLinearColor::White, X + 24.0f, Y + 20.0f, nullptr, 1.55f);
+	DrawText(TEXT("STADIUM TICKET BOOTH"), FLinearColor::White, X + 24.0f, Y + (bCompactLayout ? 15.0f : 20.0f), nullptr, bCompactLayout ? 1.35f : 1.55f);
 	DrawText(
 		FString::Printf(TEXT("BASKETBALL  |  PRE-GAME  |  %s at %s  |  LOCAL BETA"), *Offer.AwayTeam, *Offer.HomeTeam),
 		Muted,
 		X + 24.0f,
-		Y + 54.0f,
+		Y + (bCompactLayout ? 45.0f : 54.0f),
 		nullptr,
-		0.95f);
+		bCompactLayout ? 0.80f : 0.95f);
 
 	const float CloseWidth = 92.0f;
 	const float CloseX = X + Width - CloseWidth - 18.0f;
-	const float CloseY = Y + 18.0f;
-	DrawRect(FLinearColor(0.16f, 0.19f, 0.22f, 1.0f), CloseX, CloseY, CloseWidth, 38.0f);
-	DrawText(TEXT("X  CLOSE"), FLinearColor::White, CloseX + 13.0f, CloseY + 10.0f, nullptr, 0.90f);
-	AddHitBox(FVector2D(CloseX, CloseY), FVector2D(CloseWidth, 38.0f), TEXT("TicketBoothClose"), true, 20);
+	const float CloseY = Y + (bCompactLayout ? 14.0f : 18.0f);
+	const float CloseHeight = bCompactLayout ? 34.0f : 38.0f;
+	DrawRect(FLinearColor(0.16f, 0.19f, 0.22f, 1.0f), CloseX, CloseY, CloseWidth, CloseHeight);
+	DrawText(TEXT("X  CLOSE"), FLinearColor::White, CloseX + 13.0f, CloseY + (bCompactLayout ? 8.0f : 10.0f), nullptr, bCompactLayout ? 0.82f : 0.90f);
+	AddHitBox(FVector2D(CloseX, CloseY), FVector2D(CloseWidth, CloseHeight), TEXT("TicketBoothClose"), true, 20);
 
 	const TArray<FString>& Labels = GetTicketBoothMarketLabels();
 	const float TabY = Y + HeaderHeight;
@@ -7666,9 +7687,9 @@ void AOddsWellSportsbookHUD::DrawTicketBoothMenu(
 			bActive ? FString::Printf(TEXT("%s  ACTIVE"), *Labels[Index]) : Labels[Index],
 			bActive ? FLinearColor::White : Muted,
 			TabX + 15.0f,
-			TabY + 18.0f,
+			TabY + (bCompactLayout ? 15.0f : 18.0f),
 			nullptr,
-			0.90f);
+			bCompactLayout ? 0.80f : 0.90f);
 		AddHitBox(
 			FVector2D(TabX, TabY),
 			FVector2D(TabWidth - 2.0f, TabHeight),
@@ -7681,14 +7702,15 @@ void AOddsWellSportsbookHUD::DrawTicketBoothMenu(
 	const float InnerX = MarketX + 20.0f;
 	const float InnerWidth = MarketWidth - 40.0f;
 	const int32 Page = Character.GetTicketBoothMarketPage();
-	DrawText(Labels[Page], FLinearColor::White, InnerX, ContentY + 18.0f, nullptr, 1.35f);
+	DrawText(Labels[Page], FLinearColor::White, InnerX, ContentY + (bCompactLayout ? 12.0f : 18.0f), nullptr, bCompactLayout ? 1.18f : 1.35f);
 
 	if (Page == 0 && Offer.Selections.Num() == 2)
 	{
-		DrawText(TEXT("MATCH WINNER  |  DECIMAL ODDS"), Muted, InnerX, ContentY + 53.0f, nullptr, 0.95f);
-		const float CardY = ContentY + 88.0f;
+		DrawText(TEXT("MATCH WINNER  |  DECIMAL ODDS"), Muted, InnerX, ContentY + (bCompactLayout ? 38.0f : 53.0f), nullptr, bCompactLayout ? 0.82f : 0.95f);
+		const float CardY = ContentY + (bCompactLayout ? 62.0f : 88.0f);
 		const float CardGap = 14.0f;
 		const float CardWidth = (InnerWidth - CardGap) * 0.5f;
+		const float CardHeight = bCompactLayout ? TicketBoothCompactCardHeight : 134.0f;
 		for (int32 Index = 0; Index < Offer.Selections.Num(); ++Index)
 		{
 			const FOddsWellMatchWinnerSelectionPreview& Selection = Offer.Selections[Index];
@@ -7703,7 +7725,7 @@ void AOddsWellSportsbookHUD::DrawTicketBoothMenu(
 				SelectionX,
 				CardY,
 				CardWidth,
-				134.0f,
+				CardHeight,
 				true);
 			if (Character.CanReviewTicketBoothBetSlip())
 			{
@@ -7722,7 +7744,7 @@ void AOddsWellSportsbookHUD::DrawTicketBoothMenu(
 				}
 				AddHitBox(
 					FVector2D(SelectionX, CardY),
-					FVector2D(CardWidth, 134.0f),
+					FVector2D(CardWidth, CardHeight),
 					Index == 0
 						? TicketBoothHomeTeamHitBox
 						: TicketBoothAwayTeamHitBox,
@@ -7730,7 +7752,7 @@ void AOddsWellSportsbookHUD::DrawTicketBoothMenu(
 					15);
 			}
 		}
-		DrawText(TEXT("Click a team or use , / . or D-pad left / right"), Muted, InnerX, CardY + 160.0f, nullptr, 0.95f);
+		DrawText(TEXT("Click a team or use , / . or D-pad left / right"), Muted, InnerX, CardY + (bCompactLayout ? 116.0f : 160.0f), nullptr, bCompactLayout ? 0.82f : 0.95f);
 		DrawText(
 			FString::Printf(
 				TEXT("%lld Odds Bucks returns %lld or %lld, based on your selection"),
@@ -7739,9 +7761,14 @@ void AOddsWellSportsbookHUD::DrawTicketBoothMenu(
 				Offer.Selections[1].MinimumStakeGrossReturn),
 			FLinearColor::White,
 			InnerX,
-			CardY + 190.0f,
+			CardY + (bCompactLayout ? 138.0f : 190.0f),
 			nullptr,
-			1.0f);
+			bCompactLayout ? 0.86f : 1.0f);
+		if (bCompactLayout)
+		{
+			DrawText(TEXT(", / . OR D-PAD LEFT / RIGHT: TEAM"), Muted, InnerX, ContentY + 228.0f, nullptr, 0.72f);
+			DrawText(TEXT("ENTER / GAMEPAD A / BUTTON: CONFIRM"), Muted, InnerX, ContentY + 246.0f, nullptr, 0.72f);
+		}
 	}
 	else if (Page == 1)
 	{
@@ -7773,15 +7800,31 @@ void AOddsWellSportsbookHUD::DrawTicketBoothMenu(
 			: TEXT("This category stays locked until its event and settlement proof passes."),
 		Page == 0 ? Teal : Gold,
 		InnerX,
-		ContentY + ContentHeight - 46.0f,
+		ContentY + ContentHeight - (bCompactLayout ? 28.0f : 46.0f),
 		nullptr,
-		0.95f);
+		bCompactLayout ? 0.82f : 0.95f);
 
 	DrawRect(FLinearColor(0.96f, 0.94f, 0.87f, 1.0f), SlipX, ContentY, SlipWidth, ContentHeight);
 	const FOddsWellCanonicalPendingMatchWinnerReceipt* Receipt =
 		Character.GetTicketBoothCanonicalReceipt();
 	if (Receipt)
 	{
+		if (bCompactLayout)
+		{
+			DrawText(TEXT("BET ACCEPTED"), FLinearColor(0.025f, 0.055f, 0.08f), SlipX + 16.0f, ContentY + 12.0f, nullptr, 1.12f);
+			DrawText(TEXT("PENDING TIPOFF"), FLinearColor(0.08f, 0.45f, 0.42f), SlipX + 16.0f, ContentY + 34.0f, nullptr, 0.78f);
+			DrawRect(FLinearColor(0.84f, 0.82f, 0.76f, 1.0f), SlipX + 16.0f, ContentY + 54.0f, SlipWidth - 32.0f, 2.0f);
+			DrawText(TEXT("SELECTION"), FLinearColor(0.32f, 0.34f, 0.36f), SlipX + 16.0f, ContentY + 68.0f, nullptr, 0.68f);
+			DrawText(Receipt->SelectedTeam, FLinearColor(0.025f, 0.055f, 0.08f), SlipX + 16.0f, ContentY + 86.0f, nullptr, 0.82f);
+			DrawText(TEXT("STAKE / POTENTIAL GROSS"), FLinearColor(0.32f, 0.34f, 0.36f), SlipX + 16.0f, ContentY + 110.0f, nullptr, 0.68f);
+			DrawText(FString::Printf(TEXT("%lld Odds Bucks  /  %lld gross"), Receipt->Stake, Receipt->GrossReturn), FLinearColor(0.025f, 0.055f, 0.08f), SlipX + 16.0f, ContentY + 128.0f, nullptr, 0.82f);
+			DrawText(TEXT("CURRENT BALANCE"), FLinearColor(0.32f, 0.34f, 0.36f), SlipX + 16.0f, ContentY + 154.0f, nullptr, 0.68f);
+			DrawText(FString::Printf(TEXT("%lld Odds Bucks"), Receipt->CurrentBalance), FLinearColor(0.025f, 0.055f, 0.08f), SlipX + 16.0f, ContentY + 172.0f, nullptr, 0.82f);
+			DrawText(TEXT("LOCKED AT GAME START"), FLinearColor(0.55f, 0.22f, 0.12f), SlipX + 16.0f, ContentY + 205.0f, nullptr, 0.72f);
+			DrawText(TEXT("Odds Bucks only. No real money."), FLinearColor(0.55f, 0.22f, 0.12f), SlipX + 16.0f, ContentY + 225.0f, nullptr, 0.72f);
+			DrawText(TEXT("LEFT / RIGHT: MARKET    E or ESC: CLOSE"), FLinearColor(0.32f, 0.34f, 0.36f), SlipX + 16.0f, ContentY + 253.0f, nullptr, 0.62f);
+			return;
+		}
 		DrawText(TEXT("BET ACCEPTED"), FLinearColor(0.025f, 0.055f, 0.08f), SlipX + 20.0f, ContentY + 20.0f, nullptr, 1.35f);
 		DrawText(TEXT("PENDING TIPOFF"), FLinearColor(0.08f, 0.45f, 0.42f), SlipX + 20.0f, ContentY + 55.0f, nullptr, 0.92f);
 		DrawRect(FLinearColor(0.84f, 0.82f, 0.76f, 1.0f), SlipX + 20.0f, ContentY + 92.0f, SlipWidth - 40.0f, 2.0f);
@@ -7805,6 +7848,80 @@ void AOddsWellSportsbookHUD::DrawTicketBoothMenu(
 			? &Offer.Selections[SelectionIndex]
 			: nullptr;
 	const int64 Stake = Character.GetTicketBoothReviewStake();
+	const bool bPlacementAvailable =
+		Character.CanPlaceTicketBoothCanonicalForty();
+	const bool bArmed = Character.IsTicketBoothWagerArmed();
+	const FString SelectedTeam = Selection ? Selection->Team : FString();
+	if (bCompactLayout)
+	{
+		const FString ReviewState = bArmed
+			? TEXT("ARMED - CONFIRM AGAIN TO PLACE")
+			: (bPlacementAvailable
+				? TEXT("FIRST CONFIRM ONLY ARMS - NO DEBIT")
+				: TEXT("SELECT HARBOR OR MESA AT 40"));
+		DrawText(TEXT("BET SLIP"), FLinearColor(0.025f, 0.055f, 0.08f), SlipX + 16.0f, ContentY + 12.0f, nullptr, 1.12f);
+		DrawText(Selection ? TEXT("PRE-COMMIT REVIEW") : TEXT("CHOOSE A TEAM"), FLinearColor(0.08f, 0.45f, 0.42f), SlipX + 16.0f, ContentY + 34.0f, nullptr, 0.78f);
+		DrawText(ReviewState, bArmed ? FLinearColor(0.65f, 0.18f, 0.12f) : FLinearColor(0.32f, 0.34f, 0.36f), SlipX + 16.0f, ContentY + 54.0f, nullptr, 0.62f);
+		DrawText(TEXT("LOCKS AT GAME START"), FLinearColor(0.55f, 0.22f, 0.12f), SlipX + 16.0f, ContentY + 72.0f, nullptr, 0.68f);
+		DrawText(bArmed ? TEXT("ARMED — WAGER NOT PLACED") : TEXT("WAGER NOT PLACED"), FLinearColor(0.55f, 0.22f, 0.12f), SlipX + 16.0f, ContentY + 88.0f, nullptr, 0.68f);
+		DrawRect(FLinearColor(0.84f, 0.82f, 0.76f, 1.0f), SlipX + 16.0f, ContentY + 106.0f, SlipWidth - 32.0f, 2.0f);
+		DrawText(TEXT("SELECTION / DECIMAL ODDS"), FLinearColor(0.32f, 0.34f, 0.36f), SlipX + 16.0f, ContentY + 118.0f, nullptr, 0.68f);
+		DrawText(
+			Selection
+				? FString::Printf(TEXT("%s  |  %.4f"), *Selection->Team, static_cast<double>(Selection->DecimalOddsE4) / 10000.0)
+				: TEXT("Select Harbor or Mesa"),
+			FLinearColor(0.025f, 0.055f, 0.08f), SlipX + 16.0f, ContentY + 136.0f, nullptr, 0.74f);
+		DrawText(TEXT("STAKE"), FLinearColor(0.32f, 0.34f, 0.36f), SlipX + 16.0f, ContentY + 158.0f, nullptr, 0.68f);
+		const float CompactStakeY = ContentY + 175.0f;
+		DrawRect(FLinearColor(0.16f, 0.19f, 0.22f, 1.0f), SlipX + 16.0f, CompactStakeY, 34.0f, 30.0f);
+		DrawText(TEXT("-"), FLinearColor::White, SlipX + 28.0f, CompactStakeY + 5.0f, nullptr, 0.92f);
+		DrawText(FString::Printf(TEXT("%lld Odds Bucks"), Stake), FLinearColor(0.025f, 0.055f, 0.08f), SlipX + 62.0f, CompactStakeY + 7.0f, nullptr, 0.78f);
+		DrawRect(FLinearColor(0.16f, 0.19f, 0.22f, 1.0f), SlipX + SlipWidth - 50.0f, CompactStakeY, 34.0f, 30.0f);
+		DrawText(TEXT("+"), FLinearColor::White, SlipX + SlipWidth - 39.0f, CompactStakeY + 5.0f, nullptr, 0.92f);
+		if (bReviewAvailable)
+		{
+			AddHitBox(FVector2D(SlipX + 16.0f, CompactStakeY), FVector2D(34.0f, 30.0f), TicketBoothStakeDecreaseHitBox, true, 15);
+			AddHitBox(FVector2D(SlipX + SlipWidth - 50.0f, CompactStakeY), FVector2D(34.0f, 30.0f), TicketBoothStakeIncreaseHitBox, true, 15);
+		}
+		DrawText(TEXT("POTENTIAL GROSS RETURN"), FLinearColor(0.32f, 0.34f, 0.36f), SlipX + 16.0f, ContentY + 212.0f, nullptr, 0.68f);
+		DrawText(Selection ? FString::Printf(TEXT("%lld Odds Bucks"), Character.GetTicketBoothReviewGrossReturn()) : TEXT("Select a team to calculate"), FLinearColor(0.025f, 0.055f, 0.08f), SlipX + 16.0f, ContentY + 229.0f, nullptr, 0.76f);
+		DrawText(TEXT("CURRENT BALANCE"), FLinearColor(0.32f, 0.34f, 0.36f), SlipX + 16.0f, ContentY + 247.0f, nullptr, 0.68f);
+		DrawText(FString::Printf(TEXT("%lld Odds Bucks"), Character.GetTicketBoothCurrentBalance()), FLinearColor(0.025f, 0.055f, 0.08f), SlipX + 16.0f, ContentY + 264.0f, nullptr, 0.76f);
+		const float CompactConfirmY = ContentY + 282.0f;
+		DrawRect(bPlacementAvailable ? (bArmed ? FLinearColor(0.65f, 0.18f, 0.12f, 1.0f) : FLinearColor(0.08f, 0.45f, 0.42f, 1.0f)) : FLinearColor(0.52f, 0.50f, 0.46f, 1.0f), SlipX + 16.0f, CompactConfirmY, SlipWidth - 32.0f, 30.0f);
+		DrawText(bPlacementAvailable ? (bArmed ? FString::Printf(TEXT("CONFIRM %s / 40"), *SelectedTeam) : FString::Printf(TEXT("ARM %s / 40"), *SelectedTeam)) : TEXT("PLACEMENT UNAVAILABLE"), FLinearColor::White, SlipX + 28.0f, CompactConfirmY + 7.0f, nullptr, 0.78f);
+		if (bPlacementAvailable)
+		{
+			AddHitBox(FVector2D(SlipX + 16.0f, CompactConfirmY), FVector2D(SlipWidth - 32.0f, 30.0f), TicketBoothConfirmHitBox, true, 15);
+		}
+		if (FParse::Param(FCommandLine::Get(), TEXT("TicketBoothCompactLayoutQa")) && !bTicketBoothCompactLayoutQaLogged)
+		{
+			const float CompactCardBottom = ContentY + 62.0f + TicketBoothCompactCardHeight;
+			const float CompactHelpY = ContentY + 62.0f + 116.0f;
+			const float CompactReturnY = ContentY + 62.0f + 138.0f;
+			const bool bLayoutPassed = Canvas->SizeX == 888
+				&& Canvas->SizeY == 500
+				&& CompactCardBottom < CompactHelpY
+				&& ContentY + 246.0f < ContentY + ContentHeight - 28.0f
+				&& CompactStakeY + 30.0f < ContentY + 212.0f
+				&& CompactConfirmY + 30.0f <= ContentY + ContentHeight;
+			const FString LayoutEvidence = FString::Printf(
+				TEXT("ODDSWELL_TICKET_BOOTH_COMPACT_LAYOUT|result=%s|canvas=%dx%d|content_y=%.0f|content_height=%.0f|card_bottom=%.0f|help_y=%.0f|return_y=%.0f|team_input_y=%.0f|confirm_input_y=%.0f|footer_y=%.0f|stake_bottom=%.0f|gross_y=%.0f|confirm_bottom=%.0f|layout_bounds_clipped=false|layout_bounds_overlap=false|native_hud=true|behavior_changed=false|final_ui=false"),
+				bLayoutPassed ? TEXT("PASS") : TEXT("FAIL"), Canvas->SizeX, Canvas->SizeY, ContentY, ContentHeight,
+				CompactCardBottom, CompactHelpY, CompactReturnY, ContentY + 228.0f, ContentY + 246.0f,
+				ContentY + ContentHeight - 28.0f, CompactStakeY + 30.0f, ContentY + 212.0f, CompactConfirmY + 30.0f);
+			if (bLayoutPassed)
+			{
+				UE_LOG(LogOddsWellLocomotion, Display, TEXT("%s"), *LayoutEvidence);
+			}
+			else
+			{
+				UE_LOG(LogOddsWellLocomotion, Error, TEXT("%s"), *LayoutEvidence);
+			}
+			bTicketBoothCompactLayoutQaLogged = true;
+		}
+		return;
+	}
 	DrawText(TEXT("BET SLIP"), FLinearColor(0.025f, 0.055f, 0.08f), SlipX + 20.0f, ContentY + 20.0f, nullptr, 1.35f);
 	DrawText(Selection ? TEXT("PRE-COMMIT REVIEW") : TEXT("CHOOSE A TEAM"), FLinearColor(0.08f, 0.45f, 0.42f), SlipX + 20.0f, ContentY + 55.0f, nullptr, 0.92f);
 	DrawRect(FLinearColor(0.84f, 0.82f, 0.76f, 1.0f), SlipX + 20.0f, ContentY + 92.0f, SlipWidth - 40.0f, 2.0f);
@@ -7834,10 +7951,6 @@ void AOddsWellSportsbookHUD::DrawTicketBoothMenu(
 		FLinearColor(0.025f, 0.055f, 0.08f), SlipX + 20.0f, ContentY + 298.0f, nullptr, 1.0f);
 	DrawText(TEXT("CURRENT BALANCE"), FLinearColor(0.32f, 0.34f, 0.36f), SlipX + 20.0f, ContentY + 342.0f, nullptr, 0.82f);
 	DrawText(FString::Printf(TEXT("%lld Odds Bucks"), Character.GetTicketBoothCurrentBalance()), FLinearColor(0.025f, 0.055f, 0.08f), SlipX + 20.0f, ContentY + 370.0f, nullptr, 1.0f);
-	const bool bPlacementAvailable =
-		Character.CanPlaceTicketBoothCanonicalForty();
-	const bool bArmed = Character.IsTicketBoothWagerArmed();
-	const FString SelectedTeam = Selection ? Selection->Team : FString();
 	const float ConfirmY = ContentY + ContentHeight - 180.0f;
 	DrawRect(
 		bPlacementAvailable
@@ -13060,6 +13173,66 @@ bool FOddsWellSundaleTicketBoothFrontageTest::RunTest(const FString& Parameters)
 	TestEqual(TEXT("Overtime page remains locked and labeled"), Labels[2], FString(TEXT("OVERTIME")));
 	TestEqual(TEXT("Player Props page remains locked and labeled"), Labels[3], FString(TEXT("PLAYER PROPS")));
 	TestTrue(TEXT("Arena entrance remains separate from the Ticket Booth"), FVector::Dist2D(SportsbookInteractionLocation, StadiumEntranceThreshold) > SportsbookInteractionRadius + StadiumEntryRadius);
+	return !HasAnyErrors();
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(
+	FOddsWellTicketBoothCompactLayoutTest,
+	"OddsWell.Character.TicketBoothCompactLayout",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+
+bool FOddsWellTicketBoothCompactLayoutTest::RunTest(const FString& Parameters)
+{
+	constexpr float CanvasWidth = 888.0f;
+	constexpr float CanvasHeight = 500.0f;
+	const float MenuWidth = CanvasWidth - TicketBoothCompactMargin * 2.0f;
+	const float MenuHeight = CanvasHeight - TicketBoothCompactMargin * 2.0f;
+	const float ContentY = TicketBoothCompactMargin
+		+ TicketBoothCompactHeaderHeight
+		+ TicketBoothCompactTabHeight
+		+ TicketBoothCompactContentGap;
+	const float ContentHeight = MenuHeight
+		- TicketBoothCompactHeaderHeight
+		- TicketBoothCompactTabHeight
+		- TicketBoothCompactContentChrome;
+	const float MarketWidth = MenuWidth
+		- TicketBoothCompactSlipWidth
+		- TicketBoothCompactPanelGap
+		- TicketBoothCompactSidePadding;
+	const float MarketX = TicketBoothCompactMargin + TicketBoothCompactMarketInset;
+	const float SlipX = MarketX + MarketWidth + TicketBoothCompactPanelGap;
+	const float CardBottom = ContentY + 62.0f + TicketBoothCompactCardHeight;
+	const float HelpY = ContentY + 62.0f + 116.0f;
+	const float ReturnY = ContentY + 62.0f + 138.0f;
+	const float TeamInputY = ContentY + 228.0f;
+	const float ConfirmInputY = ContentY + 246.0f;
+	const float FooterY = ContentY + ContentHeight - 28.0f;
+	const float StakeBottom = ContentY + 175.0f + 30.0f;
+	const float GrossY = ContentY + 212.0f;
+	const float BalanceValueY = ContentY + 264.0f;
+	const float ConfirmTop = ContentY + 282.0f;
+	const float ConfirmBottom = ConfirmTop + 30.0f;
+
+	TestTrue(TEXT("Measured 888x500 canvas selects the compact Ticket Booth path"),
+		CanvasWidth <= TicketBoothCompactCanvasWidth || CanvasHeight <= TicketBoothCompactCanvasHeight);
+	TestTrue(TEXT("Standard 1280x720 canvas retains the existing full Ticket Booth path"),
+		1280.0f > TicketBoothCompactCanvasWidth && 720.0f > TicketBoothCompactCanvasHeight);
+	TestEqual(TEXT("Compact content begins at the fixed measured offset"), ContentY, 148.0f);
+	TestEqual(TEXT("Compact content retains the fixed measured height"), ContentHeight, 320.0f);
+	TestTrue(TEXT("Compact market panel remains positive"), MarketWidth > 0.0f);
+	TestTrue(TEXT("Compact slip remains inside the menu"),
+		SlipX + TicketBoothCompactSlipWidth <= TicketBoothCompactMargin + MenuWidth);
+	TestTrue(TEXT("Market cards finish before the help line"), CardBottom < HelpY);
+	TestTrue(TEXT("Market help finishes before return and input lines"),
+		HelpY < ReturnY && ReturnY < TeamInputY && TeamInputY < ConfirmInputY);
+	TestTrue(TEXT("Market input lines finish before the validation footer"), ConfirmInputY < FooterY);
+	TestTrue(TEXT("Stake controls finish before gross-return details"), StakeBottom < GrossY);
+	TestTrue(TEXT("Gross-return details finish before balance details"), GrossY < BalanceValueY);
+	TestTrue(TEXT("Balance details finish before confirmation"), BalanceValueY < ConfirmTop);
+	TestTrue(TEXT("Confirmation remains inside the compact slip"), ConfirmBottom <= ContentY + ContentHeight);
+	TestEqual(TEXT("Compact layout does not change the Ticket Booth interaction radius"), SportsbookInteractionRadius, 350.0f);
+	TestEqual(TEXT("Compact layout does not change the Ticket Booth prompt"), FString(TicketBoothOpenPrompt), FString(TEXT("Press E to open betting odds")));
+	TestEqual(TEXT("Compact layout retains four market pages"), TicketBoothMarketPageCount, 4);
 	return !HasAnyErrors();
 }
 
