@@ -110,6 +110,7 @@ const FName SundalePresentationTag(TEXT("OddsWellSundalePresentation"));
 const FName SundaleDestinationIdentityTag(TEXT("OddsWellSundaleDestinationIdentity"));
 const FName StadiumStructureTag(TEXT("OddsWellStadiumStructure"));
 const FName StadiumZoneTag(TEXT("OddsWellStadiumZone"));
+const FName StadiumPresentationTag(TEXT("OddsWellStadiumPresentation"));
 const FVector JobInteractionLocation(9500.0, 0.0, 0.0);
 const FVector ClothingStoreInteractionLocation(12500.0, 9000.0, 0.0);
 const FVector FurnitureStoreInteractionLocation(-9500.0, 5000.0, 0.0);
@@ -143,6 +144,7 @@ constexpr float StadiumReplayScale = 0.15f;
 constexpr int64 JobRecoveryQaStartUnixSeconds = 2000000000;
 int32 StudioQaProcessStage = 0;
 int32 StadiumQaProcessStage = 0;
+bool bStadiumPresentationQaCaptured = false;
 bool bJobPresentationQaCaptured = false;
 bool bArenaPresentationQaCaptured = false;
 int32 TicketBoothPresentationQaStage = 0;
@@ -1292,6 +1294,33 @@ const TArray<FVector>& GetStadiumQaWaypoints()
 		FVector(-1500.0, 0.0, 0.0),
 	};
 	return Waypoints;
+}
+
+struct FStadiumPresentationPartSpec
+{
+	FName Id;
+	FName Role;
+	FVector Location;
+	FVector Scale;
+	FLinearColor Color;
+};
+
+const TArray<FStadiumPresentationPartSpec>& GetStadiumPublicViewingPresentationParts()
+{
+	static const TArray<FStadiumPresentationPartSpec> Parts = {
+		{TEXT("court_edge_west"), TEXT("court_edge"), FVector(-350.0, 0.0, 4.0), FVector(0.08, 8.0, 0.03), SundaleSandConcrete},
+		{TEXT("court_edge_east"), TEXT("court_edge"), FVector(1050.0, 0.0, 4.0), FVector(0.08, 8.0, 0.03), SundaleSandConcrete},
+		{TEXT("court_edge_north"), TEXT("court_edge"), FVector(350.0, 400.0, 4.0), FVector(14.0, 0.08, 0.03), SundaleSandConcrete},
+		{TEXT("court_edge_south"), TEXT("court_edge"), FVector(350.0, -400.0, 4.0), FVector(14.0, 0.08, 0.03), SundaleSandConcrete},
+		{TEXT("viewing_deck_edge_left"), TEXT("deck_edge"), FVector(-25.0, 790.0, 70.0), FVector(6.5, 0.08, 0.9), SundaleBurntOrange},
+		{TEXT("viewing_deck_edge_right"), TEXT("deck_edge"), FVector(725.0, 790.0, 70.0), FVector(6.5, 0.08, 0.9), SundaleBurntOrange},
+		{TEXT("viewing_aisle_left"), TEXT("aisle"), FVector(-250.0, 900.0, 43.0), FVector(0.10, 2.0, 0.03), SundaleRestrainedCobalt},
+		{TEXT("viewing_aisle_right"), TEXT("aisle"), FVector(950.0, 900.0, 43.0), FVector(0.10, 2.0, 0.03), SundaleRestrainedCobalt},
+		{TEXT("viewing_frame_left"), TEXT("viewing_frame"), FVector(-350.0, 1100.0, 180.0), FVector(0.15, 0.15, 3.6), SundaleBurntOrange},
+		{TEXT("viewing_frame_right"), TEXT("viewing_frame"), FVector(1050.0, 1100.0, 180.0), FVector(0.15, 0.15, 3.6), SundaleBurntOrange},
+		{TEXT("viewing_frame_cap"), TEXT("viewing_frame"), FVector(350.0, 1100.0, 365.0), FVector(14.0, 0.15, 0.15), SundaleRestrainedCobalt},
+	};
+	return Parts;
 }
 
 bool MatchesSharedCityReconnectAppearance(
@@ -6605,12 +6634,21 @@ void AOddsWellPlaceholderCharacter::RunStadiumQa(const float DeltaSeconds)
 			int32 StructuralSurfaces = 0;
 			int32 BlockingSurfaces = 0;
 			int32 ZoneMarkers = 0;
+			int32 PresentationParts = 0;
+			int32 CollidingPresentationParts = 0;
+			int32 ReplicatedPresentationParts = 0;
 			for (TActorIterator<AStaticMeshActor> It(GetWorld()); It; ++It)
 			{
 				if (It->ActorHasTag(StadiumStructureTag))
 				{
 					++StructuralSurfaces;
 					BlockingSurfaces += It->GetStaticMeshComponent()->GetCollisionResponseToChannel(ECC_Pawn) == ECR_Block ? 1 : 0;
+				}
+				if (It->ActorHasTag(StadiumPresentationTag))
+				{
+					++PresentationParts;
+					CollidingPresentationParts += It->GetStaticMeshComponent()->GetCollisionEnabled() != ECollisionEnabled::NoCollision ? 1 : 0;
+					ReplicatedPresentationParts += It->GetIsReplicated() ? 1 : 0;
 				}
 			}
 			for (TActorIterator<ATextRenderActor> It(GetWorld()); It; ++It)
@@ -6619,17 +6657,36 @@ void AOddsWellPlaceholderCharacter::RunStadiumQa(const float DeltaSeconds)
 			}
 			if (StructuralSurfaces != GetStadiumSurfaces().Num()
 				|| BlockingSurfaces != StructuralSurfaces
-				|| ZoneMarkers != GetStadiumZones().Num())
+				|| ZoneMarkers != GetStadiumZones().Num()
+				|| PresentationParts != GetStadiumPublicViewingPresentationParts().Num()
+				|| CollidingPresentationParts != 0
+				|| ReplicatedPresentationParts != 0)
 			{
-				UE_LOG(LogOddsWellLocomotion, Error, TEXT("ODDSWELL_STADIUM_QA|result=FAIL|reason=construction|surfaces=%d|blocking=%d|zones=%d"), StructuralSurfaces, BlockingSurfaces, ZoneMarkers);
+				UE_LOG(LogOddsWellLocomotion, Error, TEXT("ODDSWELL_STADIUM_QA|result=FAIL|reason=construction|surfaces=%d|blocking=%d|zones=%d|presentation_parts=%d|presentation_collision=%d|presentation_replicated=%d"), StructuralSurfaces, BlockingSurfaces, ZoneMarkers, PresentationParts, CollidingPresentationParts, ReplicatedPresentationParts);
 				FPlatformMisc::RequestExit(false);
 				return;
 			}
 			bStadiumQaInteriorStarted = true;
 			UE_LOG(LogOddsWellLocomotion, Display, TEXT("ODDSWELL_STADIUM_READY|result=PASS|surfaces=%d|zones=%d|collision=blocking|unbranded=true|team_neutral=true|crowd=0|replay=archived|resimulated=false"), StructuralSurfaces, ZoneMarkers);
+			UE_LOG(LogOddsWellLocomotion, Display, TEXT("ODDSWELL_STADIUM_PUBLIC_VIEWING_PRESENTATION_QA|result=PASS|parts=%d|collision=0|replicated=0|surfaces_unchanged=%d|zones_unchanged=%d|manual_input=false"), PresentationParts, StructuralSurfaces, ZoneMarkers);
 		}
 		if (!bStadiumQaInteriorStarted)
 		{
+			return;
+		}
+		if (FParse::Param(FCommandLine::Get(), TEXT("StadiumPresentationQa")) && !bStadiumPresentationQaCaptured)
+		{
+			SetActorLocation(FVector(350.0, -900.0, SafeSpawnLocation.Z), false, nullptr, ETeleportType::TeleportPhysics);
+			if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
+			{
+				PlayerController->SetControlRotation(FRotator(0.0f, 90.0f, 0.0f));
+			}
+			if (GEngine)
+			{
+				GEngine->ClearOnScreenDebugMessages();
+			}
+			FScreenshotRequest::RequestScreenshot(TEXT("Phase1L1i_StadiumPublicViewing.png"), true, false);
+			bStadiumPresentationQaCaptured = true;
 			return;
 		}
 		const TArray<FVector>& Waypoints = GetStadiumQaWaypoints();
@@ -11856,6 +11913,9 @@ void AOddsWellStadiumGameMode::BeginPlay()
 {
 	Super::BeginPlay();
 	UStaticMesh* Cube = LoadObject<UStaticMesh>(nullptr, TEXT("/Engine/BasicShapes/Cube.Cube"));
+	UMaterialInterface* BasicShapeMaterial = LoadObject<UMaterialInterface>(
+		nullptr,
+		TEXT("/Engine/BasicShapes/BasicShapeMaterial.BasicShapeMaterial"));
 	if (!Cube)
 	{
 		UE_LOG(LogOddsWellLocomotion, Error, TEXT("ODDSWELL_STADIUM_CONSTRUCTED|result=FAIL|reason=missing_cube"));
@@ -11891,6 +11951,61 @@ void AOddsWellStadiumGameMode::BeginPlay()
 	{
 		Light->PointLightComponent->SetIntensity(9000.0f);
 		Light->PointLightComponent->SetAttenuationRadius(3500.0f);
+	}
+	if (GetNetMode() != NM_DedicatedServer)
+	{
+		int32 PresentationParts = 0;
+		int32 MaterialParts = 0;
+		TSet<FName> PresentationRoles;
+		for (const FStadiumPresentationPartSpec& Part : GetStadiumPublicViewingPresentationParts())
+		{
+			AStaticMeshActor* Actor = GetWorld()->SpawnActor<AStaticMeshActor>(
+				AStaticMeshActor::StaticClass(),
+				FTransform(FRotator::ZeroRotator, Part.Location, Part.Scale),
+				Parameters);
+			if (!Actor)
+			{
+				continue;
+			}
+			Actor->SetReplicates(false);
+			Actor->SetActorEnableCollision(false);
+			Actor->GetStaticMeshComponent()->SetStaticMesh(Cube);
+			Actor->GetStaticMeshComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+			Actor->GetStaticMeshComponent()->SetGenerateOverlapEvents(false);
+			Actor->GetStaticMeshComponent()->SetSimulatePhysics(false);
+			if (BasicShapeMaterial)
+			{
+				if (UMaterialInstanceDynamic* Material = UMaterialInstanceDynamic::Create(BasicShapeMaterial, Actor))
+				{
+					Material->SetVectorParameterValue(TEXT("Color"), Part.Color);
+					Material->SetVectorParameterValue(TEXT("BaseColor"), Part.Color);
+					Actor->GetStaticMeshComponent()->SetMaterial(0, Material);
+					++MaterialParts;
+				}
+			}
+			Actor->Tags.Add(StadiumPresentationTag);
+			Actor->Tags.Add(Part.Id);
+			Actor->Tags.Add(Part.Role);
+			++PresentationParts;
+			PresentationRoles.Add(Part.Role);
+		}
+		const bool bPresentationPassed = PresentationParts == GetStadiumPublicViewingPresentationParts().Num()
+			&& MaterialParts == PresentationParts
+			&& PresentationRoles.Num() == 4;
+		const FString PresentationEvidence = FString::Printf(
+			TEXT("ODDSWELL_STADIUM_PUBLIC_VIEWING_PRESENTATION|result=%s|parts=%d|roles=%d|materials=%d|local_only=true|replicated=false|collision=false|native_assets=true|team_neutral=true|unbranded=true|crowd=0|final_art=false"),
+			bPresentationPassed ? TEXT("PASS") : TEXT("FAIL"),
+			PresentationParts,
+			PresentationRoles.Num(),
+			MaterialParts);
+		if (bPresentationPassed)
+		{
+			UE_LOG(LogOddsWellLocomotion, Display, TEXT("%s"), *PresentationEvidence);
+		}
+		else
+		{
+			UE_LOG(LogOddsWellLocomotion, Error, TEXT("%s"), *PresentationEvidence);
+		}
 	}
 	UE_LOG(LogOddsWellLocomotion, Display, TEXT("ODDSWELL_STADIUM_CONSTRUCTED|result=PASS|surfaces=%d|zones=%d|entry=true|concourse=true|court=true|public_viewing=true|future_marker=true|exit=true|unbranded=true|team_neutral=true"), GetStadiumSurfaces().Num(), GetStadiumZones().Num());
 	const FTransform ReplayTransform(FRotator::ZeroRotator, StadiumReplayOrigin, FVector(StadiumReplayScale));
@@ -12003,6 +12118,62 @@ bool FOddsWellStadiumGrayboxTest::RunTest(const FString& Parameters)
 	TestTrue(TEXT("Stadium entry radius exceeds the player capsule"), StadiumEntryRadius > CapsuleRadius);
 	TestTrue(TEXT("Archived replay consumer stays compact inside the stadium"), StadiumReplayScale > 0.0f && StadiumReplayScale <= 0.25f);
 	TestTrue(TEXT("Archived replay consumer is anchored on the court"), StadiumReplayOrigin.Equals(FVector(350.0, 0.0, 0.0)));
+	return !HasAnyErrors();
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(
+	FOddsWellStadiumPublicViewingPresentationTest,
+	"OddsWell.Character.StadiumPublicViewingPresentation",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+
+bool FOddsWellStadiumPublicViewingPresentationTest::RunTest(const FString& Parameters)
+{
+	const TArray<FStadiumPresentationPartSpec>& Parts = GetStadiumPublicViewingPresentationParts();
+	TestEqual(TEXT("Public-viewing presentation remains bounded to eleven native parts"), Parts.Num(), 11);
+	const TArray<FName> ExpectedIds = {
+		TEXT("court_edge_west"),
+		TEXT("court_edge_east"),
+		TEXT("court_edge_north"),
+		TEXT("court_edge_south"),
+		TEXT("viewing_deck_edge_left"),
+		TEXT("viewing_deck_edge_right"),
+		TEXT("viewing_aisle_left"),
+		TEXT("viewing_aisle_right"),
+		TEXT("viewing_frame_left"),
+		TEXT("viewing_frame_right"),
+		TEXT("viewing_frame_cap"),
+	};
+	const TArray<FLinearColor> ApprovedPalette = {
+		SundaleSandConcrete,
+		SundaleRestrainedCobalt,
+		SundaleBurntOrange,
+	};
+	TSet<FName> Ids;
+	TMap<FName, int32> RoleCounts;
+	for (const FStadiumPresentationPartSpec& Part : Parts)
+	{
+		Ids.Add(Part.Id);
+		++RoleCounts.FindOrAdd(Part.Role);
+		TestTrue(*FString::Printf(TEXT("%s remains an approved public-viewing id"), *Part.Id.ToString()), ExpectedIds.Contains(Part.Id));
+		TestTrue(*FString::Printf(TEXT("%s keeps positive scale"), *Part.Id.ToString()), Part.Scale.GetMin() > 0.0);
+		TestTrue(*FString::Printf(TEXT("%s stays inside the existing Stadium room"), *Part.Id.ToString()), FMath::Abs(Part.Location.X) <= 1800.0 && FMath::Abs(Part.Location.Y) <= 1150.0 && Part.Location.Z > 0.0 && Part.Location.Z <= 500.0);
+		TestTrue(*FString::Printf(TEXT("%s uses the approved neutral palette"), *Part.Id.ToString()), ApprovedPalette.Contains(Part.Color));
+		TestTrue(*FString::Printf(TEXT("%s does not occupy the archived replay origin"), *Part.Id.ToString()), FVector::Dist(Part.Location, StadiumReplayOrigin) > 100.0);
+	}
+	TestEqual(TEXT("Every public-viewing presentation id remains unique"), Ids.Num(), Parts.Num());
+	TestEqual(TEXT("Public-viewing presentation uses exactly four roles"), RoleCounts.Num(), 4);
+	TestEqual(TEXT("Court perimeter keeps four edge marks"), RoleCounts.FindRef(FName(TEXT("court_edge"))), 4);
+	TestEqual(TEXT("Viewing deck keeps two front edges"), RoleCounts.FindRef(FName(TEXT("deck_edge"))), 2);
+	TestEqual(TEXT("Viewing deck keeps two aisle marks"), RoleCounts.FindRef(FName(TEXT("aisle"))), 2);
+	TestEqual(TEXT("Public viewing keeps one three-part frame"), RoleCounts.FindRef(FName(TEXT("viewing_frame"))), 3);
+	TestEqual(TEXT("Stadium retains exactly eight blocking surfaces"), GetStadiumSurfaces().Num(), 8);
+	TestEqual(TEXT("Stadium retains exactly five zone labels"), GetStadiumZones().Num(), 5);
+	TestEqual(TEXT("Stadium retains exactly five QA waypoints"), GetStadiumQaWaypoints().Num(), 5);
+	TestEqual(TEXT("Stadium entry radius remains unchanged"), StadiumEntryRadius, 350.0f);
+	TestEqual(TEXT("Stadium enter prompt remains unchanged"), FString(StadiumEnterPrompt), FString(TEXT("Press E to enter the public viewing graybox")));
+	TestEqual(TEXT("Stadium exit prompt remains unchanged"), FString(StadiumExitPrompt), FString(TEXT("Press E to exit the public viewing graybox")));
+	TestTrue(TEXT("Archived replay origin remains unchanged"), StadiumReplayOrigin.Equals(FVector(350.0, 0.0, 0.0)));
+	TestEqual(TEXT("Archived replay scale remains unchanged"), StadiumReplayScale, 0.15f);
 	return !HasAnyErrors();
 }
 
