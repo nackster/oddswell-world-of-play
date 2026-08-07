@@ -129,6 +129,7 @@ constexpr float StadiumReplayScale = 0.15f;
 constexpr int64 JobRecoveryQaStartUnixSeconds = 2000000000;
 int32 StudioQaProcessStage = 0;
 int32 StadiumQaProcessStage = 0;
+bool bJobPresentationQaCaptured = false;
 
 bool CanUseStudioInteraction(const bool bLocallyControlled, const ENetMode NetMode)
 {
@@ -892,6 +893,18 @@ const TArray<FSundaleDestinationIdentityPartSpec>& GetSundaleDestinationIdentity
 	return Parts;
 }
 
+const TArray<FSundalePresentationPartSpec>& GetSundaleJobFrontageParts()
+{
+	static const TArray<FSundalePresentationPartSpec> Parts = {
+		{TEXT("JobFrontagePierLeft"), TEXT("pier"), FVector(8900.0, 325.0, 450.0), FVector(0.5, 0.35, 9.0), SundaleCharcoalGray},
+		{TEXT("JobFrontagePierRight"), TEXT("pier"), FVector(10100.0, 325.0, 450.0), FVector(0.5, 0.35, 9.0), SundaleCharcoalGray},
+		{TEXT("JobFrontageHeader"), TEXT("header"), FVector(9500.0, 325.0, 920.0), FVector(12.5, 0.35, 0.4), SundaleBurntOrange},
+		{TEXT("JobFrontageLanding"), TEXT("landing"), FVector(9500.0, 250.0, 13.0), FVector(5.5, 1.5, 0.03), SundaleSandConcrete},
+		{TEXT("JobFrontageApproach"), TEXT("approach"), FVector(9500.0, 80.0, 13.0), FVector(1.4, 2.0, 0.03), SundaleRestrainedCobalt},
+	};
+	return Parts;
+}
+
 struct FSundaleAtmosphereSpec
 {
 	float DirectionalIntensity;
@@ -1076,6 +1089,34 @@ void BuildSundalePresentation(UWorld* World)
 	else
 	{
 		UE_LOG(LogOddsWellLocomotion, Error, TEXT("%s"), *IdentityEvidence);
+	}
+
+	int32 SpawnedJobFrontageParts = 0;
+	TSet<FName> SpawnedJobFrontageRoles;
+	for (const FSundalePresentationPartSpec& Part : GetSundaleJobFrontageParts())
+	{
+		if (SpawnPart(Part.Id, Part.Role, Part.Location, Part.Scale, Part.Color, false))
+		{
+			++SpawnedJobFrontageParts;
+			SpawnedJobFrontageRoles.Add(Part.Role);
+		}
+	}
+	const bool bJobFrontagePassed = SpawnedJobFrontageParts == GetSundaleJobFrontageParts().Num()
+		&& SpawnedJobFrontageRoles.Num() == 4;
+	const FString JobFrontageEvidence = FString::Printf(
+		TEXT("ODDSWELL_SUNDALE_JOB_FRONTAGE|result=%s|parts=%d|roles=%d|anchor_x=%.0f|anchor_y=%.0f|local_only=true|replicated=false|collision=false|native_assets=true|text=false|job_fiction=false|final_art=false"),
+		bJobFrontagePassed ? TEXT("PASS") : TEXT("FAIL"),
+		SpawnedJobFrontageParts,
+		SpawnedJobFrontageRoles.Num(),
+		JobInteractionLocation.X,
+		JobInteractionLocation.Y);
+	if (bJobFrontagePassed)
+	{
+		UE_LOG(LogOddsWellLocomotion, Display, TEXT("%s"), *JobFrontageEvidence);
+	}
+	else
+	{
+		UE_LOG(LogOddsWellLocomotion, Error, TEXT("%s"), *JobFrontageEvidence);
 	}
 }
 
@@ -4550,6 +4591,21 @@ void AOddsWellPlaceholderCharacter::RunJobQa(const float DeltaSeconds)
 		}
 		if (!bJobQaFirstCreditProven)
 		{
+			if (FParse::Param(FCommandLine::Get(), TEXT("JobPresentationQa")) && !bJobPresentationQaCaptured)
+			{
+				SetActorLocation(FVector(JobInteractionLocation.X, JobInteractionLocation.Y + 1000.0, GetActorLocation().Z), false, nullptr, ETeleportType::TeleportPhysics);
+				if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
+				{
+					PlayerController->SetControlRotation(FRotator(0.0f, -90.0f, 0.0f));
+				}
+				if (GEngine)
+				{
+					GEngine->ClearOnScreenDebugMessages();
+				}
+				FScreenshotRequest::RequestScreenshot(TEXT("Phase1L1e_JobFrontage.png"), true, false);
+				bJobPresentationQaCaptured = true;
+				return;
+			}
 			SetActorLocation(FVector(JobInteractionLocation.X, JobInteractionLocation.Y, GetActorLocation().Z), false, nullptr, ETeleportType::TeleportPhysics);
 			ServerCompletePlaceholderJob();
 			bJobQaFirstCreditProven = bPlaceholderShiftCompleted
@@ -12702,6 +12758,52 @@ bool FOddsWellSundaleDestinationIdentityTest::RunTest(const FString& Parameters)
 	TestEqual(TEXT("Sportsbook and Ticket Booth keep their offset-slab identity"), DestinationCounts.FindRef(FName(TEXT("SportsbookTicketBooth"))), 2);
 	TestEqual(TEXT("Public Court keeps its three-part gateway identity"), DestinationCounts.FindRef(FName(TEXT("PublicCourt"))), 3);
 	TestEqual(TEXT("Furniture Store keeps its stacked-shelf identity"), DestinationCounts.FindRef(FName(TEXT("FurnitureStore"))), 2);
+	return !HasAnyErrors();
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(
+	FOddsWellSundaleJobFrontageTest,
+	"OddsWell.Character.SundaleJobFrontage",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+
+bool FOddsWellSundaleJobFrontageTest::RunTest(const FString& Parameters)
+{
+	const TArray<FSundalePresentationPartSpec>& Parts = GetSundaleJobFrontageParts();
+	TestEqual(TEXT("Job frontage remains bounded to five native parts"), Parts.Num(), 5);
+	const TArray<FName> ExpectedIds = {
+		TEXT("JobFrontagePierLeft"),
+		TEXT("JobFrontagePierRight"),
+		TEXT("JobFrontageHeader"),
+		TEXT("JobFrontageLanding"),
+		TEXT("JobFrontageApproach"),
+	};
+	const TArray<FLinearColor> ApprovedPalette = {
+		SundaleSandConcrete,
+		SundaleRestrainedCobalt,
+		SundaleBurntOrange,
+		SundaleCharcoalGray,
+	};
+	TMap<FName, int32> RoleCounts;
+	TSet<FName> Ids;
+	for (const FSundalePresentationPartSpec& Part : Parts)
+	{
+		++RoleCounts.FindOrAdd(Part.Role);
+		Ids.Add(Part.Id);
+		TestTrue(*FString::Printf(TEXT("%s remains an approved Job frontage id"), *Part.Id.ToString()), ExpectedIds.Contains(Part.Id));
+		TestTrue(*FString::Printf(TEXT("%s keeps positive scale"), *Part.Id.ToString()), Part.Scale.GetMin() > 0.0);
+		TestTrue(*FString::Printf(TEXT("%s stays at the existing Job frontage"), *Part.Id.ToString()), FVector::Dist2D(Part.Location, JobInteractionLocation) <= 700.0 && Part.Location.Z > 0.0 && Part.Location.Z <= 1000.0);
+		TestTrue(*FString::Printf(TEXT("%s uses the approved palette"), *Part.Id.ToString()), ApprovedPalette.Contains(Part.Color));
+	}
+	TestEqual(TEXT("Every Job frontage part id remains unique"), Ids.Num(), Parts.Num());
+	TestEqual(TEXT("Job frontage uses exactly four architectural roles"), RoleCounts.Num(), 4);
+	TestEqual(TEXT("Job frontage keeps two framing piers"), RoleCounts.FindRef(FName(TEXT("pier"))), 2);
+	TestEqual(TEXT("Job frontage keeps one framing header"), RoleCounts.FindRef(FName(TEXT("header"))), 1);
+	TestEqual(TEXT("Job frontage keeps one landing inset"), RoleCounts.FindRef(FName(TEXT("landing"))), 1);
+	TestEqual(TEXT("Job frontage keeps one approach cue"), RoleCounts.FindRef(FName(TEXT("approach"))), 1);
+	TestTrue(TEXT("Job frontage remains anchored to the first route waypoint"), JobInteractionLocation.Equals(GetSundaleRouteWaypoints()[0]));
+	TestEqual(TEXT("Job interaction radius remains unchanged"), JobInteractionRadius, 350.0f);
+	TestEqual(TEXT("First Job payout remains unchanged"), GetOddsWellFirstJobPayout(), int64{100});
+	TestEqual(TEXT("Job payout interval remains the rolling 24-hour value"), GetOddsWellJobPayoutIntervalSeconds(), int64{24 * 60 * 60});
 	return !HasAnyErrors();
 }
 

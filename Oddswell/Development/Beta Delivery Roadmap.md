@@ -669,6 +669,14 @@ Fresh verification passed focused native `1/1`, full native `54/54`, frozen Pyth
 
 Phase 1K remains incomplete, with hands-on held-control and route usability evidence deferred to the MVP playtest but still required before beta exit. See [[Development/Reports/Phase 1L1d Empty Starter Studio Presentation Pass]].
 
+### Phase 1L.1e Sundale Job frontage presentation pass
+
+**COMPLETE FOR ONE BOUNDED JOB-FRONTAGE PRESENTATION PASS.** Exactly five transient native-cube parts add two piers, one header, one landing, and one approach cue around the existing canonical Job anchor. They use four bounded roles and the approved Phase 1L.1a palette through the existing local-only, non-replicated, collision-disabled presentation helper. No text, signage, final Job fiction, or final brand was added.
+
+The authored map, Job coordinate/radius/prompt/interaction, exact `100` Odds Bucks payout, rolling `86,400`-second cooldown, ledger/save/schema/authority/session/economy/wager/inventory/brain/store/housing behavior, and exact Phase 1L.1a-d contracts remain unchanged. Fresh verification passed focused native `1/1`, full native `55/55`, frozen Python `105/105`, Brain Admin self-check, editor/game builds, BuildCookRun, package audit, and automated packaged Job evidence. The package contains `50` files, `1,049,831,340` bytes, and zero Python files. Existing Job QA retained outside rejection, exact first credit, ledger balance `100`, and immediate cooldown.
+
+One automated `1280x720` centered fixed view documents the native frontage composition. It has no same-view pre-phase baseline and does not prove the prompt, normal approach, every angle, color/text readability, accessibility, player understanding, subjective usability, final materials/lighting/brand, minimum-PC performance, or beta readiness. Phase 1K remains incomplete, with hands-on held-control and route usability evidence deferred to the MVP playtest but still required before beta exit. See [[Development/Reports/Phase 1L1e Sundale Job Frontage Presentation Pass]].
+
 ### Exit evidence
 
 The complete loop is visually coherent, readable, accessible at the approved baseline, and within measured PC performance targets. Large catalogs and unseen districts remain out of scope.
