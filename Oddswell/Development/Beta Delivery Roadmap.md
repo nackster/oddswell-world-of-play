@@ -677,6 +677,14 @@ The authored map, Job coordinate/radius/prompt/interaction, exact `100` Odds Buc
 
 One automated `1280x720` centered fixed view documents the native frontage composition. It has no same-view pre-phase baseline and does not prove the prompt, normal approach, every angle, color/text readability, accessibility, player understanding, subjective usability, final materials/lighting/brand, minimum-PC performance, or beta readiness. Phase 1K remains incomplete, with hands-on held-control and route usability evidence deferred to the MVP playtest but still required before beta exit. See [[Development/Reports/Phase 1L1e Sundale Job Frontage Presentation Pass]].
 
+### Phase 1L.1f Sundale Arena entrance presentation pass
+
+**COMPLETE FOR ONE BOUNDED ARENA-ENTRANCE PRESENTATION PASS.** Exactly five transient native-cube parts add two portal piers, one portal cap, one threshold inset, and one approach band around the existing canonical Arena threshold. They use four bounded roles and the approved Phase 1L.1a palette through the existing local-only, non-replicated, collision-disabled presentation helper. No signage, text, final architecture, or final brand was added.
+
+The authored map, Arena coordinate/radius/prompts/E transition, exact city return, Stadium interior/structure/zones/collision/replay/duration/skip/seal/result/score, Ticket Booth/location/UI, session/authority/save/economy/wager/inventory/brain/store/housing behavior, and exact Phase 1L.1a-e contracts remain unchanged. Fresh verification passed focused native `1/1`, full native `56/56`, frozen Python `105/105`, Brain Admin self-check, editor/game builds, BuildCookRun, package audit, and automated packaged Stadium evidence. The package contains `50` files, `1,049,872,300` bytes, and zero Python files. Existing Stadium QA retained eight blocking surfaces, five zones, all five waypoints, archived non-resimulated replay, exit, Sportsbook separation, and exact `0.0` city return distance.
+
+One automated `1280x720` centered exterior view documents the bounded approach, threshold, and portal composition. It has no same-view pre-phase baseline and does not prove normal approach, the prompt, every angle, interior, color/text readability, accessibility, player understanding, subjective usability, final architecture/materials/lighting/brand, minimum-PC performance, or beta readiness. Phase 1K remains incomplete, with hands-on held-control and route usability evidence deferred to the MVP playtest but still required before beta exit. See [[Development/Reports/Phase 1L1f Sundale Arena Entrance Presentation Pass]].
+
 ### Exit evidence
 
 The complete loop is visually coherent, readable, accessible at the approved baseline, and within measured PC performance targets. Large catalogs and unseen districts remain out of scope.

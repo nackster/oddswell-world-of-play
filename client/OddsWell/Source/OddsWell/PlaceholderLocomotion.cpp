@@ -120,6 +120,8 @@ const FLinearColor ModularChairGray(0.22f, 0.25f, 0.28f);
 const FLinearColor ModularChairTeal(0.08f, 0.72f, 0.68f);
 const FVector StadiumEntranceThreshold(7000.0, 18000.0, 0.0);
 const FVector SportsbookInteractionLocation(1000.0, 18000.0, 0.0);
+const TCHAR* StadiumEnterPrompt = TEXT("Press E to enter the public viewing graybox");
+const TCHAR* StadiumExitPrompt = TEXT("Press E to exit the public viewing graybox");
 const TCHAR* TicketBoothOpenPrompt = TEXT("Press E to open betting odds");
 constexpr int32 TicketBoothMarketPageCount = 4;
 FVector StadiumCityReturnLocation = StadiumEntranceThreshold + FVector(0.0, -100.0, SafeSpawnLocation.Z);
@@ -130,6 +132,7 @@ constexpr int64 JobRecoveryQaStartUnixSeconds = 2000000000;
 int32 StudioQaProcessStage = 0;
 int32 StadiumQaProcessStage = 0;
 bool bJobPresentationQaCaptured = false;
+bool bArenaPresentationQaCaptured = false;
 
 bool CanUseStudioInteraction(const bool bLocallyControlled, const ENetMode NetMode)
 {
@@ -905,6 +908,18 @@ const TArray<FSundalePresentationPartSpec>& GetSundaleJobFrontageParts()
 	return Parts;
 }
 
+const TArray<FSundalePresentationPartSpec>& GetSundaleArenaEntranceParts()
+{
+	static const TArray<FSundalePresentationPartSpec> Parts = {
+		{TEXT("ArenaEntrancePierLeft"), TEXT("pier"), FVector(6600.0, 17625.0, 400.0), FVector(0.55, 0.4, 8.0), SundaleCharcoalGray},
+		{TEXT("ArenaEntrancePierRight"), TEXT("pier"), FVector(7400.0, 17625.0, 400.0), FVector(0.55, 0.4, 8.0), SundaleCharcoalGray},
+		{TEXT("ArenaEntrancePortalCap"), TEXT("portal_cap"), FVector(7000.0, 17625.0, 800.0), FVector(8.5, 0.4, 0.45), SundaleBurntOrange},
+		{TEXT("ArenaEntranceThresholdInset"), TEXT("threshold"), FVector(7000.0, 17480.0, 13.0), FVector(6.5, 2.0, 0.03), SundaleSandConcrete},
+		{TEXT("ArenaEntranceApproachBand"), TEXT("approach"), FVector(7000.0, 16900.0, 13.0), FVector(1.6, 5.8, 0.03), SundaleRestrainedCobalt},
+	};
+	return Parts;
+}
+
 struct FSundaleAtmosphereSpec
 {
 	float DirectionalIntensity;
@@ -1117,6 +1132,34 @@ void BuildSundalePresentation(UWorld* World)
 	else
 	{
 		UE_LOG(LogOddsWellLocomotion, Error, TEXT("%s"), *JobFrontageEvidence);
+	}
+
+	int32 SpawnedArenaEntranceParts = 0;
+	TSet<FName> SpawnedArenaEntranceRoles;
+	for (const FSundalePresentationPartSpec& Part : GetSundaleArenaEntranceParts())
+	{
+		if (SpawnPart(Part.Id, Part.Role, Part.Location, Part.Scale, Part.Color, false))
+		{
+			++SpawnedArenaEntranceParts;
+			SpawnedArenaEntranceRoles.Add(Part.Role);
+		}
+	}
+	const bool bArenaEntrancePassed = SpawnedArenaEntranceParts == GetSundaleArenaEntranceParts().Num()
+		&& SpawnedArenaEntranceRoles.Num() == 4;
+	const FString ArenaEntranceEvidence = FString::Printf(
+		TEXT("ODDSWELL_SUNDALE_ARENA_ENTRANCE|result=%s|parts=%d|roles=%d|threshold_x=%.0f|threshold_y=%.0f|local_only=true|replicated=false|collision=false|native_assets=true|text=false|architecture_final=false|final_art=false"),
+		bArenaEntrancePassed ? TEXT("PASS") : TEXT("FAIL"),
+		SpawnedArenaEntranceParts,
+		SpawnedArenaEntranceRoles.Num(),
+		StadiumEntranceThreshold.X,
+		StadiumEntranceThreshold.Y);
+	if (bArenaEntrancePassed)
+	{
+		UE_LOG(LogOddsWellLocomotion, Display, TEXT("%s"), *ArenaEntranceEvidence);
+	}
+	else
+	{
+		UE_LOG(LogOddsWellLocomotion, Error, TEXT("%s"), *ArenaEntranceEvidence);
 	}
 }
 
@@ -4762,7 +4805,7 @@ void AOddsWellPlaceholderCharacter::PollStadiumInteraction()
 			912015,
 			0.0f,
 			FColor::Yellow,
-			bInStadium ? TEXT("Press E to exit the public viewing graybox") : TEXT("Press E to enter the public viewing graybox"));
+			bInStadium ? StadiumExitPrompt : StadiumEnterPrompt);
 	}
 	if (bStadiumQa)
 	{
@@ -6424,6 +6467,21 @@ void AOddsWellPlaceholderCharacter::RunStadiumQa(const float DeltaSeconds)
 	const bool bInStadium = GetWorld()->GetAuthGameMode<AOddsWellStadiumGameMode>() != nullptr;
 	if (StadiumQaProcessStage == 0 && bInSundale && GetCharacterMovement()->IsMovingOnGround())
 	{
+		if (FParse::Param(FCommandLine::Get(), TEXT("ArenaPresentationQa")) && !bArenaPresentationQaCaptured)
+		{
+			SetActorLocation(StadiumEntranceThreshold + FVector(0.0, -1400.0, SafeSpawnLocation.Z), false, nullptr, ETeleportType::TeleportPhysics);
+			if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
+			{
+				PlayerController->SetControlRotation(FRotator(0.0f, 90.0f, 0.0f));
+			}
+			if (GEngine)
+			{
+				GEngine->ClearOnScreenDebugMessages();
+			}
+			FScreenshotRequest::RequestScreenshot(TEXT("Phase1L1f_ArenaEntrance.png"), true, false);
+			bArenaPresentationQaCaptured = true;
+			return;
+		}
 		StadiumQaProcessStage = 1;
 		SetActorLocation(StadiumEntranceThreshold + FVector(0.0, -100.0, SafeSpawnLocation.Z));
 		StadiumCityReturnLocation = GetActorLocation();
@@ -12804,6 +12862,56 @@ bool FOddsWellSundaleJobFrontageTest::RunTest(const FString& Parameters)
 	TestEqual(TEXT("Job interaction radius remains unchanged"), JobInteractionRadius, 350.0f);
 	TestEqual(TEXT("First Job payout remains unchanged"), GetOddsWellFirstJobPayout(), int64{100});
 	TestEqual(TEXT("Job payout interval remains the rolling 24-hour value"), GetOddsWellJobPayoutIntervalSeconds(), int64{24 * 60 * 60});
+	return !HasAnyErrors();
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(
+	FOddsWellSundaleArenaEntranceTest,
+	"OddsWell.Character.SundaleArenaEntrance",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+
+bool FOddsWellSundaleArenaEntranceTest::RunTest(const FString& Parameters)
+{
+	const TArray<FSundalePresentationPartSpec>& Parts = GetSundaleArenaEntranceParts();
+	TestEqual(TEXT("Arena entrance remains bounded to five native parts"), Parts.Num(), 5);
+	const TArray<FName> ExpectedIds = {
+		TEXT("ArenaEntrancePierLeft"),
+		TEXT("ArenaEntrancePierRight"),
+		TEXT("ArenaEntrancePortalCap"),
+		TEXT("ArenaEntranceThresholdInset"),
+		TEXT("ArenaEntranceApproachBand"),
+	};
+	const TArray<FLinearColor> ApprovedPalette = {
+		SundaleSandConcrete,
+		SundaleRestrainedCobalt,
+		SundaleBurntOrange,
+		SundaleCharcoalGray,
+	};
+	TMap<FName, int32> RoleCounts;
+	TSet<FName> Ids;
+	for (const FSundalePresentationPartSpec& Part : Parts)
+	{
+		++RoleCounts.FindOrAdd(Part.Role);
+		Ids.Add(Part.Id);
+		TestTrue(*FString::Printf(TEXT("%s remains an approved Arena entrance id"), *Part.Id.ToString()), ExpectedIds.Contains(Part.Id));
+		TestTrue(*FString::Printf(TEXT("%s keeps positive scale"), *Part.Id.ToString()), Part.Scale.GetMin() > 0.0);
+		TestTrue(*FString::Printf(TEXT("%s stays at the existing Arena entrance"), *Part.Id.ToString()), FVector::Dist2D(Part.Location, StadiumEntranceThreshold) <= 1500.0 && Part.Location.Z > 0.0 && Part.Location.Z <= 1000.0);
+		TestTrue(*FString::Printf(TEXT("%s uses the approved palette"), *Part.Id.ToString()), ApprovedPalette.Contains(Part.Color));
+	}
+	TestEqual(TEXT("Every Arena entrance part id remains unique"), Ids.Num(), Parts.Num());
+	TestEqual(TEXT("Arena entrance uses exactly four architectural roles"), RoleCounts.Num(), 4);
+	TestEqual(TEXT("Arena entrance keeps two framing piers"), RoleCounts.FindRef(FName(TEXT("pier"))), 2);
+	TestEqual(TEXT("Arena entrance keeps one portal cap"), RoleCounts.FindRef(FName(TEXT("portal_cap"))), 1);
+	TestEqual(TEXT("Arena entrance keeps one threshold inset"), RoleCounts.FindRef(FName(TEXT("threshold"))), 1);
+	TestEqual(TEXT("Arena entrance keeps one approach band"), RoleCounts.FindRef(FName(TEXT("approach"))), 1);
+	TestTrue(TEXT("Arena entrance remains the existing route waypoint"), GetSundaleRouteWaypoints()[4].Equals(StadiumEntranceThreshold));
+	TestEqual(TEXT("Arena entry radius remains unchanged"), StadiumEntryRadius, 350.0f);
+	TestEqual(TEXT("Arena enter prompt remains unchanged"), FString(StadiumEnterPrompt), FString(TEXT("Press E to enter the public viewing graybox")));
+	TestEqual(TEXT("Arena exit prompt remains unchanged"), FString(StadiumExitPrompt), FString(TEXT("Press E to exit the public viewing graybox")));
+	TestTrue(TEXT("Arena return remains at the existing city-side threshold offset"), StadiumCityReturnLocation.Equals(StadiumEntranceThreshold + FVector(0.0, -100.0, SafeSpawnLocation.Z)));
+	TestTrue(TEXT("Sportsbook remains separate from the Arena entrance"), FVector::Dist2D(SportsbookInteractionLocation, StadiumEntranceThreshold) > SportsbookInteractionRadius + StadiumEntryRadius);
+	TestTrue(TEXT("Archived replay origin remains unchanged"), StadiumReplayOrigin.Equals(FVector(350.0, 0.0, 0.0)));
+	TestEqual(TEXT("Archived replay scale remains unchanged"), StadiumReplayScale, 0.15f);
 	return !HasAnyErrors();
 }
 
