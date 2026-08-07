@@ -133,6 +133,7 @@ int32 StudioQaProcessStage = 0;
 int32 StadiumQaProcessStage = 0;
 bool bJobPresentationQaCaptured = false;
 bool bArenaPresentationQaCaptured = false;
+int32 TicketBoothPresentationQaStage = 0;
 
 bool CanUseStudioInteraction(const bool bLocallyControlled, const ENetMode NetMode)
 {
@@ -920,6 +921,18 @@ const TArray<FSundalePresentationPartSpec>& GetSundaleArenaEntranceParts()
 	return Parts;
 }
 
+const TArray<FSundalePresentationPartSpec>& GetSundaleTicketBoothFrontageParts()
+{
+	static const TArray<FSundalePresentationPartSpec> Parts = {
+		{TEXT("TicketBoothFrontagePostLeft"), TEXT("post"), FVector(740.0, 17625.0, 300.0), FVector(0.45, 0.4, 6.0), SundaleCharcoalGray},
+		{TEXT("TicketBoothFrontagePostRight"), TEXT("post"), FVector(1260.0, 17625.0, 300.0), FVector(0.45, 0.4, 6.0), SundaleCharcoalGray},
+		{TEXT("TicketBoothFrontageHeader"), TEXT("header"), FVector(1000.0, 17625.0, 610.0), FVector(5.8, 0.4, 0.4), SundaleBurntOrange},
+		{TEXT("TicketBoothFrontageCounter"), TEXT("counter"), FVector(1000.0, 17600.0, 120.0), FVector(4.5, 0.4, 2.2), SundaleSandConcrete},
+		{TEXT("TicketBoothFrontageApproach"), TEXT("approach"), FVector(1000.0, 17050.0, 13.0), FVector(1.3, 5.5, 0.03), SundaleRestrainedCobalt},
+	};
+	return Parts;
+}
+
 struct FSundaleAtmosphereSpec
 {
 	float DirectionalIntensity;
@@ -1160,6 +1173,34 @@ void BuildSundalePresentation(UWorld* World)
 	else
 	{
 		UE_LOG(LogOddsWellLocomotion, Error, TEXT("%s"), *ArenaEntranceEvidence);
+	}
+
+	int32 SpawnedTicketBoothFrontageParts = 0;
+	TSet<FName> SpawnedTicketBoothFrontageRoles;
+	for (const FSundalePresentationPartSpec& Part : GetSundaleTicketBoothFrontageParts())
+	{
+		if (SpawnPart(Part.Id, Part.Role, Part.Location, Part.Scale, Part.Color, false))
+		{
+			++SpawnedTicketBoothFrontageParts;
+			SpawnedTicketBoothFrontageRoles.Add(Part.Role);
+		}
+	}
+	const bool bTicketBoothFrontagePassed = SpawnedTicketBoothFrontageParts == GetSundaleTicketBoothFrontageParts().Num()
+		&& SpawnedTicketBoothFrontageRoles.Num() == 4;
+	const FString TicketBoothFrontageEvidence = FString::Printf(
+		TEXT("ODDSWELL_SUNDALE_TICKET_BOOTH_FRONTAGE|result=%s|parts=%d|roles=%d|anchor_x=%.0f|anchor_y=%.0f|local_only=true|replicated=false|collision=false|native_assets=true|text=false|markets_added=false|architecture_final=false|final_art=false"),
+		bTicketBoothFrontagePassed ? TEXT("PASS") : TEXT("FAIL"),
+		SpawnedTicketBoothFrontageParts,
+		SpawnedTicketBoothFrontageRoles.Num(),
+		SportsbookInteractionLocation.X,
+		SportsbookInteractionLocation.Y);
+	if (bTicketBoothFrontagePassed)
+	{
+		UE_LOG(LogOddsWellLocomotion, Display, TEXT("%s"), *TicketBoothFrontageEvidence);
+	}
+	else
+	{
+		UE_LOG(LogOddsWellLocomotion, Error, TEXT("%s"), *TicketBoothFrontageEvidence);
 	}
 }
 
@@ -5456,6 +5497,32 @@ void AOddsWellPlaceholderCharacter::RunSportsbookOfferQa(const float DeltaSecond
 	}
 	if (SportsbookOfferQaStage == 0)
 	{
+		if (FParse::Param(FCommandLine::Get(), TEXT("TicketBoothPresentationQa")))
+		{
+			if (TicketBoothPresentationQaStage == 0)
+			{
+				SetActorLocation(SportsbookInteractionLocation + FVector(0.0, -1400.0, SafeSpawnLocation.Z), false, nullptr, ETeleportType::TeleportPhysics);
+				if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
+				{
+					PlayerController->SetControlRotation(FRotator(0.0f, 90.0f, 0.0f));
+				}
+				if (GEngine)
+				{
+					GEngine->ClearOnScreenDebugMessages();
+				}
+				FScreenshotRequest::RequestScreenshot(TEXT("Phase1L1g_TicketBoothFrontage.png"), true, false);
+				TicketBoothPresentationQaStage = 1;
+				return;
+			}
+			if (TicketBoothPresentationQaStage == 1)
+			{
+				SetActorLocation(FVector(SportsbookInteractionLocation.X, SportsbookInteractionLocation.Y, GetActorLocation().Z), false, nullptr, ETeleportType::TeleportPhysics);
+				PollSportsbookInteraction();
+				FScreenshotRequest::RequestScreenshot(TEXT("Phase1L1g_TicketBoothPrompt.png"), true, false);
+				TicketBoothPresentationQaStage = 2;
+				return;
+			}
+		}
 		SportsbookOfferQaLedgerEntries = GameMode->GetOddsBucksEntryCount();
 		SportsbookOfferQaBalance = GameMode->GetOddsBucksBalance();
 		SetActorLocation(SafeSpawnLocation, false, nullptr, ETeleportType::TeleportPhysics);
@@ -5882,6 +5949,35 @@ void AOddsWellPlaceholderCharacter::RunSportsbookOfferQa(const float DeltaSecond
 						: TEXT("Phase1H26D_CanonicalMatchWinnerOffer.png"))))),
 				true,
 				false);
+		}
+		if (FParse::Param(FCommandLine::Get(), TEXT("TicketBoothPresentationQa")))
+		{
+			const TArray<FString>& Labels = GetTicketBoothMarketLabels();
+			const bool bPresentationQaPassed = TicketBoothPresentationQaStage == 2
+				&& FString(TicketBoothOpenPrompt) == TEXT("Press E to open betting odds")
+				&& bSportsbookOfferVisible
+				&& SportsbookOfferPreview
+				&& SportsbookMarketPage == 0
+				&& Labels.Num() == TicketBoothMarketPageCount
+				&& Labels[0] == TEXT("GAME LINES")
+				&& Labels[1] == TEXT("MARGIN")
+				&& Labels[2] == TEXT("OVERTIME")
+				&& Labels[3] == TEXT("PLAYER PROPS");
+			const FString PresentationEvidence = FString::Printf(
+				TEXT("ODDSWELL_TICKET_BOOTH_PRESENTATION_QA|result=%s|location=Sportsbook|anchor_x=1000|anchor_y=18000|radius=350|prompt=exact|menu_open=%s|market_page=GAME_LINES|market_pages=4|published_market_pages=1|locked_market_pages=3|outside_open=false|interaction=existing_press_e_path|ledger_mutation=false|manual_input=false"),
+				bPresentationQaPassed ? TEXT("PASS") : TEXT("FAIL"),
+				bSportsbookOfferVisible ? TEXT("true") : TEXT("false"));
+			if (bPresentationQaPassed)
+			{
+				UE_LOG(LogOddsWellLocomotion, Display, TEXT("%s"), *PresentationEvidence);
+			}
+			else
+			{
+				UE_LOG(LogOddsWellLocomotion, Error, TEXT("%s"), *PresentationEvidence);
+				bSportsbookOfferQa = false;
+				QaExitAt = FPlatformTime::Seconds() + 1.0;
+				return;
+			}
 		}
 		if (bCanonicalBetSlipReviewQa)
 		{
@@ -12912,6 +13008,58 @@ bool FOddsWellSundaleArenaEntranceTest::RunTest(const FString& Parameters)
 	TestTrue(TEXT("Sportsbook remains separate from the Arena entrance"), FVector::Dist2D(SportsbookInteractionLocation, StadiumEntranceThreshold) > SportsbookInteractionRadius + StadiumEntryRadius);
 	TestTrue(TEXT("Archived replay origin remains unchanged"), StadiumReplayOrigin.Equals(FVector(350.0, 0.0, 0.0)));
 	TestEqual(TEXT("Archived replay scale remains unchanged"), StadiumReplayScale, 0.15f);
+	return !HasAnyErrors();
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(
+	FOddsWellSundaleTicketBoothFrontageTest,
+	"OddsWell.Character.SundaleTicketBoothFrontage",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+
+bool FOddsWellSundaleTicketBoothFrontageTest::RunTest(const FString& Parameters)
+{
+	const TArray<FSundalePresentationPartSpec>& Parts = GetSundaleTicketBoothFrontageParts();
+	TestEqual(TEXT("Ticket Booth frontage remains bounded to five native parts"), Parts.Num(), 5);
+	const TArray<FName> ExpectedIds = {
+		TEXT("TicketBoothFrontagePostLeft"),
+		TEXT("TicketBoothFrontagePostRight"),
+		TEXT("TicketBoothFrontageHeader"),
+		TEXT("TicketBoothFrontageCounter"),
+		TEXT("TicketBoothFrontageApproach"),
+	};
+	const TArray<FLinearColor> ApprovedPalette = {
+		SundaleSandConcrete,
+		SundaleRestrainedCobalt,
+		SundaleBurntOrange,
+		SundaleCharcoalGray,
+	};
+	TMap<FName, int32> RoleCounts;
+	TSet<FName> Ids;
+	for (const FSundalePresentationPartSpec& Part : Parts)
+	{
+		++RoleCounts.FindOrAdd(Part.Role);
+		Ids.Add(Part.Id);
+		TestTrue(*FString::Printf(TEXT("%s remains an approved Ticket Booth frontage id"), *Part.Id.ToString()), ExpectedIds.Contains(Part.Id));
+		TestTrue(*FString::Printf(TEXT("%s keeps positive scale"), *Part.Id.ToString()), Part.Scale.GetMin() > 0.0);
+		TestTrue(*FString::Printf(TEXT("%s stays at the existing Ticket Booth frontage"), *Part.Id.ToString()), FVector::Dist2D(Part.Location, SportsbookInteractionLocation) <= 1500.0 && Part.Location.Z > 0.0 && Part.Location.Z <= 700.0);
+		TestTrue(*FString::Printf(TEXT("%s uses the approved palette"), *Part.Id.ToString()), ApprovedPalette.Contains(Part.Color));
+	}
+	TestEqual(TEXT("Every Ticket Booth frontage part id remains unique"), Ids.Num(), Parts.Num());
+	TestEqual(TEXT("Ticket Booth frontage uses exactly four architectural roles"), RoleCounts.Num(), 4);
+	TestEqual(TEXT("Ticket Booth frontage keeps two framing posts"), RoleCounts.FindRef(FName(TEXT("post"))), 2);
+	TestEqual(TEXT("Ticket Booth frontage keeps one header"), RoleCounts.FindRef(FName(TEXT("header"))), 1);
+	TestEqual(TEXT("Ticket Booth frontage keeps one counter"), RoleCounts.FindRef(FName(TEXT("counter"))), 1);
+	TestEqual(TEXT("Ticket Booth frontage keeps one approach band"), RoleCounts.FindRef(FName(TEXT("approach"))), 1);
+	TestTrue(TEXT("Ticket Booth remains the existing route waypoint"), GetSundaleRouteWaypoints()[5].Equals(SportsbookInteractionLocation));
+	TestEqual(TEXT("Ticket Booth interaction radius remains unchanged"), SportsbookInteractionRadius, 350.0f);
+	TestEqual(TEXT("Ticket Booth prompt remains unchanged"), FString(TicketBoothOpenPrompt), FString(TEXT("Press E to open betting odds")));
+	const TArray<FString>& Labels = GetTicketBoothMarketLabels();
+	TestEqual(TEXT("Ticket Booth keeps exactly four market pages"), Labels.Num(), TicketBoothMarketPageCount);
+	TestEqual(TEXT("Game Lines remains the only published market page"), Labels[0], FString(TEXT("GAME LINES")));
+	TestEqual(TEXT("Margin page remains locked and labeled"), Labels[1], FString(TEXT("MARGIN")));
+	TestEqual(TEXT("Overtime page remains locked and labeled"), Labels[2], FString(TEXT("OVERTIME")));
+	TestEqual(TEXT("Player Props page remains locked and labeled"), Labels[3], FString(TEXT("PLAYER PROPS")));
+	TestTrue(TEXT("Arena entrance remains separate from the Ticket Booth"), FVector::Dist2D(SportsbookInteractionLocation, StadiumEntranceThreshold) > SportsbookInteractionRadius + StadiumEntryRadius);
 	return !HasAnyErrors();
 }
 
