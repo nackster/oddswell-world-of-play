@@ -100,6 +100,7 @@ const FName StudioFurnitureTag(TEXT("OddsWellStudioFurniture"));
 const FName OneBedroomStructureTag(TEXT("OddsWellOneBedroomStructure"));
 const FName ApartmentManagementKioskTag(TEXT("OddsWellApartmentManagementKiosk"));
 const FName SundalePresentationTag(TEXT("OddsWellSundalePresentation"));
+const FName SundaleDestinationIdentityTag(TEXT("OddsWellSundaleDestinationIdentity"));
 const FName StadiumStructureTag(TEXT("OddsWellStadiumStructure"));
 const FName StadiumZoneTag(TEXT("OddsWellStadiumZone"));
 const FVector JobInteractionLocation(9500.0, 0.0, 0.0);
@@ -778,6 +779,15 @@ struct FSundalePresentationPartSpec
 	FLinearColor Color;
 };
 
+struct FSundaleDestinationIdentityPartSpec
+{
+	FName Id;
+	FName Destination;
+	FVector Location;
+	FVector Scale;
+	FLinearColor Color;
+};
+
 const FLinearColor SundaleWarmLimestone = FLinearColor::FromSRGBColor(FColor(0xD8, 0xC8, 0xA9));
 const FLinearColor SundaleMutedTerracotta = FLinearColor::FromSRGBColor(FColor(0xA6, 0x5F, 0x47));
 const FLinearColor SundaleSandConcrete = FLinearColor::FromSRGBColor(FColor(0xB9, 0xA7, 0x83));
@@ -824,6 +834,29 @@ const TArray<FSundalePresentationPartSpec>& GetSundalePresentationParts()
 	return Parts;
 }
 
+const TArray<FSundaleDestinationIdentityPartSpec>& GetSundaleDestinationIdentityParts()
+{
+	static const TArray<FSundaleDestinationIdentityPartSpec> Parts = {
+		{TEXT("StudioIdentityLeft"), TEXT("StarterStudio"), FVector(-230.0, 325.0, 550.0), FVector(0.45, 0.35, 3.4), SundaleWarmLimestone},
+		{TEXT("StudioIdentityRight"), TEXT("StarterStudio"), FVector(230.0, 325.0, 550.0), FVector(0.45, 0.35, 3.4), SundaleBurntOrange},
+		{TEXT("JobIdentityPost"), TEXT("Job"), FVector(9500.0, 325.0, 650.0), FVector(0.55, 0.35, 4.6), SundaleMutedTerracotta},
+		{TEXT("JobIdentityCap"), TEXT("Job"), FVector(9500.0, 325.0, 860.0), FVector(3.0, 0.35, 0.45), SundaleSandConcrete},
+		{TEXT("ClothingIdentityTall"), TEXT("ClothingStore"), FVector(12175.0, 8800.0, 660.0), FVector(0.35, 0.8, 3.8), SundaleRestrainedCobalt},
+		{TEXT("ClothingIdentityShort"), TEXT("ClothingStore"), FVector(12175.0, 9150.0, 570.0), FVector(0.35, 1.25, 2.0), SundaleBurntOrange},
+		{TEXT("ArenaIdentityLeft"), TEXT("Arena"), FVector(6100.0, 17675.0, 760.0), FVector(0.7, 0.4, 5.0), SundaleSandConcrete},
+		{TEXT("ArenaIdentityRight"), TEXT("Arena"), FVector(7900.0, 17675.0, 760.0), FVector(0.7, 0.4, 5.0), SundaleSandConcrete},
+		{TEXT("ArenaIdentityCrown"), TEXT("Arena"), FVector(7000.0, 17675.0, 1050.0), FVector(9.7, 0.4, 0.5), SundaleRestrainedCobalt},
+		{TEXT("SportsbookIdentityLow"), TEXT("SportsbookTicketBooth"), FVector(650.0, 17675.0, 560.0), FVector(3.0, 0.4, 0.45), SundaleCharcoalGray},
+		{TEXT("SportsbookIdentityHigh"), TEXT("SportsbookTicketBooth"), FVector(1350.0, 17675.0, 740.0), FVector(3.0, 0.4, 0.45), SundaleRestrainedCobalt},
+		{TEXT("CourtIdentityLeft"), TEXT("PublicCourt"), FVector(-9450.0, 15700.0, 240.0), FVector(0.45, 0.45, 4.8), SundaleSageGreen},
+		{TEXT("CourtIdentityRight"), TEXT("PublicCourt"), FVector(-8750.0, 15700.0, 240.0), FVector(0.45, 0.45, 4.8), SundaleRestrainedCobalt},
+		{TEXT("CourtIdentityCap"), TEXT("PublicCourt"), FVector(-9100.0, 15700.0, 500.0), FVector(4.0, 0.45, 0.45), SundaleBurntOrange},
+		{TEXT("FurnitureIdentityLow"), TEXT("FurnitureStore"), FVector(-10175.0, 4850.0, 560.0), FVector(0.4, 3.0, 0.45), SundaleMutedTerracotta},
+		{TEXT("FurnitureIdentityHigh"), TEXT("FurnitureStore"), FVector(-10175.0, 5150.0, 760.0), FVector(0.4, 3.0, 0.45), SundaleWarmLimestone},
+	};
+	return Parts;
+}
+
 void BuildSundalePresentation(UWorld* World)
 {
 	if (!World
@@ -847,15 +880,15 @@ void BuildSundalePresentation(UWorld* World)
 	FActorSpawnParameters Parameters;
 	Parameters.ObjectFlags |= RF_Transient;
 	int32 SpawnedParts = 0;
-	for (const FSundalePresentationPartSpec& Part : GetSundalePresentationParts())
+	auto SpawnPart = [&](const FName Id, const FName Role, const FVector& Location, const FVector& Scale, const FLinearColor& Color, const bool bDestinationIdentity)
 	{
 		AStaticMeshActor* Actor = World->SpawnActor<AStaticMeshActor>(
 			AStaticMeshActor::StaticClass(),
-			FTransform(FRotator::ZeroRotator, Part.Location, Part.Scale),
+			FTransform(FRotator::ZeroRotator, Location, Scale),
 			Parameters);
 		if (!Actor || !Cube)
 		{
-			continue;
+			return false;
 		}
 		Actor->SetReplicates(false);
 		Actor->SetActorEnableCollision(false);
@@ -865,15 +898,23 @@ void BuildSundalePresentation(UWorld* World)
 		{
 			if (UMaterialInstanceDynamic* Material = UMaterialInstanceDynamic::Create(BasicShapeMaterial, Actor))
 			{
-				Material->SetVectorParameterValue(TEXT("Color"), Part.Color);
-				Material->SetVectorParameterValue(TEXT("BaseColor"), Part.Color);
+				Material->SetVectorParameterValue(TEXT("Color"), Color);
+				Material->SetVectorParameterValue(TEXT("BaseColor"), Color);
 				Actor->GetStaticMeshComponent()->SetMaterial(0, Material);
 			}
 		}
 		Actor->Tags.Add(SundalePresentationTag);
-		Actor->Tags.Add(Part.Role);
-		Actor->Tags.Add(Part.Id);
-		++SpawnedParts;
+		if (bDestinationIdentity)
+		{
+			Actor->Tags.Add(SundaleDestinationIdentityTag);
+		}
+		Actor->Tags.Add(Role);
+		Actor->Tags.Add(Id);
+		return true;
+	};
+	for (const FSundalePresentationPartSpec& Part : GetSundalePresentationParts())
+	{
+		SpawnedParts += SpawnPart(Part.Id, Part.Role, Part.Location, Part.Scale, Part.Color, false) ? 1 : 0;
 	}
 	const bool bPassed = SpawnedParts == GetSundalePresentationParts().Num();
 	const FString Evidence = FString::Printf(
@@ -887,6 +928,32 @@ void BuildSundalePresentation(UWorld* World)
 	else
 	{
 		UE_LOG(LogOddsWellLocomotion, Error, TEXT("%s"), *Evidence);
+	}
+
+	int32 SpawnedIdentityParts = 0;
+	TSet<FName> SpawnedDestinations;
+	for (const FSundaleDestinationIdentityPartSpec& Part : GetSundaleDestinationIdentityParts())
+	{
+		if (SpawnPart(Part.Id, Part.Destination, Part.Location, Part.Scale, Part.Color, true))
+		{
+			++SpawnedIdentityParts;
+			SpawnedDestinations.Add(Part.Destination);
+		}
+	}
+	const bool bIdentityPassed = SpawnedIdentityParts == GetSundaleDestinationIdentityParts().Num()
+		&& SpawnedDestinations.Num() == 7;
+	const FString IdentityEvidence = FString::Printf(
+		TEXT("ODDSWELL_SUNDALE_DESTINATION_IDENTITY|result=%s|destinations=%d|parts=%d|local_only=true|collision=false|native_assets=true|text_required=false|final_art=false"),
+		bIdentityPassed ? TEXT("PASS") : TEXT("FAIL"),
+		SpawnedDestinations.Num(),
+		SpawnedIdentityParts);
+	if (bIdentityPassed)
+	{
+		UE_LOG(LogOddsWellLocomotion, Display, TEXT("%s"), *IdentityEvidence);
+	}
+	else
+	{
+		UE_LOG(LogOddsWellLocomotion, Error, TEXT("%s"), *IdentityEvidence);
 	}
 }
 
@@ -12401,6 +12468,56 @@ bool FOddsWellSundaleCoreBlockPresentationTest::RunTest(const FString& Parameter
 	TestEqual(TEXT("Two court bands remain represented"), RoleCounts.FindRef(FName(TEXT("court"))), 2);
 	TestEqual(TEXT("Two three-part greenery clusters remain represented"), RoleCounts.FindRef(FName(TEXT("greenery"))), 6);
 	TestEqual(TEXT("Six warm late-afternoon details remain represented"), RoleCounts.FindRef(FName(TEXT("warm_detail"))), 6);
+	return !HasAnyErrors();
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(
+	FOddsWellSundaleDestinationIdentityTest,
+	"OddsWell.Character.SundaleDestinationIdentity",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+
+bool FOddsWellSundaleDestinationIdentityTest::RunTest(const FString& Parameters)
+{
+	const TArray<FSundaleDestinationIdentityPartSpec>& Parts = GetSundaleDestinationIdentityParts();
+	TestEqual(TEXT("Identity pass remains bounded to sixteen native parts"), Parts.Num(), 16);
+	const TSet<FName> RequiredDestinations = {
+		FName(TEXT("StarterStudio")),
+		FName(TEXT("Job")),
+		FName(TEXT("ClothingStore")),
+		FName(TEXT("Arena")),
+		FName(TEXT("SportsbookTicketBooth")),
+		FName(TEXT("PublicCourt")),
+		FName(TEXT("FurnitureStore")),
+	};
+	const TArray<FLinearColor> ApprovedPalette = {
+		SundaleWarmLimestone,
+		SundaleMutedTerracotta,
+		SundaleSandConcrete,
+		SundaleSageGreen,
+		SundaleRestrainedCobalt,
+		SundaleBurntOrange,
+		SundaleCharcoalGray,
+	};
+	TMap<FName, int32> DestinationCounts;
+	TSet<FName> Ids;
+	for (const FSundaleDestinationIdentityPartSpec& Part : Parts)
+	{
+		++DestinationCounts.FindOrAdd(Part.Destination);
+		Ids.Add(Part.Id);
+		TestTrue(*FString::Printf(TEXT("%s names a required destination"), *Part.Id.ToString()), RequiredDestinations.Contains(Part.Destination));
+		TestTrue(*FString::Printf(TEXT("%s keeps positive scale"), *Part.Id.ToString()), Part.Scale.GetMin() > 0.0);
+		TestTrue(*FString::Printf(TEXT("%s stays inside the Sundale presentation bounds"), *Part.Id.ToString()), FMath::Abs(Part.Location.X) <= 15000.0 && FMath::Abs(Part.Location.Y) <= 20000.0 && Part.Location.Z > 0.0 && Part.Location.Z <= 1500.0);
+		TestTrue(*FString::Printf(TEXT("%s uses the approved palette"), *Part.Id.ToString()), ApprovedPalette.Contains(Part.Color));
+	}
+	TestEqual(TEXT("Every destination identity part id remains unique"), Ids.Num(), Parts.Num());
+	TestEqual(TEXT("Exactly seven required destination roles remain represented"), DestinationCounts.Num(), RequiredDestinations.Num());
+	TestEqual(TEXT("Starter Studio keeps its two-post identity"), DestinationCounts.FindRef(FName(TEXT("StarterStudio"))), 2);
+	TestEqual(TEXT("Job keeps its post-and-cap identity"), DestinationCounts.FindRef(FName(TEXT("Job"))), 2);
+	TestEqual(TEXT("Clothing Store keeps its asymmetric-panel identity"), DestinationCounts.FindRef(FName(TEXT("ClothingStore"))), 2);
+	TestEqual(TEXT("Arena keeps its three-part portal identity"), DestinationCounts.FindRef(FName(TEXT("Arena"))), 3);
+	TestEqual(TEXT("Sportsbook and Ticket Booth keep their offset-slab identity"), DestinationCounts.FindRef(FName(TEXT("SportsbookTicketBooth"))), 2);
+	TestEqual(TEXT("Public Court keeps its three-part gateway identity"), DestinationCounts.FindRef(FName(TEXT("PublicCourt"))), 3);
+	TestEqual(TEXT("Furniture Store keeps its stacked-shelf identity"), DestinationCounts.FindRef(FName(TEXT("FurnitureStore"))), 2);
 	return !HasAnyErrors();
 }
 

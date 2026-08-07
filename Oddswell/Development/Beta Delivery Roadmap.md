@@ -643,6 +643,14 @@ Fresh verification passed focused native `1/1`, full native `51/51`, frozen Pyth
 
 Phase 1K remains incomplete. At the owner's direction, hands-on held-control and route usability evidence is deferred until the MVP playtest; it is still required before beta exit. Phase 1L.1a is not final city art and adds no calibrated lighting, final materials, external assets, music, new district, or accessibility baseline. See [[Development/Reports/Phase 1L1a Sundale Core Block Presentation Pass]].
 
+### Phase 1L.1b Sundale destination-identity wayfinding pass
+
+**COMPLETE FOR ONE BOUNDED PRESENTATION-ONLY DESTINATION PASS.** Sixteen additional transient native-cube parts give exactly seven existing required destinations distinct non-text geometric entrance identities: Starter Studio, Job, Clothing Store, Arena, Sportsbook/Ticket Booth, Public Court, and Furniture Store. They reuse the Phase 1L.1a approved palette and local-only, non-replicated, collision-disabled spawn path. The original `31` parts and evidence marker remain exact.
+
+Fresh verification passed focused native `1/1`, full native `52/52`, frozen Python `105/105`, Brain Admin self-check, editor/game builds, BuildCookRun, and package audit. The package contains `50` files, `1,049,648,556` bytes, and zero Python files. Its automated route emitted both presentation markers exactly once, passed `11/11` after `154.583s`, returned home with blocking floor collision, and held vertical range to `1.0 cm`. Forty performance samples averaged `1,532.8 MiB` working set and `3,565.9 MiB` private bytes.
+
+Normal Studio/start and Arena-return captures are retained, but both are close wall-side views and do not prove all seven identities, prompt readability, subjective wayfinding, manual usability, accessibility, or final art. No authored map value, gameplay coordinate, prompt, threshold, route, session/authority rule, save, brain, ledger, wager, inventory, interior, external asset, plugin, dependency, brand, district, catalog, music, or final lighting changed. Phase 1K remains incomplete, with hands-on held-control and route usability evidence deferred to the MVP playtest but still required before beta exit. See [[Development/Reports/Phase 1L1b Sundale Destination Identity Wayfinding Pass]].
+
 ### Exit evidence
 
 The complete loop is visually coherent, readable, accessible at the approved baseline, and within measured PC performance targets. Large catalogs and unseen districts remain out of scope.
