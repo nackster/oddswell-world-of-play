@@ -103,6 +103,7 @@ constexpr int64 CanonicalProbabilityScale = 100000000;
 constexpr float StadiumQaWaypointTolerance = 75.0f;
 const FName StudioStructureTag(TEXT("OddsWellStudioStructure"));
 const FName StudioFurnitureTag(TEXT("OddsWellStudioFurniture"));
+const FName StudioPresentationTag(TEXT("OddsWellStudioPresentation"));
 const FName OneBedroomStructureTag(TEXT("OddsWellOneBedroomStructure"));
 const FName ApartmentManagementKioskTag(TEXT("OddsWellApartmentManagementKiosk"));
 const FName SundalePresentationTag(TEXT("OddsWellSundalePresentation"));
@@ -801,6 +802,34 @@ const FLinearColor SundaleSageGreen = FLinearColor::FromSRGBColor(FColor(0x6D, 0
 const FLinearColor SundaleRestrainedCobalt = FLinearColor::FromSRGBColor(FColor(0x31, 0x5F, 0x79));
 const FLinearColor SundaleBurntOrange = FLinearColor::FromSRGBColor(FColor(0xC4, 0x6D, 0x3B));
 const FLinearColor SundaleCharcoalGray = FLinearColor::FromSRGBColor(FColor(0x4D, 0x50, 0x51));
+
+struct FStudioPresentationPartSpec
+{
+	FName Id;
+	FName Role;
+	FVector Location;
+	FVector Scale;
+	FLinearColor Color;
+};
+
+constexpr float StudioPresentationLightTemperatureKelvin = 4500.0f;
+
+const TArray<FStudioPresentationPartSpec>& GetEmptyStudioPresentationParts()
+{
+	static const TArray<FStudioPresentationPartSpec> Parts = {
+		{TEXT("StudioFloorInset"), TEXT("surface"), FVector(0.0, 0.0, 1.0), FVector(6.6, 4.6, 0.02), SundaleSandConcrete},
+		{TEXT("StudioCeilingInset"), TEXT("surface"), FVector(0.0, 0.0, 289.0), FVector(6.6, 4.6, 0.02), SundaleWarmLimestone},
+		{TEXT("StudioTrimNorth"), TEXT("trim"), FVector(0.0, 289.0, 25.0), FVector(7.2, 0.06, 0.25), SundaleCharcoalGray},
+		{TEXT("StudioTrimSouth"), TEXT("trim"), FVector(0.0, -289.0, 25.0), FVector(7.2, 0.06, 0.25), SundaleCharcoalGray},
+		{TEXT("StudioTrimEast"), TEXT("trim"), FVector(389.0, 0.0, 25.0), FVector(0.06, 5.2, 0.25), SundaleCharcoalGray},
+		{TEXT("StudioTrimWest"), TEXT("trim"), FVector(-389.0, 0.0, 25.0), FVector(0.06, 5.2, 0.25), SundaleCharcoalGray},
+		{TEXT("StudioWallAccent"), TEXT("accent"), FVector(0.0, 289.0, 145.0), FVector(1.0, 0.05, 2.0), SundaleMutedTerracotta},
+		{TEXT("StudioReturnFrameLeft"), TEXT("exit_cue"), FVector(-115.0, -289.0, 120.0), FVector(0.18, 0.05, 2.2), SundaleBurntOrange},
+		{TEXT("StudioReturnFrameRight"), TEXT("exit_cue"), FVector(115.0, -289.0, 120.0), FVector(0.18, 0.05, 2.2), SundaleBurntOrange},
+		{TEXT("StudioReturnFrameCap"), TEXT("exit_cue"), FVector(0.0, -289.0, 230.0), FVector(2.5, 0.05, 0.18), SundaleRestrainedCobalt},
+	};
+	return Parts;
+}
 
 const TArray<FSundalePresentationPartSpec>& GetSundalePresentationParts()
 {
@@ -6275,6 +6304,10 @@ void AOddsWellPlaceholderCharacter::RunStudioQa(const float DeltaSeconds)
 			bStudioQaInteriorStarted = true;
 			StudioQaStartLocation = GetActorLocation();
 			UE_LOG(LogOddsWellLocomotion, Display, TEXT("ODDSWELL_STUDIO_QA_INSIDE|structure=%d|furniture=0|decorations=0|snap_points=0|empty_start=true"), StructuralSurfaces);
+			if (FParse::Param(FCommandLine::Get(), TEXT("StudioPresentationQa")))
+			{
+				FScreenshotRequest::RequestScreenshot(TEXT("Phase1L1d_EmptyStudio.png"), true, false);
+			}
 		}
 		if (bStudioQaInteriorStarted)
 		{
@@ -11318,6 +11351,59 @@ void AOddsWellStudioGameMode::BeginPlay()
 	}
 	FActorSpawnParameters Parameters;
 	Parameters.ObjectFlags |= RF_Transient;
+	if (GetNetMode() != NM_DedicatedServer)
+	{
+		UMaterialInterface* PresentationMaterial = LoadObject<UMaterialInterface>(
+			nullptr,
+			TEXT("/Engine/BasicShapes/BasicShapeMaterial.BasicShapeMaterial"));
+		int32 PresentationParts = 0;
+		TSet<FName> PresentationRoles;
+		for (const FStudioPresentationPartSpec& Part : GetEmptyStudioPresentationParts())
+		{
+			AStaticMeshActor* Actor = GetWorld()->SpawnActor<AStaticMeshActor>(
+				AStaticMeshActor::StaticClass(),
+				FTransform(FRotator::ZeroRotator, Part.Location, Part.Scale),
+				Parameters);
+			if (!Actor)
+			{
+				continue;
+			}
+			Actor->SetReplicates(false);
+			Actor->SetActorEnableCollision(false);
+			Actor->GetStaticMeshComponent()->SetStaticMesh(Cube);
+			Actor->GetStaticMeshComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+			if (PresentationMaterial)
+			{
+				if (UMaterialInstanceDynamic* Material = UMaterialInstanceDynamic::Create(PresentationMaterial, Actor))
+				{
+					Material->SetVectorParameterValue(TEXT("Color"), Part.Color);
+					Material->SetVectorParameterValue(TEXT("BaseColor"), Part.Color);
+					Actor->GetStaticMeshComponent()->SetMaterial(0, Material);
+				}
+			}
+			Actor->Tags.Add(StudioPresentationTag);
+			Actor->Tags.Add(Part.Role);
+			Actor->Tags.Add(Part.Id);
+			PresentationRoles.Add(Part.Role);
+			++PresentationParts;
+		}
+		const bool bPresentationPassed = PresentationMaterial
+			&& PresentationParts == GetEmptyStudioPresentationParts().Num()
+			&& PresentationRoles.Num() == 4;
+		const FString PresentationEvidence = FString::Printf(
+			TEXT("ODDSWELL_STUDIO_PRESENTATION|result=%s|parts=%d|roles=%d|empty_contract=6/0/0/0|owned_chair_conditional=true|presentation_excluded_from_contents=true|local_only=true|replicated=false|collision=false|native_assets=true|final_art=false"),
+			bPresentationPassed ? TEXT("PASS") : TEXT("FAIL"),
+			PresentationParts,
+			PresentationRoles.Num());
+		if (bPresentationPassed)
+		{
+			UE_LOG(LogOddsWellLocomotion, Display, TEXT("%s"), *PresentationEvidence);
+		}
+		else
+		{
+			UE_LOG(LogOddsWellLocomotion, Error, TEXT("%s"), *PresentationEvidence);
+		}
+	}
 	for (const FStudioSurfaceSpec& Surface : GetEmptyStudioSurfaces())
 	{
 		AStaticMeshActor* Actor = GetWorld()->SpawnActor<AStaticMeshActor>(AStaticMeshActor::StaticClass(), FTransform(FRotator::ZeroRotator, Surface.Location, Surface.Scale), Parameters);
@@ -11411,6 +11497,11 @@ void AOddsWellStudioGameMode::BeginPlay()
 	{
 		Light->PointLightComponent->SetIntensity(5000.0f);
 		Light->PointLightComponent->SetAttenuationRadius(1000.0f);
+		if (GetNetMode() != NM_DedicatedServer)
+		{
+			Light->PointLightComponent->SetUseTemperature(true);
+			Light->PointLightComponent->SetTemperature(StudioPresentationLightTemperatureKelvin);
+		}
 	}
 	UE_LOG(
 		LogOddsWellLocomotion,
@@ -12631,6 +12722,60 @@ bool FOddsWellSundaleAtmosphereTest::RunTest(const FString& Parameters)
 	TestTrue(TEXT("Skylight fill remains slightly cool"), Spec.SkyLightColor.B >= Spec.SkyLightColor.R);
 	TestTrue(TEXT("Dry-air haze remains light"), Spec.FogDensity > 0.0f && Spec.FogDensity <= 0.005f);
 	TestTrue(TEXT("Fog inscattering remains warm"), Spec.FogInscatteringColor.R > Spec.FogInscatteringColor.B);
+	return !HasAnyErrors();
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(
+	FOddsWellEmptyStudioPresentationTest,
+	"OddsWell.Character.EmptyStudioPresentation",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+
+bool FOddsWellEmptyStudioPresentationTest::RunTest(const FString& Parameters)
+{
+	const TArray<FStudioPresentationPartSpec>& Parts = GetEmptyStudioPresentationParts();
+	TestEqual(TEXT("Studio presentation remains bounded to ten native parts"), Parts.Num(), 10);
+	const TArray<FName> ExpectedIds = {
+		TEXT("StudioFloorInset"),
+		TEXT("StudioCeilingInset"),
+		TEXT("StudioTrimNorth"),
+		TEXT("StudioTrimSouth"),
+		TEXT("StudioTrimEast"),
+		TEXT("StudioTrimWest"),
+		TEXT("StudioWallAccent"),
+		TEXT("StudioReturnFrameLeft"),
+		TEXT("StudioReturnFrameRight"),
+		TEXT("StudioReturnFrameCap"),
+	};
+	const TArray<FLinearColor> ApprovedPalette = {
+		SundaleWarmLimestone,
+		SundaleMutedTerracotta,
+		SundaleSandConcrete,
+		SundaleRestrainedCobalt,
+		SundaleBurntOrange,
+		SundaleCharcoalGray,
+	};
+	TMap<FName, int32> RoleCounts;
+	TSet<FName> Ids;
+	for (const FStudioPresentationPartSpec& Part : Parts)
+	{
+		++RoleCounts.FindOrAdd(Part.Role);
+		Ids.Add(Part.Id);
+		TestTrue(*FString::Printf(TEXT("%s remains an approved Studio presentation id"), *Part.Id.ToString()), ExpectedIds.Contains(Part.Id));
+		TestTrue(*FString::Printf(TEXT("%s keeps positive scale"), *Part.Id.ToString()), Part.Scale.GetMin() > 0.0);
+		TestTrue(*FString::Printf(TEXT("%s stays inside the Studio"), *Part.Id.ToString()), FMath::Abs(Part.Location.X) <= 400.0 && FMath::Abs(Part.Location.Y) <= 300.0 && Part.Location.Z >= 0.0 && Part.Location.Z <= 300.0);
+		TestTrue(*FString::Printf(TEXT("%s uses the approved palette"), *Part.Id.ToString()), ApprovedPalette.Contains(Part.Color));
+	}
+	TestEqual(TEXT("Every Studio presentation part id remains unique"), Ids.Num(), Parts.Num());
+	TestEqual(TEXT("Studio presentation uses exactly four architectural roles"), RoleCounts.Num(), 4);
+	TestEqual(TEXT("Two surface insets preserve room hierarchy"), RoleCounts.FindRef(FName(TEXT("surface"))), 2);
+	TestEqual(TEXT("Four perimeter rails preserve architectural trim"), RoleCounts.FindRef(FName(TEXT("trim"))), 4);
+	TestEqual(TEXT("One wall accent remains bounded"), RoleCounts.FindRef(FName(TEXT("accent"))), 1);
+	TestEqual(TEXT("Three parts preserve the return-orientation frame"), RoleCounts.FindRef(FName(TEXT("exit_cue"))), 3);
+	TestTrue(TEXT("Studio light stays within the bounded warm range"), StudioPresentationLightTemperatureKelvin >= 4000.0f && StudioPresentationLightTemperatureKelvin <= 5000.0f);
+	TestEqual(TEXT("Fresh Studio keeps exactly six structural surfaces"), GetEmptyStudioSurfaces().Num(), 6);
+	TestEqual(TEXT("Fresh Studio keeps zero active snap points"), GetActiveStudioSnapPointCount(false, 0), 0);
+	TestEqual(TEXT("Owned chair remains exactly three furniture parts"), GetModularChairParts().Num(), 3);
+	TestEqual(TEXT("Only the complete owned chair activates studio_primary"), GetActiveStudioSnapPointCount(true, GetModularChairParts().Num()), 1);
 	return !HasAnyErrors();
 }
 

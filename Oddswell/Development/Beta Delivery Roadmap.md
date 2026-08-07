@@ -659,6 +659,16 @@ Fresh verification passed focused native `1/1`, full native `53/53`, frozen Pyth
 
 Objective same-view measurements show the intended warmth shift, but normal Studio/start and Arena-return screenshots remain close wall-side views. The Studio's bright-luma share at or above `250` rose from `0.819%` to `4.662%` in the visible sky/horizon; this is disclosed rather than treated as global highlight safety. The evidence does not prove prompt/UI readability, all destinations, accessibility, manual usability, final color grading, or final lighting. Phase 1K remains incomplete, with hands-on held-control and route usability evidence deferred to the MVP playtest but still required before beta exit. See [[Development/Reports/Phase 1L1c Sundale Late Afternoon Atmosphere Pass]].
 
+### Phase 1L.1d Empty Starter Studio presentation pass
+
+**COMPLETE FOR ONE BOUNDED EMPTY-STUDIO PRESENTATION PASS.** Exactly ten transient native-cube pieces add two surface insets, four perimeter trim rails, one wall accent, and a three-part return frame inside the existing private Studio. They reuse the approved palette and are local-only, non-replicated, collision-disabled, and absent on dedicated servers. The existing Studio point light keeps its actor, position, `5000` intensity, and `1000` radius; only its native temperature is enabled at `4500 K`.
+
+The fresh production Studio remains exactly `structure=6,furniture=0,furniture_parts=0,decorations=0,snap_points=0`. Presentation is excluded from those counts. The existing conditional three-part owned chair and single `studio_primary` snap point remain unchanged, as does the One-bedroom path. No purchase, catalog, decoration, placement control, ownership/save/schema/slot/index, route, prompt, authority, session, brain, ledger, wager, inventory, map, external asset, plugin, or dependency changed.
+
+Fresh verification passed focused native `1/1`, full native `54/54`, frozen Python `105/105`, Brain Admin self-check, editor/game builds, BuildCookRun, and package audit. The package contains `50` files, `1,049,806,764` bytes, and zero Python files. Automated packaged evidence reported the exact ten-part/four-role presentation marker, exact fresh `6/0/0/0` contents, Studio entry, a `200.2 cm` interior walk, exit, and Sundale return. One normal `1280x720` fixed-start screenshot and a short process sample are bounded evidence only; they do not prove every corner, prompt/color readability, accessibility, player understanding, subjective usability, final art/lighting, minimum-PC performance, or beta readiness.
+
+Phase 1K remains incomplete, with hands-on held-control and route usability evidence deferred to the MVP playtest but still required before beta exit. See [[Development/Reports/Phase 1L1d Empty Starter Studio Presentation Pass]].
+
 ### Exit evidence
 
 The complete loop is visually coherent, readable, accessible at the approved baseline, and within measured PC performance targets. Large catalogs and unseen districts remain out of scope.
