@@ -141,6 +141,9 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(
 
 bool FOddsWellStudioHomePersistenceTest::RunTest(const FString& Parameters)
 {
+	TestEqual(TEXT("Production Studio slot remains unchanged"), GetStudioHomeSlot(false), FString(TEXT("OddsWellStudioHome")));
+	TestEqual(TEXT("Studio user index remains unchanged"), StudioHomeUserIndex, 0);
+	TestEqual(TEXT("Studio schema remains version 1"), StudioHomeSchemaVersion, 1);
 	const FVector ExpectedReturnLocation(125.0, 75.0, 96.0);
 	UOddsWellStudioHomeSaveGame* Record = NewObject<UOddsWellStudioHomeSaveGame>();
 	Record->SchemaVersion = StudioHomeSchemaVersion;

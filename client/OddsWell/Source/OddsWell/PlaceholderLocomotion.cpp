@@ -85,6 +85,12 @@ constexpr float FurnitureStoreInteractionRadius = 350.0f;
 constexpr float ApartmentManagementInteractionRadius = 350.0f;
 constexpr float StudioEntryRadius = 350.0f;
 constexpr float StudioQaWalkDistance = 200.0f;
+const FString SharedStudioReturnEndpoint(TEXT("127.0.0.1:17777"));
+constexpr TCHAR SharedStudioReturnOption[] = TEXT("SharedStudioReturn");
+constexpr TCHAR StudioReturnOption[] = TEXT("StudioReturn");
+constexpr TCHAR StudioReturnXOption[] = TEXT("StudioReturnX");
+constexpr TCHAR StudioReturnYOption[] = TEXT("StudioReturnY");
+constexpr TCHAR StudioReturnZOption[] = TEXT("StudioReturnZ");
 constexpr float StadiumEntryRadius = 350.0f;
 constexpr float SportsbookInteractionRadius = 350.0f;
 constexpr int64 CanonicalProbabilityScale = 100000000;
@@ -114,6 +120,67 @@ constexpr float StadiumReplayScale = 0.15f;
 constexpr int64 JobRecoveryQaStartUnixSeconds = 2000000000;
 int32 StudioQaProcessStage = 0;
 int32 StadiumQaProcessStage = 0;
+
+bool CanUseStudioInteraction(const bool bLocallyControlled, const ENetMode NetMode)
+{
+	return bLocallyControlled && (NetMode == NM_Standalone || NetMode == NM_Client);
+}
+
+bool ShouldTriggerStudioInteraction(
+	const bool bPressed,
+	const bool bArmed,
+	const bool bInStudio,
+	const bool bAtStudioDoor)
+{
+	return bPressed && bArmed && (bInStudio || bAtStudioDoor);
+}
+
+bool ConsumeStudioInteractionRequest(bool& bRequested)
+{
+	const bool bWasRequested = bRequested;
+	bRequested = false;
+	return bWasRequested;
+}
+
+FString BuildSharedStudioReturnUrl(const FVector& Location)
+{
+	return FString::Printf(
+		TEXT("%s?%s=1?%s=%.17g?%s=%.17g?%s=%.17g"),
+		*SharedStudioReturnEndpoint,
+		StudioReturnOption,
+		StudioReturnXOption,
+		Location.X,
+		StudioReturnYOption,
+		Location.Y,
+		StudioReturnZOption,
+		Location.Z);
+}
+
+bool TryParseSharedStudioReturn(const FString& Options, FVector& OutLocation)
+{
+	if (UGameplayStatics::ParseOption(Options, StudioReturnOption) != TEXT("1"))
+	{
+		return false;
+	}
+	double X = 0.0;
+	double Y = 0.0;
+	double Z = 0.0;
+	if (!LexTryParseString(X, *UGameplayStatics::ParseOption(Options, StudioReturnXOption))
+		|| !LexTryParseString(Y, *UGameplayStatics::ParseOption(Options, StudioReturnYOption))
+		|| !LexTryParseString(Z, *UGameplayStatics::ParseOption(Options, StudioReturnZOption)))
+	{
+		return false;
+	}
+	const FVector Location(X, Y, Z);
+	if (Location.ContainsNaN()
+		|| FVector::Dist2D(Location, SafeSpawnLocation) > StudioEntryRadius
+		|| FMath::Abs(Location.Z - SafeSpawnLocation.Z) > StudioEntryRadius)
+	{
+		return false;
+	}
+	OutLocation = Location;
+	return true;
+}
 
 #if UE_BUILD_DEVELOPMENT
 constexpr TCHAR CanonicalAutomaticReceiptHeldInputFlag[] =
@@ -718,6 +785,11 @@ const TArray<FStudioFurniturePartSpec>& GetModularChairParts()
 		{StudioPrimarySnapPoint + FVector(32.0, 0.0, 145.0), FVector(0.16, 0.70, 0.95), ModularChairTeal},
 	};
 	return Parts;
+}
+
+int32 GetActiveStudioSnapPointCount(const bool bChairOwned, const int32 FurnitureParts)
+{
+	return bChairOwned && FurnitureParts == GetModularChairParts().Num() ? 1 : 0;
 }
 
 struct FStadiumSurfaceSpec
@@ -1444,6 +1516,7 @@ void AOddsWellPlaceholderCharacter::SetupPlayerInputComponent(UInputComponent* P
 	PlayerInputComponent->BindKey(KeyRun, IE_Released, this, &AOddsWellPlaceholderCharacter::StopRun);
 	PlayerInputComponent->BindKey(KeyJump, IE_Pressed, this, &AOddsWellPlaceholderCharacter::StartJump);
 	PlayerInputComponent->BindKey(KeyJump, IE_Released, this, &AOddsWellPlaceholderCharacter::StopJump);
+	PlayerInputComponent->BindKey(KeyInteract, IE_Pressed, this, &AOddsWellPlaceholderCharacter::QueueStudioInteraction);
 	PlayerInputComponent->BindKey(KeyLeagueView, IE_Pressed, this, &AOddsWellPlaceholderCharacter::ToggleLeagueView);
 	PlayerInputComponent->BindKey(KeyLeaguePrevious, IE_Pressed, this, &AOddsWellPlaceholderCharacter::PreviousLeaguePage);
 	PlayerInputComponent->BindKey(KeyLeagueNext, IE_Pressed, this, &AOddsWellPlaceholderCharacter::NextLeaguePage);
@@ -4210,13 +4283,23 @@ void AOddsWellPlaceholderCharacter::RunJobQa(const float DeltaSeconds)
 	}
 }
 
+void AOddsWellPlaceholderCharacter::QueueStudioInteraction()
+{
+	if (IsLocallyControlled())
+	{
+		bStudioInteractionRequested = true;
+	}
+}
+
 void AOddsWellPlaceholderCharacter::PollStudioInteraction()
 {
-	if (!IsLocallyControlled() || GetNetMode() != NM_Standalone)
+	const bool bRequested = ConsumeStudioInteractionRequest(bStudioInteractionRequested);
+	const ENetMode NetMode = GetNetMode();
+	if (!CanUseStudioInteraction(IsLocallyControlled(), NetMode))
 	{
 		return;
 	}
-	const APlayerController* PlayerController = Cast<APlayerController>(Controller);
+	APlayerController* PlayerController = Cast<APlayerController>(Controller);
 	if (!PlayerController)
 	{
 		return;
@@ -4251,12 +4334,12 @@ void AOddsWellPlaceholderCharacter::PollStudioInteraction()
 	{
 		return;
 	}
-	const bool bPressed = PlayerController->IsInputKeyDown(KeyInteract);
+	const bool bPressed = bRequested || PlayerController->IsInputKeyDown(KeyInteract);
 	if (!bPressed)
 	{
 		bStudioInteractionArmed = true;
 	}
-	if (!bPressed || !bStudioInteractionArmed || (!bInStudio && !bAtStudioDoor))
+	if (!ShouldTriggerStudioInteraction(bPressed, bStudioInteractionArmed, bInStudio, bAtStudioDoor))
 	{
 		return;
 	}
@@ -4270,14 +4353,25 @@ void AOddsWellPlaceholderCharacter::PollStudioInteraction()
 		UE_LOG(LogOddsWellLocomotion, Error, TEXT("ODDSWELL_STUDIO_TRANSITION|result=FAIL|reason=%s"), *Error);
 		return;
 	}
-	UE_LOG(LogOddsWellLocomotion, Display, TEXT("ODDSWELL_STUDIO_TRANSITION|direction=%s|private=true|visits=false"), bInStudio ? TEXT("to_city") : TEXT("to_studio"));
+	const AGameModeBase* GameMode = GetWorld()->GetAuthGameMode();
+	const bool bReturnToSharedCity = bInStudio
+		&& GameMode
+		&& UGameplayStatics::HasOption(GameMode->OptionsString, SharedStudioReturnOption);
+	UE_LOG(LogOddsWellLocomotion, Display, TEXT("ODDSWELL_STUDIO_TRANSITION|direction=%s|private=true|visits=false|shared_return=%s"), bInStudio ? TEXT("to_city") : TEXT("to_studio"), bReturnToSharedCity ? TEXT("true") : TEXT("false"));
+	if (bReturnToSharedCity)
+	{
+		PlayerController->ClientTravel(BuildSharedStudioReturnUrl(Home.SundaleReturnLocation), TRAVEL_Absolute);
+		return;
+	}
 	UGameplayStatics::OpenLevel(
 		this,
 		FName(bInStudio ? TEXT("/Game/Maps/SundaleGraybox") : TEXT("/Game/Maps/Bootstrap")),
 		true,
 		bInStudio
 			? TEXT("game=/Script/OddsWell.OddsWellLocomotionGameMode")
-			: TEXT("game=/Script/OddsWell.OddsWellStudioGameMode"));
+			: NetMode == NM_Client
+				? TEXT("game=/Script/OddsWell.OddsWellStudioGameMode?SharedStudioReturn=1")
+				: TEXT("game=/Script/OddsWell.OddsWellStudioGameMode"));
 }
 
 void AOddsWellPlaceholderCharacter::PollStadiumInteraction()
@@ -5897,7 +5991,7 @@ void AOddsWellPlaceholderCharacter::RunStudioQa(const float DeltaSeconds)
 			}
 			bStudioQaInteriorStarted = true;
 			StudioQaStartLocation = GetActorLocation();
-			UE_LOG(LogOddsWellLocomotion, Display, TEXT("ODDSWELL_STUDIO_QA_INSIDE|structure=%d|furniture=0|decorations=0|snap_points=1|empty_start=true"), StructuralSurfaces);
+			UE_LOG(LogOddsWellLocomotion, Display, TEXT("ODDSWELL_STUDIO_QA_INSIDE|structure=%d|furniture=0|decorations=0|snap_points=0|empty_start=true"), StructuralSurfaces);
 		}
 		if (bStudioQaInteriorStarted)
 		{
@@ -10603,8 +10697,29 @@ void AOddsWellLocomotionGameMode::PostLogin(APlayerController* NewPlayer)
 	}
 }
 
+FString AOddsWellLocomotionGameMode::InitNewPlayer(
+	APlayerController* NewPlayerController,
+	const FUniqueNetIdRepl& UniqueId,
+	const FString& Options,
+	const FString& Portal)
+{
+	FVector StudioReturnLocation;
+	const bool bStudioReturn = UGameplayStatics::HasOption(Options, StudioReturnOption);
+	if (bStudioReturn && !TryParseSharedStudioReturn(Options, StudioReturnLocation))
+	{
+		return TEXT("Invalid Studio return location.");
+	}
+	const FString Error = Super::InitNewPlayer(NewPlayerController, UniqueId, Options, Portal);
+	if (Error.IsEmpty() && bStudioReturn)
+	{
+		PendingStudioReturnLocations.Add(NewPlayerController, StudioReturnLocation);
+	}
+	return Error;
+}
+
 void AOddsWellLocomotionGameMode::Logout(AController* Exiting)
 {
+	PendingStudioReturnLocations.Remove(Exiting);
 	if (bSharedCityReconnectQa
 		&& !bSharedCityReconnectPassed
 		&& SharedCityReconnectExpectedAppearance.bOwnerSubmitted
@@ -10830,6 +10945,13 @@ APawn* AOddsWellLocomotionGameMode::SpawnDefaultPawnAtTransform_Implementation(A
 	Parameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
 	const int32 PlayerNumber = NextSharedCityPlayerNumber++;
 	FVector SpawnLocation = SafeSpawnLocation + FVector(0.0, SharedCitySpawnSpacing * (PlayerNumber - 1), 0.0);
+	FVector NetworkStudioReturnLocation;
+	if (PendingStudioReturnLocations.RemoveAndCopyValue(NewPlayer, NetworkStudioReturnLocation))
+	{
+		SpawnLocation = NetworkStudioReturnLocation;
+		Parameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+		UE_LOG(LogOddsWellLocomotion, Display, TEXT("ODDSWELL_NETWORK_STUDIO_RETURN_RESTORED|location=%s|exact=true|source=bounded_client_travel_option|external_authority=false"), *SpawnLocation.ToCompactString());
+	}
 	if (GetNetMode() == NM_Standalone)
 	{
 		FOddsWellStudioHomeState Home;
@@ -11010,12 +11132,13 @@ void AOddsWellStudioGameMode::BeginPlay()
 	UE_LOG(
 		LogOddsWellLocomotion,
 		Display,
-		TEXT("ODDSWELL_STUDIO_READY|result=PASS|private=true|visits=false|active_tier=%s|structure=%d|upgrade_surfaces=%d|furniture=%d|furniture_parts=%d|decorations=0|snap_points=1"),
+		TEXT("ODDSWELL_STUDIO_READY|result=PASS|private=true|visits=false|active_tier=%s|structure=%d|upgrade_surfaces=%d|furniture=%d|furniture_parts=%d|decorations=0|snap_points=%d"),
 		bOneBedroomOwned ? TEXT("one_bedroom") : TEXT("studio"),
 		GetEmptyStudioSurfaces().Num() + UpgradeSurfaces,
 		UpgradeSurfaces,
 		bChairOwned && FurnitureParts == GetModularChairParts().Num() ? 1 : 0,
-		FurnitureParts);
+		FurnitureParts,
+		GetActiveStudioSnapPointCount(bChairOwned, FurnitureParts));
 }
 
 APawn* AOddsWellStudioGameMode::SpawnDefaultPawnAtTransform_Implementation(AController* NewPlayer, const FTransform&)
@@ -11095,6 +11218,45 @@ APawn* AOddsWellStadiumGameMode::SpawnDefaultPawnAtTransform_Implementation(ACon
 }
 
 #if WITH_DEV_AUTOMATION_TESTS
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(
+	FOddsWellNetworkClientStudioTransitionTest,
+	"OddsWell.Character.NetworkClientStudioTransition",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+
+bool FOddsWellNetworkClientStudioTransitionTest::RunTest(const FString& Parameters)
+{
+	TestTrue(TEXT("A local standalone owner keeps the existing Studio interaction"), CanUseStudioInteraction(true, NM_Standalone));
+	TestTrue(TEXT("A local network client may use its private Studio interaction"), CanUseStudioInteraction(true, NM_Client));
+	TestFalse(TEXT("A remote network pawn cannot use another player's Studio interaction"), CanUseStudioInteraction(false, NM_Client));
+	TestFalse(TEXT("The listen host cannot consume a network client's private Studio record"), CanUseStudioInteraction(true, NM_ListenServer));
+	TestFalse(TEXT("A dedicated server cannot use a private Studio record"), CanUseStudioInteraction(true, NM_DedicatedServer));
+
+	bool bRapidTapRequested = true;
+	TestTrue(TEXT("A rapid Studio tap is retained until the next poll"), ConsumeStudioInteractionRequest(bRapidTapRequested));
+	TestFalse(TEXT("The same rapid Studio tap is consumed only once"), ConsumeStudioInteractionRequest(bRapidTapRequested));
+	TestTrue(TEXT("The retained rapid tap triggers once at the Studio door"), ShouldTriggerStudioInteraction(true, true, false, true));
+	TestFalse(TEXT("A held Studio key cannot repeat while disarmed"), ShouldTriggerStudioInteraction(true, false, false, true));
+	TestTrue(TEXT("Release and re-arm permit one later Studio action"), ShouldTriggerStudioInteraction(true, true, true, false));
+	TestFalse(TEXT("A retained Studio tap has no effect away from the door and interior"), ShouldTriggerStudioInteraction(true, true, false, false));
+
+	TestTrue(TEXT("One armed press at the Studio boundary triggers once"), ShouldTriggerStudioInteraction(true, true, false, true));
+	TestFalse(TEXT("A held press cannot trigger again before release"), ShouldTriggerStudioInteraction(true, false, false, true));
+	TestFalse(TEXT("Release only rearms and does not trigger"), ShouldTriggerStudioInteraction(false, true, false, true));
+	TestFalse(TEXT("An armed press away from the Studio cannot trigger"), ShouldTriggerStudioInteraction(true, true, false, false));
+
+	const FVector ExpectedReturn(125.25, 75.5, SafeSpawnLocation.Z);
+	const FString ReturnUrl = BuildSharedStudioReturnUrl(ExpectedReturn);
+	TestTrue(TEXT("Private Studio exit targets the accepted loopback shared endpoint"), ReturnUrl.StartsWith(SharedStudioReturnEndpoint));
+	const FString ReturnOptions = ReturnUrl.RightChop(SharedStudioReturnEndpoint.Len());
+	FVector ParsedReturn;
+	TestTrue(TEXT("A complete bounded Studio return is accepted"), TryParseSharedStudioReturn(ReturnOptions, ParsedReturn));
+	TestTrue(TEXT("The exact saved doorway vector round trips"), ParsedReturn.Equals(ExpectedReturn, 0.0));
+	TestFalse(TEXT("A normal join without the one-shot option is not a Studio return"), TryParseSharedStudioReturn(TEXT("?Name=Player"), ParsedReturn));
+	TestFalse(TEXT("A corrupt Studio return is rejected"), TryParseSharedStudioReturn(TEXT("?StudioReturn=1?StudioReturnX=nope?StudioReturnY=0?StudioReturnZ=220"), ParsedReturn));
+	TestFalse(TEXT("An out-of-radius Studio return is rejected"), TryParseSharedStudioReturn(TEXT("?StudioReturn=1?StudioReturnX=1000?StudioReturnY=0?StudioReturnZ=220"), ParsedReturn));
+	return !HasAnyErrors();
+}
+
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
 	FOddsWellStadiumGrayboxTest,
 	"OddsWell.Character.StadiumGraybox",
@@ -12215,6 +12377,9 @@ bool FOddsWellModularChairPurchaseGateTest::RunTest(const FString& Parameters)
 	TestTrue(TEXT("Accepted chair gate clears the error"), Error.IsEmpty());
 	TestEqual(TEXT("The fixed Studio snap id remains exact"), StudioPrimarySnapPointId, FName(TEXT("studio_primary")));
 	TestEqual(TEXT("The Modular Chair remains one three-part graybox item"), GetModularChairParts().Num(), 3);
+	TestEqual(TEXT("A fresh Studio exposes zero active snap points"), GetActiveStudioSnapPointCount(false, 0), 0);
+	TestEqual(TEXT("The purchased chair activates its one fixed snap point"), GetActiveStudioSnapPointCount(true, GetModularChairParts().Num()), 1);
+	TestEqual(TEXT("An incomplete chair cannot activate the fixed snap point"), GetActiveStudioSnapPointCount(true, GetModularChairParts().Num() - 1), 0);
 	TestTrue(TEXT("Chair gray and teal remain visibly distinct"), ModularChairGray != ModularChairTeal);
 	return !HasAnyErrors();
 }

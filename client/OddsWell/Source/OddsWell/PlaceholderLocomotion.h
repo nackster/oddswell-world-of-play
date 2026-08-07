@@ -119,6 +119,7 @@ private:
 	void PollClothingStoreInteraction();
 	void PollFurnitureStoreInteraction();
 	void PollApartmentManagementInteraction();
+	void QueueStudioInteraction();
 	void PollStudioInteraction();
 	void PollStadiumInteraction();
 	void PollSportsbookInteraction();
@@ -315,6 +316,7 @@ private:
 	FVector StudioQaStartLocation = FVector::ZeroVector;
 	float StudioQaElapsed = 0.0f;
 	bool bStudioInteractionArmed = false;
+	bool bStudioInteractionRequested = false;
 	bool bStudioQa = false;
 	bool bStudioQaInteriorStarted = false;
 	bool bStudioPersistenceQa = false;
@@ -478,6 +480,7 @@ public:
 	AOddsWellLocomotionGameMode();
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaSeconds) override;
+	virtual FString InitNewPlayer(APlayerController* NewPlayerController, const FUniqueNetIdRepl& UniqueId, const FString& Options, const FString& Portal = TEXT("")) override;
 	virtual void PostLogin(APlayerController* NewPlayer) override;
 	virtual void Logout(AController* Exiting) override;
 	virtual APawn* SpawnDefaultPawnAtTransform_Implementation(AController* NewPlayer, const FTransform&) override;
@@ -513,6 +516,7 @@ private:
 	void RunSportsbookVoidDecisionQa();
 	void RunSportsbookVoidFinalizationQa();
 	FOddsWellOddsBucksLedger OddsBucksLedger;
+	TMap<TWeakObjectPtr<AController>, FVector> PendingStudioReturnLocations;
 	TMap<int32, FVector> SharedCityQaStartLocations;
 	FOddsWellSharedCityAppearance SharedCityReconnectExpectedAppearance;
 	double SharedCityQaExitAt = 0.0;
