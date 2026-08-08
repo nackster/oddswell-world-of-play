@@ -87,6 +87,8 @@ constexpr float SundaleRouteDistance = 80000.0f;
 constexpr float SundaleWaypointTolerance = 75.0f;
 constexpr float JobInteractionRadius = 350.0f;
 constexpr TCHAR JobInteractionPrompt[] = TEXT("Press E to complete a shift (100 Odds Bucks once every 24 hours)");
+constexpr TCHAR JobCanopyPierAssetPath[] = TEXT("/Game/Art/Pilots/SundaleJobCanopy/SM_JobCanopy_Pier.SM_JobCanopy_Pier");
+constexpr TCHAR JobCanopyHeaderAssetPath[] = TEXT("/Game/Art/Pilots/SundaleJobCanopy/SM_JobCanopy_Header.SM_JobCanopy_Header");
 constexpr float ClothingStoreInteractionRadius = 350.0f;
 constexpr float FurnitureStoreInteractionRadius = 350.0f;
 constexpr float ApartmentManagementInteractionRadius = 350.0f;
@@ -109,6 +111,7 @@ const FName OneBedroomStructureTag(TEXT("OddsWellOneBedroomStructure"));
 const FName ApartmentManagementKioskTag(TEXT("OddsWellApartmentManagementKiosk"));
 const FName SundalePresentationTag(TEXT("OddsWellSundalePresentation"));
 const FName SundaleDestinationIdentityTag(TEXT("OddsWellSundaleDestinationIdentity"));
+const FName SundaleJobCanopyPilotTag(TEXT("OddsWellSundaleJobCanopyPilot"));
 const FName StadiumStructureTag(TEXT("OddsWellStadiumStructure"));
 const FName StadiumZoneTag(TEXT("OddsWellStadiumZone"));
 const FName StadiumPresentationTag(TEXT("OddsWellStadiumPresentation"));
@@ -1146,6 +1149,18 @@ const TArray<FSundalePresentationPartSpec>& GetSundaleJobFrontageParts()
 	return Parts;
 }
 
+const TCHAR* GetSundaleJobCanopyPilotAssetPath(const FName Id)
+{
+	if (Id == FName(TEXT("JobFrontagePierLeft"))
+		|| Id == FName(TEXT("JobFrontagePierRight")))
+	{
+		return JobCanopyPierAssetPath;
+	}
+	return Id == FName(TEXT("JobFrontageHeader"))
+		? JobCanopyHeaderAssetPath
+		: nullptr;
+}
+
 const TArray<FSundalePresentationPartSpec>& GetSundaleArenaEntranceParts()
 {
 	static const TArray<FSundalePresentationPartSpec> Parts = {
@@ -1318,18 +1333,29 @@ void BuildSundalePresentation(UWorld* World)
 	int32 SpawnedParts = 0;
 	auto SpawnPart = [&](const FName Id, const FName Role, const FVector& Location, const FVector& Scale, const FLinearColor& Color, const bool bDestinationIdentity)
 	{
+		const TCHAR* PilotAssetPath = GetSundaleJobCanopyPilotAssetPath(Id);
+		UStaticMesh* Mesh = PilotAssetPath
+			? LoadObject<UStaticMesh>(nullptr, PilotAssetPath)
+			: Cube;
+		if (!Mesh)
+		{
+			return false;
+		}
 		AStaticMeshActor* Actor = World->SpawnActor<AStaticMeshActor>(
 			AStaticMeshActor::StaticClass(),
 			FTransform(FRotator::ZeroRotator, Location, Scale),
 			Parameters);
-		if (!Actor || !Cube)
+		if (!Actor)
 		{
 			return false;
 		}
 		Actor->SetReplicates(false);
 		Actor->SetActorEnableCollision(false);
-		Actor->GetStaticMeshComponent()->SetStaticMesh(Cube);
-		Actor->GetStaticMeshComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		UStaticMeshComponent* Component = Actor->GetStaticMeshComponent();
+		Component->SetStaticMesh(Mesh);
+		Component->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		Component->SetGenerateOverlapEvents(false);
+		Component->SetSimulatePhysics(false);
 		if (BasicShapeMaterial)
 		{
 			if (UMaterialInstanceDynamic* Material = UMaterialInstanceDynamic::Create(BasicShapeMaterial, Actor))
@@ -1343,6 +1369,10 @@ void BuildSundalePresentation(UWorld* World)
 		if (bDestinationIdentity)
 		{
 			Actor->Tags.Add(SundaleDestinationIdentityTag);
+		}
+		if (PilotAssetPath)
+		{
+			Actor->Tags.Add(SundaleJobCanopyPilotTag);
 		}
 		Actor->Tags.Add(Role);
 		Actor->Tags.Add(Id);
@@ -1393,6 +1423,7 @@ void BuildSundalePresentation(UWorld* World)
 	}
 
 	int32 SpawnedJobFrontageParts = 0;
+	int32 SpawnedJobCanopyPilotParts = 0;
 	TSet<FName> SpawnedJobFrontageRoles;
 	for (const FSundalePresentationPartSpec& Part : GetSundaleJobFrontageParts())
 	{
@@ -1400,15 +1431,18 @@ void BuildSundalePresentation(UWorld* World)
 		{
 			++SpawnedJobFrontageParts;
 			SpawnedJobFrontageRoles.Add(Part.Role);
+			SpawnedJobCanopyPilotParts += GetSundaleJobCanopyPilotAssetPath(Part.Id) ? 1 : 0;
 		}
 	}
 	const bool bJobFrontagePassed = SpawnedJobFrontageParts == GetSundaleJobFrontageParts().Num()
-		&& SpawnedJobFrontageRoles.Num() == 4;
+		&& SpawnedJobFrontageRoles.Num() == 4
+		&& SpawnedJobCanopyPilotParts == 3;
 	const FString JobFrontageEvidence = FString::Printf(
-		TEXT("ODDSWELL_SUNDALE_JOB_FRONTAGE|result=%s|parts=%d|roles=%d|anchor_x=%.0f|anchor_y=%.0f|local_only=true|replicated=false|collision=false|native_assets=true|text=false|job_fiction=false|final_art=false"),
+		TEXT("ODDSWELL_SUNDALE_JOB_FRONTAGE|result=%s|parts=%d|roles=%d|pilot_mesh_parts=%d|pilot_assets=2|cube_parts=2|cube_fallback=false|anchor_x=%.0f|anchor_y=%.0f|local_only=true|replicated=false|collision=false|overlap=false|physics=false|native_assets=true|text=false|job_fiction=false|final_art=false"),
 		bJobFrontagePassed ? TEXT("PASS") : TEXT("FAIL"),
 		SpawnedJobFrontageParts,
 		SpawnedJobFrontageRoles.Num(),
+		SpawnedJobCanopyPilotParts,
 		JobInteractionLocation.X,
 		JobInteractionLocation.Y);
 	if (bJobFrontagePassed)
@@ -14522,6 +14556,65 @@ bool FOddsWellSundaleJobFrontageTest::RunTest(const FString& Parameters)
 	TestEqual(TEXT("Job interaction radius remains unchanged"), JobInteractionRadius, 350.0f);
 	TestEqual(TEXT("First Job payout remains unchanged"), GetOddsWellFirstJobPayout(), int64{100});
 	TestEqual(TEXT("Job payout interval remains the rolling 24-hour value"), GetOddsWellJobPayoutIntervalSeconds(), int64{24 * 60 * 60});
+	return !HasAnyErrors();
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(
+	FOddsWellSundaleJobCanopyBlenderPilotTest,
+	"OddsWell.Character.SundaleJobCanopyBlenderPilot",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+
+bool FOddsWellSundaleJobCanopyBlenderPilotTest::RunTest(const FString& Parameters)
+{
+	const TArray<FSundalePresentationPartSpec> ExpectedParts = {
+		{TEXT("JobFrontagePierLeft"), TEXT("pier"), FVector(8900.0, 325.0, 450.0), FVector(0.5, 0.35, 9.0), SundaleCharcoalGray},
+		{TEXT("JobFrontagePierRight"), TEXT("pier"), FVector(10100.0, 325.0, 450.0), FVector(0.5, 0.35, 9.0), SundaleCharcoalGray},
+		{TEXT("JobFrontageHeader"), TEXT("header"), FVector(9500.0, 325.0, 920.0), FVector(12.5, 0.35, 0.4), SundaleBurntOrange},
+		{TEXT("JobFrontageLanding"), TEXT("landing"), FVector(9500.0, 250.0, 13.0), FVector(5.5, 1.5, 0.03), SundaleSandConcrete},
+		{TEXT("JobFrontageApproach"), TEXT("approach"), FVector(9500.0, 80.0, 13.0), FVector(1.4, 2.0, 0.03), SundaleRestrainedCobalt},
+	};
+	const TArray<FSundalePresentationPartSpec>& Parts = GetSundaleJobFrontageParts();
+	TestEqual(TEXT("Job canopy pilot preserves all five frontage parts"), Parts.Num(), ExpectedParts.Num());
+	for (int32 Index = 0; Index < Parts.Num() && Index < ExpectedParts.Num(); ++Index)
+	{
+		TestEqual(*FString::Printf(TEXT("Job frontage id %d remains exact"), Index), Parts[Index].Id, ExpectedParts[Index].Id);
+		TestEqual(*FString::Printf(TEXT("Job frontage role %d remains exact"), Index), Parts[Index].Role, ExpectedParts[Index].Role);
+		TestTrue(*FString::Printf(TEXT("Job frontage transform %d remains exact"), Index),
+			Parts[Index].Location.Equals(ExpectedParts[Index].Location)
+				&& Parts[Index].Scale.Equals(ExpectedParts[Index].Scale));
+		TestTrue(*FString::Printf(TEXT("Job frontage color %d remains exact"), Index),
+			Parts[Index].Color.Equals(ExpectedParts[Index].Color));
+	}
+
+	TestEqual(TEXT("Left pier uses the pier pilot asset"), FString(GetSundaleJobCanopyPilotAssetPath(Parts[0].Id)), FString(JobCanopyPierAssetPath));
+	TestEqual(TEXT("Right pier reuses the same pier pilot asset"), FString(GetSundaleJobCanopyPilotAssetPath(Parts[1].Id)), FString(JobCanopyPierAssetPath));
+	TestEqual(TEXT("Header uses the header pilot asset"), FString(GetSundaleJobCanopyPilotAssetPath(Parts[2].Id)), FString(JobCanopyHeaderAssetPath));
+	TestTrue(TEXT("Landing retains the Engine cube"), GetSundaleJobCanopyPilotAssetPath(Parts[3].Id) == nullptr);
+	TestTrue(TEXT("Approach retains the Engine cube"), GetSundaleJobCanopyPilotAssetPath(Parts[4].Id) == nullptr);
+
+	UStaticMesh* Cube = LoadObject<UStaticMesh>(nullptr, TEXT("/Engine/BasicShapes/Cube.Cube"));
+	UStaticMesh* Pier = LoadObject<UStaticMesh>(nullptr, JobCanopyPierAssetPath);
+	UStaticMesh* Header = LoadObject<UStaticMesh>(nullptr, JobCanopyHeaderAssetPath);
+	TestNotNull(TEXT("Pier pilot asset loads"), Pier);
+	TestNotNull(TEXT("Header pilot asset loads"), Header);
+	if (!Pier || !Header)
+	{
+		return false;
+	}
+	TestTrue(TEXT("Pier has no Engine-cube fallback"), Pier != Cube);
+	TestTrue(TEXT("Header has no Engine-cube fallback"), Header != Cube);
+	TestTrue(TEXT("Pier retains normalized one-meter source bounds"), Pier->GetBounds().BoxExtent.Equals(FVector(50.0), 0.1));
+	TestTrue(TEXT("Header retains normalized one-meter source bounds"), Header->GetBounds().BoxExtent.Equals(FVector(50.0), 0.1));
+#if WITH_EDITOR
+	TestEqual(TEXT("Pier retains one UV channel"), Pier->GetNumUVChannels(0), 1);
+	TestEqual(TEXT("Header retains one UV channel"), Header->GetNumUVChannels(0), 1);
+#endif
+	TestEqual(TEXT("Pier retains one material slot"), Pier->GetStaticMaterials().Num(), 1);
+	TestEqual(TEXT("Header retains one material slot"), Header->GetStaticMaterials().Num(), 1);
+	TestEqual(TEXT("Pier imported triangle count matches source manifest"), Pier->GetNumTriangles(0), 44);
+	TestEqual(TEXT("Header imported triangle count matches source manifest"), Header->GetNumTriangles(0), 44);
+	TestTrue(TEXT("Combined Job canopy pilot remains within 512 triangles"),
+		Pier->GetNumTriangles(0) + Header->GetNumTriangles(0) <= 512);
 	return !HasAnyErrors();
 }
 

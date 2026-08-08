@@ -1,0 +1,43 @@
+{
+  "asset_status": "noncanonical_pilot",
+  "blender_version": "4.5.5 LTS",
+  "combined_triangles": 88,
+  "external_references": [],
+  "license": "Original OddsWell project asset; no external source material",
+  "objects": {
+    "SM_JobCanopy_Header": {
+      "bounds_m": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "fbx": "SM_JobCanopy_Header.fbx",
+      "fbx_sha256": "8C2C42F0605BBAD69D6D33D07973FF1A4FF6643688823B2BB377E213A59C7D94",
+      "material_slots": 1,
+      "triangles": 44,
+      "uv_channels": 1,
+      "vertices": 24
+    },
+    "SM_JobCanopy_Pier": {
+      "bounds_m": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "fbx": "SM_JobCanopy_Pier.fbx",
+      "fbx_sha256": "F80F8ADA046BF6198639A6BC3B20136776D5BDA36D91E546CE3FD20320A47221",
+      "material_slots": 1,
+      "triangles": 44,
+      "uv_channels": 1,
+      "vertices": 24
+    }
+  },
+  "source": {
+    "blend": "SundaleJobCanopy.blend",
+    "blend_sha256": "D836A407054FB8C338D68E354283ACCBC2AC742EC78A64CCBB3BE7FF100BC9F6",
+    "script": "build_job_canopy.py",
+    "script_sha256": "301EEDE1B3578CAFD186F89E5D2D76E4B4A632C570FD6600E61DFC7851AC1E96"
+  },
+  "unit_scale_m": 1.0,
+  "unit_system": "METRIC"
+}
