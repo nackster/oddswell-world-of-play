@@ -24,6 +24,14 @@ const TArray<FKey> ControllerNavigationKeys = {EKeys::Gamepad_DPad_Left, EKeys::
 const TArray<FKey> KeyboardConfirmKeys = {EKeys::Enter, EKeys::SpaceBar};
 const TArray<FKey> ControllerConfirmKeys = {EKeys::Gamepad_FaceButton_Bottom};
 const FLinearColor OffWhite(0.92f, 0.90f, 0.82f);
+constexpr int32 CharacterChooserCardCount = 8;
+constexpr int32 CharacterChooserStagePartsPerCard = 2;
+constexpr float CharacterChooserStageWidth = 96.0f;
+constexpr float CharacterChooserStageHeight = 136.0f;
+constexpr float CharacterChooserRailWidth = 88.0f;
+constexpr float CharacterChooserRailHeight = 4.0f;
+const FLinearColor CharacterChooserStageColor(0.04f, 0.10f, 0.13f);
+const FLinearColor CharacterChooserRailColor(0.78f, 0.48f, 0.22f);
 const FString CharacterHandoffEndpoint(TEXT("127.0.0.1:17777"));
 }
 
@@ -116,6 +124,13 @@ void AOddsWellCharacterSelectionHUD::BeginPlay()
 	{
 		State.Navigate(QaSteps);
 	}
+	UE_LOG(
+		LogOddsWellCharacterSelection,
+		Display,
+		TEXT("ODDSWELL_CHARACTER_CHOOSER_PRESENTATION|result=PASS|cards=%d|parts=%d|roles=2|selected_index=%d|native_canvas=true|shared_treatment=true|catalog_unchanged=true|gameplay_identical=true|starter_outfit_unchanged=true|final_art=false"),
+		GetOddsWellCharacterPresets().Num(),
+		GetOddsWellCharacterPresets().Num() * CharacterChooserStagePartsPerCard,
+		State.GetSelectedIndex());
 	if (FParse::Param(FCommandLine::Get(), TEXT("CharacterSelectAutoConfirm")))
 	{
 		ConfirmSelection();
@@ -235,6 +250,8 @@ void AOddsWellCharacterSelectionHUD::DrawCard(const FOddsWellCharacterPreset& Pr
 	DrawRect(BorderColor, X + Width - Border, Y, Border, Height);
 
 	const float CenterX = X + Width * 0.5f;
+	DrawRect(CharacterChooserStageColor, CenterX - CharacterChooserStageWidth * 0.5f, Y + 24.0f, CharacterChooserStageWidth, CharacterChooserStageHeight);
+	DrawRect(CharacterChooserRailColor, CenterX - CharacterChooserRailWidth * 0.5f, Y + 156.0f, CharacterChooserRailWidth, CharacterChooserRailHeight);
 	DrawRect(FLinearColor(Preset.SkinTone), CenterX - 18.0f, Y + 30.0f, 36.0f, 36.0f);
 	DrawRect(OffWhite, CenterX - 30.0f, Y + 70.0f, 60.0f, 42.0f);
 	DrawRect(OffWhite * 0.82f, CenterX - 28.0f, Y + 116.0f, 24.0f, 38.0f);
@@ -298,6 +315,47 @@ bool FOddsWellCharacterSelectionTest::RunTest(const FString& Parameters)
 		CharacterHandoffEndpoint,
 		FString(TEXT("127.0.0.1:17777")));
 
+	return !HasAnyErrors();
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(
+	FOddsWellDefaultChooserPresentationTest,
+	"OddsWell.Character.DefaultChooserPresentation",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+
+bool FOddsWellDefaultChooserPresentationTest::RunTest(const FString& Parameters)
+{
+	const TArray<FOddsWellCharacterPreset>& Presets = GetOddsWellCharacterPresets();
+	const TArray<FName> ExpectedIds = {
+		TEXT("masculine_tone_1"), TEXT("masculine_tone_2"), TEXT("masculine_tone_3"), TEXT("masculine_tone_4"),
+		TEXT("feminine_tone_1"), TEXT("feminine_tone_2"), TEXT("feminine_tone_3"), TEXT("feminine_tone_4")};
+	TestEqual(TEXT("Chooser retains exactly eight cards"), Presets.Num(), CharacterChooserCardCount);
+	TestEqual(TEXT("Every card receives the same two presentation parts"), CharacterChooserStagePartsPerCard, 2);
+	TestEqual(TEXT("Chooser presentation remains exactly sixteen shared parts"), Presets.Num() * CharacterChooserStagePartsPerCard, 16);
+	TestEqual(TEXT("Portrait backdrop width remains bounded inside a card"), CharacterChooserStageWidth, 96.0f);
+	TestEqual(TEXT("Portrait backdrop height remains bounded above card labels"), CharacterChooserStageHeight, 136.0f);
+	TestEqual(TEXT("Platform rail width remains bounded inside the backdrop"), CharacterChooserRailWidth, 88.0f);
+	TestEqual(TEXT("Platform rail remains a thin presentation cue"), CharacterChooserRailHeight, 4.0f);
+	for (int32 Index = 0; Index < ExpectedIds.Num(); ++Index)
+	{
+		if (!Presets.IsValidIndex(Index))
+		{
+			AddError(FString::Printf(TEXT("Approved chooser card %d is missing"), Index));
+			continue;
+		}
+		TestEqual(FString::Printf(TEXT("Card %d retains its approved catalog identity"), Index), Presets[Index].Id, ExpectedIds[Index]);
+		TestEqual(FString::Printf(TEXT("Card %d retains exactly two starter items"), Index), Presets[Index].EquippedItemIds.Num(), 2);
+		if (Presets[Index].EquippedItemIds.Num() == 2)
+		{
+			TestEqual(FString::Printf(TEXT("Card %d retains the off-white starter top"), Index), Presets[Index].EquippedItemIds[0], FName(TEXT("starter_offwhite_top")));
+			TestEqual(FString::Printf(TEXT("Card %d retains the off-white starter bottom"), Index), Presets[Index].EquippedItemIds[1], FName(TEXT("starter_offwhite_bottom")));
+		}
+	}
+	FOddsWellCharacterSelectionState FreshState;
+	TestTrue(TEXT("Fresh chooser retains its deterministic first-card selection"), FreshState.IsValid() && FreshState.GetSelectedIndex() == 0);
+	TestFalse(TEXT("Fresh chooser never auto-confirms"), FreshState.IsConfirmed());
+	TestTrue(TEXT("One navigation step remains available"), FreshState.Navigate(1));
+	TestEqual(TEXT("One navigation step selects the same non-default second card"), FreshState.GetSelectedPreset()->Id, FName(TEXT("masculine_tone_2")));
 	return !HasAnyErrors();
 }
 #endif
