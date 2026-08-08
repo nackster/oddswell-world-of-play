@@ -137,6 +137,14 @@ constexpr float TicketBoothCompactPanelGap = 14.0f;
 constexpr float TicketBoothCompactSidePadding = 24.0f;
 constexpr float TicketBoothCompactMarketInset = 12.0f;
 constexpr float TicketBoothCompactCardHeight = 104.0f;
+constexpr float SettledReceiptMaxWidth = 720.0f;
+constexpr float SettledReceiptNormalHeight = 520.0f;
+constexpr float SettledReceiptCompactHeight = 468.0f;
+constexpr float SettledReceiptNormalLineStart = 38.0f;
+constexpr float SettledReceiptCompactLineStart = 24.0f;
+constexpr float SettledReceiptNormalLineSpacing = 48.0f;
+constexpr float SettledReceiptCompactLineSpacing = 42.0f;
+constexpr int32 SettledReceiptPresentationPartCount = 5;
 FVector StadiumCityReturnLocation = StadiumEntranceThreshold + FVector(0.0, -100.0, SafeSpawnLocation.Z);
 const FVector StadiumInteriorSpawn(-1600.0, 0.0, 220.0);
 const FVector StadiumReplayOrigin(350.0, 0.0, 0.0);
@@ -149,9 +157,51 @@ bool bJobPresentationQaCaptured = false;
 bool bArenaPresentationQaCaptured = false;
 int32 TicketBoothPresentationQaStage = 0;
 bool bTicketBoothCompactLayoutQaLogged = false;
+bool bSettledReceiptPresentationQaLogged = false;
 bool bClothingStorePresentationQaCaptured = false;
 bool bFurnitureStorePresentationQaCaptured = false;
 bool bApartmentManagementPresentationQaCaptured = false;
+
+struct FSettledReceiptPresentationLayout
+{
+	bool bCompact = false;
+	float Width = 0.0f;
+	float Height = 0.0f;
+	float X = 0.0f;
+	float Y = 0.0f;
+	float LineStart = 0.0f;
+	float LineSpacing = 0.0f;
+	float HeaderHeight = 0.0f;
+	float SettlementY = 0.0f;
+	float SettlementHeight = 0.0f;
+	float FooterY = 0.0f;
+};
+
+FSettledReceiptPresentationLayout BuildSettledReceiptPresentationLayout(
+	const float CanvasWidth,
+	const float CanvasHeight)
+{
+	FSettledReceiptPresentationLayout Layout;
+	Layout.bCompact = CanvasWidth <= TicketBoothCompactCanvasWidth
+		|| CanvasHeight <= TicketBoothCompactCanvasHeight;
+	Layout.Width = FMath::Min(SettledReceiptMaxWidth, CanvasWidth - 56.0f);
+	Layout.Height = Layout.bCompact
+		? FMath::Min(SettledReceiptCompactHeight, CanvasHeight - 32.0f)
+		: SettledReceiptNormalHeight;
+	Layout.X = (CanvasWidth - Layout.Width) * 0.5f;
+	Layout.Y = (CanvasHeight - Layout.Height) * 0.5f;
+	Layout.LineStart = Layout.bCompact
+		? SettledReceiptCompactLineStart
+		: SettledReceiptNormalLineStart;
+	Layout.LineSpacing = Layout.bCompact
+		? SettledReceiptCompactLineSpacing
+		: SettledReceiptNormalLineSpacing;
+	Layout.HeaderHeight = Layout.bCompact ? 62.0f : 78.0f;
+	Layout.SettlementY = Layout.bCompact ? 218.0f : 264.0f;
+	Layout.SettlementHeight = Layout.bCompact ? 126.0f : 142.0f;
+	Layout.FooterY = Layout.bCompact ? 348.0f : 410.0f;
+	return Layout;
+}
 
 bool CanUseStudioInteraction(const bool bLocallyControlled, const ENetMode NetMode)
 {
@@ -7819,18 +7869,41 @@ void AOddsWellSportsbookHUD::DrawTicketBoothUnavailableMenu()
 void AOddsWellSportsbookHUD::DrawTicketBoothSettledLossReceipt(
 	const FOddsWellCanonicalSettledLossReceipt& Receipt)
 {
-	const float Width = FMath::Min(720.0f, Canvas->SizeX - 56.0f);
-	const float Height = 520.0f;
-	const float X = (Canvas->SizeX - Width) * 0.5f;
-	const float Y = (Canvas->SizeY - Height) * 0.5f;
+	const FSettledReceiptPresentationLayout Layout =
+		BuildSettledReceiptPresentationLayout(Canvas->SizeX, Canvas->SizeY);
+	const FLinearColor Navy(0.025f, 0.055f, 0.08f, 0.985f);
+	const FLinearColor DeepNavy(0.018f, 0.038f, 0.058f, 1.0f);
+	const FLinearColor SettlementBand(0.055f, 0.13f, 0.16f, 1.0f);
+	const FLinearColor Teal(0.20f, 0.75f, 0.68f, 1.0f);
+	const FLinearColor Gold(0.96f, 0.78f, 0.30f, 1.0f);
 	DrawRect(
 		FLinearColor(0.0f, 0.0f, 0.0f, 0.62f),
 		0.0f,
 		0.0f,
 		Canvas->SizeX,
 		Canvas->SizeY);
-	DrawRect(FLinearColor(0.025f, 0.055f, 0.08f, 0.985f), X, Y, Width, Height);
-	DrawRect(FLinearColor(0.96f, 0.78f, 0.30f, 1.0f), X, Y, Width, 5.0f);
+	DrawRect(Navy, Layout.X, Layout.Y, Layout.Width, Layout.Height);
+	DrawRect(DeepNavy, Layout.X, Layout.Y, Layout.Width, Layout.HeaderHeight);
+	DrawRect(Teal, Layout.X, Layout.Y + Layout.HeaderHeight - 3.0f, Layout.Width, 3.0f);
+	DrawRect(Gold, Layout.X, Layout.Y, Layout.Width, 5.0f);
+	DrawRect(
+		SettlementBand,
+		Layout.X + 26.0f,
+		Layout.Y + Layout.SettlementY,
+		Layout.Width - 52.0f,
+		Layout.SettlementHeight);
+	DrawRect(
+		Teal,
+		Layout.X + 26.0f,
+		Layout.Y + Layout.SettlementY,
+		5.0f,
+		Layout.SettlementHeight);
+	DrawRect(
+		DeepNavy,
+		Layout.X,
+		Layout.Y + Layout.FooterY,
+		Layout.Width,
+		Layout.Height - Layout.FooterY);
 	TArray<FString> Lines;
 	BuildCanonicalSettledLossReceiptText(Receipt).ParseIntoArrayLines(
 		Lines,
@@ -7840,12 +7913,34 @@ void AOddsWellSportsbookHUD::DrawTicketBoothSettledLossReceipt(
 		DrawText(
 			Lines[Index],
 			Index == 0
-				? FLinearColor(0.96f, 0.78f, 0.30f, 1.0f)
+				? Gold
 				: FLinearColor::White,
-			X + 42.0f,
-			Y + 38.0f + Index * 48.0f,
+			Layout.X + 42.0f,
+			Layout.Y + Layout.LineStart + Index * Layout.LineSpacing,
 			nullptr,
 			Index == 0 ? 1.55f : 1.08f);
+	}
+
+	if (FParse::Param(FCommandLine::Get(), TEXT("CanonicalSettledLossReceiptQa"))
+		&& !bSettledReceiptPresentationQaLogged)
+	{
+		const bool bFullyBounded = Layout.X >= 0.0f
+			&& Layout.Y >= 0.0f
+			&& Layout.X + Layout.Width <= Canvas->SizeX
+			&& Layout.Y + Layout.Height <= Canvas->SizeY;
+		UE_LOG(
+			LogOddsWellLocomotion,
+			Display,
+			TEXT("ODDSWELL_SETTLED_RECEIPT_PRESENTATION|result=%s|native_canvas=true|presentation_parts=%d|content_lines=9|compact=%s|canvas=%dx%d|panel=%.0fx%.0f|fully_bounded=%s|text_source=canonical_unchanged|animation=false"),
+			bFullyBounded ? TEXT("PASS") : TEXT("FAIL"),
+			SettledReceiptPresentationPartCount,
+			Layout.bCompact ? TEXT("true") : TEXT("false"),
+			Canvas->SizeX,
+			Canvas->SizeY,
+			Layout.Width,
+			Layout.Height,
+			bFullyBounded ? TEXT("true") : TEXT("false"));
+		bSettledReceiptPresentationQaLogged = true;
 	}
 }
 
@@ -13802,6 +13897,61 @@ bool FOddsWellTicketBoothCompactLayoutTest::RunTest(const FString& Parameters)
 	TestEqual(TEXT("Compact layout does not change the Ticket Booth interaction radius"), SportsbookInteractionRadius, 350.0f);
 	TestEqual(TEXT("Compact layout does not change the Ticket Booth prompt"), FString(TicketBoothOpenPrompt), FString(TEXT("Press E to open betting odds")));
 	TestEqual(TEXT("Compact layout retains four market pages"), TicketBoothMarketPageCount, 4);
+	return !HasAnyErrors();
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(
+	FOddsWellSettledWagerReceiptPresentationTest,
+	"OddsWell.Character.SettledWagerReceiptPresentation",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+
+bool FOddsWellSettledWagerReceiptPresentationTest::RunTest(
+	const FString& Parameters)
+{
+	const FSettledReceiptPresentationLayout Standard =
+		BuildSettledReceiptPresentationLayout(1280.0f, 720.0f);
+	const FSettledReceiptPresentationLayout Compact =
+		BuildSettledReceiptPresentationLayout(888.0f, 500.0f);
+	TestFalse(TEXT("A 1280x720 settled receipt keeps the existing standard path"), Standard.bCompact);
+	TestEqual(TEXT("The standard settled receipt keeps its existing width"), Standard.Width, 720.0f);
+	TestEqual(TEXT("The standard settled receipt keeps its existing height"), Standard.Height, 520.0f);
+	TestTrue(TEXT("The 888x500 settled receipt uses the bounded compact path"), Compact.bCompact);
+	TestEqual(TEXT("The compact settled receipt stays sixteen pixels from top and bottom"), Compact.Y, 16.0f);
+	TestEqual(TEXT("The compact settled receipt keeps the bounded height"), Compact.Height, 468.0f);
+	TestTrue(TEXT("All nine compact receipt lines remain inside the panel"),
+		Compact.LineStart + 8.0f * Compact.LineSpacing < Compact.FooterY + Compact.Height - Compact.FooterY);
+	TestTrue(TEXT("The settlement band finishes before the close footer"),
+		Compact.SettlementY + Compact.SettlementHeight < Compact.FooterY);
+	TestEqual(TEXT("Receipt presentation adds only five native hierarchy shapes"), SettledReceiptPresentationPartCount, 5);
+
+	FOddsWellCanonicalSettledLossReceipt Receipt;
+	Receipt.Outcome = FName(TEXT("won"));
+	Receipt.SelectedTeam = TEXT("Mesa Vista Sol");
+	Receipt.HomeTeam = TEXT("Harbor City Waves");
+	Receipt.AwayTeam = TEXT("Mesa Vista Sol");
+	Receipt.Winner = TEXT("Mesa Vista Sol");
+	Receipt.Stake = 40;
+	Receipt.HomeScore = 79;
+	Receipt.AwayScore = 113;
+	Receipt.Returned = 94;
+	Receipt.Net = 54;
+	Receipt.LedgerEntryCount = 3;
+	Receipt.CurrentBalance = 154;
+	TArray<FString> Lines;
+	BuildCanonicalSettledLossReceiptText(Receipt).ParseIntoArrayLines(Lines, false);
+	const TArray<FString> ExpectedLines = {
+		TEXT("BET SETTLED \u2014 WIN"),
+		TEXT("Mesa Vista Sol selected"),
+		TEXT("Stake 40 Odds Bucks"),
+		TEXT("Final Harbor 79\u2013113 Mesa"),
+		TEXT("Winner Mesa Vista Sol"),
+		TEXT("Returned 94"),
+		TEXT("Net +54"),
+		TEXT("Balance 154"),
+		TEXT("E or ESC: CLOSE"),
+	};
+	TestEqual(TEXT("Settled receipt keeps exactly nine canonical lines"), Lines.Num(), ExpectedLines.Num());
+	TestTrue(TEXT("Settled receipt presentation changes no canonical wording or value"), Lines == ExpectedLines);
 	return !HasAnyErrors();
 }
 
