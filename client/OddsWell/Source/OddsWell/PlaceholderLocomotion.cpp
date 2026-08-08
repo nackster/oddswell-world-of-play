@@ -151,6 +151,7 @@ int32 TicketBoothPresentationQaStage = 0;
 bool bTicketBoothCompactLayoutQaLogged = false;
 bool bClothingStorePresentationQaCaptured = false;
 bool bFurnitureStorePresentationQaCaptured = false;
+bool bApartmentManagementPresentationQaCaptured = false;
 
 bool CanUseStudioInteraction(const bool bLocallyControlled, const ENetMode NetMode)
 {
@@ -974,6 +975,18 @@ const TArray<FSundalePresentationPartSpec>& GetSundaleFurnitureStoreFrontagePart
 	return Parts;
 }
 
+const TArray<FSundalePresentationPartSpec>& GetSundaleApartmentManagementPresentationParts()
+{
+	static const TArray<FSundalePresentationPartSpec> Parts = {
+		{TEXT("ApartmentManagementPresentationPostLeft"), TEXT("post"), FVector(-300.0, 800.0, 300.0), FVector(0.45, 0.55, 6.0), SundaleCharcoalGray},
+		{TEXT("ApartmentManagementPresentationPostRight"), TEXT("post"), FVector(300.0, 800.0, 300.0), FVector(0.45, 0.55, 6.0), SundaleCharcoalGray},
+		{TEXT("ApartmentManagementPresentationHeader"), TEXT("header"), FVector(0.0, 800.0, 610.0), FVector(6.2, 0.55, 0.4), SundaleSageGreen},
+		{TEXT("ApartmentManagementPresentationThreshold"), TEXT("threshold"), FVector(0.0, 700.0, 13.0), FVector(4.0, 1.2, 0.03), SundaleWarmLimestone},
+		{TEXT("ApartmentManagementPresentationApproach"), TEXT("approach"), FVector(0.0, 350.0, 13.0), FVector(1.3, 3.5, 0.03), SundaleBurntOrange},
+	};
+	return Parts;
+}
+
 struct FSundaleAtmosphereSpec
 {
 	float DirectionalIntensity;
@@ -1298,6 +1311,35 @@ void BuildSundalePresentation(UWorld* World)
 	else
 	{
 		UE_LOG(LogOddsWellLocomotion, Error, TEXT("%s"), *FurnitureStoreFrontageEvidence);
+	}
+
+	int32 SpawnedApartmentManagementPresentationParts = 0;
+	TSet<FName> SpawnedApartmentManagementPresentationRoles;
+	for (const FSundalePresentationPartSpec& Part : GetSundaleApartmentManagementPresentationParts())
+	{
+		if (SpawnPart(Part.Id, Part.Role, Part.Location, Part.Scale, Part.Color, false))
+		{
+			++SpawnedApartmentManagementPresentationParts;
+			SpawnedApartmentManagementPresentationRoles.Add(Part.Role);
+		}
+	}
+	const bool bApartmentManagementPresentationPassed =
+		SpawnedApartmentManagementPresentationParts == GetSundaleApartmentManagementPresentationParts().Num()
+		&& SpawnedApartmentManagementPresentationRoles.Num() == 4;
+	const FString ApartmentManagementPresentationEvidence = FString::Printf(
+		TEXT("ODDSWELL_SUNDALE_APARTMENT_MANAGEMENT_PRESENTATION|result=%s|parts=%d|roles=%d|anchor_x=%.0f|anchor_y=%.0f|local_only=true|replicated=false|collision=false|native_assets=true|text=false|tiers_added=false|layouts_added=false|snap_points_added=false|final_art=false"),
+		bApartmentManagementPresentationPassed ? TEXT("PASS") : TEXT("FAIL"),
+		SpawnedApartmentManagementPresentationParts,
+		SpawnedApartmentManagementPresentationRoles.Num(),
+		ApartmentManagementInteractionLocation.X,
+		ApartmentManagementInteractionLocation.Y);
+	if (bApartmentManagementPresentationPassed)
+	{
+		UE_LOG(LogOddsWellLocomotion, Display, TEXT("%s"), *ApartmentManagementPresentationEvidence);
+	}
+	else
+	{
+		UE_LOG(LogOddsWellLocomotion, Error, TEXT("%s"), *ApartmentManagementPresentationEvidence);
 	}
 }
 
@@ -3720,6 +3762,27 @@ void AOddsWellPlaceholderCharacter::RunOneBedroomUpgradeQa(
 			UE_LOG(LogOddsWellLocomotion, Error, TEXT("ODDSWELL_ONE_BEDROOM_QA|result=FAIL|reason=unexpected_starting_state|detail=%s"), *Error);
 			bOneBedroomUpgradeQaLogged = true;
 			QaExitAt = FPlatformTime::Seconds() + 1.0;
+			return;
+		}
+		if (FParse::Param(FCommandLine::Get(), TEXT("ApartmentManagementPresentationQa"))
+			&& !bApartmentManagementPresentationQaCaptured)
+		{
+			SetActorLocation(
+				ApartmentManagementInteractionLocation + FVector(0.0, -1400.0, SafeSpawnLocation.Z),
+				false,
+				nullptr,
+				ETeleportType::TeleportPhysics);
+			PlayerController->SetControlRotation(FRotator(0.0f, 90.0f, 0.0f));
+			if (GEngine)
+			{
+				GEngine->ClearOnScreenDebugMessages();
+			}
+			FScreenshotRequest::RequestScreenshot(TEXT("Phase1L1l_ApartmentManagementKiosk.png"), true, false);
+			UE_LOG(
+				LogOddsWellLocomotion,
+				Display,
+				TEXT("ODDSWELL_APARTMENT_MANAGEMENT_PRESENTATION_QA|result=PASS|fixed_view=true|manual_input=false|housing_logic_changed=false|tiers_added=false|layouts_added=false|snap_points_added=false|final_art=false"));
+			bApartmentManagementPresentationQaCaptured = true;
 			return;
 		}
 		SetActorLocation(FVector(FurnitureStoreInteractionLocation.X, FurnitureStoreInteractionLocation.Y, GetActorLocation().Z), false, nullptr, ETeleportType::TeleportPhysics);
@@ -13566,6 +13629,55 @@ bool FOddsWellSundaleFurnitureStoreFrontageTest::RunTest(const FString& Paramete
 	TestEqual(TEXT("Owned complete chair retains studio_primary only"), GetActiveStudioSnapPointCount(true, GetModularChairParts().Num()), 1);
 	TestEqual(TEXT("Modular Chair snap point id remains unchanged"), StudioPrimarySnapPointId, FName(TEXT("studio_primary")));
 	TestTrue(TEXT("Modular Chair gray and teal presentation remains distinct"), ModularChairGray != ModularChairTeal);
+	return !HasAnyErrors();
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(
+	FOddsWellSundaleApartmentManagementPresentationTest,
+	"OddsWell.Character.SundaleApartmentManagementPresentation",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+
+bool FOddsWellSundaleApartmentManagementPresentationTest::RunTest(const FString& Parameters)
+{
+	const TArray<FSundalePresentationPartSpec>& Parts = GetSundaleApartmentManagementPresentationParts();
+	TestEqual(TEXT("Apartment Management presentation remains bounded to five native parts"), Parts.Num(), 5);
+	const TArray<FName> ExpectedIds = {
+		TEXT("ApartmentManagementPresentationPostLeft"),
+		TEXT("ApartmentManagementPresentationPostRight"),
+		TEXT("ApartmentManagementPresentationHeader"),
+		TEXT("ApartmentManagementPresentationThreshold"),
+		TEXT("ApartmentManagementPresentationApproach"),
+	};
+	const TArray<FLinearColor> ApprovedPalette = {
+		SundaleWarmLimestone,
+		SundaleSageGreen,
+		SundaleBurntOrange,
+		SundaleCharcoalGray,
+	};
+	TMap<FName, int32> RoleCounts;
+	TSet<FName> Ids;
+	for (const FSundalePresentationPartSpec& Part : Parts)
+	{
+		++RoleCounts.FindOrAdd(Part.Role);
+		Ids.Add(Part.Id);
+		TestTrue(*FString::Printf(TEXT("%s remains an approved Apartment Management presentation id"), *Part.Id.ToString()), ExpectedIds.Contains(Part.Id));
+		TestTrue(*FString::Printf(TEXT("%s keeps positive scale"), *Part.Id.ToString()), Part.Scale.GetMin() > 0.0);
+		TestTrue(*FString::Printf(TEXT("%s stays at the existing Apartment Management kiosk"), *Part.Id.ToString()), FVector::Dist2D(Part.Location, ApartmentManagementInteractionLocation) <= 1500.0 && Part.Location.Z > 0.0 && Part.Location.Z <= 700.0);
+		TestTrue(*FString::Printf(TEXT("%s uses the approved palette"), *Part.Id.ToString()), ApprovedPalette.Contains(Part.Color));
+	}
+	TestEqual(TEXT("Every Apartment Management presentation part id remains unique"), Ids.Num(), Parts.Num());
+	TestEqual(TEXT("Apartment Management presentation uses exactly four roles"), RoleCounts.Num(), 4);
+	TestEqual(TEXT("Apartment Management presentation keeps two framing posts"), RoleCounts.FindRef(FName(TEXT("post"))), 2);
+	TestEqual(TEXT("Apartment Management presentation keeps one header"), RoleCounts.FindRef(FName(TEXT("header"))), 1);
+	TestEqual(TEXT("Apartment Management presentation keeps one threshold"), RoleCounts.FindRef(FName(TEXT("threshold"))), 1);
+	TestEqual(TEXT("Apartment Management presentation keeps one approach band"), RoleCounts.FindRef(FName(TEXT("approach"))), 1);
+	TestTrue(TEXT("Apartment Management remains at its exact anchor"), ApartmentManagementInteractionLocation.Equals(FVector(0.0, 800.0, 0.0)));
+	TestEqual(TEXT("Apartment Management interaction radius remains unchanged"), ApartmentManagementInteractionRadius, 350.0f);
+	TestEqual(TEXT("Apartment Management remains a two-part functional kiosk"), GetApartmentManagementKioskParts().Num(), 2);
+	TestEqual(TEXT("One-bedroom tier id remains unchanged"), GetOddsWellOneBedroomTierId(), FString(TEXT("one_bedroom")));
+	TestEqual(TEXT("One-bedroom price remains unchanged"), GetOddsWellOneBedroomUpgradePrice(), int64{500});
+	TestEqual(TEXT("One-bedroom remains an in-place three-part partition"), GetOneBedroomUpgradeSurfaces().Num(), 3);
+	TestEqual(TEXT("Modular Chair remains at studio_primary"), StudioPrimarySnapPointId, FName(TEXT("studio_primary")));
 	return !HasAnyErrors();
 }
 
