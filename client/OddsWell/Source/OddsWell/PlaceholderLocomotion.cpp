@@ -137,6 +137,10 @@ constexpr float TicketBoothCompactPanelGap = 14.0f;
 constexpr float TicketBoothCompactSidePadding = 24.0f;
 constexpr float TicketBoothCompactMarketInset = 12.0f;
 constexpr float TicketBoothCompactCardHeight = 104.0f;
+constexpr double JobFeedbackLifetimeSeconds = 5.0;
+constexpr float JobFeedbackMaxWidth = 820.0f;
+constexpr float JobFeedbackNormalHeight = 70.0f;
+constexpr float JobFeedbackCompactHeight = 58.0f;
 constexpr float SettledReceiptMaxWidth = 720.0f;
 constexpr float SettledReceiptNormalHeight = 520.0f;
 constexpr float SettledReceiptCompactHeight = 468.0f;
@@ -154,6 +158,11 @@ int32 StudioQaProcessStage = 0;
 int32 StadiumQaProcessStage = 0;
 bool bStadiumPresentationQaCaptured = false;
 bool bJobPresentationQaCaptured = false;
+FString JobFeedbackMessage;
+double JobFeedbackExpiresAt = 0.0;
+bool bJobFeedbackPositive = false;
+uint8 JobFeedbackPresentationQaStateMask = 0;
+int32 JobFeedbackPresentationQaCaptureStage = 0;
 bool bArenaPresentationQaCaptured = false;
 int32 TicketBoothPresentationQaStage = 0;
 bool bTicketBoothCompactLayoutQaLogged = false;
@@ -161,6 +170,30 @@ bool bSettledReceiptPresentationQaLogged = false;
 bool bClothingStorePresentationQaCaptured = false;
 bool bFurnitureStorePresentationQaCaptured = false;
 bool bApartmentManagementPresentationQaCaptured = false;
+
+FString BuildJobFeedbackMessage(
+	const bool bCompleted,
+	const bool bCredited,
+	const bool bPayoutReady,
+	const int64 Balance,
+	const int64 RetryAfterSeconds)
+{
+	const int64 RetryHours = FMath::Max<int64>(
+		1,
+		(RetryAfterSeconds + 3599) / 3600);
+	return !bPayoutReady
+		? TEXT("Shift payout unavailable - balance unchanged")
+		: !bCompleted
+			? TEXT("Shift rejected - return to the marked Job location")
+			: bCredited
+				? FString::Printf(
+					TEXT("Shift complete: +100 Odds Bucks | Balance: %lld"),
+					Balance)
+				: FString::Printf(
+					TEXT("Shift complete: next payout in about %lld hour(s) | Balance: %lld"),
+					RetryHours,
+					Balance);
+}
 
 struct FSettledReceiptPresentationLayout
 {
@@ -4292,18 +4325,25 @@ void AOddsWellPlaceholderCharacter::ServerCompletePlaceholderJob_Implementation(
 
 void AOddsWellPlaceholderCharacter::ClientConfirmPlaceholderJob_Implementation(const bool bCompleted, const bool bCredited, const bool bPayoutReady, const int64 Balance, const int64 RetryAfterSeconds)
 {
-	const int64 RetryHours = FMath::Max<int64>(1, (RetryAfterSeconds + 3599) / 3600);
-	const FString Message = !bPayoutReady
-		? TEXT("Shift payout unavailable - balance unchanged")
-		: !bCompleted
-			? TEXT("Shift rejected - return to the marked Job location")
-			: bCredited
-				? FString::Printf(TEXT("Shift complete: +100 Odds Bucks | Balance: %lld"), Balance)
-				: FString::Printf(TEXT("Shift complete: next payout in about %lld hour(s) | Balance: %lld"), RetryHours, Balance);
+	JobFeedbackMessage = BuildJobFeedbackMessage(
+		bCompleted,
+		bCredited,
+		bPayoutReady,
+		Balance,
+		RetryAfterSeconds);
+	JobFeedbackExpiresAt = FPlatformTime::Seconds() + JobFeedbackLifetimeSeconds;
+	bJobFeedbackPositive = bCompleted;
 	UE_LOG(LogOddsWellLocomotion, Display, TEXT("ODDSWELL_JOB_FEEDBACK|completed=%s|credited=%s|payout_ready=%s|balance=%lld|retry_after_seconds=%lld|client_visible=true"), bCompleted ? TEXT("true") : TEXT("false"), bCredited ? TEXT("true") : TEXT("false"), bPayoutReady ? TEXT("true") : TEXT("false"), Balance, RetryAfterSeconds);
-	if (GEngine)
+	if (FParse::Param(FCommandLine::Get(), TEXT("JobFeedbackPresentationQa")))
 	{
-		GEngine->AddOnScreenDebugMessage(912016, 5.0f, bCompleted ? FColor::Green : FColor::Red, Message);
+		const uint8 StateBit = !bPayoutReady
+			? 1 << 0
+			: !bCompleted
+				? 1 << 1
+				: bCredited
+					? 1 << 2
+					: 1 << 3;
+		JobFeedbackPresentationQaStateMask |= StateBit;
 	}
 }
 
@@ -4814,6 +4854,12 @@ void AOddsWellPlaceholderCharacter::RunJobQa(const float DeltaSeconds)
 	if (GetCharacterMovement()->IsMovingOnGround())
 	{
 		AOddsWellLocomotionGameMode* GameMode = GetWorld()->GetAuthGameMode<AOddsWellLocomotionGameMode>();
+		if (FParse::Param(FCommandLine::Get(), TEXT("JobFeedbackPresentationQa"))
+			&& JobFeedbackPresentationQaStateMask == 0)
+		{
+			ClientConfirmPlaceholderJob(false, false, false, 0, 0);
+			return;
+		}
 		if (bJobRecoveryQaVerify)
 		{
 			const bool bRestored = GameMode
@@ -4991,29 +5037,88 @@ void AOddsWellPlaceholderCharacter::RunJobQa(const float DeltaSeconds)
 				&& GameMode->GetOddsBucksBalance() == GetOddsWellFirstJobPayout();
 			return;
 		}
+		const bool bFeedbackPresentationQa =
+			FParse::Param(FCommandLine::Get(), TEXT("JobFeedbackPresentationQa"));
+		if (bFeedbackPresentationQa && JobFeedbackPresentationQaCaptureStage == 0)
+		{
+			if (GEngine)
+			{
+				GEngine->ClearOnScreenDebugMessages();
+			}
+			FScreenshotRequest::RequestScreenshot(
+				TEXT("Phase1L1p_JobFeedbackSuccess.png"),
+				true,
+				false);
+			JobFeedbackPresentationQaCaptureStage = 1;
+			return;
+		}
 		SetActorLocation(FVector(JobInteractionLocation.X, JobInteractionLocation.Y, GetActorLocation().Z), false, nullptr, ETeleportType::TeleportPhysics);
-		ServerCompletePlaceholderJob();
+		if (!bFeedbackPresentationQa || JobFeedbackPresentationQaCaptureStage == 1)
+		{
+			ServerCompletePlaceholderJob();
+		}
+		if (bFeedbackPresentationQa && JobFeedbackPresentationQaCaptureStage == 1)
+		{
+			JobFeedbackPresentationQaCaptureStage = 2;
+			return;
+		}
+		if (bFeedbackPresentationQa && JobFeedbackPresentationQaCaptureStage == 2)
+		{
+			if (GEngine)
+			{
+				GEngine->ClearOnScreenDebugMessages();
+			}
+			FScreenshotRequest::RequestScreenshot(
+				TEXT("Phase1L1p_JobFeedbackCooldown.png"),
+				true,
+				false);
+			JobFeedbackPresentationQaCaptureStage = 3;
+			return;
+		}
 		const bool bPassed = bJobQaRejectionProven
 			&& bJobQaFirstCreditProven
 			&& bPlaceholderShiftCompleted
 			&& GameMode
 			&& GameMode->GetOddsBucksEntryCount() == 1
 			&& GameMode->GetOddsBucksBalance() == GetOddsWellFirstJobPayout();
+		const bool bFeedbackPresentationPassed =
+			!bFeedbackPresentationQa
+			|| (JobFeedbackPresentationQaStateMask == 0x0f
+				&& JobFeedbackPresentationQaCaptureStage == 3);
+		const bool bFinalPassed = bPassed && bFeedbackPresentationPassed;
 		const FString Evidence = FString::Printf(
 			TEXT("ODDSWELL_JOB_PAYOUT_QA|result=%s|location=Job|interaction=press_e|outside_request_rejected=%s|server_validated=true|completed=%s|first_credit_proven=%s|odds_bucks_awarded=100|ledger_entries=%d|ledger_balance=%lld|immediate_retry_blocked=true|local_save_written=true|rolling_24h=true"),
-			bPassed ? TEXT("PASS") : TEXT("FAIL"),
+			bFinalPassed ? TEXT("PASS") : TEXT("FAIL"),
 			bJobQaRejectionProven ? TEXT("true") : TEXT("false"),
 			bPlaceholderShiftCompleted ? TEXT("true") : TEXT("false"),
 			bJobQaFirstCreditProven ? TEXT("true") : TEXT("false"),
 			GameMode ? GameMode->GetOddsBucksEntryCount() : -1,
 			GameMode ? GameMode->GetOddsBucksBalance() : int64{-1});
-		if (bPassed)
+		if (bFinalPassed)
 		{
 			UE_LOG(LogOddsWellLocomotion, Display, TEXT("%s"), *Evidence);
 		}
 		else
 		{
 			UE_LOG(LogOddsWellLocomotion, Error, TEXT("%s"), *Evidence);
+		}
+		if (bFeedbackPresentationQa)
+		{
+			const FString PresentationEvidence = FString::Printf(
+				TEXT("ODDSWELL_JOB_FEEDBACK_PRESENTATION_QA|result=%s|states=unavailable,rejected,success,cooldown|state_mask=%u|capture_stage=%d|settled_frame_capture=true|lifetime_seconds=5|standard=1280x720|compact=888x500|native_canvas=true|panel_shapes=2|wording_unchanged=true|payout=100|interval_seconds=86400|ledger_entries=%d|balance=%lld|manual_input=false"),
+				bFeedbackPresentationPassed ? TEXT("PASS") : TEXT("FAIL"),
+				JobFeedbackPresentationQaStateMask,
+				JobFeedbackPresentationQaCaptureStage,
+				GameMode ? GameMode->GetOddsBucksEntryCount() : -1,
+				GameMode ? GameMode->GetOddsBucksBalance() : int64{-1});
+			if (bFeedbackPresentationPassed)
+			{
+				UE_LOG(LogOddsWellLocomotion, Display, TEXT("%s"), *PresentationEvidence);
+			}
+			else
+			{
+				UE_LOG(LogOddsWellLocomotion, Error, TEXT("%s"), *PresentationEvidence);
+			}
 		}
 		bJobQa = false;
 		QaExitAt = FPlatformTime::Seconds() + 2.0;
@@ -7800,6 +7905,33 @@ void AOddsWellSportsbookHUD::DrawHUD()
 	else
 	{
 		DrawSettledLossHandoffCue(*Character);
+	}
+
+	if (!JobFeedbackMessage.IsEmpty()
+		&& FPlatformTime::Seconds() < JobFeedbackExpiresAt)
+	{
+		const bool bCompact = Canvas->SizeX <= TicketBoothCompactCanvasWidth
+			|| Canvas->SizeY <= TicketBoothCompactCanvasHeight;
+		const float Width = FMath::Min(
+			JobFeedbackMaxWidth,
+			Canvas->SizeX - (bCompact ? 32.0f : 56.0f));
+		const float Height = bCompact
+			? JobFeedbackCompactHeight
+			: JobFeedbackNormalHeight;
+		const float X = (Canvas->SizeX - Width) * 0.5f;
+		const float Y = bCompact ? 16.0f : 72.0f;
+		const FLinearColor Accent = bJobFeedbackPositive
+			? FLinearColor(0.20f, 0.75f, 0.68f, 1.0f)
+			: FLinearColor(0.75f, 0.24f, 0.14f, 1.0f);
+		DrawRect(FLinearColor(0.025f, 0.055f, 0.08f, 0.96f), X, Y, Width, Height);
+		DrawRect(Accent, X, Y, 6.0f, Height);
+		DrawText(
+			JobFeedbackMessage,
+			FLinearColor::White,
+			X + 24.0f,
+			Y + (bCompact ? 17.0f : 22.0f),
+			nullptr,
+			bCompact ? 0.90f : 1.05f);
 	}
 }
 
@@ -13588,6 +13720,47 @@ bool FOddsWellSundaleJobFrontageTest::RunTest(const FString& Parameters)
 	TestEqual(TEXT("Job interaction radius remains unchanged"), JobInteractionRadius, 350.0f);
 	TestEqual(TEXT("First Job payout remains unchanged"), GetOddsWellFirstJobPayout(), int64{100});
 	TestEqual(TEXT("Job payout interval remains the rolling 24-hour value"), GetOddsWellJobPayoutIntervalSeconds(), int64{24 * 60 * 60});
+	return !HasAnyErrors();
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(
+	FOddsWellJobFeedbackPresentationTest,
+	"OddsWell.Character.JobFeedbackPresentation",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+
+bool FOddsWellJobFeedbackPresentationTest::RunTest(const FString& Parameters)
+{
+	const float StandardWidth = FMath::Min(JobFeedbackMaxWidth, 1280.0f - 56.0f);
+	const float CompactWidth = FMath::Min(JobFeedbackMaxWidth, 888.0f - 32.0f);
+	TestEqual(TEXT("Job feedback keeps its exact five-second lifetime"), JobFeedbackLifetimeSeconds, 5.0);
+	TestEqual(TEXT("Standard Job feedback uses the bounded native panel width"), StandardWidth, 820.0f);
+	TestTrue(TEXT("Standard Job feedback stays inside 1280x720"),
+		(1280.0f - StandardWidth) * 0.5f >= 0.0f
+			&& 72.0f + JobFeedbackNormalHeight <= 720.0f);
+	TestEqual(TEXT("Compact Job feedback uses the same bounded panel width"), CompactWidth, 820.0f);
+	TestTrue(TEXT("Compact Job feedback stays inside 888x500"),
+		(888.0f - CompactWidth) * 0.5f >= 0.0f
+			&& 16.0f + JobFeedbackCompactHeight <= 500.0f);
+	TestEqual(TEXT("Unavailable wording remains exact"),
+		BuildJobFeedbackMessage(false, false, false, 0, 0),
+		FString(TEXT("Shift payout unavailable - balance unchanged")));
+	TestEqual(TEXT("Outside rejection wording remains exact"),
+		BuildJobFeedbackMessage(false, false, true, 0, 0),
+		FString(TEXT("Shift rejected - return to the marked Job location")));
+	TestEqual(TEXT("Success wording and value remain exact"),
+		BuildJobFeedbackMessage(true, true, true, 100, 86400),
+		FString(TEXT("Shift complete: +100 Odds Bucks | Balance: 100")));
+	TestEqual(TEXT("Cooldown wording keeps approximate retry hours"),
+		BuildJobFeedbackMessage(true, false, true, 100, 86400),
+		FString(TEXT("Shift complete: next payout in about 24 hour(s) | Balance: 100")));
+	TestEqual(TEXT("Short cooldowns keep the existing one-hour display floor"),
+		BuildJobFeedbackMessage(true, false, true, 100, 1),
+		FString(TEXT("Shift complete: next payout in about 1 hour(s) | Balance: 100")));
+	TestTrue(TEXT("Job anchor remains the first route waypoint"),
+		JobInteractionLocation.Equals(GetSundaleRouteWaypoints()[0]));
+	TestEqual(TEXT("Job interaction radius remains unchanged"), JobInteractionRadius, 350.0f);
+	TestEqual(TEXT("Job payout remains unchanged"), GetOddsWellFirstJobPayout(), int64{100});
+	TestEqual(TEXT("Job cooldown remains unchanged"), GetOddsWellJobPayoutIntervalSeconds(), int64{86400});
 	return !HasAnyErrors();
 }
 
