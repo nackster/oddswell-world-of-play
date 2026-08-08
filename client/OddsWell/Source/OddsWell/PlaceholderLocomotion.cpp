@@ -854,6 +854,19 @@ const TArray<FStudioPresentationPartSpec>& GetEmptyStudioPresentationParts()
 	return Parts;
 }
 
+const TArray<FStudioPresentationPartSpec>& GetOneBedroomPresentationParts(const bool bOneBedroomOwned)
+{
+	static const TArray<FStudioPresentationPartSpec> Empty;
+	static const TArray<FStudioPresentationPartSpec> Parts = {
+		{TEXT("OneBedroomFloorInset"), TEXT("zone_surface"), FVector(-270.0, 0.0, 2.0), FVector(2.1, 4.6, 0.02), SundaleSageGreen},
+		{TEXT("OneBedroomDoorFrameSouth"), TEXT("door_frame"), FVector(-140.0, -112.0, 120.0), FVector(0.06, 0.16, 2.2), SundaleBurntOrange},
+		{TEXT("OneBedroomDoorFrameNorth"), TEXT("door_frame"), FVector(-140.0, 112.0, 120.0), FVector(0.06, 0.16, 2.2), SundaleBurntOrange},
+		{TEXT("OneBedroomDoorFrameCap"), TEXT("door_cap"), FVector(-140.0, 0.0, 230.0), FVector(0.06, 2.5, 0.18), SundaleRestrainedCobalt},
+		{TEXT("OneBedroomWallAccent"), TEXT("accent"), FVector(-389.0, 0.0, 145.0), FVector(0.05, 1.3, 1.9), SundaleMutedTerracotta},
+	};
+	return bOneBedroomOwned ? Parts : Empty;
+}
+
 const TArray<FSundalePresentationPartSpec>& GetSundalePresentationParts()
 {
 	static const TArray<FSundalePresentationPartSpec> Parts = {
@@ -11970,6 +11983,57 @@ void AOddsWellStudioGameMode::BeginPlay()
 		{
 			UE_LOG(LogOddsWellLocomotion, Error, TEXT("%s"), *PresentationEvidence);
 		}
+
+		int32 OneBedroomPresentationParts = 0;
+		TSet<FName> OneBedroomPresentationRoles;
+		for (const FStudioPresentationPartSpec& Part : GetOneBedroomPresentationParts(bOneBedroomOwned))
+		{
+			AStaticMeshActor* Actor = GetWorld()->SpawnActor<AStaticMeshActor>(
+				AStaticMeshActor::StaticClass(),
+				FTransform(FRotator::ZeroRotator, Part.Location, Part.Scale),
+				Parameters);
+			if (!Actor)
+			{
+				continue;
+			}
+			Actor->SetReplicates(false);
+			Actor->SetActorEnableCollision(false);
+			Actor->GetStaticMeshComponent()->SetStaticMesh(Cube);
+			Actor->GetStaticMeshComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+			if (PresentationMaterial)
+			{
+				if (UMaterialInstanceDynamic* Material = UMaterialInstanceDynamic::Create(PresentationMaterial, Actor))
+				{
+					Material->SetVectorParameterValue(TEXT("Color"), Part.Color);
+					Material->SetVectorParameterValue(TEXT("BaseColor"), Part.Color);
+					Actor->GetStaticMeshComponent()->SetMaterial(0, Material);
+				}
+			}
+			Actor->Tags.Add(StudioPresentationTag);
+			Actor->Tags.Add(Part.Role);
+			Actor->Tags.Add(Part.Id);
+			OneBedroomPresentationRoles.Add(Part.Role);
+			++OneBedroomPresentationParts;
+		}
+		const int32 ExpectedOneBedroomPresentationRoles = bOneBedroomOwned ? 4 : 0;
+		const bool bOneBedroomPresentationPassed =
+			(!bOneBedroomOwned || PresentationMaterial)
+			&& OneBedroomPresentationParts == GetOneBedroomPresentationParts(bOneBedroomOwned).Num()
+			&& OneBedroomPresentationRoles.Num() == ExpectedOneBedroomPresentationRoles;
+		const FString OneBedroomPresentationEvidence = FString::Printf(
+			TEXT("ODDSWELL_ONE_BEDROOM_PRESENTATION|result=%s|owned=%s|parts=%d|roles=%d|existing_studio_parts=10|structure_excluded=true|furniture_excluded=true|decorations_excluded=true|snap_points_added=false|local_only=true|replicated=false|collision=false|native_assets=true|layout_added=false|final_art=false"),
+			bOneBedroomPresentationPassed ? TEXT("PASS") : TEXT("FAIL"),
+			bOneBedroomOwned ? TEXT("true") : TEXT("false"),
+			OneBedroomPresentationParts,
+			OneBedroomPresentationRoles.Num());
+		if (bOneBedroomPresentationPassed)
+		{
+			UE_LOG(LogOddsWellLocomotion, Display, TEXT("%s"), *OneBedroomPresentationEvidence);
+		}
+		else
+		{
+			UE_LOG(LogOddsWellLocomotion, Error, TEXT("%s"), *OneBedroomPresentationEvidence);
+		}
 	}
 	for (const FStudioSurfaceSpec& Surface : GetEmptyStudioSurfaces())
 	{
@@ -13812,6 +13876,53 @@ bool FOddsWellEmptyStudioPresentationTest::RunTest(const FString& Parameters)
 	TestEqual(TEXT("Fresh Studio keeps zero active snap points"), GetActiveStudioSnapPointCount(false, 0), 0);
 	TestEqual(TEXT("Owned chair remains exactly three furniture parts"), GetModularChairParts().Num(), 3);
 	TestEqual(TEXT("Only the complete owned chair activates studio_primary"), GetActiveStudioSnapPointCount(true, GetModularChairParts().Num()), 1);
+	return !HasAnyErrors();
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(
+	FOddsWellOneBedroomInteriorPresentationTest,
+	"OddsWell.Character.OneBedroomInteriorPresentation",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+
+bool FOddsWellOneBedroomInteriorPresentationTest::RunTest(const FString& Parameters)
+{
+	TestEqual(TEXT("Fresh Studio has no One-bedroom presentation parts"), GetOneBedroomPresentationParts(false).Num(), 0);
+	const TArray<FStudioPresentationPartSpec>& Parts = GetOneBedroomPresentationParts(true);
+	TestEqual(TEXT("Owned One-bedroom presentation remains bounded to five native parts"), Parts.Num(), 5);
+	const TArray<FName> ExpectedIds = {
+		TEXT("OneBedroomFloorInset"),
+		TEXT("OneBedroomDoorFrameSouth"),
+		TEXT("OneBedroomDoorFrameNorth"),
+		TEXT("OneBedroomDoorFrameCap"),
+		TEXT("OneBedroomWallAccent"),
+	};
+	const TArray<FLinearColor> ApprovedPalette = {
+		SundaleMutedTerracotta,
+		SundaleSageGreen,
+		SundaleRestrainedCobalt,
+		SundaleBurntOrange,
+	};
+	TMap<FName, int32> RoleCounts;
+	TSet<FName> Ids;
+	for (const FStudioPresentationPartSpec& Part : Parts)
+	{
+		++RoleCounts.FindOrAdd(Part.Role);
+		Ids.Add(Part.Id);
+		TestTrue(*FString::Printf(TEXT("%s remains an approved One-bedroom presentation id"), *Part.Id.ToString()), ExpectedIds.Contains(Part.Id));
+		TestTrue(*FString::Printf(TEXT("%s keeps positive scale"), *Part.Id.ToString()), Part.Scale.GetMin() > 0.0);
+		TestTrue(*FString::Printf(TEXT("%s stays inside the existing Studio footprint"), *Part.Id.ToString()), FMath::Abs(Part.Location.X) <= 400.0 && FMath::Abs(Part.Location.Y) <= 300.0 && Part.Location.Z >= 0.0 && Part.Location.Z <= 300.0);
+		TestTrue(*FString::Printf(TEXT("%s uses the approved palette"), *Part.Id.ToString()), ApprovedPalette.Contains(Part.Color));
+	}
+	TestEqual(TEXT("Every One-bedroom presentation part id remains unique"), Ids.Num(), Parts.Num());
+	TestEqual(TEXT("One-bedroom presentation uses exactly four roles"), RoleCounts.Num(), 4);
+	TestEqual(TEXT("One bedroom-zone surface remains bounded"), RoleCounts.FindRef(FName(TEXT("zone_surface"))), 1);
+	TestEqual(TEXT("Two doorway-frame sides remain bounded"), RoleCounts.FindRef(FName(TEXT("door_frame"))), 2);
+	TestEqual(TEXT("One doorway cap remains bounded"), RoleCounts.FindRef(FName(TEXT("door_cap"))), 1);
+	TestEqual(TEXT("One bedroom wall accent remains bounded"), RoleCounts.FindRef(FName(TEXT("accent"))), 1);
+	TestEqual(TEXT("Existing Studio presentation remains exactly ten parts"), GetEmptyStudioPresentationParts().Num(), 10);
+	TestEqual(TEXT("One-bedroom remains an in-place three-surface partition"), GetOneBedroomUpgradeSurfaces().Num(), 3);
+	TestEqual(TEXT("One-bedroom price remains unchanged"), GetOddsWellOneBedroomUpgradePrice(), int64{500});
+	TestEqual(TEXT("Owned chair remains at studio_primary"), StudioPrimarySnapPointId, FName(TEXT("studio_primary")));
 	return !HasAnyErrors();
 }
 
