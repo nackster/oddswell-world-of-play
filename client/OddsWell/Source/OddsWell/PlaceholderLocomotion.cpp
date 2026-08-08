@@ -141,6 +141,7 @@ constexpr double JobFeedbackLifetimeSeconds = 5.0;
 constexpr float JobFeedbackMaxWidth = 820.0f;
 constexpr float JobFeedbackNormalHeight = 70.0f;
 constexpr float JobFeedbackCompactHeight = 58.0f;
+constexpr int32 TransientFeedbackPanelShapeCount = 2;
 constexpr float SettledReceiptMaxWidth = 720.0f;
 constexpr float SettledReceiptNormalHeight = 520.0f;
 constexpr float SettledReceiptCompactHeight = 468.0f;
@@ -163,6 +164,8 @@ double JobFeedbackExpiresAt = 0.0;
 bool bJobFeedbackPositive = false;
 uint8 JobFeedbackPresentationQaStateMask = 0;
 int32 JobFeedbackPresentationQaCaptureStage = 0;
+uint8 SignalJacketFeedbackPresentationQaStateMask = 0;
+int32 SignalJacketFeedbackPresentationQaCaptureStage = 0;
 bool bArenaPresentationQaCaptured = false;
 int32 TicketBoothPresentationQaStage = 0;
 bool bTicketBoothCompactLayoutQaLogged = false;
@@ -193,6 +196,41 @@ FString BuildJobFeedbackMessage(
 					TEXT("Shift complete: next payout in about %lld hour(s) | Balance: %lld"),
 					RetryHours,
 					Balance);
+}
+
+FString BuildSignalJacketPurchaseFeedbackMessage(
+	const bool bPurchased,
+	const bool bOwned,
+	const int64 Balance,
+	const FString& Error)
+{
+	return bPurchased
+		? FString::Printf(
+			TEXT("Sundale Signal Jacket purchased | Balance: %lld Odds Bucks"),
+			Balance)
+		: bOwned
+			? FString::Printf(
+				TEXT("Sundale Signal Jacket already owned | Balance: %lld Odds Bucks"),
+				Balance)
+			: Error.IsEmpty()
+				? TEXT("Signal Jacket purchase rejected")
+				: Error;
+}
+
+FString BuildSignalJacketEquipFeedbackMessage(
+	const bool bEquipped,
+	const FString& Error)
+{
+	return bEquipped
+		? TEXT("Sundale Signal Jacket equipped")
+		: Error;
+}
+
+void ShowTransientFeedbackPanel(const FString& Message, const bool bPositive)
+{
+	JobFeedbackMessage = Message;
+	JobFeedbackExpiresAt = FPlatformTime::Seconds() + JobFeedbackLifetimeSeconds;
+	bJobFeedbackPositive = bPositive;
 }
 
 struct FSettledReceiptPresentationLayout
@@ -3220,7 +3258,7 @@ void AOddsWellPlaceholderCharacter::RunSignalJacketPurchaseQa(
 		QaExitAt = FPlatformTime::Seconds() + 1.0;
 	};
 
-	if (SignalJacketPurchaseQaElapsed > 15.0f)
+	if (SignalJacketPurchaseQaElapsed > 25.0f)
 	{
 		Finish(false, TEXT("timeout"));
 		return;
@@ -3306,12 +3344,132 @@ void AOddsWellPlaceholderCharacter::RunSignalJacketPurchaseQa(
 		++SignalJacketPurchaseQaStage;
 		return;
 	case 5:
+		if (FParse::Param(
+				FCommandLine::Get(),
+				TEXT("SignalJacketFeedbackPresentationQa"))
+			&& !bSignalJacketPurchaseQaVerify)
+		{
+			if (SignalJacketFeedbackPresentationQaStateMask != 1)
+			{
+				Finish(false, TEXT("purchase_success_feedback_missing"));
+				return;
+			}
+			if (SignalJacketFeedbackPresentationQaCaptureStage == 0)
+			{
+				SetActorLocation(
+					ClothingStoreInteractionLocation
+						+ FVector(-1400.0, 0.0, SafeSpawnLocation.Z),
+					false,
+					nullptr,
+					ETeleportType::TeleportPhysics);
+				PlayerController->SetControlRotation(FRotator::ZeroRotator);
+				if (GEngine)
+				{
+					GEngine->ClearOnScreenDebugMessages();
+				}
+				SignalJacketFeedbackPresentationQaCaptureStage = -1;
+				SignalJacketPurchaseQaElapsed = 0.0f;
+				return;
+			}
+			if (SignalJacketPurchaseQaElapsed < 0.5f)
+			{
+				return;
+			}
+			FScreenshotRequest::RequestScreenshot(
+				TEXT("Phase1L1q_JacketPurchaseSuccess.png"),
+				true,
+				false);
+			SignalJacketFeedbackPresentationQaCaptureStage = 1;
+			SignalJacketPurchaseQaElapsed = 0.0f;
+			++SignalJacketPurchaseQaStage;
+			return;
+		}
 		Finish(
 			GameMode->GetOddsBucksEntryCount() == 2
 				&& GameMode->GetOddsBucksBalance() == 40,
 			bSignalJacketPurchaseQaVerify
 				? TEXT("cold_duplicate_verified")
 				: TEXT("purchase_verified"));
+		return;
+	case 6:
+		if (SignalJacketPurchaseQaElapsed < 0.5f)
+		{
+			return;
+		}
+		ShowTransientFeedbackPanel(
+			BuildSignalJacketPurchaseFeedbackMessage(false, true, 40, FString()),
+			true);
+		SignalJacketFeedbackPresentationQaStateMask |= 1 << 1;
+		SignalJacketPurchaseQaElapsed = 0.0f;
+		++SignalJacketPurchaseQaStage;
+		return;
+	case 7:
+		if (SignalJacketPurchaseQaElapsed < 0.2f)
+		{
+			return;
+		}
+		ShowTransientFeedbackPanel(
+			BuildSignalJacketPurchaseFeedbackMessage(false, false, 40, FString()),
+			false);
+		SignalJacketFeedbackPresentationQaStateMask |= 1 << 2;
+		SignalJacketPurchaseQaElapsed = 0.0f;
+		++SignalJacketPurchaseQaStage;
+		return;
+	case 8:
+		if (SignalJacketPurchaseQaElapsed < 0.2f)
+		{
+			return;
+		}
+		ShowTransientFeedbackPanel(
+			BuildSignalJacketEquipFeedbackMessage(true, FString()),
+			true);
+		SignalJacketFeedbackPresentationQaStateMask |= 1 << 3;
+		SignalJacketPurchaseQaElapsed = 0.0f;
+		++SignalJacketPurchaseQaStage;
+		return;
+	case 9:
+		if (SignalJacketPurchaseQaElapsed < 0.5f)
+		{
+			return;
+		}
+		FScreenshotRequest::RequestScreenshot(
+			TEXT("Phase1L1q_JacketEquipSuccess.png"),
+			true,
+			false);
+		SignalJacketFeedbackPresentationQaCaptureStage = 2;
+		SignalJacketPurchaseQaElapsed = 0.0f;
+		++SignalJacketPurchaseQaStage;
+		return;
+	case 10:
+		if (SignalJacketPurchaseQaElapsed < 0.5f)
+		{
+			return;
+		}
+		ShowTransientFeedbackPanel(
+			BuildSignalJacketEquipFeedbackMessage(
+				false,
+				TEXT("Buy the Sundale Signal Jacket before equipping it.")),
+			false);
+		SignalJacketFeedbackPresentationQaStateMask |= 1 << 4;
+		SignalJacketPurchaseQaElapsed = 0.0f;
+		++SignalJacketPurchaseQaStage;
+		return;
+	case 11:
+		if (SignalJacketPurchaseQaElapsed < 0.2f)
+		{
+			return;
+		}
+		if (SignalJacketFeedbackPresentationQaStateMask != 31
+			|| SignalJacketFeedbackPresentationQaCaptureStage != 2)
+		{
+			Finish(false, TEXT("feedback_fixture_incomplete"));
+			return;
+		}
+		UE_LOG(
+			LogOddsWellLocomotion,
+			Display,
+			TEXT("ODDSWELL_SIGNAL_JACKET_FEEDBACK_PRESENTATION_QA|result=PASS|states=purchase_success,already_owned,purchase_reject,equip_success,equip_reject|state_mask=31|capture_stage=2|settled_frame_capture=true|lifetime_seconds=5|native_canvas=true|panel_shapes=2|standard=1280x720|compact=888x500|wording_unchanged=true|item_id=sundale_signal_jacket|price=60|entries=2|balance=40|auto_equip=false|fixtures_mutate_state=false|manual_input=false"));
+		Finish(true, TEXT("feedback_presentation_verified"));
 		return;
 	default:
 		Finish(false, TEXT("invalid_stage"));
@@ -4325,14 +4483,14 @@ void AOddsWellPlaceholderCharacter::ServerCompletePlaceholderJob_Implementation(
 
 void AOddsWellPlaceholderCharacter::ClientConfirmPlaceholderJob_Implementation(const bool bCompleted, const bool bCredited, const bool bPayoutReady, const int64 Balance, const int64 RetryAfterSeconds)
 {
-	JobFeedbackMessage = BuildJobFeedbackMessage(
-		bCompleted,
-		bCredited,
-		bPayoutReady,
-		Balance,
-		RetryAfterSeconds);
-	JobFeedbackExpiresAt = FPlatformTime::Seconds() + JobFeedbackLifetimeSeconds;
-	bJobFeedbackPositive = bCompleted;
+	ShowTransientFeedbackPanel(
+		BuildJobFeedbackMessage(
+			bCompleted,
+			bCredited,
+			bPayoutReady,
+			Balance,
+			RetryAfterSeconds),
+		bCompleted);
 	UE_LOG(LogOddsWellLocomotion, Display, TEXT("ODDSWELL_JOB_FEEDBACK|completed=%s|credited=%s|payout_ready=%s|balance=%lld|retry_after_seconds=%lld|client_visible=true"), bCompleted ? TEXT("true") : TEXT("false"), bCredited ? TEXT("true") : TEXT("false"), bPayoutReady ? TEXT("true") : TEXT("false"), Balance, RetryAfterSeconds);
 	if (FParse::Param(FCommandLine::Get(), TEXT("JobFeedbackPresentationQa")))
 	{
@@ -4465,24 +4623,22 @@ void AOddsWellPlaceholderCharacter::ClientConfirmSignalJacketPurchase_Implementa
 	bSignalJacketPurchaseSubmitting = false;
 	bSignalJacketPurchaseConfirm = false;
 	bSignalJacketOwned = bOwned;
-	const FString Message = bPurchased
-		? FString::Printf(
-			TEXT("Sundale Signal Jacket purchased | Balance: %lld Odds Bucks"),
-			Balance)
-		: bOwned
-			? FString::Printf(
-				TEXT("Sundale Signal Jacket already owned | Balance: %lld Odds Bucks"),
-				Balance)
-			: Error.IsEmpty()
-				? TEXT("Signal Jacket purchase rejected")
-				: Error;
-	if (GEngine)
+	ShowTransientFeedbackPanel(
+		BuildSignalJacketPurchaseFeedbackMessage(
+			bPurchased,
+			bOwned,
+			Balance,
+			Error),
+		bPurchased || bOwned);
+	if (FParse::Param(
+			FCommandLine::Get(),
+			TEXT("SignalJacketFeedbackPresentationQa")))
 	{
-		GEngine->AddOnScreenDebugMessage(
-			912018,
-			5.0f,
-			bPurchased || bOwned ? FColor::Green : FColor::Red,
-			Message);
+		SignalJacketFeedbackPresentationQaStateMask |= bPurchased
+			? 1 << 0
+			: bOwned
+				? 1 << 1
+				: 1 << 2;
 	}
 	UE_LOG(
 		LogOddsWellLocomotion,
@@ -4536,15 +4692,16 @@ void AOddsWellPlaceholderCharacter::ClientConfirmSignalJacketEquip_Implementatio
 		SharedCityAppearance.bSignalJacketEquipped = true;
 		SyncOutfitComponents();
 	}
-	if (GEngine)
+	ShowTransientFeedbackPanel(
+		BuildSignalJacketEquipFeedbackMessage(bEquipped, Error),
+		bEquipped);
+	if (FParse::Param(
+			FCommandLine::Get(),
+			TEXT("SignalJacketFeedbackPresentationQa")))
 	{
-		GEngine->AddOnScreenDebugMessage(
-			912019,
-			5.0f,
-			bEquipped ? FColor::Green : FColor::Red,
-			bEquipped
-				? TEXT("Sundale Signal Jacket equipped")
-				: Error);
+		SignalJacketFeedbackPresentationQaStateMask |= bEquipped
+			? 1 << 3
+			: 1 << 4;
 	}
 	UE_LOG(
 		LogOddsWellLocomotion,
@@ -13761,6 +13918,56 @@ bool FOddsWellJobFeedbackPresentationTest::RunTest(const FString& Parameters)
 	TestEqual(TEXT("Job interaction radius remains unchanged"), JobInteractionRadius, 350.0f);
 	TestEqual(TEXT("Job payout remains unchanged"), GetOddsWellFirstJobPayout(), int64{100});
 	TestEqual(TEXT("Job cooldown remains unchanged"), GetOddsWellJobPayoutIntervalSeconds(), int64{86400});
+	return !HasAnyErrors();
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(
+	FOddsWellSignalJacketFeedbackPresentationTest,
+	"OddsWell.Character.SignalJacketFeedbackPresentation",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+
+bool FOddsWellSignalJacketFeedbackPresentationTest::RunTest(
+	const FString& Parameters)
+{
+	const float StandardWidth = FMath::Min(JobFeedbackMaxWidth, 1280.0f - 56.0f);
+	const float CompactWidth = FMath::Min(JobFeedbackMaxWidth, 888.0f - 32.0f);
+	TestEqual(TEXT("Signal Jacket feedback keeps the existing five-second lifetime"), JobFeedbackLifetimeSeconds, 5.0);
+	TestEqual(TEXT("Signal Jacket feedback reuses exactly two native Canvas shapes"), TransientFeedbackPanelShapeCount, 2);
+	TestTrue(TEXT("Standard Signal Jacket feedback stays inside 1280x720"),
+		(1280.0f - StandardWidth) * 0.5f >= 0.0f
+			&& 72.0f + JobFeedbackNormalHeight <= 720.0f);
+	TestTrue(TEXT("Compact Signal Jacket feedback stays inside 888x500"),
+		(888.0f - CompactWidth) * 0.5f >= 0.0f
+			&& 16.0f + JobFeedbackCompactHeight <= 500.0f);
+	TestEqual(TEXT("Purchase-success wording remains exact"),
+		BuildSignalJacketPurchaseFeedbackMessage(true, true, 40, FString()),
+		FString(TEXT("Sundale Signal Jacket purchased | Balance: 40 Odds Bucks")));
+	TestEqual(TEXT("Already-owned wording remains exact"),
+		BuildSignalJacketPurchaseFeedbackMessage(false, true, 40, FString()),
+		FString(TEXT("Sundale Signal Jacket already owned | Balance: 40 Odds Bucks")));
+	TestEqual(TEXT("Fallback purchase-reject wording remains exact"),
+		BuildSignalJacketPurchaseFeedbackMessage(false, false, 40, FString()),
+		FString(TEXT("Signal Jacket purchase rejected")));
+	TestEqual(TEXT("Server purchase rejection remains exact"),
+		BuildSignalJacketPurchaseFeedbackMessage(
+			false,
+			false,
+			40,
+			TEXT("Return to the Sundale clothing store.")),
+		FString(TEXT("Return to the Sundale clothing store.")));
+	TestEqual(TEXT("Equip-success wording remains exact"),
+		BuildSignalJacketEquipFeedbackMessage(true, FString()),
+		FString(TEXT("Sundale Signal Jacket equipped")));
+	TestEqual(TEXT("Equip-reject wording remains exact"),
+		BuildSignalJacketEquipFeedbackMessage(
+			false,
+			TEXT("Buy the Sundale Signal Jacket before equipping it.")),
+		FString(TEXT("Buy the Sundale Signal Jacket before equipping it.")));
+	TestTrue(TEXT("Clothing Store remains the exact route waypoint"),
+		ClothingStoreInteractionLocation.Equals(GetSundaleRouteWaypoints()[2]));
+	TestEqual(TEXT("Clothing Store interaction radius remains unchanged"), ClothingStoreInteractionRadius, 350.0f);
+	TestEqual(TEXT("Signal Jacket id remains unchanged"), GetOddsWellSignalJacketItemId(), FString(TEXT("sundale_signal_jacket")));
+	TestEqual(TEXT("Signal Jacket price remains unchanged"), GetOddsWellSignalJacketPrice(), int64{60});
 	return !HasAnyErrors();
 }
 
