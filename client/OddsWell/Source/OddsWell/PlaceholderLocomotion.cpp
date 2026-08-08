@@ -162,6 +162,7 @@ bool bJobPresentationQaCaptured = false;
 FString JobFeedbackMessage;
 double JobFeedbackExpiresAt = 0.0;
 bool bJobFeedbackPositive = false;
+FString StudioInteractionPromptMessage;
 uint8 JobFeedbackPresentationQaStateMask = 0;
 int32 JobFeedbackPresentationQaCaptureStage = 0;
 uint8 SignalJacketFeedbackPresentationQaStateMask = 0;
@@ -178,6 +179,8 @@ bool bSettledReceiptPresentationQaLogged = false;
 bool bClothingStorePresentationQaCaptured = false;
 bool bFurnitureStorePresentationQaCaptured = false;
 bool bApartmentManagementPresentationQaCaptured = false;
+int32 StudioInteractionPromptPresentationQaCaptureStage = 0;
+bool bStudioInteractionPromptOneBedroomInteriorLogged = false;
 
 FString BuildJobFeedbackMessage(
 	const bool bCompleted,
@@ -267,6 +270,27 @@ FString BuildOneBedroomUpgradeFeedbackMessage(
 			: Error.IsEmpty()
 				? TEXT("One-bedroom upgrade rejected")
 				: Error;
+}
+
+FString BuildStudioInteractionPrompt(
+	const bool bInteractionValid,
+	const bool bInStudio,
+	const bool bOwnsOneBedroom,
+	const bool bOwnsModularChair)
+{
+	if (!bInteractionValid)
+	{
+		return FString();
+	}
+	return bInStudio
+		? (bOwnsOneBedroom
+			? TEXT("Press E to leave your One-bedroom")
+			: TEXT("Press E to leave your Studio"))
+		: bOwnsOneBedroom
+			? TEXT("Press E to enter your One-bedroom")
+			: bOwnsModularChair
+				? TEXT("Press E to enter your Studio")
+				: TEXT("Press E to enter your empty Studio");
 }
 
 void ShowTransientFeedbackPanel(const FString& Message, const bool bPositive)
@@ -3697,6 +3721,9 @@ void AOddsWellPlaceholderCharacter::RunModularChairPurchaseQa(
 	ModularChairPurchaseQaElapsed += DeltaSeconds;
 	const bool bInStudio =
 		GetWorld()->GetAuthGameMode<AOddsWellStudioGameMode>() != nullptr;
+	const bool bStudioPromptPresentationQa = FParse::Param(
+		FCommandLine::Get(),
+		TEXT("StudioInteractionPromptPresentationQa"));
 	if (bInStudio)
 	{
 		if (ModularChairPurchaseQaElapsed < 1.0f)
@@ -3940,9 +3967,36 @@ void AOddsWellPlaceholderCharacter::RunModularChairPurchaseQa(
 			false,
 			nullptr,
 			ETeleportType::TeleportPhysics);
+		if (bStudioPromptPresentationQa)
+		{
+			ModularChairPurchaseQaElapsed = 0.0f;
+		}
 		++ModularChairPurchaseQaStage;
 		return;
 	case 6:
+		if (bStudioPromptPresentationQa)
+		{
+			if (ModularChairPurchaseQaElapsed < 0.5f)
+			{
+				return;
+			}
+			if (StudioInteractionPromptMessage
+				!= BuildStudioInteractionPrompt(true, false, false, true))
+			{
+				UE_LOG(LogOddsWellLocomotion, Error, TEXT("ODDSWELL_STUDIO_INTERACTION_PROMPT_CHAIR_QA|result=FAIL|reason=chair_entry_prompt_mismatch"));
+				bModularChairPurchaseQaLogged = true;
+				QaExitAt = FPlatformTime::Seconds() + 1.0f;
+				return;
+			}
+			UE_LOG(
+				LogOddsWellLocomotion,
+				Display,
+				TEXT("ODDSWELL_STUDIO_INTERACTION_PROMPT_CHAIR_QA|result=PASS|state=studio_enter|chair_owned=true|item_id=sundale_modular_chair|parts=3|snap_point=studio_primary|wording_unchanged=true|manual_input=false"));
+			PlayerController->InputKey(
+				FInputKeyEventArgs::CreateSimulated(KeyInteract, IE_Pressed, 1.0f));
+			++ModularChairPurchaseQaStage;
+			return;
+		}
 		if (bFeedbackPresentationQa)
 		{
 			if (ModularChairPurchaseQaElapsed < 0.5f)
@@ -4037,6 +4091,9 @@ void AOddsWellPlaceholderCharacter::RunOneBedroomUpgradeQa(
 	OneBedroomUpgradeQaElapsed += DeltaSeconds;
 	const bool bInStudio =
 		GetWorld()->GetAuthGameMode<AOddsWellStudioGameMode>() != nullptr;
+	const bool bStudioPromptPresentationQa = FParse::Param(
+		FCommandLine::Get(),
+		TEXT("StudioInteractionPromptPresentationQa"));
 	if (bInStudio)
 	{
 		if (OneBedroomUpgradeQaElapsed < 1.0f)
@@ -4052,6 +4109,23 @@ void AOddsWellPlaceholderCharacter::RunOneBedroomUpgradeQa(
 				Controller->SetControlRotation(FRotator(-8.0f, 180.0f, 0.0f));
 			}
 			return;
+		}
+		if (bStudioPromptPresentationQa
+			&& !bStudioInteractionPromptOneBedroomInteriorLogged)
+		{
+			if (StudioInteractionPromptMessage
+				!= BuildStudioInteractionPrompt(true, true, true, true))
+			{
+				UE_LOG(LogOddsWellLocomotion, Error, TEXT("ODDSWELL_STUDIO_INTERACTION_PROMPT_ONE_BEDROOM_QA|result=FAIL|reason=one_bedroom_leave_prompt_mismatch"));
+				bOneBedroomUpgradeQaLogged = true;
+				QaExitAt = FPlatformTime::Seconds() + 1.0f;
+				return;
+			}
+			UE_LOG(
+				LogOddsWellLocomotion,
+				Display,
+				TEXT("ODDSWELL_STUDIO_INTERACTION_PROMPT_ONE_BEDROOM_QA|result=PASS|state=one_bedroom_leave|tier_id=one_bedroom|partition_surfaces=3|doorway=true|chair_parts=3|snap_point=studio_primary|wording_unchanged=true|manual_input=false"));
+			bStudioInteractionPromptOneBedroomInteriorLogged = true;
 		}
 		int32 UpgradeSurfaces = 0;
 		int32 ChairParts = 0;
@@ -4301,6 +4375,10 @@ void AOddsWellPlaceholderCharacter::RunOneBedroomUpgradeQa(
 			return;
 		}
 		SetActorLocation(SafeSpawnLocation, false, nullptr, ETeleportType::TeleportPhysics);
+		if (bStudioPromptPresentationQa)
+		{
+			OneBedroomUpgradeQaElapsed = 0.0f;
+		}
 		++OneBedroomUpgradeQaStage;
 		return;
 	case 11:
@@ -4317,6 +4395,25 @@ void AOddsWellPlaceholderCharacter::RunOneBedroomUpgradeQa(
 			OneBedroomUpgradeQaElapsed = 0.0f;
 			++OneBedroomUpgradeQaStage;
 			return;
+		}
+		if (bStudioPromptPresentationQa)
+		{
+			if (OneBedroomUpgradeQaElapsed < 0.5f)
+			{
+				return;
+			}
+			if (StudioInteractionPromptMessage
+				!= BuildStudioInteractionPrompt(true, false, true, true))
+			{
+				UE_LOG(LogOddsWellLocomotion, Error, TEXT("ODDSWELL_STUDIO_INTERACTION_PROMPT_ONE_BEDROOM_QA|result=FAIL|reason=one_bedroom_entry_prompt_mismatch"));
+				bOneBedroomUpgradeQaLogged = true;
+				QaExitAt = FPlatformTime::Seconds() + 1.0f;
+				return;
+			}
+			UE_LOG(
+				LogOddsWellLocomotion,
+				Display,
+				TEXT("ODDSWELL_STUDIO_INTERACTION_PROMPT_ONE_BEDROOM_QA|result=PASS|state=one_bedroom_enter|tier_id=one_bedroom|price=500|entries=3|balance=0|wording_unchanged=true|manual_input=false"));
 		}
 		PlayerController->InputKey(
 			FInputKeyEventArgs::CreateSimulated(KeyInteract, IE_Pressed, 1.0f));
@@ -5586,6 +5683,11 @@ void AOddsWellPlaceholderCharacter::PollStudioInteraction()
 {
 	const bool bRequested = ConsumeStudioInteractionRequest(bStudioInteractionRequested);
 	const ENetMode NetMode = GetNetMode();
+	if (!IsLocallyControlled())
+	{
+		return;
+	}
+	StudioInteractionPromptMessage.Reset();
 	if (!CanUseStudioInteraction(IsLocallyControlled(), NetMode))
 	{
 		return;
@@ -5598,20 +5700,11 @@ void AOddsWellPlaceholderCharacter::PollStudioInteraction()
 	const bool bInStudio = GetWorld()->GetAuthGameMode<AOddsWellStudioGameMode>() != nullptr;
 	const bool bAtStudioDoor = GetWorld()->GetMapName().Contains(TEXT("SundaleGraybox"))
 		&& FVector::Dist2D(GetActorLocation(), SafeSpawnLocation) <= StudioEntryRadius;
-	if (GEngine && (bInStudio || bAtStudioDoor))
-	{
-		GEngine->AddOnScreenDebugMessage(
-			912011,
-			0.0f,
-			FColor::White,
-			bInStudio
-				? (bOwnsOneBedroom ? TEXT("Press E to leave your One-bedroom") : TEXT("Press E to leave your Studio"))
-				: bOwnsOneBedroom
-					? TEXT("Press E to enter your One-bedroom")
-					: bModularChairOwned
-						? TEXT("Press E to enter your Studio")
-						: TEXT("Press E to enter your empty Studio"));
-	}
+	StudioInteractionPromptMessage = BuildStudioInteractionPrompt(
+		bInStudio || bAtStudioDoor,
+		bInStudio,
+		bOwnsOneBedroom,
+		bModularChairOwned);
 	if (GEngine && bInStudio && bOwnsStudio)
 	{
 		GEngine->AddOnScreenDebugMessage(912012, 0.0f, FColor::Cyan, BuildOddsWellHousingProgressionText(true, bOwnsOneBedroom));
@@ -7259,6 +7352,9 @@ void AOddsWellPlaceholderCharacter::RunStudioQa(const float DeltaSeconds)
 		return;
 	}
 	StudioQaElapsed += DeltaSeconds;
+	const bool bPromptPresentationQa = FParse::Param(
+		FCommandLine::Get(),
+		TEXT("StudioInteractionPromptPresentationQa"));
 	const bool bInSundale = GetWorld()->GetMapName().Contains(TEXT("SundaleGraybox"));
 	const bool bInStudio = GetWorld()->GetAuthGameMode<AOddsWellStudioGameMode>() != nullptr;
 	if (bStudioPersistenceQaVerify)
@@ -7290,6 +7386,53 @@ void AOddsWellPlaceholderCharacter::RunStudioQa(const float DeltaSeconds)
 	}
 	if (StudioQaProcessStage == 0 && bInSundale && GetCharacterMovement()->IsMovingOnGround())
 	{
+		if (bPromptPresentationQa)
+		{
+			if (StudioInteractionPromptPresentationQaCaptureStage == 0)
+			{
+				SetActorLocation(SafeSpawnLocation, false, nullptr, ETeleportType::TeleportPhysics);
+				if (Controller)
+				{
+					Controller->SetControlRotation(FRotator(0.0f, 90.0f, 0.0f));
+				}
+				if (GEngine)
+				{
+					GEngine->ClearOnScreenDebugMessages();
+				}
+				StudioInteractionPromptPresentationQaCaptureStage = -1;
+				StudioQaElapsed = 0.0f;
+				return;
+			}
+			if (StudioInteractionPromptPresentationQaCaptureStage == -1)
+			{
+				if (StudioQaElapsed < 0.5f)
+				{
+					return;
+				}
+				if (StudioInteractionPromptMessage
+					!= BuildStudioInteractionPrompt(true, false, false, false))
+				{
+					UE_LOG(LogOddsWellLocomotion, Error, TEXT("ODDSWELL_STUDIO_INTERACTION_PROMPT_PRESENTATION_QA|result=FAIL|reason=empty_entry_prompt_mismatch"));
+					FPlatformMisc::RequestExit(false);
+					return;
+				}
+				FScreenshotRequest::RequestScreenshot(
+					TEXT("Phase1L1t_EmptyStudioEnterPrompt.png"),
+					true,
+					false);
+				StudioInteractionPromptPresentationQaCaptureStage = 1;
+				StudioQaElapsed = 0.0f;
+				return;
+			}
+			if (StudioInteractionPromptPresentationQaCaptureStage == 1)
+			{
+				if (StudioQaElapsed < 0.5f)
+				{
+					return;
+				}
+				StudioInteractionPromptPresentationQaCaptureStage = 2;
+			}
+		}
 		if (bStudioPersistenceQa)
 		{
 			SetActorLocation(GetActorLocation() + FVector(125.0, 75.0, 0.0));
@@ -7309,6 +7452,55 @@ void AOddsWellPlaceholderCharacter::RunStudioQa(const float DeltaSeconds)
 	}
 	if (StudioQaProcessStage == 1 && bInStudio)
 	{
+		if (bPromptPresentationQa
+			&& StudioInteractionPromptPresentationQaCaptureStage >= 2
+			&& StudioInteractionPromptPresentationQaCaptureStage < 5)
+		{
+			if (StudioInteractionPromptPresentationQaCaptureStage == 2)
+			{
+				if (Controller)
+				{
+					Controller->SetControlRotation(FRotator(-8.0f, 180.0f, 0.0f));
+				}
+				if (GEngine)
+				{
+					GEngine->ClearOnScreenDebugMessages();
+				}
+				StudioInteractionPromptPresentationQaCaptureStage = 3;
+				StudioQaElapsed = 0.0f;
+				return;
+			}
+			if (StudioInteractionPromptPresentationQaCaptureStage == 3)
+			{
+				if (StudioQaElapsed < 0.5f)
+				{
+					return;
+				}
+				if (StudioInteractionPromptMessage
+					!= BuildStudioInteractionPrompt(true, true, false, false))
+				{
+					UE_LOG(LogOddsWellLocomotion, Error, TEXT("ODDSWELL_STUDIO_INTERACTION_PROMPT_PRESENTATION_QA|result=FAIL|reason=studio_leave_prompt_mismatch"));
+					FPlatformMisc::RequestExit(false);
+					return;
+				}
+				FScreenshotRequest::RequestScreenshot(
+					TEXT("Phase1L1t_StudioLeavePrompt.png"),
+					true,
+					false);
+				StudioInteractionPromptPresentationQaCaptureStage = 4;
+				StudioQaElapsed = 0.0f;
+				return;
+			}
+			if (StudioQaElapsed < 0.5f)
+			{
+				return;
+			}
+			UE_LOG(
+				LogOddsWellLocomotion,
+				Display,
+				TEXT("ODDSWELL_STUDIO_INTERACTION_PROMPT_PRESENTATION_QA|result=PASS|states=empty_studio_enter,studio_leave|native_canvas=true|panel_shapes=2|standard=1280x720|compact=888x500|valid_conditions_only=true|unrelated_prompts_changed=false|manual_input=false"));
+			StudioInteractionPromptPresentationQaCaptureStage = 5;
+		}
 		if (!bStudioQaInteriorStarted && GetCharacterMovement()->IsMovingOnGround())
 		{
 			if (bStudioPersistenceQa)
@@ -8369,6 +8561,28 @@ void AOddsWellSportsbookHUD::DrawHUD()
 		DrawRect(Accent, X, Y, 6.0f, Height);
 		DrawText(
 			JobFeedbackMessage,
+			FLinearColor::White,
+			X + 24.0f,
+			Y + (bCompact ? 17.0f : 22.0f),
+			nullptr,
+			bCompact ? 0.90f : 1.05f);
+	}
+	if (!StudioInteractionPromptMessage.IsEmpty())
+	{
+		const bool bCompact = Canvas->SizeX <= TicketBoothCompactCanvasWidth
+			|| Canvas->SizeY <= TicketBoothCompactCanvasHeight;
+		const float Width = FMath::Min(
+			JobFeedbackMaxWidth,
+			Canvas->SizeX - (bCompact ? 32.0f : 56.0f));
+		const float Height = bCompact
+			? JobFeedbackCompactHeight
+			: JobFeedbackNormalHeight;
+		const float X = (Canvas->SizeX - Width) * 0.5f;
+		const float Y = Canvas->SizeY - Height - (bCompact ? 16.0f : 32.0f);
+		DrawRect(FLinearColor(0.025f, 0.055f, 0.08f, 0.96f), X, Y, Width, Height);
+		DrawRect(FLinearColor(0.20f, 0.75f, 0.68f, 1.0f), X, Y, 6.0f, Height);
+		DrawText(
+			StudioInteractionPromptMessage,
 			FLinearColor::White,
 			X + 24.0f,
 			Y + (bCompact ? 17.0f : 22.0f),
@@ -12544,6 +12758,7 @@ APawn* AOddsWellLocomotionGameMode::SpawnDefaultPawnAtTransform_Implementation(A
 AOddsWellStudioGameMode::AOddsWellStudioGameMode()
 {
 	DefaultPawnClass = AOddsWellPlaceholderCharacter::StaticClass();
+	HUDClass = AOddsWellSportsbookHUD::StaticClass();
 }
 
 void AOddsWellStudioGameMode::BeginPlay()
@@ -14344,6 +14559,62 @@ bool FOddsWellOneBedroomFeedbackPresentationTest::RunTest(
 	TestEqual(TEXT("Owned chair remains exactly three parts"), GetModularChairParts().Num(), 3);
 	TestEqual(TEXT("Owned chair remains at studio_primary"), StudioPrimarySnapPointId, FName(TEXT("studio_primary")));
 	TestEqual(TEXT("Fresh Studio has no One-bedroom presentation layer"), GetOneBedroomPresentationParts(false).Num(), 0);
+	return !HasAnyErrors();
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(
+	FOddsWellStudioInteractionPromptPresentationTest,
+	"OddsWell.Character.StudioInteractionPromptPresentation",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+
+bool FOddsWellStudioInteractionPromptPresentationTest::RunTest(
+	const FString& Parameters)
+{
+	const float StandardWidth = FMath::Min(JobFeedbackMaxWidth, 1280.0f - 56.0f);
+	const float CompactWidth = FMath::Min(JobFeedbackMaxWidth, 888.0f - 32.0f);
+	const float StandardY = 720.0f - JobFeedbackNormalHeight - 32.0f;
+	const float CompactY = 500.0f - JobFeedbackCompactHeight - 16.0f;
+	TestEqual(TEXT("Studio prompt reuses exactly two native Canvas shapes"), TransientFeedbackPanelShapeCount, 2);
+	TestTrue(TEXT("Standard Studio prompt stays inside 1280x720"),
+		(1280.0f - StandardWidth) * 0.5f >= 0.0f
+			&& StandardY >= 0.0f
+			&& StandardY + JobFeedbackNormalHeight <= 720.0f);
+	TestTrue(TEXT("Compact Studio prompt stays inside 888x500"),
+		(888.0f - CompactWidth) * 0.5f >= 0.0f
+			&& CompactY >= 0.0f
+			&& CompactY + JobFeedbackCompactHeight <= 500.0f);
+	TestTrue(TEXT("Standard result and Studio prompt panels do not overlap"),
+		72.0f + JobFeedbackNormalHeight < StandardY);
+	TestTrue(TEXT("Compact result and Studio prompt panels do not overlap"),
+		16.0f + JobFeedbackCompactHeight < CompactY);
+	TestEqual(TEXT("Fresh empty-Studio entry wording remains exact"),
+		BuildStudioInteractionPrompt(true, false, false, false),
+		FString(TEXT("Press E to enter your empty Studio")));
+	TestEqual(TEXT("Owned-chair Studio entry wording remains exact"),
+		BuildStudioInteractionPrompt(true, false, false, true),
+		FString(TEXT("Press E to enter your Studio")));
+	TestEqual(TEXT("One-bedroom entry wording remains exact"),
+		BuildStudioInteractionPrompt(true, false, true, true),
+		FString(TEXT("Press E to enter your One-bedroom")));
+	TestEqual(TEXT("Studio leave wording remains exact"),
+		BuildStudioInteractionPrompt(true, true, false, false),
+		FString(TEXT("Press E to leave your Studio")));
+	TestEqual(TEXT("One-bedroom leave wording remains exact"),
+		BuildStudioInteractionPrompt(true, true, true, true),
+		FString(TEXT("Press E to leave your One-bedroom")));
+	TestTrue(TEXT("Studio prompt is absent outside valid door or interior conditions"),
+		BuildStudioInteractionPrompt(false, false, true, true).IsEmpty());
+	TestFalse(TEXT("Dedicated server remains ineligible for private Studio prompts"),
+		CanUseStudioInteraction(true, NM_DedicatedServer));
+	TestFalse(TEXT("Listen host remains ineligible for a network client's private Studio prompt"),
+		CanUseStudioInteraction(true, NM_ListenServer));
+	TestTrue(TEXT("Standalone local owner retains Studio interaction"),
+		CanUseStudioInteraction(true, NM_Standalone));
+	TestTrue(TEXT("Network client retains its private Studio interaction"),
+		CanUseStudioInteraction(true, NM_Client));
+	TestTrue(TEXT("Private Studio reuses the existing native Canvas HUD"),
+		GetDefault<AOddsWellStudioGameMode>()->HUDClass == AOddsWellSportsbookHUD::StaticClass());
+	TestEqual(TEXT("Studio door radius remains unchanged"), StudioEntryRadius, 350.0f);
 	return !HasAnyErrors();
 }
 
