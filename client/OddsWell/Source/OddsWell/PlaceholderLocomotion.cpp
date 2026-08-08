@@ -150,6 +150,7 @@ bool bArenaPresentationQaCaptured = false;
 int32 TicketBoothPresentationQaStage = 0;
 bool bTicketBoothCompactLayoutQaLogged = false;
 bool bClothingStorePresentationQaCaptured = false;
+bool bFurnitureStorePresentationQaCaptured = false;
 
 bool CanUseStudioInteraction(const bool bLocallyControlled, const ENetMode NetMode)
 {
@@ -961,6 +962,18 @@ const TArray<FSundalePresentationPartSpec>& GetSundaleClothingStoreFrontageParts
 	return Parts;
 }
 
+const TArray<FSundalePresentationPartSpec>& GetSundaleFurnitureStoreFrontageParts()
+{
+	static const TArray<FSundalePresentationPartSpec> Parts = {
+		{TEXT("FurnitureStoreFrontagePostLeft"), TEXT("post"), FVector(-10125.0, 4500.0, 400.0), FVector(0.45, 0.55, 8.0), SundaleCharcoalGray},
+		{TEXT("FurnitureStoreFrontagePostRight"), TEXT("post"), FVector(-10125.0, 5500.0, 400.0), FVector(0.45, 0.55, 8.0), SundaleCharcoalGray},
+		{TEXT("FurnitureStoreFrontageHeader"), TEXT("header"), FVector(-10125.0, 5000.0, 820.0), FVector(0.45, 10.5, 0.4), SundaleSageGreen},
+		{TEXT("FurnitureStoreFrontageDisplay"), TEXT("display"), FVector(-10090.0, 5000.0, 160.0), FVector(0.45, 6.0, 2.6), SundaleWarmLimestone},
+		{TEXT("FurnitureStoreFrontageApproach"), TEXT("approach"), FVector(-9550.0, 5000.0, 13.0), FVector(5.5, 1.4, 0.03), SundaleBurntOrange},
+	};
+	return Parts;
+}
+
 struct FSundaleAtmosphereSpec
 {
 	float DirectionalIntensity;
@@ -1257,6 +1270,34 @@ void BuildSundalePresentation(UWorld* World)
 	else
 	{
 		UE_LOG(LogOddsWellLocomotion, Error, TEXT("%s"), *ClothingStoreFrontageEvidence);
+	}
+
+	int32 SpawnedFurnitureStoreFrontageParts = 0;
+	TSet<FName> SpawnedFurnitureStoreFrontageRoles;
+	for (const FSundalePresentationPartSpec& Part : GetSundaleFurnitureStoreFrontageParts())
+	{
+		if (SpawnPart(Part.Id, Part.Role, Part.Location, Part.Scale, Part.Color, false))
+		{
+			++SpawnedFurnitureStoreFrontageParts;
+			SpawnedFurnitureStoreFrontageRoles.Add(Part.Role);
+		}
+	}
+	const bool bFurnitureStoreFrontagePassed = SpawnedFurnitureStoreFrontageParts == GetSundaleFurnitureStoreFrontageParts().Num()
+		&& SpawnedFurnitureStoreFrontageRoles.Num() == 4;
+	const FString FurnitureStoreFrontageEvidence = FString::Printf(
+		TEXT("ODDSWELL_SUNDALE_FURNITURE_STORE_FRONTAGE|result=%s|parts=%d|roles=%d|anchor_x=%.0f|anchor_y=%.0f|local_only=true|replicated=false|collision=false|native_assets=true|text=false|catalog_added=false|snap_points_added=false|placement=false|store_fiction=false|final_art=false"),
+		bFurnitureStoreFrontagePassed ? TEXT("PASS") : TEXT("FAIL"),
+		SpawnedFurnitureStoreFrontageParts,
+		SpawnedFurnitureStoreFrontageRoles.Num(),
+		FurnitureStoreInteractionLocation.X,
+		FurnitureStoreInteractionLocation.Y);
+	if (bFurnitureStoreFrontagePassed)
+	{
+		UE_LOG(LogOddsWellLocomotion, Display, TEXT("%s"), *FurnitureStoreFrontageEvidence);
+	}
+	else
+	{
+		UE_LOG(LogOddsWellLocomotion, Error, TEXT("%s"), *FurnitureStoreFrontageEvidence);
 	}
 }
 
@@ -3453,6 +3494,27 @@ void AOddsWellPlaceholderCharacter::RunModularChairPurchaseQa(
 			UE_LOG(LogOddsWellLocomotion, Error, TEXT("ODDSWELL_MODULAR_CHAIR_QA|result=FAIL|reason=unexpected_starting_ledger"));
 			bModularChairPurchaseQaLogged = true;
 			QaExitAt = FPlatformTime::Seconds() + 1.0;
+			return;
+		}
+		if (FParse::Param(FCommandLine::Get(), TEXT("FurnitureStorePresentationQa"))
+			&& !bFurnitureStorePresentationQaCaptured)
+		{
+			SetActorLocation(
+				FurnitureStoreInteractionLocation + FVector(1400.0, 0.0, SafeSpawnLocation.Z),
+				false,
+				nullptr,
+				ETeleportType::TeleportPhysics);
+			PlayerController->SetControlRotation(FRotator(0.0f, 180.0f, 0.0f));
+			if (GEngine)
+			{
+				GEngine->ClearOnScreenDebugMessages();
+			}
+			FScreenshotRequest::RequestScreenshot(TEXT("Phase1L1k_FurnitureStoreFrontage.png"), true, false);
+			UE_LOG(
+				LogOddsWellLocomotion,
+				Display,
+				TEXT("ODDSWELL_FURNITURE_STORE_PRESENTATION_QA|result=PASS|fixed_view=true|manual_input=false|store_logic_changed=false|catalog_added=false|snap_points_added=false|placement=false|final_art=false"));
+			bFurnitureStorePresentationQaCaptured = true;
 			return;
 		}
 		SetActorLocation(
@@ -13453,6 +13515,57 @@ bool FOddsWellSundaleClothingStoreFrontageTest::RunTest(const FString& Parameter
 	TestEqual(TEXT("Signal Jacket item id remains unchanged"), GetOddsWellSignalJacketItemId(), FString(TEXT("sundale_signal_jacket")));
 	TestEqual(TEXT("Signal Jacket price remains unchanged"), GetOddsWellSignalJacketPrice(), int64{60});
 	TestTrue(TEXT("Signal Jacket slate and teal presentation remains distinct"), SignalJacketSlate != SignalJacketTeal);
+	return !HasAnyErrors();
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(
+	FOddsWellSundaleFurnitureStoreFrontageTest,
+	"OddsWell.Character.SundaleFurnitureStoreFrontage",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+
+bool FOddsWellSundaleFurnitureStoreFrontageTest::RunTest(const FString& Parameters)
+{
+	const TArray<FSundalePresentationPartSpec>& Parts = GetSundaleFurnitureStoreFrontageParts();
+	TestEqual(TEXT("Furniture Store frontage remains bounded to five native parts"), Parts.Num(), 5);
+	const TArray<FName> ExpectedIds = {
+		TEXT("FurnitureStoreFrontagePostLeft"),
+		TEXT("FurnitureStoreFrontagePostRight"),
+		TEXT("FurnitureStoreFrontageHeader"),
+		TEXT("FurnitureStoreFrontageDisplay"),
+		TEXT("FurnitureStoreFrontageApproach"),
+	};
+	const TArray<FLinearColor> ApprovedPalette = {
+		SundaleWarmLimestone,
+		SundaleSageGreen,
+		SundaleBurntOrange,
+		SundaleCharcoalGray,
+	};
+	TMap<FName, int32> RoleCounts;
+	TSet<FName> Ids;
+	for (const FSundalePresentationPartSpec& Part : Parts)
+	{
+		++RoleCounts.FindOrAdd(Part.Role);
+		Ids.Add(Part.Id);
+		TestTrue(*FString::Printf(TEXT("%s remains an approved Furniture Store frontage id"), *Part.Id.ToString()), ExpectedIds.Contains(Part.Id));
+		TestTrue(*FString::Printf(TEXT("%s keeps positive scale"), *Part.Id.ToString()), Part.Scale.GetMin() > 0.0);
+		TestTrue(*FString::Printf(TEXT("%s stays at the existing Furniture Store frontage"), *Part.Id.ToString()), FVector::Dist2D(Part.Location, FurnitureStoreInteractionLocation) <= 1500.0 && Part.Location.Z > 0.0 && Part.Location.Z <= 900.0);
+		TestTrue(*FString::Printf(TEXT("%s uses the approved palette"), *Part.Id.ToString()), ApprovedPalette.Contains(Part.Color));
+	}
+	TestEqual(TEXT("Every Furniture Store frontage part id remains unique"), Ids.Num(), Parts.Num());
+	TestEqual(TEXT("Furniture Store frontage uses exactly four architectural roles"), RoleCounts.Num(), 4);
+	TestEqual(TEXT("Furniture Store frontage keeps two framing posts"), RoleCounts.FindRef(FName(TEXT("post"))), 2);
+	TestEqual(TEXT("Furniture Store frontage keeps one header"), RoleCounts.FindRef(FName(TEXT("header"))), 1);
+	TestEqual(TEXT("Furniture Store frontage keeps one display sill"), RoleCounts.FindRef(FName(TEXT("display"))), 1);
+	TestEqual(TEXT("Furniture Store frontage keeps one approach band"), RoleCounts.FindRef(FName(TEXT("approach"))), 1);
+	TestTrue(TEXT("Furniture Store remains the existing route waypoint"), GetSundaleRouteWaypoints()[8].Equals(FurnitureStoreInteractionLocation));
+	TestEqual(TEXT("Furniture Store interaction radius remains unchanged"), FurnitureStoreInteractionRadius, 350.0f);
+	TestEqual(TEXT("Modular Chair item id remains unchanged"), GetOddsWellModularChairItemId(), FString(TEXT("sundale_modular_chair")));
+	TestEqual(TEXT("Modular Chair price remains unchanged"), GetOddsWellModularChairPrice(), int64{100});
+	TestEqual(TEXT("Modular Chair remains exactly three graybox parts"), GetModularChairParts().Num(), 3);
+	TestEqual(TEXT("Fresh Studio retains zero active snap points"), GetActiveStudioSnapPointCount(false, 0), 0);
+	TestEqual(TEXT("Owned complete chair retains studio_primary only"), GetActiveStudioSnapPointCount(true, GetModularChairParts().Num()), 1);
+	TestEqual(TEXT("Modular Chair snap point id remains unchanged"), StudioPrimarySnapPointId, FName(TEXT("studio_primary")));
+	TestTrue(TEXT("Modular Chair gray and teal presentation remains distinct"), ModularChairGray != ModularChairTeal);
 	return !HasAnyErrors();
 }
 
