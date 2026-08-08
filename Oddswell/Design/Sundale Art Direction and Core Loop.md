@@ -8,6 +8,8 @@ This is the smallest buildable art and layout contract for the beta first city s
 
 See [[Visual Maps/Sundale Core Loop|the clean visual loop map]], [[Development/Reports/Phase 1C1 Sundale Art Direction and Core Loop Freeze|the Phase 1C.1 planning report]], and [[Development/Reports/Phase 1C2 Primitive Sundale Graybox and Packaged Route Measurement|the measured Phase 1C.2 report]].
 
+The proposed asset-by-asset production boundary and lightweight approval sequence are tracked in [[Design/Sundale Production Asset Scope]]. It is an owner-review plan, not automatic authorization to expand the asset catalog or promote pilot meshes to final art.
+
 ## Identity sentence
 
 **Sundale is a warm modern civic neighborhood where a shaded public commons connects modest housing, daily work, street basketball, practical shopping, and the arena that represents the player's ambition.**
