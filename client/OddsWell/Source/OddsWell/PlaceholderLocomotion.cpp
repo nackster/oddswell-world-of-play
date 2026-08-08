@@ -149,6 +149,7 @@ bool bJobPresentationQaCaptured = false;
 bool bArenaPresentationQaCaptured = false;
 int32 TicketBoothPresentationQaStage = 0;
 bool bTicketBoothCompactLayoutQaLogged = false;
+bool bClothingStorePresentationQaCaptured = false;
 
 bool CanUseStudioInteraction(const bool bLocallyControlled, const ENetMode NetMode)
 {
@@ -948,6 +949,18 @@ const TArray<FSundalePresentationPartSpec>& GetSundaleTicketBoothFrontageParts()
 	return Parts;
 }
 
+const TArray<FSundalePresentationPartSpec>& GetSundaleClothingStoreFrontageParts()
+{
+	static const TArray<FSundalePresentationPartSpec> Parts = {
+		{TEXT("ClothingStoreFrontagePostLeft"), TEXT("post"), FVector(12125.0, 8500.0, 400.0), FVector(0.45, 0.55, 8.0), SundaleCharcoalGray},
+		{TEXT("ClothingStoreFrontagePostRight"), TEXT("post"), FVector(12125.0, 9500.0, 400.0), FVector(0.45, 0.55, 8.0), SundaleCharcoalGray},
+		{TEXT("ClothingStoreFrontageHeader"), TEXT("header"), FVector(12125.0, 9000.0, 820.0), FVector(0.45, 10.5, 0.4), SundaleBurntOrange},
+		{TEXT("ClothingStoreFrontageDisplay"), TEXT("display"), FVector(12090.0, 9000.0, 160.0), FVector(0.45, 6.0, 2.6), SundaleWarmLimestone},
+		{TEXT("ClothingStoreFrontageApproach"), TEXT("approach"), FVector(11550.0, 9000.0, 13.0), FVector(5.5, 1.4, 0.03), SundaleRestrainedCobalt},
+	};
+	return Parts;
+}
+
 struct FSundaleAtmosphereSpec
 {
 	float DirectionalIntensity;
@@ -1216,6 +1229,34 @@ void BuildSundalePresentation(UWorld* World)
 	else
 	{
 		UE_LOG(LogOddsWellLocomotion, Error, TEXT("%s"), *TicketBoothFrontageEvidence);
+	}
+
+	int32 SpawnedClothingStoreFrontageParts = 0;
+	TSet<FName> SpawnedClothingStoreFrontageRoles;
+	for (const FSundalePresentationPartSpec& Part : GetSundaleClothingStoreFrontageParts())
+	{
+		if (SpawnPart(Part.Id, Part.Role, Part.Location, Part.Scale, Part.Color, false))
+		{
+			++SpawnedClothingStoreFrontageParts;
+			SpawnedClothingStoreFrontageRoles.Add(Part.Role);
+		}
+	}
+	const bool bClothingStoreFrontagePassed = SpawnedClothingStoreFrontageParts == GetSundaleClothingStoreFrontageParts().Num()
+		&& SpawnedClothingStoreFrontageRoles.Num() == 4;
+	const FString ClothingStoreFrontageEvidence = FString::Printf(
+		TEXT("ODDSWELL_SUNDALE_CLOTHING_STORE_FRONTAGE|result=%s|parts=%d|roles=%d|anchor_x=%.0f|anchor_y=%.0f|local_only=true|replicated=false|collision=false|native_assets=true|text=false|catalog_added=false|changing_room=false|store_fiction=false|final_art=false"),
+		bClothingStoreFrontagePassed ? TEXT("PASS") : TEXT("FAIL"),
+		SpawnedClothingStoreFrontageParts,
+		SpawnedClothingStoreFrontageRoles.Num(),
+		ClothingStoreInteractionLocation.X,
+		ClothingStoreInteractionLocation.Y);
+	if (bClothingStoreFrontagePassed)
+	{
+		UE_LOG(LogOddsWellLocomotion, Display, TEXT("%s"), *ClothingStoreFrontageEvidence);
+	}
+	else
+	{
+		UE_LOG(LogOddsWellLocomotion, Error, TEXT("%s"), *ClothingStoreFrontageEvidence);
 	}
 }
 
@@ -3031,6 +3072,27 @@ void AOddsWellPlaceholderCharacter::RunSignalJacketPurchaseQa(
 		if (!bExpectedStartingState)
 		{
 			Finish(false, TEXT("unexpected_starting_ledger"));
+			return;
+		}
+		if (FParse::Param(FCommandLine::Get(), TEXT("ClothingStorePresentationQa"))
+			&& !bClothingStorePresentationQaCaptured)
+		{
+			SetActorLocation(
+				ClothingStoreInteractionLocation + FVector(-1400.0, 0.0, SafeSpawnLocation.Z),
+				false,
+				nullptr,
+				ETeleportType::TeleportPhysics);
+			PlayerController->SetControlRotation(FRotator::ZeroRotator);
+			if (GEngine)
+			{
+				GEngine->ClearOnScreenDebugMessages();
+			}
+			FScreenshotRequest::RequestScreenshot(TEXT("Phase1L1j_ClothingStoreFrontage.png"), true, false);
+			UE_LOG(
+				LogOddsWellLocomotion,
+				Display,
+				TEXT("ODDSWELL_CLOTHING_STORE_PRESENTATION_QA|result=PASS|fixed_view=true|manual_input=false|store_logic_changed=false|catalog_added=false|changing_room=false|final_art=false"));
+			bClothingStorePresentationQaCaptured = true;
 			return;
 		}
 		SetActorLocation(
@@ -13344,6 +13406,53 @@ bool FOddsWellSundaleTicketBoothFrontageTest::RunTest(const FString& Parameters)
 	TestEqual(TEXT("Overtime page remains locked and labeled"), Labels[2], FString(TEXT("OVERTIME")));
 	TestEqual(TEXT("Player Props page remains locked and labeled"), Labels[3], FString(TEXT("PLAYER PROPS")));
 	TestTrue(TEXT("Arena entrance remains separate from the Ticket Booth"), FVector::Dist2D(SportsbookInteractionLocation, StadiumEntranceThreshold) > SportsbookInteractionRadius + StadiumEntryRadius);
+	return !HasAnyErrors();
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(
+	FOddsWellSundaleClothingStoreFrontageTest,
+	"OddsWell.Character.SundaleClothingStoreFrontage",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+
+bool FOddsWellSundaleClothingStoreFrontageTest::RunTest(const FString& Parameters)
+{
+	const TArray<FSundalePresentationPartSpec>& Parts = GetSundaleClothingStoreFrontageParts();
+	TestEqual(TEXT("Clothing Store frontage remains bounded to five native parts"), Parts.Num(), 5);
+	const TArray<FName> ExpectedIds = {
+		TEXT("ClothingStoreFrontagePostLeft"),
+		TEXT("ClothingStoreFrontagePostRight"),
+		TEXT("ClothingStoreFrontageHeader"),
+		TEXT("ClothingStoreFrontageDisplay"),
+		TEXT("ClothingStoreFrontageApproach"),
+	};
+	const TArray<FLinearColor> ApprovedPalette = {
+		SundaleWarmLimestone,
+		SundaleRestrainedCobalt,
+		SundaleBurntOrange,
+		SundaleCharcoalGray,
+	};
+	TMap<FName, int32> RoleCounts;
+	TSet<FName> Ids;
+	for (const FSundalePresentationPartSpec& Part : Parts)
+	{
+		++RoleCounts.FindOrAdd(Part.Role);
+		Ids.Add(Part.Id);
+		TestTrue(*FString::Printf(TEXT("%s remains an approved Clothing Store frontage id"), *Part.Id.ToString()), ExpectedIds.Contains(Part.Id));
+		TestTrue(*FString::Printf(TEXT("%s keeps positive scale"), *Part.Id.ToString()), Part.Scale.GetMin() > 0.0);
+		TestTrue(*FString::Printf(TEXT("%s stays at the existing Clothing Store frontage"), *Part.Id.ToString()), FVector::Dist2D(Part.Location, ClothingStoreInteractionLocation) <= 1500.0 && Part.Location.Z > 0.0 && Part.Location.Z <= 900.0);
+		TestTrue(*FString::Printf(TEXT("%s uses the approved palette"), *Part.Id.ToString()), ApprovedPalette.Contains(Part.Color));
+	}
+	TestEqual(TEXT("Every Clothing Store frontage part id remains unique"), Ids.Num(), Parts.Num());
+	TestEqual(TEXT("Clothing Store frontage uses exactly four architectural roles"), RoleCounts.Num(), 4);
+	TestEqual(TEXT("Clothing Store frontage keeps two framing posts"), RoleCounts.FindRef(FName(TEXT("post"))), 2);
+	TestEqual(TEXT("Clothing Store frontage keeps one header"), RoleCounts.FindRef(FName(TEXT("header"))), 1);
+	TestEqual(TEXT("Clothing Store frontage keeps one display sill"), RoleCounts.FindRef(FName(TEXT("display"))), 1);
+	TestEqual(TEXT("Clothing Store frontage keeps one approach band"), RoleCounts.FindRef(FName(TEXT("approach"))), 1);
+	TestTrue(TEXT("Clothing Store remains the existing route waypoint"), GetSundaleRouteWaypoints()[2].Equals(ClothingStoreInteractionLocation));
+	TestEqual(TEXT("Clothing Store interaction radius remains unchanged"), ClothingStoreInteractionRadius, 350.0f);
+	TestEqual(TEXT("Signal Jacket item id remains unchanged"), GetOddsWellSignalJacketItemId(), FString(TEXT("sundale_signal_jacket")));
+	TestEqual(TEXT("Signal Jacket price remains unchanged"), GetOddsWellSignalJacketPrice(), int64{60});
+	TestTrue(TEXT("Signal Jacket slate and teal presentation remains distinct"), SignalJacketSlate != SignalJacketTeal);
 	return !HasAnyErrors();
 }
 
