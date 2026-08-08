@@ -168,6 +168,9 @@ uint8 SignalJacketFeedbackPresentationQaStateMask = 0;
 int32 SignalJacketFeedbackPresentationQaCaptureStage = 0;
 uint8 ModularChairFeedbackPresentationQaStateMask = 0;
 int32 ModularChairFeedbackPresentationQaCaptureStage = 0;
+uint8 OneBedroomFeedbackPresentationQaStateMask = 0;
+int32 OneBedroomFeedbackPresentationQaCaptureStage = 0;
+bool bOneBedroomFeedbackPresentationQaDuplicateVerified = false;
 bool bArenaPresentationQaCaptured = false;
 int32 TicketBoothPresentationQaStage = 0;
 bool bTicketBoothCompactLayoutQaLogged = false;
@@ -244,6 +247,25 @@ FString BuildModularChairPurchaseFeedbackMessage(
 				Balance)
 			: Error.IsEmpty()
 				? TEXT("Modular Chair purchase rejected")
+				: Error;
+}
+
+FString BuildOneBedroomUpgradeFeedbackMessage(
+	const bool bPurchased,
+	const bool bOwned,
+	const int64 Balance,
+	const FString& Error)
+{
+	return bPurchased
+		? FString::Printf(
+			TEXT("One-bedroom upgrade purchased | Balance: %lld Odds Bucks"),
+			Balance)
+		: bOwned
+			? FString::Printf(
+				TEXT("One-bedroom already owned | Balance: %lld Odds Bucks"),
+				Balance)
+			: Error.IsEmpty()
+				? TEXT("One-bedroom upgrade rejected")
 				: Error;
 }
 
@@ -4133,6 +4155,9 @@ void AOddsWellPlaceholderCharacter::RunOneBedroomUpgradeQa(
 	{
 		return;
 	}
+	const bool bFeedbackPresentationQa = FParse::Param(
+		FCommandLine::Get(),
+		TEXT("OneBedroomFeedbackPresentationQa"));
 	if (OneBedroomUpgradeQaElapsed > 30.0f)
 	{
 		UE_LOG(LogOddsWellLocomotion, Error, TEXT("ODDSWELL_ONE_BEDROOM_QA|result=FAIL|reason=city_timeout"));
@@ -4185,7 +4210,6 @@ void AOddsWellPlaceholderCharacter::RunOneBedroomUpgradeQa(
 	case 3:
 	case 6:
 	case 8:
-	case 11:
 		PlayerController->InputKey(FInputKeyEventArgs::CreateSimulated(KeyInteract, IE_Pressed, 1.0f));
 		++OneBedroomUpgradeQaStage;
 		return;
@@ -4213,7 +4237,130 @@ void AOddsWellPlaceholderCharacter::RunOneBedroomUpgradeQa(
 		{
 			return;
 		}
+		if (bFeedbackPresentationQa)
+		{
+			if (!bOneBedroomFeedbackPresentationQaDuplicateVerified)
+			{
+				bool bDuplicatePurchased = false;
+				bool bDuplicateOwned = false;
+				int64 DuplicateBalance = 0;
+				FString DuplicateError;
+				if (!GameMode->TryPurchaseOneBedroomUpgrade(
+						bDuplicatePurchased,
+						bDuplicateOwned,
+						DuplicateBalance,
+						DuplicateError)
+					|| bDuplicatePurchased
+					|| !bDuplicateOwned
+					|| GameMode->GetOddsBucksEntryCount() != 3
+					|| DuplicateBalance != 0
+					|| !DuplicateError.IsEmpty())
+				{
+					UE_LOG(LogOddsWellLocomotion, Error, TEXT("ODDSWELL_ONE_BEDROOM_FEEDBACK_PRESENTATION_QA|result=FAIL|reason=duplicate_purchase_mutated_state|detail=%s"), *DuplicateError);
+					bOneBedroomUpgradeQaLogged = true;
+					QaExitAt = FPlatformTime::Seconds() + 1.0f;
+					return;
+				}
+				bOneBedroomFeedbackPresentationQaDuplicateVerified = true;
+			}
+			if (OneBedroomFeedbackPresentationQaStateMask != 1)
+			{
+				UE_LOG(LogOddsWellLocomotion, Error, TEXT("ODDSWELL_ONE_BEDROOM_FEEDBACK_PRESENTATION_QA|result=FAIL|reason=purchase_success_feedback_missing"));
+				bOneBedroomUpgradeQaLogged = true;
+				QaExitAt = FPlatformTime::Seconds() + 1.0f;
+				return;
+			}
+			if (OneBedroomFeedbackPresentationQaCaptureStage == 0)
+			{
+				SetActorLocation(
+					ApartmentManagementInteractionLocation
+						+ FVector(0.0, -1400.0, SafeSpawnLocation.Z),
+					false,
+					nullptr,
+					ETeleportType::TeleportPhysics);
+				PlayerController->SetControlRotation(FRotator(0.0f, 90.0f, 0.0f));
+				if (GEngine)
+				{
+					GEngine->ClearOnScreenDebugMessages();
+				}
+				OneBedroomFeedbackPresentationQaCaptureStage = -1;
+				OneBedroomUpgradeQaElapsed = 0.0f;
+				return;
+			}
+			if (OneBedroomUpgradeQaElapsed < 0.5f)
+			{
+				return;
+			}
+			FScreenshotRequest::RequestScreenshot(
+				TEXT("Phase1L1s_OneBedroomUpgradeSuccess.png"),
+				true,
+				false);
+			OneBedroomFeedbackPresentationQaCaptureStage = 1;
+			OneBedroomUpgradeQaElapsed = 0.0f;
+			++OneBedroomUpgradeQaStage;
+			return;
+		}
 		SetActorLocation(SafeSpawnLocation, false, nullptr, ETeleportType::TeleportPhysics);
+		++OneBedroomUpgradeQaStage;
+		return;
+	case 11:
+		if (bFeedbackPresentationQa)
+		{
+			if (OneBedroomUpgradeQaElapsed < 0.5f)
+			{
+				return;
+			}
+			ShowTransientFeedbackPanel(
+				BuildOneBedroomUpgradeFeedbackMessage(false, true, 0, FString()),
+				true);
+			OneBedroomFeedbackPresentationQaStateMask |= 1 << 1;
+			OneBedroomUpgradeQaElapsed = 0.0f;
+			++OneBedroomUpgradeQaStage;
+			return;
+		}
+		PlayerController->InputKey(
+			FInputKeyEventArgs::CreateSimulated(KeyInteract, IE_Pressed, 1.0f));
+		++OneBedroomUpgradeQaStage;
+		return;
+	case 12:
+		if (!bFeedbackPresentationQa || OneBedroomUpgradeQaElapsed < 0.2f)
+		{
+			return;
+		}
+		ShowTransientFeedbackPanel(
+			BuildOneBedroomUpgradeFeedbackMessage(false, false, 0, FString()),
+			false);
+		OneBedroomFeedbackPresentationQaStateMask |= 1 << 2;
+		OneBedroomUpgradeQaElapsed = 0.0f;
+		++OneBedroomUpgradeQaStage;
+		return;
+	case 13:
+		if (!bFeedbackPresentationQa || OneBedroomUpgradeQaElapsed < 0.2f)
+		{
+			return;
+		}
+		if (OneBedroomFeedbackPresentationQaStateMask != 7
+			|| OneBedroomFeedbackPresentationQaCaptureStage != 1)
+		{
+			UE_LOG(LogOddsWellLocomotion, Error, TEXT("ODDSWELL_ONE_BEDROOM_FEEDBACK_PRESENTATION_QA|result=FAIL|reason=feedback_fixture_incomplete"));
+			bOneBedroomUpgradeQaLogged = true;
+			QaExitAt = FPlatformTime::Seconds() + 1.0f;
+			return;
+		}
+		UE_LOG(
+			LogOddsWellLocomotion,
+			Display,
+			TEXT("ODDSWELL_ONE_BEDROOM_FEEDBACK_PRESENTATION_QA|result=PASS|states=purchase_success,already_owned,purchase_reject|state_mask=7|capture_stage=1|settled_frame_capture=true|lifetime_seconds=5|native_canvas=true|panel_shapes=2|standard=1280x720|compact=888x500|wording_unchanged=true|tier_id=one_bedroom|price=500|entries=3|balance=0|duplicate_owned=true|duplicate_debit=false|fixtures_mutate_state=false|manual_input=false"));
+		SetActorLocation(SafeSpawnLocation, false, nullptr, ETeleportType::TeleportPhysics);
+		++OneBedroomUpgradeQaStage;
+		return;
+	case 14:
+		if (!bFeedbackPresentationQa)
+		{
+			return;
+		}
+		PlayerController->InputKey(
+			FInputKeyEventArgs::CreateSimulated(KeyInteract, IE_Pressed, 1.0f));
 		++OneBedroomUpgradeQaStage;
 		return;
 	default:
@@ -5105,20 +5252,22 @@ void AOddsWellPlaceholderCharacter::ClientConfirmOneBedroomUpgradePurchase_Imple
 	bOneBedroomUpgradeSubmitting = false;
 	bOneBedroomUpgradeConfirm = false;
 	bOwnsOneBedroom = bOwned;
-	const FString Message = bPurchased
-		? FString::Printf(TEXT("One-bedroom upgrade purchased | Balance: %lld Odds Bucks"), Balance)
-		: bOwned
-			? FString::Printf(TEXT("One-bedroom already owned | Balance: %lld Odds Bucks"), Balance)
-			: Error.IsEmpty()
-				? TEXT("One-bedroom upgrade rejected")
-				: Error;
-	if (GEngine)
+	ShowTransientFeedbackPanel(
+		BuildOneBedroomUpgradeFeedbackMessage(
+			bPurchased,
+			bOwned,
+			Balance,
+			Error),
+		bPurchased || bOwned);
+	if (FParse::Param(
+		FCommandLine::Get(),
+		TEXT("OneBedroomFeedbackPresentationQa")))
 	{
-		GEngine->AddOnScreenDebugMessage(
-			912026,
-			5.0f,
-			bPurchased || bOwned ? FColor::Green : FColor::Red,
-			Message);
+		OneBedroomFeedbackPresentationQaStateMask |= bPurchased
+			? 1 << 0
+			: bOwned
+				? 1 << 1
+				: 1 << 2;
 	}
 	UE_LOG(
 		LogOddsWellLocomotion,
@@ -14149,6 +14298,52 @@ bool FOddsWellModularChairFeedbackPresentationTest::RunTest(
 	TestEqual(TEXT("Modular Chair remains exactly three graybox parts"), GetModularChairParts().Num(), 3);
 	TestEqual(TEXT("A fresh Studio retains no active chair snap point"), GetActiveStudioSnapPointCount(false, 0), 0);
 	TestEqual(TEXT("The owned complete chair retains studio_primary only"), GetActiveStudioSnapPointCount(true, GetModularChairParts().Num()), 1);
+	return !HasAnyErrors();
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(
+	FOddsWellOneBedroomFeedbackPresentationTest,
+	"OddsWell.Character.OneBedroomFeedbackPresentation",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+
+bool FOddsWellOneBedroomFeedbackPresentationTest::RunTest(
+	const FString& Parameters)
+{
+	const float StandardWidth = FMath::Min(JobFeedbackMaxWidth, 1280.0f - 56.0f);
+	const float CompactWidth = FMath::Min(JobFeedbackMaxWidth, 888.0f - 32.0f);
+	TestEqual(TEXT("One-bedroom feedback keeps the existing five-second lifetime"), JobFeedbackLifetimeSeconds, 5.0);
+	TestEqual(TEXT("One-bedroom feedback reuses exactly two native Canvas shapes"), TransientFeedbackPanelShapeCount, 2);
+	TestTrue(TEXT("Standard One-bedroom feedback stays inside 1280x720"),
+		(1280.0f - StandardWidth) * 0.5f >= 0.0f
+			&& 72.0f + JobFeedbackNormalHeight <= 720.0f);
+	TestTrue(TEXT("Compact One-bedroom feedback stays inside 888x500"),
+		(888.0f - CompactWidth) * 0.5f >= 0.0f
+			&& 16.0f + JobFeedbackCompactHeight <= 500.0f);
+	TestEqual(TEXT("One-bedroom purchase-success wording remains exact"),
+		BuildOneBedroomUpgradeFeedbackMessage(true, true, 0, FString()),
+		FString(TEXT("One-bedroom upgrade purchased | Balance: 0 Odds Bucks")));
+	TestEqual(TEXT("One-bedroom already-owned wording remains exact"),
+		BuildOneBedroomUpgradeFeedbackMessage(false, true, 0, FString()),
+		FString(TEXT("One-bedroom already owned | Balance: 0 Odds Bucks")));
+	TestEqual(TEXT("One-bedroom fallback rejection wording remains exact"),
+		BuildOneBedroomUpgradeFeedbackMessage(false, false, 0, FString()),
+		FString(TEXT("One-bedroom upgrade rejected")));
+	TestEqual(TEXT("One-bedroom server rejection remains exact"),
+		BuildOneBedroomUpgradeFeedbackMessage(
+			false,
+			false,
+			0,
+			TEXT("Return to Apartment Management.")),
+		FString(TEXT("Return to Apartment Management.")));
+	TestTrue(TEXT("Apartment Management anchor remains unchanged"),
+		ApartmentManagementInteractionLocation.Equals(FVector(0.0, 800.0, 0.0)));
+	TestEqual(TEXT("Apartment Management interaction radius remains unchanged"), ApartmentManagementInteractionRadius, 350.0f);
+	TestEqual(TEXT("One-bedroom tier id remains unchanged"), GetOddsWellOneBedroomTierId(), FString(TEXT("one_bedroom")));
+	TestEqual(TEXT("One-bedroom price remains unchanged"), GetOddsWellOneBedroomUpgradePrice(), int64{500});
+	TestEqual(TEXT("One-bedroom remains an in-place three-surface partition"), GetOneBedroomUpgradeSurfaces().Num(), 3);
+	TestEqual(TEXT("Owned chair remains exactly three parts"), GetModularChairParts().Num(), 3);
+	TestEqual(TEXT("Owned chair remains at studio_primary"), StudioPrimarySnapPointId, FName(TEXT("studio_primary")));
+	TestEqual(TEXT("Fresh Studio has no One-bedroom presentation layer"), GetOneBedroomPresentationParts(false).Num(), 0);
 	return !HasAnyErrors();
 }
 
