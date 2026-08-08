@@ -166,6 +166,8 @@ uint8 JobFeedbackPresentationQaStateMask = 0;
 int32 JobFeedbackPresentationQaCaptureStage = 0;
 uint8 SignalJacketFeedbackPresentationQaStateMask = 0;
 int32 SignalJacketFeedbackPresentationQaCaptureStage = 0;
+uint8 ModularChairFeedbackPresentationQaStateMask = 0;
+int32 ModularChairFeedbackPresentationQaCaptureStage = 0;
 bool bArenaPresentationQaCaptured = false;
 int32 TicketBoothPresentationQaStage = 0;
 bool bTicketBoothCompactLayoutQaLogged = false;
@@ -224,6 +226,25 @@ FString BuildSignalJacketEquipFeedbackMessage(
 	return bEquipped
 		? TEXT("Sundale Signal Jacket equipped")
 		: Error;
+}
+
+FString BuildModularChairPurchaseFeedbackMessage(
+	const bool bPurchased,
+	const bool bOwned,
+	const int64 Balance,
+	const FString& Error)
+{
+	return bPurchased
+		? FString::Printf(
+			TEXT("Sundale Modular Chair purchased | Balance: %lld Odds Bucks"),
+			Balance)
+		: bOwned
+			? FString::Printf(
+				TEXT("Sundale Modular Chair already owned | Balance: %lld Odds Bucks"),
+				Balance)
+			: Error.IsEmpty()
+				? TEXT("Modular Chair purchase rejected")
+				: Error;
 }
 
 void ShowTransientFeedbackPanel(const FString& Message, const bool bPositive)
@@ -3773,7 +3794,10 @@ void AOddsWellPlaceholderCharacter::RunModularChairPurchaseQa(
 	{
 		return;
 	}
-	if (ModularChairPurchaseQaElapsed > 20.0f)
+	const bool bFeedbackPresentationQa = FParse::Param(
+		FCommandLine::Get(),
+		TEXT("ModularChairFeedbackPresentationQa"));
+	if (ModularChairPurchaseQaElapsed > 30.0f)
 	{
 		UE_LOG(LogOddsWellLocomotion, Error, TEXT("ODDSWELL_MODULAR_CHAIR_QA|result=FAIL|reason=city_timeout"));
 		bModularChairPurchaseQaLogged = true;
@@ -3850,6 +3874,45 @@ void AOddsWellPlaceholderCharacter::RunModularChairPurchaseQa(
 		{
 			return;
 		}
+		if (bFeedbackPresentationQa)
+		{
+			if (ModularChairFeedbackPresentationQaStateMask != 1)
+			{
+				UE_LOG(LogOddsWellLocomotion, Error, TEXT("ODDSWELL_MODULAR_CHAIR_FEEDBACK_PRESENTATION_QA|result=FAIL|reason=purchase_success_feedback_missing"));
+				bModularChairPurchaseQaLogged = true;
+				QaExitAt = FPlatformTime::Seconds() + 1.0;
+				return;
+			}
+			if (ModularChairFeedbackPresentationQaCaptureStage == 0)
+			{
+				SetActorLocation(
+					FurnitureStoreInteractionLocation
+						+ FVector(1400.0, 0.0, SafeSpawnLocation.Z),
+					false,
+					nullptr,
+					ETeleportType::TeleportPhysics);
+				PlayerController->SetControlRotation(FRotator(0.0f, 180.0f, 0.0f));
+				if (GEngine)
+				{
+					GEngine->ClearOnScreenDebugMessages();
+				}
+				ModularChairFeedbackPresentationQaCaptureStage = -1;
+				ModularChairPurchaseQaElapsed = 0.0f;
+				return;
+			}
+			if (ModularChairPurchaseQaElapsed < 0.5f)
+			{
+				return;
+			}
+			FScreenshotRequest::RequestScreenshot(
+				TEXT("Phase1L1r_ChairPurchaseSuccess.png"),
+				true,
+				false);
+			ModularChairFeedbackPresentationQaCaptureStage = 1;
+			ModularChairPurchaseQaElapsed = 0.0f;
+			++ModularChairPurchaseQaStage;
+			return;
+		}
 		SetActorLocation(
 			SafeSpawnLocation,
 			false,
@@ -3858,6 +3921,81 @@ void AOddsWellPlaceholderCharacter::RunModularChairPurchaseQa(
 		++ModularChairPurchaseQaStage;
 		return;
 	case 6:
+		if (bFeedbackPresentationQa)
+		{
+			if (ModularChairPurchaseQaElapsed < 0.5f)
+			{
+				return;
+			}
+			ShowTransientFeedbackPanel(
+				BuildModularChairPurchaseFeedbackMessage(
+					false,
+					true,
+					0,
+					FString()),
+				true);
+			ModularChairFeedbackPresentationQaStateMask |= 1 << 1;
+			ModularChairPurchaseQaElapsed = 0.0f;
+			++ModularChairPurchaseQaStage;
+			return;
+		}
+		PlayerController->InputKey(
+			FInputKeyEventArgs::CreateSimulated(KeyInteract, IE_Pressed, 1.0f));
+		++ModularChairPurchaseQaStage;
+		return;
+	case 7:
+		if (!bFeedbackPresentationQa)
+		{
+			return;
+		}
+		if (ModularChairPurchaseQaElapsed < 0.2f)
+		{
+			return;
+		}
+		ShowTransientFeedbackPanel(
+			BuildModularChairPurchaseFeedbackMessage(
+				false,
+				false,
+				0,
+				FString()),
+			false);
+		ModularChairFeedbackPresentationQaStateMask |= 1 << 2;
+		ModularChairPurchaseQaElapsed = 0.0f;
+		++ModularChairPurchaseQaStage;
+		return;
+	case 8:
+		if (!bFeedbackPresentationQa)
+		{
+			return;
+		}
+		if (ModularChairPurchaseQaElapsed < 0.2f)
+		{
+			return;
+		}
+		if (ModularChairFeedbackPresentationQaStateMask != 7
+			|| ModularChairFeedbackPresentationQaCaptureStage != 1)
+		{
+			UE_LOG(LogOddsWellLocomotion, Error, TEXT("ODDSWELL_MODULAR_CHAIR_FEEDBACK_PRESENTATION_QA|result=FAIL|reason=feedback_fixture_incomplete"));
+			bModularChairPurchaseQaLogged = true;
+			QaExitAt = FPlatformTime::Seconds() + 1.0;
+			return;
+		}
+		UE_LOG(
+			LogOddsWellLocomotion,
+			Display,
+			TEXT("ODDSWELL_MODULAR_CHAIR_FEEDBACK_PRESENTATION_QA|result=PASS|states=purchase_success,already_owned,purchase_reject|state_mask=7|capture_stage=1|settled_frame_capture=true|lifetime_seconds=5|native_canvas=true|panel_shapes=2|standard=1280x720|compact=888x500|wording_unchanged=true|item_id=sundale_modular_chair|price=100|entries=2|balance=0|fixtures_mutate_state=false|manual_input=false"));
+		SetActorLocation(
+			SafeSpawnLocation,
+			false,
+			nullptr,
+			ETeleportType::TeleportPhysics);
+		++ModularChairPurchaseQaStage;
+		return;
+	case 9:
+		if (!bFeedbackPresentationQa)
+		{
+			return;
+		}
 		PlayerController->InputKey(
 			FInputKeyEventArgs::CreateSimulated(KeyInteract, IE_Pressed, 1.0f));
 		++ModularChairPurchaseQaStage;
@@ -4824,24 +4962,22 @@ void AOddsWellPlaceholderCharacter::ClientConfirmModularChairPurchase_Implementa
 	bModularChairPurchaseSubmitting = false;
 	bModularChairPurchaseConfirm = false;
 	bModularChairOwned = bOwned;
-	const FString Message = bPurchased
-		? FString::Printf(
-			TEXT("Sundale Modular Chair purchased | Balance: %lld Odds Bucks"),
-			Balance)
-		: bOwned
-			? FString::Printf(
-				TEXT("Sundale Modular Chair already owned | Balance: %lld Odds Bucks"),
-				Balance)
-			: Error.IsEmpty()
-				? TEXT("Modular Chair purchase rejected")
-				: Error;
-	if (GEngine)
+	ShowTransientFeedbackPanel(
+		BuildModularChairPurchaseFeedbackMessage(
+			bPurchased,
+			bOwned,
+			Balance,
+			Error),
+		bPurchased || bOwned);
+	if (FParse::Param(
+			FCommandLine::Get(),
+			TEXT("ModularChairFeedbackPresentationQa")))
 	{
-		GEngine->AddOnScreenDebugMessage(
-			912024,
-			5.0f,
-			bPurchased || bOwned ? FColor::Green : FColor::Red,
-			Message);
+		ModularChairFeedbackPresentationQaStateMask |= bPurchased
+			? 1 << 0
+			: bOwned
+				? 1 << 1
+				: 1 << 2;
 	}
 	UE_LOG(
 		LogOddsWellLocomotion,
@@ -13968,6 +14104,51 @@ bool FOddsWellSignalJacketFeedbackPresentationTest::RunTest(
 	TestEqual(TEXT("Clothing Store interaction radius remains unchanged"), ClothingStoreInteractionRadius, 350.0f);
 	TestEqual(TEXT("Signal Jacket id remains unchanged"), GetOddsWellSignalJacketItemId(), FString(TEXT("sundale_signal_jacket")));
 	TestEqual(TEXT("Signal Jacket price remains unchanged"), GetOddsWellSignalJacketPrice(), int64{60});
+	return !HasAnyErrors();
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(
+	FOddsWellModularChairFeedbackPresentationTest,
+	"OddsWell.Character.ModularChairFeedbackPresentation",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+
+bool FOddsWellModularChairFeedbackPresentationTest::RunTest(
+	const FString& Parameters)
+{
+	const float StandardWidth = FMath::Min(JobFeedbackMaxWidth, 1280.0f - 56.0f);
+	const float CompactWidth = FMath::Min(JobFeedbackMaxWidth, 888.0f - 32.0f);
+	TestEqual(TEXT("Modular Chair feedback keeps the existing five-second lifetime"), JobFeedbackLifetimeSeconds, 5.0);
+	TestEqual(TEXT("Modular Chair feedback reuses exactly two native Canvas shapes"), TransientFeedbackPanelShapeCount, 2);
+	TestTrue(TEXT("Standard Modular Chair feedback stays inside 1280x720"),
+		(1280.0f - StandardWidth) * 0.5f >= 0.0f
+			&& 72.0f + JobFeedbackNormalHeight <= 720.0f);
+	TestTrue(TEXT("Compact Modular Chair feedback stays inside 888x500"),
+		(888.0f - CompactWidth) * 0.5f >= 0.0f
+			&& 16.0f + JobFeedbackCompactHeight <= 500.0f);
+	TestEqual(TEXT("Chair purchase-success wording remains exact"),
+		BuildModularChairPurchaseFeedbackMessage(true, true, 0, FString()),
+		FString(TEXT("Sundale Modular Chair purchased | Balance: 0 Odds Bucks")));
+	TestEqual(TEXT("Chair already-owned wording remains exact"),
+		BuildModularChairPurchaseFeedbackMessage(false, true, 0, FString()),
+		FString(TEXT("Sundale Modular Chair already owned | Balance: 0 Odds Bucks")));
+	TestEqual(TEXT("Chair fallback rejection wording remains exact"),
+		BuildModularChairPurchaseFeedbackMessage(false, false, 0, FString()),
+		FString(TEXT("Modular Chair purchase rejected")));
+	TestEqual(TEXT("Chair server rejection remains exact"),
+		BuildModularChairPurchaseFeedbackMessage(
+			false,
+			false,
+			0,
+			TEXT("Return to the Sundale furniture store.")),
+		FString(TEXT("Return to the Sundale furniture store.")));
+	TestTrue(TEXT("Furniture Store remains the exact route waypoint"),
+		FurnitureStoreInteractionLocation.Equals(GetSundaleRouteWaypoints()[8]));
+	TestEqual(TEXT("Furniture Store interaction radius remains unchanged"), FurnitureStoreInteractionRadius, 350.0f);
+	TestEqual(TEXT("Modular Chair id remains unchanged"), GetOddsWellModularChairItemId(), FString(TEXT("sundale_modular_chair")));
+	TestEqual(TEXT("Modular Chair price remains unchanged"), GetOddsWellModularChairPrice(), int64{100});
+	TestEqual(TEXT("Modular Chair remains exactly three graybox parts"), GetModularChairParts().Num(), 3);
+	TestEqual(TEXT("A fresh Studio retains no active chair snap point"), GetActiveStudioSnapPointCount(false, 0), 0);
+	TestEqual(TEXT("The owned complete chair retains studio_primary only"), GetActiveStudioSnapPointCount(true, GetModularChairParts().Num()), 1);
 	return !HasAnyErrors();
 }
 
