@@ -86,6 +86,7 @@ const FName SignalJacketAccentComponentName(TEXT("SignalJacketAccent"));
 constexpr float SundaleRouteDistance = 80000.0f;
 constexpr float SundaleWaypointTolerance = 75.0f;
 constexpr float JobInteractionRadius = 350.0f;
+constexpr TCHAR JobInteractionPrompt[] = TEXT("Press E to complete a shift (100 Odds Bucks once every 24 hours)");
 constexpr float ClothingStoreInteractionRadius = 350.0f;
 constexpr float FurnitureStoreInteractionRadius = 350.0f;
 constexpr float ApartmentManagementInteractionRadius = 350.0f;
@@ -162,6 +163,7 @@ bool bJobPresentationQaCaptured = false;
 FString JobFeedbackMessage;
 double JobFeedbackExpiresAt = 0.0;
 bool bJobFeedbackPositive = false;
+FString JobInteractionPromptMessage;
 FString StudioInteractionPromptMessage;
 uint8 JobFeedbackPresentationQaStateMask = 0;
 int32 JobFeedbackPresentationQaCaptureStage = 0;
@@ -181,6 +183,7 @@ bool bFurnitureStorePresentationQaCaptured = false;
 bool bApartmentManagementPresentationQaCaptured = false;
 int32 StudioInteractionPromptPresentationQaCaptureStage = 0;
 bool bStudioInteractionPromptOneBedroomInteriorLogged = false;
+int32 JobInteractionPromptPresentationQaCaptureStage = 0;
 
 FString BuildJobFeedbackMessage(
 	const bool bCompleted,
@@ -291,6 +294,21 @@ FString BuildStudioInteractionPrompt(
 			: bOwnsModularChair
 				? TEXT("Press E to enter your Studio")
 				: TEXT("Press E to enter your empty Studio");
+}
+
+bool CanShowJobInteractionPrompt(
+	const bool bLocallyControlled,
+	const ENetMode NetMode,
+	const bool bAtApprovedJob)
+{
+	return bLocallyControlled
+		&& NetMode != NM_DedicatedServer
+		&& bAtApprovedJob;
+}
+
+FString BuildJobInteractionPrompt(const bool bVisible)
+{
+	return bVisible ? JobInteractionPrompt : TEXT("");
 }
 
 void ShowTransientFeedbackPanel(const FString& Message, const bool bPositive)
@@ -4801,18 +4819,32 @@ void AOddsWellPlaceholderCharacter::RunCanonicalAutomaticReceiptHeldInputDriver(
 
 void AOddsWellPlaceholderCharacter::PollJobInteraction()
 {
-	if (!IsLocallyControlled() || bJobQa || bSportsbookReceiptQaMode || !GetWorld()->GetMapName().Contains(TEXT("SundaleGraybox")))
+	if (!IsLocallyControlled())
+	{
+		return;
+	}
+	JobInteractionPromptMessage.Reset();
+	const bool bPromptPresentationQa = FParse::Param(
+		FCommandLine::Get(),
+		TEXT("JobInteractionPromptPresentationQa"));
+	if ((bJobQa && !bPromptPresentationQa)
+		|| bSportsbookReceiptQaMode
+		|| !GetWorld()->GetMapName().Contains(TEXT("SundaleGraybox")))
 	{
 		return;
 	}
 	const APlayerController* PlayerController = Cast<APlayerController>(Controller);
-	if (!PlayerController || FVector::Dist2D(GetActorLocation(), JobInteractionLocation) > JobInteractionRadius)
+	if (!PlayerController)
 	{
 		return;
 	}
-	if (GEngine)
+	const bool bAtApprovedJob =
+		FVector::Dist2D(GetActorLocation(), JobInteractionLocation) <= JobInteractionRadius;
+	JobInteractionPromptMessage = BuildJobInteractionPrompt(
+		CanShowJobInteractionPrompt(IsLocallyControlled(), GetNetMode(), bAtApprovedJob));
+	if (!bAtApprovedJob)
 	{
-		GEngine->AddOnScreenDebugMessage(912015, 0.0f, FColor::Green, TEXT("Press E to complete a shift (100 Odds Bucks once every 24 hours)"));
+		return;
 	}
 	const bool bPressed = PlayerController->IsInputKeyDown(KeyInteract);
 	if (!bPressed)
@@ -5548,6 +5580,116 @@ void AOddsWellPlaceholderCharacter::RunJobQa(const float DeltaSeconds)
 			SetActorLocation(SafeSpawnLocation, false, nullptr, ETeleportType::TeleportPhysics);
 			ServerCompletePlaceholderJob();
 			bJobQaRejectionProven = !bPlaceholderShiftCompleted;
+			return;
+		}
+		const bool bPromptPresentationQa =
+			FParse::Param(FCommandLine::Get(), TEXT("JobInteractionPromptPresentationQa"));
+		if (bPromptPresentationQa
+			&& !bJobQaFirstCreditProven
+			&& JobInteractionPromptPresentationQaCaptureStage < 4)
+		{
+			if (JobInteractionPromptPresentationQaCaptureStage == 0)
+			{
+				SetActorLocation(
+					FVector(JobInteractionLocation.X, JobInteractionLocation.Y + 1000.0, GetActorLocation().Z),
+					false,
+					nullptr,
+					ETeleportType::TeleportPhysics);
+				JobFeedbackMessage.Reset();
+				JobFeedbackExpiresAt = 0.0;
+				JobInteractionPromptPresentationQaCaptureStage = -1;
+				JobQaElapsed = 0.0f;
+				return;
+			}
+			if (JobInteractionPromptPresentationQaCaptureStage == -1)
+			{
+				if (JobQaElapsed < 0.5f)
+				{
+					return;
+				}
+				if (!JobInteractionPromptMessage.IsEmpty())
+				{
+					UE_LOG(LogOddsWellLocomotion, Error, TEXT("ODDSWELL_JOB_INTERACTION_PROMPT_PRESENTATION_QA|result=FAIL|reason=outside_prompt_present"));
+					bJobQa = false;
+					QaExitAt = FPlatformTime::Seconds() + 1.0;
+					return;
+				}
+				SetActorLocation(
+					FVector(JobInteractionLocation.X, JobInteractionLocation.Y + 250.0, GetActorLocation().Z),
+					false,
+					nullptr,
+					ETeleportType::TeleportPhysics);
+				if (Controller)
+				{
+					Controller->SetControlRotation(FRotator(0.0f, -90.0f, 0.0f));
+				}
+				JobInteractionPromptPresentationQaCaptureStage = 1;
+				JobQaElapsed = 0.0f;
+				return;
+			}
+			if (JobInteractionPromptPresentationQaCaptureStage == 1)
+			{
+				if (JobQaElapsed < 0.5f)
+				{
+					return;
+				}
+				if (JobInteractionPromptMessage != BuildJobInteractionPrompt(true))
+				{
+					UE_LOG(LogOddsWellLocomotion, Error, TEXT("ODDSWELL_JOB_INTERACTION_PROMPT_PRESENTATION_QA|result=FAIL|reason=inside_prompt_mismatch"));
+					bJobQa = false;
+					QaExitAt = FPlatformTime::Seconds() + 1.0;
+					return;
+				}
+				if (GEngine)
+				{
+					GEngine->ClearOnScreenDebugMessages();
+				}
+				FScreenshotRequest::RequestScreenshot(
+					TEXT("Phase1L1u_JobInteractionPrompt.png"),
+					true,
+					false);
+				JobInteractionPromptPresentationQaCaptureStage = 2;
+				JobQaElapsed = 0.0f;
+				return;
+			}
+			APlayerController* PlayerController = Cast<APlayerController>(Controller);
+			if (!PlayerController)
+			{
+				UE_LOG(LogOddsWellLocomotion, Error, TEXT("ODDSWELL_JOB_INTERACTION_PROMPT_PRESENTATION_QA|result=FAIL|reason=missing_controller"));
+				bJobQa = false;
+				QaExitAt = FPlatformTime::Seconds() + 1.0;
+				return;
+			}
+			if (JobInteractionPromptPresentationQaCaptureStage == 2)
+			{
+				if (JobQaElapsed < 0.5f)
+				{
+					return;
+				}
+				PlayerController->InputKey(
+					FInputKeyEventArgs::CreateSimulated(KeyInteract, IE_Pressed, 1.0f));
+				JobInteractionPromptPresentationQaCaptureStage = 3;
+				return;
+			}
+			PlayerController->InputKey(
+				FInputKeyEventArgs::CreateSimulated(KeyInteract, IE_Released, 0.0f));
+			bJobQaFirstCreditProven = bPlaceholderShiftCompleted
+				&& GameMode
+				&& !GameMode->WasOddsBucksLoadedFromDisk()
+				&& GameMode->GetOddsBucksEntryCount() == 1
+				&& GameMode->GetOddsBucksBalance() == GetOddsWellFirstJobPayout();
+			if (!bJobQaFirstCreditProven)
+			{
+				UE_LOG(LogOddsWellLocomotion, Error, TEXT("ODDSWELL_JOB_INTERACTION_PROMPT_PRESENTATION_QA|result=FAIL|reason=e_path_first_credit"));
+				bJobQa = false;
+				QaExitAt = FPlatformTime::Seconds() + 1.0;
+				return;
+			}
+			UE_LOG(
+				LogOddsWellLocomotion,
+				Display,
+				TEXT("ODDSWELL_JOB_INTERACTION_PROMPT_PRESENTATION_QA|result=PASS|inside_prompt=true|outside_absent=true|interaction=press_e|native_canvas=true|panel_shapes=2|standard=1280x720|compact=888x500|payout=100|interval_seconds=86400|ledger_entries=1|balance=100|wording_unchanged=true|result_panel_preserved=true|manual_input=false"));
+			JobInteractionPromptPresentationQaCaptureStage = 4;
 			return;
 		}
 		if (!bJobQaFirstCreditProven)
@@ -8567,7 +8709,10 @@ void AOddsWellSportsbookHUD::DrawHUD()
 			nullptr,
 			bCompact ? 0.90f : 1.05f);
 	}
-	if (!StudioInteractionPromptMessage.IsEmpty())
+	const FString& InteractionPromptMessage = JobInteractionPromptMessage.IsEmpty()
+		? StudioInteractionPromptMessage
+		: JobInteractionPromptMessage;
+	if (!InteractionPromptMessage.IsEmpty())
 	{
 		const bool bCompact = Canvas->SizeX <= TicketBoothCompactCanvasWidth
 			|| Canvas->SizeY <= TicketBoothCompactCanvasHeight;
@@ -8582,7 +8727,7 @@ void AOddsWellSportsbookHUD::DrawHUD()
 		DrawRect(FLinearColor(0.025f, 0.055f, 0.08f, 0.96f), X, Y, Width, Height);
 		DrawRect(FLinearColor(0.20f, 0.75f, 0.68f, 1.0f), X, Y, 6.0f, Height);
 		DrawText(
-			StudioInteractionPromptMessage,
+			InteractionPromptMessage,
 			FLinearColor::White,
 			X + 24.0f,
 			Y + (bCompact ? 17.0f : 22.0f),
@@ -14413,6 +14558,54 @@ bool FOddsWellJobFeedbackPresentationTest::RunTest(const FString& Parameters)
 	TestEqual(TEXT("Short cooldowns keep the existing one-hour display floor"),
 		BuildJobFeedbackMessage(true, false, true, 100, 1),
 		FString(TEXT("Shift complete: next payout in about 1 hour(s) | Balance: 100")));
+	TestTrue(TEXT("Job anchor remains the first route waypoint"),
+		JobInteractionLocation.Equals(GetSundaleRouteWaypoints()[0]));
+	TestEqual(TEXT("Job interaction radius remains unchanged"), JobInteractionRadius, 350.0f);
+	TestEqual(TEXT("Job payout remains unchanged"), GetOddsWellFirstJobPayout(), int64{100});
+	TestEqual(TEXT("Job cooldown remains unchanged"), GetOddsWellJobPayoutIntervalSeconds(), int64{86400});
+	return !HasAnyErrors();
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(
+	FOddsWellJobInteractionPromptPresentationTest,
+	"OddsWell.Character.JobInteractionPromptPresentation",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+
+bool FOddsWellJobInteractionPromptPresentationTest::RunTest(
+	const FString& Parameters)
+{
+	const float StandardWidth = FMath::Min(JobFeedbackMaxWidth, 1280.0f - 56.0f);
+	const float CompactWidth = FMath::Min(JobFeedbackMaxWidth, 888.0f - 32.0f);
+	const float StandardY = 720.0f - JobFeedbackNormalHeight - 32.0f;
+	const float CompactY = 500.0f - JobFeedbackCompactHeight - 16.0f;
+	TestEqual(TEXT("Job prompt reuses exactly two native Canvas shapes"), TransientFeedbackPanelShapeCount, 2);
+	TestTrue(TEXT("Standard Job prompt stays inside 1280x720"),
+		(1280.0f - StandardWidth) * 0.5f >= 0.0f
+			&& StandardY >= 0.0f
+			&& StandardY + JobFeedbackNormalHeight <= 720.0f);
+	TestTrue(TEXT("Compact Job prompt stays inside 888x500"),
+		(888.0f - CompactWidth) * 0.5f >= 0.0f
+			&& CompactY >= 0.0f
+			&& CompactY + JobFeedbackCompactHeight <= 500.0f);
+	TestTrue(TEXT("Standard Job result and prompt panels do not overlap"),
+		72.0f + JobFeedbackNormalHeight < StandardY);
+	TestTrue(TEXT("Compact Job result and prompt panels do not overlap"),
+		16.0f + JobFeedbackCompactHeight < CompactY);
+	TestEqual(TEXT("Job prompt wording remains exact"),
+		BuildJobInteractionPrompt(true),
+		FString(JobInteractionPrompt));
+	TestTrue(TEXT("Job prompt is absent outside the existing radius"),
+		BuildJobInteractionPrompt(false).IsEmpty());
+	TestTrue(TEXT("Standalone local player retains Job prompt eligibility"),
+		CanShowJobInteractionPrompt(true, NM_Standalone, true));
+	TestTrue(TEXT("Listen host retains existing Job prompt eligibility"),
+		CanShowJobInteractionPrompt(true, NM_ListenServer, true));
+	TestFalse(TEXT("Dedicated server remains ineligible for the Job prompt"),
+		CanShowJobInteractionPrompt(true, NM_DedicatedServer, true));
+	TestFalse(TEXT("Remote pawn remains ineligible for the Job prompt"),
+		CanShowJobInteractionPrompt(false, NM_Client, true));
+	TestFalse(TEXT("Unrelated city location remains ineligible for the Job prompt"),
+		CanShowJobInteractionPrompt(true, NM_Client, false));
 	TestTrue(TEXT("Job anchor remains the first route waypoint"),
 		JobInteractionLocation.Equals(GetSundaleRouteWaypoints()[0]));
 	TestEqual(TEXT("Job interaction radius remains unchanged"), JobInteractionRadius, 350.0f);
