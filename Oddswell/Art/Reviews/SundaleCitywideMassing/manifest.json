@@ -17,15 +17,48 @@
   "external_references": [],
   "files": {
     "blend": {
-      "bytes": 1054853,
+      "bytes": 1189404,
       "file": "SundaleCitywideMassing.blend",
-      "sha256": "EF6671075E649533D0C2F19AF61E3D975AB7829F2F84EBD0609BACC9B3E1057A"
+      "sha256": "FD26DD24B103D31DC69AA6C79D024CF121B7964CC9E4201B753FC4F7DAEA0C0A"
     },
     "script": {
-      "bytes": 20850,
+      "bytes": 26415,
       "file": "build_sundale_massing_board.py",
-      "sha256": "0902D1611D1B299BFE62F596AF066BA96300B7FAB4858FFE28E672A31791F618"
+      "sha256": "DFB4573990223315E1B48B857921880F4BA45F2BACBC08B7F8F72CE6CD32AE42"
     }
+  },
+  "label_contract": {
+    "authorized_count": 7,
+    "authorized_font_size_m": 6.5,
+    "authorized_text_color": "teal",
+    "labels": {
+      "AUTH_ARENA": "A | ARENA",
+      "AUTH_CLOTHING": "A | CLOTHING",
+      "AUTH_FURNITURE": "A | FURNITURE",
+      "AUTH_JOB": "A | JOB",
+      "AUTH_PUBLIC_COURT": "A | COURT",
+      "AUTH_STUDIO": "A | STUDIO",
+      "AUTH_TICKET_BOOTH": "A | TICKET",
+      "PROP__CHARCOAL_01": "P | C01 3F",
+      "PROP__CHARCOAL_02": "P | C02 4F",
+      "PROP__CHARCOAL_03": "P | C03 5F",
+      "PROP__LIMESTONE_01": "P | L01 4F",
+      "PROP__LIMESTONE_02": "P | L02 5F",
+      "PROP__LIMESTONE_03": "P | L03 6F",
+      "PROP__LIMESTONE_04": "P | L04 5F",
+      "PROP__TERRACOTTA_01": "P | T01 6F",
+      "PROP__TERRACOTTA_02": "P | T02 5F",
+      "PROP__TERRACOTTA_03": "P | T03 4F"
+    },
+    "minimum_contrast_ratio": 5.0,
+    "plate_color": "label",
+    "plate_count": 17,
+    "plate_depth_m": 0.2,
+    "plate_height_m": 10.0,
+    "proposed_count": 10,
+    "proposed_font_size_m": 6.0,
+    "proposed_text_color": "orange",
+    "top_down_only": true
   },
   "limitations": [
     "not production Unreal geometry",
@@ -195,7 +228,7 @@
   },
   "renders": [
     {
-      "bytes": 807175,
+      "bytes": 829106,
       "camera_location_m": [
         15.0,
         90.0,
@@ -203,7 +236,7 @@
       ],
       "file": "renders/TopDown_AuthorizedAndProposed.png",
       "height": 900,
-      "sha256": "B0C1E87F2F2A8CF1868EF03435B5F2C5EA2B562747303CB4BAAABAFB8B20A704",
+      "sha256": "8BF4846763E34262EFFEC060136D820F5C5B8E3C3A3E733CC034D2C9D21BBB79",
       "target_m": [
         15.0,
         90.0,
@@ -221,7 +254,7 @@
       ],
       "file": "renders/EyeLevel_SouthArrival.png",
       "height": 480,
-      "sha256": "C2727EB46A534794BF39BCC3E00045548333E1FEF2D9B999A40E5DC21AAA6949",
+      "sha256": "90F7D36A1400C9C9B483DE6576D661669A2E2E9A33E6E055E700986104B08A20",
       "target_m": [
         115.0,
         160.0,
@@ -239,7 +272,7 @@
       ],
       "file": "renders/EyeLevel_CommonsArenaAxis.png",
       "height": 480,
-      "sha256": "EBD7BBCE9F605675D623739F70471E1610D60C3890C15AC31E46956627FFBB92",
+      "sha256": "29E31766249BAF3A8E18824CF46F05CAE6FCC6F7A014CF71DF2276890D1B0D30",
       "target_m": [
         20.0,
         205.0,
@@ -257,7 +290,7 @@
       ],
       "file": "renders/EyeLevel_CourtToArena.png",
       "height": 480,
-      "sha256": "1A8CAA83B185E397AB3F977A753DEF95A1AF8A6F74226B582B40A94991D629D2",
+      "sha256": "68C5C4186B6FC5901D6532F434FFAF7304509EDC92147705EBBE9A7BCEFC4A56",
       "target_m": [
         85.0,
         195.0,

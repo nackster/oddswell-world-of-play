@@ -16,6 +16,11 @@ RENDER_DIR = ROOT / "renders"
 MANIFEST_PATH = ROOT / "manifest.json"
 RENDER_SIZE = (1280, 900)
 EYE_RENDER_HEIGHT = 480
+LABEL_TEXT_Z_M = 30.0
+LABEL_PLATE_Z_M = 29.6
+LABEL_PLATE_HEIGHT_M = 10.0
+LABEL_PLATE_DEPTH_M = 0.2
+LABEL_CONTRAST_MIN = 5.0
 
 COLORS = {
     "ground": (0.18, 0.20, 0.21, 1.0),
@@ -68,6 +73,16 @@ DESTINATIONS = {
     "TICKET_BOOTH": (10.0, 180.0),
     "PUBLIC_COURT": (-95.0, 160.0),
     "FURNITURE": (-95.0, 50.0),
+}
+
+DESTINATION_LABELS = {
+    "STUDIO": ("A | STUDIO", (0.0, -36.0)),
+    "JOB": ("A | JOB", (95.0, -30.0)),
+    "CLOTHING": ("A | CLOTHING", (150.0, 90.0)),
+    "ARENA": ("A | ARENA", (70.0, 205.0)),
+    "TICKET_BOOTH": ("A | TICKET", (10.0, 205.0)),
+    "PUBLIC_COURT": ("A | COURT", (-79.0, 150.0)),
+    "FURNITURE": ("A | FURNITURE", (-130.0, 50.0)),
 }
 
 EXISTING_MASSING = [
@@ -168,6 +183,44 @@ def add_text(name, body, location, size, collection, color="label"):
     return obj
 
 
+def contrast_ratio(foreground, background):
+    def luminance(color):
+        channels = [value / 12.92 if value <= 0.04045 else ((value + 0.055) / 1.055) ** 2.4 for value in color[:3]]
+        return 0.2126 * channels[0] + 0.7152 * channels[1] + 0.0722 * channels[2]
+
+    light, dark = sorted((luminance(foreground), luminance(background)), reverse=True)
+    return (light + 0.05) / (dark + 0.05)
+
+
+def add_review_label(label_id, body, location, size, color, category, collection):
+    width = max(26.0, len(body) * (3.6 if category == "EXISTING_AUTHORIZED" else 3.3))
+    x, y = location
+    plate = add_cube(
+        f"PLATE__{label_id}",
+        (x, y, LABEL_PLATE_Z_M),
+        (width, LABEL_PLATE_HEIGHT_M, LABEL_PLATE_DEPTH_M),
+        "label",
+        collection,
+        "review_label_plate",
+        label_id=label_id,
+        label_category=category,
+        top_down_only=True,
+        plate_width_m=width,
+        plate_height_m=LABEL_PLATE_HEIGHT_M,
+        plate_color="label",
+    )
+    text = add_text(f"LABEL__{label_id}", body, (x, y, LABEL_TEXT_Z_M), size, collection, color)
+    text["asset_kind"] = "massing_review_label"
+    text["label_id"] = label_id
+    text["label_category"] = category
+    text["top_down_only"] = True
+    text["font_size_m"] = size
+    text["text_color"] = color
+    text["plate_color"] = "label"
+    text["contrast_ratio"] = contrast_ratio(COLORS[color], COLORS["label"])
+    return text, plate
+
+
 def point_camera(camera, location, target):
     camera.location = location
     direction = Vector(target) - camera.location
@@ -214,18 +267,19 @@ def build_scene():
         add_cube(name, (x, y, height / 2.0 + 0.3), (width, depth, height), family, proposed, "scenic_shell", status="PROPOSED_SCENIC", family=family, stories=stories, nonenterable=True)
 
     labels = []
+    label_plates = []
     labels.append(add_text("LABEL__TITLE", "SUNDALE 1L.3a  |  NONCANONICAL MASSING REVIEW", (15.0, 249.0, 30.0), 6.0, guides, "teal"))
     labels.append(add_text("LABEL__LEGEND", "EXISTING AUTHORIZED = COBALT ANCHORS   |   PROPOSED SCENIC = CHARCOAL BASES", (15.0, -65.0, 30.0), 3.5, guides, "orange"))
     labels.append(add_text("LABEL__COMMONS", "AUTHORIZED COMMONS 140m x 90m", (15.0, 90.0, 30.0), 4.2, guides, "cobalt"))
-    destination_label_positions = {
-        "STUDIO": (0.0, -36.0), "JOB": (95.0, -30.0), "CLOTHING": (150.0, 90.0),
-        "ARENA": (70.0, 205.0), "TICKET_BOOTH": (10.0, 205.0),
-        "PUBLIC_COURT": (-79.0, 150.0), "FURNITURE": (-130.0, 50.0),
-    }
-    for destination, (x, y) in destination_label_positions.items():
-        labels.append(add_text(f"LABEL__AUTH_{destination}", f"AUTH | {destination.replace('_', ' ')}", (x, y, 30.0), 3.2, guides, "teal"))
+    for destination, (body, location) in DESTINATION_LABELS.items():
+        text, plate = add_review_label(f"AUTH_{destination}", body, location, 6.5, "teal", "EXISTING_AUTHORIZED", guides)
+        labels.append(text)
+        label_plates.append(plate)
     for name, family, (x, y), _dimensions, stories in SCENIC_SHELLS:
-        labels.append(add_text(f"LABEL__{name}", f"PROP | {family[0].upper()}{name[-2:]} | {stories}F", (x, y, 30.0), 2.5, guides, "orange"))
+        body = f"P | {family[0].upper()}{name[-2:]} {stories}F"
+        text, plate = add_review_label(name, body, (x, y), 6.0, "orange", "PROPOSED_SCENIC", guides)
+        labels.append(text)
+        label_plates.append(plate)
 
     bpy.ops.object.camera_add()
     camera = bpy.context.object
@@ -277,8 +331,8 @@ def build_scene():
     for stale in RENDER_DIR.glob("*.png"):
         stale.unlink()
     for filename, view_type, location, target, ortho_scale in VIEWS:
-        for label in labels:
-            label.hide_render = view_type != "top_down"
+        for guide in labels + label_plates:
+            guide.hide_render = view_type != "top_down"
         scene.render.resolution_y = RENDER_SIZE[1] if view_type == "top_down" else EYE_RENDER_HEIGHT
         camera.data.type = "ORTHO" if view_type == "top_down" else "PERSP"
         if ortho_scale:
@@ -287,8 +341,8 @@ def build_scene():
         scene.render.filepath = str(RENDER_DIR / filename)
         bpy.ops.render.render(write_still=True)
 
-    for label in labels:
-        label.hide_render = False
+    for guide in labels + label_plates:
+        guide.hide_render = False
     scene.render.resolution_y = RENDER_SIZE[1]
     camera.data.type = "ORTHO"
     camera.data.ortho_scale = VIEWS[0][4]
@@ -352,6 +406,34 @@ def validate_scene(require_manifest):
         if aabb_intersects_route(x, y, width, depth):
             errors.append(f"{name} enters the route plus 2m review clearance")
 
+    expected_labels = {
+        **{f"AUTH_{destination}": (body, location, 6.5, "teal", "EXISTING_AUTHORIZED") for destination, (body, location) in DESTINATION_LABELS.items()},
+        **{
+            name: (f"P | {family[0].upper()}{name[-2:]} {stories}F", location, 6.0, "orange", "PROPOSED_SCENIC")
+            for name, family, location, _dimensions, stories in SCENIC_SHELLS
+        },
+    }
+    review_labels = {obj.get("label_id"): obj for obj in objects if obj.get("asset_kind") == "massing_review_label"}
+    review_plates = {obj.get("label_id"): obj for obj in objects if obj.get("asset_kind") == "review_label_plate"}
+    if set(review_labels) != set(expected_labels) or set(review_plates) != set(expected_labels):
+        errors.append(f"review labels/plates must cover exactly 7 authorized + 10 proposed: labels={sorted(review_labels)}, plates={sorted(review_plates)}")
+    for label_id, (body, (x, y), size, color, category) in expected_labels.items():
+        label = review_labels.get(label_id)
+        plate = review_plates.get(label_id)
+        width = max(26.0, len(body) * (3.6 if category == "EXISTING_AUTHORIZED" else 3.3))
+        if not label or label.data.body != body or label.get("label_category") != category or not label.get("top_down_only"):
+            errors.append(f"{label_id} text/category/top-down contract differs")
+        elif abs(label.data.size - size) > 0.001 or tuple(label.location) != (x, y, LABEL_TEXT_Z_M):
+            errors.append(f"{label_id} font size/location differs")
+        elif label.get("text_color") != color or label.get("plate_color") != "label" or label.get("contrast_ratio", 0.0) < LABEL_CONTRAST_MIN:
+            errors.append(f"{label_id} contrast contract differs")
+        if not plate or plate.get("label_category") != category or not plate.get("top_down_only"):
+            errors.append(f"{label_id} plate category/top-down contract differs")
+        elif any(abs(actual - expected) > 0.001 for actual, expected in zip(plate.dimensions, (width, LABEL_PLATE_HEIGHT_M, LABEL_PLATE_DEPTH_M))):
+            errors.append(f"{label_id} plate dimensions differ")
+        elif any(abs(actual - expected) > 0.001 for actual, expected in zip(plate.location, (x, y, LABEL_PLATE_Z_M))) or plate.get("plate_color") != "label":
+            errors.append(f"{label_id} plate location/color differs")
+
     render_files = sorted(RENDER_DIR.glob("*.png"))
     if [path.name for path in render_files] != sorted(view[0] for view in VIEWS):
         errors.append(f"expected exactly four named render outputs, found {[path.name for path in render_files]}")
@@ -371,7 +453,7 @@ def validate_scene(require_manifest):
         errors.append("manifest.json is missing")
     if errors:
         raise RuntimeError("\n".join(errors))
-    print("ODDSWELL_SUNDALE_MASSING_VALIDATION|result=PASS|district=340x280m|commons=140x90m|route=800m|route_points=12|route_segments=4|shortcuts=2|destinations=7|scenic=10|families=4,3,3|views=1_top+3_eye|eye_height_m=1.7|engine=eevee|cycles=false|external_refs=0")
+    print("ODDSWELL_SUNDALE_MASSING_VALIDATION|result=PASS|district=340x280m|commons=140x90m|route=800m|route_points=12|route_segments=4|shortcuts=2|destinations=7|scenic=10|families=4,3,3|labels=17|plates=17|contrast_min=5.0|top_down_only=true|views=1_top+3_eye|eye_height_m=1.7|engine=eevee|cycles=false|external_refs=0")
     return family_counts
 
 
@@ -418,6 +500,24 @@ def write_manifest(family_counts):
                 for name, family, center, footprint, stories in SCENIC_SHELLS
             ],
         },
+        "label_contract": {
+            "top_down_only": True,
+            "authorized_count": 7,
+            "proposed_count": 10,
+            "plate_count": 17,
+            "authorized_font_size_m": 6.5,
+            "proposed_font_size_m": 6.0,
+            "plate_height_m": LABEL_PLATE_HEIGHT_M,
+            "plate_depth_m": LABEL_PLATE_DEPTH_M,
+            "plate_color": "label",
+            "authorized_text_color": "teal",
+            "proposed_text_color": "orange",
+            "minimum_contrast_ratio": LABEL_CONTRAST_MIN,
+            "labels": {
+                **{f"AUTH_{destination}": body for destination, (body, _location) in DESTINATION_LABELS.items()},
+                **{name: f"P | {family[0].upper()}{name[-2:]} {stories}F" for name, family, _location, _dimensions, stories in SCENIC_SHELLS},
+            },
+        },
         "renders": renders,
         "external_references": [],
         "limitations": [
@@ -444,11 +544,16 @@ def main():
         manifest = json.loads(MANIFEST_PATH.read_text(encoding="utf-8"))
         if manifest["proposed_scenic"]["family_counts"] != family_counts:
             raise RuntimeError("manifest scenic counts differ from the Blend")
+        if manifest.get("label_contract", {}).get("labels") != {
+            **{f"AUTH_{destination}": body for destination, (body, _location) in DESTINATION_LABELS.items()},
+            **{name: f"P | {family[0].upper()}{name[-2:]} {stories}F" for name, family, _location, _dimensions, stories in SCENIC_SHELLS},
+        }:
+            raise RuntimeError("manifest label contract differs from the Blend")
         for render in manifest["renders"]:
             path = ROOT / render["file"]
             if path.stat().st_size != render["bytes"] or sha256(path) != render["sha256"]:
                 raise RuntimeError(f"render hash differs: {path.name}")
-        print("ODDSWELL_SUNDALE_MASSING_FOCUSED|result=PASS|manifest=true|render_hashes=4|manual_input=false")
+        print("ODDSWELL_SUNDALE_MASSING_FOCUSED|result=PASS|manifest=true|render_hashes=4|labels=17|plates=17|contrast_min=5.0|top_down_only=true|manual_input=false")
 
 
 if __name__ == "__main__":

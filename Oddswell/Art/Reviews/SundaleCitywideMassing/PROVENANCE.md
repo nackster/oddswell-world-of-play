@@ -6,4 +6,5 @@
 - Proposed content: exactly ten nonenterable scenic shells, visibly separated from existing authorized geometry and limited to four limestone, three terracotta, and three charcoal/neutral masses.
 - Source material: none. No external model, texture, font, image, marketplace item, paid service, or third-party asset is included.
 - Outputs: exactly one top-down and three eye-level Eevee review PNGs. Cycles is not used.
+- Label repair: the top-down view alone uses seven short `A` destination labels and ten short `P` scenic-shell labels, each on a native dark plate with deterministic size and at least `5.0:1` source-color contrast. The three eye-level RGB pixel arrays remain unchanged.
 - Ceiling: this artifact supports composition review only. It does not approve scenic placement/rooflines or prove production modeling, collision, materials, lighting, accessibility, usability, performance, or beta readiness.
