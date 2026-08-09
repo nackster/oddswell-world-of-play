@@ -1,0 +1,367 @@
+{
+  "cycles": false,
+  "engine": "BLENDER_EEVEE_NEXT",
+  "existing_authorized": {
+    "destination_count": 7,
+    "massing_objects": [
+      "AUTH__STUDIO_MASS",
+      "AUTH__JOB_MASS",
+      "AUTH__CLOTHING_MASS",
+      "AUTH__ARENA_MASS",
+      "AUTH__ARENA_CANOPY",
+      "AUTH__TICKET_BOOTH_MASS",
+      "AUTH__FURNITURE_MASS",
+      "AUTH__PUBLIC_COURT_SURFACE"
+    ]
+  },
+  "external_references": [],
+  "files": {
+    "blend": {
+      "bytes": 1054853,
+      "file": "SundaleCitywideMassing.blend",
+      "sha256": "EF6671075E649533D0C2F19AF61E3D975AB7829F2F84EBD0609BACC9B3E1057A"
+    },
+    "script": {
+      "bytes": 20850,
+      "file": "build_sundale_massing_board.py",
+      "sha256": "0902D1611D1B299BFE62F596AF066BA96300B7FAB4858FFE28E672A31791F618"
+    }
+  },
+  "limitations": [
+    "not production Unreal geometry",
+    "not approved scenic placement or roofline",
+    "not final art, materials, lighting, readability, accessibility, usability, performance, or readiness evidence"
+  ],
+  "phase": "Phase 1L.3a",
+  "proposed_scenic": {
+    "family_counts": {
+      "charcoal": 3,
+      "limestone": 4,
+      "terracotta": 3
+    },
+    "shell_ceiling": 10,
+    "shells": [
+      {
+        "center_m": [
+          -135.0,
+          -25.0
+        ],
+        "family": "limestone",
+        "footprint_m": [
+          30.0,
+          30.0
+        ],
+        "id": "PROP__LIMESTONE_01",
+        "nonenterable": true,
+        "status": "PROPOSED_SCENIC",
+        "stories": 4
+      },
+      {
+        "center_m": [
+          155.0,
+          20.0
+        ],
+        "family": "limestone",
+        "footprint_m": [
+          34.0,
+          24.0
+        ],
+        "id": "PROP__LIMESTONE_02",
+        "nonenterable": true,
+        "status": "PROPOSED_SCENIC",
+        "stories": 5
+      },
+      {
+        "center_m": [
+          155.0,
+          145.0
+        ],
+        "family": "limestone",
+        "footprint_m": [
+          34.0,
+          28.0
+        ],
+        "id": "PROP__LIMESTONE_03",
+        "nonenterable": true,
+        "status": "PROPOSED_SCENIC",
+        "stories": 6
+      },
+      {
+        "center_m": [
+          -135.0,
+          100.0
+        ],
+        "family": "limestone",
+        "footprint_m": [
+          32.0,
+          30.0
+        ],
+        "id": "PROP__LIMESTONE_04",
+        "nonenterable": true,
+        "status": "PROPOSED_SCENIC",
+        "stories": 5
+      },
+      {
+        "center_m": [
+          -135.0,
+          204.0
+        ],
+        "family": "terracotta",
+        "footprint_m": [
+          30.0,
+          36.0
+        ],
+        "id": "PROP__TERRACOTTA_01",
+        "nonenterable": true,
+        "status": "PROPOSED_SCENIC",
+        "stories": 6
+      },
+      {
+        "center_m": [
+          150.0,
+          -25.0
+        ],
+        "family": "terracotta",
+        "footprint_m": [
+          40.0,
+          28.0
+        ],
+        "id": "PROP__TERRACOTTA_02",
+        "nonenterable": true,
+        "status": "PROPOSED_SCENIC",
+        "stories": 5
+      },
+      {
+        "center_m": [
+          155.0,
+          205.0
+        ],
+        "family": "terracotta",
+        "footprint_m": [
+          36.0,
+          32.0
+        ],
+        "id": "PROP__TERRACOTTA_03",
+        "nonenterable": true,
+        "status": "PROPOSED_SCENIC",
+        "stories": 4
+      },
+      {
+        "center_m": [
+          -125.0,
+          135.0
+        ],
+        "family": "charcoal",
+        "footprint_m": [
+          30.0,
+          20.0
+        ],
+        "id": "PROP__CHARCOAL_01",
+        "nonenterable": true,
+        "status": "PROPOSED_SCENIC",
+        "stories": 3
+      },
+      {
+        "center_m": [
+          160.0,
+          50.0
+        ],
+        "family": "charcoal",
+        "footprint_m": [
+          28.0,
+          20.0
+        ],
+        "id": "PROP__CHARCOAL_02",
+        "nonenterable": true,
+        "status": "PROPOSED_SCENIC",
+        "stories": 4
+      },
+      {
+        "center_m": [
+          -45.0,
+          215.0
+        ],
+        "family": "charcoal",
+        "footprint_m": [
+          36.0,
+          20.0
+        ],
+        "id": "PROP__CHARCOAL_03",
+        "nonenterable": true,
+        "status": "PROPOSED_SCENIC",
+        "stories": 5
+      }
+    ]
+  },
+  "renders": [
+    {
+      "bytes": 807175,
+      "camera_location_m": [
+        15.0,
+        90.0,
+        420.0
+      ],
+      "file": "renders/TopDown_AuthorizedAndProposed.png",
+      "height": 900,
+      "sha256": "B0C1E87F2F2A8CF1868EF03435B5F2C5EA2B562747303CB4BAAABAFB8B20A704",
+      "target_m": [
+        15.0,
+        90.0,
+        0.0
+      ],
+      "view_type": "top_down",
+      "width": 1280
+    },
+    {
+      "bytes": 434762,
+      "camera_location_m": [
+        -55.0,
+        5.0,
+        1.7
+      ],
+      "file": "renders/EyeLevel_SouthArrival.png",
+      "height": 480,
+      "sha256": "C2727EB46A534794BF39BCC3E00045548333E1FEF2D9B999A40E5DC21AAA6949",
+      "target_m": [
+        115.0,
+        160.0,
+        6.0
+      ],
+      "view_type": "eye_level",
+      "width": 1280
+    },
+    {
+      "bytes": 436115,
+      "camera_location_m": [
+        -55.0,
+        50.0,
+        1.7
+      ],
+      "file": "renders/EyeLevel_CommonsArenaAxis.png",
+      "height": 480,
+      "sha256": "EBD7BBCE9F605675D623739F70471E1610D60C3890C15AC31E46956627FFBB92",
+      "target_m": [
+        20.0,
+        205.0,
+        6.0
+      ],
+      "view_type": "eye_level",
+      "width": 1280
+    },
+    {
+      "bytes": 455331,
+      "camera_location_m": [
+        -95.0,
+        150.0,
+        1.7
+      ],
+      "file": "renders/EyeLevel_CourtToArena.png",
+      "height": 480,
+      "sha256": "1A8CAA83B185E397AB3F977A753DEF95A1AF8A6F74226B582B40A94991D629D2",
+      "target_m": [
+        85.0,
+        195.0,
+        6.0
+      ],
+      "view_type": "eye_level",
+      "width": 1280
+    }
+  ],
+  "source_authority": {
+    "authored_actor_count": 45,
+    "commons_m": [
+      140.0,
+      90.0
+    ],
+    "destinations": {
+      "ARENA": [
+        70.0,
+        180.0
+      ],
+      "CLOTHING": [
+        125.0,
+        90.0
+      ],
+      "FURNITURE": [
+        -95.0,
+        50.0
+      ],
+      "JOB": [
+        95.0,
+        0.0
+      ],
+      "PUBLIC_COURT": [
+        -95.0,
+        160.0
+      ],
+      "STUDIO": [
+        0.0,
+        0.0
+      ],
+      "TICKET_BOOTH": [
+        10.0,
+        180.0
+      ]
+    },
+    "district_m": [
+      340.0,
+      280.0
+    ],
+    "route_m": 800.0,
+    "route_points_m": [
+      [
+        0.0,
+        0.0
+      ],
+      [
+        95.0,
+        0.0
+      ],
+      [
+        125.0,
+        0.0
+      ],
+      [
+        125.0,
+        90.0
+      ],
+      [
+        125.0,
+        180.0
+      ],
+      [
+        70.0,
+        180.0
+      ],
+      [
+        10.0,
+        180.0
+      ],
+      [
+        -95.0,
+        180.0
+      ],
+      [
+        -95.0,
+        160.0
+      ],
+      [
+        -95.0,
+        50.0
+      ],
+      [
+        -95.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0
+      ]
+    ],
+    "route_segments": 4,
+    "shortcuts": 2,
+    "unreal_map": "/Game/Maps/SundaleGraybox",
+    "unreal_map_sha256": "180B31BA097EE6AF6C059854C0689F698A9200036C334284A6CF9A5FC1E8C015"
+  },
+  "status": "noncanonical_owner_review"
+}
