@@ -1,10 +1,13 @@
-# Sundale Citywide Massing Review Provenance
+# Sundale Metropolitan Replacement Preview Provenance
 
-- Status: noncanonical owner-review massing board; not production Unreal geometry or final art.
-- Authoring: generated locally in Blender 4.5.5 by `build_sundale_massing_board.py` from original primitive geometry only.
-- Existing authority: the byte-frozen `SundaleGraybox` map, its original Phase 1C.2 build record, the current runtime route anchors, `Sundale Art Direction and Core Loop`, and `Sundale Production Asset Scope`.
-- Proposed content: exactly ten nonenterable scenic shells, visibly separated from existing authorized geometry and limited to four limestone, three terracotta, and three charcoal/neutral masses.
-- Source material: none. No external model, texture, font, image, marketplace item, paid service, or third-party asset is included.
-- Outputs: exactly one top-down and three eye-level Eevee review PNGs. Cycles is not used.
-- Label repair: the top-down view alone uses seven short `A` destination labels and ten short `P` scenic-shell labels, each on a native dark plate with deterministic size and at least `5.0:1` source-color contrast. The three eye-level RGB pixel arrays remain unchanged.
-- Ceiling: this artifact supports composition review only. It does not approve scenic placement/rooflines or prove production modeling, collision, materials, lighting, accessibility, usability, performance, or beta readiness.
+- Status: noncanonical owner-approved replacement-preview scope; not production Unreal geometry, Phase 2, or final art.
+- Supersedes: the rejected `340x280 m`, ten-shell Phase 1L.3a small-city proposal and its label-repair render. Git history retains both earlier review states.
+- Authoring: generated locally in Blender `4.5.5 LTS` by `build_sundale_massing_board.py` from original native primitive geometry only.
+- Playable preview: exactly `800x600 m`, divided into three connected labeled districts: South Residential/Retail, Central Civic Commons, and North Arena/Entertainment.
+- Street massing: exactly `36` street-level masses, `12` per district. Only gameplay-relevant ground-floor scope is contemplated; no interiors are modeled.
+- Skyline: exactly ten proposed skyscrapers. Four sit inside the playable preview on four counted street-level bases; six sit wholly beyond the proposed playable/collision boundary as background skyline.
+- Required landmarks: Studio/apartment frontage, attached Apartment Management kiosk, Job, Clothing, Furniture, Arena, Ticket Booth, Public Court, and central Commons/Park.
+- Circulation: six connected proposed boulevard segments and two top-down-only proposed shortcuts. No new exact distance is claimed and the proven production `800 m` route remains unchanged.
+- Source material: none. No external model, texture, image, font, marketplace item, paid service, or third-party asset is included.
+- Outputs: exactly one `1920x1440` top-down and three `1280x720`, true `1.7 m` observer-height district/skyline Eevee review PNGs. Cycles is not used.
+- Ceiling: no vehicles, World Partition, detailed facades, production materials/textures, interiors, production character, props, capacity claim, accessibility/usability proof, minimum-PC proof, or beta-readiness claim.

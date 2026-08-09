@@ -1,400 +1,215 @@
 {
   "cycles": false,
   "engine": "BLENDER_EEVEE_NEXT",
-  "existing_authorized": {
-    "destination_count": 7,
-    "massing_objects": [
-      "AUTH__STUDIO_MASS",
-      "AUTH__JOB_MASS",
-      "AUTH__CLOTHING_MASS",
-      "AUTH__ARENA_MASS",
-      "AUTH__ARENA_CANOPY",
-      "AUTH__TICKET_BOOTH_MASS",
-      "AUTH__FURNITURE_MASS",
-      "AUTH__PUBLIC_COURT_SURFACE"
-    ]
-  },
   "external_references": [],
   "files": {
     "blend": {
-      "bytes": 1189404,
+      "bytes": 1418475,
       "file": "SundaleCitywideMassing.blend",
-      "sha256": "FD26DD24B103D31DC69AA6C79D024CF121B7964CC9E4201B753FC4F7DAEA0C0A"
+      "sha256": "D45D740737ED34BC9E54EC0596A8EC70F3DD15417FADBE46746A6BB86F9715B6"
     },
     "script": {
-      "bytes": 26415,
+      "bytes": 34440,
       "file": "build_sundale_massing_board.py",
-      "sha256": "DFB4573990223315E1B48B857921880F4BA45F2BACBC08B7F8F72CE6CD32AE42"
+      "sha256": "F167F6B0C72C558A19E329A5D3784C3B06D3A1DB747F72B04B11BED139ACC31E"
     }
   },
   "label_contract": {
-    "authorized_count": 7,
-    "authorized_font_size_m": 6.5,
-    "authorized_text_color": "teal",
+    "district_count": 3,
+    "info_count": 2,
     "labels": {
-      "AUTH_ARENA": "A | ARENA",
-      "AUTH_CLOTHING": "A | CLOTHING",
-      "AUTH_FURNITURE": "A | FURNITURE",
-      "AUTH_JOB": "A | JOB",
-      "AUTH_PUBLIC_COURT": "A | COURT",
-      "AUTH_STUDIO": "A | STUDIO",
-      "AUTH_TICKET_BOOTH": "A | TICKET",
-      "PROP__CHARCOAL_01": "P | C01 3F",
-      "PROP__CHARCOAL_02": "P | C02 4F",
-      "PROP__CHARCOAL_03": "P | C03 5F",
-      "PROP__LIMESTONE_01": "P | L01 4F",
-      "PROP__LIMESTONE_02": "P | L02 5F",
-      "PROP__LIMESTONE_03": "P | L03 6F",
-      "PROP__LIMESTONE_04": "P | L04 5F",
-      "PROP__TERRACOTTA_01": "P | T01 6F",
-      "PROP__TERRACOTTA_02": "P | T02 5F",
-      "PROP__TERRACOTTA_03": "P | T03 4F"
+      "DISTRICT_CENTRAL_CIVIC_COMMONS": "CENTRAL | CIVIC COMMONS",
+      "DISTRICT_NORTH_ARENA_ENTERTAINMENT": "NORTH | ARENA + ENTERTAINMENT",
+      "DISTRICT_SOUTH_RESIDENTIAL_RETAIL": "SOUTH | RESIDENTIAL + RETAIL",
+      "INFO_LEGEND": "TEAL = REQUIRED / DISTRICT | ORANGE = PROPOSED TOWER | ROADS = PROPOSED, NO DISTANCE CLAIM",
+      "INFO_TITLE": "SUNDALE METROPOLITAN PREVIEW | NONCANONICAL",
+      "LANDMARK_APARTMENT_MANAGEMENT": "APT MGMT",
+      "LANDMARK_ARENA": "ARENA",
+      "LANDMARK_CLOTHING": "CLOTHING",
+      "LANDMARK_COMMONS_PARK": "COMMONS / PARK",
+      "LANDMARK_FURNITURE": "FURNITURE",
+      "LANDMARK_JOB": "JOB",
+      "LANDMARK_PUBLIC_COURT": "PUBLIC COURT",
+      "LANDMARK_STUDIO_APARTMENT": "STUDIO / APT",
+      "LANDMARK_TICKET_BOOTH": "TICKET",
+      "TOWER_CORE_TOWER__CENTRAL_01": "CORE TOWER C1",
+      "TOWER_CORE_TOWER__CENTRAL_02": "CORE TOWER C2",
+      "TOWER_CORE_TOWER__NORTH_01": "CORE TOWER N1",
+      "TOWER_CORE_TOWER__SOUTH_01": "CORE TOWER S1",
+      "TOWER_SKYLINE_TOWER__EAST": "SKY E1",
+      "TOWER_SKYLINE_TOWER__NORTH_01": "SKY N1",
+      "TOWER_SKYLINE_TOWER__NORTH_02": "SKY N2",
+      "TOWER_SKYLINE_TOWER__NORTH_03": "SKY N3",
+      "TOWER_SKYLINE_TOWER__WEST_NORTH": "SKY W2",
+      "TOWER_SKYLINE_TOWER__WEST_SOUTH": "SKY W1"
     },
     "minimum_contrast_ratio": 5.0,
-    "plate_color": "label",
-    "plate_count": 17,
-    "plate_depth_m": 0.2,
-    "plate_height_m": 10.0,
-    "proposed_count": 10,
-    "proposed_font_size_m": 6.0,
-    "proposed_text_color": "orange",
-    "top_down_only": true
+    "plate_count": 24,
+    "required_landmark_count": 9,
+    "top_down_only": true,
+    "total": 24,
+    "tower_count": 10
   },
   "limitations": [
-    "not production Unreal geometry",
-    "not approved scenic placement or roofline",
-    "not final art, materials, lighting, readability, accessibility, usability, performance, or readiness evidence"
+    "not production Unreal geometry or a production-route replacement",
+    "not approved final placement, capacity, interiors, facades, collision, materials, lighting, accessibility, usability, performance, or readiness",
+    "background skyline towers are outside the proposed playable/collision boundary"
   ],
-  "phase": "Phase 1L.3a",
-  "proposed_scenic": {
-    "family_counts": {
-      "charcoal": 3,
-      "limestone": 4,
-      "terracotta": 3
-    },
-    "shell_ceiling": 10,
-    "shells": [
-      {
+  "phase": "Phase 1L.3a metropolitan replacement preview",
+  "preview_contract": {
+    "commons_park_m": [
+      280.0,
+      140.0
+    ],
+    "core_tower_base_count": 4,
+    "district_count": 3,
+    "districts": {
+      "CENTRAL_CIVIC_COMMONS": {
         "center_m": [
-          -135.0,
-          -25.0
-        ],
-        "family": "limestone",
-        "footprint_m": [
-          30.0,
-          30.0
-        ],
-        "id": "PROP__LIMESTONE_01",
-        "nonenterable": true,
-        "status": "PROPOSED_SCENIC",
-        "stories": 4
-      },
-      {
-        "center_m": [
-          155.0,
+          0.0,
           20.0
         ],
-        "family": "limestone",
-        "footprint_m": [
-          34.0,
-          24.0
-        ],
-        "id": "PROP__LIMESTONE_02",
-        "nonenterable": true,
-        "status": "PROPOSED_SCENIC",
-        "stories": 5
+        "size_m": [
+          800.0,
+          200.0
+        ]
       },
-      {
+      "NORTH_ARENA_ENTERTAINMENT": {
         "center_m": [
-          155.0,
-          145.0
+          0.0,
+          210.0
         ],
-        "family": "limestone",
-        "footprint_m": [
-          34.0,
-          28.0
-        ],
-        "id": "PROP__LIMESTONE_03",
-        "nonenterable": true,
-        "status": "PROPOSED_SCENIC",
-        "stories": 6
+        "size_m": [
+          800.0,
+          180.0
+        ]
       },
-      {
+      "SOUTH_RESIDENTIAL_RETAIL": {
         "center_m": [
-          -135.0,
-          100.0
+          0.0,
+          -190.0
         ],
-        "family": "limestone",
-        "footprint_m": [
-          32.0,
-          30.0
-        ],
-        "id": "PROP__LIMESTONE_04",
-        "nonenterable": true,
-        "status": "PROPOSED_SCENIC",
-        "stories": 5
-      },
-      {
-        "center_m": [
-          -135.0,
-          204.0
-        ],
-        "family": "terracotta",
-        "footprint_m": [
-          30.0,
-          36.0
-        ],
-        "id": "PROP__TERRACOTTA_01",
-        "nonenterable": true,
-        "status": "PROPOSED_SCENIC",
-        "stories": 6
-      },
-      {
-        "center_m": [
-          150.0,
-          -25.0
-        ],
-        "family": "terracotta",
-        "footprint_m": [
-          40.0,
-          28.0
-        ],
-        "id": "PROP__TERRACOTTA_02",
-        "nonenterable": true,
-        "status": "PROPOSED_SCENIC",
-        "stories": 5
-      },
-      {
-        "center_m": [
-          155.0,
-          205.0
-        ],
-        "family": "terracotta",
-        "footprint_m": [
-          36.0,
-          32.0
-        ],
-        "id": "PROP__TERRACOTTA_03",
-        "nonenterable": true,
-        "status": "PROPOSED_SCENIC",
-        "stories": 4
-      },
-      {
-        "center_m": [
-          -125.0,
-          135.0
-        ],
-        "family": "charcoal",
-        "footprint_m": [
-          30.0,
-          20.0
-        ],
-        "id": "PROP__CHARCOAL_01",
-        "nonenterable": true,
-        "status": "PROPOSED_SCENIC",
-        "stories": 3
-      },
-      {
-        "center_m": [
-          160.0,
-          50.0
-        ],
-        "family": "charcoal",
-        "footprint_m": [
-          28.0,
-          20.0
-        ],
-        "id": "PROP__CHARCOAL_02",
-        "nonenterable": true,
-        "status": "PROPOSED_SCENIC",
-        "stories": 4
-      },
-      {
-        "center_m": [
-          -45.0,
-          215.0
-        ],
-        "family": "charcoal",
-        "footprint_m": [
-          36.0,
-          20.0
-        ],
-        "id": "PROP__CHARCOAL_03",
-        "nonenterable": true,
-        "status": "PROPOSED_SCENIC",
-        "stories": 5
+        "size_m": [
+          800.0,
+          220.0
+        ]
       }
-    ]
+    },
+    "playable_boundary_m": [
+      800.0,
+      600.0
+    ],
+    "preview_circulation": {
+      "boulevards": 6,
+      "canonical": false,
+      "exact_distance_m": null,
+      "shortcuts": 2
+    },
+    "required_landmarks": [
+      "STUDIO_APARTMENT",
+      "APARTMENT_MANAGEMENT",
+      "JOB",
+      "CLOTHING",
+      "FURNITURE",
+      "ARENA",
+      "TICKET_BOOTH",
+      "PUBLIC_COURT",
+      "COMMONS_PARK"
+    ],
+    "skyscraper_count": 10,
+    "street_level_only_initially": true,
+    "street_mass_count": 36,
+    "street_masses_per_district": {
+      "CENTRAL_CIVIC_COMMONS": 12,
+      "NORTH_ARENA_ENTERTAINMENT": 12,
+      "SOUTH_RESIDENTIAL_RETAIL": 12
+    },
+    "tower_placement_counts": {
+      "BACKGROUND_SKYLINE": 6,
+      "PLAYABLE_CORE": 4
+    },
+    "vehicles": false
+  },
+  "production_authority_preserved": {
+    "production_route_changed": false,
+    "production_route_m": 800.0,
+    "unreal_map": "/Game/Maps/SundaleGraybox",
+    "unreal_map_sha256": "180B31BA097EE6AF6C059854C0689F698A9200036C334284A6CF9A5FC1E8C015"
   },
   "renders": [
     {
-      "bytes": 829106,
+      "bytes": 1976443,
       "camera_location_m": [
-        15.0,
-        90.0,
-        420.0
+        0.0,
+        30.0,
+        950.0
       ],
-      "file": "renders/TopDown_AuthorizedAndProposed.png",
-      "height": 900,
-      "sha256": "8BF4846763E34262EFFEC060136D820F5C5B8E3C3A3E733CC034D2C9D21BBB79",
+      "file": "renders/TopDown_MetropolitanPreview.png",
+      "height": 1440,
+      "sha256": "8E1E52B1522286EF3E013BEEFEB15D128310A8313E7C9DB8AE826EDF4F84AF11",
       "target_m": [
-        15.0,
-        90.0,
+        0.0,
+        30.0,
         0.0
       ],
       "view_type": "top_down",
-      "width": 1280
+      "width": 1920
     },
     {
-      "bytes": 434762,
+      "bytes": 694889,
       "camera_location_m": [
-        -55.0,
-        5.0,
+        -340.0,
+        -185.0,
         1.7
       ],
-      "file": "renders/EyeLevel_SouthArrival.png",
-      "height": 480,
-      "sha256": "90F7D36A1400C9C9B483DE6576D661669A2E2E9A33E6E055E700986104B08A20",
+      "file": "renders/EyeLevel_SouthResidentialRetail.png",
+      "height": 720,
+      "sha256": "C4CE97E1F827B2252D2E3DAB51FD266508253DE71864101F32AFCB2FB83A14D8",
       "target_m": [
-        115.0,
-        160.0,
-        6.0
+        320.0,
+        -180.0,
+        35.0
       ],
       "view_type": "eye_level",
       "width": 1280
     },
     {
-      "bytes": 436115,
+      "bytes": 589074,
       "camera_location_m": [
-        -55.0,
-        50.0,
-        1.7
-      ],
-      "file": "renders/EyeLevel_CommonsArenaAxis.png",
-      "height": 480,
-      "sha256": "29E31766249BAF3A8E18824CF46F05CAE6FCC6F7A014CF71DF2276890D1B0D30",
-      "target_m": [
+        -80.0,
         20.0,
-        205.0,
-        6.0
+        1.7
+      ],
+      "file": "renders/EyeLevel_CentralCommonsCivicSkyline.png",
+      "height": 720,
+      "sha256": "7F6FD04BBD096B06BE583B8559CE267EAA81CAD2BA437C9BFEC26356E3736370",
+      "target_m": [
+        260.0,
+        60.0,
+        55.0
       ],
       "view_type": "eye_level",
       "width": 1280
     },
     {
-      "bytes": 455331,
+      "bytes": 683146,
       "camera_location_m": [
-        -95.0,
-        150.0,
+        -260.0,
+        200.0,
         1.7
       ],
-      "file": "renders/EyeLevel_CourtToArena.png",
-      "height": 480,
-      "sha256": "68C5C4186B6FC5901D6532F434FFAF7304509EDC92147705EBBE9A7BCEFC4A56",
+      "file": "renders/EyeLevel_NorthArenaEntertainment.png",
+      "height": 720,
+      "sha256": "F964AF0971C176143EC40A4E978350105527C08E37EA74EC618F14357F4B115F",
       "target_m": [
-        85.0,
-        195.0,
-        6.0
+        200.0,
+        235.0,
+        50.0
       ],
       "view_type": "eye_level",
       "width": 1280
     }
   ],
-  "source_authority": {
-    "authored_actor_count": 45,
-    "commons_m": [
-      140.0,
-      90.0
-    ],
-    "destinations": {
-      "ARENA": [
-        70.0,
-        180.0
-      ],
-      "CLOTHING": [
-        125.0,
-        90.0
-      ],
-      "FURNITURE": [
-        -95.0,
-        50.0
-      ],
-      "JOB": [
-        95.0,
-        0.0
-      ],
-      "PUBLIC_COURT": [
-        -95.0,
-        160.0
-      ],
-      "STUDIO": [
-        0.0,
-        0.0
-      ],
-      "TICKET_BOOTH": [
-        10.0,
-        180.0
-      ]
-    },
-    "district_m": [
-      340.0,
-      280.0
-    ],
-    "route_m": 800.0,
-    "route_points_m": [
-      [
-        0.0,
-        0.0
-      ],
-      [
-        95.0,
-        0.0
-      ],
-      [
-        125.0,
-        0.0
-      ],
-      [
-        125.0,
-        90.0
-      ],
-      [
-        125.0,
-        180.0
-      ],
-      [
-        70.0,
-        180.0
-      ],
-      [
-        10.0,
-        180.0
-      ],
-      [
-        -95.0,
-        180.0
-      ],
-      [
-        -95.0,
-        160.0
-      ],
-      [
-        -95.0,
-        50.0
-      ],
-      [
-        -95.0,
-        0.0
-      ],
-      [
-        0.0,
-        0.0
-      ]
-    ],
-    "route_segments": 4,
-    "shortcuts": 2,
-    "unreal_map": "/Game/Maps/SundaleGraybox",
-    "unreal_map_sha256": "180B31BA097EE6AF6C059854C0689F698A9200036C334284A6CF9A5FC1E8C015"
-  },
-  "status": "noncanonical_owner_review"
+  "status": "noncanonical_owner_metropolitan_preview",
+  "supersedes": "Phase 1L.3a 340x280m small-city massing proposal"
 }
