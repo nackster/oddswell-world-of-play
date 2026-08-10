@@ -116,6 +116,8 @@ This is environmental art only. It does not add a second playable basketball mod
 - One painted-metal awning/railing material family.
 - No moving or drivable vehicles, traffic simulation, transit, or generalized road system.
 
+Phase 1L.3e narrows this section to one noncanonical 64x64 m four-arm review vignette with exactly nine review identities covering asphalt, straight/corner curbs, straight/corner sidewalks, one paver transition reference, and three shape-coded cobalt route marks. Straight, turn, and destination use a bar/double-chevron, right-angle arrow, and ring/target silhouette respectively, so the proposal is not color-only. The board is not the canonical 800 m route, records exact_distance_m=null and canonical=false, and adds no traffic, vehicles, collision, navigation, production catalog, or gameplay. Owner acceptance and a separate promotion gate remain required.
+
 ## Required interiors
 
 | ID | Interior | Production scope | Explicit exclusions |

@@ -1,0 +1,192 @@
+{
+  "artifacts": [
+    {
+      "bytes": 989216,
+      "file": "SundaleStreetWayfindingReviewBoard.blend",
+      "sha256": "3FE950E9E512A675D6F43637120333E1401D8955BF882331DDBEBB78C59B0D4D"
+    },
+    {
+      "bytes": 28856,
+      "file": "build_sundale_street_wayfinding.py",
+      "sha256": "BA91C5A237591A58843FB3B8C41C1CE61E2EDBA325E3B6A58D8458F4B2EB5BCB"
+    },
+    {
+      "bytes": 1118,
+      "file": "PROVENANCE.md",
+      "sha256": "048929276EB9C9A8E08891792AAC4A55BF4B5A3C5F5D0058B9FF35D89B01BDB1"
+    },
+    {
+      "bytes": 1812939,
+      "file": "renders/Unified_TopDown_StreetWayfinding.png",
+      "sha256": "4F33A04700CEDFA3A119232A40D4D1E799C648717E711229E8C480859E405617"
+    },
+    {
+      "bytes": 977700,
+      "file": "renders/Cardinal_North_StreetWayfinding.png",
+      "sha256": "6C73ED012F6DB63C7D6F4322AC61869749E2C2CA5B8639C9AB9AF4E71E894510"
+    },
+    {
+      "bytes": 960385,
+      "file": "renders/Cardinal_East_StreetWayfinding.png",
+      "sha256": "6ED8B42E24CE9C1C4EB0766985C420EEB7E170CAB9A88BEF10EA2895E31B5449"
+    },
+    {
+      "bytes": 963626,
+      "file": "renders/Cardinal_South_StreetWayfinding.png",
+      "sha256": "C31475CF55DF8C33C4A74BFAE92F0B751900007D2B921BF11D84AB2B6EEB9C2D"
+    },
+    {
+      "bytes": 983451,
+      "file": "renders/Cardinal_West_StreetWayfinding.png",
+      "sha256": "D13AB4D951AED19605A319CCF7EA1B17DE26F29CA3078207C5F1B0E395AE6622"
+    }
+  ],
+  "authority": {
+    "board_size_m": [
+      64.0,
+      64.0
+    ],
+    "canonical": false,
+    "exact_distance_m": null,
+    "intersection_arms": 4,
+    "road_width_m": 12.0
+  },
+  "boundaries": {
+    "brands": 0,
+    "external_references": 0,
+    "gameplay_changes": 0,
+    "generalized_road_systems": 0,
+    "interiors": 0,
+    "package_changed": false,
+    "production_catalog_changed": false,
+    "production_collision_changed": false,
+    "production_map_changed": false,
+    "production_navigation_changed": false,
+    "production_route_changed": false,
+    "textures": 0,
+    "traffic": 0,
+    "vehicles": 0
+  },
+  "manual_input": false,
+  "phase": "Phase 1L.3e",
+  "renderer": "BLENDER_EEVEE_NEXT",
+  "sample_contract": {
+    "color_only": false,
+    "instance_counts": {
+      "CurbCornerModule": 1,
+      "CurbStraightModule": 1,
+      "PaverTransitionReference": 1,
+      "RouteMarkDestination": 1,
+      "RouteMarkStraight": 1,
+      "RouteMarkTurn": 1,
+      "SidewalkCornerModule": 1,
+      "SidewalkStraightModule": 1,
+      "StreetAsphaltModule": 1
+    },
+    "native_geometry_only": true,
+    "production_catalog_ids": false,
+    "route_shape_identities": {
+      "RouteMarkDestination": "CONCENTRIC_RING_TARGET",
+      "RouteMarkStraight": "STRAIGHT_BAR_DOUBLE_CHEVRON",
+      "RouteMarkTurn": "RIGHT_ANGLE_BAR_ARROW"
+    },
+    "sample_count": 9,
+    "sample_ids": [
+      "StreetAsphaltModule",
+      "CurbStraightModule",
+      "CurbCornerModule",
+      "SidewalkStraightModule",
+      "SidewalkCornerModule",
+      "PaverTransitionReference",
+      "RouteMarkStraight",
+      "RouteMarkTurn",
+      "RouteMarkDestination"
+    ],
+    "shape_distinct": true,
+    "triangle_ceiling_per_sample": 2500,
+    "triangle_counts": {
+      "CurbCornerModule": 96,
+      "CurbStraightModule": 96,
+      "PaverTransitionReference": 96,
+      "RouteMarkDestination": 428,
+      "RouteMarkStraight": 60,
+      "RouteMarkTurn": 25,
+      "SidewalkCornerModule": 48,
+      "SidewalkStraightModule": 48,
+      "StreetAsphaltModule": 24
+    }
+  },
+  "status": "noncanonical_owner_review_board",
+  "views": [
+    {
+      "camera_location_m": [
+        0.0,
+        0.0,
+        72.0
+      ],
+      "direction": "TOP",
+      "eye_height_m": null,
+      "file": "renders/Unified_TopDown_StreetWayfinding.png",
+      "height": 1080,
+      "lens_mm": null,
+      "role": "UNIFIED_TOP",
+      "width": 1920
+    },
+    {
+      "camera_location_m": [
+        0.0,
+        -36.0,
+        1.7
+      ],
+      "direction": "NORTH",
+      "eye_height_m": 1.7,
+      "file": "renders/Cardinal_North_StreetWayfinding.png",
+      "height": 900,
+      "lens_mm": 12.0,
+      "role": "CARDINAL",
+      "width": 1600
+    },
+    {
+      "camera_location_m": [
+        -36.0,
+        0.0,
+        1.7
+      ],
+      "direction": "EAST",
+      "eye_height_m": 1.7,
+      "file": "renders/Cardinal_East_StreetWayfinding.png",
+      "height": 900,
+      "lens_mm": 12.0,
+      "role": "CARDINAL",
+      "width": 1600
+    },
+    {
+      "camera_location_m": [
+        0.0,
+        36.0,
+        1.7
+      ],
+      "direction": "SOUTH",
+      "eye_height_m": 1.7,
+      "file": "renders/Cardinal_South_StreetWayfinding.png",
+      "height": 900,
+      "lens_mm": 12.0,
+      "role": "CARDINAL",
+      "width": 1600
+    },
+    {
+      "camera_location_m": [
+        36.0,
+        0.0,
+        1.7
+      ],
+      "direction": "WEST",
+      "eye_height_m": 1.7,
+      "file": "renders/Cardinal_West_StreetWayfinding.png",
+      "height": 900,
+      "lens_mm": 12.0,
+      "role": "CARDINAL",
+      "width": 1600
+    }
+  ]
+}

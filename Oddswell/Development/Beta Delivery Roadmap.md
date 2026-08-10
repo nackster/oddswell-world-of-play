@@ -851,6 +851,14 @@ One `1920x1080` unified orthographic top and four `1600x900` N/E/S/W, exact `1.7
 
 Phase 1L.3a remains preserved at its owner-accepted planning authority. This review changes no Unreal, client, map, runtime, tests, config, city count, canonical route, collision, navigation, package, production catalog, basketball behavior, or Phase 1K behavior. It does not add a second playable basketball mode or approve production geometry, placement, accessibility, interaction, performance, final art, or beta readiness. Promotion and expansion remain owner-gated. See [[Development/Reports/Phase 1L3d Sundale Public Court Review Board]].
 
+### Phase 1L.3e Sundale street, paving, and shape-coded wayfinding review board
+
+**COMPLETE FOR BOUNDED NONCANONICAL OWNER REVIEW; OWNER ACCEPTANCE AND PRODUCTION PROMOTION PENDING.** One deterministic Blender 4.5.5 LTS source presents a single 64x64 m, four-arm, 12 m-road-width review vignette. Exactly nine noncanonical identities cover asphalt, straight/corner curb modules, straight/corner sidewalk modules, a paver transition reference, and straight/turn/destination route marks. The route identities use a bar/double-chevron, right-angle arrow, and ring/target silhouette; exact shape_distinct=true and color_only=false prevent cobalt color from carrying meaning alone.
+
+The board records canonical=false and exact_distance_m=null; it neither redraws nor measures the frozen production 800 m route. One 1920x1080 unified top and four 1600x900, exact 1.7 m N/E/S/W views render in Eevee. Headless build, saved-Blend reopen, focused validation, manifest/artifact/render hashes, and original-resolution inspection lock exact IDs, counts, triangles, 64x64 m bounds, accepted-palette-only materials, five camera identities, native-only provenance, and zero external references, textures, interiors, brands, gameplay, traffic, vehicles, generalized road systems, or production changes. The top is the primary shape-comparison evidence; the compass views retain complete intersection/curb/sidewalk framing but planar marks foreshorten at pedestrian height.
+
+Phase 1L.3a remains preserved at its owner-accepted planning authority. This review changes no Unreal, client, map, runtime, tests, config, city count, canonical route, collision, navigation, package, production catalog, business/economy behavior, or Phase 1K behavior. It does not approve production geometry, placement, accessibility, performance, route usability, travel distance, traffic behavior, final art, or beta readiness. Promotion and placement remain owner-gated. See [[Development/Reports/Phase 1L3e Sundale Street Paving and Shape Coded Wayfinding Review Board]].
+
 ### Exit evidence
 
 The complete loop is visually coherent, readable, accessible at the approved baseline, and within measured PC performance targets. Large catalogs and unseen districts remain out of scope.
