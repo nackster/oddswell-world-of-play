@@ -118,6 +118,8 @@ This is environmental art only. It does not add a second playable basketball mod
 
 Phase 1L.3e narrows this section to one noncanonical 64x64 m four-arm review vignette with exactly nine review identities covering asphalt, straight/corner curbs, straight/corner sidewalks, one paver transition reference, and three shape-coded cobalt route marks. Straight, turn, and destination use a bar/double-chevron, right-angle arrow, and ring/target silhouette respectively, so the proposal is not color-only. The board is not the canonical 800 m route, records exact_distance_m=null and canonical=false, and adds no traffic, vehicles, collision, navigation, production catalog, or gameplay. Owner acceptance and a separate promotion gate remain required.
 
+Phase 1L.3f narrows the six-production-threshold requirement to one noncanonical review board with exactly six entrance-treatment IDs: shared Studio/owned One-bedroom, Job, Clothing Store, Furniture Store, Arena portal, and Ticket Booth. Each geometric sample retains an open review passage and records `collision_claim=false`. The manifest freezes the current production anchor, unchanged `350 cm` interaction radius, and exact frontage-spec bounds for each destination, plus the existing `5300 cm` Arena-to-Ticket-Booth edge clearance, as read-only references. Apartment Management is excluded, and the phase changes no production geometry, prompt, interaction, collision, navigation, route, business behavior, or gameplay. Owner acceptance, production clearance, promotion, and placement remain separate gates.
+
 ## Required interiors
 
 | ID | Interior | Production scope | Explicit exclusions |

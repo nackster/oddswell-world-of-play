@@ -1,0 +1,484 @@
+{
+  "boundaries": {
+    "brands": 0,
+    "collision_claim": false,
+    "external_references": 0,
+    "gameplay_changes": 0,
+    "interiors": 0,
+    "package_changed": false,
+    "production_collision_changed": false,
+    "production_map_changed": false,
+    "production_navigation_changed": false,
+    "production_route_changed": false,
+    "prompt_changes": 0,
+    "text_signs": 0,
+    "textures": 0
+  },
+  "deterministic_builder": "build_sundale_destination_thresholds.py",
+  "engine": "BLENDER_EEVEE_NEXT",
+  "files": {
+    "blend": {
+      "bytes": 975000,
+      "file": "SundaleDestinationThresholdReviewBoard.blend",
+      "sha256": "5A70767F4378CF301363BEE751C37159500F76F4615B5C7C1498CF2F01B10530"
+    },
+    "provenance": {
+      "bytes": 1183,
+      "file": "PROVENANCE.md",
+      "sha256": "2DD5EF566ECCD161758EB2B5F188FEB790D6609DC746248451F94EAA124083E9"
+    },
+    "script": {
+      "bytes": 28719,
+      "file": "build_sundale_destination_thresholds.py",
+      "sha256": "E47C9CD46B5C7313A902019C537E78B796EB98A54B6A82E508B7F88A0912C828"
+    }
+  },
+  "limitations": [
+    "review-only entrance silhouettes; not production geometry, collision, navigation, placement, or accessibility proof",
+    "open passage is a geometric review proxy and makes no production-clearance claim",
+    "promotion, production clearance, and placement remain owner-gated"
+  ],
+  "palette": {
+    "burnt_orange": "#C46D3B",
+    "charcoal_gray": "#4D5051",
+    "muted_terracotta": "#A65F47",
+    "restrained_cobalt": "#315F79",
+    "sage_green": "#6D7F62",
+    "sand_concrete": "#B9A783",
+    "warm_limestone": "#D8C8A9"
+  },
+  "phase": "Phase 1L.3f Sundale destination entrance/threshold treatments",
+  "production_clearance_references": {
+    "Arena_to_TicketBooth": {
+      "anchor_distance_cm": 6000.0,
+      "edge_clearance_cm": 5300.0,
+      "source_lines": [
+        14951,
+        15005
+      ],
+      "summed_interaction_radii_cm": 700.0
+    }
+  },
+  "production_references": {
+    "ThresholdArena": {
+      "anchor_cm": [
+        7000.0,
+        18000.0,
+        0.0
+      ],
+      "frontage_bounds_cm": {
+        "x": [
+          6572.5,
+          7427.5
+        ],
+        "y": [
+          16610.0,
+          17645.0
+        ],
+        "z": [
+          0.0,
+          822.5
+        ]
+      },
+      "frontage_part_ids": [
+        "ArenaEntrancePierLeft",
+        "ArenaEntrancePierRight",
+        "ArenaEntrancePortalCap",
+        "ArenaEntranceThresholdInset",
+        "ArenaEntranceApproachBand"
+      ],
+      "interaction_radius_cm": 350.0,
+      "scope_note": "Arena entry portal only",
+      "source_lines": [
+        103,
+        126,
+        1167,
+        1168,
+        1169,
+        1170,
+        1171
+      ]
+    },
+    "ThresholdClothingStore": {
+      "anchor_cm": [
+        12500.0,
+        9000.0,
+        0.0
+      ],
+      "frontage_bounds_cm": {
+        "x": [
+          11275.0,
+          12147.5
+        ],
+        "y": [
+          8472.5,
+          9527.5
+        ],
+        "z": [
+          0.0,
+          840.0
+        ]
+      },
+      "frontage_part_ids": [
+        "ClothingStoreFrontagePostLeft",
+        "ClothingStoreFrontagePostRight",
+        "ClothingStoreFrontageHeader",
+        "ClothingStoreFrontageDisplay",
+        "ClothingStoreFrontageApproach"
+      ],
+      "interaction_radius_cm": 350.0,
+      "scope_note": "exterior-only Clothing Store frontage",
+      "source_lines": [
+        92,
+        119,
+        1191,
+        1192,
+        1193,
+        1194,
+        1195
+      ]
+    },
+    "ThresholdFurnitureStore": {
+      "anchor_cm": [
+        -9500.0,
+        5000.0,
+        0.0
+      ],
+      "frontage_bounds_cm": {
+        "x": [
+          -10147.5,
+          -9275.0
+        ],
+        "y": [
+          4472.5,
+          5527.5
+        ],
+        "z": [
+          0.0,
+          840.0
+        ]
+      },
+      "frontage_part_ids": [
+        "FurnitureStoreFrontagePostLeft",
+        "FurnitureStoreFrontagePostRight",
+        "FurnitureStoreFrontageHeader",
+        "FurnitureStoreFrontageDisplay",
+        "FurnitureStoreFrontageApproach"
+      ],
+      "interaction_radius_cm": 350.0,
+      "scope_note": "exterior-only Furniture Store frontage",
+      "source_lines": [
+        93,
+        120,
+        1203,
+        1204,
+        1205,
+        1206,
+        1207
+      ]
+    },
+    "ThresholdJob": {
+      "anchor_cm": [
+        9500.0,
+        0.0,
+        0.0
+      ],
+      "frontage_bounds_cm": {
+        "x": [
+          8875.0,
+          10125.0
+        ],
+        "y": [
+          -20.0,
+          342.5
+        ],
+        "z": [
+          0.0,
+          940.0
+        ]
+      },
+      "frontage_part_ids": [
+        "JobFrontagePierLeft",
+        "JobFrontagePierRight",
+        "JobFrontageHeader",
+        "JobFrontageLanding",
+        "JobFrontageApproach"
+      ],
+      "interaction_radius_cm": 350.0,
+      "scope_note": "exterior-only Job frontage",
+      "source_lines": [
+        88,
+        118,
+        1143,
+        1144,
+        1145,
+        1146,
+        1147
+      ]
+    },
+    "ThresholdStudioApartment": {
+      "anchor_cm": [
+        0.0,
+        0.0,
+        220.0
+      ],
+      "frontage_bounds_cm": {
+        "x": [
+          -1100.0,
+          1100.0
+        ],
+        "y": [
+          1.0,
+          450.0
+        ],
+        "z": [
+          325.0,
+          975.0
+        ]
+      },
+      "frontage_part_ids": [
+        "StudioFacade",
+        "StudioAwning",
+        "StudioIdentityLeft",
+        "StudioIdentityRight"
+      ],
+      "interaction_radius_cm": 350.0,
+      "scope_note": "shared Studio/owned One-bedroom exterior entrance; Apartment Management kiosk excluded",
+      "source_lines": [
+        79,
+        95,
+        1082,
+        1088,
+        1120,
+        1121
+      ]
+    },
+    "ThresholdTicketBooth": {
+      "anchor_cm": [
+        1000.0,
+        18000.0,
+        0.0
+      ],
+      "frontage_bounds_cm": {
+        "x": [
+          710.0,
+          1290.0
+        ],
+        "y": [
+          16775.0,
+          17645.0
+        ],
+        "z": [
+          0.0,
+          630.0
+        ]
+      },
+      "frontage_part_ids": [
+        "TicketBoothFrontagePostLeft",
+        "TicketBoothFrontagePostRight",
+        "TicketBoothFrontageHeader",
+        "TicketBoothFrontageCounter",
+        "TicketBoothFrontageApproach"
+      ],
+      "interaction_radius_cm": 350.0,
+      "scope_note": "exterior-only Ticket Booth frontage",
+      "source_lines": [
+        104,
+        127,
+        1179,
+        1180,
+        1181,
+        1182,
+        1183
+      ]
+    }
+  },
+  "renders": [
+    {
+      "bytes": 1868059,
+      "camera_location_m": [
+        0.0,
+        -45.0,
+        34.0
+      ],
+      "camera_target_m": [
+        0.0,
+        0.0,
+        3.1
+      ],
+      "file": "renders/Unified_SundaleDestinationThresholds.png",
+      "height": 1080,
+      "lens_mm": 48.0,
+      "role": "UNIFIED_BOARD",
+      "sample_id": null,
+      "sha256": "028CDC5E3BC0595E1C3D1635F61E92197F74724AEBC4B0FBDFC48670BDB093DE",
+      "width": 1920
+    },
+    {
+      "bytes": 699137,
+      "camera_location_m": [
+        -12.0,
+        -12.0,
+        4.5
+      ],
+      "camera_target_m": [
+        -12.0,
+        6.0,
+        2.6
+      ],
+      "file": "renders/Closeup_ThresholdStudioApartment.png",
+      "height": 720,
+      "lens_mm": 32.0,
+      "role": "THRESHOLD_CLOSEUP",
+      "sample_id": "ThresholdStudioApartment",
+      "sha256": "AB4AF31401F7B7212AA7262F1BA2E665DC0725DCD37BBA9EF049C17A4EDF5987",
+      "width": 1280
+    },
+    {
+      "bytes": 676907,
+      "camera_location_m": [
+        0.0,
+        -12.0,
+        4.5
+      ],
+      "camera_target_m": [
+        0.0,
+        6.0,
+        2.6
+      ],
+      "file": "renders/Closeup_ThresholdJob.png",
+      "height": 720,
+      "lens_mm": 32.0,
+      "role": "THRESHOLD_CLOSEUP",
+      "sample_id": "ThresholdJob",
+      "sha256": "16C253BD092FDF7E898688E3344EAB735A30BCFBA478CAAC00A130DBDC872744",
+      "width": 1280
+    },
+    {
+      "bytes": 686446,
+      "camera_location_m": [
+        12.0,
+        -12.0,
+        4.5
+      ],
+      "camera_target_m": [
+        12.0,
+        6.0,
+        2.6
+      ],
+      "file": "renders/Closeup_ThresholdClothingStore.png",
+      "height": 720,
+      "lens_mm": 32.0,
+      "role": "THRESHOLD_CLOSEUP",
+      "sample_id": "ThresholdClothingStore",
+      "sha256": "CAC1B5844D7647AFAB664F918FAB3925FE5475A5A33DC7A449AF9FE7321263C2",
+      "width": 1280
+    },
+    {
+      "bytes": 690196,
+      "camera_location_m": [
+        -12.0,
+        -24.0,
+        4.5
+      ],
+      "camera_target_m": [
+        -12.0,
+        -6.0,
+        2.6
+      ],
+      "file": "renders/Closeup_ThresholdFurnitureStore.png",
+      "height": 720,
+      "lens_mm": 32.0,
+      "role": "THRESHOLD_CLOSEUP",
+      "sample_id": "ThresholdFurnitureStore",
+      "sha256": "80F0852E574B3D15C168A15E94497A701304238B713915B1C4DFEBB56DCD6644",
+      "width": 1280
+    },
+    {
+      "bytes": 718684,
+      "camera_location_m": [
+        0.0,
+        -24.0,
+        4.5
+      ],
+      "camera_target_m": [
+        0.0,
+        -6.0,
+        2.6
+      ],
+      "file": "renders/Closeup_ThresholdArena.png",
+      "height": 720,
+      "lens_mm": 32.0,
+      "role": "THRESHOLD_CLOSEUP",
+      "sample_id": "ThresholdArena",
+      "sha256": "B7D13C16E5ADEDDA63B7628A127EBA5102D107888E5AA1DB9E0EA63985B0B761",
+      "width": 1280
+    },
+    {
+      "bytes": 681875,
+      "camera_location_m": [
+        12.0,
+        -24.0,
+        4.5
+      ],
+      "camera_target_m": [
+        12.0,
+        -6.0,
+        2.6
+      ],
+      "file": "renders/Closeup_ThresholdTicketBooth.png",
+      "height": 720,
+      "lens_mm": 32.0,
+      "role": "THRESHOLD_CLOSEUP",
+      "sample_id": "ThresholdTicketBooth",
+      "sha256": "BA1BA6EE67A660D1A6CB62FF3CC8725B5E5A8A7E067DDF6A29026EFCA44A2372",
+      "width": 1280
+    }
+  ],
+  "sample_contract": {
+    "bounds_m": {
+      "x": [
+        -19.01,
+        19.01
+      ],
+      "y": [
+        -13.01,
+        13.01
+      ],
+      "z": [
+        -0.51,
+        9.01
+      ]
+    },
+    "collision_claim": false,
+    "instance_counts": {
+      "ThresholdArena": 1,
+      "ThresholdClothingStore": 1,
+      "ThresholdFurnitureStore": 1,
+      "ThresholdJob": 1,
+      "ThresholdStudioApartment": 1,
+      "ThresholdTicketBooth": 1
+    },
+    "native_geometry_only": true,
+    "open_passage_proxy": true,
+    "sample_count": 6,
+    "sample_ids": [
+      "ThresholdStudioApartment",
+      "ThresholdJob",
+      "ThresholdClothingStore",
+      "ThresholdFurnitureStore",
+      "ThresholdArena",
+      "ThresholdTicketBooth"
+    ],
+    "triangle_ceiling_per_sample": 2500,
+    "triangle_counts": {
+      "ThresholdArena": 84,
+      "ThresholdClothingStore": 72,
+      "ThresholdFurnitureStore": 72,
+      "ThresholdJob": 84,
+      "ThresholdStudioApartment": 72,
+      "ThresholdTicketBooth": 84
+    }
+  },
+  "status": "noncanonical_owner_review_board"
+}
