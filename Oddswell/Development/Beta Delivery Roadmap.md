@@ -825,6 +825,14 @@ One clear `3200x2400` top-down and six distinct `1280x720`, true `1.7 m` distric
 
 Acceptance authorizes the Scope Director to select one smallest next Phase 1L art subphase. It does not implement or import the city, alter the production graybox or canonical `800 m` route, approve final art, capacity, performance, scenic-business gameplay, beta readiness, or Phase 2 automatically. Phase 1K remains incomplete and deferred, not waived. See [[Development/Reports/Phase 1L3a Sundale Business Clustered Mega City Replacement Preview]].
 
+### Phase 1L.3b Sundale architectural-language review board
+
+**COMPLETE FOR BOUNDED NONCANONICAL OWNER REVIEW; OWNER DECISION PENDING AT CURSOR `0`.** One deterministic Blender `4.5.5 LTS` source builds exactly six low-poly facade samples and six low-poly tower silhouettes, one pair for each accepted district ID. The exact native opaque samples use only the accepted seven-color Sundale planning palette; facades remain within `84-132/240` triangles and towers within `24-60/96` triangles per sample.
+
+One clean `1920x1080` unified board and six `1280x720` district closeups render in Eevee. Headless build, saved-Blend reopen, and focused validation lock exact sample IDs/counts/roles, board bounds, triangle ceilings, palette-only material identities, seven cameras/renders, hashes, and zero external references, textures, interiors, brands, catalogs, frameworks, or gameplay additions. Original-resolution inspection confirms every district view presents its complete facade/tower pair without clipping.
+
+Phase 1L.3a remains preserved at its owner-accepted planning authority. This review board changes no Unreal, client, map, runtime, test, config, accepted city count, route, business behavior, or package output. It does not approve production geometry, placement, collision, accessibility, performance, interiors, branding, catalogs, services, or expansion. Promotion and expansion require explicit owner acceptance. See [[Development/Reports/Phase 1L3b Sundale Architectural Language Review Board]].
+
 ### Exit evidence
 
 The complete loop is visually coherent, readable, accessible at the approved baseline, and within measured PC performance targets. Large catalogs and unseen districts remain out of scope.

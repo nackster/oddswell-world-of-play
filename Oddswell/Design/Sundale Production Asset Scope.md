@@ -14,6 +14,7 @@ See [[Design/Sundale Art Direction and Core Loop]], [[Design/Decisions/DEC-008 B
 - Native-primitive presentation layers for the required destinations, Studio/One-bedroom interior, Stadium public viewing, prompts, and feedback.
 - One noncanonical Blender pipeline pilot containing two simple one-meter Job-canopy meshes, `88` triangles total, used for three frontage parts.
 - One owner-accepted current noncanonical business-clustered planning baseline at commit `b77e0e1`: `2400x1800 m`, six districts around one `600x420 m` Commons/Park, `144` street-level masses, thirty-six playable-core towers, and twenty-four background skyline towers. The owner accepted it at the 2026-08-09/10 conversation boundary and allowed future bounded revision. It remains review art, not production geometry.
+- One bounded noncanonical architectural-language review board with exactly six low-poly facade samples and six low-poly tower silhouettes, one pair per accepted district. Owner acceptance and production promotion remain pending separate gates.
 
 The current Blender pilot is not a person, complete building, apartment, landscape, or finished city. It proves authoring, validation, FBX export, Unreal import, Git LFS, cook, package, and runtime loading.
 
@@ -70,6 +71,12 @@ The earlier small-city, metropolitan, and `1400x1000 m` radial proposals are sup
 - The preview adds no location, mechanic, traffic system, capacity promise, or production-route change.
 
 The current planning composition is owner-accepted. A future bounded revision remains allowed, and a separate Scope Director gate is still required before any production mesh family expands.
+
+## Architectural-language review samples
+
+Phase 1L.3b narrows the next art decision to one exterior facade/tower pair for each accepted district ID. The board uses only Blender-native opaque low-poly geometry and the frozen seven-color planning palette. Facades remain below `240` triangles each and tower silhouettes below `96` triangles each; the unified board and six closeups are review evidence, not a production kit.
+
+The samples add no texture, external reference, interior, brand, catalog, framework, placement, collision, service, or gameplay behavior. They do not alter the accepted `2400x1800 m`, six-district, `144`-mass, sixty-tower planning baseline or the production `800 m` route. Owner acceptance is required before any sample is promoted, iterated into a reusable production family, or used to justify expansion.
 
 ## Central commons and landscape
 
@@ -162,7 +169,7 @@ Use tiling materials, trim sheets, and instances before unique textures. No real
 No long, high-quality render is required to approve form and layout. Every asset family should pass this sequence:
 
 1. **Citywide massing board:** one high-resolution top-down and six district eye-level Blender Eevee views showing the `2400x1800 m` envelope, six districts, all required landmarks, `144` street masses, sixty towers, Commons/Park, court, business-cluster labels, and proposed radial circulation. No production textures; simple review colors only.
-2. **Style sample board:** one limestone facade bay, one terracotta facade bay, one storefront/awning bay, one tree/planter grouping, and the Arena/Ticket Booth silhouette.
+2. **Architectural-language board:** one native low-poly facade and tower-silhouette pair for each of the six accepted districts, presented together and in six district closeups; promotion remains owner-gated.
 3. **Asset contact sheet:** front, rear, left, right, top, and perspective views with dimensions, triangle count, material slots, UV count, and status.
 4. **Unreal in-place proof:** one packaged fixed view before/after, asset-load marker, collision/route check, and short warmed resource sample.
 5. **Owner decision:** approve, request one bounded revision, or reject before the asset family expands.
