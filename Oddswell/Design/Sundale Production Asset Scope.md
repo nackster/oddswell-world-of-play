@@ -1,6 +1,6 @@
 # Sundale Production Asset Scope
 
-Status: **OWNER-REQUESTED BUSINESS-CLUSTERED MEGA-CITY PREVIEW SCOPE - PRODUCTION PROMOTION STILL REQUIRES REVIEW**
+Status: **OWNER-ACCEPTED CURRENT PLANNING BASELINE - PRODUCTION PROMOTION STILL REQUIRES A SEPARATE GATE**
 
 This document turns the approved Sundale concept direction into a complete, reviewable beta art-production boundary. The owner superseded the earlier small-city, metropolitan, and radial boards with a larger noncanonical business-clustered mega-city review. That preview does not mutate the proven production graybox, claim that the listed production assets exist, or promote the Phase 1L.2 Job-canopy pilot to canonical final art.
 
@@ -13,7 +13,7 @@ See [[Design/Sundale Art Direction and Core Loop]], [[Design/Decisions/DEC-008 B
 - Exactly `45` authored graybox actors: ground, commons, four route segments, two shortcuts, seven destination/building masses including the Arena canopy, six thresholds, one court with two primitive hoops, four primitive trees, and four environment/light actors.
 - Native-primitive presentation layers for the required destinations, Studio/One-bedroom interior, Stadium public viewing, prompts, and feedback.
 - One noncanonical Blender pipeline pilot containing two simple one-meter Job-canopy meshes, `88` triangles total, used for three frontage parts.
-- One owner-requested noncanonical business-clustered mega-city replacement-preview scope: `2400x1800 m`, six districts around one `600x420 m` Commons/Park, `144` street-level masses, thirty-six playable-core towers, and twenty-four background skyline towers. It remains review art, not production geometry.
+- One owner-accepted current noncanonical business-clustered planning baseline at commit `b77e0e1`: `2400x1800 m`, six districts around one `600x420 m` Commons/Park, `144` street-level masses, thirty-six playable-core towers, and twenty-four background skyline towers. The owner accepted it at the 2026-08-09/10 conversation boundary and allowed future bounded revision. It remains review art, not production geometry.
 
 The current Blender pilot is not a person, complete building, apartment, landscape, or finished city. It proves authoring, validation, FBX export, Unreal import, Git LFS, cook, package, and runtime loading.
 
@@ -27,7 +27,7 @@ The visual target remains warm limestone and terracotta street-level buildings a
 
 | Scene element | Production target | Current authority |
 | --- | --- | --- |
-| Playable preview | One proposed `2400 m x 1800 m` business-clustered mega-city planning/play envelope | Owner-requested preview ceiling; not production map authority |
+| Playable preview | One proposed `2400 m x 1800 m` business-clustered mega-city planning/play envelope | Owner-accepted current planning baseline; not production map authority |
 | Districts | Financial/Downtown, Arena/Entertainment, Shopping/Retail, Dining/Nightlife, Home Design/Furniture, Residential/Neighborhood Services | Exactly six in replacement preview |
 | Central commons | One proposed `600 m x 420 m` Commons/Park | Preview hub; production graybox remains `140x90 m` |
 | Production route | Existing measured route remains exactly `800 m` | Frozen production authority; not redrawn or replaced by preview |
@@ -69,7 +69,7 @@ The earlier small-city, metropolitan, and `1400x1000 m` radial proposals are sup
 - Reusable limestone, terracotta, and charcoal/neutral families remain the preferred production approach; the preview does not freeze final facade counts, rooflines, or tower architecture.
 - The preview adds no location, mechanic, traffic system, capacity promise, or production-route change.
 
-Exact placement and skyline composition require owner review before any production mesh family expands.
+The current planning composition is owner-accepted. A future bounded revision remains allowed, and a separate Scope Director gate is still required before any production mesh family expands.
 
 ## Central commons and landscape
 
@@ -171,7 +171,7 @@ Use Blender Workbench or Eevee for review images. Do not use slow Cycles renders
 
 ## Recommended production order
 
-1. Review the business-clustered mega-city replacement board and approve, revise, or reject its park/district/business-massing/street/skyline composition.
+1. Use the owner-accepted business-clustered planning baseline to scope one smallest next Phase 1L art dependency; preserve separate asset-family review gates and allow a future bounded citywide revision.
 2. Build the shared facade, street, paving, and prop kits.
 3. Complete the central commons and public court.
 4. Replace the six gameplay-building exteriors, Arena canopy, Ticket Booth, and apartment kiosk in route order.
@@ -192,10 +192,8 @@ Use Blender Workbench or Eevee for review images. Do not use slow Cycles renders
 
 ## Owner-review decisions
 
-The approved Sundale concept, production `800 m` route, required destinations, palette, materials, and atmosphere remain authoritative. The earlier small-city, metropolitan, and radial boards are superseded only as review directions; the current production map remains unchanged. The following proposed details need an explicit owner review before catalog-scale modeling:
+The approved Sundale concept, production `800 m` route, required destinations, palette, materials, atmosphere, and current business-clustered planning baseline remain authoritative at their stated levels. The earlier small-city, metropolitan, and radial boards are superseded only as review directions; the current production map remains unchanged. Acceptance of the planning baseline does not approve production modeling. The remaining proposed details need an explicit owner review before catalog-scale modeling:
 
-1. The business-clustered preview's six-district, `144`-mass, thirty-six-core-tower, twenty-four-background-tower placement, scenic land-use clustering, street topology, and roofline mix.
-2. Landscape instance ceilings and the final commons composition.
-3. The first citywide massing board.
-4. The character silhouette/proportion sheet.
-5. Promotion of any pilot asset from noncanonical to production art.
+1. Landscape instance ceilings and the final commons composition.
+2. The character silhouette/proportion sheet.
+3. Promotion of any pilot asset from noncanonical to production art.

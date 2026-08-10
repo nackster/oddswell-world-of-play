@@ -2,7 +2,7 @@
 
 Date: 2026-08-09
 Branch: `agent/phase-0d`
-Status: OWNER-REQUESTED BUSINESS-CLUSTERED REPLACEMENT PREVIEW COMPLETE; COMPOSITION DECISION OPEN
+Status: OWNER-ACCEPTED CURRENT PLANNING BASELINE
 Cost: `$0.00`
 
 ## Outcome first
@@ -16,6 +16,12 @@ This remains new-art-batch Phase `1/6`. It supersedes the prior radial Phase 1L.
 The owner requested a still larger city with logical same-business clustering: a Financial district, restaurants throughout, a bar-scene area, shopping centers, and furniture stores. The prior `1400x1000 m`, four-district, `72`-mass, twenty-four-tower radial board remains in [[Development/Reports/Phase 1L3a Sundale Radial Mega City Replacement Preview]] and Git history, but it is superseded as the active review direction.
 
 [[Design/Sundale Production Asset Scope]] now records the business-clustered review ceiling while preserving the smaller production graybox and measured `800 m` route as current runtime authority.
+
+## Owner acceptance
+
+At the 2026-08-09/10 conversation boundary, the owner accepted the current commit `b77e0e1` composition and noted that it may change later if needed. The exact `2400x1800 m`, `600x420 m` park, six-district, `144`-mass, sixty-tower, business-cluster, and proposed-street contracts below are therefore the owner-accepted current planning baseline. Future bounded revision remains allowed.
+
+This acceptance authorizes the Scope Director to select one smallest next Phase 1L art subphase. It does not implement or import the city, change the production graybox or canonical `800 m` route, approve final art, capacity, performance, scenic-business gameplay, beta readiness, or Phase 2 automatically.
 
 ## Exact preview contract
 
@@ -152,4 +158,4 @@ Phase 1K hands-on held-control and route-usability evidence remains incomplete a
 
 ## Next gate
 
-The owner reviews the top-down business-cluster plan and six district/park/skyline views and chooses one truthful outcome: accept the composition for one smallest production asset-family review, request one bounded district/business/street/mass/tower revision, or reject it. No Phase 2 modeling begins until that decision and a new Scope Director gate.
+The Scope Director selects exactly one smallest Phase 1L art subphase against the accepted planning baseline. No Phase 2 work begins automatically; any future citywide revision remains separately bounded and the production map stays unchanged until an explicit implementation gate.
