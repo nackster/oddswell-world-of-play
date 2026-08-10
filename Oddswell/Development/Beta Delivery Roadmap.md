@@ -841,6 +841,16 @@ One `1920x1080` unified orthographic top and four `1600x900` N/E/S/W views rende
 
 Phase 1L.3a remains preserved at its owner-accepted planning authority. This review changes no Unreal, client, map, runtime, tests, config, city counts, canonical route, package, production catalog, or Phase 1K behavior. It does not approve production geometry, collision, accessibility, density, performance, placement, interaction, or final landscape art. Promotion and expansion remain owner-gated. See [[Development/Reports/Phase 1L3c Sundale Central Commons Landscape Kit Review]].
 
+### Phase 1L.3d Sundale public-court review board
+
+**COMPLETE FOR BOUNDED NONCANONICAL OWNER REVIEW; OWNER ACCEPTANCE AND PRODUCTION PROMOTION PENDING.** One deterministic Blender `4.5.5 LTS` source preserves the current authored public-court surface at exactly `28.7x15.3 m`, centered at production `(-79,150) m` and review-local `(0,0)`. Exactly twelve noncanonical review identities cover the surface, painted line set, four edge modules, center treatment, two hoop assemblies, open fence silhouette, and two small bench clusters. Every identity remains one review sample under a phase-local `6,000`-triangle ceiling and uses only Blender-native opaque geometry plus the accepted seven-color Sundale planning palette.
+
+`CourtHoopNorth` and `CourtHoopSouth` retain the approved identity names but occupy the west/east long-axis ends. Exact `orientation_role=LONG_AXIS_END`, physical-end metadata, and `geographic_side_claim=false` prevent the names from asserting false geography.
+
+One `1920x1080` unified orthographic top and four `1600x900` N/E/S/W, exact `1.7 m` views render in Eevee. Headless build, saved-Blend reopen, focused validation, manifest/artifact/render hashes, and original-resolution inspection lock exact IDs, counts, triangles, surface authority, review bounds, accepted materials, five camera identities, native-only provenance, and zero external references, textures, interiors, catalogs, gameplay, route, collision, or navigation additions. Straight-axis cardinals and the first offset North/South candidates were rejected for obstruction/excess sky and edge clipping; the retained offset compass views preserve complete bounded framing with visible margin.
+
+Phase 1L.3a remains preserved at its owner-accepted planning authority. This review changes no Unreal, client, map, runtime, tests, config, city count, canonical route, collision, navigation, package, production catalog, basketball behavior, or Phase 1K behavior. It does not add a second playable basketball mode or approve production geometry, placement, accessibility, interaction, performance, final art, or beta readiness. Promotion and expansion remain owner-gated. See [[Development/Reports/Phase 1L3d Sundale Public Court Review Board]].
+
 ### Exit evidence
 
 The complete loop is visually coherent, readable, accessible at the approved baseline, and within measured PC performance targets. Large catalogs and unseen districts remain out of scope.

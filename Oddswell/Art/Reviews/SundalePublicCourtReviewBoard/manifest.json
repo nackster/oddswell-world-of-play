@@ -1,0 +1,186 @@
+{
+  "artifacts": [
+    {
+      "bytes": 1040029,
+      "file": "SundalePublicCourtReviewBoard.blend",
+      "sha256": "34383EBE8B1D3F4CCC1777CA3958897BC5C3C3F749CF470FE7640F496B317805"
+    },
+    {
+      "bytes": 29455,
+      "file": "build_sundale_public_court.py",
+      "sha256": "182D3E8329D8DBBAE97A31E132AE8616D964E8D62AE195D57750F84172B23301"
+    },
+    {
+      "bytes": 1137,
+      "file": "PROVENANCE.md",
+      "sha256": "5F03B44A7074A83B36B0C854271090C33CF9BD580A9CD567DD1F8DFA1BB55C82"
+    },
+    {
+      "bytes": 2047194,
+      "file": "renders/Unified_TopDown_PublicCourt.png",
+      "sha256": "9B9269C8A6802D1E36D3EAE4582241A615A462375F35D34D0C1EDF936F461091"
+    },
+    {
+      "bytes": 899077,
+      "file": "renders/Cardinal_North_PublicCourt.png",
+      "sha256": "ACB9A44C88B9AE4C14EA6FC662C69E53FD4B223E63B50B3766C2CE5B57296B47"
+    },
+    {
+      "bytes": 946364,
+      "file": "renders/Cardinal_East_PublicCourt.png",
+      "sha256": "5609C0C4EFB43CC57A00694942CC02CFBD82BBD21A8ABD5B71B7FE0F7D06B6D1"
+    },
+    {
+      "bytes": 896850,
+      "file": "renders/Cardinal_South_PublicCourt.png",
+      "sha256": "75916D383E856CD30471A4BA56597B7F8F916A42D20679B1E4BE9DB9718FF264"
+    },
+    {
+      "bytes": 945475,
+      "file": "renders/Cardinal_West_PublicCourt.png",
+      "sha256": "CFD19DD611DE172F0E5E2805A6A37CE7A5FE068562CBC39995715EB95C3EAC42"
+    }
+  ],
+  "authority": {
+    "court_size_m": [
+      28.7,
+      15.3
+    ],
+    "production_center_m": [
+      -79.0,
+      150.0
+    ],
+    "review_local_center_m": [
+      0.0,
+      0.0
+    ],
+    "surface_bounds_local_m": {
+      "x": [
+        -14.35,
+        14.35
+      ],
+      "y": [
+        -7.65,
+        7.65
+      ]
+    }
+  },
+  "boundaries": {
+    "external_references": 0,
+    "gameplay_changes": 0,
+    "interiors": 0,
+    "package_changed": false,
+    "production_catalog_changed": false,
+    "production_collision_changed": false,
+    "production_map_changed": false,
+    "production_navigation_changed": false,
+    "production_route_changed": false,
+    "textures": 0
+  },
+  "manual_input": false,
+  "phase": "Phase 1L.3d",
+  "renderer": "BLENDER_EEVEE_NEXT",
+  "sample_contract": {
+    "hoop_identity_note": {
+      "CourtHoopNorth": {
+        "geographic_side_claim": false,
+        "orientation_role": "LONG_AXIS_END",
+        "physical_long_axis_end": "WEST"
+      },
+      "CourtHoopSouth": {
+        "geographic_side_claim": false,
+        "orientation_role": "LONG_AXIS_END",
+        "physical_long_axis_end": "EAST"
+      }
+    },
+    "instance_counts": {
+      "CourtBenchClusterNorth": 1,
+      "CourtBenchClusterSouth": 1,
+      "CourtCenterTreatment": 1,
+      "CourtEdgeEast": 1,
+      "CourtEdgeNorth": 1,
+      "CourtEdgeSouth": 1,
+      "CourtEdgeWest": 1,
+      "CourtFenceModule": 1,
+      "CourtHoopNorth": 1,
+      "CourtHoopSouth": 1,
+      "CourtLineSet": 1,
+      "CourtSurface": 1
+    },
+    "native_geometry_only": true,
+    "production_catalog_ids": false,
+    "sample_count": 12,
+    "sample_ids": [
+      "CourtSurface",
+      "CourtLineSet",
+      "CourtEdgeNorth",
+      "CourtEdgeSouth",
+      "CourtEdgeEast",
+      "CourtEdgeWest",
+      "CourtCenterTreatment",
+      "CourtHoopNorth",
+      "CourtHoopSouth",
+      "CourtFenceModule",
+      "CourtBenchClusterNorth",
+      "CourtBenchClusterSouth"
+    ],
+    "triangle_ceiling_per_sample": 6000,
+    "triangle_counts": {
+      "CourtBenchClusterNorth": 48,
+      "CourtBenchClusterSouth": 48,
+      "CourtCenterTreatment": 216,
+      "CourtEdgeEast": 12,
+      "CourtEdgeNorth": 12,
+      "CourtEdgeSouth": 12,
+      "CourtEdgeWest": 12,
+      "CourtFenceModule": 144,
+      "CourtHoopNorth": 468,
+      "CourtHoopSouth": 468,
+      "CourtLineSet": 84,
+      "CourtSurface": 12
+    }
+  },
+  "status": "noncanonical_owner_review_board",
+  "views": [
+    {
+      "direction": "TOP",
+      "eye_height_m": null,
+      "file": "renders/Unified_TopDown_PublicCourt.png",
+      "height": 1080,
+      "role": "UNIFIED_TOP",
+      "width": 1920
+    },
+    {
+      "direction": "NORTH",
+      "eye_height_m": 1.7,
+      "file": "renders/Cardinal_North_PublicCourt.png",
+      "height": 900,
+      "role": "CARDINAL",
+      "width": 1600
+    },
+    {
+      "direction": "EAST",
+      "eye_height_m": 1.7,
+      "file": "renders/Cardinal_East_PublicCourt.png",
+      "height": 900,
+      "role": "CARDINAL",
+      "width": 1600
+    },
+    {
+      "direction": "SOUTH",
+      "eye_height_m": 1.7,
+      "file": "renders/Cardinal_South_PublicCourt.png",
+      "height": 900,
+      "role": "CARDINAL",
+      "width": 1600
+    },
+    {
+      "direction": "WEST",
+      "eye_height_m": 1.7,
+      "file": "renders/Cardinal_West_PublicCourt.png",
+      "height": 900,
+      "role": "CARDINAL",
+      "width": 1600
+    }
+  ]
+}
