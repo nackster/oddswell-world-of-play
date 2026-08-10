@@ -4,25 +4,26 @@
   "external_references": [],
   "files": {
     "blend": {
-      "bytes": 1418475,
+      "bytes": 2133428,
       "file": "SundaleCitywideMassing.blend",
-      "sha256": "D45D740737ED34BC9E54EC0596A8EC70F3DD15417FADBE46746A6BB86F9715B6"
+      "sha256": "B6B5616E77D1C60D19D15D7BABBB3ED9C8DB4E42CAEB42ADB4E6211737640E73"
     },
     "script": {
-      "bytes": 34440,
+      "bytes": 46110,
       "file": "build_sundale_massing_board.py",
-      "sha256": "F167F6B0C72C558A19E329A5D3784C3B06D3A1DB747F72B04B11BED139ACC31E"
+      "sha256": "20EED00158FEE7A2E538FEF90BABB32BC994A7672AC2D3421BBCD9235EFF4396"
     }
   },
   "label_contract": {
-    "district_count": 3,
+    "district_count": 4,
     "info_count": 2,
     "labels": {
-      "DISTRICT_CENTRAL_CIVIC_COMMONS": "CENTRAL | CIVIC COMMONS",
+      "DISTRICT_EAST_COMMERCE_WORK": "EAST | COMMERCE + WORK",
       "DISTRICT_NORTH_ARENA_ENTERTAINMENT": "NORTH | ARENA + ENTERTAINMENT",
       "DISTRICT_SOUTH_RESIDENTIAL_RETAIL": "SOUTH | RESIDENTIAL + RETAIL",
-      "INFO_LEGEND": "TEAL = REQUIRED / DISTRICT | ORANGE = PROPOSED TOWER | ROADS = PROPOSED, NO DISTANCE CLAIM",
-      "INFO_TITLE": "SUNDALE METROPOLITAN PREVIEW | NONCANONICAL",
+      "DISTRICT_WEST_RESIDENTIAL_SERVICES": "WEST | RESIDENTIAL + SERVICES",
+      "INFO_LEGEND": "8 SPOKES + 2 RINGS + 16 LOCAL STREETS | ALL PROPOSED | NO DISTANCE / CAPACITY CLAIM",
+      "INFO_TITLE": "SUNDALE RADIAL MEGA-CITY PREVIEW | NONCANONICAL",
       "LANDMARK_APARTMENT_MANAGEMENT": "APT MGMT",
       "LANDMARK_ARENA": "ARENA",
       "LANDMARK_CLOTHING": "CLOTHING",
@@ -32,78 +33,134 @@
       "LANDMARK_PUBLIC_COURT": "PUBLIC COURT",
       "LANDMARK_STUDIO_APARTMENT": "STUDIO / APT",
       "LANDMARK_TICKET_BOOTH": "TICKET",
-      "TOWER_CORE_TOWER__CENTRAL_01": "CORE TOWER C1",
-      "TOWER_CORE_TOWER__CENTRAL_02": "CORE TOWER C2",
-      "TOWER_CORE_TOWER__NORTH_01": "CORE TOWER N1",
-      "TOWER_CORE_TOWER__SOUTH_01": "CORE TOWER S1",
-      "TOWER_SKYLINE_TOWER__EAST": "SKY E1",
-      "TOWER_SKYLINE_TOWER__NORTH_01": "SKY N1",
-      "TOWER_SKYLINE_TOWER__NORTH_02": "SKY N2",
-      "TOWER_SKYLINE_TOWER__NORTH_03": "SKY N3",
-      "TOWER_SKYLINE_TOWER__WEST_NORTH": "SKY W2",
-      "TOWER_SKYLINE_TOWER__WEST_SOUTH": "SKY W1"
+      "TOWER_CORE_TOWER__EAST_01": "CORE EAST 01",
+      "TOWER_CORE_TOWER__EAST_02": "CORE EAST 02",
+      "TOWER_CORE_TOWER__EAST_03": "CORE EAST 03",
+      "TOWER_CORE_TOWER__NORTH_01": "CORE NORTH 01",
+      "TOWER_CORE_TOWER__NORTH_02": "CORE NORTH 02",
+      "TOWER_CORE_TOWER__NORTH_03": "CORE NORTH 03",
+      "TOWER_CORE_TOWER__SOUTH_01": "CORE SOUTH 01",
+      "TOWER_CORE_TOWER__SOUTH_02": "CORE SOUTH 02",
+      "TOWER_CORE_TOWER__SOUTH_03": "CORE SOUTH 03",
+      "TOWER_CORE_TOWER__WEST_01": "CORE WEST 01",
+      "TOWER_CORE_TOWER__WEST_02": "CORE WEST 02",
+      "TOWER_CORE_TOWER__WEST_03": "CORE WEST 03",
+      "TOWER_SKYLINE_TOWER__EAST_01": "SKY EAST 01",
+      "TOWER_SKYLINE_TOWER__EAST_02": "SKY EAST 02",
+      "TOWER_SKYLINE_TOWER__EAST_03": "SKY EAST 03",
+      "TOWER_SKYLINE_TOWER__NORTH_01": "SKY NORTH 01",
+      "TOWER_SKYLINE_TOWER__NORTH_02": "SKY NORTH 02",
+      "TOWER_SKYLINE_TOWER__NORTH_03": "SKY NORTH 03",
+      "TOWER_SKYLINE_TOWER__SOUTH_01": "SKY SOUTH 01",
+      "TOWER_SKYLINE_TOWER__SOUTH_02": "SKY SOUTH 02",
+      "TOWER_SKYLINE_TOWER__SOUTH_03": "SKY SOUTH 03",
+      "TOWER_SKYLINE_TOWER__WEST_01": "SKY WEST 01",
+      "TOWER_SKYLINE_TOWER__WEST_02": "SKY WEST 02",
+      "TOWER_SKYLINE_TOWER__WEST_03": "SKY WEST 03"
     },
     "minimum_contrast_ratio": 5.0,
-    "plate_count": 24,
+    "plate_count": 39,
     "required_landmark_count": 9,
     "top_down_only": true,
-    "total": 24,
-    "tower_count": 10
+    "total": 39,
+    "tower_count": 24
   },
   "limitations": [
     "not production Unreal geometry or a production-route replacement",
-    "not approved final placement, capacity, interiors, facades, collision, materials, lighting, accessibility, usability, performance, or readiness",
-    "background skyline towers are outside the proposed playable/collision boundary"
+    "not approved final placement, capacity, travel time, interiors, facades, collision, materials, lighting, accessibility, usability, performance, or readiness",
+    "background skyline towers are outside the proposed playable/collision boundary",
+    "park lawns, promenades, and tree groves are native low-poly review placeholders, not final landscape assets"
   ],
-  "phase": "Phase 1L.3a metropolitan replacement preview",
+  "phase": "Phase 1L.3a radial mega-city replacement preview",
   "preview_contract": {
+    "background_towers_per_side": {
+      "EAST": 3,
+      "NORTH": 3,
+      "SOUTH": 3,
+      "WEST": 3
+    },
     "commons_park_m": [
-      280.0,
-      140.0
+      320.0,
+      240.0
     ],
-    "core_tower_base_count": 4,
-    "district_count": 3,
+    "core_tower_base_count": 12,
+    "core_towers_per_district": {
+      "EAST_COMMERCE_WORK": 3,
+      "NORTH_ARENA_ENTERTAINMENT": 3,
+      "SOUTH_RESIDENTIAL_RETAIL": 3,
+      "WEST_RESIDENTIAL_SERVICES": 3
+    },
+    "district_count": 4,
     "districts": {
-      "CENTRAL_CIVIC_COMMONS": {
+      "EAST_COMMERCE_WORK": {
         "center_m": [
-          0.0,
-          20.0
+          530.0,
+          0.0
         ],
         "size_m": [
-          800.0,
-          200.0
+          340.0,
+          440.0
         ]
       },
       "NORTH_ARENA_ENTERTAINMENT": {
         "center_m": [
           0.0,
-          210.0
+          360.0
         ],
         "size_m": [
-          800.0,
-          180.0
+          1400.0,
+          280.0
         ]
       },
       "SOUTH_RESIDENTIAL_RETAIL": {
         "center_m": [
           0.0,
-          -190.0
+          -360.0
         ],
         "size_m": [
-          800.0,
-          220.0
+          1400.0,
+          280.0
+        ]
+      },
+      "WEST_RESIDENTIAL_SERVICES": {
+        "center_m": [
+          -530.0,
+          0.0
+        ],
+        "size_m": [
+          340.0,
+          440.0
         ]
       }
     },
+    "eye_camera_clearance_m": 20.0,
+    "eye_view_targets_commons_park": true,
+    "first_hour_landmarks_near_inner_ring": true,
+    "interiors": false,
+    "park_placeholder_roles": {
+      "LAWN_QUADRANT": 4,
+      "PROMENADE": 2,
+      "TREE_GROVE_PLACEHOLDER": 4
+    },
     "playable_boundary_m": [
-      800.0,
-      600.0
+      1400.0,
+      1000.0
     ],
     "preview_circulation": {
-      "boulevards": 6,
       "canonical": false,
+      "capacity_claim": false,
+      "collision_claim": false,
       "exact_distance_m": null,
-      "shortcuts": 2
+      "local_cross_streets": 16,
+      "local_cross_streets_per_district": {
+        "EAST_COMMERCE_WORK": 4,
+        "NORTH_ARENA_ENTERTAINMENT": 4,
+        "SOUTH_RESIDENTIAL_RETAIL": 4,
+        "WEST_RESIDENTIAL_SERVICES": 4
+      },
+      "radial_spokes": 8,
+      "ring_roads": 2,
+      "travel_time_claim": false
     },
     "required_landmarks": [
       "STUDIO_APARTMENT",
@@ -116,17 +173,19 @@
       "PUBLIC_COURT",
       "COMMONS_PARK"
     ],
-    "skyscraper_count": 10,
+    "skyscraper_count": 24,
+    "street_guides_visible_in_eye_views": true,
     "street_level_only_initially": true,
-    "street_mass_count": 36,
+    "street_mass_count": 72,
     "street_masses_per_district": {
-      "CENTRAL_CIVIC_COMMONS": 12,
-      "NORTH_ARENA_ENTERTAINMENT": 12,
-      "SOUTH_RESIDENTIAL_RETAIL": 12
+      "EAST_COMMERCE_WORK": 18,
+      "NORTH_ARENA_ENTERTAINMENT": 18,
+      "SOUTH_RESIDENTIAL_RETAIL": 18,
+      "WEST_RESIDENTIAL_SERVICES": 18
     },
     "tower_placement_counts": {
-      "BACKGROUND_SKYLINE": 6,
-      "PLAYABLE_CORE": 4
+      "BACKGROUND_SKYLINE": 12,
+      "PLAYABLE_CORE": 12
     },
     "vehicles": false
   },
@@ -138,78 +197,96 @@
   },
   "renders": [
     {
-      "bytes": 1976443,
+      "bytes": 3327374,
       "camera_location_m": [
         0.0,
-        30.0,
-        950.0
+        0.0,
+        1500.0
       ],
-      "file": "renders/TopDown_MetropolitanPreview.png",
-      "height": 1440,
-      "sha256": "8E1E52B1522286EF3E013BEEFEB15D128310A8313E7C9DB8AE826EDF4F84AF11",
+      "file": "renders/TopDown_RadialMegaCityPreview.png",
+      "height": 1800,
+      "sha256": "094CEC0B23E8EFFC7BECD06BDB57918F33135579E663FF24828D66017A34AC77",
       "target_m": [
         0.0,
-        30.0,
+        0.0,
         0.0
       ],
       "view_type": "top_down",
-      "width": 1920
+      "width": 2560
     },
     {
-      "bytes": 694889,
+      "bytes": 655631,
       "camera_location_m": [
-        -340.0,
-        -185.0,
+        0.0,
+        -145.0,
         1.7
       ],
-      "file": "renders/EyeLevel_SouthResidentialRetail.png",
+      "file": "renders/EyeLevel_SouthResidentialRetailParkSkyline.png",
       "height": 720,
-      "sha256": "C4CE97E1F827B2252D2E3DAB51FD266508253DE71864101F32AFCB2FB83A14D8",
+      "sha256": "13B75CA75145EB23EB4AAB3629776A6161B9A13C4C661252469E655F3791AD09",
       "target_m": [
-        320.0,
-        -180.0,
-        35.0
-      ],
-      "view_type": "eye_level",
-      "width": 1280
-    },
-    {
-      "bytes": 589074,
-      "camera_location_m": [
-        -80.0,
+        0.0,
         20.0,
-        1.7
-      ],
-      "file": "renders/EyeLevel_CentralCommonsCivicSkyline.png",
-      "height": 720,
-      "sha256": "7F6FD04BBD096B06BE583B8559CE267EAA81CAD2BA437C9BFEC26356E3736370",
-      "target_m": [
-        260.0,
-        60.0,
-        55.0
+        12.0
       ],
       "view_type": "eye_level",
       "width": 1280
     },
     {
-      "bytes": 683146,
+      "bytes": 676186,
       "camera_location_m": [
-        -260.0,
-        200.0,
+        -185.0,
+        0.0,
         1.7
       ],
-      "file": "renders/EyeLevel_NorthArenaEntertainment.png",
+      "file": "renders/EyeLevel_WestResidentialServicesParkSkyline.png",
       "height": 720,
-      "sha256": "F964AF0971C176143EC40A4E978350105527C08E37EA74EC618F14357F4B115F",
+      "sha256": "775A3DFFC4C3A61657A59ED085AE4569CCF8F5CDB9EDB0BA52B4C7025CAFBB93",
       "target_m": [
-        200.0,
-        235.0,
-        50.0
+        20.0,
+        0.0,
+        12.0
+      ],
+      "view_type": "eye_level",
+      "width": 1280
+    },
+    {
+      "bytes": 678776,
+      "camera_location_m": [
+        185.0,
+        0.0,
+        1.7
+      ],
+      "file": "renders/EyeLevel_EastCommerceWorkParkSkyline.png",
+      "height": 720,
+      "sha256": "2279CD550BB3A6AC292160203D293308561415611D8E287A9264FED412233CF6",
+      "target_m": [
+        -20.0,
+        0.0,
+        12.0
+      ],
+      "view_type": "eye_level",
+      "width": 1280
+    },
+    {
+      "bytes": 656249,
+      "camera_location_m": [
+        0.0,
+        145.0,
+        1.7
+      ],
+      "file": "renders/EyeLevel_NorthArenaEntertainmentParkSkyline.png",
+      "height": 720,
+      "sha256": "BFDA7B6DEB10EDD82EE8F2651E643FD1B68F8D7D6719618A15359692674C05E7",
+      "target_m": [
+        0.0,
+        -20.0,
+        12.0
       ],
       "view_type": "eye_level",
       "width": 1280
     }
   ],
-  "status": "noncanonical_owner_metropolitan_preview",
-  "supersedes": "Phase 1L.3a 340x280m small-city massing proposal"
+  "status": "noncanonical_owner_radial_mega_city_preview",
+  "supersedes": "Phase 1L.3a 800x600m/36-mass/10-tower metropolitan preview"
 }

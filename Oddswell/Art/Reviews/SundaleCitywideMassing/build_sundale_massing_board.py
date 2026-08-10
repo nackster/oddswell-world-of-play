@@ -15,23 +15,28 @@ ROOT = Path(__file__).resolve().parent
 BLEND_PATH = ROOT / "SundaleCitywideMassing.blend"
 RENDER_DIR = ROOT / "renders"
 MANIFEST_PATH = ROOT / "manifest.json"
-TOP_RENDER_SIZE = (1920, 1440)
+TOP_RENDER_SIZE = (2560, 1800)
 EYE_RENDER_SIZE = (1280, 720)
-PLAYABLE_SIZE_M = (800.0, 600.0)
-COMMONS_SIZE_M = (280.0, 140.0)
-LABEL_TEXT_Z_M = 300.0
-LABEL_PLATE_Z_M = 299.7
+PLAYABLE_SIZE_M = (1400.0, 1000.0)
+COMMONS_SIZE_M = (320.0, 240.0)
+LABEL_TEXT_Z_M = 500.0
+LABEL_PLATE_Z_M = 499.7
 LABEL_PLATE_DEPTH_M = 0.2
 LABEL_CONTRAST_MIN = 5.0
+EYE_CAMERA_CLEARANCE_M = 20.0
 
 COLORS = {
     "ground": (0.12, 0.14, 0.15, 1.0),
     "south": (0.30, 0.27, 0.23, 1.0),
-    "central": (0.24, 0.31, 0.28, 1.0),
+    "west": (0.24, 0.30, 0.27, 1.0),
+    "east": (0.29, 0.27, 0.23, 1.0),
     "north": (0.25, 0.27, 0.31, 1.0),
-    "road": (0.20, 0.23, 0.25, 1.0),
-    "shortcut": (0.43, 0.50, 0.38, 1.0),
+    "ring": (0.12, 0.46, 0.63, 1.0),
+    "spoke": (0.67, 0.49, 0.28, 1.0),
+    "local": (0.32, 0.36, 0.38, 1.0),
     "commons": (0.35, 0.48, 0.34, 1.0),
+    "promenade": (0.72, 0.64, 0.50, 1.0),
+    "grove": (0.20, 0.38, 0.24, 1.0),
     "limestone": (0.85, 0.78, 0.66, 1.0),
     "terracotta": (0.65, 0.37, 0.28, 1.0),
     "charcoal": (0.25, 0.27, 0.28, 1.0),
@@ -43,114 +48,164 @@ COLORS = {
 }
 
 DISTRICTS = {
-    "SOUTH_RESIDENTIAL_RETAIL": ((0.0, -190.0), (800.0, 220.0), "south"),
-    "CENTRAL_CIVIC_COMMONS": ((0.0, 20.0), (800.0, 200.0), "central"),
-    "NORTH_ARENA_ENTERTAINMENT": ((0.0, 210.0), (800.0, 180.0), "north"),
+    "SOUTH_RESIDENTIAL_RETAIL": ((0.0, -360.0), (1400.0, 280.0), "south"),
+    "WEST_RESIDENTIAL_SERVICES": ((-530.0, 0.0), (340.0, 440.0), "west"),
+    "EAST_COMMERCE_WORK": ((530.0, 0.0), (340.0, 440.0), "east"),
+    "NORTH_ARENA_ENTERTAINMENT": ((0.0, 360.0), (1400.0, 280.0), "north"),
 }
 
-# Exactly 12 masses per district. Four PROPOSED_CORE_TOWER_BASE entries support the four playable-core towers.
-STREET_MASSES = [
-    ("LANDMARK__STUDIO_APARTMENT", "SOUTH_RESIDENTIAL_RETAIL", (-310.0, -235.0), (100.0, 70.0, 22.0), "limestone", "REQUIRED_BETA_LANDMARK", None),
-    ("LANDMARK__APARTMENT_MANAGEMENT", "SOUTH_RESIDENTIAL_RETAIL", (-248.0, -235.0), (24.0, 24.0, 8.0), "terracotta", "REQUIRED_BETA_LANDMARK", None),
-    ("LANDMARK__JOB", "SOUTH_RESIDENTIAL_RETAIL", (-140.0, -235.0), (80.0, 60.0, 20.0), "terracotta", "REQUIRED_BETA_LANDMARK", None),
-    ("LANDMARK__CLOTHING", "SOUTH_RESIDENTIAL_RETAIL", (-30.0, -235.0), (80.0, 60.0, 22.0), "limestone", "REQUIRED_BETA_LANDMARK", None),
-    ("LANDMARK__FURNITURE", "SOUTH_RESIDENTIAL_RETAIL", (80.0, -235.0), (80.0, 60.0, 22.0), "limestone", "REQUIRED_BETA_LANDMARK", None),
-    ("CORE_BASE__SOUTH_01", "SOUTH_RESIDENTIAL_RETAIL", (-60.0, -125.0), (80.0, 55.0, 24.0), "charcoal", "PROPOSED_CORE_TOWER_BASE", "CORE_TOWER__SOUTH_01"),
-    ("STREET__SOUTH_01", "SOUTH_RESIDENTIAL_RETAIL", (210.0, -235.0), (90.0, 60.0, 18.0), "limestone", "PROPOSED_STREET_MASS", None),
-    ("STREET__SOUTH_02", "SOUTH_RESIDENTIAL_RETAIL", (330.0, -235.0), (70.0, 60.0, 20.0), "terracotta", "PROPOSED_STREET_MASS", None),
-    ("STREET__SOUTH_03", "SOUTH_RESIDENTIAL_RETAIL", (-320.0, -125.0), (90.0, 50.0, 18.0), "charcoal", "PROPOSED_STREET_MASS", None),
-    ("STREET__SOUTH_04", "SOUTH_RESIDENTIAL_RETAIL", (-205.0, -125.0), (80.0, 50.0, 20.0), "limestone", "PROPOSED_STREET_MASS", None),
-    ("STREET__SOUTH_05", "SOUTH_RESIDENTIAL_RETAIL", (175.0, -125.0), (90.0, 50.0, 24.0), "terracotta", "PROPOSED_STREET_MASS", None),
-    ("STREET__SOUTH_06", "SOUTH_RESIDENTIAL_RETAIL", (305.0, -125.0), (90.0, 50.0, 18.0), "limestone", "PROPOSED_STREET_MASS", None),
-    ("CORE_BASE__CENTRAL_01", "CENTRAL_CIVIC_COMMONS", (-340.0, 45.0), (70.0, 70.0, 26.0), "charcoal", "PROPOSED_CORE_TOWER_BASE", "CORE_TOWER__CENTRAL_01"),
-    ("CORE_BASE__CENTRAL_02", "CENTRAL_CIVIC_COMMONS", (340.0, 45.0), (70.0, 70.0, 26.0), "charcoal", "PROPOSED_CORE_TOWER_BASE", "CORE_TOWER__CENTRAL_02"),
-    ("STREET__CENTRAL_01", "CENTRAL_CIVIC_COMMONS", (-340.0, -50.0), (70.0, 50.0, 20.0), "terracotta", "PROPOSED_STREET_MASS", None),
-    ("STREET__CENTRAL_02", "CENTRAL_CIVIC_COMMONS", (-250.0, -55.0), (70.0, 40.0, 18.0), "limestone", "PROPOSED_STREET_MASS", None),
-    ("STREET__CENTRAL_03", "CENTRAL_CIVIC_COMMONS", (-235.0, 60.0), (80.0, 50.0, 22.0), "limestone", "PROPOSED_STREET_MASS", None),
-    ("STREET__CENTRAL_04", "CENTRAL_CIVIC_COMMONS", (-340.0, 105.0), (70.0, 40.0, 20.0), "terracotta", "PROPOSED_STREET_MASS", None),
-    ("STREET__CENTRAL_05", "CENTRAL_CIVIC_COMMONS", (-180.0, -65.0), (60.0, 30.0, 16.0), "charcoal", "PROPOSED_STREET_MASS", None),
-    ("STREET__CENTRAL_06", "CENTRAL_CIVIC_COMMONS", (340.0, -50.0), (70.0, 50.0, 20.0), "terracotta", "PROPOSED_STREET_MASS", None),
-    ("STREET__CENTRAL_07", "CENTRAL_CIVIC_COMMONS", (250.0, -55.0), (70.0, 40.0, 18.0), "limestone", "PROPOSED_STREET_MASS", None),
-    ("STREET__CENTRAL_08", "CENTRAL_CIVIC_COMMONS", (235.0, 60.0), (80.0, 50.0, 22.0), "limestone", "PROPOSED_STREET_MASS", None),
-    ("STREET__CENTRAL_09", "CENTRAL_CIVIC_COMMONS", (340.0, 105.0), (70.0, 40.0, 20.0), "terracotta", "PROPOSED_STREET_MASS", None),
-    ("STREET__CENTRAL_10", "CENTRAL_CIVIC_COMMONS", (180.0, -65.0), (60.0, 30.0, 16.0), "charcoal", "PROPOSED_STREET_MASS", None),
-    ("LANDMARK__ARENA", "NORTH_ARENA_ENTERTAINMENT", (160.0, 230.0), (220.0, 100.0, 30.0), "limestone", "REQUIRED_BETA_LANDMARK", None),
-    ("LANDMARK__TICKET_BOOTH", "NORTH_ARENA_ENTERTAINMENT", (285.0, 230.0), (30.0, 30.0, 10.0), "terracotta", "REQUIRED_BETA_LANDMARK", None),
-    ("CORE_BASE__NORTH_01", "NORTH_ARENA_ENTERTAINMENT", (-340.0, 245.0), (70.0, 70.0, 28.0), "charcoal", "PROPOSED_CORE_TOWER_BASE", "CORE_TOWER__NORTH_01"),
-    ("STREET__NORTH_01", "NORTH_ARENA_ENTERTAINMENT", (-340.0, 150.0), (70.0, 50.0, 20.0), "terracotta", "PROPOSED_STREET_MASS", None),
-    ("STREET__NORTH_02", "NORTH_ARENA_ENTERTAINMENT", (-250.0, 135.0), (80.0, 40.0, 18.0), "limestone", "PROPOSED_STREET_MASS", None),
-    ("STREET__NORTH_03", "NORTH_ARENA_ENTERTAINMENT", (-150.0, 135.0), (80.0, 40.0, 22.0), "charcoal", "PROPOSED_STREET_MASS", None),
-    ("STREET__NORTH_04", "NORTH_ARENA_ENTERTAINMENT", (-50.0, 135.0), (80.0, 40.0, 18.0), "limestone", "PROPOSED_STREET_MASS", None),
-    ("STREET__NORTH_05", "NORTH_ARENA_ENTERTAINMENT", (50.0, 135.0), (80.0, 40.0, 20.0), "terracotta", "PROPOSED_STREET_MASS", None),
-    ("STREET__NORTH_06", "NORTH_ARENA_ENTERTAINMENT", (150.0, 135.0), (80.0, 40.0, 22.0), "charcoal", "PROPOSED_STREET_MASS", None),
-    ("STREET__NORTH_07", "NORTH_ARENA_ENTERTAINMENT", (250.0, 135.0), (80.0, 40.0, 18.0), "limestone", "PROPOSED_STREET_MASS", None),
-    ("STREET__NORTH_08", "NORTH_ARENA_ENTERTAINMENT", (350.0, 145.0), (60.0, 50.0, 20.0), "terracotta", "PROPOSED_STREET_MASS", None),
-    ("STREET__NORTH_09", "NORTH_ARENA_ENTERTAINMENT", (-120.0, 235.0), (80.0, 60.0, 24.0), "limestone", "PROPOSED_STREET_MASS", None),
-]
+DISTRICT_SLOTS = {
+    "SOUTH_RESIDENTIAL_RETAIL": [
+        *[(x, -410.0) for x in (-560.0, -420.0, -280.0, -140.0, 0.0, 140.0, 280.0, 420.0, 560.0)],
+        (-540.0, -250.0), (-400.0, -250.0), (-338.0, -250.0), (-240.0, -250.0), (-130.0, -250.0),
+        (10.0, -250.0), (170.0, -250.0), (330.0, -250.0), (530.0, -250.0),
+    ],
+    "WEST_RESIDENTIAL_SERVICES": [(x, y) for x in (-600.0, -480.0, -360.0) for y in (-180.0, -108.0, -36.0, 36.0, 108.0, 180.0)],
+    "EAST_COMMERCE_WORK": [(x, y) for x in (360.0, 480.0, 600.0) for y in (-180.0, -108.0, -36.0, 36.0, 108.0, 180.0)],
+    "NORTH_ARENA_ENTERTAINMENT": [
+        *[(x, 410.0) for x in (-560.0, -420.0, -280.0, -140.0, 0.0, 140.0, 280.0, 420.0, 560.0)],
+        (-560.0, 250.0), (-400.0, 250.0), (-240.0, 250.0), (-90.0, 250.0), (150.0, 250.0),
+        (253.0, 250.0), (360.0, 250.0), (480.0, 250.0), (600.0, 250.0),
+    ],
+}
+
+CORE_TOWER_SLOTS = {
+    "SOUTH_RESIDENTIAL_RETAIL": {14: "CORE_TOWER__SOUTH_01", 15: "CORE_TOWER__SOUTH_02", 16: "CORE_TOWER__SOUTH_03"},
+    "WEST_RESIDENTIAL_SERVICES": {1: "CORE_TOWER__WEST_01", 9: "CORE_TOWER__WEST_02", 17: "CORE_TOWER__WEST_03"},
+    "EAST_COMMERCE_WORK": {5: "CORE_TOWER__EAST_01", 9: "CORE_TOWER__EAST_02", 13: "CORE_TOWER__EAST_03"},
+    "NORTH_ARENA_ENTERTAINMENT": {9: "CORE_TOWER__NORTH_01", 10: "CORE_TOWER__NORTH_02", 11: "CORE_TOWER__NORTH_03"},
+}
+
+MASS_OVERRIDES = {
+    ("SOUTH_RESIDENTIAL_RETAIL", 10): ("LANDMARK__STUDIO_APARTMENT", (100.0, 70.0, 22.0), "limestone", "REQUIRED_BETA_LANDMARK"),
+    ("SOUTH_RESIDENTIAL_RETAIL", 11): ("LANDMARK__APARTMENT_MANAGEMENT", (24.0, 24.0, 8.0), "terracotta", "REQUIRED_BETA_LANDMARK"),
+    ("SOUTH_RESIDENTIAL_RETAIL", 12): ("LANDMARK__CLOTHING", (80.0, 60.0, 20.0), "limestone", "REQUIRED_BETA_LANDMARK"),
+    ("SOUTH_RESIDENTIAL_RETAIL", 13): ("LANDMARK__FURNITURE", (80.0, 60.0, 20.0), "limestone", "REQUIRED_BETA_LANDMARK"),
+    ("EAST_COMMERCE_WORK", 2): ("LANDMARK__JOB", (80.0, 52.0, 20.0), "terracotta", "REQUIRED_BETA_LANDMARK"),
+    ("NORTH_ARENA_ENTERTAINMENT", 13): ("LANDMARK__ARENA", (180.0, 90.0, 30.0), "limestone", "REQUIRED_BETA_LANDMARK"),
+    ("NORTH_ARENA_ENTERTAINMENT", 14): ("LANDMARK__TICKET_BOOTH", (26.0, 26.0, 10.0), "terracotta", "REQUIRED_BETA_LANDMARK"),
+}
+
+
+def street_mass_specs():
+    specs = []
+    colors = ("limestone", "terracotta", "charcoal")
+    prefixes = {name: name.split("_")[0] for name in DISTRICTS}
+    for district_index, (district, slots) in enumerate(DISTRICT_SLOTS.items()):
+        for index, location in enumerate(slots):
+            tower_id = CORE_TOWER_SLOTS[district].get(index)
+            if (district, index) in MASS_OVERRIDES:
+                name, dimensions, color, role = MASS_OVERRIDES[(district, index)]
+            elif tower_id:
+                suffix = tower_id.rsplit("_", 1)[-1]
+                name = f"CORE_BASE__{prefixes[district]}_{suffix}"
+                dimensions, color, role = (78.0, 58.0, 26.0), "charcoal", "PROPOSED_CORE_TOWER_BASE"
+            else:
+                name = f"STREET__{prefixes[district]}_{index + 1:02d}"
+                dimensions = ((88.0, 68.0, 16.0 + 4.0 * (index % 3)) if district in {"SOUTH_RESIDENTIAL_RETAIL", "NORTH_ARENA_ENTERTAINMENT"} else (76.0, 48.0, 16.0 + 3.0 * (index % 3)))
+                color, role = colors[(index + district_index) % len(colors)], "PROPOSED_STREET_MASS"
+            specs.append((name, district, location, dimensions, color, role, tower_id))
+    return specs
+
+
+STREET_MASSES = street_mass_specs()
 
 TOWERS = [
-    ("CORE_TOWER__SOUTH_01", "PLAYABLE_CORE", "CORE_BASE__SOUTH_01", (-60.0, -125.0), (36.0, 36.0), 150.0, "cobalt"),
-    ("CORE_TOWER__CENTRAL_01", "PLAYABLE_CORE", "CORE_BASE__CENTRAL_01", (-340.0, 45.0), (40.0, 40.0), 180.0, "terracotta"),
-    ("CORE_TOWER__CENTRAL_02", "PLAYABLE_CORE", "CORE_BASE__CENTRAL_02", (340.0, 45.0), (40.0, 40.0), 165.0, "cobalt"),
-    ("CORE_TOWER__NORTH_01", "PLAYABLE_CORE", "CORE_BASE__NORTH_01", (-340.0, 245.0), (40.0, 40.0), 200.0, "terracotta"),
-    ("SKYLINE_TOWER__WEST_SOUTH", "BACKGROUND_SKYLINE", None, (-500.0, -170.0), (50.0, 50.0), 170.0, "charcoal"),
-    ("SKYLINE_TOWER__WEST_NORTH", "BACKGROUND_SKYLINE", None, (-500.0, 170.0), (55.0, 55.0), 220.0, "limestone"),
-    ("SKYLINE_TOWER__NORTH_01", "BACKGROUND_SKYLINE", None, (-260.0, 390.0), (60.0, 60.0), 240.0, "charcoal"),
-    ("SKYLINE_TOWER__NORTH_02", "BACKGROUND_SKYLINE", None, (0.0, 410.0), (55.0, 55.0), 210.0, "terracotta"),
-    ("SKYLINE_TOWER__NORTH_03", "BACKGROUND_SKYLINE", None, (280.0, 390.0), (60.0, 60.0), 250.0, "limestone"),
-    ("SKYLINE_TOWER__EAST", "BACKGROUND_SKYLINE", None, (500.0, 100.0), (50.0, 50.0), 190.0, "charcoal"),
+    ("CORE_TOWER__SOUTH_01", "PLAYABLE_CORE", "SOUTH_RESIDENTIAL_RETAIL", "CORE_BASE__SOUTH_01", (10.0, -250.0), (42.0, 42.0), 185.0, "cobalt"),
+    ("CORE_TOWER__SOUTH_02", "PLAYABLE_CORE", "SOUTH_RESIDENTIAL_RETAIL", "CORE_BASE__SOUTH_02", (170.0, -250.0), (44.0, 44.0), 220.0, "terracotta"),
+    ("CORE_TOWER__SOUTH_03", "PLAYABLE_CORE", "SOUTH_RESIDENTIAL_RETAIL", "CORE_BASE__SOUTH_03", (330.0, -250.0), (40.0, 40.0), 195.0, "limestone"),
+    ("CORE_TOWER__WEST_01", "PLAYABLE_CORE", "WEST_RESIDENTIAL_SERVICES", "CORE_BASE__WEST_01", (-600.0, -108.0), (42.0, 42.0), 210.0, "terracotta"),
+    ("CORE_TOWER__WEST_02", "PLAYABLE_CORE", "WEST_RESIDENTIAL_SERVICES", "CORE_BASE__WEST_02", (-480.0, 36.0), (40.0, 40.0), 175.0, "cobalt"),
+    ("CORE_TOWER__WEST_03", "PLAYABLE_CORE", "WEST_RESIDENTIAL_SERVICES", "CORE_BASE__WEST_03", (-360.0, 180.0), (44.0, 44.0), 230.0, "limestone"),
+    ("CORE_TOWER__EAST_01", "PLAYABLE_CORE", "EAST_COMMERCE_WORK", "CORE_BASE__EAST_01", (360.0, 180.0), (42.0, 42.0), 225.0, "cobalt"),
+    ("CORE_TOWER__EAST_02", "PLAYABLE_CORE", "EAST_COMMERCE_WORK", "CORE_BASE__EAST_02", (480.0, 36.0), (44.0, 44.0), 190.0, "terracotta"),
+    ("CORE_TOWER__EAST_03", "PLAYABLE_CORE", "EAST_COMMERCE_WORK", "CORE_BASE__EAST_03", (600.0, -108.0), (40.0, 40.0), 215.0, "limestone"),
+    ("CORE_TOWER__NORTH_01", "PLAYABLE_CORE", "NORTH_ARENA_ENTERTAINMENT", "CORE_BASE__NORTH_01", (-560.0, 250.0), (44.0, 44.0), 235.0, "terracotta"),
+    ("CORE_TOWER__NORTH_02", "PLAYABLE_CORE", "NORTH_ARENA_ENTERTAINMENT", "CORE_BASE__NORTH_02", (-400.0, 250.0), (42.0, 42.0), 200.0, "cobalt"),
+    ("CORE_TOWER__NORTH_03", "PLAYABLE_CORE", "NORTH_ARENA_ENTERTAINMENT", "CORE_BASE__NORTH_03", (-240.0, 250.0), (40.0, 40.0), 245.0, "limestone"),
+    ("SKYLINE_TOWER__WEST_01", "BACKGROUND_SKYLINE", "WEST", None, (-790.0, -300.0), (60.0, 60.0), 230.0, "charcoal"),
+    ("SKYLINE_TOWER__WEST_02", "BACKGROUND_SKYLINE", "WEST", None, (-800.0, 0.0), (64.0, 64.0), 275.0, "limestone"),
+    ("SKYLINE_TOWER__WEST_03", "BACKGROUND_SKYLINE", "WEST", None, (-790.0, 300.0), (58.0, 58.0), 245.0, "terracotta"),
+    ("SKYLINE_TOWER__EAST_01", "BACKGROUND_SKYLINE", "EAST", None, (790.0, -300.0), (60.0, 60.0), 255.0, "limestone"),
+    ("SKYLINE_TOWER__EAST_02", "BACKGROUND_SKYLINE", "EAST", None, (800.0, 0.0), (64.0, 64.0), 290.0, "charcoal"),
+    ("SKYLINE_TOWER__EAST_03", "BACKGROUND_SKYLINE", "EAST", None, (790.0, 300.0), (58.0, 58.0), 235.0, "terracotta"),
+    ("SKYLINE_TOWER__NORTH_01", "BACKGROUND_SKYLINE", "NORTH", None, (-420.0, 590.0), (60.0, 60.0), 260.0, "charcoal"),
+    ("SKYLINE_TOWER__NORTH_02", "BACKGROUND_SKYLINE", "NORTH", None, (0.0, 600.0), (64.0, 64.0), 305.0, "terracotta"),
+    ("SKYLINE_TOWER__NORTH_03", "BACKGROUND_SKYLINE", "NORTH", None, (420.0, 590.0), (60.0, 60.0), 280.0, "limestone"),
+    ("SKYLINE_TOWER__SOUTH_01", "BACKGROUND_SKYLINE", "SOUTH", None, (-420.0, -590.0), (60.0, 60.0), 240.0, "terracotta"),
+    ("SKYLINE_TOWER__SOUTH_02", "BACKGROUND_SKYLINE", "SOUTH", None, (0.0, -600.0), (64.0, 64.0), 285.0, "charcoal"),
+    ("SKYLINE_TOWER__SOUTH_03", "BACKGROUND_SKYLINE", "SOUTH", None, (420.0, -590.0), (60.0, 60.0), 265.0, "limestone"),
 ]
 
-BOULEVARDS = {
-    "PREVIEW__BOULEVARD_SOUTH": ((0.0, -185.0, 0.31), (770.0, 18.0, 0.12)),
-    "PREVIEW__BOULEVARD_CENTRAL_WEST": ((-270.0, 0.0, 0.31), (230.0, 14.0, 0.12)),
-    "PREVIEW__BOULEVARD_CENTRAL_EAST": ((270.0, 0.0, 0.31), (230.0, 14.0, 0.12)),
-    "PREVIEW__BOULEVARD_NORTH": ((0.0, 165.0, 0.31), (770.0, 14.0, 0.12)),
-    "PREVIEW__BOULEVARD_WEST_SPINE": ((-385.0, -10.0, 0.31), (14.0, 560.0, 0.12)),
-    "PREVIEW__BOULEVARD_EAST_SPINE": ((385.0, -10.0, 0.31), (14.0, 560.0, 0.12)),
+RADIAL_SPOKES = {
+    "PREVIEW__SPOKE_N": [(0.0, 120.0), (0.0, 500.0)],
+    "PREVIEW__SPOKE_NE": [(160.0, 120.0), (700.0, 500.0)],
+    "PREVIEW__SPOKE_E": [(160.0, 0.0), (700.0, 0.0)],
+    "PREVIEW__SPOKE_SE": [(160.0, -120.0), (700.0, -500.0)],
+    "PREVIEW__SPOKE_S": [(0.0, -120.0), (0.0, -500.0)],
+    "PREVIEW__SPOKE_SW": [(-160.0, -120.0), (-700.0, -500.0)],
+    "PREVIEW__SPOKE_W": [(-160.0, 0.0), (-700.0, 0.0)],
+    "PREVIEW__SPOKE_NW": [(-160.0, 120.0), (-700.0, 500.0)],
 }
 
-SHORTCUTS = {
-    "PREVIEW__SHORTCUT_STUDIO_COMMONS": [(-310.0, -190.0), (-230.0, -120.0), (-150.0, -45.0)],
-    "PREVIEW__SHORTCUT_COMMONS_ARENA": [(140.0, 80.0), (170.0, 130.0), (205.0, 175.0)],
+RING_ROADS = {
+    "PREVIEW__RING_INNER": [(-240.0, -170.0), (0.0, -190.0), (240.0, -170.0), (300.0, 0.0), (240.0, 170.0), (0.0, 190.0), (-240.0, 170.0), (-300.0, 0.0)],
+    "PREVIEW__RING_OUTER": [(-520.0, -360.0), (0.0, -410.0), (520.0, -360.0), (610.0, 0.0), (520.0, 360.0), (0.0, 410.0), (-520.0, 360.0), (-610.0, 0.0)],
 }
+
+LOCAL_CROSS_STREETS = {
+    **{f"PREVIEW__LOCAL_SOUTH_{index}": ("SOUTH_RESIDENTIAL_RETAIL", [(x, -490.0), (x, -220.0)]) for index, x in enumerate((-420.0, -140.0, 140.0, 420.0), 1)},
+    **{f"PREVIEW__LOCAL_WEST_{index}": ("WEST_RESIDENTIAL_SERVICES", [(-690.0, y), (-300.0, y)]) for index, y in enumerate((-160.0, -55.0, 55.0, 160.0), 1)},
+    **{f"PREVIEW__LOCAL_EAST_{index}": ("EAST_COMMERCE_WORK", [(300.0, y), (690.0, y)]) for index, y in enumerate((-160.0, -55.0, 55.0, 160.0), 1)},
+    **{f"PREVIEW__LOCAL_NORTH_{index}": ("NORTH_ARENA_ENTERTAINMENT", [(x, 220.0), (x, 490.0)]) for index, x in enumerate((-420.0, -140.0, 140.0, 420.0), 1)},
+}
+
+PARK_FEATURES = [
+    ("PARK__LAWN_SW", "LAWN_QUADRANT", (-82.0, -62.0), (146.0, 106.0, 0.12), "commons"),
+    ("PARK__LAWN_SE", "LAWN_QUADRANT", (82.0, -62.0), (146.0, 106.0, 0.12), "commons"),
+    ("PARK__LAWN_NW", "LAWN_QUADRANT", (-82.0, 62.0), (146.0, 106.0, 0.12), "commons"),
+    ("PARK__LAWN_NE", "LAWN_QUADRANT", (82.0, 62.0), (146.0, 106.0, 0.12), "commons"),
+    ("PARK__PROMENADE_EW", "PROMENADE", (0.0, 0.0), (320.0, 10.0, 0.18), "promenade"),
+    ("PARK__PROMENADE_NS", "PROMENADE", (0.0, 0.0), (10.0, 240.0, 0.20), "promenade"),
+    ("PARK__GROVE_SW", "TREE_GROVE_PLACEHOLDER", (-126.0, -90.0), (24.0, 24.0, 7.0), "grove"),
+    ("PARK__GROVE_SE", "TREE_GROVE_PLACEHOLDER", (126.0, -90.0), (24.0, 24.0, 7.0), "grove"),
+    ("PARK__GROVE_NW", "TREE_GROVE_PLACEHOLDER", (-126.0, 90.0), (24.0, 24.0, 7.0), "grove"),
+    ("PARK__GROVE_NE", "TREE_GROVE_PLACEHOLDER", (126.0, 90.0), (24.0, 24.0, 7.0), "grove"),
+]
 
 LANDMARK_LABELS = {
-    "STUDIO_APARTMENT": ("STUDIO / APT", (-310.0, -235.0)),
-    "APARTMENT_MANAGEMENT": ("APT MGMT", (-248.0, -235.0)),
-    "JOB": ("JOB", (-140.0, -235.0)),
-    "CLOTHING": ("CLOTHING", (-30.0, -235.0)),
-    "FURNITURE": ("FURNITURE", (80.0, -235.0)),
-    "ARENA": ("ARENA", (160.0, 230.0)),
-    "TICKET_BOOTH": ("TICKET", (285.0, 230.0)),
-    "PUBLIC_COURT": ("PUBLIC COURT", (-235.0, 220.0)),
-    "COMMONS_PARK": ("COMMONS / PARK", (0.0, 25.0)),
+    "STUDIO_APARTMENT": ("STUDIO / APT", (-400.0, -220.0)),
+    "APARTMENT_MANAGEMENT": ("APT MGMT", (-330.0, -285.0)),
+    "JOB": ("JOB", (360.0, -65.0)),
+    "CLOTHING": ("CLOTHING", (-240.0, -220.0)),
+    "FURNITURE": ("FURNITURE", (-130.0, -285.0)),
+    "ARENA": ("ARENA", (150.0, 225.0)),
+    "TICKET_BOOTH": ("TICKET", (270.0, 285.0)),
+    "PUBLIC_COURT": ("PUBLIC COURT", (-230.0, 205.0)),
+    "COMMONS_PARK": ("COMMONS / PARK", (0.0, 0.0)),
 }
 
-TOWER_LABELS = {
-    "CORE_TOWER__SOUTH_01": ("CORE TOWER S1", (-60.0, -125.0)),
-    "CORE_TOWER__CENTRAL_01": ("CORE TOWER C1", (-340.0, 45.0)),
-    "CORE_TOWER__CENTRAL_02": ("CORE TOWER C2", (340.0, 45.0)),
-    "CORE_TOWER__NORTH_01": ("CORE TOWER N1", (-340.0, 245.0)),
-    "SKYLINE_TOWER__WEST_SOUTH": ("SKY W1", (-500.0, -170.0)),
-    "SKYLINE_TOWER__WEST_NORTH": ("SKY W2", (-500.0, 170.0)),
-    "SKYLINE_TOWER__NORTH_01": ("SKY N1", (-260.0, 390.0)),
-    "SKYLINE_TOWER__NORTH_02": ("SKY N2", (0.0, 410.0)),
-    "SKYLINE_TOWER__NORTH_03": ("SKY N3", (280.0, 390.0)),
-    "SKYLINE_TOWER__EAST": ("SKY E1", (500.0, 100.0)),
-}
+TOWER_LABELS = {}
+for name, placement, district_or_side, _base, (x, y), _footprint, _height, _color in TOWERS:
+    body = name.replace("CORE_TOWER__", "CORE ").replace("SKYLINE_TOWER__", "SKY ").replace("_", " ")
+    if placement == "BACKGROUND_SKYLINE":
+        x = -710.0 if district_or_side == "WEST" else 710.0 if district_or_side == "EAST" else x
+        y = 535.0 if district_or_side == "NORTH" else -535.0 if district_or_side == "SOUTH" else y
+    TOWER_LABELS[name] = (body, (x, y))
 
 DISTRICT_LABELS = {
-    "SOUTH_RESIDENTIAL_RETAIL": ("SOUTH | RESIDENTIAL + RETAIL", (0.0, -290.0)),
-    "CENTRAL_CIVIC_COMMONS": ("CENTRAL | CIVIC COMMONS", (0.0, 105.0)),
-    "NORTH_ARENA_ENTERTAINMENT": ("NORTH | ARENA + ENTERTAINMENT", (0.0, 290.0)),
+    "SOUTH_RESIDENTIAL_RETAIL": ("SOUTH | RESIDENTIAL + RETAIL", (0.0, -475.0)),
+    "WEST_RESIDENTIAL_SERVICES": ("WEST | RESIDENTIAL + SERVICES", (-600.0, 205.0)),
+    "EAST_COMMERCE_WORK": ("EAST | COMMERCE + WORK", (600.0, 205.0)),
+    "NORTH_ARENA_ENTERTAINMENT": ("NORTH | ARENA + ENTERTAINMENT", (0.0, 475.0)),
 }
 
 VIEWS = [
-    ("TopDown_MetropolitanPreview.png", "top_down", (0.0, 30.0, 950.0), (0.0, 30.0, 0.0), 1100.0, TOP_RENDER_SIZE),
-    ("EyeLevel_SouthResidentialRetail.png", "eye_level", (-340.0, -185.0, 1.7), (320.0, -180.0, 35.0), None, EYE_RENDER_SIZE),
-    ("EyeLevel_CentralCommonsCivicSkyline.png", "eye_level", (-80.0, 20.0, 1.7), (260.0, 60.0, 55.0), None, EYE_RENDER_SIZE),
-    ("EyeLevel_NorthArenaEntertainment.png", "eye_level", (-260.0, 200.0, 1.7), (200.0, 235.0, 50.0), None, EYE_RENDER_SIZE),
+    ("TopDown_RadialMegaCityPreview.png", "top_down", (0.0, 0.0, 1500.0), (0.0, 0.0, 0.0), 2000.0, TOP_RENDER_SIZE),
+    ("EyeLevel_SouthResidentialRetailParkSkyline.png", "eye_level", (0.0, -145.0, 1.7), (0.0, 20.0, 12.0), None, EYE_RENDER_SIZE),
+    ("EyeLevel_WestResidentialServicesParkSkyline.png", "eye_level", (-185.0, 0.0, 1.7), (20.0, 0.0, 12.0), None, EYE_RENDER_SIZE),
+    ("EyeLevel_EastCommerceWorkParkSkyline.png", "eye_level", (185.0, 0.0, 1.7), (-20.0, 0.0, 12.0), None, EYE_RENDER_SIZE),
+    ("EyeLevel_NorthArenaEntertainmentParkSkyline.png", "eye_level", (0.0, 145.0, 1.7), (0.0, -20.0, 12.0), None, EYE_RENDER_SIZE),
 ]
 
 
@@ -187,21 +242,24 @@ def add_cube(name, location, dimensions, color, collection, kind, **properties):
     return obj
 
 
-def add_polyline(name, points, collection):
+def add_polyline(name, points, collection, kind, color, width, cyclic=False, **properties):
     data = bpy.data.curves.new(f"{name}_DATA", "CURVE")
     data.dimensions = "3D"
-    data.bevel_depth = 1.5
+    data.bevel_depth = width
     data.bevel_resolution = 0
     spline = data.splines.new("POLY")
     spline.points.add(len(points) - 1)
     for point, (x, y) in zip(spline.points, points):
-        point.co = (x, y, 0.6, 1.0)
+        point.co = (x, y, 0.12, 1.0)
+    spline.use_cyclic_u = cyclic
     obj = bpy.data.objects.new(name, data)
-    data.materials.append(MATERIALS["shortcut"])
-    obj["asset_kind"] = "proposed_shortcut"
+    data.materials.append(MATERIALS[color])
+    obj["asset_kind"] = kind
     obj["status"] = "PROPOSED_CIRCULATION"
     obj["distance_canonical"] = False
-    obj["top_down_only"] = True
+    obj["cyclic"] = cyclic
+    for key, value in properties.items():
+        obj[key] = value
     collection.objects.link(obj)
     return obj
 
@@ -287,36 +345,42 @@ def build_scene():
     global MATERIALS
     MATERIALS = {name: material(f"MAT__{name.upper()}", color) for name, color in COLORS.items()}
 
-    add_cube("PREVIEW__PLAYABLE_BOUNDARY_800X600M", (0.0, 0.0, -0.25), (800.0, 600.0, 0.5), "ground", core, "playable_boundary", status="NONCANONICAL_PREVIEW", collision_boundary=False)
+    add_cube("PREVIEW__PLAYABLE_BOUNDARY_1400X1000M", (0.0, 0.0, -0.25), (*PLAYABLE_SIZE_M, 0.5), "ground", core, "playable_boundary", status="NONCANONICAL_PREVIEW", collision_boundary=False)
     for district_id, ((x, y), (width, depth), color) in DISTRICTS.items():
         add_cube(f"DISTRICT__{district_id}", (x, y, 0.04), (width, depth, 0.08), color, core, "district", district_id=district_id, status="PROPOSED_DISTRICT")
-    add_cube("LANDMARK__COMMONS_PARK", (0.0, 25.0, 0.18), (*COMMONS_SIZE_M, 0.18), "commons", core, "commons_park", landmark_id="COMMONS_PARK", status="REQUIRED_BETA_LANDMARK")
-    add_cube("LANDMARK__PUBLIC_COURT", (-235.0, 220.0, 0.28), (90.0, 50.0, 0.2), "court", core, "public_court", landmark_id="PUBLIC_COURT", status="REQUIRED_BETA_LANDMARK")
+    add_cube("LANDMARK__COMMONS_PARK", (0.0, 0.0, 0.18), (*COMMONS_SIZE_M, 0.18), "commons", core, "commons_park", landmark_id="COMMONS_PARK", status="REQUIRED_BETA_LANDMARK")
+    for name, role, (x, y), (width, depth, height), color in PARK_FEATURES:
+        add_cube(name, (x, y, 0.2 + height / 2.0), (width, depth, height), color, core, "park_placeholder", role=role, status="NONCANONICAL_REVIEW_PLACEHOLDER", final_landscape=False)
+    add_cube("LANDMARK__PUBLIC_COURT", (-230.0, 170.0, 0.28), (80.0, 46.0, 0.2), "court", core, "public_court", landmark_id="PUBLIC_COURT", status="REQUIRED_BETA_LANDMARK", inner_ring_access=True)
 
     base_heights = {}
     for name, district, (x, y), (width, depth, height), color, role, tower_id in STREET_MASSES:
-        obj = add_cube(name, (x, y, height / 2.0 + 0.35), (width, depth, height), color, core, "street_mass", district_id=district, role=role, status="NONCANONICAL_PREVIEW", ground_floor_scope="GAMEPLAY_RELEVANT_ONLY", interiors=False)
+        obj = add_cube(name, (x, y, height / 2.0 + 0.35), (width, depth, height), color, core, "street_mass", district_id=district, role=role, status="NONCANONICAL_PREVIEW", ground_floor_scope="GAMEPLAY_RELEVANT_ONLY", interiors=False, inner_ring_access=role == "REQUIRED_BETA_LANDMARK")
         if tower_id:
             obj["tower_id"] = tower_id
             base_heights[name] = height
 
-    for name, location, dimensions in [(name, location, dimensions) for name, (location, dimensions) in BOULEVARDS.items()]:
-        add_cube(name, location, dimensions, "road", core, "proposed_boulevard", status="PROPOSED_CIRCULATION", distance_canonical=False)
-    shortcut_guides = [add_polyline(name, points, core) for name, points in SHORTCUTS.items()]
+    street_guides = []
+    for name, points in RADIAL_SPOKES.items():
+        street_guides.append(add_polyline(name, points, core, "radial_spoke", "spoke", 1.0, branches_from_park=True))
+    for name, points in RING_ROADS.items():
+        street_guides.append(add_polyline(name, points, core, "ring_road", "ring", 1.0, cyclic=True))
+    for name, (district, points) in LOCAL_CROSS_STREETS.items():
+        street_guides.append(add_polyline(name, points, core, "local_cross_street", "local", 0.65, district_id=district))
 
-    for name, placement, base_id, (x, y), (width, depth), height, color in TOWERS:
+    for name, placement, district_or_side, base_id, (x, y), (width, depth), height, color in TOWERS:
         bottom = base_heights[base_id] + 0.35 if base_id else 0.35
         target_collection = core if placement == "PLAYABLE_CORE" else skyline
-        add_cube(name, (x, y, bottom + height / 2.0), (width, depth, height), color, target_collection, "skyscraper", placement=placement, base_id=base_id or "", status="PROPOSED_SKYSCRAPER", interiors=False)
+        add_cube(name, (x, y, bottom + height / 2.0), (width, depth, height), color, target_collection, "skyscraper", placement=placement, district_id=district_or_side if placement == "PLAYABLE_CORE" else "", skyline_side=district_or_side if placement == "BACKGROUND_SKYLINE" else "", base_id=base_id or "", status="PROPOSED_SKYSCRAPER", interiors=False)
 
     top_guides = []
     label_specs = []
-    label_specs.extend((f"LANDMARK_{key}", body, location, 8.0, "teal", "REQUIRED_LANDMARK") for key, (body, location) in LANDMARK_LABELS.items())
-    label_specs.extend((f"TOWER_{key}", body, location, 6.5, "orange", "PLAYABLE_CORE_TOWER" if key.startswith("CORE_") else "BACKGROUND_TOWER") for key, (body, location) in TOWER_LABELS.items())
-    label_specs.extend((f"DISTRICT_{key}", body, location, 10.0, "teal", "DISTRICT") for key, (body, location) in DISTRICT_LABELS.items())
+    label_specs.extend((f"LANDMARK_{key}", body, location, 11.0, "teal", "REQUIRED_LANDMARK") for key, (body, location) in LANDMARK_LABELS.items())
+    label_specs.extend((f"TOWER_{key}", body, location, 8.0, "orange", "PLAYABLE_CORE_TOWER" if key.startswith("CORE_") else "BACKGROUND_TOWER") for key, (body, location) in TOWER_LABELS.items())
+    label_specs.extend((f"DISTRICT_{key}", body, location, 13.0, "teal", "DISTRICT") for key, (body, location) in DISTRICT_LABELS.items())
     label_specs.extend([
-        ("INFO_TITLE", "SUNDALE METROPOLITAN PREVIEW | NONCANONICAL", (0.0, 350.0), 10.0, "teal", "INFO"),
-        ("INFO_LEGEND", "TEAL = REQUIRED / DISTRICT | ORANGE = PROPOSED TOWER | ROADS = PROPOSED, NO DISTANCE CLAIM", (0.0, -350.0), 7.0, "orange", "INFO"),
+        ("INFO_TITLE", "SUNDALE RADIAL MEGA-CITY PREVIEW | NONCANONICAL", (0.0, 650.0), 13.0, "teal", "INFO"),
+        ("INFO_LEGEND", "8 SPOKES + 2 RINGS + 16 LOCAL STREETS | ALL PROPOSED | NO DISTANCE / CAPACITY CLAIM", (0.0, -650.0), 9.0, "orange", "INFO"),
     ])
     for spec in label_specs:
         text, plate = add_review_label(*spec, guides)
@@ -326,7 +390,7 @@ def build_scene():
     camera = bpy.context.object
     camera.name = "REVIEW_CAMERA"
     camera.data.lens = 28.0
-    camera.data.clip_end = 2000.0
+    camera.data.clip_end = 3000.0
     camera["asset_kind"] = "review_camera"
     for owner in list(camera.users_collection):
         owner.objects.unlink(camera)
@@ -360,17 +424,18 @@ def build_scene():
     scene.render.film_transparent = False
     scene.world.color = (0.25, 0.28, 0.33)
     scene.view_settings.exposure = 0.8
-    scene["phase"] = "Phase 1L.3a metropolitan replacement preview"
+    scene["phase"] = "Phase 1L.3a radial mega-city replacement preview"
     scene["status"] = "NONCANONICAL_OWNER_PREVIEW"
     scene["production_route_m"] = 800.0
     scene["preview_route_distance_canonical"] = False
+    scene["preview_capacity_claim"] = False
     scene["cycles_forbidden"] = True
 
     RENDER_DIR.mkdir(parents=True, exist_ok=True)
     for stale in RENDER_DIR.glob("*.png"):
         stale.unlink()
     for filename, view_type, location, target, ortho_scale, (width, height) in VIEWS:
-        for guide in top_guides + shortcut_guides:
+        for guide in top_guides:
             guide.hide_render = view_type != "top_down"
         scene.render.resolution_x = width
         scene.render.resolution_y = height
@@ -382,7 +447,7 @@ def build_scene():
         scene.render.filepath = str(RENDER_DIR / filename)
         bpy.ops.render.render(write_still=True)
 
-    for guide in top_guides + shortcut_guides:
+    for guide in top_guides:
         guide.hide_render = False
     top_view = VIEWS[0]
     scene.render.resolution_x, scene.render.resolution_y = top_view[5]
@@ -397,39 +462,76 @@ def build_scene():
 
 def expected_label_specs():
     specs = {}
-    specs.update({f"LANDMARK_{key}": (body, location, 8.0, "teal", "REQUIRED_LANDMARK") for key, (body, location) in LANDMARK_LABELS.items()})
-    specs.update({f"TOWER_{key}": (body, location, 6.5, "orange", "PLAYABLE_CORE_TOWER" if key.startswith("CORE_") else "BACKGROUND_TOWER") for key, (body, location) in TOWER_LABELS.items()})
-    specs.update({f"DISTRICT_{key}": (body, location, 10.0, "teal", "DISTRICT") for key, (body, location) in DISTRICT_LABELS.items()})
-    specs["INFO_TITLE"] = ("SUNDALE METROPOLITAN PREVIEW | NONCANONICAL", (0.0, 350.0), 10.0, "teal", "INFO")
-    specs["INFO_LEGEND"] = ("TEAL = REQUIRED / DISTRICT | ORANGE = PROPOSED TOWER | ROADS = PROPOSED, NO DISTANCE CLAIM", (0.0, -350.0), 7.0, "orange", "INFO")
+    specs.update({f"LANDMARK_{key}": (body, location, 11.0, "teal", "REQUIRED_LANDMARK") for key, (body, location) in LANDMARK_LABELS.items()})
+    specs.update({f"TOWER_{key}": (body, location, 8.0, "orange", "PLAYABLE_CORE_TOWER" if key.startswith("CORE_") else "BACKGROUND_TOWER") for key, (body, location) in TOWER_LABELS.items()})
+    specs.update({f"DISTRICT_{key}": (body, location, 13.0, "teal", "DISTRICT") for key, (body, location) in DISTRICT_LABELS.items()})
+    specs["INFO_TITLE"] = ("SUNDALE RADIAL MEGA-CITY PREVIEW | NONCANONICAL", (0.0, 650.0), 13.0, "teal", "INFO")
+    specs["INFO_LEGEND"] = ("8 SPOKES + 2 RINGS + 16 LOCAL STREETS | ALL PROPOSED | NO DISTANCE / CAPACITY CLAIM", (0.0, -650.0), 9.0, "orange", "INFO")
     return specs
+
+
+def curve_points(obj):
+    return [(round(point.co.x, 3), round(point.co.y, 3)) for point in obj.data.splines[0].points]
 
 
 def validate_scene(require_manifest):
     errors = []
     objects = bpy.data.objects
-    boundary = objects.get("PREVIEW__PLAYABLE_BOUNDARY_800X600M")
+    boundary = objects.get("PREVIEW__PLAYABLE_BOUNDARY_1400X1000M")
     if not boundary or any(abs(a - b) > 0.001 for a, b in zip(boundary.dimensions[:2], PLAYABLE_SIZE_M)):
-        errors.append("playable preview boundary must be exactly 800x600m")
+        errors.append("playable preview boundary must be exactly 1400x1000m")
 
     districts = [obj for obj in objects if obj.get("asset_kind") == "district"]
-    if {obj.get("district_id") for obj in districts} != set(DISTRICTS) or len(districts) != 3:
-        errors.append("exactly three named preview districts are required")
+    if {obj.get("district_id") for obj in districts} != set(DISTRICTS) or len(districts) != 4:
+        errors.append("exactly four named preview districts are required")
+    for district_id, ((x, y), (width, depth), _color) in DISTRICTS.items():
+        obj = objects.get(f"DISTRICT__{district_id}")
+        if not obj or any(abs(a - b) > 0.001 for a, b in zip(obj.location[:2], (x, y))) or any(abs(a - b) > 0.001 for a, b in zip(obj.dimensions[:2], (width, depth))):
+            errors.append(f"{district_id} dimensions/location differ")
+
+    park = objects.get("LANDMARK__COMMONS_PARK")
+    if not park or any(abs(a - b) > 0.001 for a, b in zip(park.dimensions[:2], COMMONS_SIZE_M)) or any(abs(value) > 0.001 for value in park.location[:2]):
+        errors.append("central Commons/Park must be exactly 320x240m at the city hub")
+    park_parts = {obj.name: obj for obj in objects if obj.get("asset_kind") == "park_placeholder"}
+    if set(park_parts) != {spec[0] for spec in PARK_FEATURES}:
+        errors.append(f"park placeholders must match the exact native low-poly set: {len(park_parts)}")
+    for name, role, (x, y), (width, depth, height), _color in PARK_FEATURES:
+        obj = park_parts.get(name)
+        if not obj or obj.type != "MESH" or obj.get("role") != role or obj.get("final_landscape") is not False:
+            errors.append(f"{name} park role/native/finality contract differs")
+        elif any(abs(a - b) > 0.001 for a, b in zip(obj.location, (x, y, 0.2 + height / 2.0))) or any(abs(a - b) > 0.001 for a, b in zip(obj.dimensions, (width, depth, height))):
+            errors.append(f"{name} park dimensions/location differ")
 
     masses = [obj for obj in objects if obj.get("asset_kind") == "street_mass"]
     district_counts = Counter(obj.get("district_id") for obj in masses)
-    if len(masses) != 36 or district_counts != Counter({name: 12 for name in DISTRICTS}):
-        errors.append(f"street masses must total 36 and 12 per district: {len(masses)}, {district_counts}")
+    if len(masses) != 72 or district_counts != Counter({name: 18 for name in DISTRICTS}):
+        errors.append(f"street masses must total 72 and 18 per district: {len(masses)}, {district_counts}")
     if any(obj.get("ground_floor_scope") != "GAMEPLAY_RELEVANT_ONLY" or obj.get("interiors") is not False for obj in masses):
         errors.append("street masses must remain exterior blockouts with gameplay-relevant ground floors only")
+    expected_masses = {spec[0]: spec for spec in STREET_MASSES}
+    if {obj.name for obj in masses} != set(expected_masses):
+        errors.append("street mass identities differ from the deterministic contract")
+    for name, district, (x, y), (width, depth, height), _color, role, tower_id in STREET_MASSES:
+        obj = objects.get(name)
+        if not obj or obj.get("district_id") != district or obj.get("role") != role or obj.get("tower_id", "") != (tower_id or ""):
+            errors.append(f"{name} district/role/tower contract differs")
+        elif any(abs(a - b) > 0.001 for a, b in zip(obj.location, (x, y, height / 2.0 + 0.35))) or any(abs(a - b) > 0.001 for a, b in zip(obj.dimensions, (width, depth, height))):
+            errors.append(f"{name} dimensions/location differ")
     bases = {obj.name: obj for obj in masses if obj.get("role") == "PROPOSED_CORE_TOWER_BASE"}
-    if len(bases) != 4:
-        errors.append(f"exactly four playable-core tower bases are required, found {len(bases)}")
+    base_district_counts = Counter(obj.get("district_id") for obj in bases.values())
+    if len(bases) != 12 or base_district_counts != Counter({name: 3 for name in DISTRICTS}):
+        errors.append(f"exactly twelve playable-core bases, three per district, are required: {len(bases)}, {base_district_counts}")
 
     towers = [obj for obj in objects if obj.get("asset_kind") == "skyscraper"]
     placement_counts = Counter(obj.get("placement") for obj in towers)
-    if len(towers) != 10 or placement_counts != Counter({"PLAYABLE_CORE": 4, "BACKGROUND_SKYLINE": 6}):
-        errors.append(f"tower split must be 4 playable/6 background: {len(towers)}, {placement_counts}")
+    core_district_counts = Counter(obj.get("district_id") for obj in towers if obj.get("placement") == "PLAYABLE_CORE")
+    background_side_counts = Counter(obj.get("skyline_side") for obj in towers if obj.get("placement") == "BACKGROUND_SKYLINE")
+    if len(towers) != 24 or placement_counts != Counter({"PLAYABLE_CORE": 12, "BACKGROUND_SKYLINE": 12}):
+        errors.append(f"tower split must be 12 playable/12 background: {len(towers)}, {placement_counts}")
+    if core_district_counts != Counter({name: 3 for name in DISTRICTS}) or background_side_counts != Counter({side: 3 for side in ("NORTH", "SOUTH", "EAST", "WEST")}):
+        errors.append(f"tower district/side split must remain three each: {core_district_counts}, {background_side_counts}")
+    if {obj.name for obj in towers} != {spec[0] for spec in TOWERS}:
+        errors.append("tower identities differ from the deterministic contract")
     for tower in towers:
         x, y = tower.location.x, tower.location.y
         half_x, half_y = tower.dimensions.x / 2.0, tower.dimensions.y / 2.0
@@ -439,6 +541,15 @@ def validate_scene(require_manifest):
             errors.append(f"{tower.name} must be inside the boundary on a counted street-level base")
         if tower.get("placement") == "BACKGROUND_SKYLINE" and (not wholly_outside or tower.get("base_id")):
             errors.append(f"{tower.name} must be wholly outside the playable boundary without a core base")
+    for name, placement, district_or_side, base_id, (x, y), (width, depth), height, _color in TOWERS:
+        tower = objects.get(name)
+        bottom = bases[base_id].dimensions.z + 0.35 if base_id else 0.35
+        if not tower or tower.get("placement") != placement or tower.get("base_id") != (base_id or ""):
+            errors.append(f"{name} placement/base contract differs")
+        elif tower.get("district_id") != (district_or_side if placement == "PLAYABLE_CORE" else "") or tower.get("skyline_side") != (district_or_side if placement == "BACKGROUND_SKYLINE" else ""):
+            errors.append(f"{name} district/skyline-side contract differs")
+        elif any(abs(a - b) > 0.001 for a, b in zip(tower.location, (x, y, bottom + height / 2.0))) or any(abs(a - b) > 0.001 for a, b in zip(tower.dimensions, (width, depth, height))):
+            errors.append(f"{name} dimensions/location differ")
 
     required_mass_names = {
         "LANDMARK__STUDIO_APARTMENT", "LANDMARK__APARTMENT_MANAGEMENT", "LANDMARK__JOB",
@@ -450,22 +561,43 @@ def validate_scene(require_manifest):
     kiosk = objects.get("LANDMARK__APARTMENT_MANAGEMENT")
     if not studio or not kiosk or abs((studio.location.x + studio.dimensions.x / 2.0) - (kiosk.location.x - kiosk.dimensions.x / 2.0)) > 0.001:
         errors.append("Apartment Management kiosk must stay attached to the Studio/apartment frontage")
+    inner_ring_landmarks = [objects.get(name) for name in required_mass_names] + [objects.get("LANDMARK__PUBLIC_COURT")]
+    for landmark in inner_ring_landmarks:
+        if not landmark:
+            continue
+        x, y = abs(landmark.location.x), abs(landmark.location.y)
+        near_ring = (abs(y - 190.0) <= 90.0 and x <= 430.0) or (abs(x - 300.0) <= 100.0 and y <= 280.0)
+        if not near_ring or landmark.get("inner_ring_access") is not True:
+            errors.append(f"{landmark.name} must remain on/near the inner destination ring")
 
-    boulevards = [obj for obj in objects if obj.get("asset_kind") == "proposed_boulevard"]
-    shortcuts = [obj for obj in objects if obj.get("asset_kind") == "proposed_shortcut"]
-    circulation = boulevards + shortcuts
-    if len(boulevards) != 6 or len(shortcuts) != 2 or any(obj.get("distance_canonical") is not False or "distance_m" in obj for obj in circulation):
-        errors.append("preview circulation must remain six boulevards plus two shortcuts with no canonical distance")
-    if any(obj.get("top_down_only") is not True for obj in shortcuts):
-        errors.append("review shortcut guides must remain top-down-only rather than eye-level barriers")
+    spokes = {obj.name: obj for obj in objects if obj.get("asset_kind") == "radial_spoke"}
+    rings = {obj.name: obj for obj in objects if obj.get("asset_kind") == "ring_road"}
+    local_streets = {obj.name: obj for obj in objects if obj.get("asset_kind") == "local_cross_street"}
+    circulation = list(spokes.values()) + list(rings.values()) + list(local_streets.values())
+    if set(spokes) != set(RADIAL_SPOKES) or set(rings) != set(RING_ROADS) or set(local_streets) != set(LOCAL_CROSS_STREETS):
+        errors.append(f"street topology must be exact 8 spokes/2 rings/16 locals: {len(spokes)}/{len(rings)}/{len(local_streets)}")
+    if any(obj.get("distance_canonical") is not False or "distance_m" in obj for obj in circulation):
+        errors.append("all preview streets must remain proposed guides with no canonical distance")
+    for name, points in RADIAL_SPOKES.items():
+        if name in spokes and (curve_points(spokes[name]) != points or spokes[name].get("branches_from_park") is not True or spokes[name].get("cyclic") is not False):
+            errors.append(f"{name} radial topology differs")
+    for name, points in RING_ROADS.items():
+        if name in rings and (curve_points(rings[name]) != points or rings[name].get("cyclic") is not True):
+            errors.append(f"{name} ring topology differs")
+    local_district_counts = Counter(obj.get("district_id") for obj in local_streets.values())
+    if local_district_counts != Counter({name: 4 for name in DISTRICTS}):
+        errors.append(f"local cross streets must remain four per district: {local_district_counts}")
+    for name, (district, points) in LOCAL_CROSS_STREETS.items():
+        if name in local_streets and (curve_points(local_streets[name]) != points or local_streets[name].get("district_id") != district or local_streets[name].get("cyclic") is not False):
+            errors.append(f"{name} local topology differs")
     if [obj for obj in objects if obj.get("asset_kind") == "canonical_route"]:
-        errors.append("the metropolitan preview must not recanonize or replace the production route")
+        errors.append("the radial preview must not recanonize or replace the production route")
 
     specs = expected_label_specs()
     labels = {obj.get("label_id"): obj for obj in objects if obj.get("asset_kind") == "metropolitan_review_label"}
     plates = {obj.get("label_id"): obj for obj in objects if obj.get("asset_kind") == "review_label_plate"}
     if set(labels) != set(specs) or set(plates) != set(specs):
-        errors.append(f"review labels/plates must cover exactly 9 landmarks + 10 towers + 3 districts + 2 info: labels={len(labels)}, plates={len(plates)}")
+        errors.append(f"review labels/plates must cover exactly 9 landmarks + 24 towers + 4 districts + 2 info: labels={len(labels)}, plates={len(plates)}")
     for label_id, (body, (x, y), size, color, category) in specs.items():
         label, plate = labels.get(label_id), plates.get(label_id)
         plate_height = 18.0 if size >= 10.0 else 14.0 if size >= 8.0 else 12.0
@@ -483,15 +615,26 @@ def validate_scene(require_manifest):
 
     render_files = sorted(RENDER_DIR.glob("*.png"))
     if [path.name for path in render_files] != sorted(view[0] for view in VIEWS):
-        errors.append(f"expected exactly four named review renders, found {[path.name for path in render_files]}")
+        errors.append(f"expected exactly five named review renders, found {[path.name for path in render_files]}")
     if BLEND_PATH.with_suffix(".blend1").exists():
         errors.append("Blender backup output is forbidden")
-    if sum(view[1] == "top_down" for view in VIEWS) != 1 or sum(view[1] == "eye_level" for view in VIEWS) != 3:
-        errors.append("review requires exactly one top-down and three eye-level views")
+    if sum(view[1] == "top_down" for view in VIEWS) != 1 or sum(view[1] == "eye_level" for view in VIEWS) != 4:
+        errors.append("review requires exactly one top-down and four eye-level views")
     if any(abs(view[2][2] - 1.7) > 0.001 for view in VIEWS if view[1] == "eye_level"):
         errors.append("all district cameras must remain at 1.7m")
     if VIEWS[0][5] != TOP_RENDER_SIZE or any(view[5] != EYE_RENDER_SIZE for view in VIEWS[1:]):
         errors.append("review resolutions differ from the approved high-resolution top/eye contract")
+    camera_obstacles = masses + towers + [obj for obj in (park, objects.get("LANDMARK__PUBLIC_COURT")) if obj]
+    for filename, view_type, location, target, _ortho, _resolution in VIEWS:
+        if view_type != "eye_level":
+            continue
+        if abs(target[0]) > COMMONS_SIZE_M[0] / 2.0 or abs(target[1]) > COMMONS_SIZE_M[1] / 2.0:
+            errors.append(f"{filename} must frame the central park opening")
+        for obstacle in camera_obstacles:
+            dx = max(abs(location[0] - obstacle.location.x) - obstacle.dimensions.x / 2.0, 0.0)
+            dy = max(abs(location[1] - obstacle.location.y) - obstacle.dimensions.y / 2.0, 0.0)
+            if math.hypot(dx, dy) < EYE_CAMERA_CLEARANCE_M:
+                errors.append(f"{filename} camera is within {EYE_CAMERA_CLEARANCE_M:.0f}m of {obstacle.name}")
     if bpy.context.scene.render.engine != "BLENDER_EEVEE_NEXT":
         errors.append("review engine must be Eevee")
     if bpy.data.libraries or [image for image in bpy.data.images if image.name not in {"Render Result", "Viewer Node"}]:
@@ -499,16 +642,16 @@ def validate_scene(require_manifest):
     if [obj for obj in objects if obj.get("asset_kind") == "character"]:
         errors.append("production character geometry is forbidden")
     if [obj for obj in objects if obj.get("asset_kind") == "vehicle"]:
-        errors.append("vehicles are forbidden in the metropolitan preview")
+        errors.append("vehicles are forbidden in the radial mega-city preview")
     if require_manifest and not MANIFEST_PATH.exists():
         errors.append("manifest.json is missing")
     if errors:
         raise RuntimeError("\n".join(errors))
-    print("ODDSWELL_SUNDALE_METRO_VALIDATION|result=PASS|playable=800x600m|districts=3|street_masses=36|street_per_district=12|towers=10|core_towers=4|background_towers=6|required_landmarks=9|boulevards=6|shortcuts=2|canonical_route_distance=false|labels=24|plates=24|views=1_top+3_eye|eye_height_m=1.7|engine=eevee|cycles=false|external_refs=0")
-    return district_counts, placement_counts
+    print("ODDSWELL_SUNDALE_RADIAL_VALIDATION|result=PASS|playable=1400x1000m|commons=320x240m|districts=4|street_masses=72|street_per_district=18|towers=24|core_towers=12|background_towers=12|required_landmarks=9|spokes=8|rings=2|local_streets=16|canonical_route_distance=false|labels=39|plates=39|views=1_top+4_eye|eye_height_m=1.7|camera_clearance_m=20|engine=eevee|cycles=false|external_refs=0|vehicles=0|interiors=0")
+    return district_counts, placement_counts, core_district_counts, background_side_counts
 
 
-def write_manifest(district_counts, placement_counts):
+def write_manifest(district_counts, placement_counts, core_district_counts, background_side_counts):
     renders = []
     for filename, view_type, location, target, _ortho, (width, height) in VIEWS:
         path = RENDER_DIR / filename
@@ -517,9 +660,9 @@ def write_manifest(district_counts, placement_counts):
             "target_m": target, "width": width, "height": height, "bytes": path.stat().st_size, "sha256": sha256(path),
         })
     manifest = {
-        "phase": "Phase 1L.3a metropolitan replacement preview",
-        "status": "noncanonical_owner_metropolitan_preview",
-        "supersedes": "Phase 1L.3a 340x280m small-city massing proposal",
+        "phase": "Phase 1L.3a radial mega-city replacement preview",
+        "status": "noncanonical_owner_radial_mega_city_preview",
+        "supersedes": "Phase 1L.3a 800x600m/36-mass/10-tower metropolitan preview",
         "engine": "BLENDER_EEVEE_NEXT",
         "cycles": False,
         "production_authority_preserved": {
@@ -534,14 +677,32 @@ def write_manifest(district_counts, placement_counts):
             "district_count": len(DISTRICTS),
             "street_mass_count": len(STREET_MASSES),
             "street_masses_per_district": dict(district_counts),
-            "core_tower_base_count": 4,
+            "core_tower_base_count": 12,
             "skyscraper_count": len(TOWERS),
             "tower_placement_counts": dict(placement_counts),
+            "core_towers_per_district": dict(core_district_counts),
+            "background_towers_per_side": dict(background_side_counts),
             "required_landmarks": list(LANDMARK_LABELS),
             "commons_park_m": COMMONS_SIZE_M,
-            "preview_circulation": {"boulevards": len(BOULEVARDS), "shortcuts": len(SHORTCUTS), "canonical": False, "exact_distance_m": None},
+            "park_placeholder_roles": dict(Counter(spec[1] for spec in PARK_FEATURES)),
+            "preview_circulation": {
+                "radial_spokes": len(RADIAL_SPOKES),
+                "ring_roads": len(RING_ROADS),
+                "local_cross_streets": len(LOCAL_CROSS_STREETS),
+                "local_cross_streets_per_district": dict(Counter(spec[0] for spec in LOCAL_CROSS_STREETS.values())),
+                "canonical": False,
+                "exact_distance_m": None,
+                "capacity_claim": False,
+                "travel_time_claim": False,
+                "collision_claim": False,
+            },
+            "first_hour_landmarks_near_inner_ring": True,
+            "eye_camera_clearance_m": EYE_CAMERA_CLEARANCE_M,
+            "eye_view_targets_commons_park": True,
+            "street_guides_visible_in_eye_views": True,
             "street_level_only_initially": True,
             "vehicles": False,
+            "interiors": False,
         },
         "label_contract": {
             "top_down_only": True,
@@ -558,8 +719,9 @@ def write_manifest(district_counts, placement_counts):
         "external_references": [],
         "limitations": [
             "not production Unreal geometry or a production-route replacement",
-            "not approved final placement, capacity, interiors, facades, collision, materials, lighting, accessibility, usability, performance, or readiness",
+            "not approved final placement, capacity, travel time, interiors, facades, collision, materials, lighting, accessibility, usability, performance, or readiness",
             "background skyline towers are outside the proposed playable/collision boundary",
+            "park lawns, promenades, and tree groves are native low-poly review placeholders, not final landscape assets",
         ],
         "files": {
             "blend": {"file": BLEND_PATH.name, "bytes": BLEND_PATH.stat().st_size, "sha256": sha256(BLEND_PATH)},
@@ -573,13 +735,18 @@ def main():
     validate_only = "--validate-only" in sys.argv
     if not validate_only:
         build_scene()
-        district_counts, placement_counts = validate_scene(require_manifest=False)
-        write_manifest(district_counts, placement_counts)
+        district_counts, placement_counts, core_district_counts, background_side_counts = validate_scene(require_manifest=False)
+        write_manifest(district_counts, placement_counts, core_district_counts, background_side_counts)
     else:
-        district_counts, placement_counts = validate_scene(require_manifest=True)
+        district_counts, placement_counts, core_district_counts, background_side_counts = validate_scene(require_manifest=True)
         manifest = json.loads(MANIFEST_PATH.read_text(encoding="utf-8"))
         contract = manifest.get("preview_contract", {})
-        if contract.get("street_masses_per_district") != dict(district_counts) or contract.get("tower_placement_counts") != dict(placement_counts):
+        if any((
+            contract.get("street_masses_per_district") != dict(district_counts),
+            contract.get("tower_placement_counts") != dict(placement_counts),
+            contract.get("core_towers_per_district") != dict(core_district_counts),
+            contract.get("background_towers_per_side") != dict(background_side_counts),
+        )):
             raise RuntimeError("manifest preview counts differ from the Blend")
         if manifest.get("label_contract", {}).get("labels") != {key: spec[0] for key, spec in expected_label_specs().items()}:
             raise RuntimeError("manifest label contract differs from the Blend")
@@ -587,7 +754,7 @@ def main():
             path = ROOT / render["file"]
             if path.stat().st_size != render["bytes"] or sha256(path) != render["sha256"]:
                 raise RuntimeError(f"render hash differs: {path.name}")
-        print("ODDSWELL_SUNDALE_METRO_FOCUSED|result=PASS|manifest=true|render_hashes=4|districts=3|street_masses=36|towers=10|core=4|background=6|landmarks=9|labels=24|plates=24|canonical_route_distance=false|manual_input=false")
+        print("ODDSWELL_SUNDALE_RADIAL_FOCUSED|result=PASS|manifest=true|render_hashes=5|districts=4|street_masses=72|towers=24|core=12|background=12|landmarks=9|spokes=8|rings=2|locals=16|labels=39|plates=39|camera_clearance_m=20|canonical_route_distance=false|manual_input=false")
 
 
 if __name__ == "__main__":

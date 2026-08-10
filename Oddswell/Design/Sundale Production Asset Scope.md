@@ -1,8 +1,8 @@
 # Sundale Production Asset Scope
 
-Status: **OWNER-APPROVED EXPANDED PREVIEW SCOPE - PRODUCTION PROMOTION STILL REQUIRES REVIEW**
+Status: **OWNER-REQUESTED RADIAL MEGA-CITY PREVIEW SCOPE - PRODUCTION PROMOTION STILL REQUIRES REVIEW**
 
-This document turns the approved Sundale concept direction into a complete, reviewable beta art-production boundary. The owner rejected the earlier `340x280 m`, ten-shell small-city proposal and approved a larger noncanonical metropolitan replacement preview. That preview does not mutate the proven production graybox, claim that the listed production assets exist, or promote the Phase 1L.2 Job-canopy pilot to canonical final art.
+This document turns the approved Sundale concept direction into a complete, reviewable beta art-production boundary. The owner rejected the earlier `340x280 m`, ten-shell small-city proposal, then superseded the `800x600 m`, `36`-mass, ten-tower metropolitan preview with a larger noncanonical radial mega-city review. That preview does not mutate the proven production graybox, claim that the listed production assets exist, or promote the Phase 1L.2 Job-canopy pilot to canonical final art.
 
 See [[Design/Sundale Art Direction and Core Loop]], [[Design/Decisions/DEC-008 Beta First City Direction]], [[Development/Reports/Phase 1C2 Primitive Sundale Graybox and Packaged Route Measurement]], and [[Development/Reports/Phase 1L2 Sundale Job Canopy Blender to Unreal Pilot]].
 
@@ -13,28 +13,28 @@ See [[Design/Sundale Art Direction and Core Loop]], [[Design/Decisions/DEC-008 B
 - Exactly `45` authored graybox actors: ground, commons, four route segments, two shortcuts, seven destination/building masses including the Arena canopy, six thresholds, one court with two primitive hoops, four primitive trees, and four environment/light actors.
 - Native-primitive presentation layers for the required destinations, Studio/One-bedroom interior, Stadium public viewing, prompts, and feedback.
 - One noncanonical Blender pipeline pilot containing two simple one-meter Job-canopy meshes, `88` triangles total, used for three frontage parts.
-- One owner-approved noncanonical metropolitan replacement-preview scope: `800x600 m`, three districts, `36` street-level masses, four playable-core tower landmarks, and six background skyline towers. It remains review art, not production geometry.
+- One owner-requested noncanonical radial mega-city replacement-preview scope: `1400x1000 m`, four districts around one `320x240 m` Commons/Park, `72` street-level masses, twelve playable-core towers, and twelve background skyline towers. It remains review art, not production geometry.
 
 The current Blender pilot is not a person, complete building, apartment, landscape, or finished city. It proves authoring, validation, FBX export, Unreal import, Git LFS, cook, package, and runtime loading.
 
 ## Production goal
 
-Evaluate one contemporary, walkable `800x600 m` metropolitan playable core with South Residential/Retail, Central Civic Commons, and North Arena/Entertainment districts while preserving the validated production route and gameplay anchors until a later production-layout approval. Production art should replace proven placeholders in controlled families rather than rebuild the whole map at once.
+Evaluate one contemporary, walkable `1400x1000 m` radial mega-city playable preview with South Residential/Retail, West Residential/Services, East Commerce/Work, and North Arena/Entertainment districts branching from one central Commons/Park while preserving the validated production route and gameplay anchors until a later production-layout approval. Production art should replace proven placeholders in controlled families rather than rebuild the whole map at once.
 
-The visual target remains warm limestone and terracotta street-level buildings around a shaded civic commons, with brick paving, mature trees, covered storefronts, a public court, and a contemporary arena anchoring the north district. Four towers may act as playable-area landmarks; six additional towers remain background skyline beyond the playable/collision boundary.
+The visual target remains warm limestone and terracotta street-level buildings around a shaded civic commons, with brick paving, mature trees, covered storefronts, a public court, and a contemporary arena anchoring the north district. Twelve towers may act as playable-area landmarks, three per district; twelve additional towers remain background skyline beyond the playable/collision boundary, three per side.
 
 ## Master scene boundary
 
 | Scene element | Production target | Current authority |
 | --- | --- | --- |
-| Playable preview | One proposed `800 m x 600 m` metropolitan core | Owner-approved preview ceiling; not production map authority |
-| Districts | South Residential/Retail, Central Civic Commons, North Arena/Entertainment | Exactly three in replacement preview |
-| Central commons | One proposed `280 m x 140 m` Commons/Park | Preview orientation anchor; production graybox remains `140x90 m` |
+| Playable preview | One proposed `1400 m x 1000 m` radial mega-city core | Owner-requested preview ceiling; not production map authority |
+| Districts | South Residential/Retail, West Residential/Services, East Commerce/Work, North Arena/Entertainment | Exactly four in replacement preview |
+| Central commons | One proposed `320 m x 240 m` Commons/Park | Preview hub; production graybox remains `140x90 m` |
 | Production route | Existing measured route remains exactly `800 m` | Frozen production authority; not redrawn or replaced by preview |
-| Preview circulation | Six connected boulevard segments and two shortcuts | Proposed only; no exact distance claim |
+| Preview circulation | Eight radial spokes, two ring roads, and sixteen local cross-streets | Proposed only; no route-distance, travel-time, capacity, collision, or production claim |
 | Gameplay landmarks | Studio/apartment, attached management kiosk, Job, Clothing, Furniture, Arena, Ticket Booth, Public Court, Commons/Park | Required and labeled in preview |
-| Street-level masses | Exactly `36`, split `12/12/12` by district | Noncanonical composition ceiling |
-| Skyscrapers | Exactly `10`: four playable-core landmarks plus six background skyline towers | Background six stay beyond playable/collision boundary |
+| Street-level masses | Exactly `72`, split `18` per district | Noncanonical composition ceiling |
+| Skyscrapers | Exactly `24`: twelve playable-core towers plus twelve background skyline towers | Core split `3` per district; background split `3` per side beyond the boundary |
 | Ground-floor scope | Gameplay-relevant ground floors only initially | No generic interiors or enterable skyline towers |
 | Time and weather | Dry late-afternoon daylight with patterned shade | Approved direction, not final lighting |
 | Vehicles | None for beta | Explicitly excluded |
@@ -55,12 +55,14 @@ These are the only unique beta destination exteriors. Store and Job gameplay rem
 
 The Ticket Booth is the current physical wagering location. A second standalone sportsbook building is not added unless the owner later changes that direction.
 
-## Metropolitan massing and skyline
+## Radial mega-city massing and skyline
 
-The earlier ten-shell perimeter proposal is superseded. The replacement preview uses exactly `36` street-level building masses, divided evenly across the three districts, plus exactly ten skyscrapers.
+The earlier ten-shell perimeter proposal and later `800x600 m`, `36`-mass, ten-tower metropolitan preview are superseded. The radial replacement uses exactly `72` street-level building masses, divided evenly across four districts, plus exactly twenty-four skyscrapers.
 
-- Four skyscrapers are proposed playable-core landmarks and each sits on one of the counted street-level masses.
-- Six skyscrapers are background skyline only and sit wholly beyond the proposed playable/collision boundary.
+- Twelve skyscrapers are proposed playable-core landmarks, three per district, and each sits on one of the counted street-level masses.
+- Twelve skyscrapers are background skyline only, three per side, and sit wholly beyond the proposed playable/collision boundary.
+- Eight radial spokes branch from the Commons/Park, joined by an inner destination ring, an outer distributor ring, and sixteen local cross-streets. All are composition guides without route-distance, travel-time, capacity, collision, or production claims.
+- Required first-hour landmarks stay on or near the inner ring so the larger optional review city does not imply a longer mandatory first-hour route.
 - Only gameplay-relevant ground floors are considered initially. Generic street masses and skyline towers receive no interiors.
 - Reusable limestone, terracotta, and charcoal/neutral families remain the preferred production approach; the preview does not freeze final facade counts, rooflines, or tower architecture.
 - The preview adds no location, mechanic, traffic system, capacity promise, or production-route change.
@@ -157,7 +159,7 @@ Use tiling materials, trim sheets, and instances before unique textures. No real
 
 No long, high-quality render is required to approve form and layout. Every asset family should pass this sequence:
 
-1. **Citywide massing board:** one high-resolution top-down and three district eye-level Blender Eevee views showing the `800x600 m` boundary, three districts, all required landmarks, `36` street masses, ten towers, Commons/Park, court, arena axis, and proposed circulation. No production textures; simple review colors only.
+1. **Citywide massing board:** one high-resolution top-down and four district eye-level Blender Eevee views showing the `1400x1000 m` boundary, four districts, all required landmarks, `72` street masses, twenty-four towers, Commons/Park, court, arena axis, and proposed radial circulation. No production textures; simple review colors only.
 2. **Style sample board:** one limestone facade bay, one terracotta facade bay, one storefront/awning bay, one tree/planter grouping, and the Arena/Ticket Booth silhouette.
 3. **Asset contact sheet:** front, rear, left, right, top, and perspective views with dimensions, triangle count, material slots, UV count, and status.
 4. **Unreal in-place proof:** one packaged fixed view before/after, asset-load marker, collision/route check, and short warmed resource sample.
@@ -167,7 +169,7 @@ Use Blender Workbench or Eevee for review images. Do not use slow Cycles renders
 
 ## Recommended production order
 
-1. Review the metropolitan replacement board and approve, revise, or reject its district/massing/skyline composition.
+1. Review the radial mega-city replacement board and approve, revise, or reject its park/district/massing/street/skyline composition.
 2. Build the shared facade, street, paving, and prop kits.
 3. Complete the central commons and public court.
 4. Replace the six gameplay-building exteriors, Arena canopy, Ticket Booth, and apartment kiosk in route order.
@@ -184,13 +186,13 @@ Use Blender Workbench or Eevee for review images. Do not use slow Cycles renders
 - Every production asset needs original/licensed provenance, stable source files, deterministic export settings, Git LFS coverage, dimensions, triangle/UV/material evidence, collision policy, LOD evidence, and a packaged Unreal proof.
 - Prototype targets favor low polygon counts, one material slot where practical, no textures unless a style decision requires them, and fast Workbench reviews.
 - Do not call a blockout, concept image, generated image, or pipeline pilot final art.
-- Do not expand beyond the `800x600 m`, three-district, `36`-mass, ten-tower preview ceiling—or expand catalogs, apartment tiers, interiors, or characters—merely because the pipeline works.
+- Do not expand beyond the `1400x1000 m`, four-district, `72`-mass, twenty-four-tower preview ceiling—or expand catalogs, apartment tiers, interiors, or characters—merely because the pipeline works.
 
 ## Owner-review decisions
 
-The approved Sundale concept, production `800 m` route, required destinations, palette, materials, and atmosphere remain authoritative. The earlier `340x280 m`, ten-shell small-city proposal is rejected and superseded only as a review direction; the current production map remains unchanged. The following proposed details need an explicit owner review before catalog-scale modeling:
+The approved Sundale concept, production `800 m` route, required destinations, palette, materials, and atmosphere remain authoritative. The earlier `340x280 m`, ten-shell small-city proposal and `800x600 m`, `36`-mass, ten-tower metropolitan preview are superseded only as review directions; the current production map remains unchanged. The following proposed details need an explicit owner review before catalog-scale modeling:
 
-1. The replacement preview's three-district, `36`-mass, four-core-tower, six-background-tower placement and roofline mix.
+1. The radial preview's four-district, `72`-mass, twelve-core-tower, twelve-background-tower placement, street topology, and roofline mix.
 2. Landscape instance ceilings and the final commons composition.
 3. The first citywide massing board.
 4. The character silhouette/proportion sheet.
