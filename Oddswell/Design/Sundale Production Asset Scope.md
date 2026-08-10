@@ -149,6 +149,8 @@ Before character production, approve one lightweight character sheet covering:
 - The worn off-white starter outfit and Signal Jacket fit.
 - Neutral proportions that do not imply ability, wealth, intelligence, or behavior.
 
+Phase 1L.3g supplies that bounded noncanonical review sheet without starting production character work. It preserves the exact current eight preset IDs/order, two approved base labels, four shared production skin-tone RGBA values, one shared `1.80 m` review stature, and eight shared joint-landmark heights. One existing starter outfit proxy design is fitted identically on all eight faceless primitive displays; one existing Signal Jacket proxy design is fitted identically once per base. A unified lineup plus front, side, back, and three-quarter views use dedicated high-contrast exact-ID plates with machine-checked frame safety and zero label/silhouette overlap. The sheet adds no armature, rig, animation, face, hair, name, pronoun, deep creator, extra outfit, new catalog/body option, demographic or athlete-outcome inference, production person, runtime behavior, or final character art. Owner acceptance and a separate production promotion/modeling/rigging gate remain required.
+
 After that approval, the minimum beta character-art set is two body meshes or one compatible shared body system, four skin-tone materials, one starter outfit, one Signal Jacket, one skeletal rig, and the existing idle/walk/run/jump locomotion set. Faces, hair catalog, names, pronouns, a deep creator, and additional outfits remain outside this first production set.
 
 ## Material families
