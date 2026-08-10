@@ -833,6 +833,14 @@ One clean `1920x1080` unified board and six `1280x720` district closeups render 
 
 Phase 1L.3a remains preserved at its owner-accepted planning authority. This review board changes no Unreal, client, map, runtime, test, config, accepted city count, route, business behavior, or package output. It does not approve production geometry, placement, collision, accessibility, performance, interiors, branding, catalogs, services, or expansion. Promotion and expansion require explicit owner acceptance. See [[Development/Reports/Phase 1L3b Sundale Architectural Language Review Board]].
 
+### Phase 1L.3c Sundale Central Commons landscape-kit review
+
+**COMPLETE FOR BOUNDED NONCANONICAL OWNER REVIEW; OWNER ACCEPTANCE AND PRODUCTION PROMOTION PENDING.** One deterministic Blender `4.5.5 LTS` source locks exactly nine noncanonical review IDs inside the accepted `600x420 m` Central Commons planning footprint: paver, three shade-tree profiles, low planter, bench, pedestrian lamp, litter bin, and edge bollard. The layout contains exactly four lawn quadrants and two `48 m`-wide cross-paths whose surfaces share the lawn elevation; exact instances remain at tree `12/12`, planter `8/10`, bench `8/8`, lamp `12/12`, bin `4/6`, and eight short nonblocking edge bollards.
+
+One `1920x1080` unified orthographic top and four `1600x900` N/E/S/W views render in Eevee. The cardinal views are deterministic `1.7 m` pedestrian perspectives from AABB-clear center-path edges; each frames a broad unobstructed path segment and a reviewable mix of complete landscape silhouettes. Headless build, saved-Blend reopen, and focused validation lock exact IDs, counts, triangle totals, planning bounds, level cross-path metadata, accepted palette-only materials, five cameras/renders and hashes, complete framing, and zero external references, textures, interiors, catalogs, or gameplay additions.
+
+Phase 1L.3a remains preserved at its owner-accepted planning authority. This review changes no Unreal, client, map, runtime, tests, config, city counts, canonical route, package, production catalog, or Phase 1K behavior. It does not approve production geometry, collision, accessibility, density, performance, placement, interaction, or final landscape art. Promotion and expansion remain owner-gated. See [[Development/Reports/Phase 1L3c Sundale Central Commons Landscape Kit Review]].
+
 ### Exit evidence
 
 The complete loop is visually coherent, readable, accessible at the approved baseline, and within measured PC performance targets. Large catalogs and unseen districts remain out of scope.
