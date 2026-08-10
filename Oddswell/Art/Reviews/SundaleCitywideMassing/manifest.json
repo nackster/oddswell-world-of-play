@@ -4,138 +4,159 @@
   "external_references": [],
   "files": {
     "blend": {
-      "bytes": 2133428,
+      "bytes": 3185582,
       "file": "SundaleCitywideMassing.blend",
-      "sha256": "B6B5616E77D1C60D19D15D7BABBB3ED9C8DB4E42CAEB42ADB4E6211737640E73"
+      "sha256": "8531EEB17E86C0F61EBA8F411E97C1D4DB4A021889F33138649C42307DE23456"
     },
     "script": {
-      "bytes": 46110,
+      "bytes": 52921,
       "file": "build_sundale_massing_board.py",
-      "sha256": "20EED00158FEE7A2E538FEF90BABB32BC994A7672AC2D3421BBCD9235EFF4396"
+      "sha256": "B25353151EAC21CDE317CBCE1C3C9590116FD055A54C179278FC37F971B6D72E"
     }
   },
   "label_contract": {
-    "district_count": 4,
-    "info_count": 2,
+    "business_cluster_count": 6,
+    "district_count": 6,
+    "info_count": 3,
     "labels": {
-      "DISTRICT_EAST_COMMERCE_WORK": "EAST | COMMERCE + WORK",
-      "DISTRICT_NORTH_ARENA_ENTERTAINMENT": "NORTH | ARENA + ENTERTAINMENT",
-      "DISTRICT_SOUTH_RESIDENTIAL_RETAIL": "SOUTH | RESIDENTIAL + RETAIL",
-      "DISTRICT_WEST_RESIDENTIAL_SERVICES": "WEST | RESIDENTIAL + SERVICES",
-      "INFO_LEGEND": "8 SPOKES + 2 RINGS + 16 LOCAL STREETS | ALL PROPOSED | NO DISTANCE / CAPACITY CLAIM",
-      "INFO_TITLE": "SUNDALE RADIAL MEGA-CITY PREVIEW | NONCANONICAL",
-      "LANDMARK_APARTMENT_MANAGEMENT": "APT MGMT",
-      "LANDMARK_ARENA": "ARENA",
-      "LANDMARK_CLOTHING": "CLOTHING",
-      "LANDMARK_COMMONS_PARK": "COMMONS / PARK",
-      "LANDMARK_FURNITURE": "FURNITURE",
-      "LANDMARK_JOB": "JOB",
-      "LANDMARK_PUBLIC_COURT": "PUBLIC COURT",
-      "LANDMARK_STUDIO_APARTMENT": "STUDIO / APT",
-      "LANDMARK_TICKET_BOOTH": "TICKET",
-      "TOWER_CORE_TOWER__EAST_01": "CORE EAST 01",
-      "TOWER_CORE_TOWER__EAST_02": "CORE EAST 02",
-      "TOWER_CORE_TOWER__EAST_03": "CORE EAST 03",
-      "TOWER_CORE_TOWER__NORTH_01": "CORE NORTH 01",
-      "TOWER_CORE_TOWER__NORTH_02": "CORE NORTH 02",
-      "TOWER_CORE_TOWER__NORTH_03": "CORE NORTH 03",
-      "TOWER_CORE_TOWER__SOUTH_01": "CORE SOUTH 01",
-      "TOWER_CORE_TOWER__SOUTH_02": "CORE SOUTH 02",
-      "TOWER_CORE_TOWER__SOUTH_03": "CORE SOUTH 03",
-      "TOWER_CORE_TOWER__WEST_01": "CORE WEST 01",
-      "TOWER_CORE_TOWER__WEST_02": "CORE WEST 02",
-      "TOWER_CORE_TOWER__WEST_03": "CORE WEST 03",
-      "TOWER_SKYLINE_TOWER__EAST_01": "SKY EAST 01",
-      "TOWER_SKYLINE_TOWER__EAST_02": "SKY EAST 02",
-      "TOWER_SKYLINE_TOWER__EAST_03": "SKY EAST 03",
-      "TOWER_SKYLINE_TOWER__NORTH_01": "SKY NORTH 01",
-      "TOWER_SKYLINE_TOWER__NORTH_02": "SKY NORTH 02",
-      "TOWER_SKYLINE_TOWER__NORTH_03": "SKY NORTH 03",
-      "TOWER_SKYLINE_TOWER__SOUTH_01": "SKY SOUTH 01",
-      "TOWER_SKYLINE_TOWER__SOUTH_02": "SKY SOUTH 02",
-      "TOWER_SKYLINE_TOWER__SOUTH_03": "SKY SOUTH 03",
-      "TOWER_SKYLINE_TOWER__WEST_01": "SKY WEST 01",
-      "TOWER_SKYLINE_TOWER__WEST_02": "SKY WEST 02",
-      "TOWER_SKYLINE_TOWER__WEST_03": "SKY WEST 03"
+      "BUSINESS_ARENA_ENTERTAINMENT": "P | ENTERTAINMENT + 4 RESTAURANT",
+      "BUSINESS_DINING_NIGHTLIFE": "P | 8 BAR SHELLS + 4 RESTAURANT",
+      "BUSINESS_FINANCIAL_DOWNTOWN": "P | 12 OFFICE + 4 RESTAURANT",
+      "BUSINESS_HOME_DESIGN_FURNITURE": "P | 8 SHOWROOMS + 4 RESTAURANT",
+      "BUSINESS_RESIDENTIAL_NEIGHBORHOOD_SERVICES": "P | NEIGHBORHOOD SERVICES + 4 RESTAURANT",
+      "BUSINESS_SHOPPING_RETAIL": "P | 3 SHOPPING CENTERS + 4 RESTAURANT",
+      "DISTRICT_ARENA_ENTERTAINMENT": "ARENA + ENTERTAINMENT",
+      "DISTRICT_DINING_NIGHTLIFE": "DINING + NIGHTLIFE",
+      "DISTRICT_FINANCIAL_DOWNTOWN": "FINANCIAL + DOWNTOWN",
+      "DISTRICT_HOME_DESIGN_FURNITURE": "HOME DESIGN + FURNITURE",
+      "DISTRICT_RESIDENTIAL_NEIGHBORHOOD_SERVICES": "RESIDENTIAL + NEIGHBORHOOD SERVICES",
+      "DISTRICT_SHOPPING_RETAIL": "SHOPPING + RETAIL",
+      "INFO_BUSINESS_LEGEND": "ORANGE RESTAURANT | PURPLE BAR SHELL | BLUE SHOPPING | TEAL SHOWROOM | GOLD OFFICE",
+      "INFO_SCOPE_LEGEND": "A = EXISTING FUNCTIONAL | P = SCENIC SHELLS | 12 SPOKES + 3 RINGS + 48 LOCAL | NO DISTANCE / CAPACITY",
+      "INFO_TITLE": "SUNDALE BUSINESS-CLUSTERED MEGA-CITY | NONCANONICAL",
+      "LANDMARK_APARTMENT_MANAGEMENT": "A | APT MGMT",
+      "LANDMARK_ARENA": "A | ARENA",
+      "LANDMARK_CLOTHING": "A | CLOTHING",
+      "LANDMARK_COMMONS_PARK": "A | COMMONS / PARK",
+      "LANDMARK_FURNITURE": "A | FURNITURE",
+      "LANDMARK_JOB": "A | JOB",
+      "LANDMARK_PUBLIC_COURT": "A | PUBLIC COURT",
+      "LANDMARK_STUDIO_APARTMENT": "A | STUDIO / APT",
+      "LANDMARK_TICKET_BOOTH": "A | TICKET"
     },
     "minimum_contrast_ratio": 5.0,
-    "plate_count": 39,
+    "plate_count": 24,
     "required_landmark_count": 9,
     "top_down_only": true,
-    "total": 39,
-    "tower_count": 24
+    "total": 24
   },
   "limitations": [
     "not production Unreal geometry or a production-route replacement",
-    "not approved final placement, capacity, travel time, interiors, facades, collision, materials, lighting, accessibility, usability, performance, or readiness",
+    "business labels are scenic architectural/land-use shells only, not services, alcohol, purchases, catalogs, economy, or gameplay",
+    "not approved final placement, capacity, travel time, interiors, facades, collision, materials, lighting, age-rating, accessibility, usability, performance, or readiness",
     "background skyline towers are outside the proposed playable/collision boundary",
     "park lawns, promenades, and tree groves are native low-poly review placeholders, not final landscape assets"
   ],
-  "phase": "Phase 1L.3a radial mega-city replacement preview",
+  "phase": "Phase 1L.3a business-clustered mega-city replacement preview",
   "preview_contract": {
-    "background_towers_per_side": {
-      "EAST": 3,
-      "NORTH": 3,
-      "SOUTH": 3,
-      "WEST": 3
+    "alcohol_service_added": false,
+    "background_towers_per_sector": {
+      "ARENA_ENTERTAINMENT": 4,
+      "DINING_NIGHTLIFE": 4,
+      "FINANCIAL_DOWNTOWN": 4,
+      "HOME_DESIGN_FURNITURE": 4,
+      "RESIDENTIAL_NEIGHBORHOOD_SERVICES": 4,
+      "SHOPPING_RETAIL": 4
     },
+    "business_land_use_counts": {
+      "FINANCIAL_OFFICE_SCENIC": 12,
+      "FURNITURE_SHOWROOM_SCENIC": 8,
+      "NIGHTLIFE_BAR_SCENIC": 8,
+      "RESTAURANT_SCENIC": 24,
+      "SHOPPING_CENTER_SCENIC": 3
+    },
+    "business_land_use_scope": "SCENIC_ARCHITECTURAL_LAND_USE_SHELLS_ONLY",
+    "business_services_added": false,
     "commons_park_m": [
-      320.0,
-      240.0
+      600.0,
+      420.0
     ],
-    "core_tower_base_count": 12,
+    "core_tower_base_count": 36,
     "core_towers_per_district": {
-      "EAST_COMMERCE_WORK": 3,
-      "NORTH_ARENA_ENTERTAINMENT": 3,
-      "SOUTH_RESIDENTIAL_RETAIL": 3,
-      "WEST_RESIDENTIAL_SERVICES": 3
+      "ARENA_ENTERTAINMENT": 6,
+      "DINING_NIGHTLIFE": 5,
+      "FINANCIAL_DOWNTOWN": 12,
+      "HOME_DESIGN_FURNITURE": 4,
+      "RESIDENTIAL_NEIGHBORHOOD_SERVICES": 4,
+      "SHOPPING_RETAIL": 5
     },
-    "district_count": 4,
+    "district_count": 6,
     "districts": {
-      "EAST_COMMERCE_WORK": {
+      "ARENA_ENTERTAINMENT": {
         "center_m": [
-          530.0,
-          0.0
+          0.0,
+          650.0
         ],
         "size_m": [
-          340.0,
+          1000.0,
+          400.0
+        ]
+      },
+      "DINING_NIGHTLIFE": {
+        "center_m": [
+          0.0,
+          -650.0
+        ],
+        "size_m": [
+          1000.0,
+          400.0
+        ]
+      },
+      "FINANCIAL_DOWNTOWN": {
+        "center_m": [
+          800.0,
+          370.0
+        ],
+        "size_m": [
+          550.0,
           440.0
         ]
       },
-      "NORTH_ARENA_ENTERTAINMENT": {
+      "HOME_DESIGN_FURNITURE": {
         "center_m": [
-          0.0,
-          360.0
+          -800.0,
+          -370.0
         ],
         "size_m": [
-          1400.0,
-          280.0
+          550.0,
+          440.0
         ]
       },
-      "SOUTH_RESIDENTIAL_RETAIL": {
+      "RESIDENTIAL_NEIGHBORHOOD_SERVICES": {
         "center_m": [
-          0.0,
-          -360.0
+          -800.0,
+          370.0
         ],
         "size_m": [
-          1400.0,
-          280.0
+          550.0,
+          440.0
         ]
       },
-      "WEST_RESIDENTIAL_SERVICES": {
+      "SHOPPING_RETAIL": {
         "center_m": [
-          -530.0,
-          0.0
+          800.0,
+          -370.0
         ],
         "size_m": [
-          340.0,
+          550.0,
           440.0
         ]
       }
     },
     "eye_camera_clearance_m": 20.0,
-    "eye_view_targets_commons_park": true,
+    "eye_views_frame_park_circulation_and_district_skyline": true,
     "first_hour_landmarks_near_inner_ring": true,
+    "gameplay_fields": [],
     "interiors": false,
     "park_placeholder_roles": {
       "LAWN_QUADRANT": 4,
@@ -143,24 +164,32 @@
       "TREE_GROVE_PLACEHOLDER": 4
     },
     "playable_boundary_m": [
-      1400.0,
-      1000.0
+      2400.0,
+      1800.0
     ],
     "preview_circulation": {
       "canonical": false,
       "capacity_claim": false,
       "collision_claim": false,
       "exact_distance_m": null,
-      "local_cross_streets": 16,
+      "local_cross_streets": 48,
       "local_cross_streets_per_district": {
-        "EAST_COMMERCE_WORK": 4,
-        "NORTH_ARENA_ENTERTAINMENT": 4,
-        "SOUTH_RESIDENTIAL_RETAIL": 4,
-        "WEST_RESIDENTIAL_SERVICES": 4
+        "ARENA_ENTERTAINMENT": 8,
+        "DINING_NIGHTLIFE": 8,
+        "FINANCIAL_DOWNTOWN": 8,
+        "HOME_DESIGN_FURNITURE": 8,
+        "RESIDENTIAL_NEIGHBORHOOD_SERVICES": 8,
+        "SHOPPING_RETAIL": 8
       },
-      "radial_spokes": 8,
-      "ring_roads": 2,
+      "radial_spokes": 12,
+      "ring_roads": 3,
       "travel_time_claim": false
+    },
+    "purchases_or_catalog_added": false,
+    "required_landmark_structure": {
+      "attached_apartment_management_kiosk": 1,
+      "commons_park": 1,
+      "functional_building_or_location_identities": 7
     },
     "required_landmarks": [
       "STUDIO_APARTMENT",
@@ -173,19 +202,29 @@
       "PUBLIC_COURT",
       "COMMONS_PARK"
     ],
-    "skyscraper_count": 24,
+    "restaurant_frontages_per_district": {
+      "ARENA_ENTERTAINMENT": 4,
+      "DINING_NIGHTLIFE": 4,
+      "FINANCIAL_DOWNTOWN": 4,
+      "HOME_DESIGN_FURNITURE": 4,
+      "RESIDENTIAL_NEIGHBORHOOD_SERVICES": 4,
+      "SHOPPING_RETAIL": 4
+    },
+    "skyscraper_count": 60,
     "street_guides_visible_in_eye_views": true,
     "street_level_only_initially": true,
-    "street_mass_count": 72,
+    "street_mass_count": 144,
     "street_masses_per_district": {
-      "EAST_COMMERCE_WORK": 18,
-      "NORTH_ARENA_ENTERTAINMENT": 18,
-      "SOUTH_RESIDENTIAL_RETAIL": 18,
-      "WEST_RESIDENTIAL_SERVICES": 18
+      "ARENA_ENTERTAINMENT": 24,
+      "DINING_NIGHTLIFE": 24,
+      "FINANCIAL_DOWNTOWN": 24,
+      "HOME_DESIGN_FURNITURE": 24,
+      "RESIDENTIAL_NEIGHBORHOOD_SERVICES": 24,
+      "SHOPPING_RETAIL": 24
     },
     "tower_placement_counts": {
-      "BACKGROUND_SKYLINE": 12,
-      "PLAYABLE_CORE": 12
+      "BACKGROUND_SKYLINE": 24,
+      "PLAYABLE_CORE": 36
     },
     "vehicles": false
   },
@@ -197,96 +236,132 @@
   },
   "renders": [
     {
-      "bytes": 3327374,
+      "bytes": 6874084,
       "camera_location_m": [
         0.0,
         0.0,
-        1500.0
+        2200.0
       ],
-      "file": "renders/TopDown_RadialMegaCityPreview.png",
-      "height": 1800,
-      "sha256": "094CEC0B23E8EFFC7BECD06BDB57918F33135579E663FF24828D66017A34AC77",
+      "file": "renders/TopDown_BusinessClusteredMegaCityPreview.png",
+      "height": 2400,
+      "sha256": "7FA4CDFB6F9D18CCCD6F5C71AB54CE60906FF53303B9CECEF7F227582D1A57F3",
       "target_m": [
         0.0,
         0.0,
         0.0
       ],
       "view_type": "top_down",
-      "width": 2560
+      "width": 3200
     },
     {
-      "bytes": 655631,
+      "bytes": 651716,
       "camera_location_m": [
-        0.0,
-        -145.0,
+        -325.0,
+        -235.0,
         1.7
       ],
-      "file": "renders/EyeLevel_SouthResidentialRetailParkSkyline.png",
+      "file": "renders/EyeLevel_FinancialDowntownParkSkyline.png",
       "height": 720,
-      "sha256": "13B75CA75145EB23EB4AAB3629776A6161B9A13C4C661252469E655F3791AD09",
+      "sha256": "A35DD1723D381FB8F0C699D6D514D3FE48D86F7C6143DF4207F94933D62ED456",
       "target_m": [
-        0.0,
-        20.0,
-        12.0
+        800.0,
+        370.0,
+        30.0
       ],
       "view_type": "eye_level",
       "width": 1280
     },
     {
-      "bytes": 676186,
+      "bytes": 657774,
       "camera_location_m": [
-        -185.0,
         0.0,
+        -235.0,
         1.7
       ],
-      "file": "renders/EyeLevel_WestResidentialServicesParkSkyline.png",
+      "file": "renders/EyeLevel_ArenaEntertainmentParkSkyline.png",
       "height": 720,
-      "sha256": "775A3DFFC4C3A61657A59ED085AE4569CCF8F5CDB9EDB0BA52B4C7025CAFBB93",
+      "sha256": "6678F3011396C91F183D469BCDE43FECAFB7268AB55CDE1C0A60DB62AF805154",
       "target_m": [
-        20.0,
         0.0,
-        12.0
+        650.0,
+        30.0
       ],
       "view_type": "eye_level",
       "width": 1280
     },
     {
-      "bytes": 678776,
+      "bytes": 640231,
       "camera_location_m": [
-        185.0,
-        0.0,
+        -325.0,
+        235.0,
         1.7
       ],
-      "file": "renders/EyeLevel_EastCommerceWorkParkSkyline.png",
+      "file": "renders/EyeLevel_ShoppingRetailParkSkyline.png",
       "height": 720,
-      "sha256": "2279CD550BB3A6AC292160203D293308561415611D8E287A9264FED412233CF6",
+      "sha256": "2F12F28415BA3323063BBB33F93057DCC5F0F87279BFE8B34986FF3099AC15F7",
       "target_m": [
-        -20.0,
-        0.0,
-        12.0
+        800.0,
+        -370.0,
+        30.0
       ],
       "view_type": "eye_level",
       "width": 1280
     },
     {
-      "bytes": 656249,
+      "bytes": 622611,
       "camera_location_m": [
         0.0,
-        145.0,
+        235.0,
         1.7
       ],
-      "file": "renders/EyeLevel_NorthArenaEntertainmentParkSkyline.png",
+      "file": "renders/EyeLevel_DiningNightlifeParkSkyline.png",
       "height": 720,
-      "sha256": "BFDA7B6DEB10EDD82EE8F2651E643FD1B68F8D7D6719618A15359692674C05E7",
+      "sha256": "165629BAD52CF3E5385296016AEBDADB368F7C7F1555E23D57657F3106BBE5D9",
       "target_m": [
         0.0,
-        -20.0,
-        12.0
+        -650.0,
+        30.0
+      ],
+      "view_type": "eye_level",
+      "width": 1280
+    },
+    {
+      "bytes": 645820,
+      "camera_location_m": [
+        325.0,
+        235.0,
+        1.7
+      ],
+      "file": "renders/EyeLevel_HomeDesignFurnitureParkSkyline.png",
+      "height": 720,
+      "sha256": "E007694F8177A580E2556302740B4B3EC8ECDF98A1BC27D98653759C92767F07",
+      "target_m": [
+        -800.0,
+        -370.0,
+        30.0
+      ],
+      "view_type": "eye_level",
+      "width": 1280
+    },
+    {
+      "bytes": 649523,
+      "camera_location_m": [
+        325.0,
+        -235.0,
+        1.7
+      ],
+      "file": "renders/EyeLevel_ResidentialNeighborhoodServicesParkSkyline.png",
+      "height": 720,
+      "sha256": "F63488D09DE300A727CA5EBFEF31F67D524507D9E301539CB8AB4D54B678B02B",
+      "target_m": [
+        -800.0,
+        370.0,
+        30.0
       ],
       "view_type": "eye_level",
       "width": 1280
     }
   ],
-  "status": "noncanonical_owner_radial_mega_city_preview",
-  "supersedes": "Phase 1L.3a 800x600m/36-mass/10-tower metropolitan preview"
+  "status": "noncanonical_owner_business_clustered_mega_city_preview",
+  "supersedes": "Phase 1L.3a 1400x1000m/72-mass/24-tower radial mega-city preview"
 }
