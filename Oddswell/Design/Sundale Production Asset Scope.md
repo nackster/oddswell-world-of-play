@@ -168,6 +168,8 @@ The first production city kit is limited to these shared families:
 9. Court surface/lines.
 10. Foliage/trunk.
 
+Phase 1L.3h supplies one bounded shared material-family review board without starting production material work. It presents exactly the ten accepted families above as one standardized Blender-native `2x2x0.2 m`, `12`-triangle swatch each, below the `256`-triangle sample ceiling. The exact accepted palette anchors and native procedural/material-node allowlist are locked with no external reference, image texture, brand, catalog, interior, gameplay behavior, or production placement. One labeled `1920x1080` unified board and five labeled, balanced `1280x720` paired closeups are noncanonical owner-review evidence only. Owner acceptance and a separate promotion/expansion gate remain required before any sample becomes a production material family.
+
 Use tiling materials, trim sheets, and instances before unique textures. No real brands, teams, advertisements, copied landmarks, or unlicensed assets.
 
 ## Lightweight review sequence
