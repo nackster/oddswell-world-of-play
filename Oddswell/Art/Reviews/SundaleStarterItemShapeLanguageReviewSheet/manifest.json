@@ -1,0 +1,247 @@
+{
+  "contract": {
+    "brands": 0,
+    "catalog_additions": 0,
+    "contact_cell_count_per_item": 6,
+    "contact_view_count_per_item": 6,
+    "contact_views": [
+      "FRONT",
+      "REAR",
+      "LEFT",
+      "RIGHT",
+      "TOP",
+      "PERSPECTIVE"
+    ],
+    "external_fonts": 0,
+    "external_references": 0,
+    "gameplay_changes": 0,
+    "image_textures": 0,
+    "interiors": 0,
+    "item_count": 2,
+    "item_ids": [
+      "sundale_signal_jacket",
+      "sundale_modular_chair"
+    ],
+    "jacket_fit_instance_count": 2,
+    "jacket_fit_presentation_envelope_ids": [
+      "CharacterPresentationMasculine",
+      "CharacterPresentationFeminine"
+    ],
+    "jacket_review_fit_local_transform": {
+      "garment_local_dimensions_m": [
+        0.72,
+        0.24,
+        0.84
+      ],
+      "garment_local_location_m": [
+        0.0,
+        0.0,
+        1.21
+      ],
+      "garment_local_rotation_deg": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "native_geometry_material_text_only": true,
+    "native_material_slots_per_proxy": 2,
+    "new_catalog_identities": 0,
+    "node_allowlist": [
+      "ShaderNodeBsdfPrincipled",
+      "ShaderNodeOutputMaterial"
+    ],
+    "one_concept_proxy_mesh_per_item": true,
+    "preexisting_garment_transform_claimed": false,
+    "projected_cell_overlap_count": 0,
+    "projected_frame_safe": true,
+    "projected_item_label_overlap_count": 0,
+    "required_contact_annotation": [
+      "dimensions",
+      "triangles",
+      "material_slots",
+      "uv_channels",
+      "NONCANONICAL REVIEW"
+    ],
+    "source_images": 0,
+    "text_cell_contrast_ratio_minimum": 4.5,
+    "triangle_ceiling_per_proxy": 1500,
+    "triangle_counts": {
+      "sundale_modular_chair": 96,
+      "sundale_signal_jacket": 96
+    },
+    "uv_channels_per_proxy": 1
+  },
+  "engine": "BLENDER_EEVEE_NEXT",
+  "files": {
+    "blend": {
+      "bytes": 860857,
+      "file": "SundaleStarterItemShapeLanguageReviewSheet.blend",
+      "sha256": "1F9113B1F19A1AA0A145A9EB14E09AFA7DC55CDF341184BF548623A029C64283"
+    },
+    "provenance": {
+      "bytes": 982,
+      "file": "PROVENANCE.md",
+      "sha256": "68F55E0556FB28EEF1FF4DEB5DCB065C40127B13872BAA53AE1576BB4DE35A95"
+    },
+    "script": {
+      "bytes": 35828,
+      "file": "build_sundale_starter_item_shape_language.py",
+      "sha256": "18E7B3790E45B0C39E43A2ED7D7FAEF7987D4368270B8AF4F1A009DD3C665973"
+    }
+  },
+  "items": [
+    {
+      "category": "clothing",
+      "colors_rgba": [
+        [
+          0.12,
+          0.18,
+          0.22,
+          1.0
+        ],
+        [
+          0.08,
+          0.72,
+          0.68,
+          1.0
+        ]
+      ],
+      "dimensions_m": [
+        0.72,
+        0.24,
+        0.84
+      ],
+      "display_name": "Sundale Signal Jacket",
+      "item_id": "sundale_signal_jacket",
+      "origin_city": "Sundale",
+      "price_odds_bucks": 60,
+      "proxy_id": "PROXY__SUNDALE_SIGNAL_JACKET",
+      "slot": "outfit"
+    },
+    {
+      "category": "furniture",
+      "colors_rgba": [
+        [
+          0.22,
+          0.25,
+          0.28,
+          1.0
+        ],
+        [
+          0.08,
+          0.72,
+          0.68,
+          1.0
+        ]
+      ],
+      "dimensions_m": [
+        0.72,
+        0.72,
+        1.0
+      ],
+      "display_name": "Sundale Modular Chair",
+      "item_id": "sundale_modular_chair",
+      "origin_city": "Sundale",
+      "price_odds_bucks": 100,
+      "proxy_id": "PROXY__MODULAR_CHAIR",
+      "snap_point_id": "studio_primary"
+    }
+  ],
+  "lfs": {
+    "blend_required": true,
+    "pattern": "*.blend filter=lfs"
+  },
+  "limitations": [
+    "review proxies only, not production assets or final art",
+    "no deformation, accessibility, performance, interaction, placement, collision, or readiness claim",
+    "owner acceptance and a separate production promotion/expansion gate remain required",
+    "no roadmap Phase 2 or Version 1 authority"
+  ],
+  "phase": "Phase 1L.3i Sundale starter-item shape-language review sheet",
+  "production_authority_preserved": {
+    "client_changed": false,
+    "config_changed": false,
+    "map_changed": false,
+    "package_changed": false,
+    "phase_1k_waived": false,
+    "prior_review_artifacts_changed": false,
+    "runtime_changed": false,
+    "tests_changed": false
+  },
+  "production_sources": [
+    {
+      "bytes": 497852,
+      "file": "client/OddsWell/Source/OddsWell/OddsBucksLedger.cpp",
+      "lines": [
+        31,
+        32,
+        47,
+        49
+      ],
+      "sha256": "4281F9F9418ADCBBBA72EC8BD1C9107C5DA82D9D53A5134C5009B6D00C65C0B7"
+    },
+    {
+      "bytes": 618514,
+      "file": "client/OddsWell/Source/OddsWell/PlaceholderLocomotion.cpp",
+      "lines": [
+        81,
+        82,
+        123,
+        124,
+        125
+      ],
+      "sha256": "22E7B6FEED0E14DC23A8A900FB58E280606F9F9160ED3FE6F23D1460B99FE298"
+    }
+  ],
+  "renders": [
+    {
+      "bytes": 1958941,
+      "contact_views": [],
+      "file": "renders/Unified_StarterItemShapeLanguage.png",
+      "full_framing_validated": true,
+      "height": 1080,
+      "item_id": null,
+      "role": "UNIFIED",
+      "sha256": "1F215D30A01FBDCFCF042A3ECC140E6F1BCADF5A268B5A65AFA348E8025B9DC9",
+      "width": 1920
+    },
+    {
+      "bytes": 1994001,
+      "contact_views": [
+        "FRONT",
+        "REAR",
+        "LEFT",
+        "RIGHT",
+        "TOP",
+        "PERSPECTIVE"
+      ],
+      "file": "renders/ContactSheet_SundaleSignalJacket.png",
+      "full_framing_validated": true,
+      "height": 1080,
+      "item_id": "sundale_signal_jacket",
+      "role": "CONTACT_SHEET",
+      "sha256": "D5EC7F6095CE0B34FA434C50B653B51F53B9B31473AE1771C70C32E44660DD8E",
+      "width": 1920
+    },
+    {
+      "bytes": 1997960,
+      "contact_views": [
+        "FRONT",
+        "REAR",
+        "LEFT",
+        "RIGHT",
+        "TOP",
+        "PERSPECTIVE"
+      ],
+      "file": "renders/ContactSheet_SundaleModularChair.png",
+      "full_framing_validated": true,
+      "height": 1080,
+      "item_id": "sundale_modular_chair",
+      "role": "CONTACT_SHEET",
+      "sha256": "7E2CC667641D015D40E9B1DCF50C199AFE550290B1F50732E2C356202B87A3C4",
+      "width": 1920
+    }
+  ],
+  "status": "noncanonical_owner_review"
+}

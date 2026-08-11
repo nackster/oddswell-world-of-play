@@ -137,6 +137,10 @@ Job, Clothing, Furniture, Ticket Booth, and scenic buildings have no beta interi
 - One production Sundale Signal Jacket compatible with the approved avatar base.
 - No additional beta clothing or furniture catalog is authorized by this scope.
 
+Phase 1L.3i supplies one bounded starter-item shape-language review sheet without starting production clothing, furniture, rigging, deformation, placement, or import work. It preserves exactly the two existing catalog identities: the `60`-Odds-Bucks `sundale_signal_jacket` in the single `outfit` slot and the `100`-Odds-Bucks `sundale_modular_chair` at `studio_primary`. Exact production colors remain Signal Jacket slate/teal `(0.12,0.18,0.22,1)` / `(0.08,0.72,0.68,1)` and Modular Chair gray/teal `(0.22,0.25,0.28,1)` / `(0.08,0.72,0.68,1)`.
+
+Each item has one recognizable Blender-native `96`-triangle review proxy under a `1500`-triangle ceiling, exactly two native material slots, and one UV channel. The Jacket is also shown against both existing Phase 1L.3g presentation-envelope IDs with one identical new review-fit local transform; that transform is not claimed as pre-existing production data. One unified sheet and two six-view contact sheets are noncanonical review evidence only. Owner acceptance and a separate promotion/import gate remain required before either proxy becomes production art.
+
 ## Player-character art is a separate approval track
 
 No production person is being modeled yet. The current player is a primitive placeholder, and the final body proportions, faces, hair, and broader options remain open.
