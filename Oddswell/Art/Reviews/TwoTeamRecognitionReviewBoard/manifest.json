@@ -1,0 +1,148 @@
+{
+  "authority": {
+    "labels": [
+      "Harbor City Waves",
+      "Mesa Vista Sol"
+    ],
+    "palette_source": "approved Phase 1L.3j Scope Director gate",
+    "team_ids": [
+      "harbor_city_waves",
+      "mesa_vista_sol"
+    ]
+  },
+  "builder": {
+    "file": "build_two_team_recognition.py",
+    "runtime": "Python standard library",
+    "sha256": "af708ad547274fa4c01a18a6bfa85759a81314f17e4fcbf5859bbe4118fbb7b1"
+  },
+  "constraints": {
+    "animation": 0,
+    "arenas": 0,
+    "crowds": 0,
+    "downloads": 0,
+    "external_assets": 0,
+    "external_brands": 0,
+    "external_fonts": 0,
+    "external_images": 0,
+    "external_libraries": 0,
+    "external_references": 0,
+    "external_textures": 0,
+    "gameplay_changes": 0,
+    "jerseys": 0,
+    "mascots": 0,
+    "production_changes": 0,
+    "runtime_imports": 0,
+    "trade_dress": 0
+  },
+  "context_count": 8,
+  "contexts": [
+    {
+      "context_id": "identity_tile",
+      "context_label": "Identity tile",
+      "team_id": "harbor_city_waves"
+    },
+    {
+      "context_id": "compact_matchup_row",
+      "context_label": "Compact matchup row",
+      "team_id": "harbor_city_waves"
+    },
+    {
+      "context_id": "match_winner_selection_card",
+      "context_label": "Match Winner selection card",
+      "team_id": "harbor_city_waves"
+    },
+    {
+      "context_id": "score_receipt_token",
+      "context_label": "Score / receipt token",
+      "team_id": "harbor_city_waves"
+    },
+    {
+      "context_id": "identity_tile",
+      "context_label": "Identity tile",
+      "team_id": "mesa_vista_sol"
+    },
+    {
+      "context_id": "compact_matchup_row",
+      "context_label": "Compact matchup row",
+      "team_id": "mesa_vista_sol"
+    },
+    {
+      "context_id": "match_winner_selection_card",
+      "context_label": "Match Winner selection card",
+      "team_id": "mesa_vista_sol"
+    },
+    {
+      "context_id": "score_receipt_token",
+      "context_label": "Score / receipt token",
+      "team_id": "mesa_vista_sol"
+    }
+  ],
+  "contexts_per_team": 4,
+  "minimum_text_contrast": 13.6769,
+  "new_nightly_phase": "3/6",
+  "output_sha256": {
+    "HarborCityWaves.svg": "9245a7483f32589c94c2594e25e2dc7905688535198c1a66b1ea9d8d46c0e40b",
+    "MesaVistaSol.svg": "fa51c6f1a6f69d45578c5215cbed98db6caa36222371f0bfe92741065ce9e6cf",
+    "PROVENANCE.md": "30058f51a3fdc29219e5c252332dd656c3dab5c347a679967f689249b059c9bf",
+    "TwoTeamRecognitionReviewBoard.svg": "b1006b99aec6fc87344ceddd7abcb74506294b95dc19e7c9d527b33e73a02bf4"
+  },
+  "phase": "Phase 1L.3j",
+  "recognition_system_count": 2,
+  "renders": [
+    {
+      "contexts": 8,
+      "file": "TwoTeamRecognitionReviewBoard.svg",
+      "height": 1080,
+      "teams": 2,
+      "viewBox": "0 0 1920 1080",
+      "width": 1920
+    },
+    {
+      "contexts": 4,
+      "file": "HarborCityWaves.svg",
+      "height": 720,
+      "teams": 1,
+      "viewBox": "0 0 1280 720",
+      "width": 1280
+    },
+    {
+      "contexts": 4,
+      "file": "MesaVistaSol.svg",
+      "height": 720,
+      "teams": 1,
+      "viewBox": "0 0 1280 720",
+      "width": 1280
+    }
+  ],
+  "schema": "oddswell-two-team-recognition-review-v1",
+  "status": "NONCANONICAL REVIEW",
+  "support_palette": {
+    "charcoal": "#20272B",
+    "off_white": "#F7F3EA"
+  },
+  "team_count": 2,
+  "teams": [
+    {
+      "label": "Harbor City Waves",
+      "palette": {
+        "primary": "#315F79",
+        "secondary": "#D8C8A9"
+      },
+      "recognition_system": "three_band_wave",
+      "shape_label": "THREE-BAND WAVE",
+      "shape_semantics": "three parallel wave bands",
+      "team_id": "harbor_city_waves"
+    },
+    {
+      "label": "Mesa Vista Sol",
+      "palette": {
+        "primary": "#A65F47",
+        "secondary": "#B9A783"
+      },
+      "recognition_system": "radial_sun",
+      "shape_label": "RADIAL SUN",
+      "shape_semantics": "central disc with twelve rays",
+      "team_id": "mesa_vista_sol"
+    }
+  ]
+}

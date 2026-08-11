@@ -141,6 +141,12 @@ Phase 1L.3i supplies one bounded starter-item shape-language review sheet withou
 
 Each item has one recognizable Blender-native `96`-triangle review proxy under a `1500`-triangle ceiling, exactly two native material slots, and one UV channel. The Jacket is also shown against both existing Phase 1L.3g presentation-envelope IDs with one identical new review-fit local transform; that transform is not claimed as pre-existing production data. One unified sheet and two six-view contact sheets are noncanonical review evidence only. Owner acceptance and a separate promotion/import gate remain required before either proxy becomes production art.
 
+## Team recognition art is a separate approval track
+
+Phase 1L.3j supplies one bounded noncanonical color-and-shape recognition review board for exactly the two existing labels Harbor City Waves and Mesa Vista Sol. Harbor uses the exact `#315F79` / `#D8C8A9` review palette with three parallel wave bands; Mesa uses the exact `#A65F47` / `#B9A783` review palette with a central disc and twelve radial rays. Charcoal and off-white are support colors only. Every use also carries the full written team label, so recognition does not depend on color alone.
+
+Exactly four logical contexts per team are reviewed: identity tile, compact matchup row, Match Winner selection card, and score/receipt token. One unified SVG and two team closeups are deterministic review evidence only. Owner identity lock and a separate production promotion/integration gate remain required. This review does not add or rename a team, lock final logos or trade dress, create jerseys/mascots/arenas/crowds, alter schedule/wager/gameplay behavior, or authorize production team art.
+
 ## Player-character art is a separate approval track
 
 No production person is being modeled yet. The current player is a primitive placeholder, and the final body proportions, faces, hair, and broader options remain open.
