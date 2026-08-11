@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080" data-phase="Phase 1L.3k" data-context="UNIFIED" data-canonical="false">
+<rect id="background" x="0" y="0" width="1920" height="1080" fill="#2C4250"/>
+<rect id="unified_board" x="64" y="56" width="1792" height="968" rx="24" fill="#FAF8F0" stroke="#999EA2" stroke-width="4"/>
+<text id="title" data-type-role="DISPLAY_TITLE" x="112" y="132" font-family="Arial, sans-serif" font-size="42" font-weight="600" text-anchor="start" fill="#2C4250">FIRST-WAGER GRAPHIC LANGUAGE</text>
+<text id="instruction" data-type-role="INSTRUCTION" x="112" y="180" font-family="Arial, sans-serif" font-size="22" font-weight="500" text-anchor="start" fill="#2C4250">Review-only state shapes using the current Harbor / Mesa first-wager values</text>
+<rect id="state_card_INTERACT" x="112" y="240" width="520" height="196" rx="24" fill="#FAF8F0" stroke="#999EA2" stroke-width="4"/>
+<g id="mark_unified_1_INTERACT" data-state-id="INTERACT" data-shape-id="OPEN_CIRCLE_DOT" data-marker-color="#50B3AD" data-marker-background="#2C4250"><rect x="134" y="272" width="132" height="132" rx="18" fill="#2C4250"/><circle cx="200.0" cy="338.0" r="38.879999999999995" fill="none" stroke="#50B3AD" stroke-width="9.719999999999999"/><circle cx="200.0" cy="338.0" r="10.8" fill="#50B3AD"/></g>
+<text id="state_label_INTERACT" data-type-role="STATE_LABEL" x="284" y="322" font-family="Arial, sans-serif" font-size="25" font-weight="600" text-anchor="start" fill="#2C4250">INTERACT</text>
+<text id="shape_caption_INTERACT" x="284" y="366" font-family="Arial, sans-serif" font-size="18" font-weight="500" fill="#2C4250">OPEN CIRCLE DOT</text>
+<rect id="state_card_ACTIVE" x="682" y="240" width="520" height="196" rx="24" fill="#FAF8F0" stroke="#999EA2" stroke-width="4"/>
+<g id="mark_unified_2_ACTIVE" data-state-id="ACTIVE" data-shape-id="TRIANGLE" data-marker-color="#FAE595" data-marker-background="#2C4250"><rect x="704" y="272" width="132" height="132" rx="18" fill="#2C4250"/><polygon points="770.0,294.8 813.2,376.88 726.8,376.88" fill="#FAE595"/></g>
+<text id="state_label_ACTIVE" data-type-role="STATE_LABEL" x="854" y="322" font-family="Arial, sans-serif" font-size="25" font-weight="600" text-anchor="start" fill="#2C4250">ACTIVE</text>
+<text id="shape_caption_ACTIVE" x="854" y="366" font-family="Arial, sans-serif" font-size="18" font-weight="500" fill="#2C4250">TRIANGLE</text>
+<rect id="state_card_LOCKED" x="1252" y="240" width="520" height="196" rx="24" fill="#FAF8F0" stroke="#999EA2" stroke-width="4"/>
+<g id="mark_unified_3_LOCKED" data-state-id="LOCKED" data-shape-id="BARRED_SQUARE" data-marker-color="#999EA2" data-marker-background="#2C4250"><rect x="1274" y="272" width="132" height="132" rx="18" fill="#2C4250"/><rect x="1301.12" y="299.12" width="77.75999999999999" height="77.75999999999999" rx="5.4" fill="none" stroke="#999EA2" stroke-width="9.719999999999999"/><line x1="1309.76" y1="368.24" x2="1370.24" y2="307.76" stroke="#999EA2" stroke-width="9.719999999999999"/></g>
+<text id="state_label_LOCKED" data-type-role="STATE_LABEL" x="1424" y="322" font-family="Arial, sans-serif" font-size="25" font-weight="600" text-anchor="start" fill="#2C4250">LOCKED</text>
+<text id="shape_caption_LOCKED" x="1424" y="366" font-family="Arial, sans-serif" font-size="18" font-weight="500" fill="#2C4250">BARRED SQUARE</text>
+<rect id="state_card_SELECTED" x="112" y="480" width="520" height="196" rx="24" fill="#FAF8F0" stroke="#999EA2" stroke-width="4"/>
+<g id="mark_unified_4_SELECTED" data-state-id="SELECTED" data-shape-id="DIAMOND" data-marker-color="#FAF8F0" data-marker-background="#2C4250"><rect x="134" y="512" width="132" height="132" rx="18" fill="#2C4250"/><polygon points="200.0,532.64 245.36,578.0 200.0,623.36 154.64,578.0" fill="#FAF8F0"/></g>
+<text id="state_label_SELECTED" data-type-role="STATE_LABEL" x="284" y="562" font-family="Arial, sans-serif" font-size="25" font-weight="600" text-anchor="start" fill="#2C4250">SELECTED</text>
+<text id="shape_caption_SELECTED" x="284" y="606" font-family="Arial, sans-serif" font-size="18" font-weight="500" fill="#2C4250">DIAMOND</text>
+<rect id="state_card_CONFIRM" x="682" y="480" width="520" height="196" rx="24" fill="#FAF8F0" stroke="#999EA2" stroke-width="4"/>
+<g id="mark_unified_5_CONFIRM" data-state-id="CONFIRM" data-shape-id="DOUBLE_CHEVRON" data-marker-color="#FAE595" data-marker-background="#2C4250"><rect x="704" y="512" width="132" height="132" rx="18" fill="#2C4250"/><polyline points="721.4,539.12 758.12,578.0 721.4,616.88" fill="none" stroke="#FAE595" stroke-width="9.719999999999999" stroke-linecap="round" stroke-linejoin="round"/><polyline points="759.2,539.12 795.92,578.0 759.2,616.88" fill="none" stroke="#FAE595" stroke-width="9.719999999999999" stroke-linecap="round" stroke-linejoin="round"/></g>
+<text id="state_label_CONFIRM" data-type-role="STATE_LABEL" x="854" y="562" font-family="Arial, sans-serif" font-size="25" font-weight="600" text-anchor="start" fill="#2C4250">CONFIRM</text>
+<text id="shape_caption_CONFIRM" x="854" y="606" font-family="Arial, sans-serif" font-size="18" font-weight="500" fill="#2C4250">DOUBLE CHEVRON</text>
+<rect id="state_card_SETTLED" x="1252" y="480" width="520" height="196" rx="24" fill="#FAF8F0" stroke="#999EA2" stroke-width="4"/>
+<g id="mark_unified_6_SETTLED" data-state-id="SETTLED" data-shape-id="RING_CHECK" data-marker-color="#50B3AD" data-marker-background="#2C4250"><rect x="1274" y="512" width="132" height="132" rx="18" fill="#2C4250"/><circle cx="1340.0" cy="578.0" r="41.04" fill="none" stroke="#50B3AD" stroke-width="9.719999999999999"/><polyline points="1313.0,580.16 1333.52,599.6 1369.16,557.48" fill="none" stroke="#50B3AD" stroke-width="9.719999999999999" stroke-linecap="round" stroke-linejoin="round"/></g>
+<text id="state_label_SETTLED" data-type-role="STATE_LABEL" x="1424" y="562" font-family="Arial, sans-serif" font-size="25" font-weight="600" text-anchor="start" fill="#2C4250">SETTLED</text>
+<text id="shape_caption_SETTLED" x="1424" y="606" font-family="Arial, sans-serif" font-size="18" font-weight="500" fill="#2C4250">RING CHECK</text>
+<text id="current_value_1" data-type-role="PRIMARY_VALUE" x="112" y="810" font-family="Arial, sans-serif" font-size="22" font-weight="600" text-anchor="start" fill="#2C4250">Harbor City Waves vs Mesa Vista Sol</text>
+<text id="current_value_2" data-type-role="PRIMARY_VALUE" x="720" y="810" font-family="Arial, sans-serif" font-size="24" font-weight="600" text-anchor="start" fill="#2C4250">40 Odds Bucks</text>
+<text id="current_value_3" data-type-role="PRIMARY_VALUE" x="1110" y="810" font-family="Arial, sans-serif" font-size="24" font-weight="600" text-anchor="start" fill="#2C4250">94 Odds Bucks</text>
+<text id="current_value_4" data-type-role="PRIMARY_VALUE" x="1470" y="810" font-family="Arial, sans-serif" font-size="24" font-weight="600" text-anchor="start" fill="#2C4250">154 Odds Bucks</text>
+<line id="baseline_rule" x1="112" y1="850" x2="1808" y2="850" stroke="#999EA2" stroke-width="3"/>
+</svg>
