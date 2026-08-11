@@ -1,0 +1,112 @@
+{
+  "boundaries": {
+    "animation": 0,
+    "brands": 0,
+    "external_fonts": 0,
+    "external_references": 0,
+    "foreign_objects": 0,
+    "images": 0,
+    "interiors": 0,
+    "scripts": 0,
+    "textures": 0
+  },
+  "builder": {
+    "bytes": 19825,
+    "file": "build_current_camera_composition.py",
+    "sha256": "FC4725CFBF8CE626A0936A40D24D39DDAA255783EFBC5C8BCCCFB9B7C4F11620"
+  },
+  "claim_flags": {
+    "accessibility_ready": false,
+    "camera_change": false,
+    "gameplay_change": false,
+    "lens_lock": false,
+    "production_claim": false
+  },
+  "contrast_contract": {
+    "graphic_minimum": 3.0,
+    "text_minimum": 4.5
+  },
+  "layout_contract": {
+    "label_containment": true,
+    "outer_margin_percent": 5,
+    "proxy_containment": true,
+    "proxy_label_overlap_count": 0,
+    "stadium_reserved_hud_top_percent": 18
+  },
+  "outputs": [
+    {
+      "bytes": 6398,
+      "file": "Unified_CurrentBetaCameraComposition.svg",
+      "height": 1080,
+      "sha256": "8B35FC83A96AD9DA1EBD3E55EE560AD10CED4B728C798539C04A5DB8D4A933EA",
+      "width": 1920
+    },
+    {
+      "bytes": 3301,
+      "file": "City_CurrentBetaCameraComposition.svg",
+      "height": 720,
+      "sha256": "4D6DDE25C183E9BDF93AC1DAAA10B848D46DEDB8FF0FE6D694BFD4BA2F55CFE1",
+      "width": 1280
+    },
+    {
+      "bytes": 3042,
+      "file": "Stadium_CurrentBetaCameraComposition.svg",
+      "height": 720,
+      "sha256": "C06A6BACF6E5D09F1FAAADC37BD38F40831FCBC0730230EC3E5BADFCF86CA81D",
+      "width": 1280
+    }
+  ],
+  "palette": [
+    "#2C4250",
+    "#50B3AD",
+    "#FAE595",
+    "#999EA2",
+    "#FAF8F0"
+  ],
+  "phase": "Phase 1L.3l",
+  "provenance": {
+    "bytes": 1678,
+    "file": "PROVENANCE.md",
+    "sha256": "06B8C268AD076491A44A49BE42A0F9E34F50DEF74C65D735AF514A4CA301BD66"
+  },
+  "renderer": "python_stdlib_native_svg",
+  "scenarios": [
+    "CITY_AVATAR_CLOTHING_READ",
+    "CITY_DESTINATION_LANDMARK_READ",
+    "STADIUM_FULL_COURT_ACTION_READ",
+    "STADIUM_SCORE_EVENT_SAFE_AREA"
+  ],
+  "schema": "oddswell-current-beta-camera-composition-v1",
+  "sources": {
+    "city": {
+      "attachment_z": 65,
+      "boom": 420,
+      "collision": true,
+      "fov": "ENGINE_DEFAULT_UNSET",
+      "id": "CITY_THIRD_PERSON_TRAILING",
+      "pitch_max": 65,
+      "pitch_min": -65,
+      "source": "client/OddsWell/Source/OddsWell/PlaceholderLocomotion.cpp",
+      "source_sha256": "22E7B6FEED0E14DC23A8A900FB58E280606F9F9160ED3FE6F23D1460B99FE298",
+      "yaw": "continuous"
+    },
+    "stadium": {
+      "fixed": true,
+      "fov": 55,
+      "id": "STADIUM_FIXED_BROADCAST",
+      "location": [
+        2400,
+        -3000,
+        1800
+      ],
+      "rotation": [
+        -25,
+        129,
+        0
+      ],
+      "source": "client/OddsWell/Source/OddsWell/ReplayBenchmarkActor.cpp",
+      "source_sha256": "CE070D7EC2EF7D94093B5CD943C271426BCF8A10B7D31D287BC32235FD8F3116"
+    }
+  },
+  "status": "nonproduction_review_evidence"
+}
