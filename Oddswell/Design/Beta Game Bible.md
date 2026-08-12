@@ -358,6 +358,12 @@ Phase 1L.1a adds one bounded native-primitive presentation layer to the existing
 
 This is a recognizable direction check, not final city art. Existing native directional light, sky, atmosphere, and fog remain unchanged; no new lighting system, calibrated final material, texture, external asset, music, district, or final-art approval is claimed. See [[Development/Reports/Phase 1L1a Sundale Core Block Presentation Pass]].
 
+### Bounded Sundale residential-facade production candidate
+
+After the owner accepted the six-district facade/tower architectural direction and explicitly authorized the first build, Phase 1L.4a creates exactly one original source asset: `SM_Sundale_ResidentialFacade_A`. It promotes only `FACADE_SAMPLE__RESIDENTIAL_NEIGHBORHOOD_SERVICES` into a bounded `5.2 x 4.1 x 5.0 m`, `96`-triangle production candidate with one mass, three opaque bays, one parapet accent, two shallow balconies, and one stoop. The asset has one UV channel and one vertex-color material slot using only warm limestone, muted terracotta, sand concrete, and charcoal gray.
+
+The deterministic Blender source, deterministic FBX export, provenance, manifest, and six-view `3200x1800` contact sheet are production-pipeline evidence only. Status remains `PRODUCTION_CANDIDATE_NOT_INTEGRATED`: no Unreal import, production placement, collision, LOD, route/map change, family expansion, final-art claim, gameplay change, or beta-readiness claim is authorized. See [[Development/Reports/Phase 1L4a Sundale Residential Facade Production Candidate Contact Sheet]].
+
 ## Admin and operations
 
 The local Brain Observatory grows into the game Admin Console only as real systems exist. Beta operations eventually need truthful controls or views for:

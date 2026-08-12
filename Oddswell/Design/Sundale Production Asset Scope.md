@@ -1,6 +1,6 @@
 # Sundale Production Asset Scope
 
-Status: **OWNER-ACCEPTED CURRENT PLANNING BASELINE - PRODUCTION PROMOTION STILL REQUIRES A SEPARATE GATE**
+Status: **OWNER-ACCEPTED CURRENT PLANNING BASELINE - EXACTLY ONE RESIDENTIAL FACADE PRODUCTION CANDIDATE AUTHORIZED; OTHER PROMOTION STILL GATED**
 
 This document turns the approved Sundale concept direction into a complete, reviewable beta art-production boundary. The owner superseded the earlier small-city, metropolitan, and radial boards with a larger noncanonical business-clustered mega-city review. That preview does not mutate the proven production graybox, claim that the listed production assets exist, or promote the Phase 1L.2 Job-canopy pilot to canonical final art.
 
@@ -46,7 +46,7 @@ These are the only unique beta destination exteriors. Store and Job gameplay rem
 
 | ID | Asset or set | Required pieces | Interior for beta | Status |
 | --- | --- | --- | --- | --- |
-| `BLD-STUDIO-EXT` | Starter apartment/residential exterior | `3-5` story shell, Studio doorway, modest residential windows/balconies, awning, return landmark | Private Studio only | Production model not started |
+| `BLD-STUDIO-EXT` | Starter apartment/residential exterior | `3-5` story shell, Studio doorway, modest residential windows/balconies, awning, return landmark | Private Studio only | One bounded facade production candidate exists; not imported or integrated |
 | `BLD-JOB-EXT` | Job building and frontage | Practical shell, two canopy piers, canopy header, landing, approach cue | No | Two-piece canopy pipeline pilot only; final Job fiction remains open |
 | `BLD-CLOTHING-EXT` | Clothing store exterior | Covered-promenade shell, two posts, header, display bay, entrance cue | No | Production model not started |
 | `BLD-FURNITURE-EXT` | Furniture store exterior | Covered-promenade shell, two posts, header, display bay, entrance cue | No | Production model not started |
@@ -77,6 +77,14 @@ The current planning composition is owner-accepted. A future bounded revision re
 Phase 1L.3b narrows the next art decision to one exterior facade/tower pair for each accepted district ID. The board uses only Blender-native opaque low-poly geometry and the frozen seven-color planning palette. Facades remain below `240` triangles each and tower silhouettes below `96` triangles each; the unified board and six closeups are review evidence, not a production kit.
 
 The samples add no texture, external reference, interior, brand, catalog, framework, placement, collision, service, or gameplay behavior. They do not alter the accepted `2400x1800 m`, six-district, `144`-mass, sixty-tower planning baseline or the production `800 m` route. Owner acceptance is required before any sample is promoted, iterated into a reusable production family, or used to justify expansion.
+
+### First bounded facade production candidate
+
+The owner accepted the six-district facade/tower architectural direction with later bounded tweaks allowed and authorized the first build. Phase 1L.4a therefore promotes only `FACADE_SAMPLE__RESIDENTIAL_NEIGHBORHOOD_SERVICES` into `SM_Sundale_ResidentialFacade_A`, status `PRODUCTION_CANDIDATE_NOT_INTEGRATED`.
+
+The exact candidate contract is `5.2 x 4.1 x 5.0 m`, `96` triangles, one UV channel, one vertex-color material slot, and the following geometry roles: one mass, three opaque bays, one parapet accent, two shallow balconies, and one stoop. Its palette is limited to warm limestone, muted terracotta, sand concrete, and charcoal gray. Blender-native source and FBX export have no external references, images, textures, fonts, downloads, brands, catalogs, libraries, or paid services.
+
+This approval does not authorize a second facade, tower, reusable family, Unreal import, production placement, collision, LODs, map/route mutation, final art, citywide implementation, or roadmap Phase 2. Those remain separate evidence gates. See [[Development/Reports/Phase 1L4a Sundale Residential Facade Production Candidate Contact Sheet]].
 
 ## Central commons and landscape
 
