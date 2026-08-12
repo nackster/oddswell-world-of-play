@@ -47,6 +47,7 @@
 #include "Misc/Paths.h"
 #include "Net/UnrealNetwork.h"
 #include "PublicLeagueView.h"
+#include "PhysicsEngine/BodySetup.h"
 #include "ReplayBenchmarkActor.h"
 #include "StudioHomeSave.h"
 #include "UnrealClient.h"
@@ -89,6 +90,8 @@ constexpr float JobInteractionRadius = 350.0f;
 constexpr TCHAR JobInteractionPrompt[] = TEXT("Press E to complete a shift (100 Odds Bucks once every 24 hours)");
 constexpr TCHAR JobCanopyPierAssetPath[] = TEXT("/Game/Art/Pilots/SundaleJobCanopy/SM_JobCanopy_Pier.SM_JobCanopy_Pier");
 constexpr TCHAR JobCanopyHeaderAssetPath[] = TEXT("/Game/Art/Pilots/SundaleJobCanopy/SM_JobCanopy_Header.SM_JobCanopy_Header");
+constexpr TCHAR ResidentialFacadeAssetPath[] = TEXT("/Game/Art/Production/SundaleArchitecture/ResidentialNeighborhoodServices/SM_Sundale_ResidentialFacade_A.SM_Sundale_ResidentialFacade_A");
+constexpr TCHAR ResidentialFacadeMaterialPath[] = TEXT("/Game/Art/Production/SundaleArchitecture/ResidentialNeighborhoodServices/M_Sundale_ResidentialFacade_VertexColor.M_Sundale_ResidentialFacade_VertexColor");
 constexpr float ClothingStoreInteractionRadius = 350.0f;
 constexpr float FurnitureStoreInteractionRadius = 350.0f;
 constexpr float ApartmentManagementInteractionRadius = 350.0f;
@@ -112,6 +115,7 @@ const FName ApartmentManagementKioskTag(TEXT("OddsWellApartmentManagementKiosk")
 const FName SundalePresentationTag(TEXT("OddsWellSundalePresentation"));
 const FName SundaleDestinationIdentityTag(TEXT("OddsWellSundaleDestinationIdentity"));
 const FName SundaleJobCanopyPilotTag(TEXT("OddsWellSundaleJobCanopyPilot"));
+const FName SundaleResidentialFacadeCandidateTag(TEXT("OddsWellSundaleResidentialFacadeCandidate"));
 const FName StadiumStructureTag(TEXT("OddsWellStadiumStructure"));
 const FName StadiumZoneTag(TEXT("OddsWellStadiumZone"));
 const FName StadiumPresentationTag(TEXT("OddsWellStadiumPresentation"));
@@ -1161,6 +1165,11 @@ const TCHAR* GetSundaleJobCanopyPilotAssetPath(const FName Id)
 		: nullptr;
 }
 
+bool IsSundaleResidentialFacadeCandidate(const FName Id)
+{
+	return Id == FName(TEXT("StudioFacade"));
+}
+
 const TArray<FSundalePresentationPartSpec>& GetSundaleArenaEntranceParts()
 {
 	static const TArray<FSundalePresentationPartSpec> Parts = {
@@ -1310,9 +1319,13 @@ void ApplySundaleAtmosphere(UWorld* World)
 void BuildSundalePresentation(UWorld* World)
 {
 	if (!World
-		|| World->GetNetMode() == NM_DedicatedServer
 		|| !World->GetMapName().Contains(TEXT("SundaleGraybox")))
 	{
+		return;
+	}
+	if (World->GetNetMode() == NM_DedicatedServer)
+	{
+		UE_LOG(LogOddsWellLocomotion, Display, TEXT("ODDSWELL_SUNDALE_RESIDENTIAL_FACADE|result=PASS|dedicated_excluded=true|spawned=0"));
 		return;
 	}
 	for (TActorIterator<AStaticMeshActor> Actor(World); Actor; ++Actor)
@@ -1328,13 +1341,18 @@ void BuildSundalePresentation(UWorld* World)
 	UMaterialInterface* BasicShapeMaterial = LoadObject<UMaterialInterface>(
 		nullptr,
 		TEXT("/Engine/BasicShapes/BasicShapeMaterial.BasicShapeMaterial"));
+	UStaticMesh* ResidentialFacade = LoadObject<UStaticMesh>(nullptr, ResidentialFacadeAssetPath);
+	UMaterialInterface* ResidentialFacadeMaterial = LoadObject<UMaterialInterface>(nullptr, ResidentialFacadeMaterialPath);
 	FActorSpawnParameters Parameters;
 	Parameters.ObjectFlags |= RF_Transient;
 	int32 SpawnedParts = 0;
 	auto SpawnPart = [&](const FName Id, const FName Role, const FVector& Location, const FVector& Scale, const FLinearColor& Color, const bool bDestinationIdentity)
 	{
+		const bool bResidentialFacadeCandidate = IsSundaleResidentialFacadeCandidate(Id);
 		const TCHAR* PilotAssetPath = GetSundaleJobCanopyPilotAssetPath(Id);
-		UStaticMesh* Mesh = PilotAssetPath
+		UStaticMesh* Mesh = bResidentialFacadeCandidate
+			? ResidentialFacade
+			: PilotAssetPath
 			? LoadObject<UStaticMesh>(nullptr, PilotAssetPath)
 			: Cube;
 		if (!Mesh)
@@ -1343,7 +1361,9 @@ void BuildSundalePresentation(UWorld* World)
 		}
 		AStaticMeshActor* Actor = World->SpawnActor<AStaticMeshActor>(
 			AStaticMeshActor::StaticClass(),
-			FTransform(FRotator::ZeroRotator, Location, Scale),
+			bResidentialFacadeCandidate
+				? FTransform(FRotator(0.0, 180.0, 0.0), FVector(0.0, -156.0, 0.0), FVector::OneVector)
+				: FTransform(FRotator::ZeroRotator, Location, Scale),
 			Parameters);
 		if (!Actor)
 		{
@@ -1356,7 +1376,11 @@ void BuildSundalePresentation(UWorld* World)
 		Component->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 		Component->SetGenerateOverlapEvents(false);
 		Component->SetSimulatePhysics(false);
-		if (BasicShapeMaterial)
+		if (bResidentialFacadeCandidate && ResidentialFacadeMaterial)
+		{
+			Component->SetMaterial(0, ResidentialFacadeMaterial);
+		}
+		else if (!bResidentialFacadeCandidate && BasicShapeMaterial)
 		{
 			if (UMaterialInstanceDynamic* Material = UMaterialInstanceDynamic::Create(BasicShapeMaterial, Actor))
 			{
@@ -1374,6 +1398,10 @@ void BuildSundalePresentation(UWorld* World)
 		{
 			Actor->Tags.Add(SundaleJobCanopyPilotTag);
 		}
+		if (bResidentialFacadeCandidate)
+		{
+			Actor->Tags.Add(SundaleResidentialFacadeCandidateTag);
+		}
 		Actor->Tags.Add(Role);
 		Actor->Tags.Add(Id);
 		return true;
@@ -1382,11 +1410,59 @@ void BuildSundalePresentation(UWorld* World)
 	{
 		SpawnedParts += SpawnPart(Part.Id, Part.Role, Part.Location, Part.Scale, Part.Color, false) ? 1 : 0;
 	}
-	const bool bPassed = SpawnedParts == GetSundalePresentationParts().Num();
+	int32 FacadeCandidateActors = 0;
+	int32 FacadeCandidateReplicated = 0;
+	int32 FacadeCandidateCollision = 0;
+	int32 FacadeCandidateExactTransforms = 0;
+	int32 FacadeCandidateExactAssets = 0;
+	for (TActorIterator<AStaticMeshActor> Actor(World); Actor; ++Actor)
+	{
+		if (!Actor->ActorHasTag(SundaleResidentialFacadeCandidateTag))
+		{
+			continue;
+		}
+		++FacadeCandidateActors;
+		FacadeCandidateReplicated += Actor->GetIsReplicated() ? 1 : 0;
+		UStaticMeshComponent* Component = Actor->GetStaticMeshComponent();
+		FacadeCandidateCollision += Component->GetCollisionEnabled() != ECollisionEnabled::NoCollision ? 1 : 0;
+		FacadeCandidateExactTransforms += Actor->GetActorLocation().Equals(FVector(0.0, -156.0, 0.0))
+			&& Actor->GetActorScale3D().Equals(FVector::OneVector)
+			&& FMath::IsNearlyEqual(Actor->GetActorRotation().Yaw, 180.0) ? 1 : 0;
+		FacadeCandidateExactAssets += Component->GetStaticMesh() == ResidentialFacade
+			&& Component->GetMaterial(0) == ResidentialFacadeMaterial ? 1 : 0;
+	}
+	const bool bFacadeCandidatePassed = ResidentialFacade
+		&& ResidentialFacadeMaterial
+		&& ResidentialFacade != Cube
+		&& FacadeCandidateActors == 1
+		&& FacadeCandidateReplicated == 0
+		&& FacadeCandidateCollision == 0
+		&& FacadeCandidateExactTransforms == 1
+		&& FacadeCandidateExactAssets == 1;
+	const bool bPassed = SpawnedParts == GetSundalePresentationParts().Num()
+		&& bFacadeCandidatePassed;
 	const FString Evidence = FString::Printf(
-		TEXT("ODDSWELL_SUNDALE_PRESENTATION|result=%s|parts=%d|local_only=true|collision=false|native_assets=true|final_art=false"),
+		TEXT("ODDSWELL_SUNDALE_PRESENTATION|result=%s|parts=%d|studio_facade_candidate=%s|studio_facade_asset=SM_Sundale_ResidentialFacade_A|location_cm=0,-156,0|yaw=180|scale=1,1,1|material=vertex_color|cube_fallback=false|local_only=true|replicated=false|dedicated=false|collision=false|native_assets=true|final_art=false"),
 		bPassed ? TEXT("PASS") : TEXT("FAIL"),
+		SpawnedParts,
+		bFacadeCandidatePassed ? TEXT("true") : TEXT("false"));
+	const FString FacadeEvidence = FString::Printf(
+		TEXT("ODDSWELL_SUNDALE_RESIDENTIAL_FACADE|result=%s|actors=%d|exact_asset_material=%d|exact_transform=%d|replicated=%d|collision=%d|dedicated_excluded=true|parts_retained=%d|cube_fallback=false"),
+		bFacadeCandidatePassed ? TEXT("PASS") : TEXT("FAIL"),
+		FacadeCandidateActors,
+		FacadeCandidateExactAssets,
+		FacadeCandidateExactTransforms,
+		FacadeCandidateReplicated,
+		FacadeCandidateCollision,
 		SpawnedParts);
+	if (bFacadeCandidatePassed)
+	{
+		UE_LOG(LogOddsWellLocomotion, Display, TEXT("%s"), *FacadeEvidence);
+	}
+	else
+	{
+		UE_LOG(LogOddsWellLocomotion, Error, TEXT("%s"), *FacadeEvidence);
+	}
 	if (bPassed)
 	{
 		UE_LOG(LogOddsWellLocomotion, Display, TEXT("%s"), *Evidence);
@@ -14510,6 +14586,53 @@ bool FOddsWellSundaleDestinationIdentityTest::RunTest(const FString& Parameters)
 	TestEqual(TEXT("Sportsbook and Ticket Booth keep their offset-slab identity"), DestinationCounts.FindRef(FName(TEXT("SportsbookTicketBooth"))), 2);
 	TestEqual(TEXT("Public Court keeps its three-part gateway identity"), DestinationCounts.FindRef(FName(TEXT("PublicCourt"))), 3);
 	TestEqual(TEXT("Furniture Store keeps its stacked-shelf identity"), DestinationCounts.FindRef(FName(TEXT("FurnitureStore"))), 2);
+	return !HasAnyErrors();
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(
+	FOddsWellSundaleResidentialFacadeInPlaceProofTest,
+	"OddsWell.Character.SundaleResidentialFacadeInPlaceProof",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+
+bool FOddsWellSundaleResidentialFacadeInPlaceProofTest::RunTest(const FString& Parameters)
+{
+	const TArray<FSundalePresentationPartSpec>& Parts = GetSundalePresentationParts();
+	TestEqual(TEXT("In-place proof preserves the exact 31-part presentation"), Parts.Num(), 31);
+	const FSundalePresentationPartSpec* StudioFacade = Parts.FindByPredicate([](const FSundalePresentationPartSpec& Part)
+	{
+		return IsSundaleResidentialFacadeCandidate(Part.Id);
+	});
+	TestNotNull(TEXT("Exactly the existing StudioFacade slot is promoted"), StudioFacade);
+	TestEqual(TEXT("Only one presentation slot selects the candidate"),
+		Parts.FilterByPredicate([](const FSundalePresentationPartSpec& Part) { return IsSundaleResidentialFacadeCandidate(Part.Id); }).Num(),
+		1);
+
+	UStaticMesh* Cube = LoadObject<UStaticMesh>(nullptr, TEXT("/Engine/BasicShapes/Cube.Cube"));
+	UStaticMesh* Facade = LoadObject<UStaticMesh>(nullptr, ResidentialFacadeAssetPath);
+	UMaterialInterface* Material = LoadObject<UMaterialInterface>(nullptr, ResidentialFacadeMaterialPath);
+	TestNotNull(TEXT("Residential facade candidate loads"), Facade);
+	TestNotNull(TEXT("Vertex-color material loads"), Material);
+	if (!Facade || !Material)
+	{
+		return false;
+	}
+	TestTrue(TEXT("Residential facade has no Engine-cube fallback"), Facade != Cube);
+	TestTrue(TEXT("Residential facade retains exact 5.2 x 4.1 x 5.0 m bounds"),
+		Facade->GetBounds().BoxExtent.Equals(FVector(260.0, 205.0, 250.0), 0.1));
+	TestEqual(TEXT("Residential facade retains 96 source triangles"), Facade->GetNumTriangles(0), 96);
+	TestEqual(TEXT("Residential facade retains exactly one LOD"), Facade->GetNumLODs(), 1);
+#if WITH_EDITOR
+	TestEqual(TEXT("Residential facade retains one UV channel"), Facade->GetNumUVChannels(0), 1);
+#endif
+	TestEqual(TEXT("Residential facade retains one material slot"), Facade->GetStaticMaterials().Num(), 1);
+	TestTrue(TEXT("Residential facade slot uses the exact vertex-color material"),
+		Facade->GetMaterial(0) == Material);
+	TestEqual(TEXT("Production candidate has no collision primitives"), Facade->GetBodySetup()->AggGeom.GetElementCount(), 0);
+
+	const FTransform Transform(FRotator(0.0, 180.0, 0.0), FVector(0.0, -156.0, 0.0), FVector::OneVector);
+	TestTrue(TEXT("Candidate location remains exact"), Transform.GetLocation().Equals(FVector(0.0, -156.0, 0.0)));
+	TestTrue(TEXT("Candidate keeps natural scale"), Transform.GetScale3D().Equals(FVector::OneVector));
+	TestTrue(TEXT("Candidate keeps exact yaw 180"), FMath::IsNearlyEqual(Transform.Rotator().Yaw, 180.0));
 	return !HasAnyErrors();
 }
 

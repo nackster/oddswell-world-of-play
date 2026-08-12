@@ -362,6 +362,10 @@ This is a recognizable direction check, not final city art. Existing native dire
 
 After the owner accepted the six-district facade/tower architectural direction and explicitly authorized the first build, Phase 1L.4a creates exactly one original source asset: `SM_Sundale_ResidentialFacade_A`. It promotes only `FACADE_SAMPLE__RESIDENTIAL_NEIGHBORHOOD_SERVICES` into a bounded `5.2 x 4.1 x 5.0 m`, `96`-triangle production candidate with one mass, three opaque bays, one parapet accent, two shallow balconies, and one stoop. The asset has one UV channel and one vertex-color material slot using only warm limestone, muted terracotta, sand concrete, and charcoal gray.
 
+Phase 1L.4b gives only that same candidate one bounded Starter-Studio Unreal in-place proof. It replaces the existing transient `StudioFacade` presentation cube at natural scale and the exact source-derived transform, imports only the candidate mesh and its contracted vertex-color material, and retains the local-only, non-replicated, non-colliding presentation boundary. Packaged evidence preserves the production map, canonical `800 m` route, destination anchors, prompts, gameplay, authority, economy, networking, saves, brains, simulator, and Phase 1K boundary.
+
+Stop after Phase 1L.4b for the owner's `approve`, `request one bounded revision`, or `reject` decision. The proof does not authorize a second facade, tower, reusable family, collision or LOD expansion, authored-map placement, citywide replacement, final art, beta readiness, roadmap Phase 2, or Version 1.
+
 The deterministic Blender source, deterministic FBX export, provenance, manifest, and six-view `3200x1800` contact sheet are production-pipeline evidence only. Status remains `PRODUCTION_CANDIDATE_NOT_INTEGRATED`: no Unreal import, production placement, collision, LOD, route/map change, family expansion, final-art claim, gameplay change, or beta-readiness claim is authorized. See [[Development/Reports/Phase 1L4a Sundale Residential Facade Production Candidate Contact Sheet]].
 
 ## Admin and operations

@@ -1,6 +1,6 @@
 # Sundale Production Asset Scope
 
-Status: **OWNER-ACCEPTED CURRENT PLANNING BASELINE - EXACTLY ONE RESIDENTIAL FACADE PRODUCTION CANDIDATE AUTHORIZED; OTHER PROMOTION STILL GATED**
+Status: **OWNER-ACCEPTED CURRENT PLANNING BASELINE - ONE RESIDENTIAL FACADE CANDIDATE HAS A BOUNDED UNREAL PROOF; OWNER DECISION AND ALL EXPANSION REMAIN GATED**
 
 This document turns the approved Sundale concept direction into a complete, reviewable beta art-production boundary. The owner superseded the earlier small-city, metropolitan, and radial boards with a larger noncanonical business-clustered mega-city review. That preview does not mutate the proven production graybox, claim that the listed production assets exist, or promote the Phase 1L.2 Job-canopy pilot to canonical final art.
 
@@ -14,7 +14,8 @@ See [[Design/Sundale Art Direction and Core Loop]], [[Design/Decisions/DEC-008 B
 - Native-primitive presentation layers for the required destinations, Studio/One-bedroom interior, Stadium public viewing, prompts, and feedback.
 - One noncanonical Blender pipeline pilot containing two simple one-meter Job-canopy meshes, `88` triangles total, used for three frontage parts.
 - One owner-accepted current noncanonical business-clustered planning baseline at commit `b77e0e1`: `2400x1800 m`, six districts around one `600x420 m` Commons/Park, `144` street-level masses, thirty-six playable-core towers, and twenty-four background skyline towers. The owner accepted it at the 2026-08-09/10 conversation boundary and allowed future bounded revision. It remains review art, not production geometry.
-- One bounded noncanonical architectural-language review board with exactly six low-poly facade samples and six low-poly tower silhouettes, one pair per accepted district. Owner acceptance and production promotion remain pending separate gates.
+- One bounded noncanonical architectural-language review board with exactly six low-poly facade samples and six low-poly tower silhouettes, one pair per accepted district. The owner accepted that direction with later bounded tweaks allowed and authorized the first build only.
+- One `SM_Sundale_ResidentialFacade_A` production candidate and one bounded Starter-Studio Unreal in-place proof of that same candidate. Owner approve/revise/reject and any second asset or family expansion remain separate gates.
 
 The current Blender pilot is not a person, complete building, apartment, landscape, or finished city. It proves authoring, validation, FBX export, Unreal import, Git LFS, cook, package, and runtime loading.
 
@@ -46,7 +47,7 @@ These are the only unique beta destination exteriors. Store and Job gameplay rem
 
 | ID | Asset or set | Required pieces | Interior for beta | Status |
 | --- | --- | --- | --- | --- |
-| `BLD-STUDIO-EXT` | Starter apartment/residential exterior | `3-5` story shell, Studio doorway, modest residential windows/balconies, awning, return landmark | Private Studio only | One bounded facade production candidate exists; not imported or integrated |
+| `BLD-STUDIO-EXT` | Starter apartment/residential exterior | `3-5` story shell, Studio doorway, modest residential windows/balconies, awning, return landmark | Private Studio only | One bounded facade candidate has one packaged in-place proof; owner decision pending |
 | `BLD-JOB-EXT` | Job building and frontage | Practical shell, two canopy piers, canopy header, landing, approach cue | No | Two-piece canopy pipeline pilot only; final Job fiction remains open |
 | `BLD-CLOTHING-EXT` | Clothing store exterior | Covered-promenade shell, two posts, header, display bay, entrance cue | No | Production model not started |
 | `BLD-FURNITURE-EXT` | Furniture store exterior | Covered-promenade shell, two posts, header, display bay, entrance cue | No | Production model not started |
@@ -84,7 +85,9 @@ The owner accepted the six-district facade/tower architectural direction with la
 
 The exact candidate contract is `5.2 x 4.1 x 5.0 m`, `96` triangles, one UV channel, one vertex-color material slot, and the following geometry roles: one mass, three opaque bays, one parapet accent, two shallow balconies, and one stoop. Its palette is limited to warm limestone, muted terracotta, sand concrete, and charcoal gray. Blender-native source and FBX export have no external references, images, textures, fonts, downloads, brands, catalogs, libraries, or paid services.
 
-This approval does not authorize a second facade, tower, reusable family, Unreal import, production placement, collision, LODs, map/route mutation, final art, citywide implementation, or roadmap Phase 2. Those remain separate evidence gates. See [[Development/Reports/Phase 1L4a Sundale Residential Facade Production Candidate Contact Sheet]].
+Phase 1L.4b imports only that mesh and its contracted asset-local vertex-color material, then replaces only the existing transient `StudioFacade` presentation cube at natural scale and the exact source-derived transform. The candidate remains local-only, non-replicated, non-colliding, non-overlapping, non-physical, absent on dedicated servers, and outside the authored map. Exact import, runtime-load, fixed-view before/after, route, collision, warmed-resource, cook, package, LFS, and regression evidence is recorded in [[Development/Reports/Phase 1L4b One-Candidate Starter-Studio Unreal In-Place Proof]].
+
+This proof does not authorize a second facade, tower, reusable family, collision, LOD expansion, authored-map placement, map/route mutation, final art, citywide implementation, roadmap Phase 2, or Version 1. Stop for the owner's `approve`, `request one bounded revision`, or `reject` decision before any Phase 1L.4c or production-family expansion. See also [[Development/Reports/Phase 1L4a Sundale Residential Facade Production Candidate Contact Sheet]].
 
 ## Central commons and landscape
 
@@ -197,8 +200,8 @@ No long, high-quality render is required to approve form and layout. Every asset
 1. **Citywide massing board:** one high-resolution top-down and six district eye-level Blender Eevee views showing the `2400x1800 m` envelope, six districts, all required landmarks, `144` street masses, sixty towers, Commons/Park, court, business-cluster labels, and proposed radial circulation. No production textures; simple review colors only.
 2. **Architectural-language board:** one native low-poly facade and tower-silhouette pair for each of the six accepted districts, presented together and in six district closeups; promotion remains owner-gated.
 3. **Asset contact sheet:** front, rear, left, right, top, and perspective views with dimensions, triangle count, material slots, UV count, and status.
-4. **Unreal in-place proof:** one packaged fixed view before/after, asset-load marker, collision/route check, and short warmed resource sample.
-5. **Owner decision:** approve, request one bounded revision, or reject before the asset family expands.
+4. **Unreal in-place proof:** complete for `SM_Sundale_ResidentialFacade_A` only; one packaged fixed view before/after, exact asset-load marker, collision/route check, and short warmed resource sample.
+5. **Owner decision:** pending; approve, request one bounded revision, or reject before the asset family expands.
 
 Use Blender Workbench or Eevee for review images. Do not use slow Cycles renders for blockout approval.
 
