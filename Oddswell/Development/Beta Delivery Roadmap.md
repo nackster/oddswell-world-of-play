@@ -937,7 +937,7 @@ No Unreal import, client/runtime/map/config/test/package change, placement, coll
 
 ### Phase 1L.4b One-candidate Starter-Studio Unreal in-place proof
 
-**COMPLETE LOCALLY FOR ONE BOUNDED PACKAGED IN-PLACE PROOF; exact local commit and Notion closure remain pending.** This is fresh owner-authorized production batch Phase `2/6`. Cursor suitability is **NO** and task count is `0` because import, material fidelity, runtime placement, packaging, and visual evidence are one coupled authoritative change.
+**COMPLETE AND OWNER-ACCEPTED FOR ONE BOUNDED PACKAGED IN-PLACE CANDIDATE.** The owner selected `A — Approve this single in-place façade candidate.` Approval applies only to `SM_Sundale_ResidentialFacade_A` at the existing transient, bounded Starter-Studio presentation seam, with future bounded tweaks allowed. This closes fresh production batch Phase `2/6`; Cursor suitability is **NO** and task count is `0`.
 
 Only `SM_Sundale_ResidentialFacade_A` and `M_Sundale_ResidentialFacade_VertexColor` are imported from the unchanged Phase 1L.4a FBX. Exact imported bounds remain `520 x 410 x 500 cm`, with `96` triangles, one UV, one material slot, and the four approved vertex colors. Only the existing transient `StudioFacade` Engine-cube presentation slot is replaced, at location `(0,-156,0) cm`, rotation `(0,180,0)`, and natural scale `1.0`. The existing `31`-part presentation count remains exact, and runtime proof requires the exact candidate with `cube_fallback=false`.
 
@@ -945,7 +945,7 @@ The proof remains transient, local-only, non-replicated, non-colliding, non-over
 
 Verification passed exact import/reimport semantics; focused native `1/1`; full native `73/73`; frozen Python `105/105`; Brain Admin `--check`; editor/game builds; fixed `1280x720` before/after original inspection; route `11/11` and blocking-floor collision; forty warmed resource samples; fresh Bootstrap plus Sundale BuildCookRun; exact zero-Python package/source exclusion; UAsset LFS; documentation, canvas, links, diff and hygiene; and zero target processes/gameplay ports. Canonical evidence is under `C:\tmp\OddsWellPhase1L4b\Evidence` and detailed in [[Development/Reports/Phase 1L4b One-Candidate Starter-Studio Unreal In-Place Proof]].
 
-After Coordinator verification, one exact local commit, and verified Notion closure, stop for the owner's `approve`, `request one bounded revision`, or `reject` decision. No production-batch Phase `3/6`, Phase 1L.4c, second asset, tower, family expansion, authored-map placement, collision, LOD expansion, citywide replacement, roadmap Phase 2, Version 1, final-art claim, beta-readiness claim, or production-readiness claim is authorized.
+[[Design/Decisions/DEC-024 Single In-Place Facade Candidate Acceptance]] and [[Development/Reports/Phase 1L4b1 Single In-Place Facade Candidate Acceptance Closure]] record the bounded acceptance. No production-batch Phase `3/6`, Phase 1L.4c, second asset, tower, family expansion, authored-map placement, collision, LOD expansion, citywide replacement, roadmap Phase 2, Version 1, final-art claim, beta-readiness claim, or production-readiness claim is authorized without a fresh Scope Director gate.
 
 ### Exit evidence
 

@@ -47,7 +47,7 @@ These are the only unique beta destination exteriors. Store and Job gameplay rem
 
 | ID | Asset or set | Required pieces | Interior for beta | Status |
 | --- | --- | --- | --- | --- |
-| `BLD-STUDIO-EXT` | Starter apartment/residential exterior | `3-5` story shell, Studio doorway, modest residential windows/balconies, awning, return landmark | Private Studio only | One bounded facade candidate has one packaged in-place proof; owner decision pending |
+| `BLD-STUDIO-EXT` | Starter apartment/residential exterior | `3-5` story shell, Studio doorway, modest residential windows/balconies, awning, return landmark | Private Studio only | One bounded in-place candidate is owner-approved at the existing transient seam; no broader production, family, or final-art approval |
 | `BLD-JOB-EXT` | Job building and frontage | Practical shell, two canopy piers, canopy header, landing, approach cue | No | Two-piece canopy pipeline pilot only; final Job fiction remains open |
 | `BLD-CLOTHING-EXT` | Clothing store exterior | Covered-promenade shell, two posts, header, display bay, entrance cue | No | Production model not started |
 | `BLD-FURNITURE-EXT` | Furniture store exterior | Covered-promenade shell, two posts, header, display bay, entrance cue | No | Production model not started |
@@ -87,7 +87,7 @@ The exact candidate contract is `5.2 x 4.1 x 5.0 m`, `96` triangles, one UV chan
 
 Phase 1L.4b imports only that mesh and its contracted asset-local vertex-color material, then replaces only the existing transient `StudioFacade` presentation cube at natural scale and the exact source-derived transform. The candidate remains local-only, non-replicated, non-colliding, non-overlapping, non-physical, absent on dedicated servers, and outside the authored map. Exact import, runtime-load, fixed-view before/after, route, collision, warmed-resource, cook, package, LFS, and regression evidence is recorded in [[Development/Reports/Phase 1L4b One-Candidate Starter-Studio Unreal In-Place Proof]].
 
-This proof does not authorize a second facade, tower, reusable family, collision, LOD expansion, authored-map placement, map/route mutation, final art, citywide implementation, roadmap Phase 2, or Version 1. Stop for the owner's `approve`, `request one bounded revision`, or `reject` decision before any Phase 1L.4c or production-family expansion. See also [[Development/Reports/Phase 1L4a Sundale Residential Facade Production Candidate Contact Sheet]].
+The owner selected `A — Approve this single in-place façade candidate.` Approval applies only to `SM_Sundale_ResidentialFacade_A` at the existing transient, bounded Starter-Studio presentation seam, with future bounded tweaks allowed. It does not authorize a second façade, tower, reusable family, collision, LOD expansion, authored-map placement, map/route mutation, final art, citywide implementation, roadmap Phase 2, Version 1, Phase 1L.4c, or production-batch Phase `3/6`. See [[Design/Decisions/DEC-024 Single In-Place Facade Candidate Acceptance]], [[Development/Reports/Phase 1L4b1 Single In-Place Facade Candidate Acceptance Closure]], and [[Development/Reports/Phase 1L4a Sundale Residential Facade Production Candidate Contact Sheet]].
 
 ## Central commons and landscape
 
@@ -201,7 +201,7 @@ No long, high-quality render is required to approve form and layout. Every asset
 2. **Architectural-language board:** one native low-poly facade and tower-silhouette pair for each of the six accepted districts, presented together and in six district closeups; promotion remains owner-gated.
 3. **Asset contact sheet:** front, rear, left, right, top, and perspective views with dimensions, triangle count, material slots, UV count, and status.
 4. **Unreal in-place proof:** complete for `SM_Sundale_ResidentialFacade_A` only; one packaged fixed view before/after, exact asset-load marker, collision/route check, and short warmed resource sample.
-5. **Owner decision:** pending; approve, request one bounded revision, or reject before the asset family expands.
+5. **Owner decision:** Option A accepts only the one `SM_Sundale_ResidentialFacade_A` in-place candidate; any bounded tweak or asset-family expansion requires a fresh gate.
 
 Use Blender Workbench or Eevee for review images. Do not use slow Cycles renders for blockout approval.
 
