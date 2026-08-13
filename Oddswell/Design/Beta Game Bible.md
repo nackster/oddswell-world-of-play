@@ -386,7 +386,9 @@ The deterministic Blender source, deterministic FBX export, provenance, manifest
 
 Phase 1L.5a inventories eleven named first-hour surfaces across thirteen fields using only direct current source and retained accepted evidence. Its exact `143` cells are `54 EVIDENCED`, `39 ABSENT`, `18 NOT APPLICABLE`, and `32 UNPROVEN`. Chooser mouse interaction and a user-facing remapping interface are absent in the inspected paths; physical keyboard/mouse/controller use, controller hardware, measured contrast, and the listed compact/standard evidence gaps remain unproven.
 
-This is a descriptive current-evidence inventory, not an accessibility standard, compliance score, remediation backlog, implementation plan, or readiness finding. Phase 1K physical hands-on evidence remains deferred to the MVP playtest, not waived. Fresh batch Phase `2/6` is pending local commit and verified Notion closure; Phase `3/6` then requires a new Scope Director gate. Cursor task count remains `0`. See [[Development/Reports/Phase 1L5a Current First Hour Accessibility Evidence Inventory]].
+This is a descriptive current-evidence inventory, not an accessibility standard, compliance score, remediation backlog, implementation plan, or readiness finding. Phase 1K physical hands-on evidence remains deferred to the MVP playtest, not waived. Fresh batch Phase `2/6` closed at commit `91cddb3cf82d56ea2c0426e903560a3a3620c966` with verified Notion closure. Cursor task count remains `0`. See [[Development/Reports/Phase 1L5a Current First Hour Accessibility Evidence Inventory]].
+
+The owner selected Option C in [[Design/Decisions/DEC-025 First Hour Input and Accessibility Remediation Deferral]]. Hands-on input testing and accessibility remediation wait for the later owner MVP/beta-ready playtest; the current evidence remains incomplete and not waived. This deferral creates no accessibility or beta-ready claim, standard, backlog, remediation, product/runtime/art change, or next-build selection. See [[Development/Reports/Phase 1L5a1 First Hour Input and Accessibility Remediation Deferral Closure]].
 
 ## Admin and operations
 

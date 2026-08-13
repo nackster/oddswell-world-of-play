@@ -2133,10 +2133,17 @@ Build the one-city scope defined in [[Design/Decisions/DEC-002 First Playable Sc
 
 ### Phase 1L.5a Current First-Hour Accessibility Evidence Inventory status
 
-- **Status:** COMPLETE LOCALLY FOR ONE READ-ONLY CURRENT-EVIDENCE INVENTORY on `agent/phase-0d`; fresh batch Phase `2/6` is pending local commit and verified Notion closure. Cursor task count is `0`.
+- **Status:** COMPLETE FOR ONE READ-ONLY CURRENT-EVIDENCE INVENTORY on `agent/phase-0d`; fresh batch Phase `2/6` closed at commit `91cddb3cf82d56ea2c0426e903560a3a3620c966` with verified Notion closure. Cursor task count is `0`.
 - **Exact inventory:** eleven named first-hour surfaces across thirteen fields produce `143` classifications: `54 EVIDENCED`, `39 ABSENT`, `18 NOT APPLICABLE`, and `32 UNPROVEN`. The inventory accepts only direct current source and retained accepted evidence; source mappings are not physical-device proof.
 - **Current blockers:** chooser mouse interaction and a user-facing remapping interface are absent in their inspected paths. Physical keyboard/mouse/controller use, controller hardware, measured contrast, and the listed compact/standard evidence gaps remain unproven. Phase 1K physical hands-on evidence remains deferred to the MVP playtest, not waived.
-- **Boundary and next gate:** no accessibility standard, score, remediation backlog, implementation plan, runtime change, or readiness claim is created. After local commit and verified Notion closure only, return to the Scope Director for one fresh batch Phase `3/6` gate; no Phase 3 work is authorized by this inventory. See [[Development/Reports/Phase 1L5a Current First Hour Accessibility Evidence Inventory]].
+- **Boundary:** no accessibility standard, score, remediation backlog, implementation plan, runtime change, or readiness claim is created. See [[Development/Reports/Phase 1L5a Current First Hour Accessibility Evidence Inventory]].
+
+### Phase 1L.5a.1 First-Hour Input and Accessibility Remediation Deferral Closure status
+
+- **Status:** COMPLETE LOCALLY FOR ONE OWNER DECISION CLOSURE on `agent/phase-0d`; fresh batch Phase `3/6` pending local commit and verified Notion closure. Cursor task count is `0`.
+- **Decision:** the owner replied exactly `C`; [[Design/Decisions/DEC-025 First Hour Input and Accessibility Remediation Deferral]] records the canonical option and boundary.
+- **Deferral boundary:** hands-on input testing and accessibility remediation wait for the later owner MVP/beta-ready playtest. The `143 = 54/39/18/32` inventory and its missing evidence remain incomplete, not waived, and support no accessibility or beta-ready claim.
+- **Next gate:** no Phase `4/6`, remediation, product/runtime/art change, or next build begins without this closure's local commit, verified Notion closure, and a fresh Scope Director gate. See [[Development/Reports/Phase 1L5a1 First Hour Input and Accessibility Remediation Deferral Closure]].
 
 ## Future shared simulation layer
 

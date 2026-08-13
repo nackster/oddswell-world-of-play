@@ -965,11 +965,19 @@ Verification passed exact import/reimport semantics; focused native `1/1`; full 
 
 ### Phase 1L.5a Current first-hour accessibility evidence inventory
 
-**COMPLETE LOCALLY FOR ONE READ-ONLY CURRENT-EVIDENCE INVENTORY; FRESH BATCH PHASE `2/6` IS PENDING COMMIT AND NOTION.** Eleven named first-hour surfaces across thirteen fields yield exactly `143` classifications: `54 EVIDENCED`, `39 ABSENT`, `18 NOT APPLICABLE`, and `32 UNPROVEN`. The inventory uses only direct current source and retained accepted evidence; implementation mappings are not physical-device proof.
+**COMPLETE FOR ONE READ-ONLY CURRENT-EVIDENCE INVENTORY; FRESH BATCH PHASE `2/6` CLOSED AT COMMIT `91cddb3cf82d56ea2c0426e903560a3a3620c966` WITH VERIFIED NOTION CLOSURE.** Eleven named first-hour surfaces across thirteen fields yield exactly `143` classifications: `54 EVIDENCED`, `39 ABSENT`, `18 NOT APPLICABLE`, and `32 UNPROVEN`. The inventory uses only direct current source and retained accepted evidence; implementation mappings are not physical-device proof.
 
 Chooser mouse interaction and a user-facing remapping interface are absent in the inspected paths. Physical keyboard/mouse/controller use, controller hardware, measured contrast, and the listed compact/standard evidence gaps remain unproven. Phase 1K physical hands-on evidence remains deferred to the MVP playtest, not waived.
 
-This phase creates no accessibility standard, score, remediation backlog, implementation plan, runtime change, or readiness claim. Cursor task count is `0`. Only after local commit and verified Notion closure may the Scope Director select one fresh batch Phase `3/6` gate; no Phase 3 work begins automatically. See [[Development/Reports/Phase 1L5a Current First Hour Accessibility Evidence Inventory]].
+This phase creates no accessibility standard, score, remediation backlog, implementation plan, runtime change, or readiness claim. Cursor task count is `0`. See [[Development/Reports/Phase 1L5a Current First Hour Accessibility Evidence Inventory]].
+
+### Phase 1L.5a.1 First-hour input and accessibility remediation deferral closure
+
+**COMPLETE LOCALLY FOR ONE OWNER DECISION CLOSURE; FRESH BATCH PHASE `3/6` PENDING COMMIT AND NOTION.** The owner replied exactly `C`; [[Design/Decisions/DEC-025 First Hour Input and Accessibility Remediation Deferral]] records the canonical option and boundary.
+
+Hands-on input testing and accessibility remediation wait for the later owner MVP/beta-ready playtest. The exact `143 = 54/39/18/32` inventory and its missing evidence remain incomplete, not waived, and support no accessibility or beta-ready claim.
+
+No standard, score, remediation backlog, implementation plan, product/runtime/art change, or next build is selected. Cursor task count remains `0`. No Phase `4/6` begins without this closure's local commit, verified Notion closure, and a fresh Scope Director gate. See [[Development/Reports/Phase 1L5a1 First Hour Input and Accessibility Remediation Deferral Closure]].
 
 ### Exit evidence
 

@@ -1,7 +1,7 @@
 # Phase 1L.5a Current First-Hour Accessibility Evidence Inventory
 
 **Date:** 2026-08-13
-**Status:** DRAFT - CURRENT-EVIDENCE INVENTORY ONLY
+**Status:** COMPLETE — READ-ONLY CURRENT-EVIDENCE INVENTORY; VERIFIED AT COMMIT `91cddb3cf82d56ea2c0426e903560a3a3620c966` WITH NOTION CLOSURE COMPLETE
 **Scope:** Eleven named first-hour surfaces; existing accepted evidence and current source only
 **Cost:** $0
 **Cursor tasks:** 0
@@ -148,5 +148,5 @@ No fresh runtime spot-check is requested. Missing proof is truthfully classified
 - It does not create an accessibility standard, score, target, remediation backlog, or implementation plan.
 - It does not claim keyboard source mappings as physical keyboard evidence, controller mappings as physical controller evidence, labels as human recognition, fixed screenshots as comprehension or contrast proof, or separated automated lanes as a contiguous first-hour session.
 - Phase 1K remains incomplete, deferred, and not waived.
-- Phase 3/6 requires a fresh Scope Director gate; this report does not authorize it.
+- Phase `2/6` closed at commit `91cddb3cf82d56ea2c0426e903560a3a3620c966` with verified Notion closure. The later owner deferral is recorded separately in [[Design/Decisions/DEC-025 First Hour Input and Accessibility Remediation Deferral]].
 - No Notion or Cursor task is created by Execution.
