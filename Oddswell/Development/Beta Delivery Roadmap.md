@@ -963,6 +963,14 @@ Verification passed exact import/reimport semantics; focused native `1/1`; full 
 
 [[Design/Decisions/DEC-024 Single In-Place Facade Candidate Acceptance]] and [[Development/Reports/Phase 1L4b1 Single In-Place Facade Candidate Acceptance Closure]] record the bounded acceptance. No production-batch Phase `3/6`, Phase 1L.4c, second asset, tower, family expansion, authored-map placement, collision, LOD expansion, citywide replacement, roadmap Phase 2, Version 1, final-art claim, beta-readiness claim, or production-readiness claim is authorized without a fresh Scope Director gate.
 
+### Phase 1L.5a Current first-hour accessibility evidence inventory
+
+**COMPLETE LOCALLY FOR ONE READ-ONLY CURRENT-EVIDENCE INVENTORY; FRESH BATCH PHASE `2/6` IS PENDING COMMIT AND NOTION.** Eleven named first-hour surfaces across thirteen fields yield exactly `143` classifications: `54 EVIDENCED`, `39 ABSENT`, `18 NOT APPLICABLE`, and `32 UNPROVEN`. The inventory uses only direct current source and retained accepted evidence; implementation mappings are not physical-device proof.
+
+Chooser mouse interaction and a user-facing remapping interface are absent in the inspected paths. Physical keyboard/mouse/controller use, controller hardware, measured contrast, and the listed compact/standard evidence gaps remain unproven. Phase 1K physical hands-on evidence remains deferred to the MVP playtest, not waived.
+
+This phase creates no accessibility standard, score, remediation backlog, implementation plan, runtime change, or readiness claim. Cursor task count is `0`. Only after local commit and verified Notion closure may the Scope Director select one fresh batch Phase `3/6` gate; no Phase 3 work begins automatically. See [[Development/Reports/Phase 1L5a Current First Hour Accessibility Evidence Inventory]].
+
 ### Exit evidence
 
 The complete loop is visually coherent, readable, accessible at the approved baseline, and within measured PC performance targets. Large catalogs and unseen districts remain out of scope.

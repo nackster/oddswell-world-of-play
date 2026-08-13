@@ -382,6 +382,12 @@ The owner selected `A — Approve this single in-place façade candidate.` This 
 
 The deterministic Blender source, deterministic FBX export, provenance, manifest, and six-view `3200x1800` contact sheet remain the Phase 1L.4a source-pipeline evidence; that phase did not integrate the candidate. The later Phase 1L.4b proof imported and accepted only this one candidate at the bounded transient seam. No authored-map production placement, collision, LOD, route/map change, family expansion, final-art claim, gameplay change, or beta-readiness claim is authorized. See [[Development/Reports/Phase 1L4a Sundale Residential Facade Production Candidate Contact Sheet]].
 
+### Current first-hour accessibility evidence boundary
+
+Phase 1L.5a inventories eleven named first-hour surfaces across thirteen fields using only direct current source and retained accepted evidence. Its exact `143` cells are `54 EVIDENCED`, `39 ABSENT`, `18 NOT APPLICABLE`, and `32 UNPROVEN`. Chooser mouse interaction and a user-facing remapping interface are absent in the inspected paths; physical keyboard/mouse/controller use, controller hardware, measured contrast, and the listed compact/standard evidence gaps remain unproven.
+
+This is a descriptive current-evidence inventory, not an accessibility standard, compliance score, remediation backlog, implementation plan, or readiness finding. Phase 1K physical hands-on evidence remains deferred to the MVP playtest, not waived. Fresh batch Phase `2/6` is pending local commit and verified Notion closure; Phase `3/6` then requires a new Scope Director gate. Cursor task count remains `0`. See [[Development/Reports/Phase 1L5a Current First Hour Accessibility Evidence Inventory]].
+
 ## Admin and operations
 
 The local Brain Observatory grows into the game Admin Console only as real systems exist. Beta operations eventually need truthful controls or views for:
