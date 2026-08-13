@@ -1769,6 +1769,16 @@ Build the one-city scope defined in [[Design/Decisions/DEC-002 First Playable Sc
 - **Verification:** exact accepted package hashes/inventory reused; no no-op build or regression run. The complete batch-level operator ledger, all `24` decisive interior per-call intervals, capture/log/save hashes, no-mutation audit, and final process/port cleanup pass are retained at `C:\tmp\OddsWellPhase1K9bFreshRoute-20260807T004325Z`.
 - **Next gate:** do not change production gameplay from this result. Select a supported hold-capable normal-input path or an observed physical player session, then repeat a wholly fresh measurement from component 1. Preserve the stop-before-Job-`E` boundary and do not infer or repair Job frontage or Stadium before an accepted run reaches them. See [[Development/Reports/Phase 1K9b Fresh Component Three Normal Route Measurement]].
 
+### Phase 1K.9c Automated Packaged Components One-Through-Three Smoke Suite status
+
+- **Status:** COMPLETE — EVIDENCE-LIMITED FAIL AT LANE A; LANES B/C NOT RUN; COMPONENT/LANE CREDIT `0` on `agent/phase-0d`. This is replacement batch Phase `3/6`, counted only after the exact local commit and two duplicate-checked Notion upserts. Cursor task count remains `0`.
+- **Frozen preflight:** unchanged accepted Phase 1L.4b package `50` files / `1,051,962,028` bytes / `0` Python; wrapper `5061151...DBD`, game `4A437A5F...C5A`, UFS `9CB5864C...356`, and protected map `180B31BA...015` remained exact.
+- **Lane A diagnostic only:** the existing QA paths emitted non-default chooser save, machine-local handoff, peer `clients=2`, owner-visible actors/names, appearance agreement, and peer locomotion PASS. No Job, Store, Stadium/Arena, or wager action occurred; the peer's read-only startup ledger remained `entries=0`, `balance=0`.
+- **First failure:** the peer returned exact exit `0`, but the owner did not finish within the `40`-second harness wait. Custody therefore records `owner_completed=false` and `owner_exit=null`. The owner log closed normally `0.223s` later, but that is not an OS exit code and is not inferred as one.
+- **Fail-fast boundary:** Lane A gets zero credit; Studio lane B and route lane C are **NOT RUN**. This is an evidence-harness custody failure, not a product defect, smoke PASS, contiguous first-hour proof, or reason for a production change. No rerun occurred.
+- **Evidence:** frozen root `C:\tmp\OddsWellPhase1K9c-20260813T022041Z`; see [[Development/Reports/Phase 1K9c Automated Packaged Components One Through Three Smoke Suite]]. Hands-on held-control, discovery, comprehension, hesitation, usability, accessibility, same-peer Studio, and route evidence remains incomplete, owner-deferred until the beta-ready playtest boundary, and not waived.
+- **Next gate:** Phase `4/6` requires a fresh Scope Director gate. No product, package, Job, economy, Stadium, Store, route, or beta-readiness inference is authorized from Lane A diagnostics.
+
 ### Phase 1L.1a Sundale Core-Block Presentation Pass status
 
 - **Status:** COMPLETE FOR ONE BOUNDED NATIVE-PRIMITIVE PRESENTATION PASS on `agent/phase-0d`.

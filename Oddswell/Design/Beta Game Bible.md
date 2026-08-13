@@ -104,6 +104,10 @@ A fresh no-QA owner then completed the normal-input proof with Right followed by
 
 The first Phase 1K.9 attempt remains a failed evidence record because it retained no passive-peer movement capture. A separate fresh corrective attempt then repeated component 1 and all of component 2 with the unchanged package. It retained hashed fixed-view peer screenshots showing the normally controlled owner move while the passive peer supplied zero gameplay input. Component 2 therefore passed in the corrective attempt. At component 3, the networked owner received no Studio prompt; one normal `E` produced no transition, housing save, or ledger file. The attempt stopped before job input. Phase 1K.9a must correct only that measured network-client Studio boundary and repeat fresh components 1-3. See [[Development/Reports/Phase 1K9 Networked Studio Entry Fail Fast Measurement]] and [[Development/Reports/Phase 1K9 Corrective Retained Movement and Networked Studio Fail Fast Measurement]].
 
+### Phase 1K.9c automated packaged smoke evidence
+
+The three-lane automated packaged components 1-3 smoke suite stopped at Lane A because owner process-exit custody remained `completed=false` / `exit=null`. Diagnostic chooser and shared-city markers do not grant lane or component credit, and the later normal log close is not inferred as an operating-system exit code. Lanes B/C were not run; no product defect or smoke PASS is claimed. Hands-on held-control, discovery, comprehension, hesitation, usability, accessibility, same-peer Studio, route, and beta-readiness evidence remains incomplete, owner-deferred until the beta-ready playtest boundary, and not waived. See [[Development/Reports/Phase 1K9c Automated Packaged Components One Through Three Smoke Suite]].
+
 ## First-hour player journey
 
 ### 1. Choose a default character
