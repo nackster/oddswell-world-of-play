@@ -10,6 +10,8 @@ date: 2026-07-19
 
 # OddsWell Beta Delivery Roadmap
 
+> **Current Phase 1K measurement gate:** Phase 1K.9e is Phase `5/6`, pending its docs commit and canonical Notion closure. Corrected packaged Lane A passed with lane credit `1`, Components 1-3 credit `0`, and Lanes B/C `NOT_RUN`. Physical hands-on evidence remains incomplete, deferred, and not waived; Phase 6 requires a fresh Scope Director gate. See [[Development/Reports/Phase 1K9e Corrected Lane A Argument and Exit Custody Rerun]].
+
 ## Purpose
 
 This roadmap converts [[Design/Beta Game Bible|OddsWell Beta Game Bible]] into a dependency-ordered delivery path. The Bible defines **what** the beta is. This roadmap defines the current expected **order**. [[Development/Current Plan|Current Plan]] and phase reports prove **what is actually complete**.

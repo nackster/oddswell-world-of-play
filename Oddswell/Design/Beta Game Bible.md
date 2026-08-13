@@ -10,6 +10,8 @@ date: 2026-07-19
 
 # OddsWell Beta Game Bible
 
+> **Phase 1K.9e automated Lane A evidence:** corrected argument and operating-system exit custody passed one packaged Lane A attempt. This grants lane credit `1` and Components 1-3 credit `0`; Lanes B/C were not run. It is automated mechanics evidence only, not physical-input, comprehension, usability, accessibility, or beta-readiness evidence. Hands-on proof remains incomplete, owner-deferred until beta-ready, and not waived. Phase 6 requires a fresh gate. See [[Development/Reports/Phase 1K9e Corrected Lane A Argument and Exit Custody Rerun]].
+
 ## Purpose
 
 This is the canonical product outline for the OddsWell beta. It tells the Scope Director what game we are building, what belongs in beta, what belongs later, and what still requires an owner decision.

@@ -10,6 +10,8 @@ date: 2026-08-04
 
 # Phase 1K First-Hour Integration Evidence Contract
 
+> **Phase 1K.9e measurement (Phase 5/6; closure pending docs commit and canonical Notion sync):** the corrected packaged Lane A argument/exit-custody rerun passed one automated Lane A on its first and only authorized attempt. Lane credit is `1`; Components 1-3 credit is `0`; Lanes B/C were not run. This is non-equivalent to physical hands-on evidence, which remains incomplete, owner-deferred until beta-ready, and not waived. Phase 6 requires a fresh Scope Director gate. See [[Development/Reports/Phase 1K9e Corrected Lane A Argument and Exit Custody Rerun]].
+
 ## Purpose
 
 This is the canonical evidence contract for the minimum OddsWell first-hour route. It does not add or change gameplay. It defines what a future fresh packaged run must record before the existing bounded Phase 1B-1J evidence may be described as one integrated player journey.
