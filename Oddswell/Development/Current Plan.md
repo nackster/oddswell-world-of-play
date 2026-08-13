@@ -1779,6 +1779,15 @@ Build the one-city scope defined in [[Design/Decisions/DEC-002 First Playable Sc
 - **Evidence:** frozen root `C:\tmp\OddsWellPhase1K9c-20260813T022041Z`; see [[Development/Reports/Phase 1K9c Automated Packaged Components One Through Three Smoke Suite]]. Hands-on held-control, discovery, comprehension, hesitation, usability, accessibility, same-peer Studio, and route evidence remains incomplete, owner-deferred until the beta-ready playtest boundary, and not waived.
 - **Next gate:** Phase `4/6` requires a fresh Scope Director gate. No product, package, Job, economy, Stadium, Store, route, or beta-readiness inference is authorized from Lane A diagnostics.
 
+### Phase 1K.9d Automated Lane-A Exit-Custody Rerun status
+
+- **Status:** COMPLETE — BLOCKED BEFORE A VALID LANE A; CANARY PASS; LANES A/B/C NOT RUN; COMPONENT/LANE CREDIT `0` on `agent/phase-0d`. Replacement Phase `4/6` counts only after exact commit and two duplicate-checked Notion upserts; Cursor task count remains `0`.
+- **Canary:** fresh isolated chooser process PID `37824` completed `WaitForExit(90000)=true`, returned exact exit `0`, and completed parameterless drainage in `5.409s`. It reported exact `8/16/2`, selected index `0`, and created no save or handoff.
+- **First blocker:** the inline Lane A helper named its parameter `$args`, colliding with PowerShell's automatic variable. Wrapper PID `17220` and child PID `19500` launched without the intended Lane A arguments, producing no `abslog`, custody, or UDP `17777` bind.
+- **Stop/cleanup:** both invalid processes were force-cleaned; no corrected retry occurred. Final target process count and TCP/UDP `17777`, `1985`, and `7810` counts are `0`.
+- **Truth boundary:** no valid Lane A mechanics ran; lanes A/B/C are **NOT RUN**. This is a harness-only forwarding failure, not a product defect, smoke result, or production-change reason. Hands-on evidence remains incomplete, owner-deferred until the beta-ready playtest boundary, and not waived.
+- **Evidence/next gate:** frozen root `C:\tmp\OddsWellPhase1K9d-20260813T032333Z`; see [[Development/Reports/Phase 1K9d Automated Lane A Exit Custody Rerun]]. Phase `5/6` requires a fresh Scope Director gate.
+
 ### Phase 1L.1a Sundale Core-Block Presentation Pass status
 
 - **Status:** COMPLETE FOR ONE BOUNDED NATIVE-PRIMITIVE PRESENTATION PASS on `agent/phase-0d`.

@@ -108,6 +108,10 @@ The first Phase 1K.9 attempt remains a failed evidence record because it retaine
 
 The three-lane automated packaged components 1-3 smoke suite stopped at Lane A because owner process-exit custody remained `completed=false` / `exit=null`. Diagnostic chooser and shared-city markers do not grant lane or component credit, and the later normal log close is not inferred as an operating-system exit code. Lanes B/C were not run; no product defect or smoke PASS is claimed. Hands-on held-control, discovery, comprehension, hesitation, usability, accessibility, same-peer Studio, route, and beta-readiness evidence remains incomplete, owner-deferred until the beta-ready playtest boundary, and not waived. See [[Development/Reports/Phase 1K9c Automated Packaged Components One Through Three Smoke Suite]].
 
+### Phase 1K.9d exit-custody rerun evidence
+
+The exit-custody canary passed with a retained live process handle and exact exit `0`. The subsequent Lane A helper used PowerShell's reserved `$args` name and stripped the intended arguments, so no valid Lane A log, custody record, or UDP bind existed. The invalid processes were cleaned without retry. Lanes A/B/C were not run, credit remains `0`, and this is no product defect or mechanics result. Hands-on evidence remains incomplete, owner-deferred until the beta-ready playtest boundary, and not waived. See [[Development/Reports/Phase 1K9d Automated Lane A Exit Custody Rerun]].
+
 ## First-hour player journey
 
 ### 1. Choose a default character
