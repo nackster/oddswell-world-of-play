@@ -10,6 +10,8 @@ date: 2026-07-19
 
 # OddsWell Beta Game Bible
 
+> **Phase 1K.9f automated standalone Studio evidence:** existing packaged Studio QA entered an empty `6/0/0/0` Studio, moved `200.4 cm`, exited, returned to Sundale, and closed with exact process exit `0`. This grants Lane B credit `1` and Components 1-3 credit `0`; Lane C was not run, and prior Lane A remains automated smoke credit only. It is not physical-input, same-peer, comprehension, usability, accessibility, or beta-readiness evidence. Hands-on proof remains incomplete, owner-deferred until beta-ready, and not waived. Phase 1K remains incomplete; no seventh phase is authorized. See [[Development/Reports/Phase 1K9f Automated Standalone Empty Studio Lane B Smoke]].
+
 > **Phase 1K.9e automated Lane A evidence:** corrected argument and operating-system exit custody passed one packaged Lane A attempt. This grants lane credit `1` and Components 1-3 credit `0`; Lanes B/C were not run. It is automated mechanics evidence only, not physical-input, comprehension, usability, accessibility, or beta-readiness evidence. Hands-on proof remains incomplete, owner-deferred until beta-ready, and not waived. Phase 6 requires a fresh gate. See [[Development/Reports/Phase 1K9e Corrected Lane A Argument and Exit Custody Rerun]].
 
 ## Purpose

@@ -10,6 +10,8 @@ date: 2026-07-19
 
 # OddsWell Beta Delivery Roadmap
 
+> **Current Phase 1K measurement gate:** Phase 1K.9f is final Phase `6/6`, pending its docs commit and canonical Notion closure. Automated standalone Lane B passed with lane credit `1`, Components 1-3 credit `0`, and Lane C `NOT_RUN`; prior Lane A remains automated smoke credit only. Physical hands-on proof remains incomplete, owner-deferred until beta-ready, and not waived. Phase 1K remains incomplete and no seventh phase is authorized. See [[Development/Reports/Phase 1K9f Automated Standalone Empty Studio Lane B Smoke]].
+
 > **Current Phase 1K measurement gate:** Phase 1K.9e is Phase `5/6`, pending its docs commit and canonical Notion closure. Corrected packaged Lane A passed with lane credit `1`, Components 1-3 credit `0`, and Lanes B/C `NOT_RUN`. Physical hands-on evidence remains incomplete, deferred, and not waived; Phase 6 requires a fresh Scope Director gate. See [[Development/Reports/Phase 1K9e Corrected Lane A Argument and Exit Custody Rerun]].
 
 ## Purpose
