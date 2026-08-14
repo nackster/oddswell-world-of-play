@@ -989,7 +989,13 @@ This grants no defect, route/resource, minimum-PC, roadmap item-5, optimization,
 
 **COMPLETE LOCALLY — EVIDENCE_LIMITED; PRODUCT `NOT_MEASURED`; FIXED-MACHINE BASELINE CREDIT `0`.** The bounded no-game canary met its `10 s` upper bound with no minimum-duration claim. The one game attempt then hit Win32 Process `Access denied` before child custody and retained `0` one-second samples. The wrapper was stopped; the uncustodied child exited naturally later with unknown exit code. Later route output grants no evidence.
 
-All product, route/resource, minimum-PC, roadmap item-5, and baseline credit remains `0`; no defect or readiness conclusion follows. Package/map custody is invariant, the original evidence-limited result is unchanged, and there is no rerun. Phase `5/6` is pending local commit and verified two Notion upserts. Phase `6/6` requires a fresh Scope Director gate. Phase 1K and accessibility/input evidence remain deferred, incomplete, and not waived. See [[Development/Reports/Phase 1L5c Workspace Local Detached Facade Resource Baseline Retry]].
+All product, route/resource, minimum-PC, roadmap item-5, and baseline credit remains `0`; no defect or readiness conclusion follows. Package/map custody is invariant, the original evidence-limited result is unchanged, and there is no rerun. Phase `5/6` closed at commit `1099203370d31c6901572fb5922008c5292a2f8c` with verified two Notion upserts. Phase 1K and accessibility/input evidence remain deferred, incomplete, and not waived. See [[Development/Reports/Phase 1L5c Workspace Local Detached Facade Resource Baseline Retry]].
+
+### Phase 1L.5d Current Phase 1L exit blocker ledger
+
+**COMPLETE LOCALLY FOR ONE READ-ONLY NINE-ROW LEDGER; PHASE 1L EXIT IS NOT MET.** Exact Status cells are: physical/contiguous `DEFERRED_NOT_WAIVED`; input/accessibility `DEFERRED_NOT_WAIVED`; resource baseline `NOT_MEASURED`; minimum-PC `OPEN_OWNER`; exactly-one accepted transient façade scope `COMPLETE`; music `INCOMPLETE`; Phase 1L exit `INCOMPLETE`; Phase 1M and Version 1 `NOT_AUTHORIZED`; current brain inventory `COMPLETE` with no training claim.
+
+This is no readiness, defect, minimum-PC, art-expansion, music, accessibility, Phase 1M, roadmap Phase 2, or Version 1 authority. Phase `6/6` is pending local commit and verified two Notion upserts. **NO SEVENTH PHASE — BATCH STOPPED.** See [[Development/Reports/Phase 1L5d Current Beta Exit Blocker Ledger and Six Phase Batch Closeout Audit]].
 
 ### Exit evidence
 

@@ -394,6 +394,8 @@ Phase 1L.5b closed locally before any valid fixed-machine packaged resource atte
 
 Phase 1L.5c consumed one workspace-local detached retry. The upper-bound canary passed, but the game controller's Win32 child query returned `Access denied` before child custody or sampling, so the frozen result is `EVIDENCE_LIMITED`, product `NOT_MEASURED`, samples `0`, and every baseline/product credit remains `0`. The wrapper was stopped; the uncustodied child later exited naturally with unknown exit code. No later route output is inferred and no defect, minimum-PC, roadmap item-5, or readiness conclusion follows. There is no rerun. See [[Development/Reports/Phase 1L5c Workspace Local Detached Facade Resource Baseline Retry]].
 
+The final Phase 1L.5d read-only ledger retains nine exact current statuses: physical/contiguous and input/accessibility evidence are `DEFERRED_NOT_WAIVED`; the resource baseline is `NOT_MEASURED`; minimum-PC scope is `OPEN_OWNER`; the exactly-one accepted transient façade scope is `COMPLETE`; music and Phase 1L exit are `INCOMPLETE`; Phase 1M and Version 1 are `NOT_AUTHORIZED`; the current versioned brain inventory is `COMPLETE` without any training or readiness claim. Phase 1L exit is not met. **NO SEVENTH PHASE — BATCH STOPPED.** See [[Development/Reports/Phase 1L5d Current Beta Exit Blocker Ledger and Six Phase Batch Closeout Audit]].
+
 ## Admin and operations
 
 The local Brain Observatory grows into the game Admin Console only as real systems exist. Beta operations eventually need truthful controls or views for:

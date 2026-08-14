@@ -2154,10 +2154,17 @@ Build the one-city scope defined in [[Design/Decisions/DEC-002 First Playable Sc
 
 ### Phase 1L.5c Workspace-Local Detached Facade Resource Baseline Retry status
 
-- **Status:** COMPLETE LOCALLY — EVIDENCE_LIMITED; PRODUCT `NOT_MEASURED`; FIXED-MACHINE BASELINE CREDIT `0` on `agent/phase-0d`. One attempt was consumed. Phase `5/6` is pending local commit and verified two Notion upserts. Cursor task count is `0`.
+- **Status:** COMPLETE — EVIDENCE_LIMITED; PRODUCT `NOT_MEASURED`; FIXED-MACHINE BASELINE CREDIT `0` on `agent/phase-0d`. One attempt was consumed. Phase `5/6` closed at commit `1099203370d31c6901572fb5922008c5292a2f8c` with verified two Notion upserts. Cursor task count is `0`.
 - **Exact result:** the upper-bound canary passed with no minimum-duration claim. The game controller then received Win32 Process `Access denied` before child custody, command/exit proof, or sampling; sample count is `0`. It stopped the wrapper, while the uncustodied child exited naturally later with unknown exit code and no retained handle. Later route output is not inferred.
 - **Evidence custody:** original result SHA-256 `5795CB8C6C02DE7A673196012B20A2CFA37B256BF4BFB67D9B2C809B1A9F09DF`; post-cleanup addendum SHA-256 `1FE4E1883F715E9218E1BE54BE4124AED146978CD4A62C0C85D15616B2CDEE8A`; full manifest SHA-256 `1435B6E749FD57AB05D7C7A378742DB53B63F67C97C0EB00A3704C25238EE52A` with `23` rows and zero audit failures. Package/map identities remained exact.
 - **Boundary and next gate:** product, route/resource, minimum-PC, roadmap item-5, and fixed-machine credit remain `0`; no defect, optimization, or readiness conclusion follows. No rerun is authorized. Phase 1K and accessibility/input evidence remain deferred, incomplete, and not waived. No Phase `6/6` work begins without this closure's commit, verified two Notion upserts, and a fresh Scope Director gate. See [[Development/Reports/Phase 1L5c Workspace Local Detached Facade Resource Baseline Retry]].
+
+### Phase 1L.5d Current Phase 1L Exit Blocker Ledger status
+
+- **Status:** COMPLETE LOCALLY FOR ONE READ-ONLY NINE-ROW LEDGER on `agent/phase-0d`; Phase 1L exit is not met. Phase `6/6` is pending local commit and verified two Notion upserts. Cursor task count is `0`.
+- **Exact ledger:** physical/contiguous `DEFERRED_NOT_WAIVED`; input/accessibility `DEFERRED_NOT_WAIVED`; resource baseline `NOT_MEASURED`; minimum-PC `OPEN_OWNER`; exactly-one transient façade scope `COMPLETE`; music `INCOMPLETE`; Phase 1L exit `INCOMPLETE`; Phase 1M and Version 1 `NOT_AUTHORIZED`; current brain inventory `COMPLETE` without a training claim.
+- **Boundary:** no readiness, product defect, minimum-PC, family expansion, music, accessibility completion, Phase 1M, roadmap Phase 2, Version 1, production, or release authority follows. Phase 1K and accessibility/input evidence remain deferred, incomplete, and not waived. See [[Development/Reports/Phase 1L5d Current Beta Exit Blocker Ledger and Six Phase Batch Closeout Audit]].
+- **Final batch gate:** **NO SEVENTH PHASE — BATCH STOPPED.**
 
 ## Future shared simulation layer
 
