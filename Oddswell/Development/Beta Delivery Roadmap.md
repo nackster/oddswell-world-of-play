@@ -983,7 +983,13 @@ No standard, score, remediation backlog, implementation plan, product/runtime/ar
 
 **COMPLETE LOCALLY — BLOCKED BEFORE VALID ATTEMPT (EXECUTION INFRASTRUCTURE); FIXED-MACHINE BASELINE CREDIT `0`.** No canonical evidence root, fresh package preflight, valid launch, process/PID, child command, exit custody, runtime log, one-second samples, result, or manifest exists. Product and package are `NOT_MEASURED`, specifically not PASS, FAIL, or EVIDENCE_LIMITED.
 
-This grants no defect, route/resource, minimum-PC, roadmap item-5, optimization, or readiness conclusion. The retained Phase 1L.4b package hashes are invariant context only, never a fresh measurement. Phase `4/6` remains pending local commit and verified two Notion upserts; there is no Phase 4 retry and Phase `5/6` requires a fresh Scope Director gate. See [[Development/Reports/Phase 1L5b Accepted Facade Fixed Machine Packaged Resource Baseline]].
+This grants no defect, route/resource, minimum-PC, roadmap item-5, optimization, or readiness conclusion. The retained Phase 1L.4b package hashes are invariant context only, never a fresh measurement. Phase `4/6` closed at commit `79b19575a41bfa54b72822b683baacd4b8053ceb` with verified two Notion upserts; there is no Phase 4 retry. See [[Development/Reports/Phase 1L5b Accepted Facade Fixed Machine Packaged Resource Baseline]].
+
+### Phase 1L.5c Workspace-local detached facade resource baseline retry
+
+**COMPLETE LOCALLY — EVIDENCE_LIMITED; PRODUCT `NOT_MEASURED`; FIXED-MACHINE BASELINE CREDIT `0`.** The bounded no-game canary met its `10 s` upper bound with no minimum-duration claim. The one game attempt then hit Win32 Process `Access denied` before child custody and retained `0` one-second samples. The wrapper was stopped; the uncustodied child exited naturally later with unknown exit code. Later route output grants no evidence.
+
+All product, route/resource, minimum-PC, roadmap item-5, and baseline credit remains `0`; no defect or readiness conclusion follows. Package/map custody is invariant, the original evidence-limited result is unchanged, and there is no rerun. Phase `5/6` is pending local commit and verified two Notion upserts. Phase `6/6` requires a fresh Scope Director gate. Phase 1K and accessibility/input evidence remain deferred, incomplete, and not waived. See [[Development/Reports/Phase 1L5c Workspace Local Detached Facade Resource Baseline Retry]].
 
 ### Exit evidence
 

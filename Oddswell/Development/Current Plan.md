@@ -2147,10 +2147,17 @@ Build the one-city scope defined in [[Design/Decisions/DEC-002 First Playable Sc
 
 ### Phase 1L.5b Accepted Facade Fixed-Machine Packaged Resource Baseline status
 
-- **Status:** COMPLETE LOCALLY — BLOCKED BEFORE VALID ATTEMPT (EXECUTION INFRASTRUCTURE); FIXED-MACHINE BASELINE CREDIT `0` on `agent/phase-0d`. Phase `4/6` is pending local commit and verified two Notion upserts. Cursor task count is `0`.
+- **Status:** COMPLETE — BLOCKED BEFORE VALID ATTEMPT (EXECUTION INFRASTRUCTURE); FIXED-MACHINE BASELINE CREDIT `0` on `agent/phase-0d`. Phase `4/6` closed at commit `79b19575a41bfa54b72822b683baacd4b8053ceb` with verified two Notion upserts. Cursor task count is `0`.
 - **Absence custody:** no canonical evidence root, fresh package preflight, valid launch, process/PID, child command, operating-system exit custody, runtime log, one-second samples, result, or manifest exists.
 - **Disposition:** product and package are `NOT_MEASURED`, specifically not PASS, FAIL, or EVIDENCE_LIMITED. No defect, route/resource, minimum-PC, roadmap item-5, optimization, or readiness credit follows. Retained Phase 1L.4b package hashes are context only, not fresh measurement.
 - **Next gate:** no Phase 4 retry is authorized. No Phase `5/6` work begins without this closure's local commit, verified two Notion upserts, and a fresh Scope Director gate. See [[Development/Reports/Phase 1L5b Accepted Facade Fixed Machine Packaged Resource Baseline]].
+
+### Phase 1L.5c Workspace-Local Detached Facade Resource Baseline Retry status
+
+- **Status:** COMPLETE LOCALLY — EVIDENCE_LIMITED; PRODUCT `NOT_MEASURED`; FIXED-MACHINE BASELINE CREDIT `0` on `agent/phase-0d`. One attempt was consumed. Phase `5/6` is pending local commit and verified two Notion upserts. Cursor task count is `0`.
+- **Exact result:** the upper-bound canary passed with no minimum-duration claim. The game controller then received Win32 Process `Access denied` before child custody, command/exit proof, or sampling; sample count is `0`. It stopped the wrapper, while the uncustodied child exited naturally later with unknown exit code and no retained handle. Later route output is not inferred.
+- **Evidence custody:** original result SHA-256 `5795CB8C6C02DE7A673196012B20A2CFA37B256BF4BFB67D9B2C809B1A9F09DF`; post-cleanup addendum SHA-256 `1FE4E1883F715E9218E1BE54BE4124AED146978CD4A62C0C85D15616B2CDEE8A`; full manifest SHA-256 `1435B6E749FD57AB05D7C7A378742DB53B63F67C97C0EB00A3704C25238EE52A` with `23` rows and zero audit failures. Package/map identities remained exact.
+- **Boundary and next gate:** product, route/resource, minimum-PC, roadmap item-5, and fixed-machine credit remain `0`; no defect, optimization, or readiness conclusion follows. No rerun is authorized. Phase 1K and accessibility/input evidence remain deferred, incomplete, and not waived. No Phase `6/6` work begins without this closure's commit, verified two Notion upserts, and a fresh Scope Director gate. See [[Development/Reports/Phase 1L5c Workspace Local Detached Facade Resource Baseline Retry]].
 
 ## Future shared simulation layer
 

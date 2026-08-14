@@ -392,6 +392,8 @@ The owner selected Option C in [[Design/Decisions/DEC-025 First Hour Input and A
 
 Phase 1L.5b closed locally before any valid fixed-machine packaged resource attempt because execution infrastructure produced no canonical root, launch, child PID, command/exit custody, log, samples, result, or manifest. Product and package are `NOT_MEASURED`, fixed-machine baseline credit is `0`, and no defect, route/resource, minimum-PC, roadmap item-5, or readiness conclusion follows. No Phase 4 retry is authorized. See [[Development/Reports/Phase 1L5b Accepted Facade Fixed Machine Packaged Resource Baseline]].
 
+Phase 1L.5c consumed one workspace-local detached retry. The upper-bound canary passed, but the game controller's Win32 child query returned `Access denied` before child custody or sampling, so the frozen result is `EVIDENCE_LIMITED`, product `NOT_MEASURED`, samples `0`, and every baseline/product credit remains `0`. The wrapper was stopped; the uncustodied child later exited naturally with unknown exit code. No later route output is inferred and no defect, minimum-PC, roadmap item-5, or readiness conclusion follows. There is no rerun. See [[Development/Reports/Phase 1L5c Workspace Local Detached Facade Resource Baseline Retry]].
+
 ## Admin and operations
 
 The local Brain Observatory grows into the game Admin Console only as real systems exist. Beta operations eventually need truthful controls or views for:
