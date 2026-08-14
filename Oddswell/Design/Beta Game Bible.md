@@ -390,6 +390,8 @@ This is a descriptive current-evidence inventory, not an accessibility standard,
 
 The owner selected Option C in [[Design/Decisions/DEC-025 First Hour Input and Accessibility Remediation Deferral]]. Hands-on input testing and accessibility remediation wait for the later owner MVP/beta-ready playtest; the current evidence remains incomplete and not waived. This deferral creates no accessibility or beta-ready claim, standard, backlog, remediation, product/runtime/art change, or next-build selection. See [[Development/Reports/Phase 1L5a1 First Hour Input and Accessibility Remediation Deferral Closure]].
 
+Phase 1L.5b closed locally before any valid fixed-machine packaged resource attempt because execution infrastructure produced no canonical root, launch, child PID, command/exit custody, log, samples, result, or manifest. Product and package are `NOT_MEASURED`, fixed-machine baseline credit is `0`, and no defect, route/resource, minimum-PC, roadmap item-5, or readiness conclusion follows. No Phase 4 retry is authorized. See [[Development/Reports/Phase 1L5b Accepted Facade Fixed Machine Packaged Resource Baseline]].
+
 ## Admin and operations
 
 The local Brain Observatory grows into the game Admin Console only as real systems exist. Beta operations eventually need truthful controls or views for:

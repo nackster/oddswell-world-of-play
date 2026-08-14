@@ -2140,10 +2140,17 @@ Build the one-city scope defined in [[Design/Decisions/DEC-002 First Playable Sc
 
 ### Phase 1L.5a.1 First-Hour Input and Accessibility Remediation Deferral Closure status
 
-- **Status:** COMPLETE LOCALLY FOR ONE OWNER DECISION CLOSURE on `agent/phase-0d`; fresh batch Phase `3/6` pending local commit and verified Notion closure. Cursor task count is `0`.
+- **Status:** COMPLETE FOR ONE OWNER DECISION CLOSURE on `agent/phase-0d`; fresh batch Phase `3/6` closed at commit `61ed413b2dc8f2ea522b4907fadf61e16d457644` with verified Notion closure. Cursor task count is `0`.
 - **Decision:** the owner replied exactly `C`; [[Design/Decisions/DEC-025 First Hour Input and Accessibility Remediation Deferral]] records the canonical option and boundary.
 - **Deferral boundary:** hands-on input testing and accessibility remediation wait for the later owner MVP/beta-ready playtest. The `143 = 54/39/18/32` inventory and its missing evidence remain incomplete, not waived, and support no accessibility or beta-ready claim.
 - **Next gate:** no Phase `4/6`, remediation, product/runtime/art change, or next build begins without this closure's local commit, verified Notion closure, and a fresh Scope Director gate. See [[Development/Reports/Phase 1L5a1 First Hour Input and Accessibility Remediation Deferral Closure]].
+
+### Phase 1L.5b Accepted Facade Fixed-Machine Packaged Resource Baseline status
+
+- **Status:** COMPLETE LOCALLY — BLOCKED BEFORE VALID ATTEMPT (EXECUTION INFRASTRUCTURE); FIXED-MACHINE BASELINE CREDIT `0` on `agent/phase-0d`. Phase `4/6` is pending local commit and verified two Notion upserts. Cursor task count is `0`.
+- **Absence custody:** no canonical evidence root, fresh package preflight, valid launch, process/PID, child command, operating-system exit custody, runtime log, one-second samples, result, or manifest exists.
+- **Disposition:** product and package are `NOT_MEASURED`, specifically not PASS, FAIL, or EVIDENCE_LIMITED. No defect, route/resource, minimum-PC, roadmap item-5, optimization, or readiness credit follows. Retained Phase 1L.4b package hashes are context only, not fresh measurement.
+- **Next gate:** no Phase 4 retry is authorized. No Phase `5/6` work begins without this closure's local commit, verified two Notion upserts, and a fresh Scope Director gate. See [[Development/Reports/Phase 1L5b Accepted Facade Fixed Machine Packaged Resource Baseline]].
 
 ## Future shared simulation layer
 

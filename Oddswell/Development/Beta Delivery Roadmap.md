@@ -979,6 +979,12 @@ Hands-on input testing and accessibility remediation wait for the later owner MV
 
 No standard, score, remediation backlog, implementation plan, product/runtime/art change, or next build is selected. Cursor task count remains `0`. No Phase `4/6` begins without this closure's local commit, verified Notion closure, and a fresh Scope Director gate. See [[Development/Reports/Phase 1L5a1 First Hour Input and Accessibility Remediation Deferral Closure]].
 
+### Phase 1L.5b Accepted facade fixed-machine packaged resource baseline
+
+**COMPLETE LOCALLY — BLOCKED BEFORE VALID ATTEMPT (EXECUTION INFRASTRUCTURE); FIXED-MACHINE BASELINE CREDIT `0`.** No canonical evidence root, fresh package preflight, valid launch, process/PID, child command, exit custody, runtime log, one-second samples, result, or manifest exists. Product and package are `NOT_MEASURED`, specifically not PASS, FAIL, or EVIDENCE_LIMITED.
+
+This grants no defect, route/resource, minimum-PC, roadmap item-5, optimization, or readiness conclusion. The retained Phase 1L.4b package hashes are invariant context only, never a fresh measurement. Phase `4/6` remains pending local commit and verified two Notion upserts; there is no Phase 4 retry and Phase `5/6` requires a fresh Scope Director gate. See [[Development/Reports/Phase 1L5b Accepted Facade Fixed Machine Packaged Resource Baseline]].
+
 ### Exit evidence
 
 The complete loop is visually coherent, readable, accessible at the approved baseline, and within measured PC performance targets. Large catalogs and unseen districts remain out of scope.
