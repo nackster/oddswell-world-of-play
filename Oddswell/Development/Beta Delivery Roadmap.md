@@ -995,7 +995,15 @@ All product, route/resource, minimum-PC, roadmap item-5, and baseline credit rem
 
 **COMPLETE LOCALLY FOR ONE READ-ONLY NINE-ROW LEDGER; PHASE 1L EXIT IS NOT MET.** Exact Status cells are: physical/contiguous `DEFERRED_NOT_WAIVED`; input/accessibility `DEFERRED_NOT_WAIVED`; resource baseline `NOT_MEASURED`; minimum-PC `OPEN_OWNER`; exactly-one accepted transient façade scope `COMPLETE`; music `INCOMPLETE`; Phase 1L exit `INCOMPLETE`; Phase 1M and Version 1 `NOT_AUTHORIZED`; current brain inventory `COMPLETE` with no training claim.
 
-This is no readiness, defect, minimum-PC, art-expansion, music, accessibility, Phase 1M, roadmap Phase 2, or Version 1 authority. Phase `6/6` is pending local commit and verified two Notion upserts. **NO SEVENTH PHASE — BATCH STOPPED.** See [[Development/Reports/Phase 1L5d Current Beta Exit Blocker Ledger and Six Phase Batch Closeout Audit]].
+This is no readiness, defect, minimum-PC, art-expansion, music, accessibility, Phase 1M, roadmap Phase 2, or Version 1 authority. Phase `6/6` closed at commit `9abdb5f079a792de2730b648b0380ea603277da5` with verified two Notion upserts. **NO SEVENTH PHASE — BATCH STOPPED.** See [[Development/Reports/Phase 1L5d Current Beta Exit Blocker Ledger and Six Phase Batch Closeout Audit]].
+
+### Phase 1L.5e Direct packaged-game-process fixed-machine resource baseline
+
+**COMPLETE LOCALLY — BASELINE_RETAINED; PRODUCT `PASS`; CURRENT-MACHINE CREDIT ONLY.** One frozen controller launched the accepted package's inner game executable directly and retained its exact Process/PID through natural operating-system exit `0`. The exact `14`-token route passed `11/11`, traveled `79,792.9/80,000 cm` (`99.7411%`), returned within `60.18 cm`, held `1.0 cm` vertical range, and produced `158` stable direct-PID one-second samples with `0` errors.
+
+Fixed-machine baseline, route/resource, and delivery-path item 5 credit are `1`. Package pre/post identity remained exact at `50` files, `1,051,962,028` bytes, and `0` Python files; ledger guard passed, fatal/mutation markers were `0`, the `20`-row manifest replay passed, and package-Saved/process/TCP/UDP residue was `0`.
+
+This is descriptive evidence from the current Core Ultra 9 185H / 22-logical-processor machine only. It grants minimum-PC, beta/readiness, player-input, FPS, GPU, accessibility, and usability credit `0`. Hands-on input and contiguous first-hour evidence remain deferred, incomplete, and not waived. Music and Phase 1L exit remain incomplete; Phase 1M, roadmap Phase 2, Version 1, and release work remain unauthorized. This is fresh Phase `1/6`, pending local commit and verified two Notion upserts; Cursor task count is `0`. Fresh Phase `2/6` requires a new Scope Director gate. See [[Development/Reports/Phase 1L5e Direct Packaged Game Process Fixed Machine Resource Baseline]].
 
 ### Exit evidence
 

@@ -2161,10 +2161,19 @@ Build the one-city scope defined in [[Design/Decisions/DEC-002 First Playable Sc
 
 ### Phase 1L.5d Current Phase 1L Exit Blocker Ledger status
 
-- **Status:** COMPLETE LOCALLY FOR ONE READ-ONLY NINE-ROW LEDGER on `agent/phase-0d`; Phase 1L exit is not met. Phase `6/6` is pending local commit and verified two Notion upserts. Cursor task count is `0`.
+- **Status:** COMPLETE FOR ONE READ-ONLY NINE-ROW LEDGER on `agent/phase-0d`; Phase 1L exit is not met. Phase `6/6` closed at commit `9abdb5f079a792de2730b648b0380ea603277da5` with verified two Notion upserts. Cursor task count is `0`.
 - **Exact ledger:** physical/contiguous `DEFERRED_NOT_WAIVED`; input/accessibility `DEFERRED_NOT_WAIVED`; resource baseline `NOT_MEASURED`; minimum-PC `OPEN_OWNER`; exactly-one transient façade scope `COMPLETE`; music `INCOMPLETE`; Phase 1L exit `INCOMPLETE`; Phase 1M and Version 1 `NOT_AUTHORIZED`; current brain inventory `COMPLETE` without a training claim.
 - **Boundary:** no readiness, product defect, minimum-PC, family expansion, music, accessibility completion, Phase 1M, roadmap Phase 2, Version 1, production, or release authority follows. Phase 1K and accessibility/input evidence remain deferred, incomplete, and not waived. See [[Development/Reports/Phase 1L5d Current Beta Exit Blocker Ledger and Six Phase Batch Closeout Audit]].
 - **Final batch gate:** **NO SEVENTH PHASE — BATCH STOPPED.**
+
+### Phase 1L.5e Direct Packaged-Game-Process Fixed-Machine Resource Baseline status
+
+- **Status:** COMPLETE LOCALLY — `BASELINE_RETAINED`; product `PASS`; current-machine evidence only on `agent/phase-0d`. This is fresh Phase `1/6`, pending local commit and verified two Notion upserts. Cursor task count is `0`.
+- **Direct attempt:** frozen controller SHA-256 `893D9B2BD6E6DB52BF03DEE0D3572CDB0990C3069954CC9EBE1EA2E2DD354CE1` launched direct game PID `18676` with exactly `14` tokens, retained it through natural exit `0`, and required no cleanup. Route passed `11/11`, `79,792.9/80,000 cm`, `60.18 cm` home error, and `1.0 cm` vertical range.
+- **Resource evidence:** `158` stable direct-PID one-second samples covered `157.019 s` with `0` errors. Working-set MiB minimum/median/P95/maximum was `1,201.184/1,647.842/1,650.898/1,651.285`; private MiB was `1,495.773/3,876.734/3,878.793/3,879.168`. CPU advanced `620.125 s` (`394.936%` one-core equivalent); handles were `653/5,815/5,816/5,823`; threads were `33/82/85/85`.
+- **Custody:** package pre/post remained exact at `50` files, `1,051,962,028` bytes, `0` Python; the accepted game, UFS, and protected-map hashes matched. Ledger guard passed, fatal/mutation markers were `0`, the `20`-row manifest replay had zero failures, and package-Saved/process/TCP/UDP residue was `0`.
+- **Credits and boundary:** fixed-machine baseline, route/resource, and Phase 1L item 5 credit are `1`. Minimum-PC, beta/readiness, player-input, FPS, GPU, accessibility, and usability credit are `0`. No product changed. Hands-on evidence remains deferred, incomplete, and not waived; music and Phase 1L exit remain incomplete; Phase 1M, roadmap Phase 2, and Version 1 remain unauthorized. See [[Development/Reports/Phase 1L5e Direct Packaged Game Process Fixed Machine Resource Baseline]].
+- **Next gate:** fresh Phase `2/6` requires this phase's local commit, verified two Notion upserts, and a new Scope Director gate.
 
 ## Future shared simulation layer
 
