@@ -2214,11 +2214,19 @@ Build the one-city scope defined in [[Design/Decisions/DEC-002 First Playable Sc
 
 ### Phase 1L.5i Current AA, Upscaling, Medium-Profile, and Frame-Control Evidence Inventory status
 
-- **Status:** COMPLETE LOCALLY — exact `6` rows: `ENGINE_DEFAULT_REFERENCE_ONLY=5`, `SCALABILITY_PROFILE_REFERENCE_ONLY=1`, and the other allowed statuses `0`; every effective value remains unproven. Fresh Phase `1/6` is pending its local documentation commit and canonical Notion sync. Cursor task count is `0`.
+- **Status:** COMPLETE — exact `6` rows: `ENGINE_DEFAULT_REFERENCE_ONLY=5`, `SCALABILITY_PROFILE_REFERENCE_ONLY=1`, and the other allowed statuses `0`; every effective value remains unproven. Fresh Phase `1/6` closed at commit `1b04d82e678bc5cb761c338de012945a42e8d8da` with verified exactly two Notion upserts. Cursor task count is `0`.
 - **Installed reference:** the ordered Medium/@1 appendix contains `11` groups, `10` present sections, one absent `[LandscapeQuality@1]`, and `154` live assignments. It is an installed UE5.8 reference only, not project selection or effective state.
 - **Non-inference:** project selectors and retained effective route markers are absent. Defaults, TAA/TSR quality CVars, off-screen 1280x720, saved profile values, and runtime/profile `@3` do not prove AA method, upscaler, screen percentage, visible Medium, VSync, frame cap, performance, compatibility, or readiness.
 - **Candidate B:** `MINPC-B_BALANCED_1080P60` remains `OWNER_SELECTED_PROVISIONAL_UNVALIDATED`; DEC-027's ordered unresolved `8` remain unchanged. Tests, representative validation, measured performance, minimum-PC validation, compatibility, and readiness credits remain `0`.
-- **Gate:** Phase 1L.5h closed at commit `9d191bcdbaacdd695c756537b4f2f80936fba794` with verified exactly two Notion upserts. Do not begin fresh Phase `2/6` without this phase's local documentation commit, canonical Notion closure, and a fresh Scope Director gate. No runtime, test, config, product, DEC, Notion, or roadmap Phase 2 work occurred. See [[Development/Reports/Phase 1L5i Current AA Upscaling Medium Profile and Frame Control Evidence Inventory]].
+- **Gate:** Phase 1L.5h closed at commit `9d191bcdbaacdd695c756537b4f2f80936fba794` and Phase 1L.5i closed at `1b04d82e678bc5cb761c338de012945a42e8d8da`, each with verified exactly two Notion upserts. See [[Development/Reports/Phase 1L5i Current AA Upscaling Medium Profile and Frame Control Evidence Inventory]].
+
+### Phase 1L.5i.1 Candidate B Balanced Medium GI and Reflection Policy Closure status
+
+- **Status:** `COMPLETE LOCALLY — PROVISIONAL GI/REFLECTION POLICY SELECTED; VALIDATION NOT RUN`. Future Candidate B policy selects `Lumen` global illumination plus `Screen Space Reflections` (`SSR`). Candidate B remains `OWNER_SELECTED_PROVISIONAL_UNVALIDATED`; fresh Phase `2/6` is pending local documentation commit and canonical Notion sync. Cursor task count is `0`.
+- **Bounded supersession:** only DEC-027 items `GI method/raw mapping` and `reflection method/raw mapping` are resolved as future owner policy; both have disposition `OWNER_SELECTED_PROVISIONAL_UNVALIDATED_POLICY`. Its six compatibility terms remain `D3D12`; `FL12_0+`; `SM6.6+`; `VSM on`; `HWRT off`; `Nanite not required`.
+- **Remaining six, in order:** `AA method`; `upscaler`; `screen percentage`; `exact visible Medium scalability CVars`; `VSync`; `frame cap`.
+- **Non-inference:** historical current config remains Lumen GI / Lumen reflections unchanged. Installed Medium SSR values are rationale/reference only, not selected effective CVars, visible output, performance, or Candidate B proof. Tests, representative validation, measured performance, minimum-PC validation, compatibility, and readiness credits remain `0`.
+- **Gate:** do not begin fresh Phase `3/6` without this phase's local documentation commit, canonical Notion closure, and a fresh Scope Director gate. No runtime, test, source/config, package/map, product, procurement, Notion, or roadmap Phase 2 work occurred. Phase 1K remains incomplete and not waived. See [[Design/Decisions/DEC-028 Candidate B Balanced Medium GI and Reflection Policy]] and [[Development/Reports/Phase 1L5i1 Candidate B Balanced Medium GI and Reflection Policy Closure]].
 
 ## Future shared simulation layer
 

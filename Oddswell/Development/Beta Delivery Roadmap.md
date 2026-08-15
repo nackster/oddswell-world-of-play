@@ -1041,11 +1041,19 @@ These mappings select no owner GI/reflection policy and prove no active visible 
 
 ### Phase 1L.5i current AA, upscaling, Medium-profile, and frame-control evidence inventory
 
-**COMPLETE LOCALLY — SIX REFERENCE-ONLY ROWS; EFFECTIVE VALUES UNPROVEN.** Exact status totals are `ENGINE_DEFAULT_REFERENCE_ONLY=5`, `SCALABILITY_PROFILE_REFERENCE_ONLY=1`, and all other allowed statuses `0`. The ordered installed Medium/@1 appendix has `11` groups, `10` present sections, one absent `[LandscapeQuality@1]`, and `154` live assignments.
+**COMPLETE — SIX REFERENCE-ONLY ROWS; EFFECTIVE VALUES UNPROVEN.** Exact status totals are `ENGINE_DEFAULT_REFERENCE_ONLY=5`, `SCALABILITY_PROFILE_REFERENCE_ONLY=1`, and all other allowed statuses `0`. The ordered installed Medium/@1 appendix has `11` groups, `10` present sections, one absent `[LandscapeQuality@1]`, and `154` live assignments.
 
 Project selectors and retained effective route markers are absent. Engine defaults and the @1 appendix are references only: TAA/TSR quality CVars, off-screen 1280x720, saved profile values, runtime/profile `@3`, and VSync/frame-cap defaults prove no effective AA method, upscaler, screen percentage, visible Medium, VSync, frame cap, performance, compatibility, or readiness. B remains `OWNER_SELECTED_PROVISIONAL_UNVALIDATED`; DEC-027's ordered unresolved `8` remain unchanged; tests, representative validation, measured performance, minimum-PC validation, compatibility, and readiness credits remain `0`.
 
-Prior Phase 1L.5h closed at commit `9d191bcdbaacdd695c756537b4f2f80936fba794` with verified exactly two Notion upserts. Fresh Phase `1/6` is pending its local documentation commit and canonical Notion sync. Do not begin fresh Phase `2/6` without both closures and a fresh Scope Director gate. No runtime, test, config, product, DEC, Notion, or roadmap Phase 2 work occurred. See [[Development/Reports/Phase 1L5i Current AA Upscaling Medium Profile and Frame Control Evidence Inventory]].
+Prior Phase 1L.5h closed at commit `9d191bcdbaacdd695c756537b4f2f80936fba794`; Phase 1L.5i closed at `1b04d82e678bc5cb761c338de012945a42e8d8da`, each with verified exactly two Notion upserts. See [[Development/Reports/Phase 1L5i Current AA Upscaling Medium Profile and Frame Control Evidence Inventory]].
+
+### Phase 1L.5i.1 candidate-B Balanced Medium GI and reflection policy closure
+
+**COMPLETE LOCALLY — PROVISIONAL GI/REFLECTION POLICY SELECTED; VALIDATION NOT RUN.** Future Candidate B policy selects `Lumen` global illumination and `Screen Space Reflections` (`SSR`). Only DEC-027 items `GI method/raw mapping` and `reflection method/raw mapping` are resolved; both have disposition `OWNER_SELECTED_PROVISIONAL_UNVALIDATED_POLICY`. Its compatibility terms remain `D3D12`; `FL12_0+`; `SM6.6+`; `VSM on`; `HWRT off`; `Nanite not required`.
+
+The remaining six stay exact and ordered: `AA method`; `upscaler`; `screen percentage`; `exact visible Medium scalability CVars`; `VSync`; `frame cap`. Historical current config remains Lumen GI / Lumen reflections unchanged. Installed Medium SSR values are rationale/reference only, not selected effective CVars, visible output, performance, compatibility, or Candidate B proof.
+
+B remains `OWNER_SELECTED_PROVISIONAL_UNVALIDATED`; tests, representative validation, measured performance, minimum-PC validation, compatibility, and readiness credits remain `0`. Fresh Phase `2/6` is pending local documentation commit and canonical Notion sync. Fresh Phase `3/6` requires both closures and a new Scope Director gate. No runtime, test, source/config, package/map, product, procurement, Notion, or roadmap Phase 2 work occurred. See [[Design/Decisions/DEC-028 Candidate B Balanced Medium GI and Reflection Policy]] and [[Development/Reports/Phase 1L5i1 Candidate B Balanced Medium GI and Reflection Policy Closure]].
 
 ### Exit evidence
 
