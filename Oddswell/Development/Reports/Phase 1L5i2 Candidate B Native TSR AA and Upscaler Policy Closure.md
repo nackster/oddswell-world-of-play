@@ -4,7 +4,7 @@
 - Branch: `agent/phase-0d`
 - Baseline commit: `b35c4c55716e418f9dbc03f36349c3f23f9f7586`
 - Status: **COMPLETE LOCALLY — PROVISIONAL NATIVE TSR AA/UPSCALER POLICY SELECTED; VALIDATION NOT RUN**
-- Batch position: fresh Phase `3/6`, pending local commit
+- Batch position: fresh Phase `3/6`, committed at `757b82ff77e82b3cfb023e3c42a2fd17b6476099` with verified exactly two Notion upserts
 - Cost: `$0`
 - Cursor tasks: `0`
 
