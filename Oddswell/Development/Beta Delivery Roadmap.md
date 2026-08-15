@@ -1079,6 +1079,25 @@ Only DEC-027 item `exact visible Medium scalability CVars` is resolved, with dis
 
 DEC-028's Lumen GI plus SSR, DEC-029's native TSR AA/upscaler and third-party dependency count `0`, DEC-030's fixed native 1080p/100%/TSR-AA-only/dynamic-resolution-disabled custody, and compatibility terms `D3D12`, `FL12_0+`, `SM6.6+`, `VSM on`, `HWRT off`, and `Nanite not required` remain unchanged. B remains `OWNER_SELECTED_PROVISIONAL_UNVALIDATED`; tests, representative validation, measured performance, minimum-PC validation, compatibility, and readiness credits remain `0`. Fresh Phase `5/6` is pending local documentation commit and canonical Notion sync; fresh Phase `6/6` requires both closures and a new Scope Director gate. No runtime, test, source/config, plugin/dependency, package/map, product, procurement, Notion, or roadmap Phase 2 work occurred. See [[Design/Decisions/DEC-031 Candidate B Exact UE5.8 Medium Profile Policy]] and [[Development/Reports/Phase 1L5i4 Candidate B Exact UE5.8 Medium Profile Policy Closure]].
 
+### Phase 1L.5i.5 candidate-B frame-control policy and six-phase batch closeout
+
+**COMPLETE LOCALLY — FRAME-CONTROL POLICY SELECTED; PLANNING AUTHORITY BOUNDED; VALIDATION NOT RUN; SIX-PHASE BATCH CLOSED.** Future separately authorized Candidate B performance validation uses VSync off through `r.VSync=0` and no engine maximum-FPS cap through `t.MaxFPS=0`. This is measurement custody, not current effective-state proof or a shipping/player-facing settings decision.
+
+The final DEC-027 items `VSync` and `frame cap` are resolved as `OWNER_SELECTED_PROVISIONAL_UNVALIDATED_POLICY`; remaining unresolved-item count is `0`. The compatibility-six, Lumen GI plus SSR, native TSR/dependency-0, fixed native-1080p/100%/TSR-AA-only/dynamic-resolution-disabled, and exact installed Medium-profile policies remain unchanged. B remains `OWNER_SELECTED_PROVISIONAL_UNVALIDATED`; tests, representative validation, measured performance, minimum-PC validation, compatibility, and readiness credits remain `0`.
+
+Standing planning authority applies only to a recommended provisional policy already inside an approved documentation-only Scope Director gate with explicit values, tradeoffs, unknowns, and proof limits. It excludes runtime or tests, source/config/product/package/map/plugin/dependency changes, procurement or spending, account/external actions, Notion, staging/commit/push, release/readiness decisions, non-recommended or expanded scopes, a new batch, and a seventh phase; express owner and execution gates remain in force.
+
+| Fresh phase | Local custody |
+| ---: | --- |
+| `1/6` | `1b04d82e678bc5cb761c338de012945a42e8d8da`; verified exactly two Notion upserts |
+| `2/6` | `b35c4c55716e418f9dbc03f36349c3f23f9f7586`; verified exactly two Notion upserts |
+| `3/6` | `757b82ff77e82b3cfb023e3c42a2fd17b6476099`; verified exactly two Notion upserts |
+| `4/6` | `eb2059888a9a0ac66cfd4a571aa3eaf38d893429`; verified exactly two Notion upserts |
+| `5/6` | `5a5a4a23c3e36710b72737be17c286087663899f`; verified exactly two Notion upserts |
+| `6/6` | the local commit containing this report |
+
+No runtime, test, source/config, plugin/dependency, package/map, product, procurement, current-phase Notion, or roadmap Phase 2 work occurred. Phase 1K and hands-on/input/accessibility evidence remain incomplete, deferred, and not waived. Brain maturity remains frozen; music and Phase 1L exit remain incomplete. **NO SEVENTH PHASE — BATCH STOPPED.** See [[Design/Decisions/DEC-032 Candidate B Frame Control and Bounded Planning Authority]] and [[Development/Reports/Phase 1L5i5 Candidate B Frame Control Policy and Six Phase Batch Closeout Audit]].
+
 ### Exit evidence
 
 The complete loop is visually coherent, readable, accessible at the approved baseline, and within measured PC performance targets. Large catalogs and unseen districts remain out of scope.

@@ -4,7 +4,7 @@
 - Branch: `agent/phase-0d`
 - Baseline commit: `eb2059888a9a0ac66cfd4a571aa3eaf38d893429`
 - Status: **COMPLETE LOCALLY — PROVISIONAL EXACT MEDIUM PROFILE SELECTED; VALIDATION NOT RUN**
-- Batch position: fresh Phase `5/6`, pending local commit
+- Batch position: fresh Phase `5/6` closed at commit `5a5a4a23c3e36710b72737be17c286087663899f` with verified exactly two Notion upserts
 - Cost: `$0`
 - Cursor tasks: `0`
 
