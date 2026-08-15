@@ -4,7 +4,7 @@
 - Branch: `agent/phase-0d`
 - Baseline commit: `1b04d82e678bc5cb761c338de012945a42e8d8da`
 - Status: **COMPLETE LOCALLY — PROVISIONAL GI/REFLECTION POLICY SELECTED; VALIDATION NOT RUN**
-- Batch position: fresh Phase `2/6`, pending local commit
+- Batch position: fresh Phase `2/6`, committed at `b35c4c55716e418f9dbc03f36349c3f23f9f7586` with verified exactly two Notion upserts
 - Cost: `$0`
 - Cursor tasks: `0`
 

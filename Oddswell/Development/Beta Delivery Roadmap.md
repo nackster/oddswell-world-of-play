@@ -1053,7 +1053,15 @@ Prior Phase 1L.5h closed at commit `9d191bcdbaacdd695c756537b4f2f80936fba794`; P
 
 The remaining six stay exact and ordered: `AA method`; `upscaler`; `screen percentage`; `exact visible Medium scalability CVars`; `VSync`; `frame cap`. Historical current config remains Lumen GI / Lumen reflections unchanged. Installed Medium SSR values are rationale/reference only, not selected effective CVars, visible output, performance, compatibility, or Candidate B proof.
 
-B remains `OWNER_SELECTED_PROVISIONAL_UNVALIDATED`; tests, representative validation, measured performance, minimum-PC validation, compatibility, and readiness credits remain `0`. Fresh Phase `2/6` is pending local documentation commit and canonical Notion sync. Fresh Phase `3/6` requires both closures and a new Scope Director gate. No runtime, test, source/config, package/map, product, procurement, Notion, or roadmap Phase 2 work occurred. See [[Design/Decisions/DEC-028 Candidate B Balanced Medium GI and Reflection Policy]] and [[Development/Reports/Phase 1L5i1 Candidate B Balanced Medium GI and Reflection Policy Closure]].
+B remains `OWNER_SELECTED_PROVISIONAL_UNVALIDATED`; tests, representative validation, measured performance, minimum-PC validation, compatibility, and readiness credits remain `0`. Fresh Phase `2/6` closed at commit `b35c4c55716e418f9dbc03f36349c3f23f9f7586` with verified exactly two Notion upserts. See [[Design/Decisions/DEC-028 Candidate B Balanced Medium GI and Reflection Policy]] and [[Development/Reports/Phase 1L5i1 Candidate B Balanced Medium GI and Reflection Policy Closure]].
+
+### Phase 1L.5i.2 candidate-B native TSR AA and upscaler policy closure
+
+**COMPLETE LOCALLY — PROVISIONAL NATIVE TSR AA/UPSCALER POLICY SELECTED; VALIDATION NOT RUN.** Future Candidate B policy selects `Temporal Super Resolution` (`TSR`) as AA and the built-in Unreal TSR temporal upscaler, with third-party plugin/dependency count `0`. Only DEC-027 items `AA method` and `upscaler` are resolved; both have disposition `OWNER_SELECTED_PROVISIONAL_UNVALIDATED_POLICY`.
+
+The remaining four stay exact and ordered: `screen percentage`; `exact visible Medium scalability CVars`; `VSync`; `frame cap`. DEC-028 remains Lumen GI plus SSR. DEC-027's compatibility terms remain `D3D12`; `FL12_0+`; `SM6.6+`; `VSM on`; `HWRT off`; `Nanite not required`.
+
+Installed UE5.8 AA/upscaler defaults are rationale/reference only, not project selection or effective visible state, plugin custody, performance, compatibility, or Candidate B proof. B remains `OWNER_SELECTED_PROVISIONAL_UNVALIDATED`; tests, representative validation, measured performance, minimum-PC validation, compatibility, and readiness credits remain `0`. Fresh Phase `3/6` is pending local documentation commit and canonical Notion sync; fresh Phase `4/6` requires both closures and a new Scope Director gate. No runtime, test, source/config, plugin/dependency, package/map, product, procurement, Notion, or roadmap Phase 2 work occurred. See [[Design/Decisions/DEC-029 Candidate B Native TSR AA and Upscaler Policy]] and [[Development/Reports/Phase 1L5i2 Candidate B Native TSR AA and Upscaler Policy Closure]].
 
 ### Exit evidence
 
