@@ -2206,11 +2206,19 @@ Build the one-city scope defined in [[Design/Decisions/DEC-002 First Playable Sc
 
 ### Phase 1L.5h Current GI and Reflection Raw-Value Decode and Six-Phase Batch Closeout Audit status
 
-- **Status:** COMPLETE LOCALLY — exactly `2` rows, both `MAPPING_EVIDENCED_CURRENT_CONFIG_ONLY`; final Phase `6/6` is pending its local documentation commit and exactly two Notion upserts. Cursor task count is `0`.
+- **Status:** COMPLETE — exactly `2` rows, both `MAPPING_EVIDENCED_CURRENT_CONFIG_ONLY`; final Phase `6/6` closed at commit `9d191bcdbaacdd695c756537b4f2f80936fba794` with verified exactly two Notion upserts. Cursor task count is `0`.
 - **Mappings and custody:** current config `r.DynamicGlobalIlluminationMethod=1` and `r.ReflectionMethod=1` each map to Lumen. Installed UE5.8 authority is `EngineTypes.h:450-485`, SHA-256 `0C18D1FACB72983298762C752D90FDB761D35084583C8B50E5427B6CD66D9538`, plus `RendererSettings.h:597-605`, SHA-256 `A036AB5E245439BFED962FDF9A6EA510DE2E1DAA3704976593A150DCFC45F8DF`; retained Lumen `Allow:1` log markers are corroborative only.
 - **Non-inference:** current-config mapping is not owner policy, active visible output, performance, candidate-B compatibility, minimum-PC validation, or readiness evidence. DEC-027's ordered unresolved `8` remain unchanged; B remains `OWNER_SELECTED_PROVISIONAL_UNVALIDATED`; tests, representative validation, measured performance, minimum-PC validation, compatibility, and readiness credits remain `0`.
-- **Final ledger:** `1/6` `388537de`; `2/6` `5e821a3`; `3/6` `c9cba81`; `4/6` `ca32072e`; `5/6` `18d5b1d` — each committed with verified exactly two Notion upserts. Phase `6/6` remains pending commit and exactly two Notion upserts.
+- **Final ledger:** `1/6` `388537de`; `2/6` `5e821a3`; `3/6` `c9cba81`; `4/6` `ca32072e`; `5/6` `18d5b1d`; `6/6` `9d191bcd` — each committed with verified exactly two Notion upserts.
 - **Boundary:** no runtime, test, source/config, package/map, DEC, product, procurement, or current-phase Notion work occurred. Phase 1K remains incomplete and not waived; music and Phase 1L exit remain incomplete; Phase 1M, roadmap Phase 2, Version 1, readiness, and release remain unauthorized. The six-phase batch stops here; Phase 7 is prohibited. See [[Development/Reports/Phase 1L5h Current GI and Reflection Raw Value Decode and Six Phase Batch Closeout Audit]].
+
+### Phase 1L.5i Current AA, Upscaling, Medium-Profile, and Frame-Control Evidence Inventory status
+
+- **Status:** COMPLETE LOCALLY — exact `6` rows: `ENGINE_DEFAULT_REFERENCE_ONLY=5`, `SCALABILITY_PROFILE_REFERENCE_ONLY=1`, and the other allowed statuses `0`; every effective value remains unproven. Fresh Phase `1/6` is pending its local documentation commit and canonical Notion sync. Cursor task count is `0`.
+- **Installed reference:** the ordered Medium/@1 appendix contains `11` groups, `10` present sections, one absent `[LandscapeQuality@1]`, and `154` live assignments. It is an installed UE5.8 reference only, not project selection or effective state.
+- **Non-inference:** project selectors and retained effective route markers are absent. Defaults, TAA/TSR quality CVars, off-screen 1280x720, saved profile values, and runtime/profile `@3` do not prove AA method, upscaler, screen percentage, visible Medium, VSync, frame cap, performance, compatibility, or readiness.
+- **Candidate B:** `MINPC-B_BALANCED_1080P60` remains `OWNER_SELECTED_PROVISIONAL_UNVALIDATED`; DEC-027's ordered unresolved `8` remain unchanged. Tests, representative validation, measured performance, minimum-PC validation, compatibility, and readiness credits remain `0`.
+- **Gate:** Phase 1L.5h closed at commit `9d191bcdbaacdd695c756537b4f2f80936fba794` with verified exactly two Notion upserts. Do not begin fresh Phase `2/6` without this phase's local documentation commit, canonical Notion closure, and a fresh Scope Director gate. No runtime, test, config, product, DEC, Notion, or roadmap Phase 2 work occurred. See [[Development/Reports/Phase 1L5i Current AA Upscaling Medium Profile and Frame Control Evidence Inventory]].
 
 ## Future shared simulation layer
 
