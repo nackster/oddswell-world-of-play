@@ -6,6 +6,6 @@ public class OddsWell : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine" });
-		PrivateDependencyModuleNames.AddRange(new string[] { "InputCore", "Json" });
+		PrivateDependencyModuleNames.AddRange(new string[] { "InputCore", "Json", "RHI" });
 	}
 }

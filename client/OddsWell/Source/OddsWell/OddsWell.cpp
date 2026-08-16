@@ -5,12 +5,22 @@
 #include "Misc/Parse.h"
 #include "Modules/ModuleManager.h"
 
+#if UE_BUILD_DEVELOPMENT
+#include "CandidateBPolicySmoke.h"
+#endif
+
 IMPLEMENT_PRIMARY_GAME_MODULE(FOddsWellModule, OddsWell, "OddsWell");
 
 void FOddsWellModule::StartupModule()
 {
 	FDefaultGameModuleImpl::StartupModule();
-	if (FParse::Param(FCommandLine::Get(), TEXT("ReplayBenchmark")))
+	const bool bReplayBenchmark = FParse::Param(FCommandLine::Get(), TEXT("ReplayBenchmark"));
+#if UE_BUILD_DEVELOPMENT
+	const bool bCandidateBPolicySmoke = OddsWellCandidateBPolicySmoke::IsCandidateBPolicySmokeRequested(FCommandLine::Get());
+	if (bReplayBenchmark || bCandidateBPolicySmoke)
+#else
+	if (bReplayBenchmark)
+#endif
 	{
 		WorldInitializedHandle = FWorldDelegates::OnPostWorldInitialization.AddRaw(this, &FOddsWellModule::HandleWorldInitialized);
 	}
@@ -26,6 +36,15 @@ void FOddsWellModule::HandleWorldInitialized(UWorld* World, const UWorld::Initia
 {
 	if (World && World->IsGameWorld())
 	{
-		World->SpawnActor<AReplayBenchmarkActor>();
+		if (FParse::Param(FCommandLine::Get(), TEXT("ReplayBenchmark")))
+		{
+			World->SpawnActor<AReplayBenchmarkActor>();
+		}
+#if UE_BUILD_DEVELOPMENT
+		if (OddsWellCandidateBPolicySmoke::IsCandidateBPolicySmokeRequested(FCommandLine::Get()))
+		{
+			OddsWellCandidateBPolicySmoke::BindToWorld(World);
+		}
+#endif
 	}
 }
