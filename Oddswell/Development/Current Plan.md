@@ -2267,7 +2267,15 @@ Build the one-city scope defined in [[Design/Decisions/DEC-002 First Playable Sc
 - **Status:** CONTRACT FROZEN; PRODUCT `NOT_MEASURED`; NO CONTROLLER OR LAUNCH AUTHORIZED. Cursor task count is `0`.
 - **Historical blocker:** Phase 1L.5j remains `PRELAUNCH_BLOCKED` with attempts `0`, no PID, no valid attempt, no product measurement, no commit, no Notion closure, and application/route credits `0/0`. Its transient controller candidates are not imported.
 - **Contract:** exact package and separate Saved custody, the exact `14`-token visible launch vector, `192` deterministic policy commands, non-default runtime renderer gates, native-TSR custody, exact route/economy guards, postflight replay, and deterministic four-verdict precedence are frozen as documentation only.
-- **Future gate and boundary:** a future controller source requires a separate PRE-LAUNCH gate. One returned PID consumes the attempt; retry is always false. B remains `OWNER_SELECTED_PROVISIONAL_UNVALIDATED`; performance, minimum-PC, compatibility, accessibility, and readiness credits remain `0`. No product, runtime, source, config, package, map, controller, test, launch, Notion, or roadmap Phase 2 work occurred. Phase 1K remains incomplete and not waived. See [[Development/Reports/Phase 1L5k Candidate B Packaged Policy Smoke Controller Contract]].
+- **Closure:** commit `0458af918d8e962a0b9b36e491738bcd87102951` with verified exactly two Notion upserts. One returned PID would consume a product attempt; retry remains false. B remains `OWNER_SELECTED_PROVISIONAL_UNVALIDATED`; performance, minimum-PC, compatibility, accessibility, and readiness credits remain `0`. Phase 1K remains incomplete and not waived. See [[Development/Reports/Phase 1L5k Candidate B Packaged Policy Smoke Controller Contract]].
+
+### Phase 1L.5l Candidate B Smoke Controller Construction and Static Proof status
+
+- **Status:** `CONTROLLER_STATIC_FAIL`; controller invocation count `1`; product result `NOT_MEASURED`; `PRE-LAUNCH_PASS=false`; retry `false`. Cursor task count is `0`.
+- **Failure:** the sole `-PreflightOnly` call terminated under strict mode because controller line `132` used unset `$_` inside `foreach ($Line in $Lines)`. The required static JSON outputs count is `0/4`; manifest, seal, Profile, and Evidence are absent.
+- **No launch or credit:** game/helper launches, game PID, valid product attempts, routes, runtime readbacks, application credit, route credit, performance credit, minimum-PC validation credit, compatibility credit, accessibility credit, and readiness credit are all `0`.
+- **Security custody:** the root-owned Defender after snapshot observed a newer detection with successful remediation, execution status `0`, `active=false`, and `did_threat_execute=false`. Do not infer harmlessness or cause beyond the recorded resource summary. The exact four transient artifacts remain frozen and unimported.
+- **Batch boundary:** Phase `2/6` is pending only this exact-five local docs commit and verified exactly two Notion upserts, then `STOP 2/6`. No repair, retry, seal, launch, Notion beyond those two closure upserts, Phase 3, or new batch is authorized. See [[Development/Reports/Phase 1L5l Candidate B Smoke Controller Construction and Static Proof]].
 
 ## Future shared simulation layer
 
