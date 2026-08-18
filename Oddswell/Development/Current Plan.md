@@ -2357,7 +2357,17 @@ Build the one-city scope defined in [[Design/Decisions/DEC-002 First Playable Sc
 - **Outer process:** future signed Microsoft cmd receives exact argv6 `/d /q /v:off /s /c` plus one whole-command value beginning with the quoted dotnet path and ending `2>&1"`; CALL, intermediary, and other metacharacters are forbidden.
 - **Child process:** dotnet receives exact argc20; token1 AutomationTool.dll occurs once, token2 is `BuildCookRun`, token18 alone substitutes the fresh archive root, and token20 is `-NoSign`.
 - **Evidence:** cmd creates the transcript before the child; tool return is non-evidence; raw bytes are never rewritten. Require two identical nonzero size/SHA reads at least `1 s` apart, strict UTF-8/marker validation, and fail-closed gaps. Future exact4 is transcript, session custody, complete package manifest, and separately labeled Saved manifest.
-- **Credits/gate:** `package_transcript_contract_credit=1`; all execution/product credits are `0`, Phase 1L.5t remains limited, and product remains `NOT_MEASURED`. Phase `3/6` closes through this exact-five docs commit plus later exactly two canonical Project upserts; no automatic Phase 4 is authorized. See [[Development/Reports/Phase 1L5u Defender Safe Package Transcript Custody Contract]].
+- **Credits/gate:** `package_transcript_contract_credit=1`; all execution/product credits are `0`, Phase 1L.5t remains limited, and product remains `NOT_MEASURED`. Phase 1L.5u closed at commit `6bf826d4f4e13ae9c05030a85c8cee65535226d6` with independently verified exactly two canonical Project upserts and counted Phase `3/6`. See [[Development/Reports/Phase 1L5u Defender Safe Package Transcript Custody Contract]].
+
+### Phase 1L.5v File-Backed Candidate B Development Package Build and Custody status
+
+- **Status:** `COMPLETE LOCALLY — PACKAGE_BUILD_PASS; PRODUCT NOT MEASURED; FRESH BATCH PHASE 4/6 CLOSED`. Tasks remain unchanged and Cursor is `0`.
+- **Attempt:** one exact signed-cmd/dotnet attempt, PID `48632`, exited naturally `0` after `115.511776 s`; timeout, forced cleanup, and retry are `false`.
+- **Transcript:** process-created combined stream, never rewritten, `82,329` bytes/SHA-256 `5C8F262CB873750FC0652DCD937C9387FE3B95ABEBB37F7EE96278B5AF7028AC`; strict UTF-8 passed and two identical observations were `8.1780769 s` apart.
+- **Evidence:** session `3,638` bytes/SHA `7AB26CFE…B5CA`; package manifest `6,666` bytes/SHA `C5CB77DE…B2EA2`; Saved manifest `6,266` bytes/SHA `A25B99B5…B3A5`. All four evidence files replay exactly.
+- **Package custody:** PackageFinal and project staged mirror each contain `50` files totaling `1,052,102,828` bytes; fresh case-sensitive ordinal replay gives missing/mismatch/unexpected `0/0/0` for both and staged mismatch `0`.
+- **Credits:** `development_package_build_credit=1`, `package_custody_credit=1`, and prior `package_transcript_contract_credit=1`. Phase 1L.5t credits remain `0`; all product measurement, policy, renderer, route, gameplay, economy, performance, minimum-PC, compatibility, accessibility, hands-on, beta-exit, and readiness credits are `0`.
+- **Boundary/gate:** product remains `NOT_MEASURED`; Candidate B remains provisional/unvalidated; no package/game launch or cleanup occurred. Phase 1L exit is incomplete; Phase 1M, roadmap Phase 2, Version 1, and automatic Phase 5 remain unauthorized. Phase `4/6` closes through the local commit containing the report plus later exactly two canonical Project upserts. See [[Development/Reports/Phase 1L5v File Backed Candidate B Development Package Build and Custody]].
 
 ## Future shared simulation layer
 
