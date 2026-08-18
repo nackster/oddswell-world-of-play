@@ -2348,7 +2348,16 @@ Build the one-city scope defined in [[Design/Decisions/DEC-002 First Playable Sc
 - **Evidence limit:** tool metadata reported `941` total lines while the returned payload contained literal `10859 tokens truncated`; exact subset, bytes, and SHA are `NOT_AVAILABLE / UNPROVEN`. Required evidence files `4/4` are absent and both patch counts are `0`; internal AutomationTool logs are supplemental only.
 - **Supplemental custody:** build/cook/stage/package/archive completed markers were each `1`; PackageFinal and the project staged mirror each had `50` files/`1,052,111,020` bytes with path/size/SHA mismatches `0`. No manifest was persisted, so this grants no package credit.
 - **Credits/boundary:** all Phase 1L.5t credits are `0`; product remains `NOT_MEASURED`, Candidate B remains provisional/unvalidated, and no product/source defect or Defender-clean state is demonstrated. No cleanup, package/game launch, retry, evidence rewrite, or Defender action occurred.
-- **Closure/gate:** Phase 1L.5s closed at commit `8de19ea25c744e5dce144e01c27d08ddbcdfed52` with independently verified exactly two Notion upserts. Phase `2/6` closes through this exact-five documentation custody; no Phase 3 is authorized. See [[Development/Reports/Phase 1L5t Candidate B Development Package Build and Custody After Desktop Runtime Alignment]].
+- **Closure/gate:** Phase 1L.5t closed at commit `89bf7e1f3aa3758c43e158341f0977fd7331763a` with independently verified exactly two Notion upserts. See [[Development/Reports/Phase 1L5t Candidate B Development Package Build and Custody After Desktop Runtime Alignment]].
+
+### Phase 1L.5u Defender-Safe Package Transcript Custody Contract status
+
+- **Status:** `COMPLETE LOCALLY — DIRECT FILE-BACKED PACKAGE TRANSCRIPT CONTRACT SELECTED; NO PACKAGE RERUN; PRODUCT NOT MEASURED; FRESH BATCH PHASE 3/6 CLOSED`. Tasks are unchanged and Cursor is `0`.
+- **Selection:** A `CMD_NATIVE_COMBINED_REDIRECT` is selected/recommended; B internal-log substitution, C larger tool-return cap, and D PowerShell/controller capture are rejected.
+- **Outer process:** future signed Microsoft cmd receives exact argv6 `/d /q /v:off /s /c` plus one whole-command value beginning with the quoted dotnet path and ending `2>&1"`; CALL, intermediary, and other metacharacters are forbidden.
+- **Child process:** dotnet receives exact argc20; token1 AutomationTool.dll occurs once, token2 is `BuildCookRun`, token18 alone substitutes the fresh archive root, and token20 is `-NoSign`.
+- **Evidence:** cmd creates the transcript before the child; tool return is non-evidence; raw bytes are never rewritten. Require two identical nonzero size/SHA reads at least `1 s` apart, strict UTF-8/marker validation, and fail-closed gaps. Future exact4 is transcript, session custody, complete package manifest, and separately labeled Saved manifest.
+- **Credits/gate:** `package_transcript_contract_credit=1`; all execution/product credits are `0`, Phase 1L.5t remains limited, and product remains `NOT_MEASURED`. Phase `3/6` closes through this exact-five docs commit plus later exactly two canonical Project upserts; no automatic Phase 4 is authorized. See [[Development/Reports/Phase 1L5u Defender Safe Package Transcript Custody Contract]].
 
 ## Future shared simulation layer
 
