@@ -2339,7 +2339,16 @@ Build the one-city scope defined in [[Design/Decisions/DEC-002 First Playable Sc
 - **Cause:** `Microsoft.WindowsDesktop.App 10.0.0 (x64)` was missing while `8.0.11` was found. AutomationTool managed execution and build/cook/stage/pak/IoStore/package/archive were `0`; `PackageFinal` was absent.
 - **Evidence:** the complete transcript and session custody are frozen; package and Saved manifests are header-only. Security/Defender/virus/threat/`0x800700E1` text count `0` is not a Defender-clean claim. Repository, source, target-process, and watched-port custody remained unchanged.
 - **Credits/boundary:** no product or source defect is demonstrated. All Phase 1L.5s build, package, product, application, route, gameplay, economy, performance, minimum-PC, compatibility, accessibility, hands-on, beta-exit, and readiness credits are `0`; Candidate B remains provisional/unvalidated.
-- **Closure/gate:** Phase 1L.5r closed at commit `ad45aca061ed87aa6bf69b7efd9f93130b7fb242` with independently verified exactly two Notion upserts. Windows Desktop Runtime `10.0.0 x64` is a separate owner-gated prerequisite. No install, retry, or Phase 2 is authorized; see [[Development/Reports/Phase 1L5s Candidate B Development Package Build and Custody]].
+- **Closure/gate:** Phase 1L.5s closed at commit `8de19ea25c744e5dce144e01c27d08ddbcdfed52` with independently verified exactly two Notion upserts. A later separate owner gate authorized the noncounting Windows Desktop Runtime `10.0.11 x64` installation, which reached `INSTALL_PASS` without changing Phase 1L.5s credits; see [[Development/Reports/Phase 1L5s Candidate B Development Package Build and Custody]].
+
+### Phase 1L.5t Candidate B Development Package Build After Desktop Runtime Alignment status
+
+- **Status:** `COMPLETE LOCALLY — PACKAGE_EVIDENCE_LIMITED; TOOL-OWNED STDOUT/STDERR TRUNCATED AND UNAVAILABLE; EVIDENCE FILES 0; PRODUCT NOT MEASURED; FRESH BATCH PHASE 2/6 CLOSED`. Cursor task count is `0`.
+- **Prerequisite/attempt:** the noncounting Windows Desktop Runtime `10.0.11 x64` prerequisite reached `INSTALL_PASS`. One exact-20-token direct BuildCookRun attempt exited naturally `0` after `198.3 s`; retry and timeout stop were `0`.
+- **Evidence limit:** tool metadata reported `941` total lines while the returned payload contained literal `10859 tokens truncated`; exact subset, bytes, and SHA are `NOT_AVAILABLE / UNPROVEN`. Required evidence files `4/4` are absent and both patch counts are `0`; internal AutomationTool logs are supplemental only.
+- **Supplemental custody:** build/cook/stage/package/archive completed markers were each `1`; PackageFinal and the project staged mirror each had `50` files/`1,052,111,020` bytes with path/size/SHA mismatches `0`. No manifest was persisted, so this grants no package credit.
+- **Credits/boundary:** all Phase 1L.5t credits are `0`; product remains `NOT_MEASURED`, Candidate B remains provisional/unvalidated, and no product/source defect or Defender-clean state is demonstrated. No cleanup, package/game launch, retry, evidence rewrite, or Defender action occurred.
+- **Closure/gate:** Phase 1L.5s closed at commit `8de19ea25c744e5dce144e01c27d08ddbcdfed52` with independently verified exactly two Notion upserts. Phase `2/6` closes through this exact-five documentation custody; no Phase 3 is authorized. See [[Development/Reports/Phase 1L5t Candidate B Development Package Build and Custody After Desktop Runtime Alignment]].
 
 ## Future shared simulation layer
 
