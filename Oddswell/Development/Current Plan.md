@@ -2367,7 +2367,17 @@ Build the one-city scope defined in [[Design/Decisions/DEC-002 First Playable Sc
 - **Evidence:** session `3,638` bytes/SHA `7AB26CFE…B5CA`; package manifest `6,666` bytes/SHA `C5CB77DE…B2EA2`; Saved manifest `6,266` bytes/SHA `A25B99B5…B3A5`. All four evidence files replay exactly.
 - **Package custody:** PackageFinal and project staged mirror each contain `50` files totaling `1,052,102,828` bytes; fresh case-sensitive ordinal replay gives missing/mismatch/unexpected `0/0/0` for both and staged mismatch `0`.
 - **Credits:** `development_package_build_credit=1`, `package_custody_credit=1`, and prior `package_transcript_contract_credit=1`. Phase 1L.5t credits remain `0`; all product measurement, policy, renderer, route, gameplay, economy, performance, minimum-PC, compatibility, accessibility, hands-on, beta-exit, and readiness credits are `0`.
-- **Boundary/gate:** product remains `NOT_MEASURED`; Candidate B remains provisional/unvalidated; no package/game launch or cleanup occurred. Phase 1L exit is incomplete; Phase 1M, roadmap Phase 2, Version 1, and automatic Phase 5 remain unauthorized. Phase `4/6` closes through the local commit containing the report plus later exactly two canonical Project upserts. See [[Development/Reports/Phase 1L5v File Backed Candidate B Development Package Build and Custody]].
+- **Boundary/gate:** product remains `NOT_MEASURED`; Candidate B remains provisional/unvalidated; no package/game launch or cleanup occurred. Phase 1L exit is incomplete; Phase 1M, roadmap Phase 2, and Version 1 remain unauthorized. Phase 1L.5v closed at commit `7fdcba4cfd4b10a9d28758eb6d14f7c11da9b664` with independently verified exactly two canonical Project upserts and counted Phase `4/6`. See [[Development/Reports/Phase 1L5v File Backed Candidate B Development Package Build and Custody]].
+
+### Phase 1L.5w Packaged Candidate B Policy Application and Native Renderer Evidence status
+
+- **Status:** `COMPLETE LOCALLY — PACKAGED_POLICY_EVIDENCE_LIMITED; TIMEOUT BEFORE CANDIDATE MARKERS; PRODUCT NOT MEASURED; FRESH BATCH PHASE 5/6`. Tasks remain unchanged and Cursor is `0`.
+- **Attempt:** one direct packaged launch, PID `36604`, timed out after `120.674126 s`; natural exit `false`, exact-PID stop/drain `true`, retry `false`.
+- **Exit custody:** game exit `-1` is `POST_FORCED_STOP`; wrapper intended `124`, but literal `exit124` caused `COMMAND_NOT_FOUND`, so wrapper terminal exit is `NOT_AVAILABLE`.
+- **Log:** immutable direct abslog `97,448` bytes/SHA `C4BA95C1…1D0B`; strict UTF-8/BOM true; two stable reads `6.5322612 s` apart.
+- **Markers/components:** Candidate echoes `2`, map load `1`, RequestExit/START/FIELD/RESULT `0/0/0/0`. Policy application, native renderer, and visible-window components are `INDETERMINATE`; field ledger data rows `0`; product result `NOT_MEASURED`.
+- **Evidence:** session `3,613` bytes/SHA `8B9026C5…CC50`; header-only ledger `65` bytes/SHA `8BC7ABF0…C6F33`; exact evidence file count `3`.
+- **Credits/boundary:** all Phase 1L.5w launch, policy-readback, renderer, window, performance, compatibility, minimum-PC, accessibility, readiness, and product credits are `0`. No product/source defect or Defender-clean state is demonstrated. Candidate B remains provisional/unvalidated; no retry, broader cleanup, Phase 1M, roadmap Phase 2, Version 1, or automatic Phase 6 is authorized. Phase `5/6` closes through the local commit containing the report plus later exactly two canonical Project upserts. See [[Development/Reports/Phase 1L5w Packaged Candidate B Policy Application and Native Renderer Evidence]].
 
 ## Future shared simulation layer
 
