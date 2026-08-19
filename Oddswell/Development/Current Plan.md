@@ -2396,6 +2396,16 @@ Phase 1L.5x closed at commit `acd5aa7ad1045b5cda913a37d1091573c446bf82` with ind
 - **Invariants:** no helper/header/dependency/state/callback/test/config was added; replay remains independent, flag-absent behavior remains unchanged, weak-world revalidation remains intact, and the Candidate path remains absent from Shipping by static review.
 - **Credits/boundary:** `activation_diagnostic_marker_source_authoring_credit=1`; build, automation, package, launch, runtime activation, policy/readback, renderer, visible window, route, gameplay, economy, performance, minimum-PC, compatibility, accessibility, hands-on, beta-exit, and readiness credits are `0`. Product is `NOT_MEASURED`, Candidate B remains provisional/unvalidated, Phase 1L exit remains incomplete, and Phase 2/6 requires a fresh gate. See [[Development/Reports/Phase 1L5y Candidate B Native Harness Activation Diagnostic Marker Source Authoring]].
 
+Phase 1L.5y closed at commit `c6c3e6df5e981e184fbf56d152827d361b4906e6` with independently verified exactly two canonical Project upserts and counted Phase `1/6`.
+
+### Phase 1L.5z Candidate B Activation Diagnostic-Marker Native Build Proof status
+
+- **Status:** `COMPLETE LOCALLY — DIAGNOSTIC MARKER NATIVE BUILD PASS; PACKAGE AND LAUNCH NOT RUN; PRODUCT NOT MEASURED; FRESH BATCH PHASE 2/6`.
+- **Attempt:** one direct UBT attempt; natural exit `0`; tool wall `10.9228903 s`; UBT total `10.34 s`; no timeout, cleanup, repair, or retry.
+- **Evidence:** stable `7,324`-byte build log SHA `87C19254…7C1`; preserved `23,697`-byte build JSON SHA `77341977…3B9`; both uncommitted outside the repository. Direct compile actions cover both marker-bearing translation units, then the module DLL linked and advanced to SHA `2157ADFE…AC21`; source hashes/blobs remain exact.
+- **Credits/boundary:** `native_build_credit=1`, `source_compile_credit=1`, prior source-authoring credit `1`; all automation, package, launch, runtime activation, policy/readback, renderer, window, route, gameplay, economy, performance, minimum-PC, compatibility, accessibility, hands-on, beta-exit, and readiness credits `0`. Product remains `NOT_MEASURED`, Candidate B remains provisional/unvalidated, and Phase 3/6 requires a fresh gate.
+- **Tasks:** shared `20`; external PermitWatchdog `15`; OddsWell relation `1`; old/new `0/0`; Cursor `0`; global `5` historical only. See [[Development/Reports/Phase 1L5z Candidate B Activation Diagnostic Marker Native Build Proof]].
+
 ## Future shared simulation layer
 
 Athlete Life Brain v4 is the default for newly generated train, rest, recover, and socialize decisions. It adds only one bounded, one-decision, same-season recent-scoring response above v3's routine behavior. V1-v4 history remains immutable. Expand into longer memory, traits, relationships, nightlife, media, discipline, career decisions, and other sports only after each smaller input passes its own engineering evaluation.

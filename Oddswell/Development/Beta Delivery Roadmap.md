@@ -1192,6 +1192,14 @@ Phase 1L.5x closed at commit `acd5aa7ad1045b5cda913a37d1091573c446bf82` with ind
 
 `activation_diagnostic_marker_source_authoring_credit=1`; all build, automation, package, launch, runtime activation, policy/readback, renderer, window, route, gameplay, economy, performance, minimum-PC, compatibility, accessibility, hands-on, beta-exit, and readiness credits are `0`. Candidate B remains provisional/unvalidated, product is `NOT_MEASURED`, Phase 1L exit remains incomplete, and Phase 2/6 requires a separate gate. See [[Development/Reports/Phase 1L5y Candidate B Native Harness Activation Diagnostic Marker Source Authoring]].
 
+Phase 1L.5y closed at commit `c6c3e6df5e981e184fbf56d152827d361b4906e6` with independently verified exactly two canonical Project upserts and counted Phase `1/6`.
+
+### Phase 1L.5z Candidate B activation diagnostic-marker native build proof
+
+**`COMPLETE LOCALLY — DIAGNOSTIC MARKER NATIVE BUILD PASS; PACKAGE AND LAUNCH NOT RUN; PRODUCT NOT MEASURED; FRESH BATCH PHASE 2/6`.** One direct signed UBT attempt exited naturally `0` in `10.9228903 s`. The build log proves distinct direct compilation of both marker-bearing translation units, library/DLL link, and success. The DLL advanced to `2,592,256` bytes/SHA `2157ADFE…AC21`; both source identities remained exact. Stable `build.log` and `build.json` remain preserved outside the repository and uncommitted.
+
+`native_build_credit=1`, `source_compile_credit=1`, and prior source-authoring credit remains `1`. Automation, package, launch, runtime activation, policy/readback, renderer, visible window, route, gameplay, economy, performance, minimum-PC, compatibility, accessibility, hands-on, beta-exit, and readiness credits remain `0`. Product is `NOT_MEASURED`; Candidate B remains provisional/unvalidated; Phase 1L exit remains incomplete; Phase 3/6 requires a separate gate. Current task truth is shared `20`, external PermitWatchdog `15`, OddsWell relation `1`, old/new `0/0`, Cursor `0`, with global `5` historical only. See [[Development/Reports/Phase 1L5z Candidate B Activation Diagnostic Marker Native Build Proof]].
+
 ### Exit evidence
 
 The complete loop is visually coherent, readable, accessible at the approved baseline, and within measured PC performance targets. Large catalogs and unseen districts remain out of scope.
