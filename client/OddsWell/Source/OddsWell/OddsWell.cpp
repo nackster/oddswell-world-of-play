@@ -17,6 +17,10 @@ void FOddsWellModule::StartupModule()
 	const bool bReplayBenchmark = FParse::Param(FCommandLine::Get(), TEXT("ReplayBenchmark"));
 #if UE_BUILD_DEVELOPMENT
 	const bool bCandidateBPolicySmoke = OddsWellCandidateBPolicySmoke::IsCandidateBPolicySmokeRequested(FCommandLine::Get());
+	if (bCandidateBPolicySmoke)
+	{
+		UE_LOG(LogTemp, Display, TEXT("ODDSWELL_CANDIDATE_B_POLICY_SMOKE|stage=FLAG_ACCEPTED|schema=1"));
+	}
 	if (bReplayBenchmark || bCandidateBPolicySmoke)
 #else
 	if (bReplayBenchmark)

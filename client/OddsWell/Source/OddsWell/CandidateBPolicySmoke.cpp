@@ -632,15 +632,18 @@ void BindToWorld(UWorld* World)
 	{
 		if (UWorld* LiveWorld = WeakWorld.Get(); LiveWorld && LiveWorld->IsGameWorld())
 		{
+			UE_LOG(LogCandidateBPolicySmoke, Display, TEXT("ODDSWELL_CANDIDATE_B_POLICY_SMOKE|stage=BEGIN_PLAY|schema=1"));
 			LiveWorld->GetTimerManager().SetTimerForNextTick(FTimerDelegate::CreateLambda([WeakWorld]()
 			{
 				if (UWorld* NextTickWorld = WeakWorld.Get(); NextTickWorld && NextTickWorld->IsGameWorld())
 				{
+					UE_LOG(LogCandidateBPolicySmoke, Display, TEXT("ODDSWELL_CANDIDATE_B_POLICY_SMOKE|stage=NEXT_TICK_DISPATCHED|schema=1"));
 					RunPolicySmoke(NextTickWorld);
 				}
 			}));
 		}
 	});
+	UE_LOG(LogCandidateBPolicySmoke, Display, TEXT("ODDSWELL_CANDIDATE_B_POLICY_SMOKE|stage=WORLD_BOUND|schema=1"));
 }
 }
 

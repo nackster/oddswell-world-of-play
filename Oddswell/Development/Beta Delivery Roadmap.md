@@ -1184,6 +1184,14 @@ Phase 1L.5w closed at commit `c5bdf7b35dd56a4012f5073a06c8fe660e73b263` with ind
 
 Future `FLAG_ACCEPTED`, `WORLD_BOUND`, `BEGIN_PLAY`, and `NEXT_TICK_DISPATCHED` markers are `NOT IMPLEMENTED`. Any source change, later build/package, and later launch are separately gated. `activation_boundary_reconciliation_credit=1`; prior `development_package_build_credit=1`, `package_custody_credit=1`, and `package_transcript_contract_credit=1` remain prior only. All current source-correction, build, rerun, launch, product, policy, renderer, window, route, gameplay, economy, performance, minimum-PC, compatibility, accessibility, hands-on, beta-exit, and readiness credits are `0`. Candidate B remains provisional/unvalidated and Phase 1L exit remains incomplete. Phase 6/6 is the local commit containing the report; canonical closeout then requires only the separately authorized exact-two Project upserts. See [[Development/Reports/Phase 1L5x Packaged Candidate B Native Harness Activation Boundary Reconciliation and Six Phase Batch Closeout Audit]]. `NO SEVENTH PHASE — SIX-PHASE BATCH STOPPED.`
 
+Phase 1L.5x closed at commit `acd5aa7ad1045b5cda913a37d1091573c446bf82` with independently verified exactly two canonical Project upserts.
+
+### Phase 1L.5y Candidate B native activation diagnostic-marker source authoring
+
+**`COMPLETE LOCALLY — FOUR DEVELOPMENT-ONLY ACTIVATION MARKERS AUTHORED; BUILD, PACKAGE, AND LAUNCH NOT RUN; PRODUCT NOT MEASURED; FRESH BATCH PHASE 1/6`.** Four direct logs now identify Candidate flag acceptance, first-world binding, BeginPlay entry after weak-world validation, and next-tick dispatch immediately before the existing smoke run. They reuse existing categories and Development guards; no helper, header, dependency, state, callback, test, config, package, or product behavior was added. Replay and Candidate selection remain independent, flag-absent behavior remains unchanged, and Shipping excludes the Candidate path by static review.
+
+`activation_diagnostic_marker_source_authoring_credit=1`; all build, automation, package, launch, runtime activation, policy/readback, renderer, window, route, gameplay, economy, performance, minimum-PC, compatibility, accessibility, hands-on, beta-exit, and readiness credits are `0`. Candidate B remains provisional/unvalidated, product is `NOT_MEASURED`, Phase 1L exit remains incomplete, and Phase 2/6 requires a separate gate. See [[Development/Reports/Phase 1L5y Candidate B Native Harness Activation Diagnostic Marker Source Authoring]].
+
 ### Exit evidence
 
 The complete loop is visually coherent, readable, accessible at the approved baseline, and within measured PC performance targets. Large catalogs and unseen districts remain out of scope.
