@@ -2406,6 +2406,17 @@ Phase 1L.5y closed at commit `c6c3e6df5e981e184fbf56d152827d361b4906e6` with ind
 - **Credits/boundary:** `native_build_credit=1`, `source_compile_credit=1`, prior source-authoring credit `1`; all automation, package, launch, runtime activation, policy/readback, renderer, window, route, gameplay, economy, performance, minimum-PC, compatibility, accessibility, hands-on, beta-exit, and readiness credits `0`. Product remains `NOT_MEASURED`, Candidate B remains provisional/unvalidated, and Phase 3/6 requires a fresh gate.
 - **Tasks:** shared `20`; external PermitWatchdog `15`; OddsWell relation `1`; old/new `0/0`; Cursor `0`; global `5` historical only. See [[Development/Reports/Phase 1L5z Candidate B Activation Diagnostic Marker Native Build Proof]].
 
+Phase 1L.5z closed at commit `c97bb111ecab1b2af89cec00d9aa20d04454276f` with independently verified exactly two canonical Project upserts and counted Phase `2/6`.
+
+### Phase 1L.5aa Candidate B Activation-Diagnostic Development Package Build and Custody status
+
+- **Status:** `COMPLETE LOCALLY — DIAGNOSTIC MARKER PACKAGE_BUILD_PASS; PRODUCT NOT MEASURED; FRESH BATCH PHASE 3/6`. This closes only the held prior-nightly Phase `3/6`; current heartbeat new-phase count is `0`.
+- **Attempt:** one direct cmd/dotnet BuildCookRun, PID `25544`, natural exit `0`, elapsed `270.6580234 s`; timeout, cleanup, and retry `false/false/false`.
+- **Evidence:** transcript `83,007` bytes/SHA `1F3FB8FD…18BE`; session `3,667`/SHA `A03934A7…D507`; package and Saved manifests each `6,266`/SHA `BE0DFA48…C7871`. Exact-four replay passes; session rows/unique `96/96`.
+- **Package:** PackageFinal and staged mirror each `50` files / `1,052,111,532` bytes; both live manifest replays missing/mismatch/unexpected `0/0/0`. Build/cook/stage/package/archive and both direct source-filename compile markers are present.
+- **Credits/boundary:** `diagnostic_marker_package_build_credit=1`, `diagnostic_marker_package_custody_credit=1`; launch/runtime marker/product/policy/renderer/window/route/gameplay/economy/performance/minimum-PC/compatibility/accessibility/hands-on/beta-exit/Brain maturity/readiness credits `0`. Product remains `NOT_MEASURED`, Candidate B provisional/unvalidated, Phase 1L incomplete, and no automatic continuation follows.
+- **Tasks:** released shared/PW `20/15`, later external drift `25/20`; OddsWell relation `1` unchanged, OddsWell new `0`, Cursor `0`; this recovery performed no task mutation. See [[Development/Reports/Phase 1L5aa Candidate B Activation Diagnostic Development Package Build and Custody]].
+
 ## Future shared simulation layer
 
 Athlete Life Brain v4 is the default for newly generated train, rest, recover, and socialize decisions. It adds only one bounded, one-decision, same-season recent-scoring response above v3's routine behavior. V1-v4 history remains immutable. Expand into longer memory, traits, relationships, nightlife, media, discipline, career decisions, and other sports only after each smaller input passes its own engineering evaluation.

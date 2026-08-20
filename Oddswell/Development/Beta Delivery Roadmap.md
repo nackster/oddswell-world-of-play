@@ -1200,6 +1200,14 @@ Phase 1L.5y closed at commit `c6c3e6df5e981e184fbf56d152827d361b4906e6` with ind
 
 `native_build_credit=1`, `source_compile_credit=1`, and prior source-authoring credit remains `1`. Automation, package, launch, runtime activation, policy/readback, renderer, visible window, route, gameplay, economy, performance, minimum-PC, compatibility, accessibility, hands-on, beta-exit, and readiness credits remain `0`. Product is `NOT_MEASURED`; Candidate B remains provisional/unvalidated; Phase 1L exit remains incomplete; Phase 3/6 requires a separate gate. Current task truth is shared `20`, external PermitWatchdog `15`, OddsWell relation `1`, old/new `0/0`, Cursor `0`, with global `5` historical only. See [[Development/Reports/Phase 1L5z Candidate B Activation Diagnostic Marker Native Build Proof]].
 
+Phase 1L.5z closed at commit `c97bb111ecab1b2af89cec00d9aa20d04454276f` with independently verified exactly two canonical Project upserts and counted Phase `2/6`.
+
+### Phase 1L.5aa Candidate B activation-diagnostic development package build and custody
+
+**`COMPLETE LOCALLY — DIAGNOSTIC MARKER PACKAGE_BUILD_PASS; PRODUCT NOT MEASURED; FRESH BATCH PHASE 3/6`.** This recovered the already-started held Phase `3/6`; current heartbeat new-phase count remains `0`. One exact direct signed-cmd/dotnet attempt exited naturally `0` after `270.6580234 s`, with no timeout, cleanup, or retry. Exact-four evidence replays; build/cook/stage/package/archive completion and direct compilation of both marker-bearing filenames are preserved.
+
+PackageFinal and the project staged mirror each hold `50` files / `1,052,111,532` bytes. Their `50`-row ordinal manifests share SHA `BE0DFA48…C7871` and replay missing/mismatch/unexpected `0/0/0`. `diagnostic_marker_package_build_credit=1` and `diagnostic_marker_package_custody_credit=1`; launch, runtime marker, product, policy/readback, renderer, window, route, gameplay, economy, performance, minimum-PC, compatibility, accessibility, hands-on, beta-exit, Brain maturity, and readiness credits are `0`. Product remains `NOT_MEASURED`, Candidate B remains provisional/unvalidated, and no automatic continuation follows. The released task snapshot `20/15` externally drifted to `25/20`; OddsWell relation `1`, OddsWell new `0`, and Cursor `0` remained unchanged, and this recovery mutated no tasks. See [[Development/Reports/Phase 1L5aa Candidate B Activation Diagnostic Development Package Build and Custody]].
+
 ### Exit evidence
 
 The complete loop is visually coherent, readable, accessible at the approved baseline, and within measured PC performance targets. Large catalogs and unseen districts remain out of scope.
