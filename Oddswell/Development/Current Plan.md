@@ -2417,6 +2417,17 @@ Phase 1L.5z closed at commit `c97bb111ecab1b2af89cec00d9aa20d04454276f` with ind
 - **Credits/boundary:** `diagnostic_marker_package_build_credit=1`, `diagnostic_marker_package_custody_credit=1`; launch/runtime marker/product/policy/renderer/window/route/gameplay/economy/performance/minimum-PC/compatibility/accessibility/hands-on/beta-exit/Brain maturity/readiness credits `0`. Product remains `NOT_MEASURED`, Candidate B provisional/unvalidated, Phase 1L incomplete, and no automatic continuation follows.
 - **Tasks:** released shared/PW `20/15`, later external drift `25/20`; OddsWell relation `1` unchanged, OddsWell new `0`, Cursor `0`; this recovery performed no task mutation. See [[Development/Reports/Phase 1L5aa Candidate B Activation Diagnostic Development Package Build and Custody]].
 
+Phase 1L.5aa closed at commit `10b6c66f97691c150f5cfd581c9575500f5a65f5` with independently verified exactly two canonical Project upserts and counted Phase `3/6` in the prior batch. Current heartbeat new-phase count remains `0`.
+
+### Phase 1L.5ab Packaged Candidate B Activation-Diagnostic Marker Evidence status
+
+- **Status:** `COMPLETE LOCALLY — ACTIVATION_EVIDENCE_LIMITED; TIMEOUT AFTER WORLD_BOUND BEFORE BEGIN_PLAY MARKER; PRODUCT NOT MEASURED; OWNER-REQUESTED SINGLE PHASE CLOSED`.
+- **Attempt:** one valid packaged attempt, exact arguments `9`, retained PID `57476`, start `2026-08-20T14:13:45.8062988Z`, cap/elapsed `90 / 90.4752791 s`, natural exit `false`, exact-PID stop/drain `true/true`, forced-stop exit `-1`, retry `false`.
+- **Evidence:** immutable log `97,749` bytes/SHA `0CA9B4CC…FFB4D5`; session `2,464` bytes/SHA `807D2D89…99FC1`; seven-row ledger `336` bytes/SHA `CC4AF7B7…F18E3D`. Exact-three replay passes.
+- **Boundary:** FLAG_ACCEPTED/WORLD_BOUND were observed once each; BEGIN_PLAY/NEXT_TICK_DISPATCHED/START/FIELD/RESULT were `0`. Activation and policy application are `INDETERMINATE`, route is `NOT_RUN`, product is `NOT_MEASURED`, and no causal defect location is inferred.
+- **Credits:** activation, packaged-source-execution, policy, renderer, window, route, gameplay, economy, performance, minimum-PC, compatibility, accessibility, hands-on, beta-exit, Brain maturity, and readiness credits remain `0`. No retry or follow-on phase is authorized.
+- **Tasks:** start snapshot shared `33`, external PermitWatchdog `28`, OddsWell relation `1` unchanged, OddsWell new `0`, Cursor `0`; mutation `0`, and later live drift was not chased. See [[Development/Reports/Phase 1L5ab Packaged Candidate B Activation Diagnostic Marker Evidence]]. OWNER-REQUESTED SINGLE PHASE CLOSED — NO AUTOMATIC FOLLOW-ON
+
 ## Future shared simulation layer
 
 Athlete Life Brain v4 is the default for newly generated train, rest, recover, and socialize decisions. It adds only one bounded, one-decision, same-season recent-scoring response above v3's routine behavior. V1-v4 history remains immutable. Expand into longer memory, traits, relationships, nightlife, media, discipline, career decisions, and other sports only after each smaller input passes its own engineering evaluation.

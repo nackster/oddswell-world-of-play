@@ -1208,6 +1208,14 @@ Phase 1L.5z closed at commit `c97bb111ecab1b2af89cec00d9aa20d04454276f` with ind
 
 PackageFinal and the project staged mirror each hold `50` files / `1,052,111,532` bytes. Their `50`-row ordinal manifests share SHA `BE0DFA48…C7871` and replay missing/mismatch/unexpected `0/0/0`. `diagnostic_marker_package_build_credit=1` and `diagnostic_marker_package_custody_credit=1`; launch, runtime marker, product, policy/readback, renderer, window, route, gameplay, economy, performance, minimum-PC, compatibility, accessibility, hands-on, beta-exit, Brain maturity, and readiness credits are `0`. Product remains `NOT_MEASURED`, Candidate B remains provisional/unvalidated, and no automatic continuation follows. The released task snapshot `20/15` externally drifted to `25/20`; OddsWell relation `1`, OddsWell new `0`, and Cursor `0` remained unchanged, and this recovery mutated no tasks. See [[Development/Reports/Phase 1L5aa Candidate B Activation Diagnostic Development Package Build and Custody]].
 
+Phase 1L.5aa closed at commit `10b6c66f97691c150f5cfd581c9575500f5a65f5` with independently verified exactly two canonical Project upserts and counted Phase `3/6` in the prior batch. Current heartbeat new-phase count remains `0`.
+
+### Phase 1L.5ab packaged Candidate B activation-diagnostic marker evidence
+
+**`COMPLETE LOCALLY — ACTIVATION_EVIDENCE_LIMITED; TIMEOUT AFTER WORLD_BOUND BEFORE BEGIN_PLAY MARKER; PRODUCT NOT MEASURED; OWNER-REQUESTED SINGLE PHASE CLOSED`.** One valid packaged attempt used the exact nine-argument contract, reached the `90 s` cap after `90.4752791 s`, and required only the revalidated retained-PID stop and drain. Exact marker counts FLAG_ACCEPTED/WORLD_BOUND/BEGIN_PLAY/NEXT_TICK_DISPATCHED/START/FIELD/RESULT were `1/1/0/0/0/0/0`; RequestExit was `0`.
+
+The immutable log plus exact session and seven-row marker ledger replay as exact-three evidence. Activation and policy application are `INDETERMINATE`; route is `NOT_RUN`; product is `NOT_MEASURED`. All current activation, packaged-source-execution, policy, renderer, visible-window, route, gameplay, economy, performance, minimum-PC, compatibility, accessibility, hands-on, beta-exit, Brain maturity, and readiness credits are `0`. No product defect, retry, follow-on phase, Defender-clean state, or readiness claim follows. Start-of-phase task custody is shared `33`, external PermitWatchdog `28`, OddsWell relation `1` unchanged, OddsWell new `0`, and Cursor `0`; no task mutation occurred and later live drift was not chased. See [[Development/Reports/Phase 1L5ab Packaged Candidate B Activation Diagnostic Marker Evidence]]. OWNER-REQUESTED SINGLE PHASE CLOSED — NO AUTOMATIC FOLLOW-ON
+
 ### Exit evidence
 
 The complete loop is visually coherent, readable, accessible at the approved baseline, and within measured PC performance targets. Large catalogs and unseen districts remain out of scope.
