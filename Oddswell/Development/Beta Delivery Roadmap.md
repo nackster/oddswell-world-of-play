@@ -1240,6 +1240,14 @@ Phase 1L.5ad closed at commit `7095e93e504d6eb8d716f52baa81bac9ae18b274` with in
 
 The single conditional EditorCmd attempt exited naturally `0` after `70.63331 s`. Found/Started/Completed Success/emitted Queue Empty/TestExit counts were `1/1/1/1/1`; TEST COMPLETE/Candidate/fatal/security counts were `0/0/0/0`; the one-row index is Success with zero errors/warnings. `native_build_credit=1`, `exact_sundale_guard_source_compile_credit=1`, and `focused_world_predicate_automation_credit=1`; all package, launch, runtime, product, and readiness credits remain `0`. No Defender-clean state is claimed. See [[Development/Reports/Phase 1L5ae Candidate B Exact Sundale Claim Native Build and Focused Automation]]. FRESH BATCH PHASE 3/6 CLOSED — NO AUTOMATIC PHASE 4
 
+Phase 1L.5ae closed at commit `e7b51f488a13f01bd587e636f4d9d3e387b9017c` with independently verified exactly two canonical Project upserts and counted Phase `3/6`.
+
+### Phase 1L.5af Candidate B exact Sundale claim development package build and custody
+
+**`COMPLETE LOCALLY — PACKAGE_EVIDENCE_LIMITED; TIMEOUT IN UBA LOW-MEMORY LOOP; PRODUCT NOT MEASURED; FRESH BATCH PHASE 4/6`.** Exact qualifier `TIMEOUT_IN_UBA_LOW_MEMORY_LOOP`. The one direct file-backed package attempt consumed its `1200 s` cap, then the revalidated retained process tree was stopped and drained once. Its immutable transcript is `198,128` bytes/SHA `A9678517…14F75`, records `1140` UBA low-memory process-kill rows, and contains no reliable build completion, Candidate compile, game link, fatal, or security result.
+
+The `-clean` step removed the pre-attempt Candidate object and project game executable before the timeout. `PackageFinal` is absent; its manifest is header-only. The preserved `50`-file staged mirror is labeled `existing_pre_attempt_staged_mirror_supplemental_only` and cannot prove a current package. `exact_sundale_claim_package_build_credit=0`, `exact_sundale_claim_package_custody_credit=0`, and all runtime/product/readiness credits remain `0`. No reliable build failure or product/source defect is inferred; no Defender-clean claim, retry, package/game launch, or post-attempt artifact cleanup follows. See [[Development/Reports/Phase 1L5af Candidate B Exact Sundale Claim Development Package Build and Custody]]. FRESH BATCH PHASE 4/6 CLOSED — NO AUTOMATIC PHASE 5
+
 ### Exit evidence
 
 The complete loop is visually coherent, readable, accessible at the approved baseline, and within measured PC performance targets. Large catalogs and unseen districts remain out of scope.
