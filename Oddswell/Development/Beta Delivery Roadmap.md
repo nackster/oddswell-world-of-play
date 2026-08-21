@@ -1232,6 +1232,14 @@ Phase 1L.5ac closed at commit `745f646627e5fbc48115a424a5b25a1176f29f80` with in
 
 `exact_sundale_world_claim_source_correction_credit=1`; prior `activation_lifecycle_reconciliation_credit=1` remains prior only. Compile, automation execution, build, package, launch, runtime activation, policy, renderer, visible window, route, product, performance, minimum-PC, compatibility, accessibility, hands-on, beta-exit, Brain maturity, and readiness credits remain `0`. Product is `NOT_MEASURED`; build, test, package, and launch require separate gates. See [[Development/Reports/Phase 1L5ad Candidate B Exact Sundale World Before Claim Source Correction]]. FRESH BATCH PHASE 2/6 CLOSED — NO AUTOMATIC PHASE 3
 
+Phase 1L.5ad closed at commit `7095e93e504d6eb8d716f52baa81bac9ae18b274` with independently verified exactly two canonical Project upserts and counted Phase `2/6`.
+
+### Phase 1L.5ae Candidate B exact Sundale claim native build and focused automation
+
+**`COMPLETE LOCALLY — NATIVE BUILD PASS; FOCUSED SUNDALE WORLD-PREDICATE AUTOMATION PASS; PRODUCT NOT MEASURED; FRESH BATCH PHASE 3/6`.** Exact terminal enum `BUILD_PASS_FOCUSED_AUTOMATION_PASS`. The single UBT attempt exited naturally `0` after `16.6414901 s`, directly compiled `CandidateBPolicySmoke.cpp` once and linked the editor DLL once. The DLL advanced from `2,592,256` to `2,592,768` bytes and SHA `3FE210AA…7348` to `B9F9CD14…D326`.
+
+The single conditional EditorCmd attempt exited naturally `0` after `70.63331 s`. Found/Started/Completed Success/emitted Queue Empty/TestExit counts were `1/1/1/1/1`; TEST COMPLETE/Candidate/fatal/security counts were `0/0/0/0`; the one-row index is Success with zero errors/warnings. `native_build_credit=1`, `exact_sundale_guard_source_compile_credit=1`, and `focused_world_predicate_automation_credit=1`; all package, launch, runtime, product, and readiness credits remain `0`. No Defender-clean state is claimed. See [[Development/Reports/Phase 1L5ae Candidate B Exact Sundale Claim Native Build and Focused Automation]]. FRESH BATCH PHASE 3/6 CLOSED — NO AUTOMATIC PHASE 4
+
 ### Exit evidence
 
 The complete loop is visually coherent, readable, accessible at the approved baseline, and within measured PC performance targets. Large catalogs and unseen districts remain out of scope.
