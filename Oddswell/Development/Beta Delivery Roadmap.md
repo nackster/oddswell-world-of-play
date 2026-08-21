@@ -1216,6 +1216,14 @@ Phase 1L.5aa closed at commit `10b6c66f97691c150f5cfd581c9575500f5a65f5` with in
 
 The immutable log plus exact session and seven-row marker ledger replay as exact-three evidence. Activation and policy application are `INDETERMINATE`; route is `NOT_RUN`; product is `NOT_MEASURED`. All current activation, packaged-source-execution, policy, renderer, visible-window, route, gameplay, economy, performance, minimum-PC, compatibility, accessibility, hands-on, beta-exit, Brain maturity, and readiness credits are `0`. No product defect, retry, follow-on phase, Defender-clean state, or readiness claim follows. Start-of-phase task custody is shared `33`, external PermitWatchdog `28`, OddsWell relation `1` unchanged, OddsWell new `0`, and Cursor `0`; no task mutation occurred and later live drift was not chased. See [[Development/Reports/Phase 1L5ab Packaged Candidate B Activation Diagnostic Marker Evidence]]. OWNER-REQUESTED SINGLE PHASE CLOSED — NO AUTOMATIC FOLLOW-ON
 
+Phase 1L.5ab closed at commit `fc70109bca5740f67866ca52cdc0d2fb18ee1673` with independently verified exactly two canonical Project upserts.
+
+### Phase 1L.5ac Candidate B dummy-world claim lifecycle reconciliation
+
+**`COMPLETE LOCALLY — STATIC DUMMY-WORLD CLAIM MECHANISM CONFIRMED; RUNTIME INSTANCE IDENTITY UNPROVEN; FUTURE EXACT-SUNDALE-WORLD-BEFORE-CLAIM CORRECTION SELECTED; NO SOURCE/BUILD/PACKAGE/LAUNCH; PRODUCT NOT MEASURED; FRESH BATCH PHASE 1/6`.** The exact 11-row source/evidence audit establishes the engine's dummy-game-world initialization path and the project's broad first-game-world, early one-shot claim mechanism. It does not prove which runtime world instance Phase 1L.5ab claimed; repaired row 11 remains atomic `EVIDENCE_ABSENT`.
+
+Option A `EXACT_SUNDALE_WORLD_BEFORE_CLAIM` is selected/recommended; B `DEFER_GLOBAL_CLAIM_UNTIL_BEGINPLAY` is `NOT_SELECTED`/rejected; C `UNCHANGED_RERUN` is `NOT_SELECTED`/rejected. Implementation is not started and requires a separate gate. `activation_lifecycle_reconciliation_credit=1`; source correction, build, automation, package, launch, runtime activation, policy, renderer, visible window, route, product, performance, minimum-PC, compatibility, accessibility, hands-on, beta-exit, Brain maturity, and readiness credits remain `0`. Prior scoped task facts remain shared `33`, external PermitWatchdog `28`, OddsWell relation `1`, OddsWell new `0`, and Cursor `0`; this docs-only phase mutated none. See [[Development/Reports/Phase 1L5ac Candidate B Dummy World Claim Lifecycle Reconciliation]]. FRESH BATCH PHASE 1/6 CLOSED — NO AUTOMATIC PHASE 2
+
 ### Exit evidence
 
 The complete loop is visually coherent, readable, accessible at the approved baseline, and within measured PC performance targets. Large catalogs and unseen districts remain out of scope.

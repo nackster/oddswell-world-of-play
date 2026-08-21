@@ -2428,6 +2428,17 @@ Phase 1L.5aa closed at commit `10b6c66f97691c150f5cfd581c9575500f5a65f5` with in
 - **Credits:** activation, packaged-source-execution, policy, renderer, window, route, gameplay, economy, performance, minimum-PC, compatibility, accessibility, hands-on, beta-exit, Brain maturity, and readiness credits remain `0`. No retry or follow-on phase is authorized.
 - **Tasks:** start snapshot shared `33`, external PermitWatchdog `28`, OddsWell relation `1` unchanged, OddsWell new `0`, Cursor `0`; mutation `0`, and later live drift was not chased. See [[Development/Reports/Phase 1L5ab Packaged Candidate B Activation Diagnostic Marker Evidence]]. OWNER-REQUESTED SINGLE PHASE CLOSED — NO AUTOMATIC FOLLOW-ON
 
+Phase 1L.5ab closed at commit `fc70109bca5740f67866ca52cdc0d2fb18ee1673` with independently verified exactly two canonical Project upserts.
+
+### Phase 1L.5ac Candidate B Dummy-World Claim Lifecycle Reconciliation status
+
+- **Status:** `COMPLETE LOCALLY — STATIC DUMMY-WORLD CLAIM MECHANISM CONFIRMED; RUNTIME INSTANCE IDENTITY UNPROVEN; FUTURE EXACT-SUNDALE-WORLD-BEFORE-CLAIM CORRECTION SELECTED; NO SOURCE/BUILD/PACKAGE/LAUNCH; PRODUCT NOT MEASURED; FRESH BATCH PHASE 1/6`.
+- **Verdict:** `STATIC_DUMMY_WORLD_CLAIM_MECHANISM_CONFIRMED_RUNTIME_INSTANCE_IDENTITY_UNPROVEN`.
+- **Audit:** exact `11` rows reconcile engine dummy-world initialization, the project broad first-game-world filter, early one-shot claim, later real-world lifecycle, and absent runtime instance identity. Row 11 is atomically `EVIDENCE_ABSENT`.
+- **Selection:** A `EXACT_SUNDALE_WORLD_BEFORE_CLAIM` is selected/recommended; B `DEFER_GLOBAL_CLAIM_UNTIL_BEGINPLAY` is `NOT_SELECTED`/rejected; C `UNCHANGED_RERUN` is `NOT_SELECTED`/rejected. Implementation is not started; source correction, build, package, and launch remain separately gated.
+- **Credits:** `activation_lifecycle_reconciliation_credit=1`; all implementation, source-correction, build, automation, package, launch, runtime, product, policy, renderer, window, route, gameplay, economy, performance, minimum-PC, compatibility, accessibility, hands-on, beta-exit, Brain maturity, and readiness credits are `0`.
+- **Tasks:** prior scoped facts remain shared `33`, external PermitWatchdog `28`, OddsWell relation `1`, OddsWell new `0`, and Cursor `0`; this docs-only phase mutated none. See [[Development/Reports/Phase 1L5ac Candidate B Dummy World Claim Lifecycle Reconciliation]]. FRESH BATCH PHASE 1/6 CLOSED — NO AUTOMATIC PHASE 2
+
 ## Future shared simulation layer
 
 Athlete Life Brain v4 is the default for newly generated train, rest, recover, and socialize decisions. It adds only one bounded, one-decision, same-season recent-scoring response above v3's routine behavior. V1-v4 history remains immutable. Expand into longer memory, traits, relationships, nightlife, media, discipline, career decisions, and other sports only after each smaller input passes its own engineering evaluation.
