@@ -22,6 +22,11 @@ DEFINE_LOG_CATEGORY_STATIC(LogCandidateBPolicySmoke, Log, All);
 
 namespace
 {
+bool IsCandidateBTargetWorldPackage(const FString& WorldPackageName)
+{
+	return WorldPackageName.Equals(TEXT("/Game/Maps/SundaleGraybox"), ESearchCase::CaseSensitive);
+}
+
 enum class EPolicyRegistryKind : uint8
 {
 	Selector,
@@ -621,7 +626,7 @@ bool IsCandidateBPolicySmokeRequested(const TCHAR* CommandLine)
 
 void BindToWorld(UWorld* World)
 {
-	if (!World || !World->IsGameWorld() || bCandidateWorldClaimed)
+	if (!World || !World->IsGameWorld() || !IsCandidateBTargetWorldPackage(World->GetOutermostObject()->GetName()) || bCandidateWorldClaimed)
 	{
 		return;
 	}
@@ -660,6 +665,9 @@ bool FCandidateBPolicySmokeCommandLineTest::RunTest(const FString& Parameters)
 	TestFalse(TEXT("Empty command line remains off"), OddsWellCandidateBPolicySmoke::IsCandidateBPolicySmokeRequested(TEXT("")));
 	TestFalse(TEXT("Existing route flags do not opt in"), OddsWellCandidateBPolicySmoke::IsCandidateBPolicySmokeRequested(TEXT("-SundaleRouteQa -SundaleRouteRun -LocomotionAutoExit")));
 	TestTrue(TEXT("Exact Candidate B flag opts in"), OddsWellCandidateBPolicySmoke::IsCandidateBPolicySmokeRequested(TEXT("-CandidateBPolicySmokeQa")));
+	TestFalse(TEXT("Empty world package is rejected"), IsCandidateBTargetWorldPackage(FString()));
+	TestFalse(TEXT("Bootstrap world package is rejected"), IsCandidateBTargetWorldPackage(FString(TEXT("/Game/Maps/Bootstrap"))));
+	TestTrue(TEXT("Exact Sundale world package is accepted"), IsCandidateBTargetWorldPackage(FString(TEXT("/Game/Maps/SundaleGraybox"))));
 
 	int32 SelectorCount = 0;
 	int32 ChildCount = 0;

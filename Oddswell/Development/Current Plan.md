@@ -2439,6 +2439,17 @@ Phase 1L.5ab closed at commit `fc70109bca5740f67866ca52cdc0d2fb18ee1673` with in
 - **Credits:** `activation_lifecycle_reconciliation_credit=1`; all implementation, source-correction, build, automation, package, launch, runtime, product, policy, renderer, window, route, gameplay, economy, performance, minimum-PC, compatibility, accessibility, hands-on, beta-exit, Brain maturity, and readiness credits are `0`.
 - **Tasks:** prior scoped facts remain shared `33`, external PermitWatchdog `28`, OddsWell relation `1`, OddsWell new `0`, and Cursor `0`; this docs-only phase mutated none. See [[Development/Reports/Phase 1L5ac Candidate B Dummy World Claim Lifecycle Reconciliation]]. FRESH BATCH PHASE 1/6 CLOSED — NO AUTOMATIC PHASE 2
 
+Phase 1L.5ac closed at commit `745f646627e5fbc48115a424a5b25a1176f29f80` with independently verified exactly two canonical Project upserts and counted Phase `1/6`.
+
+### Phase 1L.5ad Candidate B Exact Sundale World-Before-Claim Source Correction status
+
+- **Status:** `COMPLETE LOCALLY — EXACT SUNDALE WORLD-BEFORE-CLAIM SOURCE CORRECTION AUTHORED; STATIC SOURCE AUDIT PASS; BUILD/AUTOMATION/PACKAGE/LAUNCH NOT RUN; PRODUCT NOT MEASURED; FRESH BATCH PHASE 2/6`.
+- **Source:** `CandidateBPolicySmoke.cpp` only; baseline/post blob `a448a4cf…802d4 / 749ca81b…b5fb8`, SHA `DE732410…FC32 / 45C98916…60F0`, diff `+9/-1`.
+- **Guard:** exact case-sensitive target helper at line `25`; authoritative target-package guard line `629`; sole claim line `634`. No new include, state, helper file, dependency, callback, or marker.
+- **Authored test:** empty package false, Bootstrap false, and exact Sundale true at lines `668–670`; automation was not run.
+- **Credits:** `exact_sundale_world_claim_source_correction_credit=1`; prior `activation_lifecycle_reconciliation_credit=1`; compile, automation execution, build, package, launch, runtime, policy, renderer, window, route, product, gameplay, performance, minimum-PC, compatibility, accessibility, hands-on, beta-exit, Brain maturity, and readiness credits `0`.
+- **Boundary:** product `NOT_MEASURED`; Candidate B provisional/unvalidated; source is unstaged pending audit; build/test/package/launch require separate gates. Prior scoped tasks remain shared `33`, external PermitWatchdog `28`, OddsWell relation `1`, OddsWell new `0`, Cursor `0`; task mutation `0`. See [[Development/Reports/Phase 1L5ad Candidate B Exact Sundale World Before Claim Source Correction]]. FRESH BATCH PHASE 2/6 CLOSED — NO AUTOMATIC PHASE 3
+
 ## Future shared simulation layer
 
 Athlete Life Brain v4 is the default for newly generated train, rest, recover, and socialize decisions. It adds only one bounded, one-decision, same-season recent-scoring response above v3's routine behavior. V1-v4 history remains immutable. Expand into longer memory, traits, relationships, nightlife, media, discipline, career decisions, and other sports only after each smaller input passes its own engineering evaluation.

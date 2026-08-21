@@ -1224,6 +1224,14 @@ Phase 1L.5ab closed at commit `fc70109bca5740f67866ca52cdc0d2fb18ee1673` with in
 
 Option A `EXACT_SUNDALE_WORLD_BEFORE_CLAIM` is selected/recommended; B `DEFER_GLOBAL_CLAIM_UNTIL_BEGINPLAY` is `NOT_SELECTED`/rejected; C `UNCHANGED_RERUN` is `NOT_SELECTED`/rejected. Implementation is not started and requires a separate gate. `activation_lifecycle_reconciliation_credit=1`; source correction, build, automation, package, launch, runtime activation, policy, renderer, visible window, route, product, performance, minimum-PC, compatibility, accessibility, hands-on, beta-exit, Brain maturity, and readiness credits remain `0`. Prior scoped task facts remain shared `33`, external PermitWatchdog `28`, OddsWell relation `1`, OddsWell new `0`, and Cursor `0`; this docs-only phase mutated none. See [[Development/Reports/Phase 1L5ac Candidate B Dummy World Claim Lifecycle Reconciliation]]. FRESH BATCH PHASE 1/6 CLOSED — NO AUTOMATIC PHASE 2
 
+Phase 1L.5ac closed at commit `745f646627e5fbc48115a424a5b25a1176f29f80` with independently verified exactly two canonical Project upserts and counted Phase `1/6`.
+
+### Phase 1L.5ad Candidate B exact Sundale world-before-claim source correction
+
+**`COMPLETE LOCALLY — EXACT SUNDALE WORLD-BEFORE-CLAIM SOURCE CORRECTION AUTHORED; STATIC SOURCE AUDIT PASS; BUILD/AUTOMATION/PACKAGE/LAUNCH NOT RUN; PRODUCT NOT MEASURED; FRESH BATCH PHASE 2/6`.** One case-sensitive helper accepts only `/Game/Maps/SundaleGraybox`; the existing early guard invokes it after null/game-world validation and before the sole claim assignment. The existing automation test now authors empty and Bootstrap rejection plus exact Sundale acceptance assertions. Static review confirms one source file, no new include/state/helper file/dependency, and unchanged marker/lifecycle flow.
+
+`exact_sundale_world_claim_source_correction_credit=1`; prior `activation_lifecycle_reconciliation_credit=1` remains prior only. Compile, automation execution, build, package, launch, runtime activation, policy, renderer, visible window, route, product, performance, minimum-PC, compatibility, accessibility, hands-on, beta-exit, Brain maturity, and readiness credits remain `0`. Product is `NOT_MEASURED`; build, test, package, and launch require separate gates. See [[Development/Reports/Phase 1L5ad Candidate B Exact Sundale World Before Claim Source Correction]]. FRESH BATCH PHASE 2/6 CLOSED — NO AUTOMATIC PHASE 3
+
 ### Exit evidence
 
 The complete loop is visually coherent, readable, accessible at the approved baseline, and within measured PC performance targets. Large catalogs and unseen districts remain out of scope.
