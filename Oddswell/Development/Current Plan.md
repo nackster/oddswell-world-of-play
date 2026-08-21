@@ -2473,6 +2473,18 @@ Phase 1L.5ae closed at commit `e7b51f488a13f01bd587e636f4d9d3e387b9017c` with in
 - **Credits:** `exact_sundale_claim_package_build_credit=0`; `exact_sundale_claim_package_custody_credit=0`. All launch, runtime activation, policy, renderer, window, route, product, gameplay, performance, minimum-PC, compatibility, accessibility, hands-on, beta-exit, Brain maturity, and readiness credits are `0`; prior Phase 1L.5ae credits remain prior only.
 - **Boundary:** no reliable build failure or product/source defect is demonstrated, no Defender-clean state is claimed, and no retry, package/game launch, or post-attempt artifact cleanup occurred. Product remains `NOT_MEASURED`; Phase 5/6 needs a fresh gate. See [[Development/Reports/Phase 1L5af Candidate B Exact Sundale Claim Development Package Build and Custody]]. FRESH BATCH PHASE 4/6 CLOSED — NO AUTOMATIC PHASE 5
 
+Phase 1L.5af closed at commit `43a0af690ad8dd92a1f58e7d97b1c73a368e0532` with independently verified exactly two canonical Project upserts and counted Phase `4/6`; its LIMITED outcome and package credits `0/0` remain exact.
+
+### Phase 1L.5ag Candidate B Single-Action Non-Detoured Game Build Proof status
+
+- **Status:** `COMPLETE LOCALLY — SINGLE_ACTION_NONDETOURED_GAME_BUILD_PASS; PACKAGE AND LAUNCH NOT RUN; PRODUCT NOT MEASURED; FRESH BATCH PHASE 5/6`.
+- **Attempt:** one direct signed cmd/UBT game-target build; PID `61572`, natural exit `0`, elapsed `98.709134 s`; timeout/taskkill/cleanup/retry `false/false/false/false`.
+- **Contract:** raw argument `379` bytes/SHA `DEABBF48…D7B2C`; UBT arguments `10`; `-NoUBA` count `1`; maximum parallel actions `1`; `-DisableUnity` count `1`; clean count `0`.
+- **Evidence:** transcript `2,548` bytes/SHA `44E8101D…B951D`; session `2,947` bytes/SHA `4000A556…EA32`, exact `74/74` ordered unique rows. Exact-two replay passes.
+- **Build:** Result Succeeded/Candidate compile/game link `1/1/1`; build-failed, engine-change refusal, compiler/linker error, fatal, security, and low-memory `0`. All compile/link actions are `[NoUba]`; the Candidate object is `895842` bytes/SHA `3256AAFB…A733`, and the game executable is `341429248` bytes/SHA `FB214D41…E3C7`.
+- **Credits:** `single_action_game_build_credit=1`; `exact_sundale_game_source_compile_credit=1`. Package, launch, runtime activation, policy, renderer, window, route, product, gameplay, performance, minimum-PC, compatibility, accessibility, hands-on, beta-exit, Brain maturity, and readiness credits remain `0`.
+- **Boundary:** repository and source remain clean; build root, transcript, session, object, and executable remain preserved and uncommitted. Product is `NOT_MEASURED`; no Defender-clean claim, package, launch, retry, cleanup, or automatic continuation follows. See [[Development/Reports/Phase 1L5ag Candidate B Single Action Non Detoured Game Build Proof]]. FRESH BATCH PHASE 5/6 CLOSED — NO AUTOMATIC PHASE 6
+
 ## Future shared simulation layer
 
 Athlete Life Brain v4 is the default for newly generated train, rest, recover, and socialize decisions. It adds only one bounded, one-decision, same-season recent-scoring response above v3's routine behavior. V1-v4 history remains immutable. Expand into longer memory, traits, relationships, nightlife, media, discipline, career decisions, and other sports only after each smaller input passes its own engineering evaluation.

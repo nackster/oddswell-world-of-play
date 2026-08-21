@@ -1248,6 +1248,14 @@ Phase 1L.5ae closed at commit `e7b51f488a13f01bd587e636f4d9d3e387b9017c` with in
 
 The `-clean` step removed the pre-attempt Candidate object and project game executable before the timeout. `PackageFinal` is absent; its manifest is header-only. The preserved `50`-file staged mirror is labeled `existing_pre_attempt_staged_mirror_supplemental_only` and cannot prove a current package. `exact_sundale_claim_package_build_credit=0`, `exact_sundale_claim_package_custody_credit=0`, and all runtime/product/readiness credits remain `0`. No reliable build failure or product/source defect is inferred; no Defender-clean claim, retry, package/game launch, or post-attempt artifact cleanup follows. See [[Development/Reports/Phase 1L5af Candidate B Exact Sundale Claim Development Package Build and Custody]]. FRESH BATCH PHASE 4/6 CLOSED — NO AUTOMATIC PHASE 5
 
+Phase 1L.5af closed at commit `43a0af690ad8dd92a1f58e7d97b1c73a368e0532` with independently verified exactly two canonical Project upserts and counted Phase `4/6`. Its `PACKAGE_EVIDENCE_LIMITED` truth and zero package credits remain unchanged.
+
+### Phase 1L.5ag Candidate B single-action non-detoured game build proof
+
+**`COMPLETE LOCALLY — SINGLE_ACTION_NONDETOURED_GAME_BUILD_PASS; PACKAGE AND LAUNCH NOT RUN; PRODUCT NOT MEASURED; FRESH BATCH PHASE 5/6`.** The one direct signed game-target build exited naturally `0` after `98.709134 s`. Its exact arguments included `-NoUBA`, `-MaxParallelActions=1`, and `-DisableUnity`, omitted `-clean`, and produced a stable `2,548`-byte transcript SHA `44E8101D…B951D` plus a `2,947`-byte exact-74-row session SHA `4000A556…EA32`.
+
+Result Succeeded, Candidate compile, and game link counts are `1/1/1`; build-failed, engine-change refusal, compiler/linker error, fatal, security, and low-memory counts are all `0`. All build actions are marked `[NoUba]`; Candidate compilation and the game link are individually visible rather than unity-folded. The pre-absent Candidate object and project game executable now exist at SHAs `3256AAFB…A733` and `FB214D41…E3C7`. `single_action_game_build_credit=1` and `exact_sundale_game_source_compile_credit=1`; package, launch, runtime, product, and readiness credits remain `0`. No Defender-clean claim, package, launch, retry, cleanup, or product validation follows. See [[Development/Reports/Phase 1L5ag Candidate B Single Action Non Detoured Game Build Proof]]. FRESH BATCH PHASE 5/6 CLOSED — NO AUTOMATIC PHASE 6
+
 ### Exit evidence
 
 The complete loop is visually coherent, readable, accessible at the approved baseline, and within measured PC performance targets. Large catalogs and unseen districts remain out of scope.
