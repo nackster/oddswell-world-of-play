@@ -214,6 +214,16 @@ No later roadmap phase is authorized merely because it appears below.
 
 The preserved Phase 1L.5aq report identity is `4,027` bytes/SHA `3E14CFABBD0FC4C0429B96DBBEAB4A5B369BE22C6E0BB2E26F2DB67F99E7AEE2`/blob `85f8efd06ca34af22036081f92a160ae9fa706cb`.
 
+### Phase 1L.5as Candidate B packaged WORLD_CANDIDATE activation and policy evidence
+
+**`COMPLETE LOCALLY — PACKAGED_ACTIVATION_FAIL; SUNDALE_WORLD_CANDIDATE_TARGET_FALSE; BROAD PRODUCT NOT MEASURED; FRESH BATCH PHASE 5/6`.** Option A `ONE_PACKAGED_WORLD_CANDIDATE_DIAGNOSTIC_ATTEMPT` was selected/recommended as the smallest direct measurement of the newly packaged world-selection seam. B `REPEAT_STATIC_OR_PACKAGE_RECONCILIATION` was rejected because source compilation and package custody were already proved and cannot measure runtime world selection. C `EXPAND_TO_ROUTE_GAMEPLAY_OR_SOURCE_CHANGE` was rejected because it expands authority and confounds the earliest activation diagnostic.
+
+The sole packaged Candidate attempt reached its `120 s` cap; retained PID `24032` was path/start revalidated, stopped exactly once, and drained. Exit `-1` is post-forced-stop custody. Before that boundary, FLAG occurred once and two escape-valid WORLD_CANDIDATE rows occurred: `Untitled/false/false` at line `892`, then loaded `SundaleGraybox/false/false` at line `910`. Target-true count is `0`, so the reliable loaded-Sundale target-membership contradiction controls the later timeout. WORLD_BOUND, BEGIN, NEXT, START, FIELD, and RESULT are all `0`; map completion is `1`; fatal/security counts are `0/0`.
+
+The immutable exact-four evidence is log `98,541` bytes/SHA `16CDC22758C5E80BC2C75CD261AA099BCA14D8D488BB8809B05672697BBE5275`, repaired exact `155`-row session `5,991` bytes/SHA `73BBB73B1486626D369BD62A4B1AAB436B0AA9E4D88A9B43854A0883714E164F`, marker ledger `1,687` bytes/SHA `EA219030F6A54F91C020876207B7866383D1A1C4C582193845F5B1A67511405C`, and header-only field ledger `74` bytes/SHA `E4F30C58376BDD40D1D88A83F10FED382957466FCD5794697DF608C1E413A089`. Replay mismatch is `0`; the prior package remains `50` files / `1,052,121,260` bytes with unchanged manifest `00B348B2…2E4B7`.
+
+Activation is `FAIL`, policy application is `INDETERMINATE`, route is `NOT_RUN`, and broad product is `NOT_MEASURED`. Current activation, packaged-source execution, package-launch, policy, visible-client, route, gameplay, broad-product, performance, minimum-PC, compatibility, accessibility, hands-on, beta-exit, Brain, and readiness credits are `0`. Phase 1L.5ar is truth-repaired to full commit `ff5d85485e1662e6bb22a05a416816169875a8b2`, exactly two verified Project upserts, count `4/6`, and report identity `6,236` bytes/SHA `A573BE7281D30FB94F8CF58E73267140ECC6643389BE010CB0A4FE53ACB8CE11`/blob `e578f81e26ae4eeeb2c6ccf02f7e1d683ca69131`. Package/source/repo/process/ports stayed exact. No broad product defect, policy result, Defender-clean state, retry, or automatic Phase 6 follows. See [[Development/Reports/Phase 1L5as Candidate B Packaged World Candidate Activation and Policy Evidence]]. FRESH BATCH PHASE 5/6 CLOSED — NO AUTOMATIC PHASE 6
+
 ### Exit evidence
 
 - Reproducible local packaged build.
