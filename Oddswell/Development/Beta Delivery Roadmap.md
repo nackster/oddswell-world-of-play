@@ -212,6 +212,8 @@ No later roadmap phase is authorized merely because it appears below.
 7. **1A.2b COMPLETE:** directly render the existing verified 421-frame replay without resimulating basketball.
 8. **1A.3 COMPLETE:** owner accepted the benchmark evidence and approved Unreal Engine 5.8 for beta client development on July 19, 2026; see [[Design/Decisions/DEC-006 Unreal Engine 5.8 Beta Adoption]].
 
+The preserved Phase 1L.5aq report identity is `4,027` bytes/SHA `3E14CFABBD0FC4C0429B96DBBEAB4A5B369BE22C6E0BB2E26F2DB67F99E7AEE2`/blob `85f8efd06ca34af22036081f92a160ae9fa706cb`.
+
 ### Exit evidence
 
 - Reproducible local packaged build.
@@ -1331,6 +1333,16 @@ The one-file static delta is `16` insertions / `1` deletion. Post-source identit
 The immutable exact-two evidence is the `2,614`-byte transcript/SHA `EF2512A6BE27A05E3FBA747BC300D8DC4D06B9219489CC74CD19B97B316B1DA9` and exact `84`-row session/SHA `52406AB5CECB11524B65F5C6068881658F18BDB2E03F1B3E6DA0764E4FE4B943`. The Candidate object advanced from `895,842` bytes/SHA `3256AAFB…2A733` to `898,125` bytes/SHA `18D85E77…42BEF`; the game executable advanced from `341,429,248` bytes/SHA `FB214D41…5E3C7` to `341,429,760` bytes/SHA `66FC9F8E…A510`. HEAD and source stayed exact and clean; both excluded command processes remained untouched; watched residue and ports are `0`.
 
 `world_candidate_game_build_credit=1` and `world_candidate_source_compile_credit=1`; prior `world_candidate_diagnostic_source_authoring_credit=1` remains prior-only. Current automation, package, launch, runtime activation, policy, renderer, window, route, gameplay, product, performance, minimum-PC, compatibility, accessibility, hands-on, beta-exit, Brain, and readiness credits remain `0`. Product is `NOT_MEASURED`; Candidate B remains provisional/unvalidated. Phase 1L.5ap is truth-repaired to full commit `a85832eeeed18f745e7b6aad00cedb953c8086c3`, independently verified exactly two canonical Project upserts, count `2/6`. No package, game launch, runtime result, Defender-clean claim, or automatic Phase 4 follows. See [[Development/Reports/Phase 1L5aq Candidate B World Candidate Diagnostic Single Action Game Build Proof]]. FRESH BATCH PHASE 3/6 CLOSED — NO AUTOMATIC PHASE 4
+
+### Phase 1L.5ar Candidate B WORLD_CANDIDATE diagnostic receipt-backed two-layer skip-build package proof
+
+**`COMPLETE LOCALLY — WORLD_CANDIDATE_TWO_LAYER_PACKAGE_PASS; PACKAGE LAUNCH NOT RUN; PRODUCT NOT MEASURED; FRESH BATCH PHASE 4/6`.** The sole direct cmd-to-dotnet-to-AutomationTool `-skipbuild` attempt exited naturally `0` after `129.043968 s`. Build-command start/completion, Candidate compile, and game/editor link-or-metadata counts are `0/0/0/0`; ValidatePlatforms, `Trace.uba`, and disabled UBA/Horde configuration are the expected neutral custody counts `1/1/1`.
+
+The immutable exact-four evidence identities are transcript `75,678` bytes/SHA `C34B8B94F822316443B464C3FCD70528127057C909C32F164582858DFA895E56`, exact `281`-row session `13,337` bytes/SHA `219D53ADADDF88F8E5842201B24A111CCC44ABF0B909BCDA62F984F2B1093416`, and package/Saved manifests each `6,266` bytes/SHA `00B348B2168F8C66B1B98CF25BB71A8DF7B7E0AF78AD04FEA4CC6B4AD422E4B7`. PackageFinal and the current staged tree each contain `50` files / `1,052,121,260` bytes and replay byte-identically with normalized mismatch `0`. The packaged game executable and PDB equal the frozen prebuilt outputs.
+
+Layer 2 removes only Debug, NonUFS, UFS, game-executable, and game-PDB cross-run rows; the remaining `45` rows are `5,742` bytes/SHA `04F44B5EBEDC17110698BF8BBD9393F77F9007AB86FC7B11F29D63340923B782`. Debug, NonUFS, and UFS path projections match their frozen `6/36/2366` rows and SHAs `16C8689A…9C7C3`, `AC78DD0D…0AED5`, and `1772FD18…0745`. All seven frozen output/receipt identities, tracked inputs, HEAD, process exclusions, residues, and ports stayed exact.
+
+`receipt_backed_skip_build_package_credit=1` and `package_custody_credit=1`; current package launch, runtime activation, policy, renderer, window, route, gameplay, product, performance, minimum-PC, compatibility, accessibility, hands-on, beta-exit, Brain, and readiness credits remain `0`. Product is `NOT_MEASURED`; Candidate B remains provisional/unvalidated. Phase 1L.5aq is truth-repaired to full commit `8f9a1bd787ac0fda73c3e4594d4a684fa2d5866e`, independently verified exactly two canonical Project upserts, count `3/6`. No package launch, runtime claim, product measurement, Defender-clean claim, or automatic Phase 5 follows. See [[Development/Reports/Phase 1L5ar Candidate B World Candidate Diagnostic Receipt Backed Two Layer Skip Build Package Proof]]. FRESH BATCH PHASE 4/6 CLOSED — NO AUTOMATIC PHASE 5
 
 ### Exit evidence
 
