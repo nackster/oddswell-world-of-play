@@ -626,7 +626,22 @@ bool IsCandidateBPolicySmokeRequested(const TCHAR* CommandLine)
 
 void BindToWorld(UWorld* World)
 {
-	if (!World || !World->IsGameWorld() || !IsCandidateBTargetWorldPackage(World->GetOutermostObject()->GetName()) || bCandidateWorldClaimed)
+	if (!World || !World->IsGameWorld())
+	{
+		return;
+	}
+
+	const FString WorldPackageName = World->GetOutermostObject()->GetName();
+	const bool bIsTargetWorld = IsCandidateBTargetWorldPackage(WorldPackageName);
+	UE_LOG(
+		LogCandidateBPolicySmoke,
+		Display,
+		TEXT("ODDSWELL_CANDIDATE_B_POLICY_SMOKE|stage=WORLD_CANDIDATE|schema=1|package=%s|target=%s|claimed=%s"),
+		*EscapeMarkerValue(WorldPackageName),
+		bIsTargetWorld ? TEXT("true") : TEXT("false"),
+		bCandidateWorldClaimed ? TEXT("true") : TEXT("false"));
+
+	if (!bIsTargetWorld || bCandidateWorldClaimed)
 	{
 		return;
 	}
