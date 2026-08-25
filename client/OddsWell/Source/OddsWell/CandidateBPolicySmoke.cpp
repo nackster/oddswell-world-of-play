@@ -13,6 +13,7 @@
 #include "RHIStrings.h"
 #include "TimerManager.h"
 #include "UnrealClient.h"
+#include "UObject/Package.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
 #include "Misc/AutomationTest.h"
@@ -631,7 +632,7 @@ void BindToWorld(UWorld* World)
 		return;
 	}
 
-	const FString WorldPackageName = World->GetOutermostObject()->GetName();
+	const FString WorldPackageName = World->GetPackage()->GetName();
 	const bool bIsTargetWorld = IsCandidateBTargetWorldPackage(WorldPackageName);
 	UE_LOG(
 		LogCandidateBPolicySmoke,
@@ -682,6 +683,7 @@ bool FCandidateBPolicySmokeCommandLineTest::RunTest(const FString& Parameters)
 	TestTrue(TEXT("Exact Candidate B flag opts in"), OddsWellCandidateBPolicySmoke::IsCandidateBPolicySmokeRequested(TEXT("-CandidateBPolicySmokeQa")));
 	TestFalse(TEXT("Empty world package is rejected"), IsCandidateBTargetWorldPackage(FString()));
 	TestFalse(TEXT("Bootstrap world package is rejected"), IsCandidateBTargetWorldPackage(FString(TEXT("/Game/Maps/Bootstrap"))));
+	TestFalse(TEXT("Short Sundale world name is rejected"), IsCandidateBTargetWorldPackage(FString(TEXT("SundaleGraybox"))));
 	TestTrue(TEXT("Exact Sundale world package is accepted"), IsCandidateBTargetWorldPackage(FString(TEXT("/Game/Maps/SundaleGraybox"))));
 
 	int32 SelectorCount = 0;

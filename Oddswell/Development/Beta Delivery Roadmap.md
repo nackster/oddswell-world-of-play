@@ -232,6 +232,16 @@ A `GETPACKAGE_NAME_EXACT_PATH_BEFORE_CLAIM` remains selected/recommended because
 
 `exact_world_package_api_source_correction_credit=0`; all current build, focused automation, package, package-receipt, launch, activation, policy, route, gameplay, performance, minimum-PC, compatibility, accessibility, validation, readiness, and product credits remain `0`. Product is `NOT_MEASURED`; Phase 1L.5as remains a historical activation failure and Candidate B remains provisional/unvalidated. The final ledger is `59f0d864a4332812dcf9077a229d8d2ea6f8b7fc`, `a85832eeeed18f745e7b6aad00cedb953c8086c3`, `8f9a1bd787ac0fda73c3e4594d4a684fa2d5866e`, `ff5d85485e1662e6bb22a05a416816169875a8b2`, `2736a503aad3a07ce883d8fb82c0cf2b2cbc48aa`, and the pending local documentation commit. See [[Development/Reports/Phase 1L5at Candidate B Exact World Package Identity Source Correction]]. NO SEVENTH PHASE — SIX-PHASE BATCH STOPPED.
 
+### Phase 1L.5au Candidate B context-accurate exact world-package identity source correction
+
+**`COMPLETE LOCALLY — SOURCE_CORRECTION_STATIC_FAIL; STATIC_ACCEPTANCE_MISMATCH; BUILD/PACKAGE/LAUNCH NOT RUN; PRODUCT NOT MEASURED; NEW NIGHTLY BATCH PHASE 1/6`.** Phase 1L.5at is truth-repaired to full commit `ec190fcb11b62ebcfce163ec32cb7e13681fcaa9`, independently established exactly two canonical Project upserts, prior batch count `6/6`, and report identity `5,728` bytes/SHA `40E931F6D3FF130B1993B493852144AED4CAC52C870EECD542F77E256E37C4A4`/blob `b5bd2d714535588840549c47aa5c21ebf89a9377`. Its batch hard stop and `exact_world_package_api_source_correction_credit=0` remain unchanged.
+
+The sole authorized atomic patch applied only the three intended semantic edits to `CandidateBPolicySmoke.cpp`: Package header inclusion, `GetPackage()->GetName()` replacement, and short-name rejection input. Static acceptance nevertheless failed because required exact label `Short Sundale world package is rejected` has expected/actual count `1/0`, while unexpected label `Short Sundale world name is rejected` has actual count `1`. One patch was consumed; second patch, repair, rollback, build, test, package, and launch counts remain `0`.
+
+Post-source custody is `32,730` bytes/SHA `C0ED652B94980B174358201346B3A3A8999AA6B3B4AA9EFE7E831EE0E2EC2E39`/blob `25c7b80d3dd548d45f5155464ebe533c34d4c49a`; the Candidate source is the sole diff path at `3+ / 1-`, Build.cs remains exact with CoreUObject present, and `git diff --check` is clear. Exact10 statuses are `MATCH`, `MATCH`, `MATCH`, `MATCH`, `EVIDENCE_MISMATCH`, `SOURCE_PRESENT`, `MATCH`, `MATCH`, `MATCH`, `EVIDENCE_ABSENT`.
+
+`exact_world_package_api_source_correction_credit=0`; all current build, automation, package, receipt/custody, launch, activation, policy, visible-client, route, gameplay, performance, minimum-PC, compatibility, accessibility, validation, readiness, and product credits are `0`. Product remains `NOT_MEASURED`; Candidate B remains `OWNER_SELECTED_PROVISIONAL_UNVALIDATED`. No source acceptance, runtime behavior, product or security defect, Defender-clean state, retry, cleanup, or successor authority follows. See [[Development/Reports/Phase 1L5au Candidate B Context Accurate Exact World Package Identity Source Correction]]. NEW NIGHTLY BATCH PHASE 1/6 CLOSED — NO AUTOMATIC PHASE 2
+
 ### Exit evidence
 
 - Reproducible local packaged build.
