@@ -264,6 +264,14 @@ The authoritative log is `8,348` bytes/SHA `CBB28017…2151`. UBT also process-c
 
 `candidate_editor_build_credit=0`; `candidate_source_compile_credit=0`. Focused automation, game build, package, receipt/custody, launch, activation, policy, renderer, visible-client, route, gameplay, product, performance, minimum-PC, compatibility, accessibility, hands-on, beta-exit, Brain, validation, and readiness credits remain `0`. Product is `NOT_MEASURED`; Candidate B remains provisional/unvalidated. No compiler, product, or security defect, Defender-clean state, compile acceptance, or successor authority follows. See [[Development/Reports/Phase 1L5aw Candidate B Exact World Package Source Editor Build Proof]]. NEW NIGHTLY BATCH PHASE 3/6 CLOSED — NO AUTOMATIC PHASE 4
 
+### Phase 1L.5ax UBT progress and log-sidecar evidence contract reconciliation
+
+**`COMPLETE LOCALLY — UBT_EVIDENCE_CONTRACT_RECONCILED; SUFFIX PROGRESS GRAMMAR AND EXACT-THREE LOG TOPOLOGY SELECTED; BUILD NOT RERUN; PRODUCT NOT MEASURED; NEW NIGHTLY BATCH PHASE 4/6`.** Phase 1L.5aw is truth-repaired to full commit `bf5c64c011e14ac6f864312fe95fa4705d76a2d6`, independently verified exactly two canonical Project upserts, count `3/6`, and report identity `4,737` bytes/SHA `C409AE9CD4B57EBB655B444B863A4E999E1661B45D4409BAFB0C23A0AEDC47AD`/blob `93710dd01f28b6a5a8fc1e443c11b6af590c961c`; its LIMITED outcome and build/compile credits `0` remain unchanged.
+
+A `SOURCE_BACKED_SUFFIX_AND_LOG_JSON_TOPOLOGY` is selected/recommended. B `RETROACTIVE_BUILD_CREDIT` and C `RERUN_OR_DELETE_JSON` are not selected/rejected. All ten reconciliation rows are `SOURCE_CONFIRMED`: installed UE5.8 source appends `[NoUba]` after the action description and creates a JSON sidecar beside an explicit UBT log. Future compile/link proof uses exact suffix-form regexes, excludes `Action:` graph rows, preserves all success/failure/output/receipt guards, and requires stable native `.log` plus line-parseable `.json`. One separately gated patch may add `session_custody.tsv`, yielding exactly three evidence files with no delete, rename, rewrite, or substitution.
+
+`editor_build_evidence_contract_reconciliation_credit=1`; `candidate_editor_build_credit=0`; `candidate_source_compile_credit=0`. Every current automation, game-build, package, launch, runtime, policy, renderer, visible-client, route, gameplay, product, performance, minimum-PC, compatibility, accessibility, hands-on, beta-exit, Brain, validation, and readiness credit remains `0`. Product is `NOT_MEASURED`; Candidate B remains provisional/unvalidated. No rerun, cleanup, retroactive credit, source/product/security defect, or Defender-clean claim follows. See [[Development/Reports/Phase 1L5ax UBT Progress and Log Sidecar Evidence Contract Reconciliation]]. NEW NIGHTLY BATCH PHASE 4/6 CLOSED — NO AUTOMATIC PHASE 5
+
 ### Exit evidence
 
 - Reproducible local packaged build.
