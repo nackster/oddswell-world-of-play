@@ -683,7 +683,7 @@ bool FCandidateBPolicySmokeCommandLineTest::RunTest(const FString& Parameters)
 	TestTrue(TEXT("Exact Candidate B flag opts in"), OddsWellCandidateBPolicySmoke::IsCandidateBPolicySmokeRequested(TEXT("-CandidateBPolicySmokeQa")));
 	TestFalse(TEXT("Empty world package is rejected"), IsCandidateBTargetWorldPackage(FString()));
 	TestFalse(TEXT("Bootstrap world package is rejected"), IsCandidateBTargetWorldPackage(FString(TEXT("/Game/Maps/Bootstrap"))));
-	TestFalse(TEXT("Short Sundale world name is rejected"), IsCandidateBTargetWorldPackage(FString(TEXT("SundaleGraybox"))));
+	TestFalse(TEXT("Short Sundale world package is rejected"), IsCandidateBTargetWorldPackage(FString(TEXT("SundaleGraybox"))));
 	TestTrue(TEXT("Exact Sundale world package is accepted"), IsCandidateBTargetWorldPackage(FString(TEXT("/Game/Maps/SundaleGraybox"))));
 
 	int32 SelectorCount = 0;

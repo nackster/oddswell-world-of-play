@@ -242,6 +242,16 @@ Post-source custody is `32,730` bytes/SHA `C0ED652B94980B174358201346B3A3A8999AA
 
 `exact_world_package_api_source_correction_credit=0`; all current build, automation, package, receipt/custody, launch, activation, policy, visible-client, route, gameplay, performance, minimum-PC, compatibility, accessibility, validation, readiness, and product credits are `0`. Product remains `NOT_MEASURED`; Candidate B remains `OWNER_SELECTED_PROVISIONAL_UNVALIDATED`. No source acceptance, runtime behavior, product or security defect, Defender-clean state, retry, cleanup, or successor authority follows. See [[Development/Reports/Phase 1L5au Candidate B Context Accurate Exact World Package Identity Source Correction]]. NEW NIGHTLY BATCH PHASE 1/6 CLOSED — NO AUTOMATIC PHASE 2
 
+### Phase 1L.5av Candidate B short-name assertion label contract correction
+
+**`COMPLETE LOCALLY — SOURCE_CONTRACT_STATIC_PASS; EXACT WORLD-PACKAGE ASSERTION LABEL ALIGNED; BUILD/PACKAGE/LAUNCH NOT RUN; PRODUCT NOT MEASURED; NEW NIGHTLY BATCH PHASE 2/6`.** Phase 1L.5au is truth-repaired to full commit `00c90144ffd8c71ba7bbb521761e9112c72bffb3`, independently verified exactly two canonical Project upserts, count `1/6`, and report identity `5,475` bytes/SHA `DEA6CDA4EE5D5652364E1B7F730B531C52A29F4B223F087780E242E56DE858C9`/blob `cda60078c4f05e499a8e2dad183e9f7799e574b9`; its fail outcome and credits `0` remain historical.
+
+A `REPLACE_ASSERTION_LABEL_LITERAL_ONLY` is selected/recommended because one string-literal replacement closes the frozen contract without behavior change. B `RELAX_EXACT_LABEL_ACCEPTANCE` is not selected/rejected because it would move the frozen evidence contract after failure. C `BUILD_OR_RERUN_WITH_LABEL_MISMATCH` is not selected/rejected because it skips the earliest failed dependency and expands authority.
+
+The sole atomic patch changed only `Short Sundale world name is rejected` to required `Short Sundale world package is rejected`. Required/old counts are `1/0`; input `SundaleGraybox`, Package header/API, case-sensitive full-path predicate, rejection/acceptance tests, lifecycle, claim, markers, registry/FNV, Replay separation, and compile guards remain unchanged. Post source is `32,733` bytes/SHA `DAECEA4380544ADE59B701461739C2B75B41A449C72FCCCF43D96EDC58E95434`/blob `ba49c5bcaf69bd1e37ecb5c6770b9db29b128f67`; exact diff is one path, `1+ / 1-`, and diff-check is clear. Exact10 statuses are nine `MATCH` rows followed by `EVIDENCE_ABSENT` for execution.
+
+`exact_world_package_api_source_correction_credit=1`; `assertion_label_contract_correction_credit=1`. Build, focused automation, package, receipt/custody, launch, activation, policy, renderer, visible-client, route, gameplay, performance, minimum-PC, compatibility, accessibility, hands-on, beta-exit, Brain, product, validation, and readiness credits remain `0`. Product is `NOT_MEASURED`; Candidate B remains provisional/unvalidated. No compile/runtime behavior, product or security defect, Defender-clean state, retry, rollback, cleanup, or successor authority follows. See [[Development/Reports/Phase 1L5av Candidate B Short Name Assertion Label Contract Correction]]. NEW NIGHTLY BATCH PHASE 2/6 CLOSED — NO AUTOMATIC PHASE 3
+
 ### Exit evidence
 
 - Reproducible local packaged build.
