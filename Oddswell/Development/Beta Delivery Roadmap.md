@@ -330,6 +330,16 @@ The sole packaged attempt exited naturally `0` after `4.1829764` seconds without
 
 Exact-four evidence is log `146,700` bytes/SHA `4C94B9FE42B1016C24DE26F357857385037A49A4A5EE66D0F20DEB85704B1546`, exact155 session `6,176` bytes/SHA `8E3FE42CED7C15769560739063F2C69507887F8A2FC5833FFFC7384BE5649CD0`, exact8 marker ledger `1,316` bytes/SHA `35FF87EE0BB45E1CD3434B580896EBF20B295B2701AAB4716566FCF0839564BD`, and exact184 field ledger `11,123` bytes/SHA `053026ACA2C1976B851B7FD435FA8B6133D2A639FB58F6FC5DB3B64504D09AEC`. `activation_credit=1`; `packaged_candidate_source_execution_credit=1`; `package_launch_credit=1`; policy application/full validation, route, renderer, visible-client, gameplay, product, performance, minimum-PC, compatibility, accessibility, hands-on, beta-exit, Brain, validation, and readiness credits remain `0`. Product is `NOT_MEASURED`; Candidate B remains provisional/unvalidated. No broad product or security defect, Defender-clean claim, rerun, cleanup, or automatic successor follows. See [[Development/Reports/Phase 1L5bd Candidate B Corrected Packaged Activation and Policy Evidence]]. AUGUST 26 NIGHTLY BATCH PHASE 4/6 CLOSED — NO AUTOMATIC PHASE 5
 
+### Phase 1L.5be Candidate B RHI name evidence contract reconciliation
+
+**`COMPLETE LOCALLY — RHI_NAME_EVIDENCE_CONTRACT_RECONCILED; EXACT ENGINE-EMITTED D3D12 (SM6) CONTRACT SELECTED; SOURCE/BUILD/PACKAGE/LAUNCH NOT RUN; PRODUCT NOT MEASURED; AUGUST 26 NIGHTLY BATCH PHASE 5/6`.** Phase 1L.5bd is truth-repaired to full commit `7f0cfdd0bf4b16624c0728db3e755539230df6cf`, independently verified exactly two canonical Project upserts, count `4/6`, and report identity `6,277` bytes/SHA `B99A52B2F3787C418BB0874E984337656B933398A664C14D2D26AD289DE4D440`/blob `cc65684e3bde77a16a43b0bd430a0815df4ae5e1`; its activation/source-execution/package-launch credits remain prior-only and its policy failure is not rescored.
+
+The exact eleven-row audit is coherent: rows 1–8 are `SOURCE_CONFIRMED`, row 9 is `EVIDENCE_CONFIRMED`, row 10 is `AUTHORITY_CONFIRMED`, and row 11 is `EVIDENCE_ABSENT`. Installed UE5.8 source constructs `D3D12 (SM6)`, the retained package observed it, and current code compares against bare `D3D12`.
+
+A `EXACT_ENGINE_EMITTED_D3D12_SM6_NAME` is selected/recommended prospectively. B `KEEP_BARE_D3D12_EQUALITY` is not selected/rejected because it contradicts installed source and retained evidence. C `BROAD_D3D12_PREFIX_OR_SUBSTRING` is not selected/rejected because it accepts values broader than the exact approved D3D12-plus-SM6 contract. No implementation is authorized, and the reconciliation does not prove SM6.6.
+
+`rhi_name_evidence_contract_reconciliation_credit=1`; `rhi_name_source_correction_credit=0`; every current build, source-compile, automation, package, launch, policy, route, visible-client, product, performance, minimum-PC, compatibility, accessibility, hands-on, beta-exit, Brain, validation, and readiness credit remains `0`. Product is `NOT_MEASURED`; Candidate B remains provisional/unvalidated. No runtime rerun, policy rescore, product/source/security defect, Defender-clean inference, or automatic successor follows. See [[Development/Reports/Phase 1L5be Candidate B RHI Name Evidence Contract Reconciliation]]. AUGUST 26 NIGHTLY BATCH PHASE 5/6 CLOSED — NO AUTOMATIC PHASE 6
+
 ### Exit evidence
 
 - Reproducible local packaged build.
