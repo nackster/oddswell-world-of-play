@@ -288,6 +288,16 @@ A `CANONICAL_CATEGORY_AND_MESSAGE_PREFIX_MALFORMED_SCOPE` is selected/recommende
 
 `focused_automation_parser_reconciliation_credit=1`; `candidate_world_package_predicate_focused_automation_credit=0`; `focused_native_automation_credit=0`. Every current editor-build, source-compile, automation execution, package, launch, runtime, product, performance, minimum-PC, compatibility, accessibility, hands-on, beta-exit, Brain, validation, and readiness credit remains `0`. Product is `NOT_MEASURED`; Candidate B remains provisional/unvalidated. No Phase 1L.5ay rescore, rerun, cleanup, source/product/security defect, or Defender-clean claim follows. See [[Development/Reports/Phase 1L5az Focused Automation Auxiliary Line Parser Reconciliation]]. NO SEVENTH PHASE — SIX-PHASE BATCH STOPPED.
 
+### Phase 1L.5ba Candidate B reconciled-parser focused native automation
+
+**`COMPLETE LOCALLY — FOCUSED_AUTOMATION_PASS; RECONCILED PARSER CONTRACT SATISFIED; BUILD/PACKAGE/GAME LAUNCH NOT RUN; PRODUCT NOT MEASURED; AUGUST 26 NIGHTLY BATCH PHASE 1/6`.** Phase 1L.5az is truth-repaired to full commit `0aa0034351962fd43d4754a0c8907af0e51c1eb9`, independently verified exactly two canonical Project upserts, completed prior-batch count `6/6`, and report identity `6,867` bytes/SHA `49148D4904F649BB0CA248E730980F61B6DF5E188CE0CC22EE1CF75135D5468E`/blob `0a4bea4cfb32f6f3adf9154e7de68505706e74f9`; its parser-reconciliation credit remains prior-only.
+
+A `ONE_RECONCILED_PARSER_FOCUSED_EDITOR_AUTOMATION_ATTEMPT` was selected/recommended because it is the smallest fresh direct evidence under the source-reconciled parser contract. B `RETROACTIVE_PHASE1L5AY_RECLASSIFICATION` was not selected/rejected because Phase 1L.5ay remains permanently LIMITED with credits `0`. C `BUILD_PACKAGE_OR_GAME_LAUNCH` was not selected/rejected because those downstream actions cannot prove the earliest focused-automation dependency and expand authority.
+
+The sole attempt exited naturally `0` after `64.1932762` seconds with no timeout, taskkill, or retry. The canonical vector was `1/1/1/1/1/0/0/0/0`; reconciled `structured_marker_malformed_count=0`. The native index recorded one exact Success with errors/warnings `0/0`. Log `256,061` bytes/SHA `B6B98A3D87D1150BBC21BEE2A505F1474420FDB42676D93D2728395D2D765F02`, index `1,114` bytes/SHA `5BCC1642EE5A200349AEE78B67EBE8AB8CEC1C9A0A5959CFC35570B5F92642E6`, and session `2,047` bytes/SHA `65F3AA3D97AD65821C2F75673910CD4E149B7B89B1CB7E1AFBA85C645C3FD64B` replayed with exact evidence/report topologies `2/2`.
+
+`candidate_world_package_predicate_focused_automation_credit=1`; `focused_native_automation_credit=1`; `reconciled_parser_focused_automation_credit=1`. Current build, source-compile, package, game launch, runtime, product, performance, minimum-PC, compatibility, accessibility, hands-on, beta-exit, Brain, validation, and readiness credits remain `0`. Product is `NOT_MEASURED`; Candidate B remains provisional/unvalidated. No package/game launch, broad product validation, security defect, or Defender-clean claim follows. See [[Development/Reports/Phase 1L5ba Candidate B Reconciled Parser Focused Native Automation]]. AUGUST 26 NIGHTLY BATCH PHASE 1/6 CLOSED — NO AUTOMATIC PHASE 2
+
 ### Exit evidence
 
 - Reproducible local packaged build.
