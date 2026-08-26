@@ -514,9 +514,9 @@ void EmitRuntimeFields(FFieldCounts& Counts)
 
 	FString RhiName = FApp::GetGraphicsRHI();
 	RhiName.TrimStartAndEndInline();
-	EmitField(TEXT("RUNTIME"), TEXT("rhi_name"), TEXT("D3D12"), RhiName.IsEmpty() ? TEXT("UNAVAILABLE") : RhiName,
+	EmitField(TEXT("RUNTIME"), TEXT("rhi_name"), TEXT("D3D12 (SM6)"), RhiName.IsEmpty() ? TEXT("UNAVAILABLE") : RhiName,
 		RhiName.IsEmpty() ? EFieldStatus::Unavailable
-			: (RhiName.Equals(TEXT("D3D12"), ESearchCase::IgnoreCase) ? EFieldStatus::Match : EFieldStatus::Mismatch), Counts);
+			: (RhiName.Equals(TEXT("D3D12 (SM6)"), ESearchCase::IgnoreCase) ? EFieldStatus::Match : EFieldStatus::Mismatch), Counts);
 
 	FString AdapterName = GRHIAdapterName;
 	AdapterName.TrimStartAndEndInline();

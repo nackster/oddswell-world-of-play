@@ -340,6 +340,16 @@ A `EXACT_ENGINE_EMITTED_D3D12_SM6_NAME` is selected/recommended prospectively. B
 
 `rhi_name_evidence_contract_reconciliation_credit=1`; `rhi_name_source_correction_credit=0`; every current build, source-compile, automation, package, launch, policy, route, visible-client, product, performance, minimum-PC, compatibility, accessibility, hands-on, beta-exit, Brain, validation, and readiness credit remains `0`. Product is `NOT_MEASURED`; Candidate B remains provisional/unvalidated. No runtime rerun, policy rescore, product/source/security defect, Defender-clean inference, or automatic successor follows. See [[Development/Reports/Phase 1L5be Candidate B RHI Name Evidence Contract Reconciliation]]. AUGUST 26 NIGHTLY BATCH PHASE 5/6 CLOSED — NO AUTOMATIC PHASE 6
 
+### Phase 1L.5bf Candidate B exact D3D12 SM6 name source correction
+
+**`COMPLETE LOCALLY — RHI_NAME_SOURCE_CORRECTION_VERIFICATION_FAIL; FULL_NATIVE_REGRESSION_FAILED; PACKAGE LAUNCH NOT RUN; PRODUCT NOT MEASURED; AUGUST 26 NIGHTLY BATCH PHASE 6/6`.** Phase 1L.5be is truth-repaired to full commit `3ee081f2ca3c0131b05ea4e9a18be989e0328ba8`, independently verified exactly two canonical Project upserts, count `5/6`, and report identity `6,068` bytes/SHA `F94E53C06ABF94FAAAB2AB1C96DC243068E038A41489B96B68EB6A0A4AF0DE15`/blob `409f47d76e2e351fe5bca32c271bcdc4d994b955`.
+
+A `CHANGE_ONLY_EXPECTED_AND_COMPARATOR_TO_EXACT_D3D12_SM6` was selected/recommended. B `ADD_RHI_NAME_HELPER_OR_BROAD_MATCH` and C `RERUN_WITHOUT_SOURCE_CORRECTION` were not selected/rejected. The sole source patch changed two exact operands, static acceptance passed `10/10`, the editor build compiled the corrected source, and focused native automation passed `1/1`. Full native automation completed all `74` registered paths with the frozen allowlist digest, but its index classified `57` succeeded and `17` succeeded-with-warnings with `25` warnings, contradicting the frozen `74/0` requirement. No warning causation or product defect is inferred.
+
+Fail-fast stopped Python, Brain Admin, game build, and package checks before attempt. The ledger is exact162, `5,306` bytes/SHA `CD43BD1788B1FB5394E03F85DB3D0B98207089C70011472889EA78C6A49F01B4`; Evidence has exact `5` files, the root exact `9`, and package/staged manifests are absent. `rhi_name_source_correction_credit=1`; `rhi_name_source_compile_credit=1`; `editor_build_credit=1`; `focused_native_automation_credit=1`. Full native regression, Python, Brain self-check, game build, package build/custody, launch, runtime, product, validation, and readiness credits are `0`.
+
+Phase 1L.5bd remains permanently failed and is not rescored. Candidate B remains provisional/unvalidated and product is `NOT_MEASURED`. The six-phase ledger is `fb041232b9e8a8cd09a9dd76b9831c4e7e415004`, `8cc71e1da84abd58281996bad52287196b224582`, `f6eb506bd6635c142fbcafa6c48b79088972bf90`, `7f0cfdd0bf4b16624c0728db3e755539230df6cf`, `3ee081f2ca3c0131b05ea4e9a18be989e0328ba8`, and the pending local Phase 1L.5bf commit. See [[Development/Reports/Phase 1L5bf Candidate B Exact D3D12 SM6 Name Source Correction]]. NO SEVENTH PHASE — SIX-PHASE BATCH STOPPED.
+
 ### Exit evidence
 
 - Reproducible local packaged build.
