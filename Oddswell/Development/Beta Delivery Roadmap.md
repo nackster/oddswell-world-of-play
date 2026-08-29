@@ -350,6 +350,16 @@ Fail-fast stopped Python, Brain Admin, game build, and package checks before att
 
 Phase 1L.5bd remains permanently failed and is not rescored. Candidate B remains provisional/unvalidated and product is `NOT_MEASURED`. The six-phase ledger is `fb041232b9e8a8cd09a9dd76b9831c4e7e415004`, `8cc71e1da84abd58281996bad52287196b224582`, `f6eb506bd6635c142fbcafa6c48b79088972bf90`, `7f0cfdd0bf4b16624c0728db3e755539230df6cf`, `3ee081f2ca3c0131b05ea4e9a18be989e0328ba8`, and the pending local Phase 1L.5bf commit. See [[Development/Reports/Phase 1L5bf Candidate B Exact D3D12 SM6 Name Source Correction]]. NO SEVENTH PHASE — SIX-PHASE BATCH STOPPED.
 
+### Phase 1L.5bg articulated runtime placeholder and QA save warning repair
+
+**`COMPLETE LOCALLY — QA SAVE WARNING ROOT FIXED; ARTICULATED PLACEHOLDER PACKAGED AND RUNNING; FINAL CHARACTER ART/RIG/ANIMATION NOT STARTED`.** The shared Odds Bucks save routine now checks that the QA slot exists before loading prior optional void-finalization data. The Phase 1L.5bf warning source is removed without a warning allowlist, relaxed regression contract, schema, migration, ledger, settlement, or authority change. Native verification passed `74/74` with zero warnings.
+
+Four native primitive limbs and one velocity-driven opposing gait make walk/run motion visible. Existing `ACharacter` movement, capsule collision, speeds, jump, camera, eight preset identities, starter equipment, Signal Jacket, saves, replication, economy, wagering, simulator, and brain behavior remain unchanged.
+
+Editor and game builds passed; focused character automation passed `1/1`; final native passed `74/74`; frozen Python passed `105/105` after one transparently retained contention-only timing miss and clean rerun; Brain Admin passed; fresh Win64 Development BuildCookRun and final source-only package refresh passed; the `50`-file package contains zero Python files; warmed packaged Sundale locomotion passed at walk `260`, run `520`, jump `128.0`, landed/blocking floor true, camera delta `35.1°`.
+
+This is a replaceable noncanonical runtime placeholder, not a final model, skeletal mesh, rig, authored animation set, face, hair, creator, or beta-readiness claim. Candidate B full policy validation, hands-on accessibility/usability, Phase 1L exit, beta exit, Phase 1M, Roadmap Phase 2, and Version 1 remain incomplete or unauthorized. See [[Development/Reports/Phase 1L5bg Articulated Runtime Placeholder and QA Save Warning Repair]].
+
 ### Exit evidence
 
 - Reproducible local packaged build.

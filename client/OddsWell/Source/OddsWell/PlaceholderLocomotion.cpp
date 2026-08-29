@@ -68,6 +68,10 @@ constexpr float CameraPitchMin = -65.0f;
 constexpr float CameraPitchMax = 65.0f;
 constexpr float CapsuleRadius = 42.0f;
 constexpr float CapsuleHalfHeight = 96.0f;
+constexpr float PrimitiveWalkGaitCyclesPerSecond = 1.4f;
+constexpr float PrimitiveRunGaitCyclesPerSecond = 2.2f;
+constexpr float PrimitiveWalkGaitAngle = 18.0f;
+constexpr float PrimitiveRunGaitAngle = 30.0f;
 constexpr float SharedCitySpawnSpacing = 200.0f;
 constexpr float SharedCityQaMovementDistance = 300.0f;
 constexpr int32 SharedCityCapacityMinClients = 2;
@@ -2020,6 +2024,34 @@ AOddsWellPlaceholderCharacter::AOddsWellPlaceholderCharacter()
 	PrimitiveHead->SetRelativeScale3D(FVector(0.55));
 	PrimitiveHead->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
+	PrimitiveLeftArm = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("NeutralPrimitiveLeftArm"));
+	PrimitiveLeftArm->SetupAttachment(GetCapsuleComponent());
+	PrimitiveLeftArm->SetStaticMesh(Cube);
+	PrimitiveLeftArm->SetRelativeLocation(FVector(0.0, -35.0, 2.0));
+	PrimitiveLeftArm->SetRelativeScale3D(FVector(0.18, 0.18, 0.62));
+	PrimitiveLeftArm->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+	PrimitiveRightArm = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("NeutralPrimitiveRightArm"));
+	PrimitiveRightArm->SetupAttachment(GetCapsuleComponent());
+	PrimitiveRightArm->SetStaticMesh(Cube);
+	PrimitiveRightArm->SetRelativeLocation(FVector(0.0, 35.0, 2.0));
+	PrimitiveRightArm->SetRelativeScale3D(FVector(0.18, 0.18, 0.62));
+	PrimitiveRightArm->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+	PrimitiveLeftLeg = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("NeutralPrimitiveLeftLeg"));
+	PrimitiveLeftLeg->SetupAttachment(GetCapsuleComponent());
+	PrimitiveLeftLeg->SetStaticMesh(Cube);
+	PrimitiveLeftLeg->SetRelativeLocation(FVector(0.0, -16.0, -58.0));
+	PrimitiveLeftLeg->SetRelativeScale3D(FVector(0.20, 0.20, 0.68));
+	PrimitiveLeftLeg->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+	PrimitiveRightLeg = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("NeutralPrimitiveRightLeg"));
+	PrimitiveRightLeg->SetupAttachment(GetCapsuleComponent());
+	PrimitiveRightLeg->SetStaticMesh(Cube);
+	PrimitiveRightLeg->SetRelativeLocation(FVector(0.0, 16.0, -58.0));
+	PrimitiveRightLeg->SetRelativeScale3D(FVector(0.20, 0.20, 0.68));
+	PrimitiveRightLeg->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
 	StarterOutfitTop = CreateDefaultSubobject<UStaticMeshComponent>(TopComponentName);
 	StarterOutfitTop->SetupAttachment(GetCapsuleComponent());
 	StarterOutfitTop->SetStaticMesh(Cube);
@@ -2235,6 +2267,10 @@ void AOddsWellPlaceholderCharacter::BeginPlay()
 			SignalJacketAccent->SetMaterial(0, SignalJacketAccentMaterial);
 			PrimitiveBody->SetMaterial(0, PrimitiveSkinMaterial);
 			PrimitiveHead->SetMaterial(0, PrimitiveSkinMaterial);
+			PrimitiveLeftArm->SetMaterial(0, PrimitiveSkinMaterial);
+			PrimitiveRightArm->SetMaterial(0, PrimitiveSkinMaterial);
+			PrimitiveLeftLeg->SetMaterial(0, StarterOutfitMaterial);
+			PrimitiveRightLeg->SetMaterial(0, StarterOutfitMaterial);
 		}
 	}
 	bool bAppearanceReady = true;
@@ -3266,6 +3302,7 @@ void AOddsWellPlaceholderCharacter::ClientConfirmCanonicalFortyWager_Implementat
 void AOddsWellPlaceholderCharacter::Tick(const float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
+	UpdatePrimitiveGait(DeltaSeconds);
 	PollKeyboardMovement();
 	PollJobInteraction();
 	PollClothingStoreInteraction();
@@ -3405,6 +3442,24 @@ void AOddsWellPlaceholderCharacter::Tick(const float DeltaSeconds)
 		QaExitAt = 0.0;
 		FPlatformMisc::RequestExit(false);
 	}
+}
+
+void AOddsWellPlaceholderCharacter::UpdatePrimitiveGait(const float DeltaSeconds)
+{
+	const float Speed = GetVelocity().Size2D();
+	float GaitAngle = 0.0f;
+	if (Speed > KINDA_SMALL_NUMBER && GetCharacterMovement()->IsMovingOnGround())
+	{
+		const float RunAlpha = FMath::Clamp((Speed - WalkSpeed) / (RunSpeed - WalkSpeed), 0.0f, 1.0f);
+		const float CyclesPerSecond = FMath::Lerp(PrimitiveWalkGaitCyclesPerSecond, PrimitiveRunGaitCyclesPerSecond, RunAlpha);
+		PrimitiveGaitPhase = FMath::Fmod(PrimitiveGaitPhase + DeltaSeconds * CyclesPerSecond * 2.0f * PI, 2.0f * PI);
+		GaitAngle = FMath::Sin(PrimitiveGaitPhase) * FMath::Lerp(PrimitiveWalkGaitAngle, PrimitiveRunGaitAngle, RunAlpha);
+	}
+
+	PrimitiveLeftArm->SetRelativeRotation(FRotator(GaitAngle, 0.0f, 0.0f));
+	PrimitiveRightArm->SetRelativeRotation(FRotator(-GaitAngle, 0.0f, 0.0f));
+	PrimitiveLeftLeg->SetRelativeRotation(FRotator(-GaitAngle, 0.0f, 0.0f));
+	PrimitiveRightLeg->SetRelativeRotation(FRotator(GaitAngle, 0.0f, 0.0f));
 }
 
 #if UE_BUILD_DEVELOPMENT
@@ -14485,6 +14540,8 @@ bool FOddsWellLocomotionDefaultsTest::RunTest(const FString& Parameters)
 	TestFalse(TEXT("Crouch is not supported"), AllowCrouch);
 	TestFalse(TEXT("Flight is not supported"), AllowFlight);
 	TestFalse(TEXT("Swimming is not supported"), AllowSwimming);
+	TestTrue(TEXT("Primitive run gait is faster than walk gait"), PrimitiveRunGaitCyclesPerSecond > PrimitiveWalkGaitCyclesPerSecond);
+	TestTrue(TEXT("Primitive run stride is wider than walk stride"), PrimitiveRunGaitAngle > PrimitiveWalkGaitAngle);
 	const TArray<FVector>& SundaleWaypoints = GetSundaleRouteWaypoints();
 	TestEqual(TEXT("Sundale route keeps the minimal eleven waypoints"), SundaleWaypoints.Num(), 11);
 	float SundaleDistance = 0.0f;

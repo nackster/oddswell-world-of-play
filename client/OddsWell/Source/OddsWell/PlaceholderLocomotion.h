@@ -102,6 +102,7 @@ protected:
 private:
 	void MoveForward(float Value);
 	void MoveRight(float Value);
+	void UpdatePrimitiveGait(float DeltaSeconds);
 	void PollKeyboardMovement();
 	void LookYaw(float Value);
 	void LookPitchMouse(float Value);
@@ -239,6 +240,18 @@ private:
 	TObjectPtr<UStaticMeshComponent> PrimitiveHead;
 
 	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<UStaticMeshComponent> PrimitiveLeftArm;
+
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<UStaticMeshComponent> PrimitiveRightArm;
+
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<UStaticMeshComponent> PrimitiveLeftLeg;
+
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<UStaticMeshComponent> PrimitiveRightLeg;
+
+	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UStaticMeshComponent> StarterOutfitTop;
 
 	UPROPERTY(VisibleAnywhere)
@@ -275,6 +288,7 @@ private:
 	FOddsWellSharedCityAppearance SharedCityAppearance;
 
 	FOddsWellStarterOutfitState StarterOutfitState;
+	float PrimitiveGaitPhase = 0.0f;
 	FVector QaStartLocation = FVector::ZeroVector;
 	float QaElapsed = 0.0f;
 	float QaMaxZ = 0.0f;

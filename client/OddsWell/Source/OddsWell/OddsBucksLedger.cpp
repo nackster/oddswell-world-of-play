@@ -3454,12 +3454,15 @@ bool SaveOddsWellOddsBucksState(
 	{
 		Record->MatchWinnerVoidFinalizations = *MatchWinnerVoidFinalizations;
 	}
-	else if (const UOddsWellOddsBucksSaveGame* Existing = Cast<UOddsWellOddsBucksSaveGame>(
-		UGameplayStatics::LoadGameFromSlot(GetOddsBucksSlot(bQaSlot), OddsBucksUserIndex)))
+	else if (UGameplayStatics::DoesSaveGameExist(GetOddsBucksSlot(bQaSlot), OddsBucksUserIndex))
 	{
-		Record->MatchWinnerVoidFinalizations = Existing->SchemaVersion >= 11
-			? Existing->MatchWinnerVoidFinalizations
-			: TArray<FOddsWellMatchWinnerVoidFinalizationRecord>();
+		if (const UOddsWellOddsBucksSaveGame* Existing = Cast<UOddsWellOddsBucksSaveGame>(
+			UGameplayStatics::LoadGameFromSlot(GetOddsBucksSlot(bQaSlot), OddsBucksUserIndex)))
+		{
+			Record->MatchWinnerVoidFinalizations = Existing->SchemaVersion >= 11
+				? Existing->MatchWinnerVoidFinalizations
+				: TArray<FOddsWellMatchWinnerVoidFinalizationRecord>();
+		}
 	}
 	FOddsWellOddsBucksLedger Validated;
 	int64 ValidatedNextJobPayout = 0;
