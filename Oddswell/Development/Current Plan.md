@@ -2735,6 +2735,15 @@ The preserved Phase 1L.5aq report identity is `4,027` bytes/SHA `3E14CFABBD0FC4C
 - **Verified:** focused character `1/1`; native `74/74` warnings `0`; frozen Python `105/105`; Brain Admin PASS; editor/game/BuildCookRun PASS; packaged Sundale walk/run/jump/landing/camera PASS; package `50` files / `1,052,124,588` bytes / Python `0`.
 - **Next:** evaluate the existing eight-preset silhouette review against the runtime placeholder, then seek an explicit promotion/modeling/rigging decision. Do not represent this primitive gait as final character art or animation. See [[Development/Reports/Phase 1L5bg Articulated Runtime Placeholder and QA Save Warning Repair]].
 
+### Phase 1L.5bh runtime-placeholder-to-eight-preset silhouette compatibility review status
+
+- **Status:** `COMPLETE LOCALLY — COMPATIBILITY REVIEW PACKET READY; OWNER PROMOTION/MODELING/RIGGING DECISION REQUIRED`.
+- **Matches:** exact eight preset IDs/order, four skin tones, gameplay-identical behavior, shared runtime geometry, starter item IDs/off-white, and Signal Jacket identity/slate/teal colors.
+- **Gaps:** the runtime has one neutral approximately `1.885 m` floor-to-crown primitive, center-pivot limbs, and different clothing transforms; Phase 1L.3g has a `1.80 m` two-base/eight-landmark/shared-fit review target but no skeleton, rig, deformation, animation, or Unreal import proof.
+- **Owner gate:** choose A keep the primitive through beta, B authorize one bounded shared-skeleton production-candidate bridge, or C reconcile the noncanonical review target first; also select the controlling stature and whether two distinct torso/hip silhouettes remain required. No option is selected here. See [[Development/Reports/Phase 1L5bh Runtime Placeholder to Eight Preset Silhouette Compatibility Review and Owner Decision Packet]].
+- **Verified:** focused docs/links/canvas PASS; native `74/74` warnings `0`; frozen Python `105/105` on the required interpreters after retained environment diagnostics; Brain Admin PASS; accepted Phase 1L.5bg package integrity exact at `50` files / `1,052,124,588` bytes / Python `0`; no recook or launch because client/package-input diff is `0`.
+- **Boundary:** documentation/canvas evidence only. No character asset, source, runtime, config, package input, catalog, gameplay, persistence, authority, simulator, or brain change. Cursor delegation is not suitable.
+
 ## Future shared simulation layer
 
 Athlete Life Brain v4 is the default for newly generated train, rest, recover, and socialize decisions. It adds only one bounded, one-decision, same-season recent-scoring response above v3's routine behavior. V1-v4 history remains immutable. Expand into longer memory, traits, relationships, nightlife, media, discipline, career decisions, and other sports only after each smaller input passes its own engineering evaluation.

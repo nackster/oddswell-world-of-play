@@ -360,6 +360,12 @@ Editor and game builds passed; focused character automation passed `1/1`; final 
 
 This is a replaceable noncanonical runtime placeholder, not a final model, skeletal mesh, rig, authored animation set, face, hair, creator, or beta-readiness claim. Candidate B full policy validation, hands-on accessibility/usability, Phase 1L exit, beta exit, Phase 1M, Roadmap Phase 2, and Version 1 remain incomplete or unauthorized. See [[Development/Reports/Phase 1L5bg Articulated Runtime Placeholder and QA Save Warning Repair]].
 
+### Phase 1L.5bh runtime-placeholder-to-eight-preset silhouette compatibility review and owner gate
+
+**`COMPLETE LOCALLY — COMPATIBILITY REVIEW PACKET READY; OWNER PROMOTION/MODELING/RIGGING DECISION REQUIRED`.** The exact eight preset IDs/order, four tones, gameplay-identical behavior, starter item IDs/colors, and Signal Jacket identity/colors match between the current runtime pawn and Phase 1L.3g review. Production compatibility does not: the runtime uses one neutral approximately `1.885 m` floor-to-crown primitive with center-pivot limbs and different clothing transforms, while the review uses a `1.80 m`, two-base, eight-landmark, shared-fit target and proves no skeleton, skin weights, deformation, animation, or Unreal import.
+
+The owner must choose A retain the articulated primitive through beta, B authorize one bounded shared-skeleton production-candidate bridge, or C reconcile the noncanonical review target first, plus select the controlling stature and whether two distinct torso/hip silhouettes remain required. No option is selected. Focused documentation/canvas checks, native `74/74`, frozen Python `105/105`, Brain Admin, and unchanged accepted-package integrity passed. No modeling, mesh promotion, skeleton, rig, animation asset, import, runtime/config/package-input change, or final-art claim follows automatically. See [[Development/Reports/Phase 1L5bh Runtime Placeholder to Eight Preset Silhouette Compatibility Review and Owner Decision Packet]].
+
 ### Exit evidence
 
 - Reproducible local packaged build.
