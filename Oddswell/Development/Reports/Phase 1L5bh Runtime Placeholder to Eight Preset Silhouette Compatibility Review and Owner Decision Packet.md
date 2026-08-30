@@ -54,7 +54,7 @@ Choose exactly one bounded direction before any character modeling, skeleton, ri
 
 ### Option B — Authorize one shared-skeleton production-candidate bridge
 
-- Authorize one faceless `1.80 m` shared-landmark mannequin contract, with both approved presentation silhouettes using the same skeleton and the existing eight cosmetic presets.
+- Authorize one faceless shared-landmark mannequin contract at the owner-selected controlling stature, with the owner-selected one-neutral-or-two-silhouette treatment using the same skeleton and the existing eight cosmetic presets.
 - Refit only `starter_offwhite_top`, `starter_offwhite_bottom`, and `sundale_signal_jacket` to that contract, then prove a minimal Unreal walk/run/jump import on the existing movement authority.
 - Treat the result as a bounded production candidate, not final art. Faces, hair, deep customization, extra clothing, marketplace features, and final animation polish remain out of scope.
 
