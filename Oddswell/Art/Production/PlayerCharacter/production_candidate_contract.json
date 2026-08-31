@@ -1,0 +1,75 @@
+{
+  "contract_id": "player_character_shared_skeleton_candidate_v1",
+  "decision": "DEC-034",
+  "status": "owner_approved_contract_only",
+  "cost_usd": 0,
+  "body": {
+    "faceless": true,
+    "silhouette_count": 1,
+    "silhouette_id": "neutral_beta",
+    "stature_m": 1.8
+  },
+  "shared_landmarks_m": {
+    "ankle": 0.1,
+    "knee": 0.53,
+    "hip": 0.94,
+    "wrist": 0.78,
+    "elbow": 1.12,
+    "shoulder": 1.45,
+    "head_center": 1.66,
+    "crown": 1.8
+  },
+  "appearance": {
+    "geometry_shared_by_all_presets": true,
+    "preset_ids": [
+      "masculine_tone_1",
+      "masculine_tone_2",
+      "masculine_tone_3",
+      "masculine_tone_4",
+      "feminine_tone_1",
+      "feminine_tone_2",
+      "feminine_tone_3",
+      "feminine_tone_4"
+    ],
+    "tone_rgba8": {
+      "tone_1": [246, 218, 194, 255],
+      "tone_2": [210, 160, 120, 255],
+      "tone_3": [145, 96, 68, 255],
+      "tone_4": [82, 52, 38, 255]
+    }
+  },
+  "authorized_items": [
+    "starter_offwhite_top",
+    "starter_offwhite_bottom",
+    "sundale_signal_jacket"
+  ],
+  "authorized_motion": [
+    "walk",
+    "run",
+    "jump",
+    "land"
+  ],
+  "runtime_authority": {
+    "replace_visuals_only": true,
+    "preserve_character_movement": true,
+    "preserve_capsule_collision": true,
+    "preserve_camera": true,
+    "preserve_replication": true,
+    "preserve_saves": true
+  },
+  "out_of_scope": [
+    "final_art",
+    "second_silhouette",
+    "faces",
+    "hair",
+    "body_sliders",
+    "deep_character_creator",
+    "additional_clothing",
+    "additional_animation",
+    "marketplace_assets",
+    "paid_services",
+    "new_plugins",
+    "gameplay_changes"
+  ],
+  "next_gate": "deterministic_blender_mannequin_and_shared_armature"
+}

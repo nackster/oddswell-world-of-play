@@ -2744,6 +2744,14 @@ The preserved Phase 1L.5aq report identity is `4,027` bytes/SHA `3E14CFABBD0FC4C
 - **Verified:** focused docs/links/canvas PASS; native `74/74` warnings `0`; frozen Python `105/105` on the required interpreters after retained environment diagnostics; Brain Admin PASS; accepted Phase 1L.5bg package integrity exact at `50` files / `1,052,124,588` bytes / Python `0`; no recook or launch because client/package-input diff is `0`.
 - **Boundary:** documentation/canvas evidence only. No character asset, source, runtime, config, package input, catalog, gameplay, persistence, authority, simulator, or brain change. Cursor delegation is not suitable.
 
+### Phase 1L.5bi shared-skeleton player-character production contract status
+
+- **Status:** `COMPLETE LOCALLY — OPTION B ACCEPTED; 1.80 M ONE-NEUTRAL-SILHOUETTE CONTRACT FROZEN; MODELING NOT STARTED`.
+- **Owner decision:** [[Design/Decisions/DEC-034 Shared Skeleton Player Character Production Candidate]] accepts Option B, exact `1.80 m` stature, and one neutral beta silhouette for all eight existing gameplay-identical presets.
+- **Contract:** `Oddswell/Art/Production/PlayerCharacter/production_candidate_contract.json` freezes exact preset/tone identity, the eight accepted landmark heights, the three authorized clothing items, walk/run/jump/land scope, and visual-only Unreal integration boundaries.
+- **Boundary:** cost `$0`; no external asset, marketplace download, plugin, dependency, mesh, armature, rig, skin weight, animation, FBX, Unreal import, package, runtime replacement, final-art claim, beta-readiness claim, or production-readiness claim. Movement/collision/camera/replication/save/economy/wager/simulator/brain authority is unchanged.
+- **Next:** create and verify one deterministic Blender faceless neutral mannequin plus shared armature from the frozen contract. See [[Development/Reports/Phase 1L5bi Shared Skeleton Player Character Production Contract]].
+
 ## Future shared simulation layer
 
 Athlete Life Brain v4 is the default for newly generated train, rest, recover, and socialize decisions. It adds only one bounded, one-decision, same-season recent-scoring response above v3's routine behavior. V1-v4 history remains immutable. Expand into longer memory, traits, relationships, nightlife, media, discipline, career decisions, and other sports only after each smaller input passes its own engineering evaluation.

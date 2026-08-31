@@ -366,6 +366,10 @@ This is a replaceable noncanonical runtime placeholder, not a final model, skele
 
 The owner must choose A retain the articulated primitive through beta, B authorize one bounded shared-skeleton production-candidate bridge at an owner-selected stature/silhouette treatment, or C reconcile the noncanonical review target first. Only B or C also requires selecting the controlling stature and whether two distinct torso/hip silhouettes remain required. No option is selected. Focused documentation/canvas checks, native `74/74`, frozen Python `105/105`, Brain Admin, and unchanged accepted-package integrity passed. No modeling, mesh promotion, skeleton, rig, animation asset, import, runtime/config/package-input change, or final-art claim follows automatically. See [[Development/Reports/Phase 1L5bh Runtime Placeholder to Eight Preset Silhouette Compatibility Review and Owner Decision Packet]].
 
+### Phase 1L.5bi shared-skeleton player-character production contract
+
+**`COMPLETE LOCALLY — OPTION B ACCEPTED; 1.80 M ONE-NEUTRAL-SILHOUETTE CONTRACT FROZEN; MODELING NOT STARTED`.** The owner approved Option B with exact `1.80 m` stature and one neutral beta silhouette. [[Design/Decisions/DEC-034 Shared Skeleton Player Character Production Candidate]] and `Oddswell/Art/Production/PlayerCharacter/production_candidate_contract.json` freeze one faceless shared-skeleton visual path for all eight existing presets, exact four tones, the eight accepted landmarks, only the starter top/bottom and Signal Jacket, and only walk/run/jump/land proof. Existing Unreal movement, capsule collision, camera, replication, saves, economy, wagering, simulator, and brains remain unchanged. Cost is `$0`; no external asset, marketplace download, plugin, dependency, mesh, armature, rig, animation, import, package, runtime replacement, or final-art claim exists in this phase. The next gate is one deterministic Blender mannequin and shared-armature source. See [[Development/Reports/Phase 1L5bi Shared Skeleton Player Character Production Contract]].
+
 ### Exit evidence
 
 - Reproducible local packaged build.
