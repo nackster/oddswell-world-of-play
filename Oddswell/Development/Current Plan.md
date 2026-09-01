@@ -2761,6 +2761,16 @@ The preserved Phase 1L.5aq report identity is `4,027` bytes/SHA `3E14CFABBD0FC4C
 - **Boundary:** cost `$0`; no external asset, download, plugin, dependency, parenting, skin weights, deformation, control rig, IK, clothing refit, animation/action, FBX/export, Unreal import, client/map/config/package input, runtime replacement, or final-art claim. Movement/collision/camera/replication/save/economy/wager/simulator/brain authority is unchanged.
 - **Next:** no later character-production or integration step follows automatically; the Scope Director must select the smallest separate roadmap gate. See [[Development/Reports/Phase 1L5bj Deterministic Neutral Mannequin and Shared Armature Blender Source]].
 
+### Phase 1L.5bk deterministic mannequin skin binding and static deformation proof status
+
+- **Status:** `COMPLETE LOCALLY — ADDITIVE SKIN-BINDING/STATIC-DIAGNOSTIC SOURCE ONLY; NOT ANIMATION OR RUNTIME`.
+- **Source custody:** the accepted Phase 1L.5bj source remains exact at SHA-256 `27D4F7D5585B7AACD90AEF9A03D0426E5415EF2C17F002F79C832F080F9D9F80`; its accepted manifest remains `63A839B581E8DB21F4F98861D734372A79581126F542174022ACA950B6060A95`.
+- **Binding:** `302/302` vertices have exactly one normalized `1.0` influence across the exact `12` accepted bone groups; unweighted `0`, non-normalized `0`, maximum influences `1`, and armature modifiers `1`. Geometry, stature, landmarks, eight presets, four tones, bone names, and hierarchy are preserved.
+- **Static proof:** deterministic shoulder/elbow/hip/knee diagnostic moves `228` vertices with maximum `.151338 m` displacement and delta identity `61819BDCAAC79CC8F86AEE354AE9B74B2FF0F4F5D3045BA1AA47A4EB9352C005`; the saved source is clear rest pose. Semantic identity is `8F86A1FE89E9975C75B31D6700FA3FD64A98F87139C2C7DF0B721197ED25F146`; custody manifest is `09BCC9BFDA60E1F7FE6F0288D52AA8C4FA22671653C2A190D96A682802CF9751`.
+- **Verified:** deterministic build/rerun/reopen, weight/deformation assertions, and rest/static visual review PASS; focused docs/wiki/canvas/client-diff checks PASS; fresh native `74/74` warnings `0`; frozen Python `105/105`; Brain Admin PASS; accepted `50`-file / `1,052,124,588`-byte / Python-`0` package integrity exact.
+- **Boundary:** Actions/NLA/motion clips `0`; no walk/run/jump/land proof, clothing refit, control rig, IK, constraints, drivers, shape keys, FBX/export, Unreal import, client/map/config/package input, runtime replacement, or final-art claim. Cost `$0`; no external asset, paid input, plugin, or dependency.
+- **Next:** no later character-production or integration step follows automatically; the Scope Director must select the smallest separate roadmap gate. See [[Development/Reports/Phase 1L5bk Deterministic Mannequin Skin Binding and Static Deformation Proof]].
+
 ## Future shared simulation layer
 
 Athlete Life Brain v4 is the default for newly generated train, rest, recover, and socialize decisions. It adds only one bounded, one-decision, same-season recent-scoring response above v3's routine behavior. V1-v4 history remains immutable. Expand into longer memory, traits, relationships, nightlife, media, discipline, career decisions, and other sports only after each smaller input passes its own engineering evaluation.
