@@ -1,0 +1,331 @@
+{
+  "blender_version": "4.5.5 LTS",
+  "boundaries": {
+    "actions": 0,
+    "animations": 0,
+    "armatures": 1,
+    "clothing_refits": 0,
+    "control_rigs": 0,
+    "deformation": 0,
+    "external_assets": 0,
+    "fbx_exports": 0,
+    "final_art_claim": false,
+    "ik": 0,
+    "mannequins": 1,
+    "paid_inputs": 0,
+    "runtime_changes": 0,
+    "skin_weights": 0,
+    "unreal_imports": 0
+  },
+  "contract_source": {
+    "decision": "DEC-034",
+    "file": "../production_candidate_contract.json",
+    "sha256": "BE283BD9EB10789682ACC71B14A293CFD8080ADBB4F75CDB808F80CA77222FBB"
+  },
+  "deterministic_builder": "build_shared_skeleton_candidate.py",
+  "engine": "BLENDER_WORKBENCH",
+  "files": {
+    "blend": {
+      "file": "SharedSkeletonCharacterCandidate.blend",
+      "identity": "semantic_only"
+    },
+    "builder": {
+      "bytes": 25297,
+      "file": "build_shared_skeleton_candidate.py",
+      "sha256": "2ACB75A633FD56EDCFA77D02C7A8C10D1D2EAE079C0C6EF04A0473B16EBDAE76"
+    },
+    "provenance": {
+      "bytes": 1009,
+      "file": "PROVENANCE.md",
+      "sha256": "9EAF81E2B293396443225E4E71EB6DD210E5E2919D56B10579B9BDA576793823"
+    }
+  },
+  "phase": "Phase 1L.5bj deterministic neutral mannequin and shared-armature Blender source",
+  "renders": [
+    {
+      "bytes": 636775,
+      "file": "renders/Review_Front.png",
+      "height": 900,
+      "role": "FRONT",
+      "sha256": "21735DCBC14B42D43659CD3D0679DA814BDEA12F2D4ECC6BEFF9611599D58E61",
+      "width": 720
+    },
+    {
+      "bytes": 627331,
+      "file": "renders/Review_Side.png",
+      "height": 900,
+      "role": "SIDE",
+      "sha256": "F36336F949EE802E2C6740A1DD5D0095B228CDF5A30E721CD742947A45A9177C",
+      "width": 720
+    },
+    {
+      "bytes": 631473,
+      "file": "renders/Review_ThreeQuarter.png",
+      "height": 900,
+      "role": "THREE_QUARTER",
+      "sha256": "144CFDC7078272A3CEA6B23875A10F6EF0942D973A6BA1C1832ED5962AE3B25E",
+      "width": 720
+    }
+  ],
+  "review_source": {
+    "file": "../../../Reviews/PlayerCharacterSilhouetteReviewSheet/manifest.json",
+    "sha256": "CCA6E44FC213D9F23547C2BE0964CAB9D85E4EE472E696183A864E44B95B811A"
+  },
+  "semantic": {
+    "armature": {
+      "bone_count": 12,
+      "bones": {
+        "forearm.L": {
+          "connected": true,
+          "head_m": [
+            0.28,
+            0.0,
+            1.12
+          ],
+          "parent": "upper_arm.L",
+          "tail_m": [
+            0.265,
+            0.0,
+            0.78
+          ]
+        },
+        "forearm.R": {
+          "connected": true,
+          "head_m": [
+            -0.28,
+            0.0,
+            1.12
+          ],
+          "parent": "upper_arm.R",
+          "tail_m": [
+            -0.265,
+            0.0,
+            0.78
+          ]
+        },
+        "head": {
+          "connected": true,
+          "head_m": [
+            0.0,
+            0.0,
+            1.66
+          ],
+          "parent": "neck",
+          "tail_m": [
+            0.0,
+            0.0,
+            1.8
+          ]
+        },
+        "neck": {
+          "connected": true,
+          "head_m": [
+            0.0,
+            0.0,
+            1.45
+          ],
+          "parent": "spine",
+          "tail_m": [
+            0.0,
+            0.0,
+            1.66
+          ]
+        },
+        "root": {
+          "connected": false,
+          "head_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "parent": null,
+          "tail_m": [
+            0.0,
+            0.0,
+            0.1
+          ]
+        },
+        "shin.L": {
+          "connected": true,
+          "head_m": [
+            0.13,
+            0.0,
+            0.53
+          ],
+          "parent": "thigh.L",
+          "tail_m": [
+            0.13,
+            0.0,
+            0.1
+          ]
+        },
+        "shin.R": {
+          "connected": true,
+          "head_m": [
+            -0.13,
+            0.0,
+            0.53
+          ],
+          "parent": "thigh.R",
+          "tail_m": [
+            -0.13,
+            0.0,
+            0.1
+          ]
+        },
+        "spine": {
+          "connected": false,
+          "head_m": [
+            0.0,
+            0.0,
+            0.94
+          ],
+          "parent": "root",
+          "tail_m": [
+            0.0,
+            0.0,
+            1.45
+          ]
+        },
+        "thigh.L": {
+          "connected": false,
+          "head_m": [
+            0.155,
+            0.0,
+            0.94
+          ],
+          "parent": "root",
+          "tail_m": [
+            0.13,
+            0.0,
+            0.53
+          ]
+        },
+        "thigh.R": {
+          "connected": false,
+          "head_m": [
+            -0.155,
+            0.0,
+            0.94
+          ],
+          "parent": "root",
+          "tail_m": [
+            -0.13,
+            0.0,
+            0.53
+          ]
+        },
+        "upper_arm.L": {
+          "connected": false,
+          "head_m": [
+            0.245,
+            0.0,
+            1.45
+          ],
+          "parent": "spine",
+          "tail_m": [
+            0.28,
+            0.0,
+            1.12
+          ]
+        },
+        "upper_arm.R": {
+          "connected": false,
+          "head_m": [
+            -0.245,
+            0.0,
+            1.45
+          ],
+          "parent": "spine",
+          "tail_m": [
+            -0.28,
+            0.0,
+            1.12
+          ]
+        }
+      },
+      "name": "ARMATURE__shared_bilateral_v1"
+    },
+    "contract_id": "player_character_shared_skeleton_candidate_v1",
+    "identity_sha256": "C34CD757A694EC897350350BA1B977A67EFCE6B8E959799992559DB9A0A54860",
+    "mannequin": {
+      "active_tone": "tone_2",
+      "bounds_max_m": [
+        0.343643,
+        0.14,
+        1.8
+      ],
+      "bounds_min_m": [
+        -0.343643,
+        -0.195,
+        0.0
+      ],
+      "material_slots": [
+        "SKIN__tone_1",
+        "SKIN__tone_2",
+        "SKIN__tone_3",
+        "SKIN__tone_4"
+      ],
+      "name": "MANNEQUIN__neutral_beta",
+      "polygons": 354,
+      "triangles": 540,
+      "vertices": 302
+    },
+    "materials": {
+      "tone_1": [
+        246,
+        218,
+        194,
+        255
+      ],
+      "tone_2": [
+        210,
+        160,
+        120,
+        255
+      ],
+      "tone_3": [
+        145,
+        96,
+        68,
+        255
+      ],
+      "tone_4": [
+        82,
+        52,
+        38,
+        255
+      ]
+    },
+    "neutral_horizontal_midpoints_m": {
+      "ankle_half_width_m": 0.13,
+      "elbow_half_width_m": 0.28,
+      "hip_half_width_m": 0.155,
+      "knee_half_width_m": 0.13,
+      "pelvis_depth_m": 0.24,
+      "pelvis_width_m": 0.35,
+      "shoulder_half_width_m": 0.245,
+      "torso_depth_m": 0.25,
+      "torso_width_m": 0.455,
+      "wrist_half_width_m": 0.265
+    },
+    "object_counts": {
+      "armature": 1,
+      "camera": 1,
+      "light": 0,
+      "mesh": 1,
+      "total": 3
+    },
+    "preset_ids": [
+      "masculine_tone_1",
+      "masculine_tone_2",
+      "masculine_tone_3",
+      "masculine_tone_4",
+      "feminine_tone_1",
+      "feminine_tone_2",
+      "feminine_tone_3",
+      "feminine_tone_4"
+    ]
+  },
+  "status": "production_candidate_source_not_runtime"
+}

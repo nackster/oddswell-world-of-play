@@ -2752,6 +2752,15 @@ The preserved Phase 1L.5aq report identity is `4,027` bytes/SHA `3E14CFABBD0FC4C
 - **Boundary:** cost `$0`; no external asset, marketplace download, plugin, dependency, mesh, armature, rig, skin weight, animation, FBX, Unreal import, package, runtime replacement, final-art claim, beta-readiness claim, or production-readiness claim. Movement/collision/camera/replication/save/economy/wager/simulator/brain authority is unchanged.
 - **Next:** create and verify one deterministic Blender faceless neutral mannequin plus shared armature from the frozen contract. See [[Development/Reports/Phase 1L5bi Shared Skeleton Player Character Production Contract]].
 
+### Phase 1L.5bj deterministic neutral mannequin and shared-armature Blender source status
+
+- **Status:** `COMPLETE LOCALLY — DETERMINISTIC SOURCE/REVIEW EVIDENCE ONLY; NOT SKINNED, ANIMATED, EXPORTED, OR IMPORTED`.
+- **Source:** `Oddswell/Art/Production/PlayerCharacter/SharedSkeletonCandidate/SharedSkeletonCharacterCandidate.blend` contains exactly one faceless non-anatomical neutral `1.80 m` mannequin and one shared bilateral `12`-bone armature. A deterministic Blender 4.5.5 LTS builder, one manifest, provenance, and exact front/side/three-quarter review renders accompany it.
+- **Contract:** exact presets `8`, tones/materials `4`, silhouette `1`, stature `1.80 m`, and landmarks `8`; neutral horizontal dimensions are the arithmetic midpoints of the two Phase 1L.3g review silhouettes. Semantic identity is `C34CD757A694EC897350350BA1B977A67EFCE6B8E959799992559DB9A0A54860`; manifest SHA-256 is `63A839B581E8DB21F4F98861D734372A79581126F542174022ACA950B6060A95`.
+- **Verified:** deterministic build/rerun/reopen and three-view visual review PASS; focused docs/wiki/canvas/client-diff checks PASS; fresh native `74/74` warnings `0`; frozen Python `105/105`; Brain Admin PASS; accepted `50`-file / `1,052,124,588`-byte / Python-`0` package integrity exact.
+- **Boundary:** cost `$0`; no external asset, download, plugin, dependency, parenting, skin weights, deformation, control rig, IK, clothing refit, animation/action, FBX/export, Unreal import, client/map/config/package input, runtime replacement, or final-art claim. Movement/collision/camera/replication/save/economy/wager/simulator/brain authority is unchanged.
+- **Next:** no later character-production or integration step follows automatically; the Scope Director must select the smallest separate roadmap gate. See [[Development/Reports/Phase 1L5bj Deterministic Neutral Mannequin and Shared Armature Blender Source]].
+
 ## Future shared simulation layer
 
 Athlete Life Brain v4 is the default for newly generated train, rest, recover, and socialize decisions. It adds only one bounded, one-decision, same-season recent-scoring response above v3's routine behavior. V1-v4 history remains immutable. Expand into longer memory, traits, relationships, nightlife, media, discipline, career decisions, and other sports only after each smaller input passes its own engineering evaluation.
