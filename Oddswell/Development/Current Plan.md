@@ -2847,6 +2847,17 @@ The preserved Phase 1L.5aq report identity is `4,027` bytes/SHA `3E14CFABBD0FC4C
 - **Boundary:** FBX/UAsset files, Blender mutation, new rig/bones/Actions/clothing, retargeting framework, Unreal source/config/map/package-input/runtime replacement, movement/capsule/camera/replication/save, authority/economy/wager/simulator/brain, external/paid inputs, final art, and readiness claims remain `0`.
 - **Next:** export/import execution requires a separate Scope Director gate; this contract does not authorize it. See [[Development/Reports/Phase 1L5br Shared Skeleton Character FBX Export and Unreal Import Contract]].
 
+### Phase 1L.5bs deterministic eight-file character FBX export and source-custody proof status
+
+- **Status:** `COMPLETE LOCALLY — EXACT EIGHT-FILE DETERMINISTIC FBX EXPORT PROOF ONLY; NOT UNREAL IMPORT OR RUNTIME`.
+- **Exact inputs:** retained Phase 1L.5bq blend `B837C111...`, custody `499A4622...`, semantic `A2AA2605...`, and frozen Phase 1L.5br contract `3DAA1D94...` pass before every export.
+- **Partition:** exactly four skeletal-mesh FBXs (body `55,724` bytes, top `39,004`, bottom `40,476`, jacket `40,316`) and four animation-only FBXs (walk/run `109,500` each, jump/land `98,972` each), plus exactly eight uppercase SHA-256 sidecars.
+- **Determinism:** timestamp fixed to the phase epoch and FBX identifiers derived stably from exact keys; two same-path passes and two independent Blender invocations changed `0/19` export/evidence files. Manifest `81EF175D7600D188E06305FAB5DD0366BE1AD0D4093C9F77C3C8CBAF135F2433`.
+- **Custody:** one exact 12-bone shared skeleton, no leaf bones, four separate body/clothing mesh identities, exact walk/run/jump/land identities, source meter/Unreal centimeter, `-Y` forward/`Z` up, scale `1`, stature `180 cm`, and root translation `0`.
+- **Verification:** focused export/source/sidecar checks PASS; fresh native `74/74`; Python `105/105`; Brain Admin PASS; client diff `0`; accepted package remains exact.
+- **Boundary:** Unreal import/UAsset, runtime/client/map/config/package-input, movement/capsule/camera/replication/persistence, economy/wager/simulator/brain, new source/rig/bones/Actions/geometry/clothing, external/paid input, final art, and readiness claims remain `0`.
+- **Next:** Unreal import requires a separate Scope Director gate; this phase stops at deterministic FBX custody. See [[Development/Reports/Phase 1L5bs Deterministic Eight File Character FBX Export and Source Custody Proof]].
+
 ## Future shared simulation layer
 
 Athlete Life Brain v4 is the default for newly generated train, rest, recover, and socialize decisions. It adds only one bounded, one-decision, same-season recent-scoring response above v3's routine behavior. V1-v4 history remains immutable. Expand into longer memory, traits, relationships, nightlife, media, discipline, career decisions, and other sports only after each smaller input passes its own engineering evaluation.
