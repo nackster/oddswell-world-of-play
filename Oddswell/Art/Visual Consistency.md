@@ -21,7 +21,9 @@ Review the character, clothing, architecture, materials, lighting, and interface
 
 Start from the accepted warm civic-commons direction and later six-district business-clustered planning baseline in [[Design/Sundale Production Asset Scope]]. Preserve their distinction from the smaller validated production map. Present concrete visual candidates before promoting new proportions, a different art style, or a city redesign to canonical production. The current shared-skeleton mannequin proves the animation and clothing pipeline; its primitive surfaces are not final character art.
 
-Near-term art review: one character-and-street composition using existing approved references, followed by a matching in-engine comparison. Establish the repeatable visual rules from that small scene before expanding the asset family. Recognition and visual quality need owner review; passing import or regression tests does not establish them.
+The first character-and-street review is available in [[Art/Reviews/OddsWellStreetIdentityCandidate/README]]. It includes a native Blender scale/layout study, a generated direction concept, and current packaged street, shared-city, and Studio captures. The comparison is at gameplay scale, not an identical camera or implemented recreation. Proposed rules: warm mineral stone and terracotta, blue courts, mature green canopies, human-scale shopfronts, a readable arena silhouette, and a scarce narrow teal band connecting clothing and civic fixtures. The generated image is more realistic than the requested sculpted/painterly treatment; the amount of stylization remains a decision. The back/shoulder jacket band and detailed assets are proposals, not changes to canonical production assets.
+
+The runtime now uses the shared skeletal body and clothing with movement-driven animation; its geometry and materials remain a technical candidate. Next, establish the repeatable visual rules in one small production street slice with a refined character and jacket before expanding the asset family. Recognition and visual quality need owner review; passing import or regression tests does not establish them.
 
 ## Canonical hierarchy
 

@@ -10,7 +10,7 @@ date: 2026-07-19
 
 # OddsWell Beta Delivery Roadmap
 
-**2026-09-12 update:** Phase 1L.5bt resumes the character handoff: nine Unreal assets now pass import, independent cold reopen, Windows asset cook, 74 native tests, 105 Python tests, and Brain Admin self-check. See [[Development/Reports/Phase 1L5bt Character Unreal Import and Handoff Corrections]] for complete closeout evidence and [[Design/Decisions/DEC-035 Character Unreal Bone Name Mapping]] for the source-preserving bridge. The next character milestone is runtime skeletal integration. [[Art/Visual Consistency]] now explicitly requires screenshot-recognizable OddsWell graphics. None of this establishes final art, Phase 1K completion, Phase 1L exit, or beta readiness.
+**2026-09-12 update:** The next-ten-step batch completes runtime skeletal body/outfit integration, eight preset compatibility, walk/run/jump/land playback, packaged camera/Studio/movement checks, and local two-player animated appearance verification. A fresh Windows package, 75 native tests, 105 Python tests, and Brain Admin self-check pass. A concrete visual review pairs a generated OddsWell street concept and native Blender study with actual engine captures. See [[Development/Reports/Next Ten Steps Runtime Character and Visual Review]] and [[Development/OddsWell Next Ten Steps 2026-09-12]]. Next: resolve stylization and recurring visual rules in a small production street slice with a refined character/jacket. [[Art/Visual Consistency]] requires screenshot-recognizable OddsWell graphics; this review candidate does not grant final art approval, Phase 1K completion, Phase 1L exit, or beta readiness.
 
 The dated measurement and batch entries below are historical; this checkpoint does not reopen their batch counters.
 

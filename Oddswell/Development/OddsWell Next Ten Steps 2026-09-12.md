@@ -8,14 +8,14 @@ This is a new bounded batch. Earlier six-phase counters remain historical. It fo
 | --- | --- | --- |
 | 1 | Skeletal body replaces primitive presentation; correct asset, stature, floor alignment, and unchanged capsule | Technical implementation and focused Unreal check PASS |
 | 2 | Starter top/bottom and Signal Jacket use shared skeletal pose and existing equipment state | Technical implementation and focused Unreal check PASS |
-| 3 | All eight presets retain their four exact skin tones, IDs, and saved appearance behavior | Eight preset applications PASS; persistence code unchanged; packaged verification follows |
+| 3 | All eight presets retain their four exact skin tones, IDs, and saved appearance behavior | Eight preset applications PASS; persistence code unchanged; two different packaged peer presets PASS |
 | 4 | Walk/run playback responds to actual movement and stops at rest | Native transition/pose checks and rendered gameplay PASS |
 | 5 | Jump/landing playback follows the existing movement state with no animation-driven displacement | Native transition/pose checks and rendered gameplay PASS |
-| 6 | Two local players agree on skeletal appearance and observe replicated movement | Two-player rendered editor session PASS |
+| 6 | Two local players agree on skeletal appearance and observe replicated movement | Two-player rendered editor and packaged sessions PASS |
 | 7 | Automated camera, collision, and Studio interaction checks pass with the new character | Camera orbit, locomotion collision, Studio entry/walk/exit PASS |
-| 8 | Fresh Windows Development package includes and exercises the character with appropriate regressions | Pending |
-| 9 | One coherent OddsWell character-and-street visual candidate and an in-engine comparison are available for owner review | Pending |
-| 10 | Evidence, local commits, roadmap/canvas, and verified Notion handoff close this batch | Pending |
+| 8 | Fresh Windows Development package includes and exercises the character with appropriate regressions | PASS: fresh package; five packaged process exits 0; 75 native/105 Python tests and Brain self-check |
+| 9 | One coherent OddsWell character-and-street visual candidate and an in-engine comparison are available for owner review | Delivered: generated proposal, editable Blender study, actual packaged street/shared/Studio captures; art approval open |
+| 10 | Evidence, local commits, roadmap/canvas, and verified Notion handoff close this batch | Closeout packet complete; exact local closeout commit and sync verification recorded in canonical Notion |
 
 Each result must distinguish automated technical evidence from physical playtest and subjective art approval. Step 9 delivers a review candidate; it cannot grant itself approval. Final art, first-hour usability, accessibility/performance exit, beta release, and Version 1 remain outside this completion claim.
 
@@ -42,3 +42,11 @@ Accepted checks: editor build `build-axes.log`; 75/75 native tests with zero war
 `Network2/shared-processes.json` retains exact arguments, PIDs, and exit 0 for both local players; the server owns gameplay UDP 127.0.0.1:17777. Both clients verify the exact preset skin colors and shared-pose clothing. The server observes 5.72 cm of actual remote knee travel at 260 cm/s and 302.7 cm of replicated character travel. No networking or appearance authority was replaced. The initial network attempt timed out while Unreal startup waited for the concurrent game build; it is excluded from completion credit.
 
 `camera.log` proves a 370-degree orbit, zero player drift, and exit 0. `studio-final.log` proves the empty 6/0/0/0 Studio, valid entry/leave prompts, 201.7 cm of interior walking, exit/return to Sundale, and exit 0. The earlier Studio launch omitted its auto-exit flag and was stopped after technical completion; only the corrected run has completion credit. Rendered locomotion also proves blocking-floor landing and unchanged speed limits. These are automated technical checks, not physical usability or a contiguous first-hour session.
+
+## Steps 8-10 evidence
+
+The new Windows Development package at `C:/tmp/OddsWellNextTen20260912/Package/Windows` contains 50 files totaling 1,038,710,362 bytes. `PackagedChecks2/processes.json` records exact commands/PIDs and exit 0 for locomotion, Studio, camera, server, and client. Both peers agree on skin colors and skeletal clothing. The server measures 8.49 cm of remote knee travel and 304.0 cm of replicated movement. Its gameplay socket binds to 127.0.0.1:17777. The initial packaged script failed its free-port query after passing three local checks; the corrected full rerun passes. Package and log hashes are in [[Development/Reports/NextTen20260912-evidence.json]]. All 75 native tests, 105 Python tests, and Brain Admin self-check pass.
+
+[[Art/Reviews/OddsWellStreetIdentityCandidate/README]] delivers a native Blender study and generated concept beside actual packaged street, shared-city, and Studio images. The generated concept proposes warm stone/terracotta, blue courts, green canopies, and scarce repeated teal bands; it is more realistic than the requested sculpted/painterly style. Current graybox captures document the implementation gap. This is a delivered review candidate, not final art or recognition approval.
+
+[[Development/Reports/Next Ten Steps Runtime Character and Visual Review]] is the durable handoff. Current Plan, roadmap, canvas, Bible, visual consistency, and vault entry notes reflect this checkpoint. Canonical Notion receives the exact local closeout commit and is fetched after insertion to verify it alongside earlier history. No push or deployment belongs to this batch. The next milestone is a small production street slice and refined character/jacket, with physical first-hour, art approval, accessibility/performance, and beta exit still open.
