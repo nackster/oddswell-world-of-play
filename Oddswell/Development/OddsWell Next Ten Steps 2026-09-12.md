@@ -11,8 +11,8 @@ This is a new bounded batch. Earlier six-phase counters remain historical. It fo
 | 3 | All eight presets retain their four exact skin tones, IDs, and saved appearance behavior | Eight preset applications PASS; persistence code unchanged; packaged verification follows |
 | 4 | Walk/run playback responds to actual movement and stops at rest | Native transition/pose checks and rendered gameplay PASS |
 | 5 | Jump/landing playback follows the existing movement state with no animation-driven displacement | Native transition/pose checks and rendered gameplay PASS |
-| 6 | Two local players agree on skeletal appearance and observe replicated movement | Pending |
-| 7 | Automated camera, collision, and Studio interaction checks pass with the new character | Pending |
+| 6 | Two local players agree on skeletal appearance and observe replicated movement | Two-player rendered editor session PASS |
+| 7 | Automated camera, collision, and Studio interaction checks pass with the new character | Camera orbit, locomotion collision, Studio entry/walk/exit PASS |
 | 8 | Fresh Windows Development package includes and exercises the character with appropriate regressions | Pending |
 | 9 | One coherent OddsWell character-and-street visual candidate and an in-engine comparison are available for owner review | Pending |
 | 10 | Evidence, local commits, roadmap/canvas, and verified Notion handoff close this batch | Pending |
@@ -36,3 +36,9 @@ Rendered validation exposed two defects that the earlier import-only checks had 
 The new derivative in `Art/Production/PlayerCharacter/CharacterMotionAxisCorrection` includes Blender source, deterministic eight-file FBX handoff, sidecars, and measured axis evidence. Two scene-reopen exports match. The hash-bound correction script preserves before/after animation hashes and uses existing-asset import settings, which Unreal's legacy reimport requires. The fresh import contract and validator now require the correct animation root scale.
 
 Accepted checks: editor build `build-axes.log`; 75/75 native tests with zero warning-successes in `FullNative/index.json`; rendered `motion-final.log` at 260 cm/s walk and 520 cm/s run, 126.5 cm jump, landed on blocking floor, all five visual states observed, zero root translation, and process exit 0. Full-size run/jump frames are retained under `MotionFinalUser/Saved/Screenshots/WindowsEditor`. Earlier invisible and twisting-motion captures remain diagnostic failures, not completion evidence. The native test now evaluates head height and knee travel, rather than only checking asset assignment or nonzero rotations.
+
+## Steps 6-7 evidence
+
+`Network2/shared-processes.json` retains exact arguments, PIDs, and exit 0 for both local players; the server owns gameplay UDP 127.0.0.1:17777. Both clients verify the exact preset skin colors and shared-pose clothing. The server observes 5.72 cm of actual remote knee travel at 260 cm/s and 302.7 cm of replicated character travel. No networking or appearance authority was replaced. The initial network attempt timed out while Unreal startup waited for the concurrent game build; it is excluded from completion credit.
+
+`camera.log` proves a 370-degree orbit, zero player drift, and exit 0. `studio-final.log` proves the empty 6/0/0/0 Studio, valid entry/leave prompts, 201.7 cm of interior walking, exit/return to Sundale, and exit 0. The earlier Studio launch omitted its auto-exit flag and was stopped after technical completion; only the corrected run has completion credit. Rendered locomotion also proves blocking-floor landing and unchanged speed limits. These are automated technical checks, not physical usability or a contiguous first-hour session.
