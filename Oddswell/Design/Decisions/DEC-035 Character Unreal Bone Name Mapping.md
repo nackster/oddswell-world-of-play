@@ -31,6 +31,10 @@ Installed engine evidence: `FbxMainImport.cpp` contains `FFbxImporter::MakeName`
 
 ## Scope
 
+### Runtime verification corrections — September 12, 2026
+
+The owner's subsequent ten-step goal exposed two further handoff defects. Mesh import scale remains 1, but animation-only import must explicitly use scale 100 to retain the skeleton's meter-to-centimeter bind scale after the Armature wrapper is removed. The evaluated head must remain at 166 cm in neutral pose. The original local-Y curves also twisted limbs without moving the knees; a derivative changes the four existing Actions to local-X pitch, preserving key times and angle values. Original Blender/FBX sources remain historical evidence. `CharacterMotionAxisCorrection` is the current derivative handoff. These are measured corrections to the approved four motions, not additional animation or a new silhouette. See [[Development/OddsWell Next Ten Steps 2026-09-12]].
+
 Resume the isolated asset-import phase. This decision does not change movement, capsule collision, camera, networking, saves, game simulation, wagering, or the economy. Runtime wiring is the subsequent character integration step. The mannequin remains a production candidate, not approved final art or beta-readiness evidence.
 
 See [[Design/Decisions/DEC-034 Shared Skeleton Player Character Production Candidate]], [[Development/Reports/Phase 1L5bs Deterministic Eight File Character FBX Export and Source Custody Proof]], and [[Art/Visual Consistency]] for the new screenshot-recognition requirement.

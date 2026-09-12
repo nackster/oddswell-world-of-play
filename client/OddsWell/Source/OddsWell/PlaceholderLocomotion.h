@@ -18,6 +18,7 @@ class USpringArmComponent;
 class UStaticMeshComponent;
 class USkeletalMeshComponent;
 class USkeletalMesh;
+class UAnimSequence;
 class UTextRenderComponent;
 
 USTRUCT()
@@ -250,6 +251,18 @@ private:
 	UPROPERTY()
 	TObjectPtr<USkeletalMesh> SignalJacketMesh;
 
+	UPROPERTY()
+	TObjectPtr<UAnimSequence> WalkAnimation;
+
+	UPROPERTY()
+	TObjectPtr<UAnimSequence> RunAnimation;
+
+	UPROPERTY()
+	TObjectPtr<UAnimSequence> JumpAnimation;
+
+	UPROPERTY()
+	TObjectPtr<UAnimSequence> LandAnimation;
+
 	UPROPERTY(Transient)
 	TObjectPtr<UMaterialInstanceDynamic> StarterOutfitMaterial;
 
@@ -278,7 +291,14 @@ private:
 	FOddsWellSharedCityAppearance SharedCityAppearance;
 
 	FOddsWellStarterOutfitState StarterOutfitState;
-	float PrimitiveGaitPhase = 0.0f;
+	enum class EVisualMotion : uint8 { None, Idle, Walk, Run, Jump, Land };
+	EVisualMotion VisualMotion = EVisualMotion::None;
+	bool bVisualWasFalling = false;
+	float VisualLandingRemaining = 0.0f;
+	uint8 VisualMotionQaMask = 0;
+	uint8 VisualCaptureMask = 0;
+	bool bSharedSkeletalMotionLogged = false;
+	FVector SharedSkeletalInitialKnee = FVector::ZeroVector;
 	FVector QaStartLocation = FVector::ZeroVector;
 	float QaElapsed = 0.0f;
 	float QaMaxZ = 0.0f;

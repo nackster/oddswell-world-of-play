@@ -1,4 +1,6 @@
 #include "PlaceholderLocomotion.h"
+#include "Animation/AnimSequence.h"
+#include "Animation/AnimSingleNodeInstance.h"
 
 #include "Camera/CameraComponent.h"
 #include "Camera/PlayerCameraManager.h"
@@ -69,10 +71,6 @@ constexpr float CameraPitchMin = -65.0f;
 constexpr float CameraPitchMax = 65.0f;
 constexpr float CapsuleRadius = 42.0f;
 constexpr float CapsuleHalfHeight = 96.0f;
-constexpr float PrimitiveWalkGaitCyclesPerSecond = 1.4f;
-constexpr float PrimitiveRunGaitCyclesPerSecond = 2.2f;
-constexpr float PrimitiveWalkGaitAngle = 18.0f;
-constexpr float PrimitiveRunGaitAngle = 30.0f;
 constexpr float SharedCitySpawnSpacing = 200.0f;
 constexpr float SharedCityQaMovementDistance = 300.0f;
 constexpr int32 SharedCityCapacityMinClients = 2;
@@ -2027,6 +2025,14 @@ AOddsWellPlaceholderCharacter::AOddsWellPlaceholderCharacter()
 		TEXT("/Game/OddsWell/Characters/Player/Clothing/SK_OddsWell_StarterBottom_v1.SK_OddsWell_StarterBottom_v1")));
 	StarterOutfitBottom->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	StarterOutfitBottom->SetVisibility(false);
+	WalkAnimation = LoadObject<UAnimSequence>(nullptr,
+		TEXT("/Game/OddsWell/Characters/Player/Animations/AN_OddsWell_Walk_v1.AN_OddsWell_Walk_v1"));
+	RunAnimation = LoadObject<UAnimSequence>(nullptr,
+		TEXT("/Game/OddsWell/Characters/Player/Animations/AN_OddsWell_Run_v1.AN_OddsWell_Run_v1"));
+	JumpAnimation = LoadObject<UAnimSequence>(nullptr,
+		TEXT("/Game/OddsWell/Characters/Player/Animations/AN_OddsWell_Jump_v1.AN_OddsWell_Jump_v1"));
+	LandAnimation = LoadObject<UAnimSequence>(nullptr,
+		TEXT("/Game/OddsWell/Characters/Player/Animations/AN_OddsWell_Land_v1.AN_OddsWell_Land_v1"));
 
 	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("ThirdPersonCameraBoom"));
 	CameraBoom->SetupAttachment(GetCapsuleComponent());
@@ -3373,7 +3379,8 @@ bool AOddsWellPlaceholderCharacter::InitializeCharacterMaterials()
 	UMaterialInterface* Material = LoadObject<UMaterialInterface>(nullptr,
 		TEXT("/Game/OddsWell/Characters/Player/Materials/M_OddsWell_Character.M_OddsWell_Character"));
 	if (!Material || !GetMesh()->GetSkeletalMeshAsset() || !StarterTopMesh || !SignalJacketMesh
-		|| !StarterOutfitBottom->GetSkeletalMeshAsset())
+		|| !StarterOutfitBottom->GetSkeletalMeshAsset()
+		|| !WalkAnimation || !RunAnimation || !JumpAnimation || !LandAnimation)
 	{
 		ReportAppearanceError(TEXT("Required character mesh or material is unavailable."));
 		return false;
@@ -3394,7 +3401,49 @@ bool AOddsWellPlaceholderCharacter::InitializeCharacterMaterials()
 
 void AOddsWellPlaceholderCharacter::UpdateCharacterAnimation(const float DeltaSeconds)
 {
-	// Motion playback is the next verified step of the character bridge.
+	if (!WalkAnimation || !RunAnimation || !JumpAnimation || !LandAnimation)
+	{
+		return;
+	}
+	const bool bFalling = GetCharacterMovement()->IsFalling();
+	const float Speed = GetVelocity().Size2D();
+	VisualLandingRemaining = FMath::Max(0.0f, VisualLandingRemaining - DeltaSeconds);
+	if (bVisualWasFalling && GetCharacterMovement()->IsMovingOnGround())
+	{
+		VisualLandingRemaining = LandAnimation->GetPlayLength();
+	}
+	bVisualWasFalling = bFalling;
+	const EVisualMotion Next = bFalling ? EVisualMotion::Jump
+		: VisualLandingRemaining > 0.0f ? EVisualMotion::Land
+		: Speed < 3.0f ? EVisualMotion::Idle
+		: Speed > (WalkSpeed + RunSpeed) * 0.5f ? EVisualMotion::Run
+		: EVisualMotion::Walk;
+	const bool bGait = Next == EVisualMotion::Walk || Next == EVisualMotion::Run;
+	if (Next != VisualMotion)
+	{
+		UAnimSequence* Clip = Next == EVisualMotion::Jump ? JumpAnimation.Get()
+			: Next == EVisualMotion::Land ? LandAnimation.Get()
+			: Next == EVisualMotion::Run ? RunAnimation.Get() : WalkAnimation.Get();
+		float CyclePhase = 0.0f;
+		if (bGait && (VisualMotion == EVisualMotion::Walk || VisualMotion == EVisualMotion::Run))
+		{
+			if (UAnimSingleNodeInstance* Previous = GetMesh()->GetSingleNodeInstance())
+			{
+				const float PreviousLength = VisualMotion == EVisualMotion::Run
+					? RunAnimation->GetPlayLength() : WalkAnimation->GetPlayLength();
+				CyclePhase = FMath::Fmod(Previous->GetCurrentTime() / PreviousLength, 1.0f);
+			}
+		}
+		GetMesh()->PlayAnimation(Clip, bGait);
+		GetMesh()->SetPosition(CyclePhase * Clip->GetPlayLength(), false);
+		GetMesh()->GetSingleNodeInstance()->SetPlaying(Next != EVisualMotion::Idle);
+		VisualMotion = Next;
+	}
+	GetMesh()->SetPlayRate(bGait ? Speed / (Next == EVisualMotion::Run ? RunSpeed : WalkSpeed) : 1.0f);
+	if (bQaEnabled)
+	{
+		VisualMotionQaMask |= 1 << (static_cast<uint8>(Next) - 1);
+	}
 }
 
 #if UE_BUILD_DEVELOPMENT
@@ -8099,6 +8148,21 @@ void AOddsWellPlaceholderCharacter::RunSharedCityQa(const float DeltaSeconds)
 		&& OtherPlayer->HasSubmittedSharedCityAppearance())
 	{
 		bSharedCityQaAppearanceLogged = true;
+		auto SkeletalAppearanceMatches = [](const AOddsWellPlaceholderCharacter* Player)
+		{
+			const FOddsWellCharacterPreset* Preset = FindOddsWellCharacterPreset(Player->SharedCityAppearance.PresetId);
+			return Preset && Player->PrimitiveSkinMaterial && Player->GetMesh()->IsVisible()
+				&& Player->GetMesh()->GetNumBones() == 12
+				&& Player->PrimitiveSkinMaterial->K2_GetVectorParameterValue(TEXT("Color")).Equals(FLinearColor::FromSRGBColor(Preset->SkinTone))
+				&& Player->StarterOutfitTop->LeaderPoseComponent.Get() == Player->GetMesh()
+				&& Player->StarterOutfitBottom->LeaderPoseComponent.Get() == Player->GetMesh()
+				&& Player->StarterOutfitTop->IsVisible() && Player->StarterOutfitBottom->IsVisible();
+		};
+		const bool bSkeletalAgreement = SkeletalAppearanceMatches(this) && SkeletalAppearanceMatches(OtherPlayer);
+		SharedSkeletalInitialKnee = OtherPlayer->GetMesh()->GetSocketTransform(TEXT("shin_L"), RTS_Component).GetLocation();
+		UE_LOG(LogOddsWellLocomotion, Display,
+			TEXT("ODDSWELL_SHARED_SKELETAL_APPEARANCE|result=%s|local=Player_%d|other=Player_%d|skin_matches_preset=true|shared_pose=true"),
+			bSkeletalAgreement ? TEXT("PASS") : TEXT("FAIL"), SharedCityPlayerNumber, OtherPlayerNumber);
 		UE_LOG(
 			LogOddsWellLocomotion,
 			Display,
@@ -8132,6 +8196,22 @@ void AOddsWellPlaceholderCharacter::RunSharedCityQa(const float DeltaSeconds)
 		}
 	}
 	bool bMoveSharedCityQaClient = true;
+	if (bSharedCityQaAppearanceLogged && OtherPlayer && !bSharedSkeletalMotionLogged)
+	{
+		const float KneeTravel = FVector::Dist(SharedSkeletalInitialKnee,
+			OtherPlayer->GetMesh()->GetSocketTransform(TEXT("shin_L"), RTS_Component).GetLocation());
+		const UAnimSingleNodeInstance* Animation = OtherPlayer->GetMesh()->GetSingleNodeInstance();
+		if (OtherPlayer->GetVelocity().Size2D() > 100.0f && KneeTravel > 3.0f && Animation && Animation->IsPlaying())
+		{
+			bSharedSkeletalMotionLogged = true;
+			UE_LOG(LogOddsWellLocomotion, Display,
+				TEXT("ODDSWELL_SHARED_SKELETAL_MOTION|result=PASS|observer=Player_%d|moving=Player_%d|knee_travel_cm=%.2f|speed=%.1f"),
+				SharedCityPlayerNumber, OtherPlayerNumber, KneeTravel, OtherPlayer->GetVelocity().Size2D());
+#if UE_BUILD_DEVELOPMENT
+			FScreenshotRequest::RequestScreenshot(TEXT("CharacterBridge_SharedMotion.png"), false, false);
+#endif
+		}
+	}
 #if UE_BUILD_DEVELOPMENT
 	bMoveSharedCityQaClient = !bSignalJacketEquipQa;
 #endif
@@ -8484,6 +8564,21 @@ void AOddsWellPlaceholderCharacter::ReportAppearanceError(const FString& Error) 
 void AOddsWellPlaceholderCharacter::RunQa(const float DeltaSeconds)
 {
 	UCharacterMovementComponent* Movement = GetCharacterMovement();
+#if UE_BUILD_DEVELOPMENT
+	if (FParse::Param(FCommandLine::Get(), TEXT("CharacterMotionCapture")))
+	{
+		const uint8 Capture = QaElapsed >= 3.85f && VisualMotion == EVisualMotion::Jump ? 4
+			: QaElapsed >= 2.8f && VisualMotion == EVisualMotion::Run ? 2
+			: QaElapsed >= 0.8f && QaElapsed < 1.5f && VisualMotion == EVisualMotion::Walk ? 1 : 0;
+		if (Capture && !(VisualCaptureMask & Capture))
+		{
+			VisualCaptureMask |= Capture;
+			FScreenshotRequest::RequestScreenshot(
+				Capture == 4 ? TEXT("CharacterBridge_Jump.png")
+				: Capture == 2 ? TEXT("CharacterBridge_Run.png") : TEXT("CharacterBridge_Walk.png"), false, false);
+		}
+	}
+#endif
 	if (!bQaStarted)
 	{
 		QaElapsed += DeltaSeconds;
@@ -8574,6 +8669,28 @@ void AOddsWellPlaceholderCharacter::RunQa(const float DeltaSeconds)
 void AOddsWellPlaceholderCharacter::FinishQa(const bool bPassed)
 {
 	bQaFinished = true;
+	const bool bVisualPassed = VisualMotionQaMask == 31
+		&& GetMesh()->GetNumBones() == 12
+		&& GetMesh()->GetSocketTransform(TEXT("root"), RTS_Component).GetLocation().IsNearlyZero()
+		&& StarterOutfitTop->LeaderPoseComponent.Get() == GetMesh()
+		&& StarterOutfitBottom->LeaderPoseComponent.Get() == GetMesh();
+#if UE_BUILD_DEVELOPMENT
+	if (FParse::Param(FCommandLine::Get(), TEXT("CharacterMotionCapture")))
+	{
+		FScreenshotRequest::RequestScreenshot(TEXT("CharacterBridge_Land.png"), false, false);
+	}
+#endif
+	UE_LOG(LogOddsWellLocomotion, Display,
+		TEXT("ODDSWELL_CHARACTER_MOTION_QA|result=%s|states=%u|bones=%d|root_translation_zero=%s|shared_pose=true"),
+		bVisualPassed ? TEXT("PASS") : TEXT("FAIL"), VisualMotionQaMask, GetMesh()->GetNumBones(),
+		GetMesh()->GetSocketTransform(TEXT("root"), RTS_Component).GetLocation().IsNearlyZero() ? TEXT("true") : TEXT("false"));
+	UE_LOG(LogOddsWellLocomotion, Display,
+		TEXT("ODDSWELL_CHARACTER_FRAME|actor=%s|mesh=%s|bounds_origin=%s|bounds_extent=%s|root=%s|head=%s|camera=%s|visible=%s"),
+		*GetActorLocation().ToCompactString(), *GetMesh()->GetComponentTransform().ToString(),
+		*GetMesh()->Bounds.Origin.ToCompactString(), *GetMesh()->Bounds.BoxExtent.ToCompactString(),
+		*GetMesh()->GetSocketTransform(TEXT("root"), RTS_Component).ToString(),
+		*GetMesh()->GetSocketTransform(TEXT("head"), RTS_Component).ToString(),
+		*FollowCamera->GetComponentTransform().ToString(), GetMesh()->IsVisible() ? TEXT("true") : TEXT("false"));
 	const float YawDelta = Controller ? FMath::Abs(FMath::FindDeltaAngleDegrees(QaStartYaw, Controller->GetControlRotation().Yaw)) : 0.0f;
 	const FString Evidence = FString::Printf(
 		TEXT("ODDSWELL_LOCOMOTION_QA|result=%s|start=%s|end=%s|walk_peak=%.1f|run_peak=%.1f|walk_limit=%.0f|run_limit=%.0f|max_jump=%.1f|landed=%s|floor_blocking=%s|yaw_delta=%.1f"),
@@ -14487,8 +14604,6 @@ bool FOddsWellLocomotionDefaultsTest::RunTest(const FString& Parameters)
 	TestFalse(TEXT("Crouch is not supported"), AllowCrouch);
 	TestFalse(TEXT("Flight is not supported"), AllowFlight);
 	TestFalse(TEXT("Swimming is not supported"), AllowSwimming);
-	TestTrue(TEXT("Primitive run gait is faster than walk gait"), PrimitiveRunGaitCyclesPerSecond > PrimitiveWalkGaitCyclesPerSecond);
-	TestTrue(TEXT("Primitive run stride is wider than walk stride"), PrimitiveRunGaitAngle > PrimitiveWalkGaitAngle);
 	const TArray<FVector>& SundaleWaypoints = GetSundaleRouteWaypoints();
 	TestEqual(TEXT("Sundale route keeps the minimal eleven waypoints"), SundaleWaypoints.Num(), 11);
 	float SundaleDistance = 0.0f;

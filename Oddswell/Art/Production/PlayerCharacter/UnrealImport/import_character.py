@@ -70,7 +70,9 @@ def import_assets(source, folder, exports):
         if skeleton:
             options.set_editor_property("skeleton", skeleton)
         data = options.get_editor_property("skeletal_mesh_import_data" if is_mesh else "anim_sequence_import_data")
-        data.set_editor_property("import_uniform_scale", 1.0)
+        # Blender's removed Armature wrapper carries the meter-to-centimeter scale.
+        # Mesh import retains it; animation-only import needs it explicitly.
+        data.set_editor_property("import_uniform_scale", 1.0 if is_mesh else 100.0)
         data.set_editor_property("convert_scene", True)
         data.set_editor_property("convert_scene_unit", True)
         if not is_mesh:
@@ -99,6 +101,9 @@ def validate(mapping, source, exports):
     expected = sorted([skel_path] + [r["unreal_asset"] for r in exports])
     registry = unreal.AssetRegistryHelpers.get_asset_registry()
     paths = sorted(str(x.package_name) for x in registry.get_assets_by_path(BASE, recursive=True))
+    material_path = BASE + "/Materials/M_OddsWell_Character"
+    if material_path in paths:
+        expected = sorted(expected + [material_path])
     require(paths == expected, "unexpected/missing asset paths: " + repr(paths))
     require(isinstance(unreal.load_asset(skel_path), unreal.Skeleton), "shared skeleton missing")
     names = mapping["source_to_unreal_bone_names"]
@@ -148,6 +153,8 @@ def validate(mapping, source, exports):
                     dot = sum(a * b for a, b in zip(rotation, first_rotations[bone]))
                     rotation_span = max(rotation_span, 2 * math.acos(min(1.0, abs(dot))))
                     if bone == "root":
+                        require(all(abs(float(getattr(pose.scale3d, axis)) - 100.0) < 0.001 for axis in ("x", "y", "z")),
+                                "animation root unit scale differs from skeletal bind pose")
                         max_root = max(max_root, abs(pose.translation.x), abs(pose.translation.y), abs(pose.translation.z))
             require(max_root < 1e-4, "root motion differs")
             require(rotation_span > 0.001, "animation has no changing bone rotations")

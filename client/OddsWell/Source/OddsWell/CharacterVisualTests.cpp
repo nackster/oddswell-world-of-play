@@ -1,5 +1,7 @@
 #if WITH_DEV_AUTOMATION_TESTS
 #include "PlaceholderLocomotion.h"
+#include "Animation/AnimSequence.h"
+#include "Animation/AnimSingleNodeInstance.h"
 #include "CharacterAppearanceSave.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/SkeletalMeshComponent.h"
@@ -65,6 +67,41 @@ bool FOddsWellSkeletalVisualTest::RunTest(const FString& Parameters)
 	Character->StarterOutfitState.Unequip(EOddsWellStarterEquipmentSlot::Top, Error);
 	Character->SyncOutfitComponents();
 	TestTrue(TEXT("Removing top preserves body and bottom"), !Character->StarterOutfitTop->IsVisible() && Body->IsVisible() && Character->StarterOutfitBottom->IsVisible());
+	UCharacterMovementComponent* Movement = Character->GetCharacterMovement();
+	Movement->SetMovementMode(MOVE_Walking);
+	Movement->Velocity = FVector::ZeroVector;
+	Character->UpdateCharacterAnimation(0.016f);
+	TestTrue(TEXT("Idle holds the neutral walk frame"), !Body->GetSingleNodeInstance()->IsPlaying());
+	Body->TickAnimation(0.0f, false);
+	Body->RefreshBoneTransforms();
+	TestTrue(TEXT("Evaluated head remains at authored 166 cm"), FMath::IsNearlyEqual(
+		Body->GetSocketTransform(TEXT("head"), RTS_Component).GetLocation().Z, 166.0, 0.1));
+	TestTrue(TEXT("Animation root scale matches skeletal bind pose"),
+		Body->GetSocketTransform(TEXT("root"), RTS_Component).GetScale3D().Equals(
+			Body->GetSkeletalMeshAsset()->GetRefSkeleton().GetRefBonePose()[0].GetScale3D(), 0.001));
+	const FVector NeutralKnee = Body->GetSocketTransform(TEXT("shin_L"), RTS_Component).GetLocation();
+	Movement->Velocity = FVector(260, 0, 0);
+	Character->UpdateCharacterAnimation(0.016f);
+	TestTrue(TEXT("Actual walking velocity selects walk"), Body->GetSingleNodeInstance()->GetCurrentAsset() == Character->WalkAnimation);
+	Body->SetPosition(Character->WalkAnimation->GetPlayLength() * 0.25f, false);
+	Body->TickAnimation(0.0f, false);
+	Body->RefreshBoneTransforms();
+	TestTrue(TEXT("Walking swings the knee instead of only twisting the bone"), FVector::Dist(
+		NeutralKnee, Body->GetSocketTransform(TEXT("shin_L"), RTS_Component).GetLocation()) > 10.0);
+	Movement->Velocity = FVector(520, 0, 0);
+	Character->UpdateCharacterAnimation(0.016f);
+	TestTrue(TEXT("Actual running velocity selects run"), Body->GetSingleNodeInstance()->GetCurrentAsset() == Character->RunAnimation);
+	TestTrue(TEXT("Walk to run preserves cycle phase"), FMath::IsNearlyEqual(Body->GetSingleNodeInstance()->GetCurrentTime(), Character->RunAnimation->GetPlayLength() * 0.25f));
+	Movement->SetMovementMode(MOVE_Falling);
+	Character->UpdateCharacterAnimation(0.016f);
+	TestTrue(TEXT("Movement falling selects jump"), Body->GetSingleNodeInstance()->GetCurrentAsset() == Character->JumpAnimation);
+	Movement->SetMovementMode(MOVE_Walking);
+	Movement->Velocity = FVector::ZeroVector;
+	Character->UpdateCharacterAnimation(0.016f);
+	TestTrue(TEXT("Landing selects land once"), Body->GetSingleNodeInstance()->GetCurrentAsset() == Character->LandAnimation);
+	Character->UpdateCharacterAnimation(0.5f);
+	TestTrue(TEXT("Landing ends in stationary neutral pose"), Body->GetSingleNodeInstance()->GetCurrentAsset() == Character->WalkAnimation && !Body->GetSingleNodeInstance()->IsPlaying());
+	TestTrue(TEXT("Visual animation never moves the capsule"), Movement->Velocity.IsNearlyZero());
 	World->DestroyWorld(false);
 	return !HasAnyErrors();
 }

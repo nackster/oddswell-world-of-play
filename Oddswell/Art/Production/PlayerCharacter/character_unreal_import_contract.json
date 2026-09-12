@@ -1,10 +1,13 @@
 {
   "contract_id": "oddswell_character_unreal_import_v1",
   "decision": "DEC-035",
+  "mesh_import_uniform_scale": 1.0,
+  "animation_import_uniform_scale": 100.0,
+  "animation_root_bind_scale": 100.0,
   "source_contract": "character_fbx_unreal_contract.json",
   "source_contract_sha256": "3DAA1D94A19148F03D31682D15B2FA40D9D43133008A1DA099097FCC4AAD88C6",
-  "export_manifest": "CharacterFBXTimingCorrection/timed_export_custody.json",
-  "export_manifest_sha256": "A7DE14862CE908960DBE844F08D707D2D921BD7DC6457E311692412FC2C5CA52",
+  "export_manifest": "CharacterMotionAxisCorrection/motion_axis_custody.json",
+  "export_manifest_sha256": "5591A6AFD5E8A41D601A9AE53ECDF914B9C1996008C5772A9B1F4043FB954BD4",
   "source_to_unreal_bone_names": {
     "root": "root",
     "spine": "spine",
