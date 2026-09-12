@@ -8,7 +8,9 @@ Private repository: [nackster/oddswell-world-of-play](https://github.com/nackste
 
 ## Current stage
 
-The project is in early concept and pre-production. The immediate development focus is a deterministic, auditable basketball simulation before the 3D vertical slice.
+The project has a substantial machine-local Unreal beta slice: a deterministic basketball simulation, Sundale graybox, shared character presence, housing, and bounded Odds Bucks, wagering, and purchase paths. Current work advances character production and first-hour integration. A complete end-to-end player session, final art, accessibility, performance, and beta-release evidence remain incomplete.
+
+Use the [Beta Game Bible](Oddswell/Design/Beta%20Game%20Bible.md) for product scope and the latest checkpoint in [Current Plan](Oddswell/Development/Current%20Plan.md) for implementation status. The existing primitive character and the imported shared-skeleton candidate are separate stages; successful asset import is not runtime integration.
 
 ## Project brain
 

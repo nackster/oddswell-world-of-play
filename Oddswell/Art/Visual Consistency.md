@@ -13,6 +13,16 @@ status: active
 
 Every OddsWell character, city, team, item, apartment, interface element, and promotional image should feel as though it belongs to the same authored universe.
 
+## Owner direction — 2026-09-12
+
+OddsWell must have a distinguished visual identity that a player can recognize from a screenshot. The owner explicitly wants something different from the assistant's usual visual defaults. This is a product requirement, not a claim that the current graybox or character candidate already achieves it.
+
+Review the character, clothing, architecture, materials, lighting, and interface together at the actual gameplay camera. A logo or the word OddsWell cannot carry recognition alone. Future visual reviews should include an ordinary street view, the same character near the arena, and a home/interior view with identifying text hidden. Ask whether their silhouettes, surface treatment, color relationships, and recurring forms visibly belong to the same game.
+
+Start from the accepted warm civic-commons direction and later six-district business-clustered planning baseline in [[Design/Sundale Production Asset Scope]]. Preserve their distinction from the smaller validated production map. Present concrete visual candidates before promoting new proportions, a different art style, or a city redesign to canonical production. The current shared-skeleton mannequin proves the animation and clothing pipeline; its primitive surfaces are not final character art.
+
+Near-term art review: one character-and-street composition using existing approved references, followed by a matching in-engine comparison. Establish the repeatable visual rules from that small scene before expanding the asset family. Recognition and visual quality need owner review; passing import or regression tests does not establish them.
+
 ## Canonical hierarchy
 
 1. Approved art-direction rules.

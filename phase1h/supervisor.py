@@ -35,7 +35,7 @@ LOG_DIRECTORY = PRIVATE_ROOT / "SupervisorLogs"
 APPROVED_PYTHON = Path(
     r"C:\Users\reali\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe"
 )
-APPROVED_PYTHON_VERSION = "3.12.13"
+APPROVED_PYTHON_VERSION = "3.12.14"
 APPROVED_FROZEN_MANIFEST_SHA256 = (
     "6a92c3067e2cab3a14e70accd5f6c4b3bcf4df9b8cddbb3413950ea2301c137c"
 )

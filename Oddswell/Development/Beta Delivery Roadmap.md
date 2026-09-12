@@ -10,6 +10,10 @@ date: 2026-07-19
 
 # OddsWell Beta Delivery Roadmap
 
+**2026-09-12 update:** Phase 1L.5bt resumes the character handoff: nine Unreal assets now pass import, independent cold reopen, Windows asset cook, 74 native tests, 105 Python tests, and Brain Admin self-check. See [[Development/Reports/Phase 1L5bt Character Unreal Import and Handoff Corrections]] for complete closeout evidence and [[Design/Decisions/DEC-035 Character Unreal Bone Name Mapping]] for the source-preserving bridge. The next character milestone is runtime skeletal integration. [[Art/Visual Consistency]] now explicitly requires screenshot-recognizable OddsWell graphics. None of this establishes final art, Phase 1K completion, Phase 1L exit, or beta readiness.
+
+The dated measurement and batch entries below are historical; this checkpoint does not reopen their batch counters.
+
 > **Current Phase 1K measurement gate:** Phase 1K.9g is fresh-batch Phase `1/6`, pending its docs commit and canonical Notion closure. Automated canonical Sundale Lane C passed `11/11` with lane credit `1` and Components 1-3 credit `0`. Physical hands-on proof remains incomplete, owner-deferred until beta-ready, and not waived. Phase 1K remains incomplete; Phase `2/6` requires a fresh Scope Director gate. See [[Development/Reports/Phase 1K9g Automated Canonical Sundale Route Lane C Smoke]].
 
 > **Current Phase 1K measurement gate:** Phase 1K.9f is final Phase `6/6`, pending its docs commit and canonical Notion closure. Automated standalone Lane B passed with lane credit `1`, Components 1-3 credit `0`, and Lane C `NOT_RUN`; prior Lane A remains automated smoke credit only. Physical hands-on proof remains incomplete, owner-deferred until beta-ready, and not waived. Phase 1K remains incomplete and no seventh phase is authorized. See [[Development/Reports/Phase 1K9f Automated Standalone Empty Studio Lane B Smoke]].
@@ -189,8 +193,8 @@ No later roadmap phase is authorized merely because it appears below.
 | 8 | 1H — Wager locking and settlement | Reach the physical booth, inspect approved odds, place approved wagers, and receive exact outcomes | COMPLETE FOR THE FIXED HARBOR/MESA `40` MATCH WINNER SLICE / GENERALIZATION UNPROVEN |
 | 9 | 1I — Stores and lifestyle upgrades | Buy, equip, display, and place basic items | COMPLETE FOR ONE JACKET + ONE CHAIR + ONE-BEDROOM LOCAL PATH |
 | 10 | 1J — Athlete life and league storytelling | Understand athletes, availability, and consequences | COMPLETE FOR CURRENT BOUNDED MILESTONE — OWNER ACCEPTED ONE-PERSON 5/6 + SPECIALTY CLARIFICATION; NO POPULATION CLAIM |
-| 11 | 1K — First-hour integration | Complete the entire beta promise in one session | ACTIVE — 1K.9d BLOCKED BEFORE VALID LANE A; CANARY PASS; CREDIT 0; PHYSICAL PROOF OPEN |
-| 12 | 1L — Content, presentation, and accessibility | The slice feels coherent and readable | PENDING |
+| 11 | 1K — First-hour integration | Complete the entire beta promise in one session | INCOMPLETE — AUTOMATED LANES A/B/C PROVEN; FULL OBSERVED FIRST-HOUR EVIDENCE OPEN |
+| 12 | 1L — Content, presentation, and accessibility | The slice feels coherent and readable | ACTIVE — CHARACTER ASSET IMPORT PROVEN; RUNTIME INTEGRATION, FINAL ART, ACCESSIBILITY, AND PERFORMANCE REMAIN |
 | 13 | 1M — Reliability, compliance, and beta exit | The owner can truthfully approve beta release | BETA EXIT |
 
 ## Phase 1A — Engine and packaged-build proof

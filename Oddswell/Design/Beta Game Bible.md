@@ -371,6 +371,8 @@ The owner now accepts that one-person unseen and uncoached `5/6` result plus the
 
 ## Art, music, and storytelling
 
+- **LOCKED OWNER DIRECTION — 2026-09-12:** OddsWell needs a distinctive authored visual identity recognizable from an ordinary screenshot. Character, clothing, architecture, materials, lighting, and interface must support that identity together; a logo or title is insufficient. See [[Art/Visual Consistency]]. This requirement does not approve a new final art style or declare the current primitive character final.
+
 - **BETA TARGET:** a distinctive original visual identity rather than a generic modern city.
 - **BETA TARGET:** stylized production remains the current recommendation until the owner approves a final art bible.
 - **OPEN:** city theme, visual style, character proportions, materials, palette, lighting, architecture, and team identities.
@@ -613,6 +615,8 @@ Before proposing a phase, the Scope Director must:
 10. End every phase with the next smallest gate and any owner decision required before it.
 
 ## Current implementation boundary
+
+- **2026-09-12 / Phase 1L.5bt:** the shared-skeleton character candidate now has nine imported Unreal assets with cold-reopen proof: one skeleton, four separate body/clothing meshes, and four motion clips. DEC-035 documents the name mapping; source-preserving handoff corrections retain authored rates and all final animation frames. These are asset-level results. The runtime pawn remains primitive, and no final-art, first-hour-completion, or beta-readiness claim follows. See [[Development/Reports/Phase 1L5bt Character Unreal Import and Handoff Corrections]].
 
 - Phase 0 basketball simulation is frozen at its validated baseline except for demonstrated defects or a measured beta requirement.
 - Phase 1A is complete. The owner accepted the measured UE 5.8 packaged-build, graybox, and authoritative replay-rendering evidence in [[Design/Decisions/DEC-006 Unreal Engine 5.8 Beta Adoption|DEC-006]].

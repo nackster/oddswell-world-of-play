@@ -1,0 +1,382 @@
+{
+  "schema": "oddswell-character-import-evidence-v1",
+  "date": "2026-09-12",
+  "status": "PASS",
+  "engine": "Unreal Engine 5.8",
+  "blender": "4.5.5 LTS",
+  "python": "3.12.14",
+  "source_contract_sha256": "3daa1d94a19148f03d31682d15b2fa40d9d43133008a1da099097fcc4aad88c6",
+  "import_contract_sha256": "fa036565588b4ddd0c899d54e7081484c7784a1dc338fe927da76878dbf34b50",
+  "export_manifest_sha256": "a7de14862ce908960dbe844f08d707d2d921bd7dc6457e311692412fc2c5ca52",
+  "accepted_import": {
+    "status": "PASS",
+    "mode": "import",
+    "asset_count": 9,
+    "meshes": 4,
+    "animations": 4,
+    "skeletons": 1,
+    "bone_mapping": {
+      "root": "root",
+      "spine": "spine",
+      "neck": "neck",
+      "head": "head",
+      "thigh.L": "thigh_L",
+      "shin.L": "shin_L",
+      "thigh.R": "thigh_R",
+      "shin.R": "shin_R",
+      "upper_arm.L": "upper_arm_L",
+      "forearm.L": "forearm_L",
+      "upper_arm.R": "upper_arm_R",
+      "forearm.R": "forearm_R"
+    },
+    "assets": [
+      {
+        "path": "/Game/OddsWell/Characters/Player/Meshes/SK_OddsWell_PlayerBody_v1",
+        "type": "SkeletalMesh",
+        "height_cm": 180.0,
+        "bones": [
+          "root",
+          "spine",
+          "thigh_L",
+          "thigh_R",
+          "neck",
+          "upper_arm_L",
+          "upper_arm_R",
+          "shin_L",
+          "shin_R",
+          "head",
+          "forearm_L",
+          "forearm_R"
+        ],
+        "parents": {
+          "root": null,
+          "spine": "root",
+          "thigh_L": "root",
+          "thigh_R": "root",
+          "neck": "spine",
+          "upper_arm_L": "spine",
+          "upper_arm_R": "spine",
+          "shin_L": "thigh_L",
+          "shin_R": "thigh_R",
+          "head": "neck",
+          "forearm_L": "upper_arm_L",
+          "forearm_R": "upper_arm_R"
+        }
+      },
+      {
+        "path": "/Game/OddsWell/Characters/Player/Clothing/SK_OddsWell_StarterTop_v1",
+        "type": "SkeletalMesh",
+        "height_cm": 48.0,
+        "bones": [
+          "root",
+          "spine",
+          "thigh_L",
+          "thigh_R",
+          "neck",
+          "upper_arm_L",
+          "upper_arm_R",
+          "shin_L",
+          "shin_R",
+          "head",
+          "forearm_L",
+          "forearm_R"
+        ],
+        "parents": {
+          "root": null,
+          "spine": "root",
+          "thigh_L": "root",
+          "thigh_R": "root",
+          "neck": "spine",
+          "upper_arm_L": "spine",
+          "upper_arm_R": "spine",
+          "shin_L": "thigh_L",
+          "shin_R": "thigh_R",
+          "head": "neck",
+          "forearm_L": "upper_arm_L",
+          "forearm_R": "upper_arm_R"
+        }
+      },
+      {
+        "path": "/Game/OddsWell/Characters/Player/Clothing/SK_OddsWell_StarterBottom_v1",
+        "type": "SkeletalMesh",
+        "height_cm": 41.7972297668457,
+        "bones": [
+          "root",
+          "spine",
+          "thigh_L",
+          "thigh_R",
+          "neck",
+          "upper_arm_L",
+          "upper_arm_R",
+          "shin_L",
+          "shin_R",
+          "head",
+          "forearm_L",
+          "forearm_R"
+        ],
+        "parents": {
+          "root": null,
+          "spine": "root",
+          "thigh_L": "root",
+          "thigh_R": "root",
+          "neck": "spine",
+          "upper_arm_L": "spine",
+          "upper_arm_R": "spine",
+          "shin_L": "thigh_L",
+          "shin_R": "thigh_R",
+          "head": "neck",
+          "forearm_L": "upper_arm_L",
+          "forearm_R": "upper_arm_R"
+        }
+      },
+      {
+        "path": "/Game/OddsWell/Characters/Player/Clothing/SK_OddsWell_SignalJacket_v1",
+        "type": "SkeletalMesh",
+        "height_cm": 50.0,
+        "bones": [
+          "root",
+          "spine",
+          "thigh_L",
+          "thigh_R",
+          "neck",
+          "upper_arm_L",
+          "upper_arm_R",
+          "shin_L",
+          "shin_R",
+          "head",
+          "forearm_L",
+          "forearm_R"
+        ],
+        "parents": {
+          "root": null,
+          "spine": "root",
+          "thigh_L": "root",
+          "thigh_R": "root",
+          "neck": "spine",
+          "upper_arm_L": "spine",
+          "upper_arm_R": "spine",
+          "shin_L": "thigh_L",
+          "shin_R": "thigh_R",
+          "head": "neck",
+          "forearm_L": "upper_arm_L",
+          "forearm_R": "upper_arm_R"
+        }
+      },
+      {
+        "path": "/Game/OddsWell/Characters/Player/Animations/AN_OddsWell_Walk_v1",
+        "type": "AnimSequence",
+        "seconds": 0.7142857313156128,
+        "frames": 20,
+        "bone_tracks": [
+          "root",
+          "spine",
+          "neck",
+          "head",
+          "upper_arm_l",
+          "forearm_l",
+          "upper_arm_r",
+          "forearm_r",
+          "thigh_l",
+          "shin_l",
+          "thigh_r",
+          "shin_r"
+        ],
+        "max_root_translation_cm": 0.0,
+        "max_rotation_change_radians": 0.31415928533073334
+      },
+      {
+        "path": "/Game/OddsWell/Characters/Player/Animations/AN_OddsWell_Run_v1",
+        "type": "AnimSequence",
+        "seconds": 0.4545454680919647,
+        "frames": 20,
+        "bone_tracks": [
+          "root",
+          "spine",
+          "neck",
+          "head",
+          "upper_arm_l",
+          "forearm_l",
+          "upper_arm_r",
+          "forearm_r",
+          "thigh_l",
+          "shin_l",
+          "thigh_r",
+          "shin_r"
+        ],
+        "max_root_translation_cm": 0.0,
+        "max_rotation_change_radians": 0.5235987540251886
+      },
+      {
+        "path": "/Game/OddsWell/Characters/Player/Animations/AN_OddsWell_Jump_v1",
+        "type": "AnimSequence",
+        "seconds": 0.3333333432674408,
+        "frames": 10,
+        "bone_tracks": [
+          "root",
+          "spine",
+          "neck",
+          "head",
+          "upper_arm_l",
+          "forearm_l",
+          "upper_arm_r",
+          "forearm_r",
+          "thigh_l",
+          "shin_l",
+          "thigh_r",
+          "shin_r"
+        ],
+        "max_root_translation_cm": 0.0,
+        "max_rotation_change_radians": 0.5235987540250162
+      },
+      {
+        "path": "/Game/OddsWell/Characters/Player/Animations/AN_OddsWell_Land_v1",
+        "type": "AnimSequence",
+        "seconds": 0.3333333432674408,
+        "frames": 10,
+        "bone_tracks": [
+          "root",
+          "spine",
+          "neck",
+          "head",
+          "upper_arm_l",
+          "forearm_l",
+          "upper_arm_r",
+          "forearm_r",
+          "thigh_l",
+          "shin_l",
+          "thigh_r",
+          "shin_r"
+        ],
+        "max_root_translation_cm": 0.0,
+        "max_rotation_change_radians": 1.0122888794642115
+      }
+    ],
+    "runtime_wiring": false
+  },
+  "cold_reopen": {
+    "reopen": "PASS",
+    "exit": 0,
+    "changedAssets": 0,
+    "assetCount": 9
+  },
+  "deterministic_export_repeat": {
+    "exit": 0,
+    "changed": 0,
+    "files": 17
+  },
+  "uassets": [
+    {
+      "path": "client/OddsWell/Content/OddsWell/Characters/Player/Animations/AN_OddsWell_Jump_v1.uasset",
+      "bytes": 27904,
+      "sha256": "67fdbaee1046fa74c5856253486799b5c9b7fac39a4fce4dae311ed573a3dab3"
+    },
+    {
+      "path": "client/OddsWell/Content/OddsWell/Characters/Player/Animations/AN_OddsWell_Land_v1.uasset",
+      "bytes": 27904,
+      "sha256": "863b055e58e41a752e536324a5d435e301833a1a6e351f355e7984b8e8d218e8"
+    },
+    {
+      "path": "client/OddsWell/Content/OddsWell/Characters/Player/Animations/AN_OddsWell_Run_v1.uasset",
+      "bytes": 28023,
+      "sha256": "3444934e224e588dca12887c2e75fad0de7c5e33464fc13a130fca7e491482dc"
+    },
+    {
+      "path": "client/OddsWell/Content/OddsWell/Characters/Player/Animations/AN_OddsWell_Walk_v1.uasset",
+      "bytes": 26686,
+      "sha256": "b571b43dd731416bd789c76db04a903687d60b22a15fd10b15e7115e7dbdfeb9"
+    },
+    {
+      "path": "client/OddsWell/Content/OddsWell/Characters/Player/Clothing/SK_OddsWell_SignalJacket_v1.uasset",
+      "bytes": 19142,
+      "sha256": "7b02f5fa2257d613ec9174e204259fb562e59ac7c6ec555da144c300b029dcab"
+    },
+    {
+      "path": "client/OddsWell/Content/OddsWell/Characters/Player/Clothing/SK_OddsWell_StarterBottom_v1.uasset",
+      "bytes": 29354,
+      "sha256": "929fcf2d58e7310b9b7aabde889a0e114ed4e37c07537e531040ba419423e561"
+    },
+    {
+      "path": "client/OddsWell/Content/OddsWell/Characters/Player/Clothing/SK_OddsWell_StarterTop_v1.uasset",
+      "bytes": 16225,
+      "sha256": "4aad2904eec43f6528cf7899f7e165fd3d81e659c1f1b1f1ee98f286fb1cf763"
+    },
+    {
+      "path": "client/OddsWell/Content/OddsWell/Characters/Player/Meshes/SK_OddsWell_PlayerBody_v1.uasset",
+      "bytes": 124890,
+      "sha256": "5b81fac2095ba5d03f6d3ef2e3f736532d7edd3c40c282b5fc769aed30d29c75"
+    },
+    {
+      "path": "client/OddsWell/Content/OddsWell/Characters/Player/Skeleton/SKEL_OddsWell_Player_v1.uasset",
+      "bytes": 4393,
+      "sha256": "861aa3ebb46bae8603b45b31c9add77a22ae0b705494c58614bd3370caf13db4"
+    }
+  ],
+  "native_tests": {
+    "passed": 74,
+    "failed": 0,
+    "warning_successes": 0,
+    "not_run": 0
+  },
+  "python_suites": {
+    "phase0a": {
+      "passed": 9,
+      "log_sha256": "b9b98317eab6653672d8bf53604413abddfd9d0fff5f5779023680735f4a3fca"
+    },
+    "phase0b": {
+      "passed": 2,
+      "log_sha256": "d6dc7195c774c84999118b93a34fcc12542dcf32cda6fc300a765b6bdc1638fe"
+    },
+    "phase0c": {
+      "passed": 8,
+      "log_sha256": "3c6a040ddc2f22790bda85571ce3d0e1cbc53a60c966ea65cd00b3cc45a9969c"
+    },
+    "phase0d": {
+      "passed": 46,
+      "log_sha256": "69fddf998d716ff00f34c3f39f18093ff49aed6f9b3ad9cadf500f7070cb9df2"
+    },
+    "phase1h": {
+      "passed": 40,
+      "log_sha256": "7d9031aee79389187b0c801b9ab8e033716acc6ff7fd4c0acaf8307458d3c7c3"
+    }
+  },
+  "brain_admin": "PASS",
+  "windows_asset_cook": {
+    "exit": 0,
+    "errors": 0,
+    "warnings": 0,
+    "entry_map": "/Engine/Maps/Entry",
+    "character_packages": [
+      "/game/oddswell/characters/player/animations/an_oddswell_jump_v1",
+      "/game/oddswell/characters/player/animations/an_oddswell_land_v1",
+      "/game/oddswell/characters/player/animations/an_oddswell_run_v1",
+      "/game/oddswell/characters/player/animations/an_oddswell_walk_v1",
+      "/game/oddswell/characters/player/clothing/sk_oddswell_signaljacket_v1",
+      "/game/oddswell/characters/player/clothing/sk_oddswell_starterbottom_v1",
+      "/game/oddswell/characters/player/clothing/sk_oddswell_startertop_v1",
+      "/game/oddswell/characters/player/meshes/sk_oddswell_playerbody_v1",
+      "/game/oddswell/characters/player/skeleton/skel_oddswell_player_v1"
+    ],
+    "referenced_set_sha256": "6f7634398dfd8fa872253cc39db1588bf92a32991b7974c89ceddaf64b03861c",
+    "full_game_package": false
+  },
+  "supervisor_integrity": {
+    "supervisor.py": "7cb466b107190fdca741ae98ea71c9f2e17594a5fe8d128367cb511c1cfb6440",
+    "seal_supervisor.py": "1c1464c4d208a708da35d7347b3df1c2856adc4a2746872408102c3209d81784",
+    "result_supervisor.py": "9a006f6c43b3d45970ae59d026cb9d9aaff0602e2663bb03310fd6405bd5e38e"
+  },
+  "raw_evidence_directory": "client/OddsWell/Saved/CharacterImport20260912",
+  "raw_evidence_hashes": {
+    "import9.log": "4c0b77e1fc58744c725659ed5f4e115a5856a474b8ce0dc8ddff0dc7cb7f4c08",
+    "reopen.log": "2b9063cc451e89c1ccee740c33166e220cee2f16dcb35615d04220a91072459f",
+    "export-final-repeat.log": "c78af6bf94d549fe7525f6b28cc76a875c6096411827188e830218aa53ddd6c2",
+    "AutomationReport/index.json": "d290036c053b9094d39a17dc71a4448552ce4098821a105ac3fbd293ed70a598",
+    "cook.log": "bfd78ed9057945c543037258e1f5882efe98844103cbe9eafc35568619d13e61",
+    "brain-final.log": "d0ec87f0c4586a63f332837562b25bd44c57f02fb788b6fde599102ae2c3ba44"
+  },
+  "limits": {
+    "runtime_wiring": false,
+    "final_art": false,
+    "physical_first_hour": false,
+    "beta_exit": false
+  }
+}

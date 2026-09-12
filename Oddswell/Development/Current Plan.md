@@ -7,6 +7,14 @@ status: active
 
 # Current Plan
 
+## Latest checkpoint — 2026-09-12
+
+The owner asked to resume the **Verify game plans** work and made screenshot-recognizable OddsWell graphics an explicit requirement; see [[Art/Visual Consistency]]. The later accepted six-district city planning concept and the smaller measured production map remain distinct.
+
+Phase 1L.5bt has passed saved Unreal asset import, independent cold reopen, Windows asset cook, 74/74 native tests, 105/105 Python tests, and Brain Admin self-check. Exactly one shared skeleton, four body/clothing meshes, and four motion clips now exist at the intended character paths. DEC-035 resolves the bone-name bridge; measured exporter timing, wrapper, unit-conversion, and final-frame issues were corrected without changing the Blender source or historical exports. Completed local handoff evidence is recorded in [[Development/Reports/Phase 1L5bt Character Unreal Import and Handoff Corrections]].
+
+The runtime pawn still uses the primitive presentation. The next implementation milestone is skeletal visual/animation integration with existing movement and equipment, followed by packaged and shared-city verification. Final character art, first-hour completion, accessibility/performance, and beta exit remain open. The dated entries below are historical evidence, not a newer checkpoint.
+
 > **Phase 1K.9g status - fresh-batch Phase 1/6 closure pending docs commit and canonical Notion sync:** the first and only authorized automated canonical Sundale Lane C passed exact 14-token argument/exit custody, `11/11` ordered points, `80,000 cm` planned, `79,789.2 cm` traveled, `58.66 cm` home error, landed/blocking floor, `1.0 cm` vertical range, and exact exit `0`. Lane C credit is `1`; Components 1-3 credit is `0`; no product defect was found. Physical hands-on evidence remains incomplete, owner-deferred until beta-ready, and not waived. Phase 1K remains incomplete. Do not begin Phase `2/6` without a fresh Scope Director gate after closure. See [[Development/Reports/Phase 1K9g Automated Canonical Sundale Route Lane C Smoke]].
 
 > **Phase 1K.9f status - final Phase 6/6 closure pending docs commit and canonical Notion sync:** the first and only authorized automated standalone empty-Studio Lane B passed exact argument/exit custody, `6/0/0/0`, `200.4 cm`, exit, and Sundale return. Lane B credit is `1`; Components 1-3 credit is `0`; Lane C is `NOT_RUN`; prior Lane A remains automated smoke credit only; no product defect was found. Physical hands-on evidence remains incomplete, owner-deferred until beta-ready, and not waived. Phase 1K remains incomplete. Do not begin a seventh phase. See [[Development/Reports/Phase 1K9f Automated Standalone Empty Studio Lane B Smoke]].

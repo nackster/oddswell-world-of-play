@@ -1,0 +1,39 @@
+{
+  "contract_id": "oddswell_character_unreal_import_v1",
+  "decision": "DEC-035",
+  "source_contract": "character_fbx_unreal_contract.json",
+  "source_contract_sha256": "3DAA1D94A19148F03D31682D15B2FA40D9D43133008A1DA099097FCC4AAD88C6",
+  "export_manifest": "CharacterFBXTimingCorrection/timed_export_custody.json",
+  "export_manifest_sha256": "A7DE14862CE908960DBE844F08D707D2D921BD7DC6457E311692412FC2C5CA52",
+  "source_to_unreal_bone_names": {
+    "root": "root",
+    "spine": "spine",
+    "neck": "neck",
+    "head": "head",
+    "thigh.L": "thigh_L",
+    "shin.L": "shin_L",
+    "thigh.R": "thigh_R",
+    "shin.R": "shin_R",
+    "upper_arm.L": "upper_arm_L",
+    "forearm.L": "forearm_L",
+    "upper_arm.R": "upper_arm_R",
+    "forearm.R": "forearm_R"
+  },
+  "source_bone_parents": {
+    "root": null,
+    "spine": "root",
+    "neck": "spine",
+    "head": "neck",
+    "thigh.L": "root",
+    "shin.L": "thigh.L",
+    "thigh.R": "root",
+    "shin.R": "thigh.R",
+    "upper_arm.L": "spine",
+    "forearm.L": "upper_arm.L",
+    "upper_arm.R": "spine",
+    "forearm.R": "upper_arm.R"
+  },
+  "preserve_source_and_fbx_bytes": true,
+  "allow_destination_overwrite": false,
+  "runtime_wiring": false
+}
