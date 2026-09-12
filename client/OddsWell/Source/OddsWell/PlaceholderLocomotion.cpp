@@ -17,6 +17,7 @@
 #include "Engine/DirectionalLight.h"
 #include "Engine/ExponentialHeightFog.h"
 #include "Engine/StaticMesh.h"
+#include "Engine/SkeletalMesh.h"
 #include "Engine/StaticMeshActor.h"
 #include "Engine/SkyLight.h"
 #include "Engine/TextRenderActor.h"
@@ -87,7 +88,7 @@ const FLinearColor SignalJacketSlate(0.12f, 0.18f, 0.22f);
 const FLinearColor SignalJacketTeal(0.08f, 0.72f, 0.68f);
 const FName TopComponentName(TEXT("StarterOutfitTop"));
 const FName BottomComponentName(TEXT("StarterOutfitBottom"));
-const FName SignalJacketAccentComponentName(TEXT("SignalJacketAccent"));
+const FName SignalJacketAccentSlot(TEXT("CLOTHING__signal_jacket_teal"));
 constexpr float SundaleRouteDistance = 80000.0f;
 constexpr float SundaleWaypointTolerance = 75.0f;
 constexpr float JobInteractionRadius = 350.0f;
@@ -2005,76 +2006,27 @@ AOddsWellPlaceholderCharacter::AOddsWellPlaceholderCharacter()
 	SetReplicateMovement(true);
 	GetCapsuleComponent()->InitCapsuleSize(CapsuleRadius, CapsuleHalfHeight);
 	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_Pawn, SharedCityPlayerCollision);
-	GetMesh()->SetHiddenInGame(true);
+	GetMesh()->SetHiddenInGame(false);
 	GetMesh()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-
-	UStaticMesh* Cylinder = LoadObject<UStaticMesh>(nullptr, TEXT("/Engine/BasicShapes/Cylinder.Cylinder"));
-	UStaticMesh* Cube = LoadObject<UStaticMesh>(nullptr, TEXT("/Engine/BasicShapes/Cube.Cube"));
-	PrimitiveBody = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("NeutralPrimitiveBody"));
-	PrimitiveBody->SetupAttachment(GetCapsuleComponent());
-	PrimitiveBody->SetStaticMesh(Cylinder);
-	PrimitiveBody->SetRelativeLocation(FVector(0.0, 0.0, -20.0));
-	PrimitiveBody->SetRelativeScale3D(FVector(0.46, 0.46, 1.28));
-	PrimitiveBody->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-
-	PrimitiveHead = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("NeutralPrimitiveHead"));
-	PrimitiveHead->SetupAttachment(GetCapsuleComponent());
-	PrimitiveHead->SetStaticMesh(Cube);
-	PrimitiveHead->SetRelativeLocation(FVector(0.0, 0.0, 65.0));
-	PrimitiveHead->SetRelativeScale3D(FVector(0.55));
-	PrimitiveHead->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-
-	PrimitiveLeftArm = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("NeutralPrimitiveLeftArm"));
-	PrimitiveLeftArm->SetupAttachment(GetCapsuleComponent());
-	PrimitiveLeftArm->SetStaticMesh(Cube);
-	PrimitiveLeftArm->SetRelativeLocation(FVector(0.0, -35.0, 2.0));
-	PrimitiveLeftArm->SetRelativeScale3D(FVector(0.18, 0.18, 0.62));
-	PrimitiveLeftArm->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-
-	PrimitiveRightArm = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("NeutralPrimitiveRightArm"));
-	PrimitiveRightArm->SetupAttachment(GetCapsuleComponent());
-	PrimitiveRightArm->SetStaticMesh(Cube);
-	PrimitiveRightArm->SetRelativeLocation(FVector(0.0, 35.0, 2.0));
-	PrimitiveRightArm->SetRelativeScale3D(FVector(0.18, 0.18, 0.62));
-	PrimitiveRightArm->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-
-	PrimitiveLeftLeg = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("NeutralPrimitiveLeftLeg"));
-	PrimitiveLeftLeg->SetupAttachment(GetCapsuleComponent());
-	PrimitiveLeftLeg->SetStaticMesh(Cube);
-	PrimitiveLeftLeg->SetRelativeLocation(FVector(0.0, -16.0, -58.0));
-	PrimitiveLeftLeg->SetRelativeScale3D(FVector(0.20, 0.20, 0.68));
-	PrimitiveLeftLeg->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-
-	PrimitiveRightLeg = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("NeutralPrimitiveRightLeg"));
-	PrimitiveRightLeg->SetupAttachment(GetCapsuleComponent());
-	PrimitiveRightLeg->SetStaticMesh(Cube);
-	PrimitiveRightLeg->SetRelativeLocation(FVector(0.0, 16.0, -58.0));
-	PrimitiveRightLeg->SetRelativeScale3D(FVector(0.20, 0.20, 0.68));
-	PrimitiveRightLeg->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-
-	StarterOutfitTop = CreateDefaultSubobject<UStaticMeshComponent>(TopComponentName);
-	StarterOutfitTop->SetupAttachment(GetCapsuleComponent());
-	StarterOutfitTop->SetStaticMesh(Cube);
-	StarterOutfitTop->SetRelativeLocation(FVector(0.0, 0.0, 5.0));
-	StarterOutfitTop->SetRelativeScale3D(FVector(0.62, 0.50, 0.50));
+	GetMesh()->SetRelativeLocation(FVector(0.0, 0.0, -CapsuleHalfHeight));
+	GetMesh()->SetRelativeRotation(FRotator(0.0, -90.0, 0.0));
+	GetMesh()->SetSkeletalMesh(LoadObject<USkeletalMesh>(nullptr,
+		TEXT("/Game/OddsWell/Characters/Player/Meshes/SK_OddsWell_PlayerBody_v1.SK_OddsWell_PlayerBody_v1")));
+	StarterTopMesh = LoadObject<USkeletalMesh>(nullptr,
+		TEXT("/Game/OddsWell/Characters/Player/Clothing/SK_OddsWell_StarterTop_v1.SK_OddsWell_StarterTop_v1"));
+	SignalJacketMesh = LoadObject<USkeletalMesh>(nullptr,
+		TEXT("/Game/OddsWell/Characters/Player/Clothing/SK_OddsWell_SignalJacket_v1.SK_OddsWell_SignalJacket_v1"));
+	StarterOutfitTop = CreateDefaultSubobject<USkeletalMeshComponent>(TopComponentName);
+	StarterOutfitTop->SetupAttachment(GetMesh());
+	StarterOutfitTop->SetSkeletalMesh(StarterTopMesh);
 	StarterOutfitTop->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	StarterOutfitTop->SetVisibility(false);
-
-	StarterOutfitBottom = CreateDefaultSubobject<UStaticMeshComponent>(BottomComponentName);
-	StarterOutfitBottom->SetupAttachment(GetCapsuleComponent());
-	StarterOutfitBottom->SetStaticMesh(Cube);
-	StarterOutfitBottom->SetRelativeLocation(FVector(0.0, 0.0, -52.0));
-	StarterOutfitBottom->SetRelativeScale3D(FVector(0.56, 0.46, 0.48));
+	StarterOutfitBottom = CreateDefaultSubobject<USkeletalMeshComponent>(BottomComponentName);
+	StarterOutfitBottom->SetupAttachment(GetMesh());
+	StarterOutfitBottom->SetSkeletalMesh(LoadObject<USkeletalMesh>(nullptr,
+		TEXT("/Game/OddsWell/Characters/Player/Clothing/SK_OddsWell_StarterBottom_v1.SK_OddsWell_StarterBottom_v1")));
 	StarterOutfitBottom->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	StarterOutfitBottom->SetVisibility(false);
-
-	SignalJacketAccent = CreateDefaultSubobject<UStaticMeshComponent>(SignalJacketAccentComponentName);
-	SignalJacketAccent->SetupAttachment(GetCapsuleComponent());
-	SignalJacketAccent->SetStaticMesh(Cube);
-	SignalJacketAccent->SetRelativeLocation(FVector(0.0, 0.0, 15.0));
-	SignalJacketAccent->SetRelativeScale3D(FVector(0.70, 0.58, 0.14));
-	SignalJacketAccent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-	SignalJacketAccent->SetVisibility(false);
 
 	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("ThirdPersonCameraBoom"));
 	CameraBoom->SetupAttachment(GetCapsuleComponent());
@@ -2240,39 +2192,11 @@ void AOddsWellPlaceholderCharacter::BeginPlay()
 			bOwnsOneBedroom = OwnsOddsWellOneBedroomUpgrade(Ledger);
 		}
 	}
-	UMaterialInterface* BasicShapeMaterial = LoadObject<UMaterialInterface>(nullptr, TEXT("/Engine/BasicShapes/BasicShapeMaterial.BasicShapeMaterial"));
-	if (!BasicShapeMaterial)
+	if (!InitializeCharacterMaterials())
 	{
-		ReportOutfitError(TEXT("The native starter outfit material could not be loaded."));
 		bOutfitQaEnabled = false;
 	}
-	else
-	{
-		StarterOutfitMaterial = UMaterialInstanceDynamic::Create(BasicShapeMaterial, this);
-		SignalJacketMaterial = UMaterialInstanceDynamic::Create(BasicShapeMaterial, this);
-		SignalJacketAccentMaterial = UMaterialInstanceDynamic::Create(BasicShapeMaterial, this);
-		PrimitiveSkinMaterial = UMaterialInstanceDynamic::Create(BasicShapeMaterial, this);
-		if (!StarterOutfitMaterial || !SignalJacketMaterial || !SignalJacketAccentMaterial || !PrimitiveSkinMaterial)
-		{
-			ReportAppearanceError(TEXT("The native placeholder material instances could not be created."));
-			bOutfitQaEnabled = false;
-		}
-		else
-		{
-			StarterOutfitMaterial->SetVectorParameterValue(TEXT("Color"), StarterOffWhite);
-			SignalJacketMaterial->SetVectorParameterValue(TEXT("Color"), SignalJacketSlate);
-			SignalJacketAccentMaterial->SetVectorParameterValue(TEXT("Color"), SignalJacketTeal);
-			StarterOutfitTop->SetMaterial(0, StarterOutfitMaterial);
-			StarterOutfitBottom->SetMaterial(0, StarterOutfitMaterial);
-			SignalJacketAccent->SetMaterial(0, SignalJacketAccentMaterial);
-			PrimitiveBody->SetMaterial(0, PrimitiveSkinMaterial);
-			PrimitiveHead->SetMaterial(0, PrimitiveSkinMaterial);
-			PrimitiveLeftArm->SetMaterial(0, PrimitiveSkinMaterial);
-			PrimitiveRightArm->SetMaterial(0, PrimitiveSkinMaterial);
-			PrimitiveLeftLeg->SetMaterial(0, StarterOutfitMaterial);
-			PrimitiveRightLeg->SetMaterial(0, StarterOutfitMaterial);
-		}
-	}
+
 	bool bAppearanceReady = true;
 	if (GetNetMode() == NM_Standalone)
 	{
@@ -3302,7 +3226,7 @@ void AOddsWellPlaceholderCharacter::ClientConfirmCanonicalFortyWager_Implementat
 void AOddsWellPlaceholderCharacter::Tick(const float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
-	UpdatePrimitiveGait(DeltaSeconds);
+	UpdateCharacterAnimation(DeltaSeconds);
 	PollKeyboardMovement();
 	PollJobInteraction();
 	PollClothingStoreInteraction();
@@ -3444,22 +3368,33 @@ void AOddsWellPlaceholderCharacter::Tick(const float DeltaSeconds)
 	}
 }
 
-void AOddsWellPlaceholderCharacter::UpdatePrimitiveGait(const float DeltaSeconds)
+bool AOddsWellPlaceholderCharacter::InitializeCharacterMaterials()
 {
-	const float Speed = GetVelocity().Size2D();
-	float GaitAngle = 0.0f;
-	if (Speed > KINDA_SMALL_NUMBER && GetCharacterMovement()->IsMovingOnGround())
+	UMaterialInterface* Material = LoadObject<UMaterialInterface>(nullptr,
+		TEXT("/Game/OddsWell/Characters/Player/Materials/M_OddsWell_Character.M_OddsWell_Character"));
+	if (!Material || !GetMesh()->GetSkeletalMeshAsset() || !StarterTopMesh || !SignalJacketMesh
+		|| !StarterOutfitBottom->GetSkeletalMeshAsset())
 	{
-		const float RunAlpha = FMath::Clamp((Speed - WalkSpeed) / (RunSpeed - WalkSpeed), 0.0f, 1.0f);
-		const float CyclesPerSecond = FMath::Lerp(PrimitiveWalkGaitCyclesPerSecond, PrimitiveRunGaitCyclesPerSecond, RunAlpha);
-		PrimitiveGaitPhase = FMath::Fmod(PrimitiveGaitPhase + DeltaSeconds * CyclesPerSecond * 2.0f * PI, 2.0f * PI);
-		GaitAngle = FMath::Sin(PrimitiveGaitPhase) * FMath::Lerp(PrimitiveWalkGaitAngle, PrimitiveRunGaitAngle, RunAlpha);
+		ReportAppearanceError(TEXT("Required character mesh or material is unavailable."));
+		return false;
 	}
+	StarterOutfitMaterial = UMaterialInstanceDynamic::Create(Material, this);
+	SignalJacketMaterial = UMaterialInstanceDynamic::Create(Material, this);
+	SignalJacketAccentMaterial = UMaterialInstanceDynamic::Create(Material, this);
+	PrimitiveSkinMaterial = UMaterialInstanceDynamic::Create(Material, this);
+	StarterOutfitMaterial->SetVectorParameterValue(TEXT("Color"), StarterOffWhite);
+	SignalJacketMaterial->SetVectorParameterValue(TEXT("Color"), SignalJacketSlate);
+	SignalJacketAccentMaterial->SetVectorParameterValue(TEXT("Color"), SignalJacketTeal);
+	GetMesh()->SetMaterial(0, PrimitiveSkinMaterial);
+	StarterOutfitBottom->SetMaterial(0, StarterOutfitMaterial);
+	StarterOutfitTop->SetLeaderPoseComponent(GetMesh());
+	StarterOutfitBottom->SetLeaderPoseComponent(GetMesh());
+	return true;
+}
 
-	PrimitiveLeftArm->SetRelativeRotation(FRotator(GaitAngle, 0.0f, 0.0f));
-	PrimitiveRightArm->SetRelativeRotation(FRotator(-GaitAngle, 0.0f, 0.0f));
-	PrimitiveLeftLeg->SetRelativeRotation(FRotator(-GaitAngle, 0.0f, 0.0f));
-	PrimitiveRightLeg->SetRelativeRotation(FRotator(GaitAngle, 0.0f, 0.0f));
+void AOddsWellPlaceholderCharacter::UpdateCharacterAnimation(const float DeltaSeconds)
+{
+	// Motion playback is the next verified step of the character bridge.
 }
 
 #if UE_BUILD_DEVELOPMENT
@@ -3752,7 +3687,7 @@ void AOddsWellPlaceholderCharacter::RunSignalJacketEquipQa(
 			: SharedCityAppearance.bSignalJacketEquipped;
 		const bool bVisibleAccent = bObserver
 			? bPassed
-			: SignalJacketAccent && SignalJacketAccent->IsVisible();
+			: HasSignalJacketVisual();
 		const FString Evidence = FString::Printf(
 			TEXT("ODDSWELL_SIGNAL_JACKET_EQUIP_QA|result=%s|role=%s|normal_e_path=true|physical_store=true|explicit_equip=true|owned=true|equipped=%s|slot=outfit|slate_teal_graybox=%s|replicated=%s|other_client_visible=%s|entries=%d|balance=%lld|additional_debit=%s|auto_equip=false|detail=%s"),
 			bPassed ? TEXT("PASS") : TEXT("FAIL"),
@@ -3806,8 +3741,7 @@ void AOddsWellPlaceholderCharacter::RunSignalJacketEquipQa(
 		{
 			if (*It != this
 				&& It->SharedCityAppearance.bSignalJacketEquipped
-				&& It->SignalJacketAccent
-				&& It->SignalJacketAccent->IsVisible())
+				&& It->HasSignalJacketVisual())
 			{
 				if (SignalJacketEquipQaStage == 0)
 				{
@@ -3882,8 +3816,7 @@ void AOddsWellPlaceholderCharacter::RunSignalJacketEquipQa(
 			Finish(
 				GameMode->GetOddsBucksEntryCount() == 2
 					&& GameMode->GetOddsBucksBalance() == 40
-					&& SignalJacketAccent
-					&& SignalJacketAccent->IsVisible(),
+					&& HasSignalJacketVisual(),
 				TEXT("owner"),
 				TEXT("replicated_state_published"));
 		}
@@ -8307,7 +8240,7 @@ bool AOddsWellPlaceholderCharacter::ApplyResolvedAppearance(
 	FString Error;
 	if (!PrimitiveSkinMaterial)
 	{
-		ReportAppearanceError(TEXT("The primitive skin material is unavailable."));
+		ReportAppearanceError(TEXT("The character skin material is unavailable."));
 		return false;
 	}
 	StarterOutfitState.Reset();
@@ -8450,17 +8383,31 @@ void AOddsWellPlaceholderCharacter::SetAuthoritativeSharedCityAppearance(
 		*Source);
 }
 
+bool AOddsWellPlaceholderCharacter::HasSignalJacketVisual() const
+{
+	return StarterOutfitTop->IsVisible()
+		&& StarterOutfitTop->GetSkeletalMeshAsset() == SignalJacketMesh
+		&& StarterOutfitTop->GetMaterialByName(SignalJacketAccentSlot) == SignalJacketAccentMaterial;
+}
+
 void AOddsWellPlaceholderCharacter::SyncOutfitComponents()
 {
 	const bool bJacketEquipped = SharedCityAppearance.bSignalJacketEquipped;
-	StarterOutfitTop->SetMaterial(
-		0,
-		bJacketEquipped && SignalJacketMaterial
-			? SignalJacketMaterial.Get()
-			: StarterOutfitMaterial.Get());
-	StarterOutfitTop->SetVisibility(!StarterOutfitState.GetEquipped(EOddsWellStarterEquipmentSlot::Top).IsNone(), true);
-	StarterOutfitBottom->SetVisibility(!StarterOutfitState.GetEquipped(EOddsWellStarterEquipmentSlot::Bottom).IsNone(), true);
-	SignalJacketAccent->SetVisibility(bJacketEquipped && StarterOutfitTop->IsVisible(), true);
+	USkeletalMesh* DesiredTop = bJacketEquipped ? SignalJacketMesh.Get() : StarterTopMesh.Get();
+	if (StarterOutfitTop->GetSkeletalMeshAsset() != DesiredTop)
+	{
+		StarterOutfitTop->SetSkeletalMesh(DesiredTop);
+		StarterOutfitTop->SetLeaderPoseComponent(GetMesh(), true);
+	}
+	StarterOutfitTop->SetMaterial(0,
+		bJacketEquipped ? SignalJacketMaterial.Get() : StarterOutfitMaterial.Get());
+	if (bJacketEquipped)
+	{
+		StarterOutfitTop->SetMaterialByName(SignalJacketAccentSlot, SignalJacketAccentMaterial);
+	}
+	StarterOutfitTop->SetVisibility(!StarterOutfitState.GetEquipped(EOddsWellStarterEquipmentSlot::Top).IsNone());
+	StarterOutfitBottom->SetVisibility(!StarterOutfitState.GetEquipped(EOddsWellStarterEquipmentSlot::Bottom).IsNone());
+
 }
 
 void AOddsWellPlaceholderCharacter::RunOutfitQa(const float DeltaSeconds)
@@ -8492,7 +8439,7 @@ void AOddsWellPlaceholderCharacter::RunOutfitQa(const float DeltaSeconds)
 			return;
 		}
 		SyncOutfitComponents();
-		const bool bPassed = PrimitiveBody->IsVisible()
+		const bool bPassed = GetMesh()->IsVisible()
 			&& StarterOutfitTop->IsVisible()
 			&& StarterOutfitBottom->IsVisible()
 			&& GetCharacterMovement()->MaxWalkSpeed == WalkSpeed
@@ -8503,7 +8450,7 @@ void AOddsWellPlaceholderCharacter::RunOutfitQa(const float DeltaSeconds)
 			bPassed ? TEXT("PASS") : TEXT("FAIL"),
 			*StarterOutfitState.GetEquipped(EOddsWellStarterEquipmentSlot::Top).ToString(),
 			*StarterOutfitState.GetEquipped(EOddsWellStarterEquipmentSlot::Bottom).ToString(),
-			PrimitiveBody->IsVisible() ? TEXT("true") : TEXT("false"),
+			GetMesh()->IsVisible() ? TEXT("true") : TEXT("false"),
 			*StarterOutfitTop->GetFName().ToString(),
 			StarterOutfitTop->IsVisible() ? TEXT("true") : TEXT("false"),
 			*StarterOutfitBottom->GetFName().ToString(),
@@ -15677,7 +15624,7 @@ bool FOddsWellSignalJacketEquipTest::RunTest(const FString& Parameters)
 	TestEqual(TEXT("Equip adds no ledger entry"), Ledger.GetEntries().Num(), EntriesBeforeEquip);
 	TestEqual(TEXT("Equip charges no Odds Bucks"), Ledger.GetBalance(), BalanceBeforeEquip);
 	TestTrue(TEXT("Slate and teal remain visibly distinct"), SignalJacketSlate != SignalJacketTeal);
-	TestTrue(TEXT("Jacket accent has a distinct component identity"), SignalJacketAccentComponentName != TopComponentName);
+	TestTrue(TEXT("Jacket accent has a distinct material slot"), SignalJacketAccentSlot != FName(TEXT("CLOTHING__signal_jacket_slate")));
 	return !HasAnyErrors();
 }
 

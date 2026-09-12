@@ -16,6 +16,8 @@ class UCameraComponent;
 class UMaterialInstanceDynamic;
 class USpringArmComponent;
 class UStaticMeshComponent;
+class USkeletalMeshComponent;
+class USkeletalMesh;
 class UTextRenderComponent;
 
 USTRUCT()
@@ -102,7 +104,10 @@ protected:
 private:
 	void MoveForward(float Value);
 	void MoveRight(float Value);
-	void UpdatePrimitiveGait(float DeltaSeconds);
+	void UpdateCharacterAnimation(float DeltaSeconds);
+	bool InitializeCharacterMaterials();
+	bool HasSignalJacketVisual() const;
+	friend class FOddsWellSkeletalVisualTest;
 	void PollKeyboardMovement();
 	void LookYaw(float Value);
 	void LookPitchMouse(float Value);
@@ -234,31 +239,16 @@ private:
 	void ClientConfirmCanonicalFortyWager(bool bAccepted, bool bDuplicate, const FString& Error);
 
 	UPROPERTY(VisibleAnywhere)
-	TObjectPtr<UStaticMeshComponent> PrimitiveBody;
+	TObjectPtr<USkeletalMeshComponent> StarterOutfitTop;
 
 	UPROPERTY(VisibleAnywhere)
-	TObjectPtr<UStaticMeshComponent> PrimitiveHead;
+	TObjectPtr<USkeletalMeshComponent> StarterOutfitBottom;
 
 	UPROPERTY(VisibleAnywhere)
-	TObjectPtr<UStaticMeshComponent> PrimitiveLeftArm;
+	TObjectPtr<USkeletalMesh> StarterTopMesh;
 
-	UPROPERTY(VisibleAnywhere)
-	TObjectPtr<UStaticMeshComponent> PrimitiveRightArm;
-
-	UPROPERTY(VisibleAnywhere)
-	TObjectPtr<UStaticMeshComponent> PrimitiveLeftLeg;
-
-	UPROPERTY(VisibleAnywhere)
-	TObjectPtr<UStaticMeshComponent> PrimitiveRightLeg;
-
-	UPROPERTY(VisibleAnywhere)
-	TObjectPtr<UStaticMeshComponent> StarterOutfitTop;
-
-	UPROPERTY(VisibleAnywhere)
-	TObjectPtr<UStaticMeshComponent> StarterOutfitBottom;
-
-	UPROPERTY(VisibleAnywhere)
-	TObjectPtr<UStaticMeshComponent> SignalJacketAccent;
+	UPROPERTY()
+	TObjectPtr<USkeletalMesh> SignalJacketMesh;
 
 	UPROPERTY(Transient)
 	TObjectPtr<UMaterialInstanceDynamic> StarterOutfitMaterial;
