@@ -53,12 +53,12 @@ plaster = mat('OW | mineral ivory plaster', (.69,.59,.46), .88, 26)
 clay = mat('OW | terracotta ceramic', (.43,.21,.12), .78, 32)
 mortar = mat('OW | recessed sand joints', (.23,.19,.14), .95, 35)
 dark = mat('OW | graphite anodized frames', (.038,.048,.046), .36, 0, .65)
-teal = mat('OW | restrained signal teal', (.045,.32,.29), .55, 90)
+teal = mat('OW | restrained signal teal', (.026,.22,.21), .65, 900)
 wood = mat('OW | oiled oak', (.25,.12,.049), .62, 13)
 shopback = mat('OW | deep retail interior', (.023,.015,.008), .9, 18)
 chalk = mat('OW | court warm white', (.77,.77,.65), .86)
-court = mat('OW | blue mineral court', (.095,.235,.30), .92, 140)
-courtkey = mat('OW | deep blue key', (.061,.15,.20), .92, 140)
+court = mat('OW | blue mineral court', (.040,.120,.190), .92, 140)
+courtkey = mat('OW | deep blue key', (.020,.065,.105), .92, 140)
 soil = mat('OW | planted soil', (.073,.053,.026), 1, 45)
 bark = mat('OW | rough oak bark', (.145,.093,.045), .96, 24)
 glass = mat('OW | clear shop glazing', (.82,.88,.88), .055, 0, 0)
@@ -154,14 +154,10 @@ def tube(name, points, radius, material, closed=False):
 
 
 def sphere(name, pos, scale, material, segments=16, rings=10):
-    bpy.ops.mesh.primitive_uv_sphere_add(segments=segments, ring_count=rings, radius=1, location=pos)
-    o = bpy.context.object
-    o.name = name
-    o.scale = scale
-    o.data.materials.append(material)
-    for p in o.data.polygons:
-        p.use_smooth = True
-    return o
+    # Native datablocks avoid a full scene dependency update for every flower.
+    verts=[(pos[0]+scale[0]*math.sin(math.pi*k/rings)*math.cos(math.tau*j/segments),pos[1]+scale[1]*math.sin(math.pi*k/rings)*math.sin(math.tau*j/segments),pos[2]+scale[2]*math.cos(math.pi*k/rings)) for k in range(rings+1) for j in range(segments)]
+    faces=[(k*segments+j,k*segments+(j+1)%segments,(k+1)*segments+(j+1)%segments,(k+1)*segments+j) for k in range(rings) for j in range(segments)]
+    return mesh(name,verts,faces,material,True)
 
 
 def branch(name, a, b, ra, rb, material=bark):
@@ -176,46 +172,37 @@ def leaf_cloud(name, centers, radius=1, count=230):
     verts, faces, indices = [], [], []
     for center in centers:
         for i in range(count):
-            v = Vector((random.gauss(0,.65),random.gauss(0,.65),random.gauss(0,.37))) * radius
+            v = Vector((random.gauss(0,.43),random.gauss(0,.43),random.gauss(0,.42))) * radius
             v += Vector(center)
             angle = random.uniform(0,math.tau)
-            length = random.uniform(.065,.16) * radius**.15
+            length = random.uniform(.052,.112) * radius**.15
             u = Vector((math.cos(angle),math.sin(angle),random.uniform(-.45,.45))) * length
             w = Vector((-math.sin(angle),math.cos(angle),random.uniform(-.6,.6))) * length*.43
+            # Curved, elliptical leaf blade: an actual surface with a raised
+            # midrib, rounded shoulders and pointed tip, rather than diamonds.
             start = len(verts)
-            verts.extend([v-u, v-w, v+u, v+w, v+Vector((0,0,.018))])
-            faces.extend([(start,start+1,start+4),(start+1,start+2,start+4),(start+2,start+3,start+4),(start+3,start,start+4)])
-            indices.extend([random.randrange(6)]*4)
-    o = mesh(name, verts, faces, leaves[0])
+            for t in range(7):
+                f=t/6
+                width=math.sin(math.pi*f)**.72
+                centerline=v+u*(2*f-1)+Vector((0,0,.014*math.sin(math.pi*f)))
+                verts.extend([centerline-w*width,centerline+Vector((0,0,.004*width)),centerline+w*width])
+            for t in range(6):
+                for side in range(2):
+                    n=start+t*3+side
+                    faces.append((n,n+3,n+4,n+1))
+            indices.extend([random.randrange(6)]*12)
+    o = mesh(name, verts, faces, leaves[0],True)
     for m in leaves[1:]: o.data.materials.append(m)
     for p,index in zip(o.data.polygons,indices): p.material_index=index
     return o
 
 
-def tree(x,y,scale=1):
-    def pt(a,b,c): return (x+a*scale,y+b*scale,c*scale)
-    branch('Oak | trunk',pt(0,0,0),pt(.12,.07,3.4),.23*scale,.12*scale)
-    crowns=[]
-    for k in range(9):
-        angle = k*2.4
-        reach = random.uniform(1.8,3.0)
-        a = pt(.12,.07,2.6+random.random()*.6)
-        b = pt(math.cos(angle)*reach*.5,math.sin(angle)*reach*.5,4+random.random()*.6)
-        c = pt(math.cos(angle)*reach,math.sin(angle)*reach,4.8+random.random()*1.2)
-        branch('Oak | primary limb',a,b,.10*scale,.055*scale)
-        branch('Oak | secondary limb',b,c,.055*scale,.015*scale)
-        crowns.extend([c,tuple((Vector(b)+Vector(c))/2)])
-        for j in range(2):
-            end = Vector(c)+Vector((random.uniform(-.8,.8),random.uniform(-.8,.8),random.uniform(-.2,.5)))*scale
-            branch('Oak | fine twig',c,end,.015*scale,.004*scale)
-            crowns.append(end)
-    leaf_cloud('Oak | individual folded leaves', crowns, scale*.80, 520)
-    box('Tree pit stone surround',(x,y,.16),(1.6*scale,1.6*scale,.32),stone,.03)
-    box('Tree pit soil',(x,y,.329),(1.33*scale,1.33*scale,.012),soil)
+# Shared mature tree geometry, adapted from the retained CC0 native source.
+exec(compile((ROOT/'mature_trees.py').read_text(encoding='utf-8'),str(ROOT/'mature_trees.py'),'exec'))
 
 
 # Real paver geometry, with variation in color and height, grouped into one mesh.
-box('Street foundation',(3,25,-.17),(60,100,.3),mortar)
+box('Street foundation',(3,25,-.113),(60,100,.3),mortar)
 pv,pf,pi=[],[],[]
 for row in range(340):
     y=-8+row*.17
@@ -244,23 +231,29 @@ for x in (-6.5,1.9):
 def facade(front, y, width, height, right=False, terra=False):
     sign=1 if right else -1
     material=clay if terra else stonewall
-    box('Building | masonry volume',(front+sign*3.1,y,height/2),(6.2,width,height),material,.045)
+    box('Building | masonry volume',(front+sign*3.1,y,(height+3.4)/2),(6.2,width,height-3.4),material,.045)
+    box('Building | retail rear volume',(front+sign*3.85,y,1.7),(4.7,width,3.4),material,.025)
     # Deep exterior storefront recess; dark backing and glass with visible retail fittings.
     for yy in (y-width*.25,y+width*.25):
-        box('Shop | recessed interior',(front-sign*.025,yy,1.65),(.035,width*.44,2.95),shopback)
+        box('Shop | recessed interior',(front+sign*1.48,yy,1.65),(.035,width*.44,2.95),shopback)
+        box('Shop | interior floor',(front+sign*.70,yy,.11),(1.55,width*.44,.12),wood,.012)
+        box('Shop | interior ceiling',(front+sign*.70,yy,3.10),(1.55,width*.44,.12),plaster,.012)
         box('Shop | glazing',(front-sign*.20,yy,1.65),(.018,width*.41,2.8),shopglass)
         for z in (.14,3.12):box('Shop | frame',(front-sign*.23,yy,z),(.07,width*.44,.065),dark,.012)
         for dy in (-width*.22,0,width*.22):box('Shop | mullion',(front-sign*.24,yy+dy,1.64),(.07,.045,3.05),dark,.01)
         for z in (.55,1.05,1.55):
-            box('Shop | oak display shelf',(front-sign*.12,yy,z),(.10,width*.36,.045),wood,.01)
+            box('Shop | oak display shelf',(front+sign*.85,yy,z),(.65,width*.36,.045),wood,.01)
             for item in range(6):
-                box('Shop | display goods',(front-sign*.16,yy-width*.14+item*width*.058,z+.12),(.10,.13,random.uniform(.10,.23)),stone if item%2 else clay,.012)
-        sphere('Shop | pendant',(front-sign*.28,yy,2.75),(.14,.14,.065),lamp)
+                box('Shop | display goods',(front+sign*.80,yy-width*.14+item*width*.058,z+.12),(.20,.13,random.uniform(.10,.23)),stone if item%2 else clay,.012)
+        sphere('Shop | pendant',(front+sign*.60,yy,2.75),(.14,.14,.065),lamp)
+        lightdata=bpy.data.lights.new('Shop | warm display light','POINT');lightdata.energy=85;lightdata.color=(1,.64,.32);lightdata.shadow_soft_size=.18
+        lightobj=bpy.data.objects.new('Shop | warm display light',lightdata);scene.collection.objects.link(lightobj);lightobj.location=(front+sign*.60,yy,2.67)
         for offset in (-.62,.35):
             coords=[(-.20,.33),(-.38,.21),(-.31,.02),(-.19,.08),(-.20,-.37),(.20,-.37),(.19,.08),(.31,.02),(.38,.21),(.20,.33),(.08,.28),(-.08,.28)]
-            garment=mesh('Shop | hanging garment',[(front-sign*.155,yy+offset+a,2.10+b) for a,b in coords],[tuple(range(len(coords)))],teal if offset>0 else stone)
-            garment.modifiers.new('Display cloth thickness','SOLIDIFY').thickness=.025
-            tube('Shop | brass hanger',[(front-sign*.15,yy+offset-.18,2.40),(front-sign*.15,yy+offset,2.53),(front-sign*.15,yy+offset+.18,2.40)],.007,wood)
+            garment=mesh('Shop | hanging garment',[(front+sign*.37,yy+offset+a,2.10+b) for a,b in coords],[tuple(range(len(coords)))],teal if offset>0 else stone)
+            garment.modifiers.new('Display cloth thickness','SOLIDIFY').thickness=.07
+            bevel=garment.modifiers.new('Soft folded garment edge','BEVEL');bevel.width=.025;bevel.segments=3
+            tube('Shop | brass hanger',[(front+sign*.37,yy+offset-.18,2.40),(front+sign*.37,yy+offset,2.53),(front+sign*.37,yy+offset+.18,2.40)],.007,wood)
     for yy in (y-width/2+.15,y+width/2-.15):
         box('Building | stone pier',(front-sign*.25,yy,1.7),(.54,.34,3.4),stone,.025)
     box('Building | floor band',(front-sign*.18,y,3.45),(.40,width+.10,.20),stone,.025)
@@ -343,7 +336,7 @@ for x in (1.3,18.8):
         leaf_cloud('Civic | planted shrub',[(x,y-.6,1),(x,y+.6,1)],.42,220)
         box('Civic | oak bench',(x,y+2.1,.48),(1.05,1.3,.14),wood,.045)
         for yy in (y+1.62,y+2.55):box('Civic | bench support',(x,yy,.23),(.9,.12,.46),stone,.018)
-for x,y,s in [(-3.4,4.5,1.25),(-3.8,14,1),(-3.8,25,1.1),(-3.8,36,.95),(19,4,.95),(19,15,1.1),(19,28,1),(2,40,.9),(12,40,1.05)]:
+for x,y,s in [(-2.4,7.5,1.35),(-3.8,17,1),(-3.8,28,1.1),(-3.8,38,.95),(19,4,.95),(19,15,1.1),(19,28,1),(2,40,.9),(12,40,1.05)]:
     tree(x,y,s)
 for x in (-3,1.6,18.5):
     for y in (8,21,34):
@@ -465,23 +458,43 @@ for region in ('head','legs','left hand','right hand'):
         rotation=(wrist-elbow).rotation_difference(Vector((sign*.03,.04,-.25)))
     for face in bodyfaces:
         vs=[converted[i] for i in face]
-        keep=all(v.z>1.53 and abs(v.x)<.15 for v in vs) if region=='head' else all(.13<v.z<.635 for v in vs) if region=='legs' else all(v.x*sign>.422 and v.z<1.35 for v in vs)
+        keep=False if region=='head' else all(.13<v.z<.635 for v in vs) if region=='legs' else all(v.x*sign>.422 and v.z<1.35 for v in vs)
         if not keep:continue
         newface=[]
         for index in face:
             if index not in indices:
                 v=converted[index].copy()
                 if region=='legs':
-                    v.x*=.62;v.y+=.075 if v.x>0 else -.065
+                    side=1 if v.x>0 else -1
+                    # Preserve calf width while correcting the base mesh's
+                    # outward A-pose stance. Uniform X scaling made thin shins.
+                    v.x=side*.14+(v.x-side*(.248-.145*v.z))*1.20
+                    v.y+=.075 if v.x>0 else -.065
                 elif 'hand' in region:
                     v=target+rotation@(v-wrist)
-                    v.y-=max(0,.85-v.z)*.4
+                    v.x=target.x+(v.x-target.x)*.85
+                    v.y+=max(0,.87-v.z)**2*3
                 indices[index]=len(vertices);vertices.append(bodypt(v))
             newface.append(indices[index])
         faces.append(newface)
+    if region=='head':
+        # A continuous sculpted skull/jaw/neck is intentionally featureless.
+        # The head is an authored surface, with no facial openings.
+        profiles=[(1.505,.048,.049,.015),(1.53,.051,.054,.017),(1.555,.053,.054,.020),(1.575,.064,.060,.025),(1.595,.078,.071,.023),(1.625,.087,.084,.014),(1.665,.090,.095,.005),(1.71,.088,.099,0),(1.75,.080,.092,-.002),(1.78,.060,.072,-.007),(1.795,.032,.038,-.010),(1.80,.002,.002,-.010)]
+        n=len(vertices);sides=64
+        for z,rx,ry,cy in profiles:
+            for j in range(sides):
+                a=j*math.tau/sides
+                vertices.append(bodypt((rx*math.cos(a),cy+ry*math.sin(a),z)))
+        faces.extend([(n+k*sides+j,n+k*sides+(j+1)%sides,n+(k+1)*sides+(j+1)%sides,n+(k+1)*sides+j) for k in range(len(profiles)-1) for j in range(sides)])
+        faces.extend([tuple(n+j for j in range(sides-1,-1,-1)),tuple(n+(len(profiles)-1)*sides+j for j in range(sides))])
     anatomy=mesh('Character | anatomical '+region,vertices,faces,skin,True)
     mod=anatomy.modifiers.new('Anatomical surface','SUBSURF');mod.levels=1
 skin.node_tree.nodes.get('Principled BSDF').inputs['Subsurface Weight'].default_value=.08
+
+# Authored tailoring, layered planting and surface details share the helpers
+# above and remain ordinary editable meshes in the resulting Blender file.
+exec(compile((ROOT/'develop_character_landscape.py').read_text(encoding='utf-8'),str(ROOT/'develop_character_landscape.py'),'exec'))
 
 # Pose the clothed lower body for a short walking stride in this static study.
 from mathutils import Matrix
@@ -496,7 +509,7 @@ for obj in list(scene.objects):
         posed=pivot+Matrix.Rotation(angle,3,'X')@(relative-pivot)
         vertex.co=obj.matrix_world.inverted()@(posed+origin)
 for obj in scene.objects:
-    if obj.type!='CURVE' or not any(obj.name.startswith('Character | '+p) for p in ('shoe lace','back pocket seam')):continue
+    if obj.type!='CURVE' or not any(obj.name.startswith('Character | '+p) for p in ('shoe lace','back pocket seam','shorts leg hem')):continue
     for spline in obj.data.splines:
         for point in spline.points:
             relative=Vector(point.co[:3])-origin
@@ -506,53 +519,70 @@ for obj in scene.objects:
             point.co=(*(pivot+Matrix.Rotation(angle,3,'X')@(relative-pivot)+origin),1)
 scene['clothing_details_posed']=True
 
+# Plant the stance foot on the brick surface after the walking deformation.
+# Inspect evaluated soles so subdivision cannot leave the entire figure afloat.
+bpy.context.view_layer.update()
+depsgraph=bpy.context.evaluated_depsgraph_get()
+foot_min=min((obj.evaluated_get(depsgraph).matrix_world@v.co).z for obj in scene.objects if obj.name.startswith('Character | sneaker sole') for v in obj.evaluated_get(depsgraph).data.vertices)
+ground_offset=.051-foot_min
+for obj in scene.objects:
+    if obj.name.startswith('Character | '):obj.location.z+=ground_offset
+scene['character_ground_offset']=ground_offset
+
 # Physical daylight and photographic contrast, without a generated background.
 world=bpy.data.worlds.new('Sundale | late afternoon sky')
 world.use_nodes=True
 scene.world=world
 nodes=world.node_tree.nodes
-sky=nodes.new('ShaderNodeTexSky');sky.sky_type='NISHITA'
-sky.sun_elevation=math.radians(27);sky.sun_rotation=math.radians(218)
-sky.sun_disc=True;sky.sun_size=math.radians(1.0);sky.altitude=.1
-sky.air_density=1.0;sky.dust_density=1.5
+sky=nodes.new('ShaderNodeTexEnvironment')
+sky.image=bpy.data.images.load(str(ROOT/'textures/kloppenheim_06_puresky_4k.exr'));sky.image.pack()
+coords=nodes.new('ShaderNodeTexCoord');mapping=nodes.new('ShaderNodeMapping')
+mapping.inputs['Rotation'].default_value[2]=math.radians(125)
+world.node_tree.links.new(coords.outputs['Generated'],mapping.inputs['Vector'])
+world.node_tree.links.new(mapping.outputs['Vector'],sky.inputs['Vector'])
 world.node_tree.links.new(sky.outputs[0],nodes.get('Background').inputs[0])
-nodes.get('Background').inputs[1].default_value=.22
+nodes.get('Background').inputs[1].default_value=.8
 bpy.ops.object.light_add(type='SUN',location=(-10,5,15))
 sun=bpy.context.object;sun.name='Sundale | warm afternoon sun'
-sun.rotation_euler=(math.radians(48),math.radians(-25),math.radians(-38))
-sun.data.energy=1.4;sun.data.color=(1,.82,.63);sun.data.angle=math.radians(1.2)
+sun.rotation_euler=(math.radians(52),math.radians(-25),math.radians(-155))
+sun.data.energy=6;sun.data.color=(1,.76,.52);sun.data.angle=math.radians(.8)
 bpy.ops.object.light_add(type='AREA',location=(-1,-3,7))
 fill=bpy.context.object;fill.name='Sundale | broad warm bounce'
-fill.data.energy=450;fill.data.shape='DISK';fill.data.size=10;fill.data.color=(1,.84,.68)
+fill.data.energy=700;fill.data.shape='DISK';fill.data.size=10;fill.data.color=(1,.88,.75)
 fill.rotation_euler=(Vector((0,9,1.5))-fill.location).to_track_quat('-Z','Y').to_euler()
-bpy.ops.object.camera_add(location=(-.2,-7.5,1.85))
+data=bpy.data.lights.new('Sundale | reflected courtyard light','AREA')
+data.energy=2100;data.shape='DISK';data.size=12;data.color=(1,.80,.58)
+bounce=bpy.data.objects.new('Sundale | reflected courtyard light',data);scene.collection.objects.link(bounce)
+bounce.location=(8,7,8);bounce.rotation_euler=(Vector((-5,8,3))-bounce.location).to_track_quat('-Z','Y').to_euler()
+bpy.ops.object.camera_add(location=(-.2,-6.9,1.60))
 camera=bpy.context.object;camera.name='CAM | gameplay street'
-camera.rotation_euler=(Vector((2,34,2.8))-camera.location).to_track_quat('-Z','Y').to_euler()
+camera.rotation_euler=(Vector((2,34,1.0))-camera.location).to_track_quat('-Z','Y').to_euler()
 camera.data.lens=28;camera.data.clip_end=500
 scene.camera=camera
 scene.render.engine='CYCLES'
 scene.cycles.samples=32 if '--preview' in sys.argv else 160
 scene.cycles.use_denoising=True
 scene.cycles.max_bounces=8
+scene.cycles.transparent_max_bounces=16
 scene.render.resolution_x=1100 if '--preview' in sys.argv else 1920
 scene.render.resolution_y=619 if '--preview' in sys.argv else 1080
 scene.render.resolution_percentage=100
 scene.view_settings.view_transform='AgX'
 scene.view_settings.look='AgX - Medium High Contrast'
-scene.view_settings.exposure=-.9
+scene.view_settings.exposure=0
 scene.render.image_settings.file_format='PNG'
 scene.render.filepath=str(ROOT / ('StreetSlice_Preview.png' if '--preview' in sys.argv else 'StreetSlice_Gameplay.png'))
 # Named collections keep the actual model editable by asset family.
 groups={}
 for obj in list(scene.objects):
     prefix=obj.name.split(' | ')[0]
-    group='Character' if prefix=='Character' else 'Trees and planting' if prefix in ('Oak','Tree pit soil','Tree pit stone surround') else 'Arena' if prefix=='Arena' else 'Court' if prefix in ('Court','Basket') else 'Architecture' if prefix in ('Building','Window','Balcony','Shop','Masonry') else 'Civic and paving' if prefix in ('Civic','Civic light','Promenade') else 'Lighting and cameras'
+    group='Character' if prefix=='Character' else 'Trees and planting' if prefix in ('Oak','Tree','Tree pit soil','Tree pit stone surround') else 'Arena' if prefix=='Arena' else 'Court' if prefix in ('Court','Basket') else 'Architecture' if prefix in ('Building','Window','Balcony','Shop','Masonry') else 'Civic and paving' if prefix in ('Civic','Civic light','Promenade') else 'Lighting and cameras'
     if group not in groups:
         groups[group]=bpy.data.collections.new(group);scene.collection.children.link(groups[group])
     for collection in list(obj.users_collection):collection.objects.unlink(obj)
     groups[group].objects.link(obj)
-bpy.ops.wm.save_as_mainfile(filepath=str(ROOT/'OddsWell_Sundale_StreetSlice.blend'))
+bpy.ops.wm.save_as_mainfile(filepath=str(ROOT/'OddsWell_Sundale_StreetSlice.blend'),compress=True)
 print('ODDSWELL_STREET_SLICE_MODELED',len(scene.objects),flush=True)
 bpy.ops.render.render(write_still=True)
-(ROOT/'scene-evidence.json').write_text(json.dumps({'source':'Native Blender geometry, procedural materials, and three CC0 sandstone maps from Poly Haven','reference':'../../Reviews/OddsWellStreetIdentityCandidate/OddsWell_Visual_Direction_Concept.png','objects':len(scene.objects),'meshes':len(bpy.data.meshes),'materials':len(bpy.data.materials),'seed':218,'render_engine':'Cycles','samples':scene.cycles.samples,'resolution':[scene.render.resolution_x,scene.render.resolution_y],'runtime_integrated':False,'character':'New static clothing/anatomy study; current game rig unchanged','no_generated_background':True},indent=2)+'\n',encoding='utf-8')
+(ROOT/'scene-evidence.json').write_text(json.dumps({'source':'Authored native architecture, garments, paving and understory; CC0 MakeHuman anatomical surfaces; adapted CC0 Jacaranda geometry; packed Poly Haven stone, bark, tree and sky maps','reference':'../../Reviews/OddsWellStreetIdentityCandidate/OddsWell_Visual_Direction_Concept.png','objects':len(scene.objects),'meshes':len(bpy.data.meshes),'materials':len(bpy.data.materials),'packed_texture_maps':len([i for i in bpy.data.images if i.source=='FILE' and i.packed_file]),'mature_tree_instances':sum(o.name.startswith('Tree | mature Sundale') for o in scene.objects),'seed':218,'render_engine':'Cycles','samples':scene.cycles.samples,'resolution':[scene.render.resolution_x,scene.render.resolution_y],'runtime_integrated':False,'character':'Static tailored study with grounded stance and continuous shorts; current game rig unchanged','character_ground_offset_m':scene['character_ground_offset'],'no_generated_background':True,'quality_goal':'Active; reference fidelity and final art approval remain open'},indent=2)+'\n',encoding='utf-8')
 print('ODDSWELL_STREET_SLICE_RENDER_PASS',flush=True)

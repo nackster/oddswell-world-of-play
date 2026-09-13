@@ -1,10 +1,15 @@
 {
   "result": "PASS",
-  "packed_texture_maps": 6,
-  "cameras": 3,
+  "packed_texture_maps": 17,
+  "cameras": 6,
   "court_paint_max_thickness_m": 0.00048000007518567145,
   "collar_stray_faces": 0,
-  "mesh_objects": 2002,
-  "native_scene_objects": 2417,
+  "head_boundary_edges": 0,
+  "stance_sole_min_z_m": 0.050999999046325684,
+  "shorts_surface_components": 1,
+  "mature_tree_instances": 13,
+  "shared_tree_meshes": 1,
+  "mesh_objects": 2745,
+  "native_scene_objects": 3341,
   "runtime_claim": false
 }

@@ -8,4 +8,10 @@ The source header explicitly releases this asset under CC0. The retained `MAKEHU
 
 https://raw.githubusercontent.com/makehumancommunity/makehuman/master/LICENSE.ASSETS.md
 
-The scene builder reads only the body group and joint reference points, normalizes its height to 1.8 m, retains the exposed head/neck, lower legs, and hands, and adjusts them for the new clothed static study. No helper surfaces, game skeleton, or new gameplay preset are introduced. The original source file is preserved intact. Exact hashes are recorded in the scene delivery manifest.
+The scene builder reads only the body group and joint reference points, normalizes its height to 1.8 m, and retains the lower legs and hands for the clothed static study. The head is an authored faceless surface. No helper surfaces, game skeleton, or new gameplay preset are introduced. The original source file is preserved intact. Exact hashes are recorded in the scene delivery manifest.
+
+The continuing character pass narrows the source hand spread, relaxes the fingers and preserves calf volume while correcting the base stance. A new authored faceless skull/jaw/neck replaces the source head. The original anatomy remains unchanged on disk.
+
+## Mature tree source
+
+`jacaranda_tree_4k.blend` is the original CC0 [Jacaranda Tree](https://polyhaven.com/a/jacaranda_tree), authored by Rico Cilliers with guidance from Rob Tuytel. `jacaranda-source.json` records its exact URL/hash and the ten retained 2K surface maps. `../mature_trees.py` adapts the native growth nodes, foliage appearance and planting proportions, then shares the evaluated geometry between scene instances. The source file is preserved intact; the derivative and its maps are packed into the main street-scene Blender file.

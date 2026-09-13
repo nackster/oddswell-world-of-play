@@ -1,12 +1,16 @@
 {
-  "request": "Continue modeling/rendering toward the first OddsWell street concept",
-  "delivery": "Native Blender street slice and three views; not live Unreal output",
+  "request": "Develop the character and landscape toward the first OddsWell picture; sustain the visual-quality goal",
+  "goal_status": "active",
+  "delivery": "Editable native Blender scene and six native renders; offline art study",
+  "starting_checkpoint": "76ccb76",
   "evidence": {
-    "source": "Original native scene/garments/plant geometry, CC0 MakeHuman anatomical surfaces, six CC0 Poly Haven stone/bark texture maps",
+    "source": "Native scene/garments/plant geometry, CC0 MakeHuman anatomical surfaces, six CC0 Poly Haven stone/bark texture maps and one CC0 photographed sky environment; adapted CC0 Jacaranda model with ten packed 2K maps",
     "reference": "../../Reviews/OddsWellStreetIdentityCandidate/OddsWell_Visual_Direction_Concept.png",
-    "objects": 2417,
-    "meshes": 2012,
-    "materials": 41,
+    "objects": 3341,
+    "meshes": 2769,
+    "materials": 53,
+    "packed_texture_maps": 17,
+    "mature_tree_instances": 13,
     "seed": 218,
     "render_engine": "Cycles",
     "samples": 160,
@@ -15,73 +19,199 @@
       1080
     ],
     "runtime_integrated": false,
-    "character": "New static clothing/anatomy study; current game rig unchanged",
+    "character": "Static tailored study with grounded stance and continuous shorts; current game rig unchanged",
+    "character_ground_offset_m": -0.0626026903986931,
     "no_generated_background": true,
+    "quality_goal": "Active; reference fidelity and final art approval remain open",
     "independent_reopen": "PASS",
-    "packed_texture_maps": 6,
     "additional_views": [
       "Court_and_Arena",
-      "Architecture_Detail"
+      "Architecture_Detail",
+      "Character_Detail",
+      "Landscape_Detail",
+      "Character_ThreeQuarter"
     ],
-    "additional_view_resolution": [
-      1600,
-      900
-    ],
-    "additional_view_samples": 96,
-    "cold_reopen": {
-      "result": "PASS",
-      "packed_texture_maps": 6,
-      "cameras": 3,
-      "court_paint_max_thickness_m": 0.00048000007518567145,
-      "collar_stray_faces": 0,
-      "mesh_objects": 2002,
-      "native_scene_objects": 2417,
-      "runtime_claim": false
-    }
+    "additional_view_resolutions": {
+      "Court_and_Arena": [
+        1600,
+        900
+      ],
+      "Architecture_Detail": [
+        1600,
+        900
+      ],
+      "Character_Detail": [
+        1000,
+        1100
+      ],
+      "Landscape_Detail": [
+        1000,
+        1100
+      ],
+      "Character_ThreeQuarter": [
+        1000,
+        1100
+      ]
+    },
+    "additional_view_samples": 96
+  },
+  "cold_reopen": {
+    "result": "PASS",
+    "packed_texture_maps": 17,
+    "cameras": 6,
+    "court_paint_max_thickness_m": 0.00048000007518567145,
+    "collar_stray_faces": 0,
+    "head_boundary_edges": 0,
+    "stance_sole_min_z_m": 0.050999999046325684,
+    "shorts_surface_components": 1,
+    "mature_tree_instances": 13,
+    "shared_tree_meshes": 1,
+    "mesh_objects": 2745,
+    "native_scene_objects": 3341,
+    "runtime_claim": false
   },
   "renders": {
     "StreetSlice_Gameplay.png": {
       "width": 1920,
       "height": 1080,
-      "sha256": "66a9d97ba0116b4448c7221f9b92a6b6ed0a7b7cedfbe6beffe38c0556ef0eab"
+      "sha256": "e2854771789e01cb8f9c2def09954f101db3b8239c75dc82817de4de6abf1cba"
     },
     "StreetSlice_Court_and_Arena.png": {
       "width": 1600,
       "height": 900,
-      "sha256": "8459022dd69c836a691c0ed5243e12f293403408059332aefe8bb6342641ae5f"
+      "sha256": "f1823c1fc71ceb1500fbbf55c5349d9bdffb69c8ad27b625c989704007932ae6"
     },
     "StreetSlice_Architecture_Detail.png": {
       "width": 1600,
       "height": 900,
-      "sha256": "21654fdb1d02f3de36cb451651e341f87dfe9ee313d5ac1fe587df2afe2f47bb"
+      "sha256": "859df8a4a2610cff04ede52113787c54eca43d06188014f5703a55f13f6d97ac"
+    },
+    "StreetSlice_Character_Detail.png": {
+      "width": 1000,
+      "height": 1100,
+      "sha256": "3285355904f57a466d25ccb944a9a00a6e94a6a7fcf5ed7db91a4c7654d2f2ba"
+    },
+    "StreetSlice_Landscape_Detail.png": {
+      "width": 1000,
+      "height": 1100,
+      "sha256": "0583a8dcc131b3c39e3d9b445b35674d830dd65792e55910301daf7f736bb52a"
+    },
+    "StreetSlice_Character_ThreeQuarter.png": {
+      "width": 1000,
+      "height": 1100,
+      "sha256": "04bc37516f5d4d90ad1f08523c49737789f54f4477ebc948a645ca990c66c987"
     }
   },
   "files_sha256": {
-    "build_scene.py": "a77a294bbf324b8b31984643e6cb323f90d6a10e1253f7eabc0333c5d1c400ec",
+    "build_scene.py": "64ad1437f3dcbb7e05835c6128670124725b635855147f828f16eae4fe913e77",
+    "develop_character_landscape.py": "06ad7f2ca009d1a83707cc3a42620e19cf7e4aa688736ee1202dc3d99b6d334c",
+    "DevelopmentGoal.md": "ee28e606872c156f0199a04cf93a1405be64cd80b8875a588097d94232bc4721",
+    "fetch_sky.py": "8d382e47d5baf5ac8d7a551c0e7d3fa82400956d1dbf785b8754682a25effed3",
     "fetch_stone_material.py": "aa616e57aeca46b79df656608f9f204c146e94b7bc34118b48329a6e77dae0e0",
-    "OddsWell_Sundale_StreetSlice.blend": "e31962d3f3edf3d59a9d013c359621f12382c5a76d1578ff53d8494e14e5c741",
-    "README.md": "cb7c9a06d67d9c2fb4de1e5a480baf1dee1957fc71c7bb5bac47753d72ceb48b",
-    "render_views.py": "57a150f1f2f3e40692ba08083ba29f7ccf1c7110d56e7b349734045e8da33bc6",
+    "fetch_tree.py": "73f1d44cc7c742d6eeb923d35ba3d3a4f8ce3ca259231767ac5d1f65d1bb7cb9",
+    "inspect_details.py": "194abee5e7aacff77c6da8a69ecb73bc7e0338583081ccf4dde390c3da7d78fa",
+    "mature_trees.py": "b3f060ed0de4bc6268b696d103061712038f66d6a7372bc78acf9a0c1711617d",
+    "OddsWell_Sundale_StreetSlice.blend": "d3b0181086c1fc43b315e3c59c00e9f033e2e8de445fd8eea8ee5ea80b9db8d5",
+    "README.md": "cc4de61abe379e8f9982240b64fb89617e4f49d45f0f35235717bb452bea0c8d",
+    "record_delivery.py": "a9c4a5dbb1e53ff409015e13413b6dd9859044458840f030727e7eace16502cf",
+    "render_views.py": "efc893f1e887379b59b52bdfa047008cede0fb8be1a88de008ecdd22ae19d732",
+    "source-assets/jacaranda_tree_4k.blend": "e28b4897a9cc9fbee38b1675860649c79284f2ba31de2f551ce5946236e977f5",
     "source-assets/makehuman-base.obj": "8e761e6624b8f54536409135d1636da63b32486a90d4897f84e121d144f6fb4c",
     "source-assets/MAKEHUMAN-LICENSE.ASSETS.md": "f6089cba01cb570a24712b41ab8a586ccd3cc5ef53dc266ca50b95c288956d2c",
-    "source-assets/README.md": "7d90d5c8c9bc5c7e302e356a845aad5c2d5c6798db099e84a31a8b8f1a3eec9a",
+    "source-assets/README.md": "d4b11ee438ad8196502f01d359c4ac7defa141248234fd8a3e00ce861e5deaac",
     "textures/bark_brown_01_diff_4k.jpg": "545d3c48d3ad237d9fbb7eeaf7e5251cbf9520840e37e28e4e325d833c34bc0b",
     "textures/bark_brown_01_disp_4k.jpg": "fed4f06ddb560636a77c24f50e2100d879a21f65a135ca98e3f423bb14cd6067",
     "textures/bark_brown_01_rough_4k.jpg": "c6f9832b5053f055113d559fcb988ae02c5eb20b1786b0237bdbed4494f9f4a3",
+    "textures/jacaranda/jacaranda_tree_branches_diff_2k.jpg": "0c558fe09ce7e74e211ed181607be323f299724caf131af8605cc91b11335b66",
+    "textures/jacaranda/jacaranda_tree_branches_nor_gl_2k.jpg": "e4cac77b4f35ad47ba4fcdb9061f91acf3318d9889dd259cb5e6e132b0ab60c7",
+    "textures/jacaranda/jacaranda_tree_branches_rough_2k.jpg": "8d7ae974958449b110be53118d64f62ea8a03cb028bb322442180a4969b48c1f",
+    "textures/jacaranda/jacaranda_tree_leaves_diff_2k.jpg": "8915643cdd8b4eb8abb3020bc3a3c2c239daccee0d4adbe3194935439f693d8e",
+    "textures/jacaranda/jacaranda_tree_leaves_nor_gl_2k.jpg": "b5515c611ae7faa6245a0f1a056d50905118366e7ebf1aacb9e220160c7b989f",
+    "textures/jacaranda/jacaranda_tree_leaves_rough_2k.jpg": "f48815a0da5e798337372d8f3488c231587e1b5eb6a2033ed5fcdcbeca8e8368",
+    "textures/jacaranda/jacaranda_tree_trunk_diff_2k.jpg": "d3ab4fd9f3d6237a4e7c3d2b7ac0fde9f34a8d09c3aee443c0a3e1a033ce7d96",
+    "textures/jacaranda/jacaranda_tree_trunk_nor_gl_2k.jpg": "bb7b2c4914c139bc61c9ac5e0e1fd1c4b38f781351ead433a1e93dd886c732d6",
+    "textures/jacaranda/jacaranda_tree_trunk_rough_2k.jpg": "f930543bb87a1a9d9ea369c6d16fa8c8981a65518790ae98030af24daeb4a1d5",
+    "textures/kloppenheim_06_puresky_4k.exr": "0afc1fb008d04094d6a4f65906ea89c5743f4168faab73aee71dd2fbd4a9eb3b",
     "textures/sandstone_blocks_08_diff_4k.jpg": "d1a39585a84abe779ca252fe269b880837e6dd3805298d5b470f75c90afe5293",
     "textures/sandstone_blocks_08_disp_4k.jpg": "3db51669487d6312bfa52621783ab308ebca3ddbd23b061e220cee69847a768c",
     "textures/sandstone_blocks_08_rough_4k.jpg": "e395bdfea1536ddf3a8c97e51b0861270dc75dea722b22633b1cebd4c31ec63a",
-    "verify_scene.py": "eeed676dc72ea42bcca7d9e7bfd1b88b8137a9adf141ee046d4e9fa75f5a4290"
+    "verify_scene.py": "99221619996efc87e2b7e7e388107ed383eb73ef97730c71531a9333185da792",
+    "VisualReview.md": "edc133d95af8b3ef77856fed2dbcb49af00fd4d68854dbc9b4549a5ea57750e1",
+    "textures/jacaranda/jacaranda_tree_leaves_alpha_2k.png": "48b37ef95590d96c39d43af51b4d7683ad1ab7db8dae474f29d3b8c3e726f352"
   },
   "render_log": {
-    "path": "C:\\Users\\reali\\Documents\\SaaS\\Oddswell\\client\\OddsWell\\Saved\\NextTen20260912\\street-slice-views4.log",
-    "sha256": "a2059572fbd716524196ffffe800a383b5862a364bc9bc526f4e21cb9a19badb"
+    "path": "C:\\Users\\reali\\Documents\\SaaS\\Oddswell\\client\\OddsWell\\Saved\\NextTen20260912\\character-landscape-final-views.log",
+    "sha256": "b042a4be794d32471ad04c793bfbb8cf9feeee35bc1e07384e2040918ead6f3d"
   },
-  "source_base_url": "https://raw.githubusercontent.com/makehumancommunity/makehuman/master/makehuman/data/3dobjs/base.obj",
-  "source_base_license": "CC0; original asset header and license retained",
+  "preview_iterations": [
+    {
+      "log": "character-landscape-preview1.log",
+      "sha256": "6b2dd3b44851fabea1d0fb1d0736c0f11881d1db35dfce93dde89504f4ac63e0",
+      "native_render": "PASS"
+    },
+    {
+      "log": "character-landscape-preview2.log",
+      "sha256": "dc7a1e456d10b71d927796ab848b79e6f2961a1c226ee72c2e968856a226b691",
+      "native_render": "PASS"
+    },
+    {
+      "log": "character-landscape-preview3.log",
+      "sha256": "c220f6551e531c25b9fe574455dd7b26db7ba683dd11c20cb1bc166329e99b7e",
+      "native_render": "PASS"
+    },
+    {
+      "log": "character-landscape-preview4.log",
+      "sha256": "9ec693f75bbb669e7c5b2031aa8ef958ffcbd6f20e8eefd9bcc1f2ab2ac71065",
+      "native_render": "PASS"
+    },
+    {
+      "log": "character-landscape-preview5.log",
+      "sha256": "6daf5b8a1fce3d07ffadf1f5a0d6536f55ea71cc9725ed57f06b6536f3d7f432",
+      "native_render": "PASS"
+    },
+    {
+      "log": "character-landscape-preview6.log",
+      "sha256": "59557cf59695164442365e100427b5e6f1cd2ad8bc97d2fec2dfe63c072efee4",
+      "native_render": "PASS"
+    },
+    {
+      "log": "character-landscape-preview7.log",
+      "sha256": "d89571c042ba75f5cc19dba1b9065d456d60ef1afa8e82987c543c277dc4f885",
+      "native_render": "PASS"
+    },
+    {
+      "log": "character-landscape-preview8.log",
+      "sha256": "6b196bb4cedcf324d052712af263f0e0307482d9f16d48d5e9c358b3bcf4ba4f",
+      "native_render": "PASS"
+    },
+    {
+      "log": "character-landscape-preview9.log",
+      "sha256": "363c855ec58e3644ad7fd5ecd727f145801cfb1421af01a9f82e16e7b6105a2a",
+      "native_render": "PASS"
+    },
+    {
+      "log": "character-landscape-preview10.log",
+      "sha256": "3265bb3518083fb6731cfabd680f48f213c18f7bbd5250bafa1bd9f82cc31bca",
+      "native_render": "PASS"
+    },
+    {
+      "log": "character-landscape-preview11.log",
+      "sha256": "17e0481c0f4fd0a3e874484b215f910723053458fe210b5dc786797d5d49ef64",
+      "native_render": "PASS"
+    },
+    {
+      "log": "character-landscape-preview12.log",
+      "sha256": "0d915a69ae07f6c9d6d101bb7b2ae036077c912fdd38fd81b1fb556771f96af9",
+      "native_render": "PASS"
+    }
+  ],
   "original_source_bytes_preserved": true,
   "runtime_map_modified": false,
   "runtime_character_modified": false,
-  "visual_review": "Camera framing, foliage density, surface scale, glazing, steps, walking details, and stray collar faces revised after native render inspection",
-  "remaining": "Reference-level fidelity is still a target; game material baking, LOD/collision, rig integration, and Unreal performance are not proven by offline renders"
+  "visual_review": "Garment fit, continuous shorts, closed shoes, grounded stance, faceless sculpt, sleeve joins, mature tree silhouettes, warm lighting, layered planting and retail depth inspected across native views.",
+  "remaining": "Reference fidelity remains an active art goal, especially garment behavior, architectural variety and photographic surface detail. Runtime LODs/collision/material baking/rigging/performance are not proven.",
+  "architecture_reframe_log": {
+    "path": "C:\\Users\\reali\\Documents\\SaaS\\Oddswell\\client\\OddsWell\\Saved\\NextTen20260912\\character-architecture-final-reframe.log",
+    "sha256": "8f767912fdaaf9688a4cb371a377973d28308e240177640c85c1b460938163b0"
+  }
 }

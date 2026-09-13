@@ -1,27 +1,38 @@
-# Sundale street slice
+# Sundale character and landscape study
 
-An editable 3D scene modeled and rendered toward the first OddsWell visual concept, following the owner's request to continue on September 12, 2026. These are Blender Cycles renders of actual geometry. The reference image is not used as a background or projected onto the scene.
+The owner’s first OddsWell concept picture remains the visual target. [DevelopmentGoal.md](DevelopmentGoal.md) records the active goal and acceptance criteria. The scene is being developed through actual modeling and Blender Cycles renders; the reference is not projected onto geometry or used as a scene background.
 
-![Native street render](StreetSlice_Gameplay.png)
+![Native gameplay view](StreetSlice_Gameplay.png)
 
-The scene contains a brick promenade, recessed storefront displays and awnings, stone/terracotta residential facades and balconies, mature tree canopies, planted limestone seats, a blue basketball court with two baskets and nets, and a glazed arena with a stepped approach. Teal bands connect the jacket, planters, lights, and arena. The clothing and exposed anatomy are a new static study; the game character and production map are unchanged.
+This pass develops a tailored slate jacket with a sewn teal yoke, shaped sleeves, fine seams and localized folds; continuous cotton shorts; relaxed hands, fuller calves and a grounded walking stance; closed canvas shoes with heel details. The promenade has mature tree canopies, grasses, flowering stems, groundcover, fallen leaves, planted seats, deeper illuminated retail windows and a landscaped arena approach. Restrained teal connects clothing, stone furniture, lights and the arena.
 
-![Court and arena](StreetSlice_Court_and_Arena.png)
+![Character inspection](StreetSlice_Character_Detail.png)
 
-![Architecture detail](StreetSlice_Architecture_Detail.png)
+![Landscape inspection](StreetSlice_Landscape_Detail.png)
 
-## Editable source
+## Native source and rendering
 
-Open `OddsWell_Sundale_StreetSlice.blend` in Blender 4.5 or later. Geometry is organized by asset family; six external texture maps are packed into the file. The gameplay camera is active, and two alternate cameras are retained. The main output is 1920x1080 at 160 Cycles samples with denoising; alternate views are 1600x900 at 96 samples. The shaded architecture close-up uses a brighter camera exposure for material inspection.
+Open `OddsWell_Sundale_StreetSlice.blend` in Blender 4.5 or later. It is compressed and contains packed surface maps and the sky environment. Named collections separate the character, planting, architecture, civic details, court, arena and lights. Mature trees share one evaluated mesh; their original growth-node source and deterministic adaptations are retained.
 
-`build_scene.py` rebuilds the native scene, and `render_views.py` reopens the saved file, validates the collections and packed maps, and renders the alternate cameras. Run Blender in background mode with `--python-exit-code 1 --python build_scene.py`; add `-- --preview` for a smaller draft. Run `fetch_stone_material.py` with Python first only if the retained texture files are absent. The anatomical source is retained under `source-assets`.
+- `build_scene.py` rebuilds the scene. It executes `develop_character_landscape.py` for garment construction and landscape detail, and `mature_trees.py` for the adapted tree family.
+- `render_views.py` reopens the saved scene and renders the 1920x1080 gameplay view at 160 samples plus inspection views at 96 samples. `inspect_details.py` provides faster 48-sample close-ups during modeling.
+- `verify_scene.py` checks the cold-open artifact, packed resources, cameras, flat court paint, collar boundaries, stance-foot contact and the connected shorts surface. Use `-- --draft` before final cameras exist.
+- `fetch_stone_material.py`, `fetch_sky.py` and `fetch_tree.py` restore the retained public source maps if needed. The finished Blender file already packs the required maps.
 
-## Sources
+Run Blender with `--background --factory-startup --disable-autoexec --python-exit-code 1 --python build_scene.py`. Add `-- --preview` for a 1100x619 draft. Python exceptions must cause a nonzero exit. The preview is a working file; delivery renders and their hashes are recorded in `delivery.json` after verification.
 
-Architecture, paving, court, arena, plants, fixtures, garments, and scene composition were authored for this study. The exposed anatomical surfaces derive from the MakeHuman hm08 base mesh, released under [CC0 by MakeHuman](https://github.com/makehumancommunity/makehuman/blob/master/LICENSE.md); the original OBJ, asset license, source URL, and hash are retained. It is a static anatomical study, not a new approved gameplay rig or preset.
+## Sources and adaptations
 
-The sandstone and bark maps are [Sandstone Blocks 08](https://polyhaven.com/a/sandstone_blocks_08) and [Bark Brown 01](https://polyhaven.com/a/bark_brown_01), by Rob Tuytel, distributed under [Poly Haven's CC0 license](https://polyhaven.com/license). `textures/sources.json` records the original URLs and exact hashes. No paid marketplace asset or new paid generation was used for this scene.
+Architecture, paving, court, arena, civic furniture, garments, grasses, flowering stems, groundcover, smaller leaf geometry and scene composition were authored for this study.
 
-## What this proves
+The exposed anatomical surfaces derive from the [MakeHuman hm08 CC0 base mesh](https://github.com/makehumancommunity/makehuman/blob/master/LICENSE.md). The original OBJ, asset license and transformations remain under `source-assets`. This is a static clothing/anatomy study, not a new approved gameplay rig.
 
-The visual direction now has an editable modeled scene and multiple native renders, advancing beyond the earlier blockout and generated concept. It does not establish a finished Unreal scene, animation-ready character, collision, LODs, baked game materials, or a frame-rate target. The source is deliberately retained for continued modeling and eventual controlled engine integration. The reference remains the fidelity target; these renders do not claim an exact match or final art approval.
+The mature trees adapt [Jacaranda Tree](https://polyhaven.com/a/jacaranda_tree), by Rico Cilliers with guidance from Rob Tuytel, under CC0. Native growth-node density and leaf size, shader settings, placement, proportions and rotation are adjusted in `mature_trees.py`. The original source Blender file is unchanged. `source-assets/jacaranda-source.json` records the exact source and ten 2K map hashes. Opening the original source alone may request its original 4K paths; the builder explicitly substitutes and packs the retained 2K maps.
+
+Surface maps are [Sandstone Blocks 08](https://polyhaven.com/a/sandstone_blocks_08) and [Bark Brown 01](https://polyhaven.com/a/bark_brown_01), by Rob Tuytel. The photographed environment is [Kloppenheim 06 (Pure Sky)](https://polyhaven.com/a/kloppenheim_06_puresky), by Greg Zaal and Jarod Guest. These are distributed under [Poly Haven’s CC0 license](https://polyhaven.com/license), with URLs and hashes retained in `textures`. No paid marketplace asset or paid image generation was used in this modeling pass.
+
+## Current limits
+
+The goal remains active. The reference still has more resolved garment behavior, architectural variety, planting composition and photographic surface detail. These native renders demonstrate progress and expose remaining defects; they do not claim an exact match or final art approval.
+
+The tested Unreal character and map remain separate. This scene has not established animation compatibility, production LODs, collision, baked game materials or a frame-rate budget. Offline render quality does not grant runtime integration or beta-exit credit.

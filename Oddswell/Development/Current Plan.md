@@ -9,6 +9,8 @@ status: active
 
 ## Latest checkpoint — 2026-09-12
 
+**Active character and landscape goal:** the owner asked to spend sustained time developing the scene toward the first picture. [[Art/Production/SundaleStreetSlice/DevelopmentGoal]] records the visual acceptance criteria. Current modeling concentrates on garment construction and proportions, mature tree silhouettes, layered planting, warm light and native close-up review. The goal remains active while the reference has a materially more resolved finish; a successful render or another completed checklist is not final art approval.
+
 **Subsequent art continuation:** the owner chose the first generated scene as the visual target and asked for continued modeling/rendering. [[Art/Production/SundaleStreetSlice/README]] now records an editable Blender scene with storefronts, paving, mature planting, court, arena, civic details, and a refined clothed character study. Native renders and independent reopen evidence are retained with it. This is the active art source; the previous ten-step completion and tested Unreal package remain separate checkpoints. Engine integration still requires baked materials, geometry/LOD/collision budgets, and a controlled scene import.
 
 The owner asked to resume the **Verify game plans** work and made screenshot-recognizable OddsWell graphics an explicit requirement; see [[Art/Visual Consistency]]. The later accepted six-district city planning concept and the smaller measured production map remain distinct.
