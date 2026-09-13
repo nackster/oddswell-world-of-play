@@ -10,6 +10,8 @@ date: 2026-07-19
 
 # OddsWell Beta Delivery Roadmap
 
+**Art continuation after the ten-step batch:** the owner selected the first scene concept as the fidelity target and authorized further modeling/rendering. [[Art/Production/SundaleStreetSlice/README]] is the new native Blender street slice, with multiple renders and packed source materials. The next engine-facing milestone is to prepare this scene's assets for a controlled import and performance review. These offline renders do not grant game-runtime, final-art, or beta-exit credit.
+
 **2026-09-12 update:** The next-ten-step batch completes runtime skeletal body/outfit integration, eight preset compatibility, walk/run/jump/land playback, packaged camera/Studio/movement checks, and local two-player animated appearance verification. A fresh Windows package, 75 native tests, 105 Python tests, and Brain Admin self-check pass. A concrete visual review pairs a generated OddsWell street concept and native Blender study with actual engine captures. See [[Development/Reports/Next Ten Steps Runtime Character and Visual Review]] and [[Development/OddsWell Next Ten Steps 2026-09-12]]. Next: resolve stylization and recurring visual rules in a small production street slice with a refined character/jacket. [[Art/Visual Consistency]] requires screenshot-recognizable OddsWell graphics; this review candidate does not grant final art approval, Phase 1K completion, Phase 1L exit, or beta readiness.
 
 The dated measurement and batch entries below are historical; this checkpoint does not reopen their batch counters.

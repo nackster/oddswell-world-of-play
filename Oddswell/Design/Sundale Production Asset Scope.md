@@ -1,5 +1,7 @@
 # Sundale Production Asset Scope
 
+**2026-09-12 owner-authorized scene continuation:** the later instruction to keep modeling/rendering toward the first OddsWell street concept authorizes the new offline street slice in [[Art/Production/SundaleStreetSlice/README]]. This supersedes the earlier one-facade-only limit for that scene study. The tested production graybox, gameplay route, and runtime asset authority remain unchanged; the historical scope and gates below describe their earlier checkpoints.
+
 Status: **OWNER-ACCEPTED CURRENT PLANNING BASELINE - ONE RESIDENTIAL FACADE CANDIDATE HAS A BOUNDED UNREAL PROOF; OWNER DECISION AND ALL EXPANSION REMAIN GATED**
 
 This document turns the approved Sundale concept direction into a complete, reviewable beta art-production boundary. The owner superseded the earlier small-city, metropolitan, and radial boards with a larger noncanonical business-clustered mega-city review. That preview does not mutate the proven production graybox, claim that the listed production assets exist, or promote the Phase 1L.2 Job-canopy pilot to canonical final art.

@@ -15,6 +15,8 @@ Every OddsWell character, city, team, item, apartment, interface element, and pr
 
 ## Owner direction — 2026-09-12
 
+The owner's follow-up explicitly selects the first generated street picture as the graphics target and authorizes continued modeling and rendering toward it. The active target is therefore that more realistic warm civic scene, rather than the earlier unresolved painterly alternative. [[Art/Production/SundaleStreetSlice/README]] contains the resulting editable Blender street slice and native renders. It advances the modeled scene; it does not silently replace the tested game map or promote the static anatomical study to the gameplay rig.
+
 OddsWell must have a distinguished visual identity that a player can recognize from a screenshot. The owner explicitly wants something different from the assistant's usual visual defaults. This is a product requirement, not a claim that the current graybox or character candidate already achieves it.
 
 Review the character, clothing, architecture, materials, lighting, and interface together at the actual gameplay camera. A logo or the word OddsWell cannot carry recognition alone. Future visual reviews should include an ordinary street view, the same character near the arena, and a home/interior view with identifying text hidden. Ask whether their silhouettes, surface treatment, color relationships, and recurring forms visibly belong to the same game.

@@ -1,0 +1,10 @@
+{
+  "result": "PASS",
+  "packed_texture_maps": 6,
+  "cameras": 3,
+  "court_paint_max_thickness_m": 0.00048000007518567145,
+  "collar_stray_faces": 0,
+  "mesh_objects": 2002,
+  "native_scene_objects": 2417,
+  "runtime_claim": false
+}

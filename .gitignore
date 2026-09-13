@@ -66,3 +66,6 @@ phase0a/*.jsonl
 
 # Legacy duplicate of the canonical Obsidian vault
 docs/brain/
+
+# Disposable draft render; final Sundale scene views are retained.
+Oddswell/Art/Production/SundaleStreetSlice/StreetSlice_Preview.png

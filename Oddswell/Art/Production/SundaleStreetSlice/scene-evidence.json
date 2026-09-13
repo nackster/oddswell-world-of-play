@@ -1,0 +1,28 @@
+{
+  "source": "Original native scene/garments/plant geometry, CC0 MakeHuman anatomical surfaces, six CC0 Poly Haven stone/bark texture maps",
+  "reference": "../../Reviews/OddsWellStreetIdentityCandidate/OddsWell_Visual_Direction_Concept.png",
+  "objects": 2417,
+  "meshes": 2012,
+  "materials": 41,
+  "seed": 218,
+  "render_engine": "Cycles",
+  "samples": 160,
+  "resolution": [
+    1920,
+    1080
+  ],
+  "runtime_integrated": false,
+  "character": "New static clothing/anatomy study; current game rig unchanged",
+  "no_generated_background": true,
+  "independent_reopen": "PASS",
+  "packed_texture_maps": 6,
+  "additional_views": [
+    "Court_and_Arena",
+    "Architecture_Detail"
+  ],
+  "additional_view_resolution": [
+    1600,
+    900
+  ],
+  "additional_view_samples": 96
+}

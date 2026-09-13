@@ -9,6 +9,8 @@ status: active
 
 ## Latest checkpoint — 2026-09-12
 
+**Subsequent art continuation:** the owner chose the first generated scene as the visual target and asked for continued modeling/rendering. [[Art/Production/SundaleStreetSlice/README]] now records an editable Blender scene with storefronts, paving, mature planting, court, arena, civic details, and a refined clothed character study. Native renders and independent reopen evidence are retained with it. This is the active art source; the previous ten-step completion and tested Unreal package remain separate checkpoints. Engine integration still requires baked materials, geometry/LOD/collision budgets, and a controlled scene import.
+
 The owner asked to resume the **Verify game plans** work and made screenshot-recognizable OddsWell graphics an explicit requirement; see [[Art/Visual Consistency]]. The later accepted six-district city planning concept and the smaller measured production map remain distinct.
 
 The next-ten-step batch now integrates the shared skeletal body, starter outfit, Signal Jacket, eight presets/four skin tones, and walk/run/jump/land playback into the existing runtime pawn. Rendered validation caught and corrected animation root scale and limb rotation-axis defects while preserving the original sources. Existing movement, camera, capsule, replication, save, item, economy, and simulation authorities remain intact. See [[Development/OddsWell Next Ten Steps 2026-09-12]] and [[Development/Reports/Next Ten Steps Runtime Character and Visual Review]].

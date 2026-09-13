@@ -1,0 +1,87 @@
+{
+  "request": "Continue modeling/rendering toward the first OddsWell street concept",
+  "delivery": "Native Blender street slice and three views; not live Unreal output",
+  "evidence": {
+    "source": "Original native scene/garments/plant geometry, CC0 MakeHuman anatomical surfaces, six CC0 Poly Haven stone/bark texture maps",
+    "reference": "../../Reviews/OddsWellStreetIdentityCandidate/OddsWell_Visual_Direction_Concept.png",
+    "objects": 2417,
+    "meshes": 2012,
+    "materials": 41,
+    "seed": 218,
+    "render_engine": "Cycles",
+    "samples": 160,
+    "resolution": [
+      1920,
+      1080
+    ],
+    "runtime_integrated": false,
+    "character": "New static clothing/anatomy study; current game rig unchanged",
+    "no_generated_background": true,
+    "independent_reopen": "PASS",
+    "packed_texture_maps": 6,
+    "additional_views": [
+      "Court_and_Arena",
+      "Architecture_Detail"
+    ],
+    "additional_view_resolution": [
+      1600,
+      900
+    ],
+    "additional_view_samples": 96,
+    "cold_reopen": {
+      "result": "PASS",
+      "packed_texture_maps": 6,
+      "cameras": 3,
+      "court_paint_max_thickness_m": 0.00048000007518567145,
+      "collar_stray_faces": 0,
+      "mesh_objects": 2002,
+      "native_scene_objects": 2417,
+      "runtime_claim": false
+    }
+  },
+  "renders": {
+    "StreetSlice_Gameplay.png": {
+      "width": 1920,
+      "height": 1080,
+      "sha256": "66a9d97ba0116b4448c7221f9b92a6b6ed0a7b7cedfbe6beffe38c0556ef0eab"
+    },
+    "StreetSlice_Court_and_Arena.png": {
+      "width": 1600,
+      "height": 900,
+      "sha256": "8459022dd69c836a691c0ed5243e12f293403408059332aefe8bb6342641ae5f"
+    },
+    "StreetSlice_Architecture_Detail.png": {
+      "width": 1600,
+      "height": 900,
+      "sha256": "21654fdb1d02f3de36cb451651e341f87dfe9ee313d5ac1fe587df2afe2f47bb"
+    }
+  },
+  "files_sha256": {
+    "build_scene.py": "a77a294bbf324b8b31984643e6cb323f90d6a10e1253f7eabc0333c5d1c400ec",
+    "fetch_stone_material.py": "aa616e57aeca46b79df656608f9f204c146e94b7bc34118b48329a6e77dae0e0",
+    "OddsWell_Sundale_StreetSlice.blend": "e31962d3f3edf3d59a9d013c359621f12382c5a76d1578ff53d8494e14e5c741",
+    "README.md": "cb7c9a06d67d9c2fb4de1e5a480baf1dee1957fc71c7bb5bac47753d72ceb48b",
+    "render_views.py": "57a150f1f2f3e40692ba08083ba29f7ccf1c7110d56e7b349734045e8da33bc6",
+    "source-assets/makehuman-base.obj": "8e761e6624b8f54536409135d1636da63b32486a90d4897f84e121d144f6fb4c",
+    "source-assets/MAKEHUMAN-LICENSE.ASSETS.md": "f6089cba01cb570a24712b41ab8a586ccd3cc5ef53dc266ca50b95c288956d2c",
+    "source-assets/README.md": "7d90d5c8c9bc5c7e302e356a845aad5c2d5c6798db099e84a31a8b8f1a3eec9a",
+    "textures/bark_brown_01_diff_4k.jpg": "545d3c48d3ad237d9fbb7eeaf7e5251cbf9520840e37e28e4e325d833c34bc0b",
+    "textures/bark_brown_01_disp_4k.jpg": "fed4f06ddb560636a77c24f50e2100d879a21f65a135ca98e3f423bb14cd6067",
+    "textures/bark_brown_01_rough_4k.jpg": "c6f9832b5053f055113d559fcb988ae02c5eb20b1786b0237bdbed4494f9f4a3",
+    "textures/sandstone_blocks_08_diff_4k.jpg": "d1a39585a84abe779ca252fe269b880837e6dd3805298d5b470f75c90afe5293",
+    "textures/sandstone_blocks_08_disp_4k.jpg": "3db51669487d6312bfa52621783ab308ebca3ddbd23b061e220cee69847a768c",
+    "textures/sandstone_blocks_08_rough_4k.jpg": "e395bdfea1536ddf3a8c97e51b0861270dc75dea722b22633b1cebd4c31ec63a",
+    "verify_scene.py": "eeed676dc72ea42bcca7d9e7bfd1b88b8137a9adf141ee046d4e9fa75f5a4290"
+  },
+  "render_log": {
+    "path": "C:\\Users\\reali\\Documents\\SaaS\\Oddswell\\client\\OddsWell\\Saved\\NextTen20260912\\street-slice-views4.log",
+    "sha256": "a2059572fbd716524196ffffe800a383b5862a364bc9bc526f4e21cb9a19badb"
+  },
+  "source_base_url": "https://raw.githubusercontent.com/makehumancommunity/makehuman/master/makehuman/data/3dobjs/base.obj",
+  "source_base_license": "CC0; original asset header and license retained",
+  "original_source_bytes_preserved": true,
+  "runtime_map_modified": false,
+  "runtime_character_modified": false,
+  "visual_review": "Camera framing, foliage density, surface scale, glazing, steps, walking details, and stray collar faces revised after native render inspection",
+  "remaining": "Reference-level fidelity is still a target; game material baking, LOD/collision, rig integration, and Unreal performance are not proven by offline renders"
+}

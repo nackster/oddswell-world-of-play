@@ -38,6 +38,8 @@ Oddswell/Art/Production/PlayerCharacter/CharacterMotionAxisCorrection/*.sha256 t
 *.tiff filter=lfs diff=lfs merge=lfs -text
 *.exr filter=lfs diff=lfs merge=lfs -text
 *.hdr filter=lfs diff=lfs merge=lfs -text
+Oddswell/Art/Production/SundaleStreetSlice/textures/*.jpg filter=lfs diff=lfs merge=lfs -text
+Oddswell/Art/Production/SundaleStreetSlice/source-assets/*.obj filter=lfs diff=lfs merge=lfs -text
 *.dds filter=lfs diff=lfs merge=lfs -text
 *.ktx filter=lfs diff=lfs merge=lfs -text
 *.ktx2 filter=lfs diff=lfs merge=lfs -text

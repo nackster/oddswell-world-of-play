@@ -1,0 +1,47 @@
+{
+  "assets": [
+    "Sandstone Blocks 08",
+    "Bark Brown 01"
+  ],
+  "author": "Rob Tuytel",
+  "license": "CC0",
+  "license_url": "https://polyhaven.com/license",
+  "maps": [
+    {
+      "file": "sandstone_blocks_08_diff_4k.jpg",
+      "source_page": "https://polyhaven.com/a/sandstone_blocks_08",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/4k/sandstone_blocks_08/sandstone_blocks_08_diff_4k.jpg",
+      "sha256": "d1a39585a84abe779ca252fe269b880837e6dd3805298d5b470f75c90afe5293"
+    },
+    {
+      "file": "sandstone_blocks_08_disp_4k.jpg",
+      "source_page": "https://polyhaven.com/a/sandstone_blocks_08",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/4k/sandstone_blocks_08/sandstone_blocks_08_disp_4k.jpg",
+      "sha256": "3db51669487d6312bfa52621783ab308ebca3ddbd23b061e220cee69847a768c"
+    },
+    {
+      "file": "sandstone_blocks_08_rough_4k.jpg",
+      "source_page": "https://polyhaven.com/a/sandstone_blocks_08",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/4k/sandstone_blocks_08/sandstone_blocks_08_rough_4k.jpg",
+      "sha256": "e395bdfea1536ddf3a8c97e51b0861270dc75dea722b22633b1cebd4c31ec63a"
+    },
+    {
+      "file": "bark_brown_01_diff_4k.jpg",
+      "source_page": "https://polyhaven.com/a/bark_brown_01",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/4k/bark_brown_01/bark_brown_01_diff_4k.jpg",
+      "sha256": "545d3c48d3ad237d9fbb7eeaf7e5251cbf9520840e37e28e4e325d833c34bc0b"
+    },
+    {
+      "file": "bark_brown_01_disp_4k.jpg",
+      "source_page": "https://polyhaven.com/a/bark_brown_01",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/4k/bark_brown_01/bark_brown_01_disp_4k.jpg",
+      "sha256": "fed4f06ddb560636a77c24f50e2100d879a21f65a135ca98e3f423bb14cd6067"
+    },
+    {
+      "file": "bark_brown_01_rough_4k.jpg",
+      "source_page": "https://polyhaven.com/a/bark_brown_01",
+      "source_url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/4k/bark_brown_01/bark_brown_01_rough_4k.jpg",
+      "sha256": "c6f9832b5053f055113d559fcb988ae02c5eb20b1786b0237bdbed4494f9f4a3"
+    }
+  ]
+}
