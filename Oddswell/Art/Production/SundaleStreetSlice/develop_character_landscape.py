@@ -24,10 +24,23 @@ for material,scale,distance in ((skin,1800,.00012),(jacket,1700,.00035),(shorts,
             node.color_ramp.elements[1].color=(*(c*1.05 for c in color),1)
 
 def ring_at(rings,z):
-    for a,b in zip(rings,rings[1:]):
+    # Smooth the tailoring profile while limiting overshoot at narrow cuffs.
+    # Piecewise straight radii produced angular shoulder and hip bands.
+    for index,(a,b) in enumerate(zip(rings,rings[1:])):
         if a[2]<=z<=b[2]:
             f=(z-a[2])/(b[2]-a[2])
-            return tuple(x+(y-x)*f for x,y in zip(a,b))
+            width=b[2]-a[2]
+            result=[]
+            for component in range(5):
+                if component==2:result.append(z);continue
+                slope=(b[component]-a[component])/width
+                previous=(a[component]-rings[index-1][component])/(a[2]-rings[index-1][2]) if index else slope
+                following=(rings[index+2][component]-b[component])/(rings[index+2][2]-b[2]) if index+2<len(rings) else slope
+                def tangent(left,right):
+                    return 0 if left*right<=0 else math.copysign(min(abs((left+right)/2),3*min(abs(left),abs(right))),left)
+                ma=tangent(previous,slope)*width;mb=tangent(slope,following)*width
+                result.append((2*f**3-3*f*f+1)*a[component]+(f**3-2*f*f+f)*ma+(-2*f**3+3*f*f)*b[component]+(f**3-f*f)*mb)
+            return tuple(result)
     return rings[0] if z<rings[0][2] else rings[-1]
 
 def cloth_point(rings,z,a,kind):
@@ -42,9 +55,11 @@ def cloth_point(rings,z,a,kind):
             localized=math.exp(-((a-center)/.45)**2)
             fold+=localized*(.008*math.exp(-(d/.011)**2)-.003*math.exp(-((d+.014)/.010)**2))
         fold+=.003*math.sin(a*8-z*21)*math.exp(-((z-1.36)/.09)**2)
+        fold*=max(0,min(1,(z-.942)/.030))
     elif kind=='sleeve':
         gather=math.exp(-((z-1.15)/.06)**2)+.4*math.exp(-((z-.955)/.035)**2)
         fold=.006*math.sin(z*100+a*3)*gather*(.5+.5*math.sin(a+z*2))+.0015*math.sin(a*9+z*9)
+        fold*=max(0,min(1,(z-.945)/.035))
     elif kind=='shorts':
         fold=.0025*math.sin(a*9+z*11)
         fold+=.004*math.sin(z*82+a*2)*math.exp(-((z-.84)/.05)**2)
@@ -71,7 +86,7 @@ def cloth(name,rings,material,kind,steps=55,sides=80):
 
 coat=[(0,0,.915,.190,.114),(0,0,.95,.209,.132),(0,.006,1.02,.222,.140),(0,.012,1.15,.239,.144),(0,.014,1.31,.253,.146),(0,.012,1.395,.250,.133),(0,.007,1.43,.231,.123),(0,0,1.48,.104,.083)]
 cloth('tailored slate jacket',coat,jacket,'coat')
-cloth('ribbed waistband',[(0,0,.897,.191,.117),(0,0,.922,.196,.121),(0,0,.943,.204,.130)],rib,'rib',12)
+cloth('ribbed waistband',[(0,0,.897,.194,.120),(0,0,.922,.199,.124),(0,0,.943,.207,.133)],rib,'rib',12)
 cloth('standing collar',[(0,0,1.47,.095,.082),(0,0,1.485,.091,.079),(0,0,1.526,.076,.071)],rib,'rib',14)
 cloth('shorts leg hip yoke',[(0,0,.80,.190,.115),(0,0,.865,.215,.132),(0,0,.925,.209,.129)],shorts,'shorts',24)
 
@@ -104,6 +119,7 @@ for k in range(67):
     box('Character | zipper teeth',p,(.006,.0015,.0015),zipper)
 box('Character | zipper pull',cloth_point(coat,1.432,math.pi/2,'coat')+Vector((0,.004,0)),(.011,.004,.023),zipper,.0015)
 
+leg_profiles={}
 for side in (-1,1):
     suffix=' left' if side<0 else ' right'
     sleeve=[(side*.338,-.016,.924,.054,.059),(side*.34,-.026,.973,.060,.067),(side*.324,-.040,1.05,.066,.074),(side*.311,-.052,1.15,.076,.079),(side*.30,-.029,1.22,.076,.084),(side*.273,-.003,1.34,.086,.093),(side*.229,.006,1.414,.060,.080),(side*.20,.006,1.445,.047,.064),(side*.145,.006,1.455,.035,.045)]
@@ -114,12 +130,17 @@ for side in (-1,1):
             a=math.pi+j*math.pi/40;z=1.329+k*.009+.008*math.cos(a*2)
             sleeve_yoke.append(cloth_point(sleeve,z,a,'sleeve')+Vector((math.cos(a),math.sin(a),0))*.0018)
     mesh('Character | sleeve signal yoke'+suffix,sleeve_yoke,[(k*41+j,k*41+j+1,(k+1)*41+j+1,(k+1)*41+j) for k in range(4) for j in range(40)],teal,True)
-    cloth('sleeve cuff'+suffix,[(side*.338,-.016,.902,.052,.056),(side*.338,-.016,.933,.057,.061),(side*.338,-.016,.945,.060,.064)],rib,'rib',12)
+    cuff=[]
+    for z in (.902,.923,.945):
+        x,y,_,rx,ry=ring_at(sleeve,z)
+        cuff.append((x,y,z,rx+.0035,ry+.0035))
+    cloth('sleeve cuff'+suffix,cuff,rib,'rib',12)
     # Sewn outer sleeve line is thin and rests on the displaced fabric.
     a=math.pi*1.5
     tube('Character | sleeve seam'+suffix,[cloth_point(sleeve,.95+k*.006,a,'sleeve')+Vector((0,-.001,0)) for k in range(72)],.00065,thread)
     legy=.075 if side==1 else -.065
     pants=[(side*.131,legy,.604,.090,.104),(side*.13,legy,.625,.095,.109),(side*.126,legy*.9,.685,.104,.116),(side*.12,legy*.6,.77,.119,.129),(side*.11,legy*.15,.85,.122,.137),(side*.106,0,.922,.115,.129)]
+    leg_profiles[side]=pants
     cloth('shorts leg'+suffix,pants,shorts,'shorts',58)
     for z in (.611,.622):
         tube('Character | shorts leg hem'+suffix,[cloth_point(pants,z,j*math.tau/80,'shorts')+Vector((math.cos(j*math.tau/80),math.sin(j*math.tau/80),0))*.001 for j in range(81)],.00065,cotton_thread)
@@ -148,6 +169,20 @@ for side in (-1,1):
     tube('Character | shoe lace heel seam'+suffix,[bodypt((side*.14-.028,legy-.110,.089)),bodypt((side*.14,legy-.115,.111)),bodypt((side*.14+.028,legy-.110,.089))],.0009,cotton_thread)
     box('Character | canvas sneaker heel tab'+suffix,bodypt((side*.14,legy-.105,.121)),(.019,.008,.030),shoe_fabric,.003)
 
+# Fit the covered thigh under the garment; keep exposed calf anatomy intact.
+# The source thigh widens above the knee and otherwise pierces the narrow hem.
+for vertex in bpy.data.objects['Character | anatomical legs'].data.vertices:
+    p=vertex.co-origin
+    if p.z<=.56:continue
+    side=1 if p.x>0 else -1
+    x,y,_,rx,ry=ring_at(leg_profiles[side],p.z)
+    radius=math.sqrt(((p.x-x)/rx)**2+((p.y-y)/ry)**2)
+    if radius>.90:
+        blend=min(1,(p.z-.56)/.045)
+        factor=1+(.90/radius-1)*blend
+        p.x=x+(p.x-x)*factor;p.y=y+(p.y-y)*factor
+        vertex.co=p+origin
+
 # Fuse the closed garment volumes into one continuous pair of shorts. This
 # removes the separate-tube crotch and the belt-like lower edge of the yoke.
 parts=[o for o in scene.objects if o.type=='MESH' and o.name.startswith('Character | shorts leg')]
@@ -164,6 +199,14 @@ smooth=pants.modifiers.new('Soft garment joins','SMOOTH');smooth.factor=.65;smoo
 # Apply the union before posing so folds and the crotch deform together.
 bpy.context.view_layer.objects.active=pants
 for modifier in list(pants.modifiers):bpy.ops.object.modifier_apply(modifier=modifier.name)
+# Open the leg hems after the volume union. Filled end caps intersected the
+# anatomical thighs and left a dark horizontal patch beneath the shorts.
+import bmesh
+bm=bmesh.new();bm.from_mesh(pants.data)
+bottom=[v for v in bm.verts if v.co.z<origin.z+.609]
+bmesh.ops.delete(bm,geom=bottom,context='VERTS')
+bm.to_mesh(pants.data);bm.free();pants.data.update()
+hem=pants.modifiers.new('Cotton hem thickness','SOLIDIFY');hem.thickness=.0015
 
 # Small opposing arm swing and relaxed fingers produce an ordinary walking
 # stance. Every visible cuff, sleeve and hand is moved together.
@@ -177,6 +220,44 @@ for obj in list(scene.objects):
         pivot=Vector((side*.23,0,1.405))
         p=pivot+Matrix.Rotation(-side*.09,3,'X')@(p-pivot)
         point.co=p+origin if obj.type=='MESH' else (*(p+origin),1)
+
+# Fuse the posed sleeves and torso so the shoulder is one cloth surface.
+# The teal panels and stitching are fitted onto the resulting geometry.
+parts=[o for o in scene.objects if o.type=='MESH' and (o.name=='Character | tailored slate jacket' or o.name.startswith('Character | shaped sleeve'))]
+vertices=[];faces=[]
+for obj in parts:
+    offset=len(vertices);vertices.extend([v.co.copy() for v in obj.data.vertices])
+    faces.extend([tuple(offset+i for i in p.vertices) for p in obj.data.polygons])
+    n=len(obj.data.vertices);sides=80
+    faces.extend([tuple(offset+j for j in range(sides-1,-1,-1)),tuple(offset+n-sides+j for j in range(sides))])
+    bpy.data.objects.remove(obj,do_unlink=True)
+coat_surface=mesh('Character | tailored slate jacket',vertices,faces,jacket,True)
+remesh=coat_surface.modifiers.new('Continuous jacket construction','REMESH');remesh.mode='VOXEL';remesh.voxel_size=.0025;remesh.use_smooth_shade=True
+smooth=coat_surface.modifiers.new('Soft shoulder joins','SMOOTH');smooth.factor=.45;smooth.iterations=3
+bpy.context.view_layer.objects.active=coat_surface
+for modifier in list(coat_surface.modifiers):bpy.ops.object.modifier_apply(modifier=modifier.name)
+from mathutils.bvhtree import BVHTree
+bpy.context.view_layer.update()
+surface=BVHTree.FromObject(coat_surface,bpy.context.evaluated_depsgraph_get())
+for obj in scene.objects:
+    if not obj.name.startswith('Character | ') or not any(name in obj.name for name in ('yoke','jacket panel seam','sleeve seam','front welt pocket')):continue
+    if obj.type=='MESH' and 'yoke' in obj.name:
+        # Inner sleeve panels are buried by the torso union. Projecting those
+        # hidden vertices onto the nearest exterior made a stray teal sliver.
+        bm=bmesh.new();bm.from_mesh(obj.data)
+        buried=[]
+        for vertex in bm.verts:
+            location,normal,_,distance=surface.find_nearest(vertex.co)
+            if location is not None and (vertex.co-location).dot(normal)<-.006:buried.append(vertex)
+        bmesh.ops.delete(bm,geom=buried,context='VERTS')
+        bm.to_mesh(obj.data);bm.free();obj.data.update()
+    points=list(obj.data.vertices) if obj.type=='MESH' else [p for s in obj.data.splines for p in s.points] if obj.type=='CURVE' else []
+    for point in points:
+        location,normal,_,distance=surface.find_nearest(Vector(point.co[:3]))
+        if location is not None and distance<.04:
+            value=location+normal*.0015
+            point.co=value if obj.type=='MESH' else (*value,1)
+scene['continuous_jacket']=True
 
 # Layered landscape: narrow grasses, flowering stems, small groundcover and
 # broad shrub leaves occupy different heights instead of one leaf cloud.

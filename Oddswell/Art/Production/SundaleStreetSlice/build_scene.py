@@ -110,6 +110,7 @@ def scanned_surface(material,asset,repeat,height):
     links.new(maps['disp'].outputs['Color'],bump.inputs['Height']);links.new(bump.outputs[0],bs.inputs['Normal'])
 scanned_surface(stonewall,'sandstone_blocks_08',1/3,.06)
 scanned_surface(bark,'bark_brown_01',1.1,.035)
+exec(compile((ROOT/'refine_minerals.py').read_text(encoding='utf-8'),str(ROOT/'refine_minerals.py'),'exec'))
 
 
 def mesh(name, verts, faces, material, smooth=False):
@@ -126,6 +127,7 @@ def mesh(name, verts, faces, material, smooth=False):
 
 
 def box(name, pos, size, material, bevel=0):
+    if material==wood and size[1]>size[0]:material=wood_along_y
     x,y,z = pos
     a,b,c = (s/2 for s in size)
     verts = [(x+dx,y+dy,z+dz) for dx,dy,dz in [(-a,-b,-c),(-a,-b,c),(-a,b,-c),(-a,b,c),(a,-b,-c),(a,-b,c),(a,b,-c),(a,b,c)]]
@@ -458,7 +460,7 @@ for region in ('head','legs','left hand','right hand'):
         rotation=(wrist-elbow).rotation_difference(Vector((sign*.03,.04,-.25)))
     for face in bodyfaces:
         vs=[converted[i] for i in face]
-        keep=False if region=='head' else all(.13<v.z<.635 for v in vs) if region=='legs' else all(v.x*sign>.422 and v.z<1.35 for v in vs)
+        keep=False if region=='head' else all(.13<v.z<.705 for v in vs) if region=='legs' else all(v.x*sign>.422 and v.z<1.35 for v in vs)
         if not keep:continue
         newface=[]
         for index in face:
@@ -560,6 +562,11 @@ camera.rotation_euler=(Vector((2,34,1.0))-camera.location).to_track_quat('-Z','Y
 camera.data.lens=28;camera.data.clip_end=500
 scene.camera=camera
 scene.render.engine='CYCLES'
+scene.cycles.device='GPU' if '--gpu' in sys.argv else 'CPU'
+if '--gpu' in sys.argv:
+    devices=bpy.context.preferences.addons['cycles'].preferences
+    devices.compute_device_type='OPTIX';devices.get_devices()
+    for device in devices.devices:device.use=device.type=='OPTIX'
 scene.cycles.samples=32 if '--preview' in sys.argv else 160
 scene.cycles.use_denoising=True
 scene.cycles.max_bounces=8

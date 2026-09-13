@@ -26,19 +26,25 @@ assert head_boundary_edges==0
 depsgraph=bpy.context.evaluated_depsgraph_get()
 sole_min=min((obj.evaluated_get(depsgraph).matrix_world@v.co).z for obj in scene.objects if obj.name.startswith('Character | sneaker sole') for v in obj.evaluated_get(depsgraph).data.vertices)
 assert abs(sole_min-.051)<.0002,sole_min
+def assert_connected(obj):
+    adj=[set() for _ in obj.data.vertices]
+    for edge in obj.data.edges:
+        a,b=edge.vertices;adj[a].add(b);adj[b].add(a)
+    visited={0};pending=[0]
+    while pending:
+        for neighbor in adj[pending.pop()]-visited:
+            visited.add(neighbor);pending.append(neighbor)
+    assert len(visited)==len(adj),'Disconnected garment: '+obj.name
 pants=[o for o in scene.objects if o.type=='MESH' and o.name.startswith('Character | shorts leg')]
 assert len(pants)==1
-adj=[set() for _ in pants[0].data.vertices]
-for edge in pants[0].data.edges:
-    a,b=edge.vertices;adj[a].add(b);adj[b].add(a)
-visited={0};pending=[0]
-while pending:
-    for neighbor in adj[pending.pop()]-visited:
-        visited.add(neighbor);pending.append(neighbor)
-assert len(visited)==len(adj),'Disconnected shorts surface'
+assert_connected(pants[0])
+assert scene.get('continuous_jacket')
+assert_connected(bpy.data.objects['Character | tailored slate jacket'])
 assert scene.get('character_landscape_development')
 trees=[o for o in scene.objects if o.name.startswith('Tree | mature Sundale')]
-assert len(trees)==13 and len({o.data.as_pointer() for o in trees})==1
-result={'result':'PASS','packed_texture_maps':len(packed),'cameras':sum(o.type=='CAMERA' for o in scene.objects),'court_paint_max_thickness_m':max(obj.dimensions.z for obj in paint),'collar_stray_faces':0,'head_boundary_edges':head_boundary_edges,'stance_sole_min_z_m':sole_min,'shorts_surface_components':1,'mature_tree_instances':len(trees),'shared_tree_meshes':1,'mesh_objects':sum(obj.type=='MESH' for obj in scene.objects),'native_scene_objects':len(scene.objects),'runtime_claim':False}
+tree_meshes=len({o.data.as_pointer() for o in trees})
+assert len(trees)==13 and tree_meshes==3
+assert {o['growth_variant'] for o in trees}=={0,1,2}
+result={'result':'PASS','packed_texture_maps':len(packed),'cameras':sum(o.type=='CAMERA' for o in scene.objects),'court_paint_max_thickness_m':max(obj.dimensions.z for obj in paint),'collar_stray_faces':0,'head_boundary_edges':head_boundary_edges,'stance_sole_min_z_m':sole_min,'shorts_surface_components':1,'jacket_surface_components':1,'mature_tree_instances':len(trees),'shared_tree_meshes':tree_meshes,'mesh_objects':sum(obj.type=='MESH' for obj in scene.objects),'native_scene_objects':len(scene.objects),'runtime_claim':False}
 if '--draft' not in sys.argv:(ROOT/'cold-reopen.json').write_text(json.dumps(result,indent=2)+'\n',encoding='utf-8')
 print('ODDSWELL_STREET_SLICE_COLD_CHECK_PASS',json.dumps(result))

@@ -5,6 +5,11 @@ from mathutils import Vector
 ROOT=Path(__file__).resolve().parent
 bpy.ops.wm.open_mainfile(filepath=str(ROOT/'OddsWell_Sundale_StreetSlice.blend'))
 scene=bpy.context.scene
+scene.cycles.device='GPU' if '--gpu' in sys.argv else 'CPU'
+if '--gpu' in sys.argv:
+    devices=bpy.context.preferences.addons['cycles'].preferences
+    devices.compute_device_type='OPTIX';devices.get_devices()
+    for device in devices.devices:device.use=device.type=='OPTIX'
 scene.cycles.samples=48
 scene.render.resolution_x=1000;scene.render.resolution_y=1100
 for name,pos,target,lens in [

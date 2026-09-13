@@ -1,6 +1,22 @@
 # Character and landscape development review
 
-The first OddsWell picture remains the target, and the visual-quality goal remains **active**. The previous committed starting point is `76ccb76`.
+The first OddsWell picture remains the target, and the visual-quality goal remains **active**. The original starting point is `76ccb76`; the preceding character/landscape checkpoint is `ae5144c`.
+
+Reference picture:
+
+![Accepted first reference](../../Reviews/OddsWellStreetIdentityCandidate/OddsWell_Visual_Direction_Concept.png)
+
+Current native gameplay render:
+
+![Native scene comparison](StreetSlice_Gameplay.png)
+
+## Refinement after the first character checkpoint
+
+The jacket torso and posed sleeves now form one continuous surface. Smoothly interpolated tailoring profiles reduce angular shoulder and hip bands; the teal panels and seams are fitted to that surface. Hidden inner-sleeve panel vertices are removed before fitting so they cannot appear as teal slivers on the front shoulder. The cuff profile follows the sleeve, and compression folds fade into the knit bands.
+
+The shorts have open, thickened hems after their volume union. Native close-ups also exposed insufficient thigh coverage inside the hem; the retained anatomical surface now extends farther under the shorts and fits within their opening. The exposed calves retain their volume. These changes address gaps and intersections, not only shading.
+
+Thirteen mature trees use three shared growth variants with different leaf seeds, densities and crown proportions. The foreground hero stays fixed for composition; upright and spreading forms vary the street and forecourt. Stone and fired paving gain sparse pores and fine mineral relief, while oak fibers follow the seat slats and shelves. At gameplay distance these material changes are subtle; they do not replace the reference's richer wear and photographic detail.
 
 ## Changes visible in the native scene
 
@@ -18,6 +34,8 @@ The tree comparison led to adapting a CC0 native model instead of retaining the 
 
 The reference has more natural garment drape, richer architectural variation and shop contents, subtler weathering, a more composed mixture of plants, and a more photographic finish. The current character is a static model and the scene is deliberately an offline art study. A successful render and geometric checks do not close those visual gaps.
 
-The next visible priorities are shoulder and hip cloth shapes, varied facade/window arrangements, more convincing retail contents, and the smooth foreground stone surfaces. Paving scale is established, but wear and small color changes still need refinement. The shared tree source improves branching; a small number of distinct growth variants would reduce repetition without duplicating every tree’s geometry.
+The next visible priorities are natural cloth drape around the hips and shoulder seam, varied facade/window arrangements, more convincing retail contents, and less uniformly clean foreground surfaces. Paving scale is established, but wear and small color changes still need refinement. The three tree variants reduce repetition; their compound foliage still differs from the reference's broad, rounded leaves and needs further art direction.
+
+The court inspection also reveals low foreground branches encroaching on the court view. Further landscape work should establish a higher clear trunk and prune the court-facing crown before treating the planting as production placement.
 
 Next iterations should focus on those remaining visible differences before spending effort on engine import. LODs, collision, baked game materials, rigging and performance remain separate requirements. No runtime code, production map or tested package was changed by this art pass.
