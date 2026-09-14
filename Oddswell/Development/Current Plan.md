@@ -13,6 +13,8 @@ status: active
 
 The continuing refinement joins the jacket torso and sleeves, fits the cuffs and teal panels, corrects thigh/shorts overlap, introduces three shared tree growth variants, and adds mineral pores and directional oak grain. [[Art/Production/SundaleStreetSlice/VisualReview]] records the visible changes and remaining gaps against the first picture.
 
+The latest landscape pass adapts broad-leaf clusters onto raised woody branching and adds stemmed foreground shrubs. A single crown distribution pass produces more open forms and improves the court/arena sightlines. Original CC0 sources and seven additional leaf/twig maps are retained; the scene packs 24 maps. Natural cloth drape, selective pruning, architectural variety and photographic surface detail remain active visual work.
+
 **Subsequent art continuation:** the owner chose the first generated scene as the visual target and asked for continued modeling/rendering. [[Art/Production/SundaleStreetSlice/README]] now records an editable Blender scene with storefronts, paving, mature planting, court, arena, civic details, and a refined clothed character study. Native renders and independent reopen evidence are retained with it. This is the active art source; the previous ten-step completion and tested Unreal package remain separate checkpoints. Engine integration still requires baked materials, geometry/LOD/collision budgets, and a controlled scene import.
 
 The owner asked to resume the **Verify game plans** work and made screenshot-recognizable OddsWell graphics an explicit requirement; see [[Art/Visual Consistency]]. The later accepted six-district city planning concept and the smaller measured production map remain distinct.

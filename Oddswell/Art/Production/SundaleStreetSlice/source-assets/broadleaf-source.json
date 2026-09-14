@@ -1,0 +1,69 @@
+{
+  "asset": "https://polyhaven.com/a/island_tree_01",
+  "authors": [
+    "Rico Cilliers (cleanup, processing)",
+    "Rob Tuytel (scanning, processing)"
+  ],
+  "license": "CC0",
+  "license_url": "https://polyhaven.com/license",
+  "scope": "Retained original native source and leaf/twig maps for broad-leaf geometry adaptation. Source trunk geometry and trunk-specific maps are not used.",
+  "adaptation": "LOD1 leaf clusters retain their UVs, use a 0.40 decimation ratio and 6x local scaling, and replace the Jacaranda leaf family in a single branch-mask emission pass. Raised woody geometry preserves scanned leaf proportions. Understory instances use a separate leaf material. See broadleaf_canopy.py and mature_trees.py.",
+  "files": [
+    {
+      "file": "source-assets/island_tree_01_2k.blend",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Models/blend/2k/island_tree_01/island_tree_01_2k.blend",
+      "bytes": 58077539,
+      "source_md5": "8dfa9f536a47d4436a674c9e7cd8ffbb",
+      "sha256": "77de2c504a7aa9b6ae8acb5877dbcd155d4bda6eb156f761c492c48c843bdcd2"
+    },
+    {
+      "file": "textures/broadleaf/island_tree_01_branches_diff_2k.png",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/2k/island_tree_01/island_tree_01_branches_diff_2k.png",
+      "bytes": 19963299,
+      "source_md5": "f288bf34ce29dde5e1675374edb9cd04",
+      "sha256": "fcfaaa1262cb8f31327ca084e6f8d69cda0b6af0d1f065a68c5a47b906ec02ff"
+    },
+    {
+      "file": "textures/broadleaf/island_tree_01_branches_nor_gl_2k.png",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/2k/island_tree_01/island_tree_01_branches_nor_gl_2k.png",
+      "bytes": 20594936,
+      "source_md5": "98af2803beca2055fde16a4ca8f2151a",
+      "sha256": "2ee3ff83fdf8f01cd9d26d5c4665b866bf69f2557e02582577f23d6d007f9c78"
+    },
+    {
+      "file": "textures/broadleaf/island_tree_01_branches_rough_2k.png",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/2k/island_tree_01/island_tree_01_branches_rough_2k.png",
+      "bytes": 4730461,
+      "source_md5": "f2c70d75834aa97f7ef173c119f92f8d",
+      "sha256": "e6d3c688b07dea15344672516433d7ba681727f5149c8be446dc1a5bbed9afdc"
+    },
+    {
+      "file": "textures/broadleaf/island_tree_01_leaves_alpha_2k.png",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/2k/island_tree_01/island_tree_01_leaves_alpha_2k.png",
+      "bytes": 139077,
+      "source_md5": "063774afef8fe1d35ce52d56bf41bf81",
+      "sha256": "30c36ae0d9023400035f0af9d336ed5f73a84bf8a88c8e2bec8faa07d725992b"
+    },
+    {
+      "file": "textures/broadleaf/island_tree_01_leaves_diff_2k.png",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/2k/island_tree_01/island_tree_01_leaves_diff_2k.png",
+      "bytes": 6428036,
+      "source_md5": "d54fd06a5611278810df55d427cc4b1b",
+      "sha256": "fca98db31845a92e6374fccd032d40d6134e2c80fdca8038b063897c8e8f0035"
+    },
+    {
+      "file": "textures/broadleaf/island_tree_01_leaves_nor_gl_2k.png",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/2k/island_tree_01/island_tree_01_leaves_nor_gl_2k.png",
+      "bytes": 10109651,
+      "source_md5": "3d3d53270e1a5d6be297307c7ab8629c",
+      "sha256": "2d152d8530e707056fce44303de71cf63503f5d95b80d0820dc7625c99d8d2d9"
+    },
+    {
+      "file": "textures/broadleaf/island_tree_01_leaves_rough_2k.png",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/2k/island_tree_01/island_tree_01_leaves_rough_2k.png",
+      "bytes": 2723975,
+      "source_md5": "a49ed311f1d7f504a17d917ffbc83bd1",
+      "sha256": "eccee8f209c8dd869b478a209ec0b44a3de6bae11c9594700f7e201771a9eac2"
+    }
+  ]
+}

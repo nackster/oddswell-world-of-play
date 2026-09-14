@@ -1,10 +1,10 @@
 {
   "source": "Native scene/garments/plant geometry, CC0 MakeHuman anatomical surfaces, six CC0 Poly Haven stone/bark texture maps and one CC0 photographed sky environment; adapted CC0 Jacaranda model with ten packed 2K maps",
   "reference": "../../Reviews/OddsWellStreetIdentityCandidate/OddsWell_Visual_Direction_Concept.png",
-  "objects": 3339,
-  "meshes": 2770,
-  "materials": 54,
-  "packed_texture_maps": 17,
+  "objects": 4553,
+  "meshes": 3106,
+  "materials": 57,
+  "packed_texture_maps": 24,
   "mature_tree_instances": 13,
   "seed": 218,
   "render_engine": "Cycles",
@@ -49,5 +49,6 @@
     ]
   },
   "additional_view_samples": 96,
-  "render_device": "OPTIX"
+  "render_device": "OPTIX",
+  "canopy": "Raised Jacaranda branching with adapted CC0 Island Tree 01 broad-leaf clusters; same leaf family in foreground shrubs"
 }

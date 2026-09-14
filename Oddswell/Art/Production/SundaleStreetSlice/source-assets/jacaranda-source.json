@@ -6,7 +6,7 @@
   ],
   "license": "CC0",
   "license_url": "https://polyhaven.com/license",
-  "adaptation": "Native growth-node density multiplied by 1.5 and leaf size by 1.18; leaf shader color/translucency adjusted; shared evaluated geometry instanced at varied scales and rotations. 2K maps substituted for the source file 4K image paths. Original source file unmodified. See mature_trees.py for reproducible parameters.",
+  "adaptation": "Original source file unmodified. Current Sundale derivative raises woody geometry, combines original branch growth masks, and uses one emission pass with retained Island Tree 01 leaf clusters. Three shared crown variants use different seeds and proportions. 2K maps replace original 4K paths. See mature_trees.py and broadleaf_canopy.py for reproducible parameters.",
   "files": [
     {
       "file": "textures/jacaranda/jacaranda_tree_branches_diff_2k.jpg",

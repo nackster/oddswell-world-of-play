@@ -10,7 +10,8 @@ bpy.ops.wm.open_mainfile(filepath=str(ROOT/'OddsWell_Sundale_StreetSlice.blend')
 scene=bpy.context.scene
 bpy.context.view_layer.update()
 packed=[image for image in bpy.data.images if image.source=='FILE' and image.packed_file]
-assert len(packed)==17
+assert len(packed)==24
+assert not [image.name for image in bpy.data.images if image.source=='FILE' and not image.packed_file],'Unpacked source image'
 assert scene.camera.name=='CAM | gameplay street'
 if '--draft' not in sys.argv:
     assert all(bpy.data.objects.get('CAM | '+name) for name in ('Court_and_Arena','Architecture_Detail','Character_Detail','Landscape_Detail','Character_ThreeQuarter'))
@@ -45,6 +46,8 @@ trees=[o for o in scene.objects if o.name.startswith('Tree | mature Sundale')]
 tree_meshes=len({o.data.as_pointer() for o in trees})
 assert len(trees)==13 and tree_meshes==3
 assert {o['growth_variant'] for o in trees}=={0,1,2}
+assert all(o.get('raised_clear_trunk') for o in trees)
+assert all(any('island_tree_01_leaves' in m.name for m in o.data.materials if m) for o in trees)
 result={'result':'PASS','packed_texture_maps':len(packed),'cameras':sum(o.type=='CAMERA' for o in scene.objects),'court_paint_max_thickness_m':max(obj.dimensions.z for obj in paint),'collar_stray_faces':0,'head_boundary_edges':head_boundary_edges,'stance_sole_min_z_m':sole_min,'shorts_surface_components':1,'jacket_surface_components':1,'mature_tree_instances':len(trees),'shared_tree_meshes':tree_meshes,'mesh_objects':sum(obj.type=='MESH' for obj in scene.objects),'native_scene_objects':len(scene.objects),'runtime_claim':False}
 if '--draft' not in sys.argv:(ROOT/'cold-reopen.json').write_text(json.dumps(result,indent=2)+'\n',encoding='utf-8')
 print('ODDSWELL_STREET_SLICE_COLD_CHECK_PASS',json.dumps(result))

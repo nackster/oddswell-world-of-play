@@ -1,6 +1,6 @@
 # Character and landscape development review
 
-The first OddsWell picture remains the target, and the visual-quality goal remains **active**. The original starting point is `76ccb76`; the preceding character/landscape checkpoint is `ae5144c`.
+The first OddsWell picture remains the target, and the visual-quality goal remains **active**. The original starting point is `76ccb76`; preceding character/landscape checkpoints are `ae5144c` and `ab7ec49`.
 
 Reference picture:
 
@@ -11,6 +11,8 @@ Current native gameplay render:
 ![Native scene comparison](StreetSlice_Gameplay.png)
 
 ## Refinement after the first character checkpoint
+
+The latest landscape pass replaces the fine compound foliage with adapted broad-leaf geometry and raises the woody branching before leaf emission. A single distribution pass over the combined branch masks reduces hanging, crowded patches. The court view reveals the far basket and more of the arena. Foreground shrubs now have woody stems and overlapping clusters from the same leaf family, with darker understory material settings. The retained Island Tree 01 source and seven leaf/twig maps are documented alongside the original Jacaranda source.
 
 The jacket torso and posed sleeves now form one continuous surface. Smoothly interpolated tailoring profiles reduce angular shoulder and hip bands; the teal panels and seams are fitted to that surface. Hidden inner-sleeve panel vertices are removed before fitting so they cannot appear as teal slivers on the front shoulder. The cuff profile follows the sleeve, and compression folds fade into the knit bands.
 
@@ -26,16 +28,16 @@ Thirteen mature trees use three shared growth variants with different leaf seeds
 
 ## Defects caught during review
 
-Native previews and close-ups exposed sparse foliage, overly regular cloth folds, thin calves, floating feet, open shoe heels, a collar gap, separate shorts sections, floating roof planting, shoulder openings and distorted facial smoothing. These were corrected in the editable source and re-rendered. The rejected previews and raw logs remain under the project’s ignored `client/OddsWell/Saved/NextTen20260912` work folder; the delivery manifest identifies the retained outputs.
+Native previews and close-ups exposed sparse foliage, overly regular cloth folds, thin calves, floating feet, open shoe heels, a collar gap, separate shorts sections, floating roof planting, shoulder openings and distorted facial smoothing. These were corrected in the editable source and re-rendered. Raw modeling and render logs remain under the project’s ignored `client/OddsWell/Saved/NextTen20260912` work folder; the delivery manifest identifies the retained outputs. Working preview images are overwritten as the scene develops.
 
-The tree comparison led to adapting a CC0 native model instead of retaining the original radial-branch approximation. Source authorship is recorded in the README and retained manifests. The understory, garments, architecture and scene composition remain locally authored.
+The tree comparison led to adapting CC0 native branching and leaf geometry instead of retaining the original radial-branch approximation. Source authorship is recorded in the README and retained manifests. Shrub stems and placement, grasses, garments, architecture and scene composition remain locally authored; shrub leaf geometry now shares the retained broad-leaf source.
 
 ## What remains below the reference
 
 The reference has more natural garment drape, richer architectural variation and shop contents, subtler weathering, a more composed mixture of plants, and a more photographic finish. The current character is a static model and the scene is deliberately an offline art study. A successful render and geometric checks do not close those visual gaps.
 
-The next visible priorities are natural cloth drape around the hips and shoulder seam, varied facade/window arrangements, more convincing retail contents, and less uniformly clean foreground surfaces. Paving scale is established, but wear and small color changes still need refinement. The three tree variants reduce repetition; their compound foliage still differs from the reference's broad, rounded leaves and needs further art direction.
+The next visible priorities are natural cloth drape around the hips and shoulder seam, varied facade/window arrangements, more convincing retail contents, and less uniformly clean foreground surfaces. Paving scale is established, but wear and small color changes still need refinement. Broad-leaf geometry is now present; crown composition, color balance and selective pruning still need art direction against the reference.
 
-The court inspection also reveals low foreground branches encroaching on the court view. Further landscape work should establish a higher clear trunk and prune the court-facing crown before treating the planting as production placement.
+The higher trunks materially open the court view, but some low edge branches remain. Selective court-facing pruning and measured physical clearances are still required before treating this as production planting.
 
 Next iterations should focus on those remaining visible differences before spending effort on engine import. LODs, collision, baked game materials, rigging and performance remain separate requirements. No runtime code, production map or tested package was changed by this art pass.

@@ -265,6 +265,15 @@ grass_mat=mat('Landscape | sage grass',(.16,.22,.060),.88)
 grass_tip=mat('Landscape | dry seed tips',(.37,.31,.13),.95)
 flower_mat=mat('Landscape | muted lavender flowers',(.27,.16,.32),.9)
 
+# The close planters use stemmed broad-leaf growth from the same retained
+# foliage family as the canopy, at an ordinary shrub scale.
+for obj in list(scene.objects):
+    if obj.name.startswith('Civic | planted shrub'):bpy.data.objects.remove(obj,do_unlink=True)
+for x in (1.3,18.8):
+    for y in (3,11,24,35):
+        broadleaf_shrub(x,y-.52,.83,.48,.29)
+        broadleaf_shrub(x,y+.48,.83,.57,.29)
+
 def grasses(name,centers,basez=.83,count=110,height=.40):
     verts=[];faces=[]
     for cx,cy in centers:
@@ -298,7 +307,7 @@ for x,y in [(8.7,-.5),(8.7,35.5)]:
     box('Civic | garden end planter',(x,y,.46),(1.15,1.25,.92),stonewall,.035)
     box('Civic | garden end soil',(x,y,.923),(.94,1.04,.01),soil)
     box('Civic | garden end teal',(x,y-.634,.54),(1.03,.016,.075),teal,.003)
-    leaf_cloud('Civic | sage shrub',[(x,y,1.13)],.50,850)
+    broadleaf_shrub(x,y,.93,.58,.38)
     grasses('Civic | planter grasses',[(x-.30,y-.24),(x+.30,y+.24)],.93,90,.6)
 
 # Groundcover at tree bases and loose fallen leaves connect planting to paving.
