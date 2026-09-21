@@ -44,6 +44,11 @@ for side in ('l','r'):
     assert all(edge.is_manifold for edge in bm.edges),'Open eyeball surface'
     bm.free()
 assert all(bpy.data.objects.get('Character | eyebrow '+str(side)) for side in (-1,1))
+facial_targets=json.loads(scene.get('facial_targets','{}'))
+assert len(facial_targets)==3,'Missing retained anatomical face adjustments'
+for side in ('l','r'):
+    color=bpy.data.objects['Character | iris '+side].data.color_attributes.get('Iris radial fibers')
+    assert color and max(c.color[0] for c in color.data)-min(c.color[0] for c in color.data)>.02,'Iris has no fiber variation'
 depsgraph=bpy.context.evaluated_depsgraph_get()
 sole_min=min((obj.evaluated_get(depsgraph).matrix_world@v.co).z for obj in scene.objects if obj.name.startswith('Character | sneaker sole') for v in obj.evaluated_get(depsgraph).data.vertices)
 assert abs(sole_min-.051)<.0002,sole_min
@@ -56,6 +61,11 @@ for side in ('left','right'):
 assert abs(feet['right']['min_z']-.051)<.0002,'Forward stance foot is floating'
 assert abs(feet['right']['heel_min_z']-feet['right']['toe_min_z'])<.001,'Stance sole is not flat'
 assert feet['left']['heel_min_z']>feet['left']['toe_min_z']+.04,'Trailing heel is not raised'
+stance=bpy.data.objects['Character | sneaker sole right'].evaluated_get(depsgraph)
+contact=[stance.matrix_world@v.co for v in stance.data.vertices if (stance.matrix_world@v.co).z<sole_min+.0002]
+contact_width=max(p.x for p in contact)-min(p.x for p in contact)
+contact_length=max(p.y for p in contact)-min(p.y for p in contact)
+assert contact_width>.080 and contact_length>.20,'Stance support is only a narrow line'
 def assert_connected(obj):
     adj=[set() for _ in obj.data.vertices]
     for edge in obj.data.edges:
@@ -100,6 +110,7 @@ for name in ('left hand','right hand'):
 from mathutils.bvhtree import BVHTree
 from mathutils import Vector
 lace_gap=0
+eyelet_gap=0;tongue_clearance=[]
 for side in ('left','right'):
     shoe=bpy.data.objects['Character | canvas sneaker '+side]
     bm=bmesh.new();bm.from_mesh(shoe.data)
@@ -107,14 +118,33 @@ for side in ('left','right'):
     bm.free()
     upper=BVHTree.FromObject(shoe,depsgraph)
     laces=[obj for obj in scene.objects if obj.name.startswith('Character | shoe lace '+side)]
-    assert len(laces)==8
+    assert len(laces)==7
+    eyelets=[o for o in scene.objects if o.name.startswith('Character | shoe lace eyelet '+side)]
+    centers=[sum((Vector(p.co[:3]) for p in o.data.splines[0].points),Vector())/len(o.data.splines[0].points) for o in eyelets]
+    assert len(centers)==8
     for obj in laces:
         for spline in obj.data.splines:
+            for point in (spline.points[0],spline.points[-1]):
+                gap=min((Vector(point.co[:3])-center).length for center in centers)
+                assert gap<.0012,'Lace endpoint misses its eyelet'
+                eyelet_gap=max(eyelet_gap,gap)
             for point in spline.points:
                 location,normal,_,distance=upper.find_nearest(Vector(point.co[:3]))
                 assert distance is not None and distance<.008,'Detached shoe lace'
                 assert (Vector(point.co[:3])-location).dot(normal)>.0005,'Lace buried inside shoe'
                 lace_gap=max(lace_gap,distance)
+    for polygon in bpy.data.objects['Character | canvas sneaker tongue '+side].data.polygons:
+        location,normal,_,distance=upper.find_nearest(polygon.center)
+        gap=(polygon.center-location).dot(normal)
+        assert gap>.0002,'Tongue intersects the shoe upper'
+        tongue_clearance.append(gap)
+head_surface=BVHTree.FromObject(head,depsgraph)
+lashes=[o for o in scene.objects if o.name.startswith('Character | eyelashes ')]
+assert len(lashes)==2 and sum(len(o.data.splines) for o in lashes)==scene['eyelash_strands']>=60
+for obj in lashes:
+    for strand in obj.data.splines:
+        root=Vector(strand.points[0].co[:3]);location,normal,_,distance=head_surface.find_nearest(root)
+        assert distance<.0003 and (root-location).dot(normal)>0,'Detached eyelash root'
 assert scene.get('character_landscape_development')
 trees=[o for o in scene.objects if o.name.startswith('Tree | mature Sundale')]
 tree_meshes=len({o.data.as_pointer() for o in trees})
@@ -131,6 +161,12 @@ result['reference_upper_body_fit']=True
 result['hand_boundary_edges_under_sleeves']=hand_openings
 result['maximum_lace_surface_distance_m']=lace_gap
 result['foot_contact']=feet
+result['stance_contact_width_m']=contact_width
+result['stance_contact_length_m']=contact_length
+result['maximum_lace_eyelet_gap_m']=eyelet_gap
+result['minimum_tongue_surface_clearance_m']=min(tongue_clearance)
+result['facial_targets']=facial_targets
+result['eyelash_strands']=scene['eyelash_strands']
 result['cotton_drape_frames']=scene['cotton_drape_frames']
 result['cotton_drape_maximum_delta_m']=scene['cotton_drape_maximum_delta_m']
 skin_surface=BVHTree.FromObject(bpy.data.objects['Character | anatomical legs'],depsgraph)

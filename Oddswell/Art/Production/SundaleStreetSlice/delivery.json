@@ -3,13 +3,13 @@
   "goal_status": "active",
   "delivery": "Editable native Blender scene and eight native renders; offline art study",
   "starting_checkpoint": "76ccb76",
-  "previous_checkpoint": "3af6bd9",
+  "previous_checkpoint": "3b3caa0",
   "evidence": {
     "source": "Native scene/garments/plant geometry, CC0 MakeHuman anatomical surfaces, six CC0 Poly Haven stone/bark texture maps and one CC0 photographed sky environment; adapted CC0 Jacaranda model with ten packed 2K maps",
     "reference": "../../Reviews/OddsWellStreetIdentityCandidate/OddsWell_Visual_Direction_Concept.png",
-    "objects": 4594,
-    "meshes": 3114,
-    "materials": 63,
+    "objects": 4718,
+    "meshes": 3229,
+    "materials": 64,
     "packed_texture_maps": 31,
     "mature_tree_instances": 13,
     "seed": 218,
@@ -21,7 +21,7 @@
     ],
     "runtime_integrated": false,
     "character": "Static tailored study with grounded stance and continuous shorts; current game rig unchanged",
-    "character_ground_offset_m": -0.08439122045040132,
+    "character_ground_offset_m": -0.08427651131153108,
     "no_generated_background": true,
     "quality_goal": "Active; reference fidelity and final art approval remain open",
     "independent_reopen": "PASS",
@@ -68,6 +68,8 @@
     "render_device": "OPTIX",
     "skin": "CC0 MakeHuman young_lightskinned_male_diffuse map on retained anatomical UVs; original source preserved",
     "body_detail": "Individual anatomical finger bends, fitted rib cuffs, crossed shoe laces/eyelets, dense pocket stitches and 2600 tapered calf hair curves",
+    "face_detail": "Three pinned CC0 hm08 targets applied in memory; radial iris color, directional fine brows and 96 fitted eyelash strands",
+    "construction": "Shaped collar and continuous zipper; relaxed forearms; recessed shoe collars, fitted tongue/lacing/bows and broad flat sole contact",
     "cloth": "40-frame native cotton drape study blended with tailoring; retained CC0 fabric maps and articulated hip/knee/ankle pose",
     "canopy": "Raised Jacaranda branching with adapted CC0 Island Tree 01 broad-leaf clusters; same leaf family in foreground shrubs"
   },
@@ -83,8 +85,8 @@
     "jacket_surface_components": 1,
     "mature_tree_instances": 13,
     "shared_tree_meshes": 3,
-    "mesh_objects": 3937,
-    "native_scene_objects": 4594,
+    "mesh_objects": 4050,
+    "native_scene_objects": 4718,
     "runtime_claim": false,
     "shorts_boundary_edges": 240,
     "shorts_openings": 3,
@@ -95,19 +97,29 @@
       "left hand": 20,
       "right hand": 20
     },
-    "maximum_lace_surface_distance_m": 0.0030003103893250227,
+    "maximum_lace_surface_distance_m": 0.0066000609658658504,
     "foot_contact": {
       "left": {
-        "min_z": 0.057591989636421204,
-        "heel_min_z": 0.12149427831172943,
-        "toe_min_z": 0.057591989636421204
+        "min_z": 0.0518721342086792,
+        "heel_min_z": 0.12338298559188843,
+        "toe_min_z": 0.0518721342086792
       },
       "right": {
         "min_z": 0.050999999046325684,
-        "heel_min_z": 0.051000043749809265,
-        "toe_min_z": 0.050999999046325684
+        "heel_min_z": 0.050999999046325684,
+        "toe_min_z": 0.05100007355213165
       }
     },
+    "stance_contact_width_m": 0.12801814079284668,
+    "stance_contact_length_m": 0.3115217685699463,
+    "maximum_lace_eyelet_gap_m": 0.0005397453314036824,
+    "minimum_tongue_surface_clearance_m": 0.0014140395214781165,
+    "facial_targets": {
+      "head-age-incr.target": 0.55,
+      "l-eye-height2-decr.target": 0.45,
+      "r-eye-height2-decr.target": 0.45
+    },
+    "eyelash_strands": 96,
     "cotton_drape_frames": 40,
     "cotton_drape_maximum_delta_m": 0.0529472243832398,
     "calf_hair_strands": 2600,
@@ -118,71 +130,76 @@
     "StreetSlice_Gameplay.png": {
       "width": 1920,
       "height": 1080,
-      "sha256": "25a7e7768a7bdd2281ce75bf4a255167c524f76c6ab7d2cee8f467ce186283e2"
+      "sha256": "ae34a0c47ccd9c05a26b2a6d0b312e2f8dd83e3d6dcae0374e138f689cd1816c"
     },
     "StreetSlice_Court_and_Arena.png": {
       "width": 1600,
       "height": 900,
-      "sha256": "b86a5b7668a4a454118a653d97f25087166d9bae08c46536994b3e3c0a4077f5"
+      "sha256": "216b4d8760ce345577a443ba41550993f940ad47d339f779093276d13794c640"
     },
     "StreetSlice_Architecture_Detail.png": {
       "width": 1600,
       "height": 900,
-      "sha256": "76fdda26920ef6ca00c2037015aa2b015edc6940a0c7ee88bc8495b0f341138e"
+      "sha256": "0a0ed7469134d0ab95be3ea4922df4b63c1f7d234c93d0ec241a0fdec4717023"
     },
     "StreetSlice_Character_Detail.png": {
       "width": 1000,
       "height": 1100,
-      "sha256": "d377fd772e1ac9afea0fb75a4cb123c01d0e28896b8039a6569615910a425e4a"
+      "sha256": "091ffb9d45fb471a7358941dd95715f89eb567b80187189bb584f0b3d9b2fa97"
     },
     "StreetSlice_Landscape_Detail.png": {
       "width": 1000,
       "height": 1100,
-      "sha256": "b8f4224fb70659158db26ee05e30951258667ad7791d79025d6d36f354636543"
+      "sha256": "6a138014dd4b9d2f11470c17c8dd84db160cd56030571a2017efeb4f458c459a"
     },
     "StreetSlice_Character_ThreeQuarter.png": {
       "width": 1000,
       "height": 1100,
-      "sha256": "d214ac437342fb969db0f6839b29e2a89522f5b4dfcb4a3aea77afb569de1515"
+      "sha256": "ae5a3e91a806b1982062ea27ac25960d1678169ebdd4f07ae62562cd7e5f432c"
     },
     "StreetSlice_Head_Front.png": {
       "width": 1000,
       "height": 1100,
-      "sha256": "e3d09ab99c6e9d75f8293f52de5a2acd11076ccf0db7cbd6c5951ebfc474d732"
+      "sha256": "cd5220da3e7ffb6c834eeaa545e79b2f55d4e6347f17ce4e531add314d0dbd92"
     },
     "StreetSlice_Head_Profile.png": {
       "width": 1000,
       "height": 1100,
-      "sha256": "bbe2e61411b02900daaa210c0ef2fd35e1727243d159ec87e980b73f3347d7ac"
+      "sha256": "65c2d37d403ed069adb483bc3226eccea332b127a7d6d1f4068c91477f0226db"
     }
   },
   "files_sha256": {
     "broadleaf_canopy.py": "f737b396c7c2e02415d6c6d7b9b21727a3ac450038e265a362c1a0263d3e9b3b",
-    "build_scene.py": "786857bf79f28ef71dcf496c50deade48f90e922ceb7f433d7491350b080e723",
-    "develop_character_landscape.py": "b94689b50190c2bb5a7f64e9d89cb19100c4559d6506d9e788eadfa3655f86a5",
-    "DevelopmentGoal.md": "07e839eb9b0a4aa3e64f4fd2ec313cbaea86d9171c5545e0c44906916d5ebd38",
+    "build_scene.py": "d282690df9bfb4a8066d3729a28021a7a33e77fd521d6fb3cfa73c418080b121",
+    "develop_character_landscape.py": "4831f6bd0e7390fdbbaf751d9eb62d916af6a5f8e632b3a381051b0bbdd5c176",
+    "DevelopmentGoal.md": "603a32d8757a4c2d5233fc27d615bc3383ce1b3c15e967ec724c740f300acb38",
     "fetch_broadleaf.py": "2b42dbc1c9b7a041008006ffb0f9a025927b3d3a8fbafbaf9508de9f5aabf399",
     "fetch_fabrics.py": "1108de70f7d2e1b2c271c476a4c46813b34f99911ed73a400cca163b0283de34",
+    "fetch_face_targets.py": "8081323ae2dee00e4ef3a0535059130410959d4e10aed8af46879dc677fd0d36",
     "fetch_skin.py": "8109647b4862cd00c50efa765599079a78b2647b27505cc1661e02f5a7e22652",
     "fetch_sky.py": "8d382e47d5baf5ac8d7a551c0e7d3fa82400956d1dbf785b8754682a25effed3",
     "fetch_stone_material.py": "aa616e57aeca46b79df656608f9f204c146e94b7bc34118b48329a6e77dae0e0",
     "fetch_tree.py": "543452c80b83a56aad4062620b1adfc2677d6c0a2bdef8c7f87b74333fb409da",
     "inspect_details.py": "4389f327017cf2c03acc55831e1d1c7dd9ca17d2b02f0217747785dee12d77f1",
     "mature_trees.py": "9300020af31be8cbb731c4378668fd3a18c89cdbb026cae0a263ce2741a63f7a",
-    "OddsWell_Sundale_StreetSlice.blend": "da161fbdd815a72fd879c4f82dc84e8b5523aa1af680d38fb6d0afbf0c9b428c",
-    "README.md": "12c87cb3eb1555f3e208f07dd307ca82abd4861a8710e150f57f8fa21af2473a",
-    "record_delivery.py": "03b464fa25f72f929dab5a5bbd4d7adb185d1afc6a34f0637a0351d822ad997d",
-    "refine_character_head.py": "8b66957e5e72b33b09cf84822ab7b05a25c5aa0a6e56ae48b8f70488c35a55cd",
+    "OddsWell_Sundale_StreetSlice.blend": "00c7f84303f16d9037e06a2d991f6f3906dd862f7fb63df7f3fabccf90bd0ae3",
+    "README.md": "cbaa276414f8a784afb20875b32f99b52a63f6c71e502b25db4f2866642383e3",
+    "record_delivery.py": "768ea6917d6ad900e69d5a1fa7f5be52928fcb7cd7633fa51fb8d3088183e5d0",
+    "refine_character_head.py": "998376234895963b794b29a302866683b2cdc1c19623c15ea7194e04619accb5",
+    "refine_eye_margins.py": "a5cc48e1fbb443da5410c9b08cf085df0b9a87ecc0ec3acb8d4d49c0f0e869fc",
     "refine_fabrics.py": "f817b076bb483d0bc3486b23ee909731bc37c22f6872c0c6f7c7f6d5c6f059d1",
     "refine_minerals.py": "a3bc6d0647e83058d89afdaecf5d23c508b2b17ec12731438efdb74e515cc932",
-    "render_views.py": "946d2b9170b91c985a528669d0f8178b70df8d6e7e70faf3d5846635e9889b0b",
-    "ResumeTomorrow.md": "117f87899d3931ae570d582de8f1e8d422f823f1401bacbab7b109b505fe813b",
+    "render_views.py": "0574c921342428703da829c244128511119012c37e1a22aef5a83adca6cada47",
+    "ResumeTomorrow.md": "72fd6ab4f3e0cc814a7de33a7d5fd3caa868b99414f262d6371d7886322193a4",
     "settle_cotton.py": "6b6ba615a4adba5145266174bc31cf5ea23318c1857a962fa766c0c94648e68d",
+    "source-assets/facial-targets/head-age-incr.target": "ff677345bd81e3f439bdf75496bbee620ca3c3f029955a546837afd283abf73a",
+    "source-assets/facial-targets/l-eye-height2-decr.target": "11f97a658461ab341b75165acc280dd5541a0ebf57d84dab24819a3af8ee5d25",
+    "source-assets/facial-targets/r-eye-height2-decr.target": "8fbe66bf11786f68697b5ba720f6f76e1a99f0db066249d369e4476e016f3f64",
     "source-assets/island_tree_01_2k.blend": "77de2c504a7aa9b6ae8acb5877dbcd155d4bda6eb156f761c492c48c843bdcd2",
     "source-assets/jacaranda_tree_4k.blend": "e28b4897a9cc9fbee38b1675860649c79284f2ba31de2f551ce5946236e977f5",
     "source-assets/makehuman-base.obj": "8e761e6624b8f54536409135d1636da63b32486a90d4897f84e121d144f6fb4c",
     "source-assets/MAKEHUMAN-LICENSE.ASSETS.md": "f6089cba01cb570a24712b41ab8a586ccd3cc5ef53dc266ca50b95c288956d2c",
-    "source-assets/README.md": "05283db369965c2e7dde347c6f319040977b0faa42675800a9c3b09762e92016",
+    "source-assets/README.md": "365634c0b8c0abbf3511497358da9d9b83b3c6c582cfa35177c29c25c3b16960",
     "textures/bark_brown_01_diff_4k.jpg": "545d3c48d3ad237d9fbb7eeaf7e5251cbf9520840e37e28e4e325d833c34bc0b",
     "textures/bark_brown_01_disp_4k.jpg": "fed4f06ddb560636a77c24f50e2100d879a21f65a135ca98e3f423bb14cd6067",
     "textures/bark_brown_01_rough_4k.jpg": "c6f9832b5053f055113d559fcb988ae02c5eb20b1786b0237bdbed4494f9f4a3",
@@ -204,8 +221,8 @@
     "textures/sandstone_blocks_08_diff_4k.jpg": "d1a39585a84abe779ca252fe269b880837e6dd3805298d5b470f75c90afe5293",
     "textures/sandstone_blocks_08_disp_4k.jpg": "3db51669487d6312bfa52621783ab308ebca3ddbd23b061e220cee69847a768c",
     "textures/sandstone_blocks_08_rough_4k.jpg": "e395bdfea1536ddf3a8c97e51b0861270dc75dea722b22633b1cebd4c31ec63a",
-    "verify_scene.py": "24a2b154e7437abde56a18b5b9581d3fe5a11fc2a8a20250f9383aafe29e08f1",
-    "VisualReview.md": "bb3ff083a768cf06ba37d225cf452ac98239dcc0fafa8a88b3027a38ce3cd78d",
+    "verify_scene.py": "415e8646124077b374047de2eaaa0465c9d9d16bed4e32fa2212f381ba1d81c5",
+    "VisualReview.md": "eb5f95da00cab8fd339b9469efe9de5b348938a67a00eb4e58ba8a9aab614c63",
     "textures/broadleaf/island_tree_01_branches_diff_2k.png": "fcfaaa1262cb8f31327ca084e6f8d69cda0b6af0d1f065a68c5a47b906ec02ff",
     "textures/broadleaf/island_tree_01_branches_nor_gl_2k.png": "2ee3ff83fdf8f01cd9d26d5c4665b866bf69f2557e02582577f23d6d007f9c78",
     "textures/broadleaf/island_tree_01_branches_rough_2k.png": "e6d3c688b07dea15344672516433d7ba681727f5149c8be446dc1a5bbed9afdc",
@@ -218,11 +235,12 @@
     "textures/jacaranda/jacaranda_tree_leaves_alpha_2k.png": "48b37ef95590d96c39d43af51b4d7683ad1ab7db8dae474f29d3b8c3e726f352",
     "textures/makehuman-skin/young_lightskinned_male_diffuse.png": "862a26e335e958b70534cb5f0d7c47ef30ab148a56c42b3e9da969cf76f12963",
     "source-assets/skin-source.json": "1369419920d721277045e12f3a003845dce125155658eed97f89943c0de76667",
-    "source-assets/fabric-sources.json": "9b7e77ab19bc73d02791563162cdd7f5f8606f572ffd4e46b8eb5483a1f88c8d"
+    "source-assets/fabric-sources.json": "9b7e77ab19bc73d02791563162cdd7f5f8606f572ffd4e46b8eb5483a1f88c8d",
+    "source-assets/facial-targets.json": "98e709248c904bdb5c214cb4e4d006f6f4ec7363af55a59ec528032a8d72c8fc"
   },
   "render_log": {
-    "path": "C:\\Users\\reali\\Documents\\SaaS\\Oddswell\\client\\OddsWell\\Saved\\NextTen20260912\\character-realism-final-views.log",
-    "sha256": "075554eaf84f44dda89d34105f2f7df2efdc693c31d8ef022443e1c76499f9cb"
+    "path": "C:\\Users\\reali\\Documents\\SaaS\\Oddswell\\client\\OddsWell\\Saved\\NextTen20260912\\character-presence-final-views.log",
+    "sha256": "14691778c08d799ca631268946829a06e2b21ade3155eae3a9f0c02442a1eee1"
   },
   "preview_iterations": [
     {
@@ -459,12 +477,42 @@
       "log": "character-realism-preview10.log",
       "sha256": "885ca709852a00d2d3b4fe8f3b3bd97478f7e97c3f21f293f6a765cb67a9ede3",
       "native_render": "PASS"
+    },
+    {
+      "log": "character-presence-preview1.log",
+      "sha256": "f258d850c41dd43cbe3e852e1e31e6b657ffbecdef35e56ccfb355a21d4f57bc",
+      "native_render": "PASS"
+    },
+    {
+      "log": "character-presence-preview2.log",
+      "sha256": "b60b5f34188e9d0de99d3e961d813e666d2240bd70395365cb012b0d851ce441",
+      "native_render": "PASS"
+    },
+    {
+      "log": "character-presence-preview3.log",
+      "sha256": "1cbbc13507c7e23b4957283641e098410e9947b857475d84f02eee3315978483",
+      "native_render": "PASS"
+    },
+    {
+      "log": "character-presence-preview4.log",
+      "sha256": "5e89c8ebd927b5b8b9f1f80c75e7a320cca54cef4b27d521096ec9944cb37198",
+      "native_render": "PASS"
+    },
+    {
+      "log": "character-presence-preview5.log",
+      "sha256": "aa115f2d79665ff81cf8516c50c70a6c3b1e090feab1439af54c4702ba1bd782",
+      "native_render": "PASS"
+    },
+    {
+      "log": "character-presence-preview6.log",
+      "sha256": "6750631c48ca2a3eab8b29a9c3e6bca509afac05e21e4a23d44b888bbe624c8d",
+      "native_render": "PASS"
     }
   ],
   "original_source_bytes_preserved": true,
   "runtime_map_modified": false,
   "runtime_character_modified": false,
-  "visual_review": "The owner set a new sustained human-realism goal from 3af6bd9. This first iteration articulates the hips, knees and ankles separately, with a flat forward stance foot and a raised trailing heel. A 40-frame native cotton simulation develops shorts drape; its result is blended with the tailored base and relaxed to avoid excessive tiny wrinkles. The simulation uses body proxies plus the actual leg surface, with a final skin-clearance correction and refitted seams. Six original CC0 Poly Haven fabric maps now add photographed surface variation, displacement-derived bump and roughness to the jacket, shorts and canvas shoes. Terlenka provides the jacket weave; Denim Fabric 04 supplies the cotton weave, recolored in the shader to the existing OddsWell palette. Source photography is by colormass, processed by Rico Cilliers. The scene contains 31 packed maps. Box projection is an interim shading method; production garment UVs remain open.",
-  "body_detail_review": "Further native refinement reduces jacket torso/sleeve volume and concentrates folds around the armholes, elbows and waistband. Ribbed cuffs taper toward the wrists, with the sleeve ends fitted inside them. Each finger now bends around its three retained anatomical joints, with progressively deeper ring/little-finger curl and mild left/right asymmetry. The shoes have crossed laces, paired eyelets and a stitched toe panel. Fine tapered calf hairs follow the posed skin, and denser pocket-stitch samples follow the simulated shorts surface.",
-  "remaining": "This is a realism development checkpoint, not completion of the new goal. The overall figure still reads as a digital model: shoulder/armhole shaping, garment tension and collar construction need more work, alongside hand tendon/nail detail, face/eyelid expression and skin response. The calf hair is deliberately subtle at gameplay distance. Cloth is retained as static editable geometry after simulation; no gameplay cloth, animation rig or runtime integration is claimed. Architecture/retail and planting remain next in the roadmap after the human passes the visual criteria."
+  "visual_review": "Continuing from `3b3caa0`, the forearms hang closer beneath the elbows and a shaped collar follows the neck, with a smaller continuous zipper and pull. Three pinned CC0 MakeHuman morph targets add restrained facial-age and eyelid changes in memory; the original anatomical OBJ remains unchanged. Native irises now carry radial color variation, finer brows follow a changing hair direction, and 96 tapered eyelashes are rooted at the actual visible lid margins. These details remain subtle and do not establish a lifelike facial expression.",
+  "body_detail_review": "The footwear now has recessed ankle openings with dark inner lining, a denser fitted tongue, crossed laces seated at paired eyelets, bow loops and free ends. The upper and sole profiles use smooth longitudinal interpolation; rounded sole edges surround a broad flat underside. Native close-ups exposed tongue intersections, displaced lace endpoints and an uneven upper/sole join. Those findings led to denser tongue faces, matching endpoint projections and a deeper upper overlap inside the extended sole.",
+  "remaining": "The full realism goal remains active. The next major character work is shoulder/armhole construction and jacket drape, followed by hand tendon/nail detail, convincing eye tissue, skin response and expression. Review the complete figure against the original concept before proceeding to architectural/retail variety and planting realism. This checkpoint is an editable offline model, not an animation rig, gameplay cloth implementation or runtime update."
 }

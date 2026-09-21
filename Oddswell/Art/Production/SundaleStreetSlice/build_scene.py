@@ -450,6 +450,14 @@ for line in (ROOT/'source-assets/makehuman-base.obj').read_text(encoding='utf-8'
 used={i for face in bodyfaces for i in face}
 low=min(rawverts[i].y for i in used);high=max(rawverts[i].y for i in used)
 unit=1.8/(high-low)
+facial_targets={'head-age-incr.target':.55,'l-eye-height2-decr.target':.45,'r-eye-height2-decr.target':.45}
+for filename,weight in facial_targets.items():
+    for line in (ROOT/'source-assets/facial-targets'/filename).read_text(encoding='utf-8').splitlines():
+        parts=line.split()
+        if not parts or parts[0].startswith('#'):continue
+        index=int(parts[0]);delta=Vector(tuple(map(float,parts[1:4])))
+        rawverts[index]+=delta*weight
+scene['facial_targets']=json.dumps(facial_targets,sort_keys=True)
 def convert(v):return Vector((v.x*unit,v.z*unit,(v.y-low)*unit))
 converted=[convert(v) for v in rawverts]
 def joint(name):return sum((converted[i] for i in jointverts[name]),Vector())/len(jointverts[name])
@@ -526,6 +534,7 @@ skin.node_tree.nodes.get('Principled BSDF').inputs['Subsurface Weight'].default_
 # above and remain ordinary editable meshes in the resulting Blender file.
 exec(compile((ROOT/'develop_character_landscape.py').read_text(encoding='utf-8'),str(ROOT/'develop_character_landscape.py'),'exec'))
 exec(compile((ROOT/'refine_character_head.py').read_text(encoding='utf-8'),str(ROOT/'refine_character_head.py'),'exec'))
+exec(compile((ROOT/'refine_eye_margins.py').read_text(encoding='utf-8'),str(ROOT/'refine_eye_margins.py'),'exec'))
 exec(compile((ROOT/'refine_fabrics.py').read_text(encoding='utf-8'),str(ROOT/'refine_fabrics.py'),'exec'))
 
 # Pose the clothed lower body for a short walking stride in this static study.

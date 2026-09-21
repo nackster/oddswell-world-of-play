@@ -43,6 +43,10 @@ for material in (white,iris,pupil):
     eye_bs=material.node_tree.nodes.get('Principled BSDF')
     eye_bs.inputs['Coat Weight'].default_value=.35
     eye_bs.inputs['Coat Roughness'].default_value=.07
+white.node_tree.nodes.get('Principled BSDF').inputs['Subsurface Weight'].default_value=.045
+white.node_tree.nodes.get('Principled BSDF').inputs['Subsurface Scale'].default_value=.002
+fibers=iris.node_tree.nodes.new('ShaderNodeVertexColor');fibers.layer_name='Iris radial fibers'
+iris.node_tree.links.new(fibers.outputs['Color'],iris.node_tree.nodes.get('Principled BSDF').inputs['Base Color'])
 for side in ('l','r'):
     center=joint('joint-'+side+'-eye');radius=.0158
     eye=sphere('Character | eye '+side,bodypt(center),(radius,)*3,white,48,32)
@@ -53,16 +57,26 @@ for side in ('l','r'):
     for name,size,material in (('iris',.006,iris),('pupil',.0024,pupil)):
         offset=.00025 if name=='pupil' else .00012
         verts=[bodypt(center+Vector((0,radius+offset,0)))];faces=[]
-        for k in range(1,7):
-            r=size*k/6
-            for j in range(64):
-                a=j*math.tau/64
+        rings=14 if name=='iris' else 6;segments=256 if name=='iris' else 64
+        colors=[(.015,.010,.005,1)]
+        for k in range(1,rings+1):
+            r=size*k/rings
+            for j in range(segments):
+                a=j*math.tau/segments
                 verts.append(bodypt(center+Vector((r*math.cos(a),math.sqrt(radius*radius-r*r)+offset,r*math.sin(a)))))
-        faces.extend((0,1+j,1+(j+1)%64) for j in range(64))
-        for k in range(5):
-            start=1+k*64
-            faces.extend((start+j,start+(j+1)%64,start+64+(j+1)%64,start+64+j) for j in range(64))
-        mesh('Character | '+name+' '+side,verts,[tuple(reversed(face)) for face in faces],material,True)
+                t=k/rings
+                fiber=.65+.19*math.sin(a*71+.7*math.sin(t*12))+.13*math.sin(a*113+t*5)
+                limbus=1-.68*max(0,min(1,(t-.79)/.21))
+                inner=math.exp(-((t-.46)/.11)**2)
+                colors.append(((.105+.025*inner)*fiber*limbus,(.070-.015*inner)*fiber*limbus,.025*fiber*limbus,1))
+        faces.extend((0,1+j,1+(j+1)%segments) for j in range(segments))
+        for k in range(rings-1):
+            start=1+k*segments
+            faces.extend((start+j,start+(j+1)%segments,start+segments+(j+1)%segments,start+segments+j) for j in range(segments))
+        eye_part=mesh('Character | '+name+' '+side,verts,[tuple(reversed(face)) for face in faces],material,True)
+        if name=='iris':
+            attribute=eye_part.data.color_attributes.new(name='Iris radial fibers',type='FLOAT_COLOR',domain='POINT')
+            for datum,color in zip(attribute.data,colors):datum.color=color
 
 # Short, tapered strands follow the actual brow surface, keeping the face
 # readable without drawing a solid painted stripe above each eye.
@@ -72,20 +86,21 @@ surface=BVHTree.FromObject(head,bpy.context.evaluated_depsgraph_get())
 hair=mat('Character | dark brown brow hair',(.025,.013,.008),.82)
 rng=random.Random(518)
 for sign in (-1,1):
-    data=bpy.data.curves.new('Character | eyebrow strands','CURVE');data.dimensions='3D';data.bevel_depth=.000075;data.bevel_resolution=2
-    for i in range(350):
+    data=bpy.data.curves.new('Character | eyebrow strands','CURVE');data.dimensions='3D';data.bevel_depth=.000045;data.bevel_resolution=2
+    for i in range(500):
         t=rng.random();x=sign*(.014+.044*t)
-        z=1.682+.004*math.sin(t*math.pi)-.002*t+rng.uniform(-.0018,.0018)
-        length=rng.uniform(.0025,.004)
+        spread=.0016*(1-.65*t)
+        z=1.682+.004*math.sin(t*math.pi)-.002*t+rng.uniform(-spread,spread)
+        length=rng.uniform(.0035,.0055)
         points=[]
         for k in range(4):
-            u=k/3;px=x+sign*.0016*u;pz=z+length*(1-.45*t)*u
+            u=k/3;px=x+sign*length*(.20+.75*t)*u;pz=z+length*(.80-t)*u
             hit,normal,_,_=surface.ray_cast(bodypt((px,.30,pz)),Vector((0,-1,0)),.30)
             assert hit is not None,'Eyebrow strand missed face'
             points.append(hit+normal*.00025)
         spline=data.splines.new('POLY');spline.points.add(3)
         for k,(point,position) in enumerate(zip(spline.points,points)):
-            point.co=(*position,1);point.radius=1-k*.27
+            point.co=(*position,1);point.radius=(1-k/3)*.97+.03
     brow=bpy.data.objects.new('Character | eyebrow '+str(sign),data);scene.collection.objects.link(brow);data.materials.append(hair)
 
 face_skin=skin.copy();face_skin.name='Character | anatomical face skin'

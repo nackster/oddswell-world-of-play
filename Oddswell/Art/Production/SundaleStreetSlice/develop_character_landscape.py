@@ -14,6 +14,7 @@ thread=mat('Character | matching charcoal topstitch',(.042,.055,.060),.92)
 cotton_thread=mat('Character | matching cotton topstitch',(.42,.40,.34),.94)
 rib=mat('Character | dense slate rib knit',(.025,.035,.039),.94,340)
 shoe_fabric=mat('Character | oat canvas',(.48,.46,.39),.94,260)
+shoe_lining=mat('Character | shadowed canvas lining',(.085,.080,.065),.95,260)
 for node in sole.node_tree.nodes:
     if node.type=='BUMP':node.inputs['Distance'].default_value=.0002;node.inputs['Strength'].default_value=.12
     if node.type=='VALTORGB':
@@ -97,13 +98,16 @@ def cloth_point(rings,z,a,kind):
     if kind=='shorts' and rx>.18 and math.sin(a)<0:
         py+=.018*math.exp(-(px/.050)**2)*math.exp(-((z-.825)/.065)**2)
     pz=z
+    if kind=='collar':
+        # Higher at the nape, lower and softer at the front of the throat.
+        pz-=.012*max(0,math.sin(a))**6*max(0,min(1,(z-1.49)/.036))
     if kind=='sleeve' and z>1.38:
         side=1 if x>0 else -1
         pz-=.029*min(1,(z-1.38)/.065)*(1+side*math.cos(a))*.5
     return bodypt((px,py,pz))
 
 def cloth(name,rings,material,kind,steps=110,sides=80):
-    if kind=='rib':sides=384
+    if kind in ('rib','collar'):sides=384
     lo,hi=rings[0][2],rings[-1][2]
     vertices=[cloth_point(rings,lo+(hi-lo)*k/steps,j*math.tau/sides,kind) for k in range(steps+1) for j in range(sides)]
     faces=[(k*sides+j,k*sides+(j+1)%sides,(k+1)*sides+(j+1)%sides,(k+1)*sides+j) for k in range(steps) for j in range(sides)]
@@ -115,7 +119,8 @@ def cloth(name,rings,material,kind,steps=110,sides=80):
 coat=[(0,0,.915,.190,.114),(0,0,.95,.205,.128),(0,.006,1.02,.212,.133),(0,.012,1.15,.219,.134),(0,.014,1.31,.240,.138),(0,.012,1.395,.243,.128),(0,.007,1.43,.221,.116),(0,0,1.48,.099,.080)]
 cloth('tailored slate jacket',coat,jacket,'coat')
 cloth('ribbed waistband',[(0,0,.897,.194,.120),(0,0,.922,.199,.124),(0,0,.943,.207,.133)],rib,'rib',12)
-cloth('standing collar',[(0,0,1.47,.095,.082),(0,0,1.485,.091,.079),(0,0,1.526,.076,.071)],rib,'rib',14)
+collar=[(0,0,1.47,.095,.082),(0,.004,1.487,.086,.075),(0,.009,1.507,.073,.068),(0,.012,1.526,.068,.065)]
+cloth('standing collar',collar,rib,'collar',24)
 
 # The yoke follows the same displaced cloth surface and has a narrow sewn edge.
 verts=[]
@@ -138,13 +143,19 @@ for a in (math.pi*1.16,math.pi*1.84):
 
 # Front construction remains readable when the character turns around.
 zipper=mat('Character | muted gunmetal zipper',(.065,.070,.068),.45,0,.55)
+def fastening(z):
+    return cloth_point(coat,z,math.pi/2,'coat') if z<=1.48 else cloth_point(collar,z,math.pi/2,'collar')
 for side in (-1,1):
-    tube('Character | front zipper tape',[cloth_point(coat,.948+k*.007,math.pi/2,'coat')+Vector((side*.0026,.0016,0)) for k in range(73)],.0011,thread)
+    tube('Character | front zipper tape',[fastening(.948+k*.00575)+Vector((side*.0026,.0016,0)) for k in range(101)],.0011,thread)
     tube('Character | front welt pocket',[cloth_point(coat,1.005+k*.004,(.72 if side>0 else math.pi-.72)+side*k*.003,'coat')+Vector((0,.0018,0)) for k in range(27)],.0015,rib)
-for k in range(67):
-    p=cloth_point(coat,.96+k*.0074,math.pi/2,'coat')+Vector((0,.002,0))
-    box('Character | zipper teeth',p,(.006,.0015,.0015),zipper)
-box('Character | zipper pull',cloth_point(coat,1.432,math.pi/2,'coat')+Vector((0,.004,0)),(.011,.004,.023),zipper,.0015)
+for k in range(180):
+    p=fastening(.95+k*.0032)+Vector((0,.002,0))
+    box('Character | zipper teeth',p,(.005,.0015,.0012),zipper)
+box('Character | zipper slider',fastening(1.517)+Vector((0,.004,0)),(.008,.004,.005),zipper,.001)
+pull=[]
+for x,z in [(-.0035,1.516),(-.0045,1.501),(-.003,1.498),(.003,1.498),(.0045,1.501),(.0035,1.516)]:
+    pull.append(fastening(z)+Vector((x,.005,0)))
+tube('Character | zipper pull loop',pull,.0008,zipper,True)
 
 leg_profiles={}
 for side in (-1,1):
@@ -183,40 +194,81 @@ for side in (-1,1):
     # Low canvas shoes with a flat welt and separate heel/toe profile.
     for part,material,height in [('sneaker sole',sole,0),('canvas sneaker',shoe_fabric,1)]:
         verts=[]
-        sections=[(-.112,.041,.058),(-.095,.058,.093),(-.04,.062,.103),(.025,.062,.080),(.10,.058,.046),(.154,.042,.031),(.172,.012,.019)]
-        for yy,width,h in sections:
-            for j in range(32):
-                a=j*math.tau/32
-                z=.045+(.031+.018*math.sin(a) if not height else .042+h*max(0,math.sin(a)))
-                verts.append(bodypt((side*.14+width*math.cos(a),legy+yy,z)))
-        faces=[(k*32+j,k*32+(j+1)%32,(k+1)*32+(j+1)%32,(k+1)*32+j) for k in range(len(sections)-1) for j in range(32)]
-        faces.extend([tuple(range(31,-1,-1)),tuple((len(sections)-1)*32+j for j in range(32))])
+        sections=[(-.130,.004,.042),(-.125,.029,.057),(-.112,.048,.082),(-.095,.056,.093),(-.04,.062,.103),(.025,.062,.080),(.10,.058,.046),(.154,.044,.031),(.165,.036,.024),(.174,.023,.019),(.179,.009,.017),(.180,.004,.017)]
+        shoe_profile=[(0,0,y,w,h) for y,w,h in sections]
+        stations=sorted({round(sections[0][0]+(sections[-1][0]-sections[0][0])*k/48,7) for k in range(49)}|{s[0] for s in sections})
+        shoe_sides=64 if height else 68
+        for yy in stations:
+            _,_,_,width,h=ring_at(shoe_profile,yy)
+            if height:
+                for j in range(shoe_sides):
+                    a=j*math.tau/shoe_sides
+                    verts.append(bodypt((side*.14+width*math.cos(a),legy+yy,.080+(h+.007)*max(0,math.sin(a))+.003*min(0,math.sin(a)))))
+            else:
+                # Flat top/bottom and vertical sidewalls, with a 3 mm edge
+                # radius. An elliptical section supported only its midline.
+                rx=width+.004;r=.003
+                for quadrant,(cx,cz) in enumerate(((rx-r,.088-r),(-rx+r,.088-r),(-rx+r,.058+r),(rx-r,.058+r))):
+                    for j in range(17):
+                        a=quadrant*math.pi/2+j*math.pi/32
+                        verts.append(bodypt((side*.14+cx+r*math.cos(a),legy+.025+(yy-.025)*1.025,cz+r*math.sin(a))))
+        faces=[(k*shoe_sides+j,k*shoe_sides+(j+1)%shoe_sides,(k+1)*shoe_sides+(j+1)%shoe_sides,(k+1)*shoe_sides+j) for k in range(len(stations)-1) for j in range(shoe_sides)]
+        faces.extend([tuple(range(shoe_sides-1,-1,-1)),tuple((len(stations)-1)*shoe_sides+j for j in range(shoe_sides))])
         obj=mesh('Character | '+part+suffix,verts,faces,material,True)
         import bmesh
         bm=bmesh.new();bm.from_mesh(obj.data)
         bmesh.ops.recalc_face_normals(bm,faces=list(bm.faces))
         bm.to_mesh(obj.data);bm.free()
         obj.modifiers.new('Canvas shoe surface','SUBSURF').levels=1
+        if height:
+            # Recess the ankle opening into the evaluated upper. The footbed
+            # and inner walls close the mesh while making the collar real.
+            bpy.context.view_layer.objects.active=obj
+            bpy.ops.object.modifier_apply(modifier='Canvas shoe surface')
+            cut_vertices=[bodypt((side*.149+.034*math.cos(j*math.tau/64),legy-.030+.044*math.sin(j*math.tau/64),z)) for z in (.120,.32) for j in range(64)]
+            cut_faces=[(j,(j+1)%64,64+(j+1)%64,64+j) for j in range(64)]
+            cut_faces.extend([tuple(range(63,-1,-1)),tuple(range(64,128))])
+            cutter=mesh('STUDY | ankle opening',cut_vertices,cut_faces,shoe_fabric)
+            recess=obj.modifiers.new('Open padded ankle collar','BOOLEAN');recess.operation='DIFFERENCE';recess.solver='EXACT';recess.object=cutter
+            bpy.ops.object.modifier_apply(modifier=recess.name)
+            bpy.data.objects.remove(cutter,do_unlink=True)
+            obj.data.materials.append(shoe_lining)
+            for polygon in obj.data.polygons:
+                p=polygon.center-origin
+                radial=Vector(((p.x-side*.149)/.034,(p.y-legy+.030)/.044,0))
+                if radial.length<1.1 and (polygon.normal.dot(radial)<-.30 or abs(p.z-.120)<.001):polygon.material_index=1
+                polygon.use_smooth=True
+            edge=obj.modifiers.new('Soft canvas opening edge','BEVEL');edge.width=.0007;edge.segments=2
+            edge.limit_method='ANGLE';edge.angle_limit=.60
     def shoe_top(x,y,lift=0):
-        for a,b in zip(sections,sections[1:]):
-            if a[0]<=y<=b[0]:
-                t=(y-a[0])/(b[0]-a[0]);w=a[1]*(1-t)+b[1]*t;h=a[2]*(1-t)+b[2]*t
-                return bodypt((side*.14+x,legy+y,.087+h*math.sqrt(max(0,1-(x/w)**2))+lift))
-    tongue=[shoe_top(x,.030+k*.011,.001) for k in range(9) for x in (-.030,0,.030)]
-    tongue_mesh=mesh('Character | canvas sneaker tongue'+suffix,tongue,[(k*3+j,k*3+j+1,(k+1)*3+j+1,(k+1)*3+j) for k in range(8) for j in range(2)],shoe_fabric,True)
+        _,_,_,w,h=ring_at(shoe_profile,y)
+        return bodypt((side*.14+x,legy+y,.080+(h+.007)*math.sqrt(max(0,1-(x/w)**2))+lift))
+    tongue=[shoe_top(-.030+j*.005,.030+k*.0044,.0015) for k in range(21) for j in range(13)]
+    tongue_mesh=mesh('Character | canvas sneaker tongue'+suffix,tongue,[(k*13+j,k*13+j+1,(k+1)*13+j+1,(k+1)*13+j) for k in range(20) for j in range(12)],shoe_fabric,True)
+    tube('Character | shoe lace collar seam'+suffix,[shoe_top(side*.009+.035*math.cos(j*math.tau/96),-.030+.045*math.sin(j*math.tau/96),.001) for j in range(97)],.0012,cotton_thread)
     for k in range(4):
         yy=.035+k*.020
-        for diagonal in (-1,1):
-            tube('Character | shoe lace'+suffix,[shoe_top(-.028+i*.056/16,yy+diagonal*(i/16-.5)*.018,.004) for i in range(17)],.0013,sole)
+        if k<3:
+            for diagonal in (-1,1):
+                lace=tube('Character | shoe lace'+suffix,[shoe_top(diagonal*(-.030+i*.060/20),yy+.020*i/20,.001) for i in range(21)],.0012,sole)
+                lace['lace_threading']=True;lace['crossing_offset_m']=.0028 if diagonal>0 else 0
         for sign in (-1,1):
-            tube('Character | shoe lace eyelet'+suffix,[shoe_top(sign*.030+.003*math.cos(a*math.tau/16),yy+.003*math.sin(a*math.tau/16),.002) for a in range(17)],.00055,zipper)
+            eyelet=tube('Character | shoe lace eyelet'+suffix,[shoe_top(sign*.030+.003*math.cos(a*math.tau/16),yy+.003*math.sin(a*math.tau/16),.001) for a in range(17)],.00055,zipper)
+            eyelet['surface_offset_m']=.0008
+    lace=tube('Character | shoe lace'+suffix,[shoe_top(-.030+i*.060/20,.095,.001) for i in range(21)],.0012,sole)
+    lace['lace_threading']=True
+    for sign in (-1,1):
+        loop=tube('Character | shoe lace bow'+suffix,[shoe_top(sign*.014*(1-math.cos(j*math.tau/32)),.029+.009*math.sin(j*math.tau/32),.007) for j in range(33)],.0012,sole)
+        loop['bow_loop']=True
+        tail=tube('Character | shoe lace free end'+suffix,[shoe_top(sign*(.004+.010*j/16),.029+.027*j/16,.006) for j in range(17)],.0012,sole)
+        tail['surface_offset_m']=.006;tail.data.use_fill_caps=True
+    sphere('Character | canvas sneaker lace knot'+suffix,shoe_top(0,.029,.006),(.003,.003,.0025),sole,16,8)
     # A stitched toe panel, upper welt and small heel seam break up the
     # otherwise featureless canvas surface at ordinary full-body distance.
     tube('Character | shoe lace toe cap seam'+suffix,[shoe_top(-.050+i*.100/32,.119-.008*math.cos((i/32-.5)*math.pi),.0015) for i in range(33)],.00065,cotton_thread)
     for sign in (-1,1):
         tube('Character | shoe lace quarter seam'+suffix,[shoe_top(sign*.043,-.088+k*.014,.0015) for k in range(12)],.0008,cotton_thread)
-    tube('Character | shoe lace heel seam'+suffix,[bodypt((side*.14-.027,legy-.110,.108)),bodypt((side*.14,legy-.115,.148)),bodypt((side*.14+.027,legy-.110,.108))],.0009,cotton_thread)
-    box('Character | canvas sneaker heel tab'+suffix,bodypt((side*.14,legy-.105,.152)),(.019,.008,.029),shoe_fabric,.003)
+    tube('Character | shoe lace heel seam'+suffix,[bodypt((side*.14,legy-.124,.103+j*.004)) for j in range(12)],.0007,cotton_thread)
     # Fit construction details to the evaluated upper, then place the heel
     # behind the ankle with more shoe length in front of the foot.
     from mathutils.bvhtree import BVHTree
@@ -225,11 +277,16 @@ for side in (-1,1):
     for detail in list(scene.objects):
         if not detail.name.split('.')[0].endswith(suffix) or not any(word in detail.name for word in ('sneaker','shoe lace')):continue
         points=list(detail.data.vertices) if detail.type=='MESH' else [p for spline in detail.data.splines for p in spline.points] if detail.type=='CURVE' else []
-        for point in points:
+        for point_index,point in enumerate(points):
             p=Vector(point.co[:3])
             if detail==tongue_mesh or detail.type=='CURVE':
                 location,normal,_,distance=upper.find_nearest(p)
-                if location is not None and distance<.018:p=location+normal*(.003 if 'lace' in detail.name and 'seam' not in detail.name else .001)
+                if location is not None and distance<.025:
+                    offset=detail.get('surface_offset_m',.003 if 'lace' in detail.name and 'seam' not in detail.name else .0015)
+                    if detail.get('lace_threading'):
+                        offset=.0012+(.0026+detail.get('crossing_offset_m',0))*math.sin(math.pi*point_index/(len(points)-1))
+                    if detail.get('bow_loop'):offset=.004+.006*math.sin(math.pi*point_index/(len(points)-1))**2
+                    p=location+normal*offset
             p.y+=.035
             point.co=p if detail.type=='MESH' else (*p,1)
 
@@ -310,6 +367,10 @@ for obj in list(scene.objects):
     for point in points:
         p=Vector(point.co[:3])-origin
         side=1 if p.x>0 else -1
+        # Let the forearms return toward the body below the elbows. The
+        # upper arm stays clear of the torso so the armpit does not web over.
+        inward=max(0,min(1,(1.18-p.z)/.25));inward=inward*inward*(3-2*inward)
+        p.x-=side*.047*inward
         pivot=Vector((side*.23,0,1.405))
         elbow=Vector((side*.311,-.052,1.15))
         bend=max(0,min(1,(1.20-p.z)/.13))

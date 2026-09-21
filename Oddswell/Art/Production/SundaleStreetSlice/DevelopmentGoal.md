@@ -8,6 +8,8 @@ Acceptance requires credible adult proportions and weight through the hips, knee
 
 Work sequence: develop the weight-bearing pose; improve garment drape through native cloth studies; refine hands, footwear and facial detail; review the entire figure under the scene lighting; then continue architectural/retail variety and planting realism. Preserve editable source, original asset bytes, license records and verified checkpoints. Keep the goal active until the visual criteria are actually met.
 
+Current progress after `3b3caa0`: fitted collar/zipper and relaxed forearms, subtle source-derived facial targets, radial iris color and finer eye/brow detail, and rebuilt shoe openings/lacing/sole contact. These are development checkpoints; jacket shoulder construction, natural drape, face/skin realism and whole-figure acceptance remain unfinished.
+
 Active owner request, September 12, 2026: spend time developing the character and landscape toward the **first reference picture**, continuing through modeling and native render review.
 
 The target is `../../Reviews/OddsWellStreetIdentityCandidate/OddsWell_Visual_Direction_Concept.png`. It sets the desired warm, tactile, realistic finish. The current Blender scene is a work in progress; a completed render does not by itself satisfy this goal.

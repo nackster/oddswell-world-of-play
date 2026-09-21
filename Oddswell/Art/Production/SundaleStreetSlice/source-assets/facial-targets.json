@@ -1,0 +1,26 @@
+{
+  "commit": "a8bc2d54ff0ac92e78ff71431b1023eda42bf482",
+  "license": "CC0 1.0 Universal",
+  "license_url": "https://github.com/makehumancommunity/makehuman/blob/a8bc2d54ff0ac92e78ff71431b1023eda42bf482/LICENSE.ASSETS.md",
+  "basemesh": "hm08",
+  "files": {
+    "head-age-incr.target": {
+      "url": "https://raw.githubusercontent.com/makehumancommunity/makehuman/a8bc2d54ff0ac92e78ff71431b1023eda42bf482/makehuman/data/targets/head/head-age-incr.target",
+      "git_blob_sha1": "54440c85e23e77fa51bc0585e324806deac24e4f",
+      "sha256": "ff677345bd81e3f439bdf75496bbee620ca3c3f029955a546837afd283abf73a",
+      "bytes": 59255
+    },
+    "l-eye-height2-decr.target": {
+      "url": "https://raw.githubusercontent.com/makehumancommunity/makehuman/a8bc2d54ff0ac92e78ff71431b1023eda42bf482/makehuman/data/targets/eyes/l-eye-height2-decr.target",
+      "git_blob_sha1": "8f61d233b9ac805da40315b9ae25f22b55fac605",
+      "sha256": "11f97a658461ab341b75165acc280dd5541a0ebf57d84dab24819a3af8ee5d25",
+      "bytes": 8855
+    },
+    "r-eye-height2-decr.target": {
+      "url": "https://raw.githubusercontent.com/makehumancommunity/makehuman/a8bc2d54ff0ac92e78ff71431b1023eda42bf482/makehuman/data/targets/eyes/r-eye-height2-decr.target",
+      "git_blob_sha1": "dc8a8cd33556d89fc4f9436136dcbb40f078fed0",
+      "sha256": "8fbe66bf11786f68697b5ba720f6f76e1a99f0db066249d369e4476e016f3f64",
+      "bytes": 8469
+    }
+  }
+}

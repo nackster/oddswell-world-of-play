@@ -10,8 +10,8 @@
   "jacket_surface_components": 1,
   "mature_tree_instances": 13,
   "shared_tree_meshes": 3,
-  "mesh_objects": 3937,
-  "native_scene_objects": 4594,
+  "mesh_objects": 4050,
+  "native_scene_objects": 4718,
   "runtime_claim": false,
   "shorts_boundary_edges": 240,
   "shorts_openings": 3,
@@ -22,19 +22,29 @@
     "left hand": 20,
     "right hand": 20
   },
-  "maximum_lace_surface_distance_m": 0.0030003103893250227,
+  "maximum_lace_surface_distance_m": 0.0066000609658658504,
   "foot_contact": {
     "left": {
-      "min_z": 0.057591989636421204,
-      "heel_min_z": 0.12149427831172943,
-      "toe_min_z": 0.057591989636421204
+      "min_z": 0.0518721342086792,
+      "heel_min_z": 0.12338298559188843,
+      "toe_min_z": 0.0518721342086792
     },
     "right": {
       "min_z": 0.050999999046325684,
-      "heel_min_z": 0.051000043749809265,
-      "toe_min_z": 0.050999999046325684
+      "heel_min_z": 0.050999999046325684,
+      "toe_min_z": 0.05100007355213165
     }
   },
+  "stance_contact_width_m": 0.12801814079284668,
+  "stance_contact_length_m": 0.3115217685699463,
+  "maximum_lace_eyelet_gap_m": 0.0005397453314036824,
+  "minimum_tongue_surface_clearance_m": 0.0014140395214781165,
+  "facial_targets": {
+    "head-age-incr.target": 0.55,
+    "l-eye-height2-decr.target": 0.45,
+    "r-eye-height2-decr.target": 0.45
+  },
+  "eyelash_strands": 96,
   "cotton_drape_frames": 40,
   "cotton_drape_maximum_delta_m": 0.0529472243832398,
   "calf_hair_strands": 2600,

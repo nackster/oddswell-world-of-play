@@ -1,9 +1,9 @@
 {
   "source": "Native scene/garments/plant geometry, CC0 MakeHuman anatomical surfaces, six CC0 Poly Haven stone/bark texture maps and one CC0 photographed sky environment; adapted CC0 Jacaranda model with ten packed 2K maps",
   "reference": "../../Reviews/OddsWellStreetIdentityCandidate/OddsWell_Visual_Direction_Concept.png",
-  "objects": 4594,
-  "meshes": 3114,
-  "materials": 63,
+  "objects": 4718,
+  "meshes": 3229,
+  "materials": 64,
   "packed_texture_maps": 31,
   "mature_tree_instances": 13,
   "seed": 218,
@@ -15,7 +15,7 @@
   ],
   "runtime_integrated": false,
   "character": "Static tailored study with grounded stance and continuous shorts; current game rig unchanged",
-  "character_ground_offset_m": -0.08439122045040132,
+  "character_ground_offset_m": -0.08427651131153108,
   "no_generated_background": true,
   "quality_goal": "Active; reference fidelity and final art approval remain open",
   "independent_reopen": "PASS",
@@ -62,6 +62,8 @@
   "render_device": "OPTIX",
   "skin": "CC0 MakeHuman young_lightskinned_male_diffuse map on retained anatomical UVs; original source preserved",
   "body_detail": "Individual anatomical finger bends, fitted rib cuffs, crossed shoe laces/eyelets, dense pocket stitches and 2600 tapered calf hair curves",
+  "face_detail": "Three pinned CC0 hm08 targets applied in memory; radial iris color, directional fine brows and 96 fitted eyelash strands",
+  "construction": "Shaped collar and continuous zipper; relaxed forearms; recessed shoe collars, fitted tongue/lacing/bows and broad flat sole contact",
   "cloth": "40-frame native cotton drape study blended with tailoring; retained CC0 fabric maps and articulated hip/knee/ankle pose",
   "canopy": "Raised Jacaranda branching with adapted CC0 Island Tree 01 broad-leaf clusters; same leaf family in foreground shrubs"
 }
