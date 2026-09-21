@@ -39,6 +39,23 @@ def assert_connected(obj):
 pants=[o for o in scene.objects if o.type=='MESH' and o.name.startswith('Character | shorts leg')]
 assert len(pants)==1
 assert_connected(pants[0])
+bm=bmesh.new();bm.from_mesh(pants[0].data)
+shorts_boundary_edges=sum(edge.is_boundary for edge in bm.edges)
+assert all(edge.is_manifold or edge.is_boundary for edge in bm.edges),'Non-manifold shorts'
+boundary={v for e in bm.edges if e.is_boundary for v in e.verts}
+assert all(sum(e.is_boundary for e in v.link_edges)==2 for v in boundary),'Broken garment boundary'
+shorts_openings=0
+while boundary:
+    shorts_openings+=1;pending=[boundary.pop()]
+    while pending:
+        vertex=pending.pop()
+        for edge in vertex.link_edges:
+            other=edge.other_vert(vertex)
+            if edge.is_boundary and other in boundary:
+                boundary.remove(other);pending.append(other)
+assert shorts_openings==3,'Expected open waist and two leg hems'
+assert len(bm.verts)-len(bm.edges)+len(bm.faces)==-1,'Expected three garment openings'
+bm.free()
 assert scene.get('continuous_jacket')
 assert_connected(bpy.data.objects['Character | tailored slate jacket'])
 assert scene.get('character_landscape_development')
@@ -49,5 +66,7 @@ assert {o['growth_variant'] for o in trees}=={0,1,2}
 assert all(o.get('raised_clear_trunk') for o in trees)
 assert all(any('island_tree_01_leaves' in m.name for m in o.data.materials if m) for o in trees)
 result={'result':'PASS','packed_texture_maps':len(packed),'cameras':sum(o.type=='CAMERA' for o in scene.objects),'court_paint_max_thickness_m':max(obj.dimensions.z for obj in paint),'collar_stray_faces':0,'head_boundary_edges':head_boundary_edges,'stance_sole_min_z_m':sole_min,'shorts_surface_components':1,'jacket_surface_components':1,'mature_tree_instances':len(trees),'shared_tree_meshes':tree_meshes,'mesh_objects':sum(obj.type=='MESH' for obj in scene.objects),'native_scene_objects':len(scene.objects),'runtime_claim':False}
+result['shorts_boundary_edges']=shorts_boundary_edges
+result['shorts_openings']=shorts_openings
 if '--draft' not in sys.argv:(ROOT/'cold-reopen.json').write_text(json.dumps(result,indent=2)+'\n',encoding='utf-8')
 print('ODDSWELL_STREET_SLICE_COLD_CHECK_PASS',json.dumps(result))

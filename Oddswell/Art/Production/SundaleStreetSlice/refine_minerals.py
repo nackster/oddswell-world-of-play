@@ -25,6 +25,25 @@ def mineral_relief(material,pore_scale,pore_depth):
 mineral_relief(stone,105,.0011)
 for material in pavers:mineral_relief(material,155,.0007)
 
+# Honed limestone has restrained grain and broken sediment layers, rather
+# than a high-contrast cloudy pattern repeated over every civic element.
+nodes,links=stone.node_tree.nodes,stone.node_tree.links
+bs=nodes.get('Principled BSDF')
+coords=next(node for node in nodes if node.type=='TEX_COORD')
+base=next(node for node in nodes if node.type=='VALTORGB')
+for element,factor in zip(base.color_ramp.elements,(.86,1.06)):
+    element.color=(*(c*factor for c in stone.diffuse_color[:3]),1)
+scale=nodes.new('ShaderNodeVectorMath');scale.operation='MULTIPLY';scale.inputs[1].default_value=(1.7,1.7,16)
+links.new(coords.outputs['Object'],scale.inputs[0])
+layers=nodes.new('ShaderNodeTexNoise');layers.name='Broken limestone bedding';layers.inputs['Scale'].default_value=2;layers.inputs['Detail'].default_value=3;layers.inputs['Roughness'].default_value=.7
+links.new(scale.outputs['Vector'],layers.inputs['Vector'])
+tint=nodes.new('ShaderNodeValToRGB');tint.name='Subtle sediment tint'
+tint.color_ramp.elements[0].position=.25;tint.color_ramp.elements[0].color=(.74,.72,.68,1)
+tint.color_ramp.elements[1].position=.75;tint.color_ramp.elements[1].color=(1,1,1,1)
+links.new(layers.outputs['Fac'],tint.inputs[0])
+mix=nodes.new('ShaderNodeMixRGB');mix.blend_type='MULTIPLY';mix.inputs[0].default_value=.65
+links.new(base.outputs['Color'],mix.inputs[1]);links.new(tint.outputs['Color'],mix.inputs[2]);links.new(mix.outputs[0],bs.inputs['Base Color'])
+
 # Oak fibers follow the long direction of each seat slat or display shelf.
 nodes,links=wood.node_tree.nodes,wood.node_tree.links
 coords=next(node for node in nodes if node.type=='TEX_COORD')

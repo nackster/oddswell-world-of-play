@@ -12,5 +12,7 @@
   "shared_tree_meshes": 3,
   "mesh_objects": 3929,
   "native_scene_objects": 4553,
-  "runtime_claim": false
+  "runtime_claim": false,
+  "shorts_boundary_edges": 240,
+  "shorts_openings": 3
 }

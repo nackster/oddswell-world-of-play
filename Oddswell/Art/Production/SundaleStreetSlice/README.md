@@ -2,7 +2,7 @@
 
 The owner’s first OddsWell concept picture remains the visual target. [DevelopmentGoal.md](DevelopmentGoal.md) records the active goal and acceptance criteria. The scene is being developed through actual modeling and Blender Cycles renders; the reference is not projected onto geometry or used as a scene background.
 
-September 21 continuation: the saved broadleaf scene was reopened, its jacket/shorts folds were adjusted conservatively after rejecting an overly striped draft, and all six native views were rebuilt. The visual goal remains active; see [VisualReview.md](VisualReview.md) for the remaining gaps.
+September 21 continuation: after the modest fold checkpoint `8c868ec`, the shorts were rebuilt as a continuous tailored surface through the hips and inseam, the sleeve caps and shoulder join were softened, and civic limestone gained restrained sediment variation. All six native views were rebuilt. The visual goal remains active; see [VisualReview.md](VisualReview.md) for the remaining gaps.
 
 ![Native gameplay view](StreetSlice_Gameplay.png)
 
@@ -20,7 +20,7 @@ Open `OddsWell_Sundale_StreetSlice.blend` in Blender 4.5 or later. It is compres
 - `broadleaf_canopy.py` adapts retained leaf clusters to the tree branching and foreground shrubs. The woody structure is raised before leaf emission so leaf proportions remain intact.
 - `refine_minerals.py` layers fine pores and mineral grain into the native stone and brick materials, and directs oak fibers along the seats and shelves.
 - `render_views.py` reopens the saved scene and renders the 1920x1080 gameplay view at 160 samples plus inspection views at 96 samples. `inspect_details.py` provides faster 48-sample close-ups during modeling.
-- `verify_scene.py` checks the cold-open artifact, packed resources, cameras, flat court paint, head boundaries, stance-foot contact, connected jacket/shorts surfaces and the three shared tree variants. Use `-- --draft` before final cameras exist.
+- `verify_scene.py` checks the cold-open artifact, packed resources, cameras, flat court paint, head boundaries, stance-foot contact, connected jacket/shorts surfaces, three closed boundary loops at the shorts waist/hems, and the three shared tree variants. Use `-- --draft` before final cameras exist.
 - `fetch_stone_material.py`, `fetch_sky.py`, `fetch_tree.py` and `fetch_broadleaf.py` restore the retained public source maps if needed. The finished Blender file packs 24 maps, including seven leaf/twig maps added in the broad-leaf pass.
 
 Run Blender with `--background --factory-startup --disable-autoexec --python-exit-code 1 --python build_scene.py`. Add `-- --preview` for a 1100x619 draft. Python exceptions must cause a nonzero exit. The preview is a working file; delivery renders and their hashes are recorded in `delivery.json` after verification.

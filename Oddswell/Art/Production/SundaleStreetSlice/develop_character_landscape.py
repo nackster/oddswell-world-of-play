@@ -90,7 +90,6 @@ coat=[(0,0,.915,.190,.114),(0,0,.95,.209,.132),(0,.006,1.02,.222,.140),(0,.012,1
 cloth('tailored slate jacket',coat,jacket,'coat')
 cloth('ribbed waistband',[(0,0,.897,.194,.120),(0,0,.922,.199,.124),(0,0,.943,.207,.133)],rib,'rib',12)
 cloth('standing collar',[(0,0,1.47,.095,.082),(0,0,1.485,.091,.079),(0,0,1.526,.076,.071)],rib,'rib',14)
-cloth('shorts leg hip yoke',[(0,0,.80,.190,.115),(0,0,.865,.215,.132),(0,0,.925,.209,.129)],shorts,'shorts',24)
 
 # The yoke follows the same displaced cloth surface and has a narrow sewn edge.
 verts=[]
@@ -124,7 +123,7 @@ box('Character | zipper pull',cloth_point(coat,1.432,math.pi/2,'coat')+Vector((0
 leg_profiles={}
 for side in (-1,1):
     suffix=' left' if side<0 else ' right'
-    sleeve=[(side*.338,-.016,.924,.054,.059),(side*.34,-.026,.973,.060,.067),(side*.324,-.040,1.05,.066,.074),(side*.311,-.052,1.15,.076,.079),(side*.30,-.029,1.22,.076,.084),(side*.273,-.003,1.34,.086,.093),(side*.229,.006,1.414,.060,.080),(side*.20,.006,1.445,.047,.064),(side*.145,.006,1.455,.035,.045)]
+    sleeve=[(side*.338,-.016,.924,.054,.059),(side*.34,-.026,.973,.060,.067),(side*.324,-.040,1.05,.066,.074),(side*.311,-.052,1.15,.076,.079),(side*.30,-.029,1.22,.076,.084),(side*.266,-.003,1.34,.079,.086),(side*.217,.006,1.414,.066,.065),(side*.18,.006,1.445,.048,.049),(side*.135,.006,1.455,.030,.035)]
     cloth('shaped sleeve'+suffix,sleeve,jacket,'sleeve')
     sleeve_yoke=[]
     for k in range(5):
@@ -141,9 +140,8 @@ for side in (-1,1):
     a=math.pi*1.5
     tube('Character | sleeve seam'+suffix,[cloth_point(sleeve,.95+k*.006,a,'sleeve')+Vector((0,-.001,0)) for k in range(72)],.00065,thread)
     legy=.075 if side==1 else -.065
-    pants=[(side*.131,legy,.604,.090,.104),(side*.13,legy,.625,.095,.109),(side*.126,legy*.9,.685,.104,.116),(side*.12,legy*.6,.77,.119,.129),(side*.11,legy*.15,.85,.122,.137),(side*.106,0,.922,.115,.129)]
+    pants=[(side*.131,legy*.45,.604,.090,.104),(side*.13,legy*.45,.625,.095,.109),(side*.126,legy*.4,.685,.104,.116),(side*.12,legy*.25,.77,.113,.124),(side*.11,legy*.08,.85,.119,.132),(side*.106,0,.922,.115,.129)]
     leg_profiles[side]=pants
-    cloth('shorts leg'+suffix,pants,shorts,'shorts',58)
     for z in (.611,.622):
         tube('Character | shorts leg hem'+suffix,[cloth_point(pants,z,j*math.tau/80,'shorts')+Vector((math.cos(j*math.tau/80),math.sin(j*math.tau/80),0))*.001 for j in range(81)],.00065,cotton_thread)
     # Pocket curves sit on the rear quarter of each leg; no floating white V.
@@ -185,30 +183,59 @@ for vertex in bpy.data.objects['Character | anatomical legs'].data.vertices:
         p.x=x+(p.x-x)*factor;p.y=y+(p.y-y)*factor
         vertex.co=p+origin
 
-# Fuse the closed garment volumes into one continuous pair of shorts. This
-# removes the separate-tube crotch and the belt-like lower edge of the yoke.
-parts=[o for o in scene.objects if o.type=='MESH' and o.name.startswith('Character | shorts leg')]
-vertices=[];faces=[]
-for obj in parts:
-    offset=len(vertices);vertices.extend([v.co.copy() for v in obj.data.vertices])
-    faces.extend([tuple(offset+i for i in p.vertices) for p in obj.data.polygons])
-    sides=80;n=len(obj.data.vertices)
-    faces.extend([tuple(offset+j for j in range(sides-1,-1,-1)),tuple(offset+n-sides+j for j in range(sides))])
-    bpy.data.objects.remove(obj,do_unlink=True)
+# Tailor a single open garment: the two leg loops share a curved inseam
+# bridge and the hip circumference. Overlapping capped tubes left a bulge
+# at the fly and a horizontal ledge around the seat after voxel union.
+vertices=[];faces=[];sides=80
+hip=[(0,0,.80,.215,.132),(0,0,.865,.215,.132),(0,0,.925,.209,.129)]
+for k in range(17):
+    z=.80+.125*k/16
+    vertices.extend(cloth_point(hip,z,j*math.tau/sides,'shorts') for j in range(sides))
+for k in range(16):
+    faces.extend((k*sides+j,k*sides+(j+1)%sides,(k+1)*sides+(j+1)%sides,(k+1)*sides+j) for j in range(sides))
+bridge={20:20,60:60}
+for j in range(21,60):
+    a=j*math.tau/sides
+    bridge[j]=len(vertices)
+    vertices.append(bodypt((0,.132*math.sin(a),.80+.058*math.cos(a))))
+for side in (-1,1):
+    top=[]
+    for j in range(sides):
+        outer=(20<=j<=60) if side<0 else (j<=20 or j>=60)
+        top.append(j if outer else bridge[(40-j)%sides] if side<0 else bridge[j])
+    previous=None
+    for k in range(37):
+        t=k/36;z=.609+.191*t
+        blend=t**4
+        ring=top if k==36 else list(range(len(vertices),len(vertices)+sides))
+        if k<36:
+            for j in range(sides):
+                p=cloth_point(leg_profiles[side],z,j*math.tau/sides,'shorts')
+                target=vertices[top[j]].copy()
+                target.z-=.191*(1-t)
+                vertices.append(p.lerp(target,blend))
+        if previous is not None:
+            faces.extend((previous[j],previous[(j+1)%sides],ring[(j+1)%sides],ring[j]) for j in range(sides))
+        previous=ring
 pants=mesh('Character | shorts leg continuous tailoring',vertices,faces,shorts,True)
-remesh=pants.modifiers.new('Continuous cotton garment surface','REMESH');remesh.mode='VOXEL';remesh.voxel_size=.003;remesh.use_smooth_shade=True
-smooth=pants.modifiers.new('Soft garment joins','SMOOTH');smooth.factor=.65;smooth.iterations=4
-# Apply the union before posing so folds and the crotch deform together.
-bpy.context.view_layer.objects.active=pants
-for modifier in list(pants.modifiers):bpy.ops.object.modifier_apply(modifier=modifier.name)
-# Open the leg hems after the volume union. Filled end caps intersected the
-# anatomical thighs and left a dark horizontal patch beneath the shorts.
 import bmesh
 bm=bmesh.new();bm.from_mesh(pants.data)
-bottom=[v for v in bm.verts if v.co.z<origin.z+.609]
-bmesh.ops.delete(bm,geom=bottom,context='VERTS')
+# Recalculate the shared saddle consistently before subdivision/thickness.
+bmesh.ops.recalc_face_normals(bm,faces=list(bm.faces))
+assert all(edge.is_manifold or edge.is_boundary for edge in bm.edges),'Non-manifold shorts tailoring'
 bm.to_mesh(pants.data);bm.free();pants.data.update()
+sub=pants.modifiers.new('Continuous cotton drape','SUBSURF');sub.levels=2
 hem=pants.modifiers.new('Cotton hem thickness','SOLIDIFY');hem.thickness=.0015
+from mathutils.bvhtree import BVHTree
+bpy.context.view_layer.update()
+trouser_surface=BVHTree.FromObject(pants,bpy.context.evaluated_depsgraph_get())
+for obj in scene.objects:
+    if not obj.name.startswith('Character | back pocket seam'):continue
+    for spline in obj.data.splines:
+        for point in spline.points:
+            location,normal,_,distance=trouser_surface.find_nearest(Vector(point.co[:3]))
+            assert location is not None and distance<.05,'Pocket seam outside tailoring'
+            point.co=(*(location+normal*.001),1)
 
 # Small opposing arm swing and relaxed fingers produce an ordinary walking
 # stance. Every visible cuff, sleeve and hand is moved together.
@@ -238,7 +265,14 @@ remesh=coat_surface.modifiers.new('Continuous jacket construction','REMESH');rem
 smooth=coat_surface.modifiers.new('Soft shoulder joins','SMOOTH');smooth.factor=.45;smooth.iterations=3
 bpy.context.view_layer.objects.active=coat_surface
 for modifier in list(coat_surface.modifiers):bpy.ops.object.modifier_apply(modifier=modifier.name)
-from mathutils.bvhtree import BVHTree
+# Relax the narrow sleeve/torso join while retaining the lower-body folds.
+shoulder=coat_surface.vertex_groups.new(name='Shoulder transition')
+for vertex in coat_surface.data.vertices:
+    p=vertex.co-origin
+    weight=math.exp(-((p.z-1.405)/.045)**2)*min(1,abs(p.x)/.17)
+    if weight>.01:shoulder.add([vertex.index],weight,'REPLACE')
+smooth=coat_surface.modifiers.new('Relax shoulder cap','SMOOTH');smooth.factor=1;smooth.iterations=35;smooth.vertex_group=shoulder.name
+bpy.ops.object.modifier_apply(modifier=smooth.name)
 bpy.context.view_layer.update()
 surface=BVHTree.FromObject(coat_surface,bpy.context.evaluated_depsgraph_get())
 for obj in scene.objects:

@@ -12,13 +12,17 @@ Current native gameplay render:
 
 ## Refinement after the first character checkpoint
 
-On September 21, the owner resumed the saved broadleaf checkpoint. A first hip-fold preview produced narrow, stripe-like marks and was rejected. The retained pass uses broader, lower-amplitude shorts folds and a slightly stronger jacket-body fold. Gameplay plus five inspection views were rebuilt from the same editable scene. In the close-ups the result is a modest improvement, not a resolved cloth simulation: the shorts still have a stiff hip/crotch shape and the jacket shoulder-to-sleeve transition still needs art direction.
+On September 21, the owner resumed the saved broadleaf checkpoint. A first hip-fold preview produced narrow, stripe-like marks and was rejected. Checkpoint `8c868ec` retained broader, lower-amplitude shorts folds and a slightly stronger jacket-body fold.
+
+The next pass replaces overlapping, voxel-unioned shorts volumes with a single surface sharing the hip circumference and curved inseam. The first transition produced a pronounced rear shelf; close-up review led to a gradual blend over the full leg height and reduced pre-pose offsets. Pocket seams were fitted to the evaluated cloth. The retained rear and three-quarter views show a smoother hip-to-leg transition and less bulky crotch. Sleeve caps are narrower and the upper shoulder join is locally relaxed. These are visible modeling improvements, but the cloth still reads as a static sculpt and the rear inseam needs further art direction.
+
+Civic limestone now combines lower-contrast grain with broken horizontal sediment variation over its existing pores. The change is deliberately subtle. It is not a substitute for object-specific wear, edge treatment or more varied architecture.
 
 The latest landscape pass replaces the fine compound foliage with adapted broad-leaf geometry and raises the woody branching before leaf emission. A single distribution pass over the combined branch masks reduces hanging, crowded patches. The court view reveals the far basket and more of the arena. Foreground shrubs now have woody stems and overlapping clusters from the same leaf family, with darker understory material settings. The retained Island Tree 01 source and seven leaf/twig maps are documented alongside the original Jacaranda source.
 
 The jacket torso and posed sleeves now form one continuous surface. Smoothly interpolated tailoring profiles reduce angular shoulder and hip bands; the teal panels and seams are fitted to that surface. Hidden inner-sleeve panel vertices are removed before fitting so they cannot appear as teal slivers on the front shoulder. The cuff profile follows the sleeve, and compression folds fade into the knit bands.
 
-The shorts have open, thickened hems after their volume union. Native close-ups also exposed insufficient thigh coverage inside the hem; the retained anatomical surface now extends farther under the shorts and fits within their opening. The exposed calves retain their volume. These changes address gaps and intersections, not only shading.
+The shorts have open, thickened hems and an open waist, with subdivision over the continuous tailored surface. The cold-open check counts the three boundary loops and rejects non-manifold edges. Earlier native close-ups exposed insufficient thigh coverage inside the hem; the retained anatomical surface extends farther under the shorts and fits within their opening. The exposed calves retain their volume. These changes address gaps and intersections, not only shading.
 
 Thirteen mature trees use three shared growth variants with different leaf seeds, densities and crown proportions. The foreground hero stays fixed for composition; upright and spreading forms vary the street and forecourt. Stone and fired paving gain sparse pores and fine mineral relief, while oak fibers follow the seat slats and shelves. At gameplay distance these material changes are subtle; they do not replace the reference's richer wear and photographic detail.
 
@@ -38,7 +42,7 @@ The tree comparison led to adapting CC0 native branching and leaf geometry inste
 
 The reference has more natural garment drape, richer architectural variation and shop contents, subtler weathering, a more composed mixture of plants, and a more photographic finish. The current character is a static model and the scene is deliberately an offline art study. A successful render and geometric checks do not close those visual gaps.
 
-The next visible priorities are natural cloth drape around the hips and shoulder seam, varied facade/window arrangements, more convincing retail contents, and less uniformly clean foreground surfaces. Paving scale is established, but wear and small color changes still need refinement. Broad-leaf geometry is now present; crown composition, color balance and selective pruning still need art direction against the reference.
+The next visible priorities are the overly oval head/neck silhouette, more natural cloth behavior at the rear inseam and shoulder seam, varied facade/window arrangements, more convincing retail contents, and less uniformly clean foreground surfaces. Paving scale is established, but wear and small color changes still need refinement. Broad-leaf geometry is now present; crown composition, color balance and selective pruning still need art direction against the reference.
 
 The higher trunks materially open the court view, but some low edge branches remain. Selective court-facing pruning and measured physical clearances are still required before treating this as production planting.
 
