@@ -4,7 +4,7 @@
   "objects": 4563,
   "meshes": 3109,
   "materials": 62,
-  "packed_texture_maps": 24,
+  "packed_texture_maps": 25,
   "mature_tree_instances": 13,
   "seed": 218,
   "render_engine": "Cycles",
@@ -60,5 +60,6 @@
   },
   "additional_view_samples": 96,
   "render_device": "OPTIX",
+  "skin": "CC0 MakeHuman young_lightskinned_male_diffuse map on retained anatomical UVs; original source preserved",
   "canopy": "Raised Jacaranda branching with adapted CC0 Island Tree 01 broad-leaf clusters; same leaf family in foreground shrubs"
 }

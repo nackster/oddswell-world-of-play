@@ -5,6 +5,11 @@ Executed by build_scene.py after tailoring; the original CC0 source is intact.
 import bmesh
 
 head=bpy.data.objects['Character | anatomical head']
+for vertex in head.data.vertices:
+    p=vertex.co-origin
+    if p.y>.08:
+        p.x*=1+.065*math.exp(-((p.z-1.575)/.035)**2)
+        vertex.co=p+origin
 bm=bmesh.new();bm.from_mesh(head.data)
 # Cut away source shoulder fragments and extend a fitted neck skirt beneath
 # the collar. Capping the original uneven crop left visible skin flanges.
@@ -29,9 +34,15 @@ head['anatomical_source']='MakeHuman hm08 body; neck cut capped beneath collar'
 
 # The native eyelid openings sit over spherical eyes placed at the retained
 # source joints. Iris and pupil are curved patches on the same eye radius.
-white=mat('Character | warm sclera',(.55,.52,.43),.28)
-iris=mat('Character | hazel iris',(.045,.025,.011),.40,750)
-pupil=mat('Character | pupil',(.002,.0025,.002),.18)
+white=mat('Character | warm sclera',(.60,.58,.53),.18)
+iris=mat('Character | hazel iris',(.055,.035,.017),.27,750)
+pupil=mat('Character | pupil',(.002,.0025,.002),.12)
+for node in iris.node_tree.nodes:
+    if node.type=='BUMP':node.inputs['Distance'].default_value=.00002;node.inputs['Strength'].default_value=.12
+for material in (white,iris,pupil):
+    eye_bs=material.node_tree.nodes.get('Principled BSDF')
+    eye_bs.inputs['Coat Weight'].default_value=.35
+    eye_bs.inputs['Coat Roughness'].default_value=.07
 for side in ('l','r'):
     center=joint('joint-'+side+'-eye');radius=.0158
     eye=sphere('Character | eye '+side,bodypt(center),(radius,)*3,white,48,32)
@@ -84,15 +95,22 @@ bs=nodes.get('Principled BSDF');bs.inputs['Roughness'].default_value=.56
 bs.inputs['Subsurface Weight'].default_value=.10
 bs.inputs['Subsurface Radius'].default_value=(1,.45,.22)
 bs.inputs['Subsurface Scale'].default_value=.004
-color=head.data.color_attributes.new(name='Natural face tint',type='FLOAT_COLOR',domain='POINT')
-for vertex in head.data.vertices:
-    x,y,z=vertex.co-origin
-    lips=math.exp(-((x/.023)**4+((z-1.599)/.009)**4))*min(1,max(0,(y-.151)/.012))
-    cheeks=math.exp(-((abs(x)-.045)/.023)**2-((z-1.63)/.025)**2)*min(1,max(0,(y-.10)/.045))
-    base=Vector(skin.diffuse_color[:3])
-    base=base.lerp(Vector((.30,.12,.083)),lips*.65)
-    base=base.lerp(Vector((.40,.21,.14)),cheeks*.20)
-    color.data[vertex.index].color=(*base,1)
-attribute=nodes.new('ShaderNodeVertexColor');attribute.layer_name=color.name
-links.new(attribute.outputs['Color'],bs.inputs['Base Color'])
+# Preserve the original skin map and use its matching source UVs on every
+# exposed anatomical region. Pigment, nails and scalp detail stay registered.
+image=bpy.data.images.load(str(ROOT/'textures/makehuman-skin/young_lightskinned_male_diffuse.png'))
+image.colorspace_settings.name='sRGB';image.pack()
+for material in (skin,face_skin):
+    nodes,links=material.node_tree.nodes,material.node_tree.links
+    bs=nodes.get('Principled BSDF')
+    coords=next(node for node in nodes if node.type=='TEX_COORD')
+    texture=nodes.new('ShaderNodeTexImage');texture.name='CC0 MakeHuman skin';texture.image=image
+    links.new(coords.outputs['UV'],texture.inputs['Vector'])
+    tint=nodes.new('ShaderNodeHueSaturation');tint.inputs['Saturation'].default_value=.85;tint.inputs['Value'].default_value=.85
+    links.new(texture.outputs['Color'],tint.inputs['Color']);links.new(tint.outputs['Color'],bs.inputs['Base Color'])
+    roughness=nodes.new('ShaderNodeTexNoise');roughness.inputs['Scale'].default_value=85;roughness.inputs['Detail'].default_value=3
+    links.new(coords.outputs['Object'],roughness.inputs['Vector'])
+    rough=nodes.new('ShaderNodeMapRange');rough.inputs['To Min'].default_value=.44;rough.inputs['To Max'].default_value=.62
+    links.new(roughness.outputs['Fac'],rough.inputs['Value']);links.new(rough.outputs[0],bs.inputs['Roughness'])
+    bs.inputs['Subsurface Weight'].default_value=.10;bs.inputs['Subsurface Scale'].default_value=.004
 scene['human_head_refinement']=True
+scene['source_skin_uvs']=True

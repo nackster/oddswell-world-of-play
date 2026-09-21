@@ -434,15 +434,18 @@ for x in (-.13,.13):tube('Character | rear jacket seam',[bodypt((x,-.122,.96)),b
 for obj in list(scene.objects):
     if any(obj.name.startswith('Character | '+n) for n in ('bare lower leg','relaxed hand','thumb','neck','faceless head','ear')):
         bpy.data.objects.remove(obj,do_unlink=True)
-rawverts=[];bodyfaces=[];jointverts={};group=''
+rawverts=[];rawuvs=[];bodyfaces=[];bodyfaceuvs=[];jointverts={};group=''
 for line in (ROOT/'source-assets/makehuman-base.obj').read_text(encoding='utf-8').splitlines():
     parts=line.split()
     if not parts:continue
     if parts[0]=='v':rawverts.append(Vector(tuple(map(float,parts[1:4]))))
+    elif parts[0]=='vt':rawuvs.append(tuple(map(float,parts[1:3])))
     elif parts[0]=='g':group=parts[1]
     elif parts[0]=='f':
         ids=[int(p.split('/')[0])-1 for p in parts[1:]]
-        if group=='body':bodyfaces.append(ids)
+        if group=='body':
+            bodyfaces.append(ids)
+            bodyfaceuvs.append([rawuvs[int(p.split('/')[1])-1] for p in parts[1:]])
         if group.startswith('joint-'):jointverts.setdefault(group,set()).update(ids)
 used={i for face in bodyfaces for i in face}
 low=min(rawverts[i].y for i in used);high=max(rawverts[i].y for i in used)
@@ -451,14 +454,14 @@ def convert(v):return Vector((v.x*unit,v.z*unit,(v.y-low)*unit))
 converted=[convert(v) for v in rawverts]
 def joint(name):return sum((converted[i] for i in jointverts[name]),Vector())/len(jointverts[name])
 for region in ('head','legs','left hand','right hand'):
-    vertices=[];faces=[];indices={}
+    vertices=[];faces=[];faceuvs=[];indices={}
     sign=1 if region=='left hand' else -1
     if 'hand' in region:
         side='l' if sign==1 else 'r'
         wrist=joint('joint-'+side+'-hand');elbow=joint('joint-'+side+'-elbow')
         target=Vector((sign*.35,-.015,.90))
         rotation=(wrist-elbow).rotation_difference(Vector((sign*.03,.04,-.25)))
-    for face in bodyfaces:
+    for face,source_uvs in zip(bodyfaces,bodyfaceuvs):
         vs=[converted[i] for i in face]
         keep=all(v.z>1.485 for v in vs) if region=='head' else all(.13<v.z<.705 for v in vs) if region=='legs' else all(v.x*sign>.422 and v.z<1.35 for v in vs)
         if not keep:continue
@@ -479,7 +482,11 @@ for region in ('head','legs','left hand','right hand'):
                 indices[index]=len(vertices);vertices.append(bodypt(v))
             newface.append(indices[index])
         faces.append(newface)
+        faceuvs.append(source_uvs)
     anatomy=mesh('Character | anatomical '+region,vertices,faces,skin,True)
+    uv=anatomy.data.uv_layers.new(name='MakeHuman source UV')
+    for polygon,source_uvs in zip(anatomy.data.polygons,faceuvs):
+        for loop_index,coord in zip(polygon.loop_indices,source_uvs):uv.data[loop_index].uv=coord
     mod=anatomy.modifiers.new('Anatomical surface','SUBSURF');mod.levels=2 if region=='head' else 1
 skin.node_tree.nodes.get('Principled BSDF').inputs['Subsurface Weight'].default_value=.08
 

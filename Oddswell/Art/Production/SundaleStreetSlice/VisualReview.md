@@ -10,9 +10,15 @@ Current native gameplay render:
 
 ![Native scene comparison](StreetSlice_Gameplay.png)
 
+## Current reference refinement
+
+Continuing from human-face checkpoint `f46ac3b`, the upper jacket and arms are slimmer together, bringing the silhouette closer to the original reference. The slate fabric has less broad sheen, the jaw is subtly wider, and the shorts have localized diagonal gathers with a shallower rear-seat crease. Original anatomical UVs now carry a retained CC0 MakeHuman skin map across the head, hands and legs. Native close-ups show lip, cheek, ear and scalp variation; eye surface relief was reduced and reflections refined. The scene packs 25 maps and retains eight native review views.
+
+The original procedural tint was still too uniform in the portraits. The source UV map adds surface variation without changing the original texture bytes. Full-figure and portrait review checked facial registration, neck/collar fit, cuffs and exposed limbs. Early jacket sheen was too broad and was reduced before delivery. These are static modeled creases and shaded skin; facial expression, eyelid refinement, individual identity and natural cloth drape remain open.
+
 ## Refinement after the first character checkpoint
 
-The latest owner request specifically asks for a more human character. From `c255dd5`, the authored oval head was replaced with the retained MakeHuman skull, face, ears and neck. Paired fitted eyes have separate curved irises and pupils; finer brow strands follow the evaluated face, with restrained cheek/lip tint and skin shading. The first native portraits exposed source shoulder fragments protruding through the collar. A planar neck crop and fitted skirt beneath the collar removed those fragments. A second brow draft was too coarse and high, so its strands were made finer and repositioned. Front and profile portraits are now part of the eight-view review set.
+The preceding owner request specifically asked for a more human character. From `c255dd5`, the authored oval head was replaced with the retained MakeHuman skull, face, ears and neck. Paired fitted eyes have separate curved irises and pupils; finer brow strands follow the evaluated face, with restrained cheek/lip tint and skin shading. The first native portraits exposed source shoulder fragments protruding through the collar. A planar neck crop and fitted skirt beneath the collar removed those fragments. A second brow draft was too coarse and high, so its strands were made finer and repositioned. Front and profile portraits are now part of the eight-view review set.
 
 The result reads as human anatomy rather than a featureless mannequin, but remains a neutral static face study. Skin variation, the eyes, expression and individual character identity still need refinement before final approval. The front/profile images are native scene renders with the same outdoor lighting, not generated portraits.
 
@@ -50,7 +56,7 @@ The tree comparison led to adapting CC0 native branching and leaf geometry inste
 
 The reference has more natural garment drape, richer architectural variation and shop contents, subtler weathering, a more composed mixture of plants, and a more photographic finish. The current character is a static model and the scene is deliberately an offline art study. A successful render and geometric checks do not close those visual gaps.
 
-The next visible priorities are more natural facial skin, eyes and expression, cloth behavior at the rear inseam and shoulder seam, varied facade/window arrangements, more convincing retail contents, and less uniformly clean foreground surfaces. Paving scale is established, but wear and small color changes still need refinement. Broad-leaf geometry is now present; crown composition, color balance and selective pruning still need art direction against the reference.
+The next visible priorities are eyelid and eye detail, expression, a more relaxed hand pose, cloth behavior at the rear inseam and shoulder seam, varied facade/window arrangements, more convincing retail contents, and less uniformly clean foreground surfaces. Paving scale is established, but wear and small color changes still need refinement. Broad-leaf geometry is now present; crown composition, color balance and selective pruning still need art direction against the reference.
 
 The higher trunks materially open the court view, but some low edge branches remain. Selective court-facing pruning and measured physical clearances are still required before treating this as production planting.
 

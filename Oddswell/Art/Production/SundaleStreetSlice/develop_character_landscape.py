@@ -14,6 +14,9 @@ thread=mat('Character | matching charcoal topstitch',(.042,.055,.060),.92)
 cotton_thread=mat('Character | matching cotton topstitch',(.42,.40,.34),.94)
 rib=mat('Character | dense slate rib knit',(.025,.035,.039),.94,340)
 shoe_fabric=mat('Character | oat canvas',(.48,.46,.39),.94,260)
+jacket.diffuse_color=(.041,.051,.060,1)
+jacket.node_tree.nodes.get('Principled BSDF').inputs['Sheen Weight'].default_value=.08
+jacket.node_tree.nodes.get('Principled BSDF').inputs['Sheen Roughness'].default_value=.80
 for material,scale,distance in ((skin,1800,.00012),(jacket,1700,.00035),(shorts,2100,.00030),(shoe_fabric,1400,.00045)):
     for node in material.node_tree.nodes:
         if node.type=='TEX_NOISE':node.inputs['Scale'].default_value=scale
@@ -61,16 +64,19 @@ def cloth_point(rings,z,a,kind):
         fold=.006*math.sin(z*100+a*3)*gather*(.5+.5*math.sin(a+z*2))+.0015*math.sin(a*9+z*9)
         fold*=max(0,min(1,(z-.945)/.035))
     elif kind=='shorts':
-        fold=.0025*math.sin(a*9+z*11)
-        # Broad, tapering hip-to-hem creases break the smooth tubular rear.
-        fold+=.004*math.sin(a*6+z*5)*math.exp(-((z-.75)/.15)**2)
-        fold+=.004*math.sin(z*82+a*2)*math.exp(-((z-.84)/.05)**2)
-        fold+=.0025*math.sin(z*120+a*4)*math.exp(-((z-.63)/.025)**2)
+        fold=.0012*math.sin(a*9+z*11)
+        # Local diagonal gathers interrupt the broad cotton volume; each
+        # crease tapers before reaching the side seam or an adjacent fold.
+        for angle,height,slope,depth in ((3.9,.83,.045,.005),(4.95,.805,-.060,.006),(5.4,.74,.045,.004),(4.2,.67,.030,.004),(5.25,.66,-.040,.003),(1.1,.78,-.055,.004),(2.1,.72,.070,.004)):
+            da=(a-angle+math.pi)%math.tau-math.pi
+            d=z-height-slope*da
+            mask=math.exp(-(da/.42)**2-((z-height)/.13)**2)
+            fold+=mask*(depth*math.exp(-(d/.009)**2)-depth*.45*math.exp(-((d+.012)/.011)**2))
     else:
         fold=.00015*math.cos(a*24)
     px=x+(rx+fold)*math.cos(a);py=y+(ry+fold)*math.sin(a)
     if kind=='shorts' and rx>.18 and math.sin(a)<0:
-        py+=.045*math.exp(-(px/.050)**2)*math.exp(-((z-.825)/.065)**2)
+        py+=.018*math.exp(-(px/.050)**2)*math.exp(-((z-.825)/.065)**2)
     pz=z
     if kind=='sleeve' and z>1.38:
         side=1 if x>0 else -1
@@ -294,6 +300,20 @@ for obj in scene.objects:
             value=location+normal*.0015
             point.co=value if obj.type=='MESH' else (*value,1)
 scene['continuous_jacket']=True
+
+# Bring the padded upper-body silhouette closer to the lean reference.
+# Transform cloth, fitted trim and hands together so their joins stay fitted.
+for obj in scene.objects:
+    if not obj.name.startswith('Character | '):continue
+    if any(word in obj.name for word in ('anatomical head','anatomical legs','shorts','back pocket','sneaker','shoe lace')):continue
+    points=list(obj.data.vertices) if obj.type=='MESH' else [p for spline in obj.data.splines for p in spline.points] if obj.type=='CURVE' else []
+    for point in points:
+        p=Vector(point.co[:3])-origin
+        chest=max(0,min(1,(p.z-.98)/.22));chest=chest*chest*(3-2*chest)
+        arm=max(0,min(1,(abs(p.x)-.21)/.07))
+        p.x*=1-.085*max(chest,arm)
+        point.co=p+origin if obj.type=='MESH' else (*(p+origin),1)
+scene['reference_upper_body_fit']=True
 
 # Layered landscape: narrow grasses, flowering stems, small groundcover and
 # broad shrub leaves occupy different heights instead of one leaf cloud.

@@ -48,6 +48,8 @@ Oddswell/Art/Production/SundaleArchitecture/ResidentialNeighborhoodServices/rend
 
 # Broad-leaf source textures
 Oddswell/Art/Production/SundaleStreetSlice/textures/broadleaf/*.png filter=lfs diff=lfs merge=lfs -text
+Oddswell/Art/Production/SundaleStreetSlice/textures/makehuman-skin/*.png filter=lfs diff=lfs merge=lfs -text
+Oddswell/Art/Production/SundaleStreetSlice/textures/makehuman-skin/*.mhmat -text
 
 # Audio and video production files
 *.wav filter=lfs diff=lfs merge=lfs -text

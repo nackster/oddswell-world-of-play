@@ -10,7 +10,13 @@ bpy.ops.wm.open_mainfile(filepath=str(ROOT/'OddsWell_Sundale_StreetSlice.blend')
 scene=bpy.context.scene
 bpy.context.view_layer.update()
 packed=[image for image in bpy.data.images if image.source=='FILE' and image.packed_file]
-assert len(packed)==24
+assert len(packed)==25
+assert scene.get('source_skin_uvs') and scene.get('reference_upper_body_fit')
+for obj in scene.objects:
+    if obj.name.startswith('Character | anatomical '):
+        uv=obj.data.uv_layers.get('MakeHuman source UV')
+        assert uv is not None and len(uv.data)==len(obj.data.loops),'Missing anatomical source UVs'
+        assert max(p.uv.x for p in uv.data)-min(p.uv.x for p in uv.data)>.01,'Collapsed skin UVs'
 assert not [image.name for image in bpy.data.images if image.source=='FILE' and not image.packed_file],'Unpacked source image'
 assert scene.camera.name=='CAM | gameplay street'
 if '--draft' not in sys.argv:
@@ -79,5 +85,7 @@ result={'result':'PASS','packed_texture_maps':len(packed),'cameras':sum(o.type==
 result['shorts_boundary_edges']=shorts_boundary_edges
 result['shorts_openings']=shorts_openings
 result['anatomical_head']='Closed source-derived head and fitted neck; paired closed eyes, irises, pupils and brows'
+result['skin_source_uvs']=True
+result['reference_upper_body_fit']=True
 if '--draft' not in sys.argv:(ROOT/'cold-reopen.json').write_text(json.dumps(result,indent=2)+'\n',encoding='utf-8')
 print('ODDSWELL_STREET_SLICE_COLD_CHECK_PASS',json.dumps(result))

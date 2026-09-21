@@ -12,6 +12,12 @@ The scene builder reads only the body group and joint reference points, normaliz
 
 The continuing character pass narrows the source hand spread, relaxes the fingers and preserves calf volume while correcting the base stance. The leg surface extends beneath the shorts to prevent gaps at the posed hems. At the owner's September 21 request for a more human character, the source skull, face and ears replaced the earlier authored faceless head. The lower neck is cropped, fitted and extended beneath the jacket collar. Locally authored eyes use the source eye-joint positions; iris/pupil patches, brow strands and face tint are additional native detail. The original anatomy remains unchanged on disk.
 
+## Skin source
+
+The retained diffuse map and original `.mhmat` come from the official [MakeHuman system assets](https://static.makehumancommunity.org/assets/assetpacks/makehuman_system_assets.html) CC0 pack. The material explicitly records its September 2020 CC0 release and Data Collection AB, Joel Palmius and Jonas Hauquier as copyright holders at release. `skin-source.json` records archive/member hashes, URLs, and the original material-name versus directory/tag discrepancy. `../fetch_skin.py` validates those bytes before extraction.
+
+The original body UVs are preserved on the exposed head, hands and legs; the fitted neck skirt interpolates them beneath the collar. The shader adjusts saturation/value and roughness while the original image remains unchanged. This is a static derivative anatomy/material study, with no claim of a scan, final character identity or production rig.
+
 ## Mature tree source
 
 `jacaranda_tree_4k.blend` is the original CC0 [Jacaranda Tree](https://polyhaven.com/a/jacaranda_tree), authored by Rico Cilliers with guidance from Rob Tuytel. `jacaranda-source.json` records its exact URL/hash and the ten retained 2K surface maps. `../mature_trees.py` adapts native leaf seeds, growth density, foliage appearance and planting proportions into three shared variants. Secondary variants receive upright or spreading proportions and a gentle upper-branch lean. The source file is preserved intact; the derivatives and maps are packed into the main street-scene Blender file.

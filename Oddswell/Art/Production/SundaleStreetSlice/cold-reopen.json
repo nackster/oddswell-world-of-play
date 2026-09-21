@@ -1,6 +1,6 @@
 {
   "result": "PASS",
-  "packed_texture_maps": 24,
+  "packed_texture_maps": 25,
   "cameras": 8,
   "court_paint_max_thickness_m": 0.00048000007518567145,
   "collar_stray_faces": 0,
@@ -15,5 +15,7 @@
   "runtime_claim": false,
   "shorts_boundary_edges": 240,
   "shorts_openings": 3,
-  "anatomical_head": "Closed source-derived head and fitted neck; paired closed eyes, irises, pupils and brows"
+  "anatomical_head": "Closed source-derived head and fitted neck; paired closed eyes, irises, pupils and brows",
+  "skin_source_uvs": true,
+  "reference_upper_body_fit": true
 }
