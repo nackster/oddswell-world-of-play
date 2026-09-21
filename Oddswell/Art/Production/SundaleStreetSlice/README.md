@@ -2,6 +2,8 @@
 
 The owner’s first OddsWell concept picture remains the visual target. [DevelopmentGoal.md](DevelopmentGoal.md) records the active goal and acceptance criteria. The scene is being developed through actual modeling and Blender Cycles renders; the reference is not projected onto geometry or used as a scene background.
 
+September 21 continuation: the saved broadleaf scene was reopened, its jacket/shorts folds were adjusted conservatively after rejecting an overly striped draft, and all six native views were rebuilt. The visual goal remains active; see [VisualReview.md](VisualReview.md) for the remaining gaps.
+
 ![Native gameplay view](StreetSlice_Gameplay.png)
 
 This pass develops a tailored slate jacket with a sewn teal yoke, shaped sleeves, fine seams and localized folds; continuous cotton shorts; relaxed hands, fuller calves and a grounded walking stance; closed canvas shoes with heel details. The promenade has mature tree canopies, grasses, flowering stems, groundcover, fallen leaves, planted seats, deeper illuminated retail windows and a landscaped arena approach. Restrained teal connects clothing, stone furniture, lights and the arena.

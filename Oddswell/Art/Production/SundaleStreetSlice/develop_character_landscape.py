@@ -48,7 +48,7 @@ def cloth_point(rings,z,a,kind):
     if kind=='coat':
         gather=math.exp(-((z-.970)/.045)**2)
         fold=.005*math.sin(a*11+z*24)*gather
-        fold+=.003*math.sin(a*15+z*4)*math.exp(-((z-1.17)/.19)**2)
+        fold+=.006*math.sin(a*15+z*4)*math.exp(-((z-1.23)/.17)**2)
         # Diagonal compression folds above the hem, terminating at side seams.
         for crest,center in ((.976,3.75),(1.025,5.3),(1.070,3.5)):
             d=z-(crest+.065*math.cos(a*2+.7))
@@ -62,6 +62,8 @@ def cloth_point(rings,z,a,kind):
         fold*=max(0,min(1,(z-.945)/.035))
     elif kind=='shorts':
         fold=.0025*math.sin(a*9+z*11)
+        # Broad, tapering hip-to-hem creases break the smooth tubular rear.
+        fold+=.004*math.sin(a*6+z*5)*math.exp(-((z-.75)/.15)**2)
         fold+=.004*math.sin(z*82+a*2)*math.exp(-((z-.84)/.05)**2)
         fold+=.0025*math.sin(z*120+a*4)*math.exp(-((z-.63)/.025)**2)
     else:

@@ -12,6 +12,8 @@ Current native gameplay render:
 
 ## Refinement after the first character checkpoint
 
+On September 21, the owner resumed the saved broadleaf checkpoint. A first hip-fold preview produced narrow, stripe-like marks and was rejected. The retained pass uses broader, lower-amplitude shorts folds and a slightly stronger jacket-body fold. Gameplay plus five inspection views were rebuilt from the same editable scene. In the close-ups the result is a modest improvement, not a resolved cloth simulation: the shorts still have a stiff hip/crotch shape and the jacket shoulder-to-sleeve transition still needs art direction.
+
 The latest landscape pass replaces the fine compound foliage with adapted broad-leaf geometry and raises the woody branching before leaf emission. A single distribution pass over the combined branch masks reduces hanging, crowded patches. The court view reveals the far basket and more of the arena. Foreground shrubs now have woody stems and overlapping clusters from the same leaf family, with darker understory material settings. The retained Island Tree 01 source and seven leaf/twig maps are documented alongside the original Jacaranda source.
 
 The jacket torso and posed sleeves now form one continuous surface. Smoothly interpolated tailoring profiles reduce angular shoulder and hip bands; the teal panels and seams are fitted to that surface. Hidden inner-sleeve panel vertices are removed before fitting so they cannot appear as teal slivers on the front shoulder. The cuff profile follows the sleeve, and compression folds fade into the knit bands.

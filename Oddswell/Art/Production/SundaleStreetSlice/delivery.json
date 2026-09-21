@@ -3,7 +3,7 @@
   "goal_status": "active",
   "delivery": "Editable native Blender scene and six native renders; offline art study",
   "starting_checkpoint": "76ccb76",
-  "previous_checkpoint": "ab7ec49",
+  "previous_checkpoint": "f9ede7a",
   "evidence": {
     "source": "Native scene/garments/plant geometry, CC0 MakeHuman anatomical surfaces, six CC0 Poly Haven stone/bark texture maps and one CC0 photographed sky environment; adapted CC0 Jacaranda model with ten packed 2K maps",
     "reference": "../../Reviews/OddsWellStreetIdentityCandidate/OddsWell_Visual_Direction_Concept.png",
@@ -78,38 +78,38 @@
     "StreetSlice_Gameplay.png": {
       "width": 1920,
       "height": 1080,
-      "sha256": "3621ce20bf92352dfdb14cf6d5e1b84f13aebb894b4f1d0c9c9c42f84fdb84d3"
+      "sha256": "ac83b474338dc3674c75de1b063c5d5dfed3da7c4874cd43c77510a2983a8b96"
     },
     "StreetSlice_Court_and_Arena.png": {
       "width": 1600,
       "height": 900,
-      "sha256": "8c3f51dce31c2aeeeacf28281506d2a91ba360cf7db9d02a15318387844c07ba"
+      "sha256": "137a3b0920f86603783bcfee7c341440a47e1b9611ee6c15386925c72f47ecdc"
     },
     "StreetSlice_Architecture_Detail.png": {
       "width": 1600,
       "height": 900,
-      "sha256": "8845937f87abc3c8356374634bf8b6c06b04cbd42e5460d22f923a735d1282d7"
+      "sha256": "800d91feda6a16b70500c89ec537aadd294363ee6634d7e3244cd2d394a94bcb"
     },
     "StreetSlice_Character_Detail.png": {
       "width": 1000,
       "height": 1100,
-      "sha256": "3ca1ac3ec0518cddc084594cd573f3b4595b883d97d8819472142559c94e8625"
+      "sha256": "9d4cb331755667de8fff229bf5631618b470128741c4af8be87dd69da6043aa1"
     },
     "StreetSlice_Landscape_Detail.png": {
       "width": 1000,
       "height": 1100,
-      "sha256": "9edbfe3b83db54030c9cda4316d0addfdaaa0fe1d03914e82c7124d6a69385dd"
+      "sha256": "a1f1a0fd0a97d577e175850627533bdc91c743ea2d4d73c0a68e804d44c1ca66"
     },
     "StreetSlice_Character_ThreeQuarter.png": {
       "width": 1000,
       "height": 1100,
-      "sha256": "2cb5b4386415fa96d87faefc44b4b365936f4637ac91f645a18fda67639c73cd"
+      "sha256": "85cd37b2f256fa9096671c19b23277815bdbe60a8a881b03587636f3245bc73c"
     }
   },
   "files_sha256": {
     "broadleaf_canopy.py": "f737b396c7c2e02415d6c6d7b9b21727a3ac450038e265a362c1a0263d3e9b3b",
     "build_scene.py": "4ded7f7db7f7536291f3e366f9745e126017adcd2ef5914b236a537cae62c9d9",
-    "develop_character_landscape.py": "21b2d916aaf6093a2cd9ec01279771075880579fdd264409123ae79e9964491f",
+    "develop_character_landscape.py": "785de877bd0a265a1246ee5d46aef7de41e2f0a69b0b9ffb6133e656993f1934",
     "DevelopmentGoal.md": "ee28e606872c156f0199a04cf93a1405be64cd80b8875a588097d94232bc4721",
     "fetch_broadleaf.py": "2b42dbc1c9b7a041008006ffb0f9a025927b3d3a8fbafbaf9508de9f5aabf399",
     "fetch_sky.py": "8d382e47d5baf5ac8d7a551c0e7d3fa82400956d1dbf785b8754682a25effed3",
@@ -117,11 +117,12 @@
     "fetch_tree.py": "543452c80b83a56aad4062620b1adfc2677d6c0a2bdef8c7f87b74333fb409da",
     "inspect_details.py": "e75843a00269b32229e3f96b536f5746ff152fa5107e9e3c95be4bc0d0d7a5c0",
     "mature_trees.py": "9300020af31be8cbb731c4378668fd3a18c89cdbb026cae0a263ce2741a63f7a",
-    "OddsWell_Sundale_StreetSlice.blend": "fc9fce895054ba7d213fea38b78b3bb3f324e2f136fef02e6c88521e7c3750e0",
-    "README.md": "5ba2eb7f03670ff830f4142ba6ff72e77140b0ef0cd15c5a616d6c7dec16e836",
-    "record_delivery.py": "11f4f09f34470cada3b9e26cd4c799c03792daf070c38738f0440cc7f517468c",
+    "OddsWell_Sundale_StreetSlice.blend": "ee0716cb52bb2e095f54a991fde33c48c65fa68bb09665bf07fcae87418961ff",
+    "README.md": "d83e8a9b9bc4d0769752178732b057e471b0c3ff4380d40f0768442cf0769728",
+    "record_delivery.py": "29a9e70355804b34ed7a19350d56f5c4e156035963e72437efc4475e8221244f",
     "refine_minerals.py": "a9dc87199606e1f4a76aca1678a7af9b342fafbfecc67c514ab99ef8c8e4c5e7",
     "render_views.py": "29cbeef1ef628a113bf6074782c2dd4a4cc484b8c458d76d324a1a29ee5b9eab",
+    "ResumeTomorrow.md": "2c14eb9211792930738d532f8a8d6cee90f047cc61bcfd64bb37ef55f6c6702d",
     "source-assets/island_tree_01_2k.blend": "77de2c504a7aa9b6ae8acb5877dbcd155d4bda6eb156f761c492c48c843bdcd2",
     "source-assets/jacaranda_tree_4k.blend": "e28b4897a9cc9fbee38b1675860649c79284f2ba31de2f551ce5946236e977f5",
     "source-assets/makehuman-base.obj": "8e761e6624b8f54536409135d1636da63b32486a90d4897f84e121d144f6fb4c",
@@ -144,7 +145,7 @@
     "textures/sandstone_blocks_08_disp_4k.jpg": "3db51669487d6312bfa52621783ab308ebca3ddbd23b061e220cee69847a768c",
     "textures/sandstone_blocks_08_rough_4k.jpg": "e395bdfea1536ddf3a8c97e51b0861270dc75dea722b22633b1cebd4c31ec63a",
     "verify_scene.py": "36fc0e9ab85ca2566455b6078802d6c78b11999b43002edbca46729008a11c79",
-    "VisualReview.md": "bab12fd848063537178e0e278b2bc99bf567b1fb65e5f657c6d4320ed4824c0c",
+    "VisualReview.md": "3d72bd0e0973d450bfd87136f94923a333ab0b98145b7343625d0d40e283bf25",
     "textures/broadleaf/island_tree_01_branches_diff_2k.png": "fcfaaa1262cb8f31327ca084e6f8d69cda0b6af0d1f065a68c5a47b906ec02ff",
     "textures/broadleaf/island_tree_01_branches_nor_gl_2k.png": "2ee3ff83fdf8f01cd9d26d5c4665b866bf69f2557e02582577f23d6d007f9c78",
     "textures/broadleaf/island_tree_01_branches_rough_2k.png": "e6d3c688b07dea15344672516433d7ba681727f5149c8be446dc1a5bbed9afdc",
@@ -155,8 +156,8 @@
     "textures/jacaranda/jacaranda_tree_leaves_alpha_2k.png": "48b37ef95590d96c39d43af51b4d7683ad1ab7db8dae474f29d3b8c3e726f352"
   },
   "render_log": {
-    "path": "C:\\Users\\reali\\Documents\\SaaS\\Oddswell\\client\\OddsWell\\Saved\\NextTen20260912\\character-landscape-broadleaf-final-views.log",
-    "sha256": "b5694e23198ec37c68830fd9c8d446d69233e1c1cea241296f77edcd17b9c322"
+    "path": "C:\\Users\\reali\\Documents\\SaaS\\Oddswell\\client\\OddsWell\\Saved\\NextTen20260912\\character-landscape-garment-final-views.log",
+    "sha256": "3b1ca22c2f6d599b6543e77e58e59e8a1c5a757d9f611506b81e774c350acb94"
   },
   "preview_iterations": [
     {
@@ -283,6 +284,6 @@
   "original_source_bytes_preserved": true,
   "runtime_map_modified": false,
   "runtime_character_modified": false,
-  "visual_review": "Broad-leaf crown geometry, raised trunks, branch growth distribution and stemmed foreground shrubs reviewed from gameplay, court and landscape cameras; retained character inspected in the same lighting.",
+  "visual_review": "A stripe-like shorts-fold draft was rejected; the retained six-view rebuild has softer hip folds and slightly stronger jacket-body drape. Improvement is modest; shoulder/sleeve and shorts hip/crotch silhouette remain below the reference.",
   "remaining": "Reference fidelity remains an active art goal, especially garment drape, architectural variety, planting composition and photographic surface detail. Runtime LODs/collision/material baking/rigging/performance are not proven."
 }
