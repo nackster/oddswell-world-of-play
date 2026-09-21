@@ -12,6 +12,7 @@ bpy.context.view_layer.update()
 packed=[image for image in bpy.data.images if image.source=='FILE' and image.packed_file]
 assert len(packed)==25
 assert scene.get('source_skin_uvs') and scene.get('reference_upper_body_fit')
+assert scene.get('body_refinement')
 for obj in scene.objects:
     if obj.name.startswith('Character | anatomical '):
         uv=obj.data.uv_layers.get('MakeHuman source UV')
@@ -74,6 +75,34 @@ assert len(bm.verts)-len(bm.edges)+len(bm.faces)==-1,'Expected three garment ope
 bm.free()
 assert scene.get('continuous_jacket')
 assert_connected(bpy.data.objects['Character | tailored slate jacket'])
+hand_openings={}
+for name in ('left hand','right hand'):
+    hand=bpy.data.objects['Character | anatomical '+name]
+    assert_connected(hand)
+    bm=bmesh.new();bm.from_mesh(hand.data)
+    boundary=[edge for edge in bm.edges if edge.is_boundary]
+    assert boundary and all(v.co.z>.97 for edge in boundary for v in edge.verts),'Exposed opening in hand'
+    assert all(edge.is_manifold or edge.is_boundary for edge in bm.edges)
+    hand_openings[name]=len(boundary)
+    bm.free()
+from mathutils.bvhtree import BVHTree
+from mathutils import Vector
+lace_gap=0
+for side in ('left','right'):
+    shoe=bpy.data.objects['Character | canvas sneaker '+side]
+    bm=bmesh.new();bm.from_mesh(shoe.data)
+    assert all(edge.is_manifold for edge in bm.edges) and bm.calc_volume(signed=True)>0,'Open or inward shoe surface'
+    bm.free()
+    upper=BVHTree.FromObject(shoe,depsgraph)
+    laces=[obj for obj in scene.objects if obj.name.startswith('Character | shoe lace '+side)]
+    assert len(laces)==4
+    for obj in laces:
+        for spline in obj.data.splines:
+            for point in spline.points:
+                location,normal,_,distance=upper.find_nearest(Vector(point.co[:3]))
+                assert distance is not None and distance<.008,'Detached shoe lace'
+                assert (Vector(point.co[:3])-location).dot(normal)>.0005,'Lace buried inside shoe'
+                lace_gap=max(lace_gap,distance)
 assert scene.get('character_landscape_development')
 trees=[o for o in scene.objects if o.name.startswith('Tree | mature Sundale')]
 tree_meshes=len({o.data.as_pointer() for o in trees})
@@ -87,5 +116,7 @@ result['shorts_openings']=shorts_openings
 result['anatomical_head']='Closed source-derived head and fitted neck; paired closed eyes, irises, pupils and brows'
 result['skin_source_uvs']=True
 result['reference_upper_body_fit']=True
+result['hand_boundary_edges_under_sleeves']=hand_openings
+result['maximum_lace_surface_distance_m']=lace_gap
 if '--draft' not in sys.argv:(ROOT/'cold-reopen.json').write_text(json.dumps(result,indent=2)+'\n',encoding='utf-8')
 print('ODDSWELL_STREET_SLICE_COLD_CHECK_PASS',json.dumps(result))

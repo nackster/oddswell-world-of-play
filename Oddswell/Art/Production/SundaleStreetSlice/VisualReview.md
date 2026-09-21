@@ -10,7 +10,15 @@ Current native gameplay render:
 
 ![Native scene comparison](StreetSlice_Gameplay.png)
 
-## Current reference refinement
+## Current body refinement
+
+The body continuation from `c19da50` adds a smaller, gently curled resting hand pose, more opposing arm swing with a soft elbow bend, and a narrower calf-to-ankle profile. The jacket has less abdominal bulk and localized front folds; shorts gain front compression creases. The sneakers have higher heel/instep profiles, fitted tongues, laces and quarter seams, a smoother rubber sole, and more length ahead of the ankle.
+
+Dedicated hand and shoe close-ups caught an exposed opening near the thumb from the earlier coordinate-based source crop, plus upper laces intersecting the ankle. The hand extraction now follows the wrist/knuckle direction and retains the complete thumb. Shoe details are fitted to the evaluated upper and placed forward of the ankle. A second footwear review exposed inward upper normals that buried fitted laces; the upper normals are now outward and the laces sit outside the surface. The saved-artifact check rejects exposed hand boundary edges, inward shoe surfaces and detached or buried laces. These are editable static geometry changes, not a rigged animation or cloth simulation.
+
+![Body and clothing study](StreetSlice_Character_ThreeQuarter.png)
+
+## Previous reference refinement
 
 Continuing from human-face checkpoint `f46ac3b`, the upper jacket and arms are slimmer together, bringing the silhouette closer to the original reference. The slate fabric has less broad sheen, the jaw is subtly wider, and the shorts have localized diagonal gathers with a shallower rear-seat crease. Original anatomical UVs now carry a retained CC0 MakeHuman skin map across the head, hands and legs. Native close-ups show lip, cheek, ear and scalp variation; eye surface relief was reduced and reflections refined. The scene packs 25 maps and retains eight native review views.
 
@@ -56,7 +64,7 @@ The tree comparison led to adapting CC0 native branching and leaf geometry inste
 
 The reference has more natural garment drape, richer architectural variation and shop contents, subtler weathering, a more composed mixture of plants, and a more photographic finish. The current character is a static model and the scene is deliberately an offline art study. A successful render and geometric checks do not close those visual gaps.
 
-The next visible priorities are eyelid and eye detail, expression, a more relaxed hand pose, cloth behavior at the rear inseam and shoulder seam, varied facade/window arrangements, more convincing retail contents, and less uniformly clean foreground surfaces. Paving scale is established, but wear and small color changes still need refinement. Broad-leaf geometry is now present; crown composition, color balance and selective pruning still need art direction against the reference.
+The next visible priorities are eyelid and eye detail, expression, further finger articulation and a weight-bearing knee/hip pose, cloth behavior at the rear inseam and shoulder seam, varied facade/window arrangements, more convincing retail contents, and less uniformly clean foreground surfaces. Paving scale is established, but wear and small color changes still need refinement. Broad-leaf geometry is now present; crown composition, color balance and selective pruning still need art direction against the reference.
 
 The higher trunks materially open the court view, but some low edge branches remain. Selective court-facing pruning and measured physical clearances are still required before treating this as production planting.
 

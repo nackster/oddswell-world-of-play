@@ -12,6 +12,8 @@ The scene builder reads only the body group and joint reference points, normaliz
 
 The continuing character pass narrows the source hand spread, relaxes the fingers and preserves calf volume while correcting the base stance. The leg surface extends beneath the shorts to prevent gaps at the posed hems. At the owner's September 21 request for a more human character, the source skull, face and ears replaced the earlier authored faceless head. The lower neck is cropped, fitted and extended beneath the jacket collar. Locally authored eyes use the source eye-joint positions; iris/pupil patches, brow strands and face tint are additional native detail. The original anatomy remains unchanged on disk.
 
+The subsequent body pass retains the source UVs while scaling/curling the hands and refining the calf/ankle width. The hand-region crop follows the wrist/knuckle direction and includes the complete thumb, fixing an exposed boundary from the earlier X-coordinate cutoff. These are derived static shapes; the original OBJ remains unchanged.
+
 ## Skin source
 
 The retained diffuse map and original `.mhmat` come from the official [MakeHuman system assets](https://static.makehumancommunity.org/assets/assetpacks/makehuman_system_assets.html) CC0 pack. The material explicitly records its September 2020 CC0 release and Data Collection AB, Joel Palmius and Jonas Hauquier as copyright holders at release. `skin-source.json` records archive/member hashes, URLs, and the original material-name versus directory/tag discrepancy. `../fetch_skin.py` validates those bytes before extraction.

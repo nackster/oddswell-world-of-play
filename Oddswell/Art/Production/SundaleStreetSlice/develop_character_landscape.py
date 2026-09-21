@@ -14,6 +14,11 @@ thread=mat('Character | matching charcoal topstitch',(.042,.055,.060),.92)
 cotton_thread=mat('Character | matching cotton topstitch',(.42,.40,.34),.94)
 rib=mat('Character | dense slate rib knit',(.025,.035,.039),.94,340)
 shoe_fabric=mat('Character | oat canvas',(.48,.46,.39),.94,260)
+for node in sole.node_tree.nodes:
+    if node.type=='BUMP':node.inputs['Distance'].default_value=.0002;node.inputs['Strength'].default_value=.12
+    if node.type=='VALTORGB':
+        node.color_ramp.elements[0].color=(.61,.60,.54,1)
+        node.color_ramp.elements[1].color=(.65,.64,.58,1)
 jacket.diffuse_color=(.041,.051,.060,1)
 jacket.node_tree.nodes.get('Principled BSDF').inputs['Sheen Weight'].default_value=.08
 jacket.node_tree.nodes.get('Principled BSDF').inputs['Sheen Roughness'].default_value=.80
@@ -58,6 +63,9 @@ def cloth_point(rings,z,a,kind):
             localized=math.exp(-((a-center)/.45)**2)
             fold+=localized*(.008*math.exp(-(d/.011)**2)-.003*math.exp(-((d+.014)/.010)**2))
         fold+=.003*math.sin(a*8-z*21)*math.exp(-((z-1.36)/.09)**2)
+        for center,height,slope in ((.72,1.04,.08),(1.8,1.015,-.065),(2.45,1.11,-.10)):
+            d=z-height-slope*(a-center)
+            fold+=.005*math.exp(-((a-center)/.34)**2)*(math.exp(-(d/.013)**2)-.4*math.exp(-((d+.017)/.012)**2))
         fold*=max(0,min(1,(z-.942)/.030))
     elif kind=='sleeve':
         gather=math.exp(-((z-1.15)/.06)**2)+.4*math.exp(-((z-.955)/.035)**2)
@@ -67,7 +75,7 @@ def cloth_point(rings,z,a,kind):
         fold=.0012*math.sin(a*9+z*11)
         # Local diagonal gathers interrupt the broad cotton volume; each
         # crease tapers before reaching the side seam or an adjacent fold.
-        for angle,height,slope,depth in ((3.9,.83,.045,.005),(4.95,.805,-.060,.006),(5.4,.74,.045,.004),(4.2,.67,.030,.004),(5.25,.66,-.040,.003),(1.1,.78,-.055,.004),(2.1,.72,.070,.004)):
+        for angle,height,slope,depth in ((3.9,.83,.045,.005),(4.95,.805,-.060,.006),(5.4,.74,.045,.004),(4.2,.67,.030,.004),(5.25,.66,-.040,.003),(1.1,.78,-.055,.007),(2.1,.72,.070,.006),(.6,.66,-.055,.004),(1.65,.64,.045,.003)):
             da=(a-angle+math.pi)%math.tau-math.pi
             d=z-height-slope*da
             mask=math.exp(-(da/.42)**2-((z-height)/.13)**2)
@@ -159,7 +167,7 @@ for side in (-1,1):
     # Low canvas shoes with a flat welt and separate heel/toe profile.
     for part,material,height in [('sneaker sole',sole,0),('canvas sneaker',shoe_fabric,1)]:
         verts=[]
-        sections=[(-.112,.041,.026),(-.095,.060,.046),(-.04,.063,.059),(.025,.062,.062),(.10,.061,.043),(.154,.042,.030),(.168,.012,.010)]
+        sections=[(-.112,.041,.058),(-.095,.058,.093),(-.04,.062,.103),(.025,.062,.080),(.10,.058,.046),(.154,.042,.031),(.172,.012,.019)]
         for yy,width,h in sections:
             for j in range(32):
                 a=j*math.tau/32
@@ -168,12 +176,40 @@ for side in (-1,1):
         faces=[(k*32+j,k*32+(j+1)%32,(k+1)*32+(j+1)%32,(k+1)*32+j) for k in range(len(sections)-1) for j in range(32)]
         faces.extend([tuple(range(31,-1,-1)),tuple((len(sections)-1)*32+j for j in range(32))])
         obj=mesh('Character | '+part+suffix,verts,faces,material,True)
+        import bmesh
+        bm=bmesh.new();bm.from_mesh(obj.data)
+        bmesh.ops.recalc_face_normals(bm,faces=list(bm.faces))
+        bm.to_mesh(obj.data);bm.free()
         obj.modifiers.new('Canvas shoe surface','SUBSURF').levels=1
-    for k in range(5):
-        yy=legy-.015+k*.018
-        tube('Character | shoe lace'+suffix,[bodypt((side*.14-.031,yy,.136-k*.002)),bodypt((side*.14,yy+.008,.143-k*.002)),bodypt((side*.14+.031,yy+.002,.136-k*.002))],.0022,sole)
-    tube('Character | shoe lace heel seam'+suffix,[bodypt((side*.14-.028,legy-.110,.089)),bodypt((side*.14,legy-.115,.111)),bodypt((side*.14+.028,legy-.110,.089))],.0009,cotton_thread)
-    box('Character | canvas sneaker heel tab'+suffix,bodypt((side*.14,legy-.105,.121)),(.019,.008,.030),shoe_fabric,.003)
+    def shoe_top(x,y,lift=0):
+        for a,b in zip(sections,sections[1:]):
+            if a[0]<=y<=b[0]:
+                t=(y-a[0])/(b[0]-a[0]);w=a[1]*(1-t)+b[1]*t;h=a[2]*(1-t)+b[2]*t
+                return bodypt((side*.14+x,legy+y,.087+h*math.sqrt(max(0,1-(x/w)**2))+lift))
+    tongue=[shoe_top(x,.030+k*.011,.001) for k in range(9) for x in (-.030,0,.030)]
+    tongue_mesh=mesh('Character | canvas sneaker tongue'+suffix,tongue,[(k*3+j,k*3+j+1,(k+1)*3+j+1,(k+1)*3+j) for k in range(8) for j in range(2)],shoe_fabric,True)
+    for k in range(4):
+        yy=.045+k*.018
+        tube('Character | shoe lace'+suffix,[shoe_top(-.028+i*.056/12,yy+.006*math.sin(i*math.pi/12),.004) for i in range(13)],.0017,sole)
+    for sign in (-1,1):
+        tube('Character | shoe lace quarter seam'+suffix,[shoe_top(sign*.043,-.088+k*.014,.0015) for k in range(12)],.0008,cotton_thread)
+    tube('Character | shoe lace heel seam'+suffix,[bodypt((side*.14-.027,legy-.110,.108)),bodypt((side*.14,legy-.115,.148)),bodypt((side*.14+.027,legy-.110,.108))],.0009,cotton_thread)
+    box('Character | canvas sneaker heel tab'+suffix,bodypt((side*.14,legy-.105,.152)),(.019,.008,.029),shoe_fabric,.003)
+    # Fit construction details to the evaluated upper, then place the heel
+    # behind the ankle with more shoe length in front of the foot.
+    from mathutils.bvhtree import BVHTree
+    bpy.context.view_layer.update()
+    upper=BVHTree.FromObject(bpy.data.objects['Character | canvas sneaker'+suffix],bpy.context.evaluated_depsgraph_get())
+    for detail in list(scene.objects):
+        if not detail.name.split('.')[0].endswith(suffix) or not any(word in detail.name for word in ('sneaker','shoe lace')):continue
+        points=list(detail.data.vertices) if detail.type=='MESH' else [p for spline in detail.data.splines for p in spline.points] if detail.type=='CURVE' else []
+        for point in points:
+            p=Vector(point.co[:3])
+            if detail==tongue_mesh or detail.type=='CURVE':
+                location,normal,_,distance=upper.find_nearest(p)
+                if location is not None and distance<.018:p=location+normal*(.003 if 'lace' in detail.name and 'seam' not in detail.name else .001)
+            p.y+=.035
+            point.co=p if detail.type=='MESH' else (*p,1)
 
 # Fit the covered thigh under the garment; keep exposed calf anatomy intact.
 # The source thigh widens above the knee and otherwise pierces the narrow hem.
@@ -253,7 +289,10 @@ for obj in list(scene.objects):
         p=Vector(point.co[:3])-origin
         side=1 if p.x>0 else -1
         pivot=Vector((side*.23,0,1.405))
-        p=pivot+Matrix.Rotation(-side*.09,3,'X')@(p-pivot)
+        elbow=Vector((side*.311,-.052,1.15))
+        bend=max(0,min(1,(1.20-p.z)/.13))
+        p=elbow+Matrix.Rotation(.12*bend,3,'X')@(p-elbow)
+        p=pivot+Matrix.Rotation(-side*.16,3,'X')@(p-pivot)
         point.co=p+origin if obj.type=='MESH' else (*(p+origin),1)
 
 # Fuse the posed sleeves and torso so the shoulder is one cloth surface.
@@ -312,8 +351,11 @@ for obj in scene.objects:
         chest=max(0,min(1,(p.z-.98)/.22));chest=chest*chest*(3-2*chest)
         arm=max(0,min(1,(abs(p.x)-.21)/.07))
         p.x*=1-.085*max(chest,arm)
+        torso=max(0,min(1,(.29-abs(p.x))/.065))
+        p.y*=1-.10*torso*math.exp(-((p.z-1.16)/.18)**2)
         point.co=p+origin if obj.type=='MESH' else (*(p+origin),1)
 scene['reference_upper_body_fit']=True
+scene['body_refinement']='Resting finger curl, articulated arm swing, calf/ankle taper, fitted sneaker instep and localized cloth gathers'
 
 # Layered landscape: narrow grasses, flowering stems, small groundcover and
 # broad shrub leaves occupy different heights instead of one leaf cloud.

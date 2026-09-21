@@ -1,14 +1,14 @@
 {
-  "request": "Make the character more human while continuing toward the first OddsWell picture",
+  "request": "Develop the rest of the human body toward the original OddsWell design",
   "goal_status": "active",
   "delivery": "Editable native Blender scene and eight native renders; offline art study",
   "starting_checkpoint": "76ccb76",
-  "previous_checkpoint": "f46ac3b",
+  "previous_checkpoint": "c19da50",
   "evidence": {
     "source": "Native scene/garments/plant geometry, CC0 MakeHuman anatomical surfaces, six CC0 Poly Haven stone/bark texture maps and one CC0 photographed sky environment; adapted CC0 Jacaranda model with ten packed 2K maps",
     "reference": "../../Reviews/OddsWellStreetIdentityCandidate/OddsWell_Visual_Direction_Concept.png",
-    "objects": 4563,
-    "meshes": 3109,
+    "objects": 4567,
+    "meshes": 3111,
     "materials": 62,
     "packed_texture_maps": 25,
     "mature_tree_instances": 13,
@@ -21,7 +21,7 @@
     ],
     "runtime_integrated": false,
     "character": "Static tailored study with grounded stance and continuous shorts; current game rig unchanged",
-    "character_ground_offset_m": -0.0626026903986931,
+    "character_ground_offset_m": -0.05744562202692032,
     "no_generated_background": true,
     "quality_goal": "Active; reference fidelity and final art approval remain open",
     "independent_reopen": "PASS",
@@ -81,61 +81,66 @@
     "jacket_surface_components": 1,
     "mature_tree_instances": 13,
     "shared_tree_meshes": 3,
-    "mesh_objects": 3935,
-    "native_scene_objects": 4563,
+    "mesh_objects": 3937,
+    "native_scene_objects": 4567,
     "runtime_claim": false,
     "shorts_boundary_edges": 240,
     "shorts_openings": 3,
     "anatomical_head": "Closed source-derived head and fitted neck; paired closed eyes, irises, pupils and brows",
     "skin_source_uvs": true,
-    "reference_upper_body_fit": true
+    "reference_upper_body_fit": true,
+    "hand_boundary_edges_under_sleeves": {
+      "left hand": 20,
+      "right hand": 20
+    },
+    "maximum_lace_surface_distance_m": 0.0030002950225025415
   },
   "renders": {
     "StreetSlice_Gameplay.png": {
       "width": 1920,
       "height": 1080,
-      "sha256": "10cb0a012d607743c664e52337f32d09ed0ed493a7f041e2ea5cb19a423a510c"
+      "sha256": "b703a2baddb7aaa20ba94455c6d0937f3da5e6144f269a93c02cb5349dcb33f6"
     },
     "StreetSlice_Court_and_Arena.png": {
       "width": 1600,
       "height": 900,
-      "sha256": "c87dae7f117f645781ed2f93ba4f20e78f8ebf754f402f7d09d5e3221809dcaf"
+      "sha256": "0f07be38c0c099a23842436b2b4b0f26ff43ab2a593a3a1074522e0b05754e7a"
     },
     "StreetSlice_Architecture_Detail.png": {
       "width": 1600,
       "height": 900,
-      "sha256": "64f3f57dea14822fcc1a57ff259fdd156760453ac20a3878c8fa00f8909b67d0"
+      "sha256": "e26349a20537bc3f763c3bdd1e39fc586a4b2f71e5379ece6d268cc100f9fb20"
     },
     "StreetSlice_Character_Detail.png": {
       "width": 1000,
       "height": 1100,
-      "sha256": "7664de81725c09797e087136e9752978c425bb3bd6fda94d8ec3ab1c787012f0"
+      "sha256": "04c7788eb191cb81b05f47cc86f1c8325c8f67c35b10073741470f06c84134ac"
     },
     "StreetSlice_Landscape_Detail.png": {
       "width": 1000,
       "height": 1100,
-      "sha256": "5bf036de2042949fc286357b0edadad61d39c004c18629121d5c23e81606eb15"
+      "sha256": "c8958ba2be9452877aff9dc8ae81c82c358747ff67992e88875d2afa3f3b4acf"
     },
     "StreetSlice_Character_ThreeQuarter.png": {
       "width": 1000,
       "height": 1100,
-      "sha256": "74fcf9cbdd5bdfdbeb2049fcaa670f439bd8ef1f2f6deb269e0697dc1f9ddc5b"
+      "sha256": "3d0240d7d77b0bd10d8c36d12a73512f052a09a40fe0ccb8d0a3f250fb018798"
     },
     "StreetSlice_Head_Front.png": {
       "width": 1000,
       "height": 1100,
-      "sha256": "000ec79200cd06b5c78b0b6766ffe993a8a0ccea819572fd62b763774085c2ad"
+      "sha256": "f04d083a19d770b4456d0a9e1f7ffe9fd68d65e38fa6b905af3352738dc39a63"
     },
     "StreetSlice_Head_Profile.png": {
       "width": 1000,
       "height": 1100,
-      "sha256": "7a4c11d57efd27786c92117ed63a30ef279a4dfe74df6691267ffcd7cb791b56"
+      "sha256": "341f561fc1af0b206d9f4b1461bcfd684695cf1b3f5b153782bcbdef202f6d77"
     }
   },
   "files_sha256": {
     "broadleaf_canopy.py": "f737b396c7c2e02415d6c6d7b9b21727a3ac450038e265a362c1a0263d3e9b3b",
-    "build_scene.py": "f2c381fdd07626dcb690abb21b17118175faeb2fa4b329aae2b0a7e61b8b65f5",
-    "develop_character_landscape.py": "2cfa53064998fb4882a5613468cfec626835e85dd8a42e326cc828c6ed80755a",
+    "build_scene.py": "ab68e041d65188a452850a7fbf8aa809633f8f32f76dd3bd6231ea1f6b44d96a",
+    "develop_character_landscape.py": "1bdf366bf259142ef7b6d09d413ff9bf67b8da9214554d14a9e9d9335ca00c7c",
     "DevelopmentGoal.md": "969e7b2fb2732e9ab89cad059893d9a72db3eef6b7d2af670df978058b7815f2",
     "fetch_broadleaf.py": "2b42dbc1c9b7a041008006ffb0f9a025927b3d3a8fbafbaf9508de9f5aabf399",
     "fetch_skin.py": "8109647b4862cd00c50efa765599079a78b2647b27505cc1661e02f5a7e22652",
@@ -144,18 +149,18 @@
     "fetch_tree.py": "543452c80b83a56aad4062620b1adfc2677d6c0a2bdef8c7f87b74333fb409da",
     "inspect_details.py": "6e038ac42fbe71f1cbe6d53da226ae9ab9376f381cbccd42d1b0efe74da65630",
     "mature_trees.py": "9300020af31be8cbb731c4378668fd3a18c89cdbb026cae0a263ce2741a63f7a",
-    "OddsWell_Sundale_StreetSlice.blend": "0df3babc6afd3d65c79ad7aaeb571b1dc5df46376514c1ab7e64e380af5490c8",
-    "README.md": "e6bafe3aabbe34d61796bdccca29510588f923942a674cf33c18a6ea2b33e01a",
-    "record_delivery.py": "83fa941b147a031dae9a5352f83b89dace07a13777f92f79b8dd3bfed6ad469f",
+    "OddsWell_Sundale_StreetSlice.blend": "2b5ec4f7d33d214961987c06e51a1615a9b02f427618d97a59687116b5986537",
+    "README.md": "7c814bc6abec3022ee32e01fd433289505acb4a7f0373fb51392daf5b0a33a76",
+    "record_delivery.py": "98e1f0902c2f50157ae4ea7235860ea6b02fd67672218e03c001c772a17c7512",
     "refine_character_head.py": "8b66957e5e72b33b09cf84822ab7b05a25c5aa0a6e56ae48b8f70488c35a55cd",
     "refine_minerals.py": "a3bc6d0647e83058d89afdaecf5d23c508b2b17ec12731438efdb74e515cc932",
     "render_views.py": "3cf3c7ca45f6f2f2aeb8ce1adb7bffd74b1191feffa658e64a6e285337341a7a",
-    "ResumeTomorrow.md": "d18d6932595e221cbc5a55ce4b0a54be3dcca4b5a7a1a38e143d2e83d47496b9",
+    "ResumeTomorrow.md": "b8e9d0ffc6683a41e7fe84cb498b52aec65e89d338d282da1c8f2c438ca323e1",
     "source-assets/island_tree_01_2k.blend": "77de2c504a7aa9b6ae8acb5877dbcd155d4bda6eb156f761c492c48c843bdcd2",
     "source-assets/jacaranda_tree_4k.blend": "e28b4897a9cc9fbee38b1675860649c79284f2ba31de2f551ce5946236e977f5",
     "source-assets/makehuman-base.obj": "8e761e6624b8f54536409135d1636da63b32486a90d4897f84e121d144f6fb4c",
     "source-assets/MAKEHUMAN-LICENSE.ASSETS.md": "f6089cba01cb570a24712b41ab8a586ccd3cc5ef53dc266ca50b95c288956d2c",
-    "source-assets/README.md": "eef1bc71b8c049ceb762c672cfa582623ec1ae952a960404a6cf9cedaefca31f",
+    "source-assets/README.md": "aa7c392d1c623365b456400b2c4884f4ebf377953839df18445f8671e8831c3d",
     "textures/bark_brown_01_diff_4k.jpg": "545d3c48d3ad237d9fbb7eeaf7e5251cbf9520840e37e28e4e325d833c34bc0b",
     "textures/bark_brown_01_disp_4k.jpg": "fed4f06ddb560636a77c24f50e2100d879a21f65a135ca98e3f423bb14cd6067",
     "textures/bark_brown_01_rough_4k.jpg": "c6f9832b5053f055113d559fcb988ae02c5eb20b1786b0237bdbed4494f9f4a3",
@@ -173,8 +178,8 @@
     "textures/sandstone_blocks_08_diff_4k.jpg": "d1a39585a84abe779ca252fe269b880837e6dd3805298d5b470f75c90afe5293",
     "textures/sandstone_blocks_08_disp_4k.jpg": "3db51669487d6312bfa52621783ab308ebca3ddbd23b061e220cee69847a768c",
     "textures/sandstone_blocks_08_rough_4k.jpg": "e395bdfea1536ddf3a8c97e51b0861270dc75dea722b22633b1cebd4c31ec63a",
-    "verify_scene.py": "12b2d787d5772478e10b0ad05081ae1aa7a59adfd90c374e86a20e65c4e07d5d",
-    "VisualReview.md": "ae7f348042c91a7c62abef0852be3eb03f83df2a6bed36ef284fb8d25a09873b",
+    "verify_scene.py": "ce36a73e64ffee9222b0335dd537579daff51e9a8d01111dc089fe493407fffd",
+    "VisualReview.md": "c05b12104ee958ee187b3ca0123295f52be4223fd667c577d32bb7f5dd2e67d1",
     "textures/broadleaf/island_tree_01_branches_diff_2k.png": "fcfaaa1262cb8f31327ca084e6f8d69cda0b6af0d1f065a68c5a47b906ec02ff",
     "textures/broadleaf/island_tree_01_branches_nor_gl_2k.png": "2ee3ff83fdf8f01cd9d26d5c4665b866bf69f2557e02582577f23d6d007f9c78",
     "textures/broadleaf/island_tree_01_branches_rough_2k.png": "e6d3c688b07dea15344672516433d7ba681727f5149c8be446dc1a5bbed9afdc",
@@ -187,8 +192,8 @@
     "source-assets/skin-source.json": "1369419920d721277045e12f3a003845dce125155658eed97f89943c0de76667"
   },
   "render_log": {
-    "path": "C:\\Users\\reali\\Documents\\SaaS\\Oddswell\\client\\OddsWell\\Saved\\NextTen20260912\\character-reference-final-views.log",
-    "sha256": "50e13a93292285e7bc8ea5ff71ae0eab3b843932b64fb8032cde68a7a2f34cf4"
+    "path": "C:\\Users\\reali\\Documents\\SaaS\\Oddswell\\client\\OddsWell\\Saved\\NextTen20260912\\character-body-final-views.log",
+    "sha256": "8c2c84e19e43a0c3659f4cbf54bd33a54dc921338cd3137c46c1269993c5249e"
   },
   "preview_iterations": [
     {
@@ -355,11 +360,31 @@
       "log": "character-reference-preview3.log",
       "sha256": "c1a1486d9ee8ef1da554b8bf1274ce854d8bbd0edd652e54ddf2f7ffc28488f1",
       "native_render": "PASS"
+    },
+    {
+      "log": "character-body-preview1.log",
+      "sha256": "d5469df0968fc51c8f4e3df672a88ee4a26c0b1589748d9a8fa82db7630ff58b",
+      "native_render": "PASS"
+    },
+    {
+      "log": "character-body-preview2.log",
+      "sha256": "7ef0c437bfb60fc0cf3865d69f5758afa8527e07da3a8523d8a6187e0b2325d9",
+      "native_render": "PASS"
+    },
+    {
+      "log": "character-body-preview3.log",
+      "sha256": "366d047268aa5f17236fceca1f292368b47d5a99edcabbc605ccdf6fba9edbdc",
+      "native_render": "PASS"
+    },
+    {
+      "log": "character-body-preview4.log",
+      "sha256": "874083065fab46523ab07d0c8b5ed661b0a23db12838bf78c1dd02b9d669e43a",
+      "native_render": "PASS"
     }
   ],
   "original_source_bytes_preserved": true,
   "runtime_map_modified": false,
   "runtime_character_modified": false,
-  "visual_review": "Slimmer coordinated jacket/arm fit, lower fabric sheen, localized cotton creases and reduced rear-seat indentation move the silhouette toward the original design. Retained anatomical UVs carry a CC0 skin map across head, hands and legs. Front/profile and full-figure review checked skin registration, neck/cuffs and garment joins. Eye surface relief and reflections were refined.",
-  "remaining": "The neutral static face still needs eyelid/eye refinement, expression and individual identity. Cloth drape, architectural variety, planting composition and photographic surface detail remain open. Runtime LODs/collision/material baking/rigging/performance are not proven."
+  "visual_review": "The body continuation from c19da50 adds a smaller, gently curled resting hand pose, more opposing arm swing with a soft elbow bend, and a narrower calf-to-ankle profile. The jacket has less abdominal bulk and localized front folds; shorts gain front compression creases. The sneakers have higher heel/instep profiles, fitted tongues, laces and quarter seams, a smoother rubber sole, and more length ahead of the ankle. Dedicated hand and shoe close-ups caught an exposed opening near the thumb from the earlier coordinate-based source crop, plus upper laces intersecting the ankle. The hand extraction now follows the wrist/knuckle direction and retains the complete thumb. Shoe details are fitted to the evaluated upper and placed forward of the ankle. A second footwear review exposed inward upper normals that buried fitted laces; the upper normals are now outward and the laces sit outside the surface. The saved-artifact check rejects exposed hand boundary edges, inward shoe surfaces and detached or buried laces. These are editable static geometry changes, not a rigged animation or cloth simulation.",
+  "remaining": "Weight-bearing knee/hip pose, finer finger articulation and natural cloth drape remain open. The neutral static face still needs eyelid/eye refinement, expression and individual identity. Architectural variety, planting composition and photographic surface detail remain open. Runtime LODs/collision/material baking/rigging/performance are not proven."
 }

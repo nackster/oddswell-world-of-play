@@ -461,9 +461,14 @@ for region in ('head','legs','left hand','right hand'):
         wrist=joint('joint-'+side+'-hand');elbow=joint('joint-'+side+'-elbow')
         target=Vector((sign*.35,-.015,.90))
         rotation=(wrist-elbow).rotation_difference(Vector((sign*.03,.04,-.25)))
+        knuckle=joint('joint-'+side+'-finger-3-1')
+        finger_axis=(knuckle-wrist).normalized()
+        across=(joint('joint-'+side+'-finger-5-1')-joint('joint-'+side+'-finger-2-1')).normalized()
+        palm_normal=across.cross(finger_axis).normalized()
+        if (rotation@palm_normal).x*sign<0:palm_normal=-palm_normal
     for face,source_uvs in zip(bodyfaces,bodyfaceuvs):
         vs=[converted[i] for i in face]
-        keep=all(v.z>1.485 for v in vs) if region=='head' else all(.13<v.z<.705 for v in vs) if region=='legs' else all(v.x*sign>.422 and v.z<1.35 for v in vs)
+        keep=all(v.z>1.485 for v in vs) if region=='head' else all(.13<v.z<.705 for v in vs) if region=='legs' else all(v.x*sign>.375 and v.z<1.26 and (v-wrist).dot(finger_axis)>-.035 for v in vs)
         if not keep:continue
         newface=[]
         for index in face:
@@ -473,12 +478,17 @@ for region in ('head','legs','left hand','right hand'):
                     side=1 if v.x>0 else -1
                     # Preserve calf width while correcting the base mesh's
                     # outward A-pose stance. Uniform X scaling made thin shins.
-                    v.x=side*.14+(v.x-side*(.248-.145*v.z))*1.20
+                    width=1.06+.07*math.exp(-((v.z-.37)/.11)**2)
+                    v.x=side*.14+(v.x-side*(.248-.145*v.z))*width
                     v.y+=.075 if v.x>0 else -.065
                 elif 'hand' in region:
-                    v=target+rotation@(v-wrist)
+                    # Smooth resting curl beyond the knuckles, preserving
+                    # source topology/UVs and the wrist attachment.
+                    length=max(0,(v-knuckle).dot(finger_axis))
+                    angle=length*9
+                    v+=finger_axis*(math.sin(angle)/9-length)-palm_normal*((1-math.cos(angle))/9)
+                    v=target+rotation@((v-wrist)*.94)
                     v.x=target.x+(v.x-target.x)*.85
-                    v.y+=max(0,.87-v.z)**2*3
                 indices[index]=len(vertices);vertices.append(bodypt(v))
             newface.append(indices[index])
         faces.append(newface)

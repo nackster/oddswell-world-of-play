@@ -10,12 +10,17 @@
   "jacket_surface_components": 1,
   "mature_tree_instances": 13,
   "shared_tree_meshes": 3,
-  "mesh_objects": 3935,
-  "native_scene_objects": 4563,
+  "mesh_objects": 3937,
+  "native_scene_objects": 4567,
   "runtime_claim": false,
   "shorts_boundary_edges": 240,
   "shorts_openings": 3,
   "anatomical_head": "Closed source-derived head and fitted neck; paired closed eyes, irises, pupils and brows",
   "skin_source_uvs": true,
-  "reference_upper_body_fit": true
+  "reference_upper_body_fit": true,
+  "hand_boundary_edges_under_sleeves": {
+    "left hand": 20,
+    "right hand": 20
+  },
+  "maximum_lace_surface_distance_m": 0.0030002950225025415
 }
