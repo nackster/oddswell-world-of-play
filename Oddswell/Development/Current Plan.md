@@ -7,9 +7,11 @@ status: active
 
 # Current Plan
 
-## Latest checkpoint — 2026-09-12
+## Latest checkpoint — 2026-09-21
 
 **Active character and landscape goal:** the owner asked to spend sustained time developing the scene toward the first picture. [[Art/Production/SundaleStreetSlice/DevelopmentGoal]] records the visual acceptance criteria. Current modeling concentrates on garment construction and proportions, mature tree silhouettes, layered planting, warm light and native close-up review. The goal remains active while the reference has a materially more resolved finish; a successful render or another completed checklist is not final art approval.
+
+**Human character direction:** after `c255dd5`, the owner asked for a more human-looking character. The retained anatomical skull, facial features and ears now replace the featureless oval, with a fitted neck, eyes, brow strands and localized skin tint. Native front/profile review caught and removed protruding source shoulder fragments and led to finer brow strands. The review set now has eight views. Further skin/eye/expression refinement, cloth drape and facade/retail variety remain open.
 
 **September 21 continuation:** after garment-fold checkpoint `8c868ec`, the owner requested the next steps. The shorts were rebuilt as one continuous tailored surface through the hips and inseam, pocket seams were refitted, sleeve caps and the shoulder join were softened, and civic limestone gained restrained sediment variation. The first sharp hip-to-leg transition was rejected after native close-up review. The six-view offline art scene remains separate from the tested Unreal character and beta package. Next priorities are head/neck proportions, rear inseam, facade/retail variety and selective planting refinement; no final-art or beta-exit claim follows from these renders.
 

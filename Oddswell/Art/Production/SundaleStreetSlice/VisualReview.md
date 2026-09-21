@@ -12,6 +12,14 @@ Current native gameplay render:
 
 ## Refinement after the first character checkpoint
 
+The latest owner request specifically asks for a more human character. From `c255dd5`, the authored oval head was replaced with the retained MakeHuman skull, face, ears and neck. Paired fitted eyes have separate curved irises and pupils; finer brow strands follow the evaluated face, with restrained cheek/lip tint and skin shading. The first native portraits exposed source shoulder fragments protruding through the collar. A planar neck crop and fitted skirt beneath the collar removed those fragments. A second brow draft was too coarse and high, so its strands were made finer and repositioned. Front and profile portraits are now part of the eight-view review set.
+
+The result reads as human anatomy rather than a featureless mannequin, but remains a neutral static face study. Skin variation, the eyes, expression and individual character identity still need refinement before final approval. The front/profile images are native scene renders with the same outdoor lighting, not generated portraits.
+
+![Human face study](StreetSlice_Head_Front.png)
+
+![Profile and collar fit](StreetSlice_Head_Profile.png)
+
 On September 21, the owner resumed the saved broadleaf checkpoint. A first hip-fold preview produced narrow, stripe-like marks and was rejected. Checkpoint `8c868ec` retained broader, lower-amplitude shorts folds and a slightly stronger jacket-body fold.
 
 The next pass replaces overlapping, voxel-unioned shorts volumes with a single surface sharing the hip circumference and curved inseam. The first transition produced a pronounced rear shelf; close-up review led to a gradual blend over the full leg height and reduced pre-pose offsets. Pocket seams were fitted to the evaluated cloth. The retained rear and three-quarter views show a smoother hip-to-leg transition and less bulky crotch. Sleeve caps are narrower and the upper shoulder join is locally relaxed. These are visible modeling improvements, but the cloth still reads as a static sculpt and the rear inseam needs further art direction.
@@ -28,7 +36,7 @@ Thirteen mature trees use three shared growth variants with different leaf seeds
 
 ## Changes visible in the native scene
 
-- **Character:** clothing surfaces now include localized folds, matching seams, cuffs, a continuous pair of shorts, front zipper/welt pockets, heel details and a teal yoke extending onto the sleeves. Calves retain their volume, hands have a more relaxed shape, and the stance foot touches the promenade. A continuous faceless head surface avoids the anatomical source’s eye and mouth openings.
+- **Character:** clothing surfaces now include localized folds, matching seams, cuffs, a continuous pair of shorts, front zipper/welt pockets, heel details and a teal yoke extending onto the sleeves. Calves retain their volume, hands have a more relaxed shape, and the stance foot touches the promenade. The source-derived human head has a closed fitted neck, facial anatomy, paired eyes and fine brows.
 - **Landscape:** shared mature tree geometry has more detailed branching and textured foliage, with adjusted growth density, proportions and color. The foreground tree moves behind the character; lower planting combines shrubs, grasses, flowers, groundcover, soil and fallen leaves. Planted stone seats and forecourt gardens connect the court to the arena.
 - **Light and depth:** the arena moves farther back, shops have deeper lit interiors, and a photographed sky plus warm sunlight and reflected light replace the plain sky and flatter illumination. Tree shadows break up the promenade. Court paint remains flat against the play surface.
 
@@ -42,7 +50,7 @@ The tree comparison led to adapting CC0 native branching and leaf geometry inste
 
 The reference has more natural garment drape, richer architectural variation and shop contents, subtler weathering, a more composed mixture of plants, and a more photographic finish. The current character is a static model and the scene is deliberately an offline art study. A successful render and geometric checks do not close those visual gaps.
 
-The next visible priorities are the overly oval head/neck silhouette, more natural cloth behavior at the rear inseam and shoulder seam, varied facade/window arrangements, more convincing retail contents, and less uniformly clean foreground surfaces. Paving scale is established, but wear and small color changes still need refinement. Broad-leaf geometry is now present; crown composition, color balance and selective pruning still need art direction against the reference.
+The next visible priorities are more natural facial skin, eyes and expression, cloth behavior at the rear inseam and shoulder seam, varied facade/window arrangements, more convincing retail contents, and less uniformly clean foreground surfaces. Paving scale is established, but wear and small color changes still need refinement. Broad-leaf geometry is now present; crown composition, color balance and selective pruning still need art direction against the reference.
 
 The higher trunks materially open the court view, but some low edge branches remain. Selective court-facing pruning and measured physical clearances are still required before treating this as production planting.
 

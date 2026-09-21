@@ -8,9 +8,9 @@ The source header explicitly releases this asset under CC0. The retained `MAKEHU
 
 https://raw.githubusercontent.com/makehumancommunity/makehuman/master/LICENSE.ASSETS.md
 
-The scene builder reads only the body group and joint reference points, normalizes its height to 1.8 m, and retains the lower legs and hands for the clothed static study. The head is an authored faceless surface. No helper surfaces, game skeleton, or new gameplay preset are introduced. The original source file is preserved intact. Exact hashes are recorded in the scene delivery manifest.
+The scene builder reads only the body group and joint reference points, normalizes its height to 1.8 m, and retains the head/neck, lower legs and hands for the clothed static study. No helper surfaces, game skeleton, or new gameplay preset are introduced. The original source file is preserved intact. Exact hashes are recorded in the scene delivery manifest.
 
-The continuing character pass narrows the source hand spread, relaxes the fingers and preserves calf volume while correcting the base stance. The leg surface extends beneath the shorts to prevent gaps at the posed hems. A new authored faceless skull/jaw/neck replaces the source head. The original anatomy remains unchanged on disk.
+The continuing character pass narrows the source hand spread, relaxes the fingers and preserves calf volume while correcting the base stance. The leg surface extends beneath the shorts to prevent gaps at the posed hems. At the owner's September 21 request for a more human character, the source skull, face and ears replaced the earlier authored faceless head. The lower neck is cropped, fitted and extended beneath the jacket collar. Locally authored eyes use the source eye-joint positions; iris/pupil patches, brow strands and face tint are additional native detail. The original anatomy remains unchanged on disk.
 
 ## Mature tree source
 

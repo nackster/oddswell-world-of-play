@@ -1,9 +1,9 @@
 {
   "source": "Native scene/garments/plant geometry, CC0 MakeHuman anatomical surfaces, six CC0 Poly Haven stone/bark texture maps and one CC0 photographed sky environment; adapted CC0 Jacaranda model with ten packed 2K maps",
   "reference": "../../Reviews/OddsWellStreetIdentityCandidate/OddsWell_Visual_Direction_Concept.png",
-  "objects": 4553,
-  "meshes": 3103,
-  "materials": 57,
+  "objects": 4563,
+  "meshes": 3109,
+  "materials": 62,
   "packed_texture_maps": 24,
   "mature_tree_instances": 13,
   "seed": 218,
@@ -24,7 +24,9 @@
     "Architecture_Detail",
     "Character_Detail",
     "Landscape_Detail",
-    "Character_ThreeQuarter"
+    "Character_ThreeQuarter",
+    "Head_Front",
+    "Head_Profile"
   ],
   "additional_view_resolutions": {
     "Court_and_Arena": [
@@ -44,6 +46,14 @@
       1100
     ],
     "Character_ThreeQuarter": [
+      1000,
+      1100
+    ],
+    "Head_Front": [
+      1000,
+      1100
+    ],
+    "Head_Profile": [
       1000,
       1100
     ]

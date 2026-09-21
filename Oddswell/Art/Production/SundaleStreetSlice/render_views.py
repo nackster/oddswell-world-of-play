@@ -1,4 +1,4 @@
-"""Reopen and validate the scene; render gameplay and five inspection views."""
+"""Reopen and validate the scene; render gameplay and seven inspection views."""
 import bpy
 import json
 import sys
@@ -51,6 +51,8 @@ views=[
     ('Character_Detail',(-1.45,-5.85,1.25),(-.75,-2.4,.97),58,1000,1100),
     ('Landscape_Detail',(6,-4.4,1.55),(1.0,8,2.1),38,1000,1100),
     ('Character_ThreeQuarter',(1.8,.2,1.35),(-.75,-2.4,.97),58,1000,1100),
+    ('Head_Front',(-.75,-1.15,1.74),(-.75,-2.36,1.69),75,1000,1100),
+    ('Head_Profile',(.40,-2.30,1.73),(-.75,-2.36,1.69),75,1000,1100),
 ]
 for name,pos,target,lens,width,height in ([] if '--main-only' in sys.argv else views):
     if selected and name!=selected:continue

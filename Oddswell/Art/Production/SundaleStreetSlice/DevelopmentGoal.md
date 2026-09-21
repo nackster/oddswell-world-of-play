@@ -4,6 +4,8 @@ Active owner request, September 12, 2026: spend time developing the character an
 
 The target is `../../Reviews/OddsWellStreetIdentityCandidate/OddsWell_Visual_Direction_Concept.png`. It sets the desired warm, tactile, realistic finish. The current Blender scene is a work in progress; a completed render does not by itself satisfy this goal.
 
+September 21 owner direction: the character needs to look more human. Develop recognizable adult facial anatomy and a natural head/neck silhouette, and review front/profile close-ups alongside the full clothed figure. The earlier featureless head is a superseded modeling simplification.
+
 ## Visual acceptance criteria
 
 - **Character:** credible adult proportions and calf volume; a relaxed walking stance; a slate jacket with shaped shoulders, sleeves, ribbed cuffs and hem, localized garment folds, and a narrow teal yoke sewn onto the surface; cotton shorts with believable fit, hems and pockets; ordinary canvas footwear.

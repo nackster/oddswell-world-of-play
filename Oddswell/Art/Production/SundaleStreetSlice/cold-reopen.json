@@ -1,7 +1,7 @@
 {
   "result": "PASS",
   "packed_texture_maps": 24,
-  "cameras": 6,
+  "cameras": 8,
   "court_paint_max_thickness_m": 0.00048000007518567145,
   "collar_stray_faces": 0,
   "head_boundary_edges": 0,
@@ -10,9 +10,10 @@
   "jacket_surface_components": 1,
   "mature_tree_instances": 13,
   "shared_tree_meshes": 3,
-  "mesh_objects": 3929,
-  "native_scene_objects": 4553,
+  "mesh_objects": 3935,
+  "native_scene_objects": 4563,
   "runtime_claim": false,
   "shorts_boundary_edges": 240,
-  "shorts_openings": 3
+  "shorts_openings": 3,
+  "anatomical_head": "Closed source-derived head and fitted neck; paired closed eyes, irises, pupils and brows"
 }

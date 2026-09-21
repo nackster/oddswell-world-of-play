@@ -4,6 +4,8 @@ The owner’s first OddsWell concept picture remains the visual target. [Develop
 
 September 21 continuation: after the modest fold checkpoint `8c868ec`, the shorts were rebuilt as a continuous tailored surface through the hips and inseam, the sleeve caps and shoulder join were softened, and civic limestone gained restrained sediment variation. All six native views were rebuilt. The visual goal remains active; see [VisualReview.md](VisualReview.md) for the remaining gaps.
 
+The owner's next direction was to make the character more human. From checkpoint `c255dd5`, the featureless oval head was replaced with the retained anatomical skull, jaw, nose, lips and ears. Fitted eyes, fine brow strands and localized skin tint complete this first human-face study. A cropped source-shoulder defect was caught in close-up and removed; the neck now extends inside the collar. The review set includes eight native views, adding front and profile portraits.
+
 ![Native gameplay view](StreetSlice_Gameplay.png)
 
 This pass develops a tailored slate jacket with a sewn teal yoke, shaped sleeves, fine seams and localized folds; continuous cotton shorts; relaxed hands, fuller calves and a grounded walking stance; closed canvas shoes with heel details. The promenade has mature tree canopies, grasses, flowering stems, groundcover, fallen leaves, planted seats, deeper illuminated retail windows and a landscaped arena approach. Restrained teal connects clothing, stone furniture, lights and the arena.
@@ -19,8 +21,9 @@ Open `OddsWell_Sundale_StreetSlice.blend` in Blender 4.5 or later. It is compres
 - `build_scene.py` rebuilds the scene. It executes `develop_character_landscape.py` for garment construction and landscape detail, and `mature_trees.py` for the adapted tree family.
 - `broadleaf_canopy.py` adapts retained leaf clusters to the tree branching and foreground shrubs. The woody structure is raised before leaf emission so leaf proportions remain intact.
 - `refine_minerals.py` layers fine pores and mineral grain into the native stone and brick materials, and directs oak fibers along the seats and shelves.
-- `render_views.py` reopens the saved scene and renders the 1920x1080 gameplay view at 160 samples plus inspection views at 96 samples. `inspect_details.py` provides faster 48-sample close-ups during modeling.
-- `verify_scene.py` checks the cold-open artifact, packed resources, cameras, flat court paint, head boundaries, stance-foot contact, connected jacket/shorts surfaces, three closed boundary loops at the shorts waist/hems, and the three shared tree variants. Use `-- --draft` before final cameras exist.
+- `refine_character_head.py` fits the source-derived neck beneath the collar, constructs eyes at the retained anatomical joints, fits brow strands to the head, and adds restrained skin variation.
+- `render_views.py` reopens the saved scene and renders the 1920x1080 gameplay view at 160 samples plus seven inspection views at 96 samples. `inspect_details.py` provides faster 48-sample close-ups during modeling; `-- --head-only --gpu` renders the face front and profile.
+- `verify_scene.py` checks the cold-open artifact, packed resources, eight cameras, flat court paint, a closed anatomical head and paired eyes, the neck crop, stance-foot contact, connected jacket/shorts surfaces, three closed boundary loops at the shorts waist/hems, and the three shared tree variants. Use `-- --draft` before final cameras exist.
 - `fetch_stone_material.py`, `fetch_sky.py`, `fetch_tree.py` and `fetch_broadleaf.py` restore the retained public source maps if needed. The finished Blender file packs 24 maps, including seven leaf/twig maps added in the broad-leaf pass.
 
 Run Blender with `--background --factory-startup --disable-autoexec --python-exit-code 1 --python build_scene.py`. Add `-- --preview` for a 1100x619 draft. Python exceptions must cause a nonzero exit. The preview is a working file; delivery renders and their hashes are recorded in `delivery.json` after verification.

@@ -460,7 +460,7 @@ for region in ('head','legs','left hand','right hand'):
         rotation=(wrist-elbow).rotation_difference(Vector((sign*.03,.04,-.25)))
     for face in bodyfaces:
         vs=[converted[i] for i in face]
-        keep=False if region=='head' else all(.13<v.z<.705 for v in vs) if region=='legs' else all(v.x*sign>.422 and v.z<1.35 for v in vs)
+        keep=all(v.z>1.485 for v in vs) if region=='head' else all(.13<v.z<.705 for v in vs) if region=='legs' else all(v.x*sign>.422 and v.z<1.35 for v in vs)
         if not keep:continue
         newface=[]
         for index in face:
@@ -479,24 +479,14 @@ for region in ('head','legs','left hand','right hand'):
                 indices[index]=len(vertices);vertices.append(bodypt(v))
             newface.append(indices[index])
         faces.append(newface)
-    if region=='head':
-        # A continuous sculpted skull/jaw/neck is intentionally featureless.
-        # The head is an authored surface, with no facial openings.
-        profiles=[(1.505,.048,.049,.015),(1.53,.051,.054,.017),(1.555,.053,.054,.020),(1.575,.064,.060,.025),(1.595,.078,.071,.023),(1.625,.087,.084,.014),(1.665,.090,.095,.005),(1.71,.088,.099,0),(1.75,.080,.092,-.002),(1.78,.060,.072,-.007),(1.795,.032,.038,-.010),(1.80,.002,.002,-.010)]
-        n=len(vertices);sides=64
-        for z,rx,ry,cy in profiles:
-            for j in range(sides):
-                a=j*math.tau/sides
-                vertices.append(bodypt((rx*math.cos(a),cy+ry*math.sin(a),z)))
-        faces.extend([(n+k*sides+j,n+k*sides+(j+1)%sides,n+(k+1)*sides+(j+1)%sides,n+(k+1)*sides+j) for k in range(len(profiles)-1) for j in range(sides)])
-        faces.extend([tuple(n+j for j in range(sides-1,-1,-1)),tuple(n+(len(profiles)-1)*sides+j for j in range(sides))])
     anatomy=mesh('Character | anatomical '+region,vertices,faces,skin,True)
-    mod=anatomy.modifiers.new('Anatomical surface','SUBSURF');mod.levels=1
+    mod=anatomy.modifiers.new('Anatomical surface','SUBSURF');mod.levels=2 if region=='head' else 1
 skin.node_tree.nodes.get('Principled BSDF').inputs['Subsurface Weight'].default_value=.08
 
 # Authored tailoring, layered planting and surface details share the helpers
 # above and remain ordinary editable meshes in the resulting Blender file.
 exec(compile((ROOT/'develop_character_landscape.py').read_text(encoding='utf-8'),str(ROOT/'develop_character_landscape.py'),'exec'))
+exec(compile((ROOT/'refine_character_head.py').read_text(encoding='utf-8'),str(ROOT/'refine_character_head.py'),'exec'))
 
 # Pose the clothed lower body for a short walking stride in this static study.
 from mathutils import Matrix
