@@ -9,7 +9,7 @@ import random
 import json
 import sys
 from pathlib import Path
-from mathutils import Vector
+from mathutils import Vector, Quaternion
 
 ROOT = Path(__file__).resolve().parent
 random.seed(218)
@@ -466,6 +466,26 @@ for region in ('head','legs','left hand','right hand'):
         across=(joint('joint-'+side+'-finger-5-1')-joint('joint-'+side+'-finger-2-1')).normalized()
         palm_normal=across.cross(finger_axis).normalized()
         if (rotation@palm_normal).x*sign<0:palm_normal=-palm_normal
+        digits={digit:[joint(f'joint-{side}-finger-{digit}-{part}') for part in range(1,5)] for digit in range(1,6)}
+        def relaxed_digit(point,digit):
+            chain=digits[digit]
+            axis=(chain[1]-chain[0]).normalized()
+            flex_axis=axis.cross(-palm_normal).normalized()
+            angles={1:(.09,.15,.12),2:(.18,.36,.16),3:(.24,.44,.22),4:(.32,.50,.24),5:(.36,.56,.28)}[digit]
+            value=point.copy()
+            # Distal rotations precede the proximal rotations so each
+            # fingertip follows its own three anatomical joints.
+            for k in (2,1,0):
+                direction=(chain[k+1]-chain[k]).normalized()
+                weight=max(0,min(1,((point-chain[k]).dot(direction)+.004)/.011))
+                weight=weight*weight*(3-2*weight)
+                value=chain[k]+Quaternion(flex_axis,angles[k]*weight*(1 if sign>0 else .90))@(value-chain[k])
+            distance=1
+            for a,b in zip(chain,chain[1:]):
+                delta=b-a
+                nearest=a+delta*max(0,min(1,(point-a).dot(delta)/delta.length_squared))
+                distance=min(distance,(point-nearest).length)
+            return value,math.exp(-(distance/.008)**2)
     for face,source_uvs in zip(bodyfaces,bodyfaceuvs):
         vs=[converted[i] for i in face]
         keep=all(v.z>1.485 for v in vs) if region=='head' else all(.13<v.z<.705 for v in vs) if region=='legs' else all(v.x*sign>.375 and v.z<1.26 and (v-wrist).dot(finger_axis)>-.035 for v in vs)
@@ -482,51 +502,93 @@ for region in ('head','legs','left hand','right hand'):
                     v.x=side*.14+(v.x-side*(.248-.145*v.z))*width
                     v.y+=.075 if v.x>0 else -.065
                 elif 'hand' in region:
-                    # Smooth resting curl beyond the knuckles, preserving
-                    # source topology/UVs and the wrist attachment.
-                    length=max(0,(v-knuckle).dot(finger_axis))
-                    angle=length*9
-                    v+=finger_axis*(math.sin(angle)/9-length)-palm_normal*((1-math.cos(angle))/9)
+                    # Blend adjacent digit influences only at their webs.
+                    # Palm and wrist remain unchanged; UVs follow topology.
+                    posed=[relaxed_digit(v,digit) for digit in range(1,6)]
+                    total=sum(weight for _,weight in posed)
+                    if total>1e-9:v=sum((p*weight for p,weight in posed),Vector())/total
                     v=target+rotation@((v-wrist)*.94)
                     v.x=target.x+(v.x-target.x)*.85
                 indices[index]=len(vertices);vertices.append(bodypt(v))
             newface.append(indices[index])
-        faces.append(newface)
-        faceuvs.append(source_uvs)
+        # Swapping source Y/Z reverses handedness. Reverse the face and its
+        # UV corners together so skin normals and cloth contact face outward.
+        faces.append(newface[::-1])
+        faceuvs.append(source_uvs[::-1])
     anatomy=mesh('Character | anatomical '+region,vertices,faces,skin,True)
     uv=anatomy.data.uv_layers.new(name='MakeHuman source UV')
     for polygon,source_uvs in zip(anatomy.data.polygons,faceuvs):
         for loop_index,coord in zip(polygon.loop_indices,source_uvs):uv.data[loop_index].uv=coord
-    mod=anatomy.modifiers.new('Anatomical surface','SUBSURF');mod.levels=2 if region=='head' else 1
+    mod=anatomy.modifiers.new('Anatomical surface','SUBSURF');mod.levels=1 if region=='legs' else 2
 skin.node_tree.nodes.get('Principled BSDF').inputs['Subsurface Weight'].default_value=.08
 
 # Authored tailoring, layered planting and surface details share the helpers
 # above and remain ordinary editable meshes in the resulting Blender file.
 exec(compile((ROOT/'develop_character_landscape.py').read_text(encoding='utf-8'),str(ROOT/'develop_character_landscape.py'),'exec'))
 exec(compile((ROOT/'refine_character_head.py').read_text(encoding='utf-8'),str(ROOT/'refine_character_head.py'),'exec'))
+exec(compile((ROOT/'refine_fabrics.py').read_text(encoding='utf-8'),str(ROOT/'refine_fabrics.py'),'exec'))
 
 # Pose the clothed lower body for a short walking stride in this static study.
 from mathutils import Matrix
+def walking_point(relative):
+    side=1 if relative.x>0 else -1
+    legy=.075 if side>0 else -.065
+    ankle=Vector((side*.14,legy+.015,.14))
+    knee=Vector((side*.14,legy+.035,.48))
+    hip=Vector((side*.13,0,.9))
+    ankle_angle=(-.04 if side>0 else .20)*min(1,max(0,(.29-relative.z)/.07))
+    knee_angle=(-.09 if side>0 else -.30)*min(1,max(0,(.53-relative.z)/.10))
+    hip_angle=(.13 if side>0 else -.16)*min(1,max(0,(.95-relative.z)/.20))
+    p=ankle+Matrix.Rotation(ankle_angle,3,'X')@(relative-ankle)
+    p=knee+Matrix.Rotation(knee_angle,3,'X')@(p-knee)
+    p=hip+Matrix.Rotation(hip_angle,3,'X')@(p-hip)
+    if side<0:p.z+=.013*min(1,max(0,(.95-relative.z)/.20))
+    return p
 for obj in list(scene.objects):
     if obj.type!='MESH' or not any(obj.name.startswith('Character | '+p) for p in ('anatomical legs','shorts leg','sneaker sole','canvas sneaker')):continue
     for vertex in obj.data.vertices:
         worldpoint=obj.matrix_world@vertex.co
         relative=worldpoint-origin
-        sign=1 if relative.x>0 else -1
-        pivot=Vector((sign*.13,0,.9))
-        angle=sign*.14*min(1,max(0,(.95-relative.z)/.20))
-        posed=pivot+Matrix.Rotation(angle,3,'X')@(relative-pivot)
+        posed=walking_point(relative)
         vertex.co=obj.matrix_world.inverted()@(posed+origin)
 for obj in scene.objects:
     if obj.type!='CURVE' or not any(obj.name.startswith('Character | '+p) for p in ('shoe lace','back pocket seam','shorts leg hem')):continue
     for spline in obj.data.splines:
         for point in spline.points:
             relative=Vector(point.co[:3])-origin
-            sign=1 if relative.x>0 else -1
-            pivot=Vector((sign*.13,0,.9))
-            angle=sign*.14*min(1,max(0,(.95-relative.z)/.20))
-            point.co=(*(pivot+Matrix.Rotation(angle,3,'X')@(relative-pivot)+origin),1)
+            point.co=(*(walking_point(relative)+origin),1)
 scene['clothing_details_posed']=True
+scene['articulated_walking_pose']=True
+exec(compile((ROOT/'settle_cotton.py').read_text(encoding='utf-8'),str(ROOT/'settle_cotton.py'),'exec'))
+
+# Fine, tapered calf hair follows the posed skin. Retain ordinary curves so
+# this surface detail remains editable without a particle cache or add-on.
+import bisect
+skin_mesh=bpy.data.objects['Character | anatomical legs'].evaluated_get(bpy.context.evaluated_depsgraph_get()).to_mesh()
+skin_mesh.calc_loop_triangles()
+triangles=[tri for tri in skin_mesh.loop_triangles if .24<(tri.center.z-origin.z)<.57]
+areas=[];total=0
+for tri in triangles:total+=tri.area;areas.append(total)
+rng=random.Random(6842)
+hair_data=bpy.data.curves.new('Character | fine calf hair','CURVE');hair_data.dimensions='3D';hair_data.bevel_depth=.000028;hair_data.bevel_resolution=1
+for _ in range(2600):
+    tri=triangles[bisect.bisect_left(areas,rng.random()*total)]
+    u=math.sqrt(rng.random());v=rng.random()
+    root=sum((skin_mesh.vertices[index].co*weight for index,weight in zip(tri.vertices,(1-u,u*(1-v),u*v))),Vector())
+    normal=tri.normal.normalized()
+    tangent=Vector((rng.uniform(-.25,.25),rng.uniform(-.15,.15),-1))
+    tangent=(tangent-normal*tangent.dot(normal)).normalized()
+    length=rng.uniform(.004,.009)
+    spline=hair_data.splines.new('POLY');spline.points.add(3)
+    for k,point in enumerate(spline.points):
+        t=k/3
+        point.co=(*(root+tangent*length*t+normal*(.00012+.0011*math.sin(t*math.pi*.8))),1)
+        point.radius=(1-t)*.9+.05
+hair_obj=bpy.data.objects.new('Character | fine calf hair',hair_data);scene.collection.objects.link(hair_obj)
+hair_data.materials.append(mat('Character | fine warm brown body hair',(.042,.024,.013),.68))
+bpy.data.objects['Character | anatomical legs'].evaluated_get(bpy.context.evaluated_depsgraph_get()).to_mesh_clear()
+scene['anatomical_finger_articulation']=True
+scene['calf_hair_strands']=2600
 
 # Plant the stance foot on the brick surface after the walking deformation.
 # Inspect evaluated soles so subdivision cannot leave the entire figure afloat.

@@ -10,7 +10,23 @@ Current native gameplay render:
 
 ![Native scene comparison](StreetSlice_Gameplay.png)
 
-## Current body refinement
+## Active human realism goal
+
+The owner set a new sustained human-realism goal from `3af6bd9`. This first iteration articulates the hips, knees and ankles separately, with a flat forward stance foot and a raised trailing heel. A 40-frame native cotton simulation develops shorts drape; its result is blended with the tailored base and relaxed to avoid excessive tiny wrinkles. The simulation uses body proxies plus the actual leg surface, with a final skin-clearance correction and refitted seams.
+
+Six original CC0 Poly Haven fabric maps now add photographed surface variation, displacement-derived bump and roughness to the jacket, shorts and canvas shoes. Terlenka provides the jacket weave; Denim Fabric 04 supplies the cotton weave, recolored in the shader to the existing OddsWell palette. Source photography is by colormass, processed by Rico Cilliers. The scene contains 31 packed maps. Box projection is an interim shading method; production garment UVs remain open.
+
+Further native refinement reduces jacket torso/sleeve volume and concentrates folds around the armholes, elbows and waistband. Ribbed cuffs taper toward the wrists, with the sleeve ends fitted inside them. Each finger now bends around its three retained anatomical joints, with progressively deeper ring/little-finger curl and mild left/right asymmetry. The shoes have crossed laces, paired eyelets and a stitched toe panel. Fine tapered calf hairs follow the posed skin, and denser pocket-stitch samples follow the simulated shorts surface.
+
+The first full-strength cloth studies produced excessive inseam wrinkles. Blending with the tailored shape and relaxing the smallest creases reduced that artifact. Native inspection then exposed the thigh through the draped hem. Clearance checks traced the defect to inward anatomical faces after the source Y/Z coordinate swap. Reversing face winding and matching UV corners preserves the original mapping while making skin contact outward. Actual-leg collision and post-smoothing clearance remove the visible thigh breakout. The saved-scene check measures the evaluated hem against the leg with a 1.5 mm tolerance; the exact measured minimum is retained in `cold-reopen.json`. This finite sampling is not a zero-intersection guarantee.
+
+This is a realism development checkpoint, not completion of the new goal. The overall figure still reads as a digital model: shoulder/armhole shaping, garment tension and collar construction need more work, alongside hand tendon/nail detail, face/eyelid expression and skin response. The calf hair is deliberately subtle at gameplay distance. Cloth is retained as static editable geometry after simulation; no gameplay cloth, animation rig or runtime integration is claimed. Architecture/retail and planting remain next in the roadmap after the human passes the visual criteria.
+
+Dedicated hand views exposed a loose cuff opening, followed by a protruding sleeve end after tapering. The sleeve profile now narrows inside the cuff; rib sampling was increased to resolve the fine channels. The pocket stitches also needed more samples to follow the curved garment instead of passing inside it between their corners.
+
+The first full render review also caught an artificial crossing pattern in the lower back folds and a ledge where the shorts clearance correction snapped toward the cropped thigh boundary. Rear creases were shortened, softened and separated; clearance now moves cloth only along the skin normal, preserving its tangential position. The initial all-view render set was rejected for those visual defects despite passing the structural checks.
+
+## Previous body refinement
 
 The body continuation from `c19da50` adds a smaller, gently curled resting hand pose, more opposing arm swing with a soft elbow bend, and a narrower calf-to-ankle profile. The jacket has less abdominal bulk and localized front folds; shorts gain front compression creases. The sneakers have higher heel/instep profiles, fitted tongues, laces and quarter seams, a smoother rubber sole, and more length ahead of the ankle.
 

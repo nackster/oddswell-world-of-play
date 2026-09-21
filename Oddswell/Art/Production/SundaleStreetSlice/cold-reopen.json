@@ -1,6 +1,6 @@
 {
   "result": "PASS",
-  "packed_texture_maps": 25,
+  "packed_texture_maps": 31,
   "cameras": 8,
   "court_paint_max_thickness_m": 0.00048000007518567145,
   "collar_stray_faces": 0,
@@ -11,7 +11,7 @@
   "mature_tree_instances": 13,
   "shared_tree_meshes": 3,
   "mesh_objects": 3937,
-  "native_scene_objects": 4567,
+  "native_scene_objects": 4594,
   "runtime_claim": false,
   "shorts_boundary_edges": 240,
   "shorts_openings": 3,
@@ -22,5 +22,22 @@
     "left hand": 20,
     "right hand": 20
   },
-  "maximum_lace_surface_distance_m": 0.0030002950225025415
+  "maximum_lace_surface_distance_m": 0.0030003103893250227,
+  "foot_contact": {
+    "left": {
+      "min_z": 0.057591989636421204,
+      "heel_min_z": 0.12149427831172943,
+      "toe_min_z": 0.057591989636421204
+    },
+    "right": {
+      "min_z": 0.050999999046325684,
+      "heel_min_z": 0.051000043749809265,
+      "toe_min_z": 0.050999999046325684
+    }
+  },
+  "cotton_drape_frames": 40,
+  "cotton_drape_maximum_delta_m": 0.0529472243832398,
+  "calf_hair_strands": 2600,
+  "anatomical_finger_articulation": true,
+  "minimum_cloth_thigh_clearance_m": 0.0034853005781769753
 }

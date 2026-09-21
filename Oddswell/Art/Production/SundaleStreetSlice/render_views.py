@@ -14,7 +14,7 @@ if '--gpu' in sys.argv:
     devices.compute_device_type='OPTIX';devices.get_devices()
     for device in devices.devices:device.use=device.type=='OPTIX'
 assert all(name in bpy.data.collections for name in ('Character','Trees and planting','Arena','Court','Architecture'))
-assert len([image for image in bpy.data.images if image.source=='FILE' and image.packed_file])==25
+assert len([image for image in bpy.data.images if image.source=='FILE' and image.packed_file])==31
 assert sum(o.name.startswith('Character | anatomical ') for o in scene.objects)==4
 assert scene.render.engine=='CYCLES'
 main=scene.camera
@@ -80,8 +80,10 @@ bpy.ops.wm.save_as_mainfile(filepath=str(ROOT/'OddsWell_Sundale_StreetSlice.blen
 evidence=json.loads((ROOT/'scene-evidence.json').read_text(encoding='utf-8'))
 evidence.update({'independent_reopen':'PASS','packed_texture_maps':17,'additional_views':[v[0] for v in views],'additional_view_resolutions':{v[0]:list(v[4:]) for v in views},'additional_view_samples':96,'objects':len(scene.objects),'resolution':[1920,1080],'samples':160,'source':'Native scene/garments/plant geometry, CC0 MakeHuman anatomical surfaces, six CC0 Poly Haven stone/bark texture maps and one CC0 photographed sky environment; adapted CC0 Jacaranda model with ten packed 2K maps'})
 evidence['render_device']='OPTIX' if '--gpu' in sys.argv else 'CPU'
-evidence['packed_texture_maps']=25
+evidence['packed_texture_maps']=31
 evidence['skin']='CC0 MakeHuman young_lightskinned_male_diffuse map on retained anatomical UVs; original source preserved'
+evidence['body_detail']='Individual anatomical finger bends, fitted rib cuffs, crossed shoe laces/eyelets, dense pocket stitches and 2600 tapered calf hair curves'
+evidence['cloth']='40-frame native cotton drape study blended with tailoring; retained CC0 fabric maps and articulated hip/knee/ankle pose'
 evidence['canopy']='Raised Jacaranda branching with adapted CC0 Island Tree 01 broad-leaf clusters; same leaf family in foreground shrubs'
 (ROOT/'scene-evidence.json').write_text(json.dumps(evidence,indent=2)+'\n',encoding='utf-8')
 print('ODDSWELL_STREET_SLICE_REOPEN_PASS',flush=True)

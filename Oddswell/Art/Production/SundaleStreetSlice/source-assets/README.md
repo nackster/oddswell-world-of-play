@@ -20,6 +20,10 @@ The retained diffuse map and original `.mhmat` come from the official [MakeHuman
 
 The original body UVs are preserved on the exposed head, hands and legs; the fitted neck skirt interpolates them beneath the collar. The shader adjusts saturation/value and roughness while the original image remains unchanged. This is a static derivative anatomy/material study, with no claim of a scan, final character identity or production rig.
 
+## Fabric surface sources
+
+`fabric-sources.json` retains the URLs, original MD5/SHA-256 identities, authors and physical dimensions of [Terlenka](https://polyhaven.com/a/terlenka) and [Denim Fabric 04](https://polyhaven.com/a/denim_fabric_04). Both are distributed under [Poly Haven CC0](https://polyhaven.com/license), photographed by colormass and processed by Rico Cilliers. Six original 2K diffuse, displacement and roughness maps are retained unchanged. `../fetch_fabrics.py` restores them and checks upstream identities. The native shader uses grayscale diffuse variation with the OddsWell garment colors, physical-scale box projection and fine bump.
+
 ## Mature tree source
 
 `jacaranda_tree_4k.blend` is the original CC0 [Jacaranda Tree](https://polyhaven.com/a/jacaranda_tree), authored by Rico Cilliers with guidance from Rob Tuytel. `jacaranda-source.json` records its exact URL/hash and the ten retained 2K surface maps. `../mature_trees.py` adapts native leaf seeds, growth density, foliage appearance and planting proportions into three shared variants. Secondary variants receive upright or spreading proportions and a gentle upper-branch lean. The source file is preserved intact; the derivatives and maps are packed into the main street-scene Blender file.
@@ -27,3 +31,5 @@ The original body UVs are preserved on the exposed head, hands and legs; the fit
 ## Broad-leaf source
 
 `island_tree_01_2k.blend` is the original CC0 [Island Tree 01](https://polyhaven.com/a/island_tree_01), processed by Rico Cilliers and scanned/processed by Rob Tuytel. `broadleaf-source.json` retains official API MD5 verification, local SHA-256 hashes, URLs and seven leaf/twig maps. The source trunk and its texture channels are not used. `../broadleaf_canopy.py` adapts LOD1 clusters, preserving UVs while simplifying geometry and adjusting scale and shading. These clusters grow on the raised Jacaranda branching and are instanced around locally authored shrub stems. Both original Blender sources remain unchanged on disk.
+
+The realism pass corrects the handedness of the source Y/Z coordinate conversion: derived face order and matching UV corners are reversed together. This makes exposed skin normals outward without altering the original OBJ or its UV values, and permits meaningful cloth contact against the legs.

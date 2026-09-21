@@ -20,6 +20,7 @@ views=[
 if '--head-only' in sys.argv:
     views=[('Head_Front',(-.75,-1.15,1.74),(-.75,-2.36,1.69),75),('Head_Profile',(.40,-2.30,1.73),(-.75,-2.36,1.69),75)]
 for name,pos,target,lens in views:
+    if '--body-only' in sys.argv and name=='Landscape_Detail':continue
     if '--front-only' in sys.argv and name!='Character_ThreeQuarter':continue
     data=bpy.data.cameras.new('INSPECT | '+name)
     camera=bpy.data.objects.new('INSPECT | '+name,data);scene.collection.objects.link(camera)

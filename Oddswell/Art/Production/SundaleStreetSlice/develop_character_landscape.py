@@ -56,20 +56,31 @@ def cloth_point(rings,z,a,kind):
     if kind=='coat':
         gather=math.exp(-((z-.970)/.045)**2)
         fold=.005*math.sin(a*11+z*24)*gather
-        fold+=.006*math.sin(a*15+z*4)*math.exp(-((z-1.23)/.17)**2)
+        # Broad panels stay quiet; cloth gathers where the waistband and
+        # armholes constrain it, rather than forming full-height fluting.
+        fold+=.0015*math.sin(a*15+z*4)*math.exp(-((z-1.23)/.17)**2)
         # Diagonal compression folds above the hem, terminating at side seams.
         for crest,center in ((.976,3.75),(1.025,5.3),(1.070,3.5)):
             d=z-(crest+.065*math.cos(a*2+.7))
             localized=math.exp(-((a-center)/.45)**2)
-            fold+=localized*(.008*math.exp(-(d/.011)**2)-.003*math.exp(-((d+.014)/.010)**2))
-        fold+=.003*math.sin(a*8-z*21)*math.exp(-((z-1.36)/.09)**2)
+            fold+=localized*(.004*math.exp(-(d/.018)**2)-.0015*math.exp(-((d+.022)/.016)**2))
+        fold+=.001*math.sin(a*8-z*21)*math.exp(-((z-1.36)/.09)**2)
         for center,height,slope in ((.72,1.04,.08),(1.8,1.015,-.065),(2.45,1.11,-.10)):
             d=z-height-slope*(a-center)
             fold+=.005*math.exp(-((a-center)/.34)**2)*(math.exp(-(d/.013)**2)-.4*math.exp(-((d+.017)/.012)**2))
+        for center,height,slope,depth in ((.32,1.23,-.12,.007),(2.82,1.25,.14,.006),(3.40,1.22,-.08,.006),(6.02,1.205,.08,.005),(4.00,1.008,.052,.005),(5.40,1.036,-.034,.004),(1.00,1.025,-.085,.006),(2.1,1.015,.095,.005)):
+            da=(a-center+math.pi)%math.tau-math.pi
+            d=z-height-slope*da
+            width=.28 if center>3.1 else .43
+            fold+=depth*math.exp(-(da/width)**2)*(math.exp(-(d/.014)**2)-.42*math.exp(-((d+.021)/.016)**2))
         fold*=max(0,min(1,(z-.942)/.030))
     elif kind=='sleeve':
         gather=math.exp(-((z-1.15)/.06)**2)+.4*math.exp(-((z-.955)/.035)**2)
-        fold=.006*math.sin(z*100+a*3)*gather*(.5+.5*math.sin(a+z*2))+.0015*math.sin(a*9+z*9)
+        fold=.004*math.sin(z*100+a*3)*gather*(.5+.5*math.sin(a+z*2))+.0006*math.sin(a*9+z*9)
+        for center,height,slope,depth in ((1.5,1.13,.023,.008),(1.7,1.17,-.025,.007),(4.4,1.09,-.018,.006),(4.8,.994,.025,.007),(1.0,.974,-.020,.006)):
+            da=(a-center+math.pi)%math.tau-math.pi
+            d=z-height-slope*da
+            fold+=depth*math.exp(-(da/.85)**2)*(math.exp(-(d/.009)**2)-.40*math.exp(-((d+.014)/.010)**2))
         fold*=max(0,min(1,(z-.945)/.035))
     elif kind=='shorts':
         fold=.0012*math.sin(a*9+z*11)
@@ -81,7 +92,7 @@ def cloth_point(rings,z,a,kind):
             mask=math.exp(-(da/.42)**2-((z-height)/.13)**2)
             fold+=mask*(depth*math.exp(-(d/.009)**2)-depth*.45*math.exp(-((d+.012)/.011)**2))
     else:
-        fold=.00015*math.cos(a*24)
+        fold=.00045*math.cos(a*96)
     px=x+(rx+fold)*math.cos(a);py=y+(ry+fold)*math.sin(a)
     if kind=='shorts' and rx>.18 and math.sin(a)<0:
         py+=.018*math.exp(-(px/.050)**2)*math.exp(-((z-.825)/.065)**2)
@@ -91,7 +102,8 @@ def cloth_point(rings,z,a,kind):
         pz-=.029*min(1,(z-1.38)/.065)*(1+side*math.cos(a))*.5
     return bodypt((px,py,pz))
 
-def cloth(name,rings,material,kind,steps=55,sides=80):
+def cloth(name,rings,material,kind,steps=110,sides=80):
+    if kind=='rib':sides=384
     lo,hi=rings[0][2],rings[-1][2]
     vertices=[cloth_point(rings,lo+(hi-lo)*k/steps,j*math.tau/sides,kind) for k in range(steps+1) for j in range(sides)]
     faces=[(k*sides+j,k*sides+(j+1)%sides,(k+1)*sides+(j+1)%sides,(k+1)*sides+j) for k in range(steps) for j in range(sides)]
@@ -100,7 +112,7 @@ def cloth(name,rings,material,kind,steps=55,sides=80):
     solid=obj.modifiers.new('Garment edge thickness','SOLIDIFY');solid.thickness=.0015
     return obj
 
-coat=[(0,0,.915,.190,.114),(0,0,.95,.209,.132),(0,.006,1.02,.222,.140),(0,.012,1.15,.239,.144),(0,.014,1.31,.253,.146),(0,.012,1.395,.250,.133),(0,.007,1.43,.231,.123),(0,0,1.48,.104,.083)]
+coat=[(0,0,.915,.190,.114),(0,0,.95,.205,.128),(0,.006,1.02,.212,.133),(0,.012,1.15,.219,.134),(0,.014,1.31,.240,.138),(0,.012,1.395,.243,.128),(0,.007,1.43,.221,.116),(0,0,1.48,.099,.080)]
 cloth('tailored slate jacket',coat,jacket,'coat')
 cloth('ribbed waistband',[(0,0,.897,.194,.120),(0,0,.922,.199,.124),(0,0,.943,.207,.133)],rib,'rib',12)
 cloth('standing collar',[(0,0,1.47,.095,.082),(0,0,1.485,.091,.079),(0,0,1.526,.076,.071)],rib,'rib',14)
@@ -137,7 +149,7 @@ box('Character | zipper pull',cloth_point(coat,1.432,math.pi/2,'coat')+Vector((0
 leg_profiles={}
 for side in (-1,1):
     suffix=' left' if side<0 else ' right'
-    sleeve=[(side*.338,-.016,.924,.054,.059),(side*.34,-.026,.973,.060,.067),(side*.324,-.040,1.05,.066,.074),(side*.311,-.052,1.15,.076,.079),(side*.30,-.029,1.22,.076,.084),(side*.266,-.003,1.34,.079,.086),(side*.217,.006,1.414,.066,.065),(side*.18,.006,1.445,.048,.049),(side*.135,.006,1.455,.030,.035)]
+    sleeve=[(side*.338,-.016,.924,.038,.036),(side*.339,-.020,.947,.050,.054),(side*.34,-.026,.973,.056,.062),(side*.324,-.040,1.05,.061,.068),(side*.311,-.052,1.15,.071,.074),(side*.30,-.029,1.22,.072,.078),(side*.266,-.003,1.34,.074,.081),(side*.217,.006,1.414,.063,.061),(side*.18,.006,1.445,.046,.047),(side*.135,.006,1.455,.030,.035)]
     cloth('shaped sleeve'+suffix,sleeve,jacket,'sleeve')
     sleeve_yoke=[]
     for k in range(5):
@@ -146,9 +158,9 @@ for side in (-1,1):
             sleeve_yoke.append(cloth_point(sleeve,z,a,'sleeve')+Vector((math.cos(a),math.sin(a),0))*.0018)
     mesh('Character | sleeve signal yoke'+suffix,sleeve_yoke,[(k*41+j,k*41+j+1,(k+1)*41+j+1,(k+1)*41+j) for k in range(4) for j in range(40)],teal,True)
     cuff=[]
-    for z in (.902,.923,.945):
+    for z,fit in ((.902,0),(.917,.22),(.936,.78),(.945,1)):
         x,y,_,rx,ry=ring_at(sleeve,z)
-        cuff.append((x,y,z,rx+.0035,ry+.0035))
+        cuff.append((x,y,z,.036*(1-fit)+(rx+.0035)*fit,.034*(1-fit)+(ry+.0035)*fit))
     cloth('sleeve cuff'+suffix,cuff,rib,'rib',12)
     # Sewn outer sleeve line is thin and rests on the displaced fabric.
     a=math.pi*1.5
@@ -160,8 +172,12 @@ for side in (-1,1):
         tube('Character | shorts leg hem'+suffix,[cloth_point(pants,z,j*math.tau/80,'shorts')+Vector((math.cos(j*math.tau/80),math.sin(j*math.tau/80),0))*.001 for j in range(81)],.00065,cotton_thread)
     # Pocket curves sit on the rear quarter of each leg; no floating white V.
     pocket=[]
-    for a,z in [(4.12,.846),(4.13,.79),(4.65,.77),(5.14,.79),(5.15,.846)]:
-        pocket.append(cloth_point(pants,z,a,'shorts')+Vector((0,-.0018,0)))
+    corners=[(4.12,.846),(4.13,.79),(4.65,.77),(5.14,.79),(5.15,.846)]
+    for start,end in zip(corners,corners[1:]):
+        for k in range(12):
+            t=k/12;a=start[0]*(1-t)+end[0]*t;z=start[1]*(1-t)+end[1]*t
+            pocket.append(cloth_point(pants,z,a,'shorts')+Vector((0,-.0018,0)))
+    a,z=corners[-1];pocket.append(cloth_point(pants,z,a,'shorts')+Vector((0,-.0018,0)))
     tube('Character | back pocket seam'+suffix,pocket,.00065,cotton_thread)
 
     # Low canvas shoes with a flat welt and separate heel/toe profile.
@@ -189,8 +205,14 @@ for side in (-1,1):
     tongue=[shoe_top(x,.030+k*.011,.001) for k in range(9) for x in (-.030,0,.030)]
     tongue_mesh=mesh('Character | canvas sneaker tongue'+suffix,tongue,[(k*3+j,k*3+j+1,(k+1)*3+j+1,(k+1)*3+j) for k in range(8) for j in range(2)],shoe_fabric,True)
     for k in range(4):
-        yy=.045+k*.018
-        tube('Character | shoe lace'+suffix,[shoe_top(-.028+i*.056/12,yy+.006*math.sin(i*math.pi/12),.004) for i in range(13)],.0017,sole)
+        yy=.035+k*.020
+        for diagonal in (-1,1):
+            tube('Character | shoe lace'+suffix,[shoe_top(-.028+i*.056/16,yy+diagonal*(i/16-.5)*.018,.004) for i in range(17)],.0013,sole)
+        for sign in (-1,1):
+            tube('Character | shoe lace eyelet'+suffix,[shoe_top(sign*.030+.003*math.cos(a*math.tau/16),yy+.003*math.sin(a*math.tau/16),.002) for a in range(17)],.00055,zipper)
+    # A stitched toe panel, upper welt and small heel seam break up the
+    # otherwise featureless canvas surface at ordinary full-body distance.
+    tube('Character | shoe lace toe cap seam'+suffix,[shoe_top(-.050+i*.100/32,.119-.008*math.cos((i/32-.5)*math.pi),.0015) for i in range(33)],.00065,cotton_thread)
     for sign in (-1,1):
         tube('Character | shoe lace quarter seam'+suffix,[shoe_top(sign*.043,-.088+k*.014,.0015) for k in range(12)],.0008,cotton_thread)
     tube('Character | shoe lace heel seam'+suffix,[bodypt((side*.14-.027,legy-.110,.108)),bodypt((side*.14,legy-.115,.148)),bodypt((side*.14+.027,legy-.110,.108))],.0009,cotton_thread)

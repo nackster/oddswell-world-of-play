@@ -10,9 +10,12 @@ bpy.ops.wm.open_mainfile(filepath=str(ROOT/'OddsWell_Sundale_StreetSlice.blend')
 scene=bpy.context.scene
 bpy.context.view_layer.update()
 packed=[image for image in bpy.data.images if image.source=='FILE' and image.packed_file]
-assert len(packed)==25
+assert len(packed)==31
 assert scene.get('source_skin_uvs') and scene.get('reference_upper_body_fit')
 assert scene.get('body_refinement')
+assert scene.get('articulated_walking_pose') and scene.get('photographic_fabric_maps')
+assert scene.get('anatomical_finger_articulation')
+assert scene.get('cotton_drape_frames')==40 and 0<scene['cotton_drape_maximum_delta_m']<.12
 for obj in scene.objects:
     if obj.name.startswith('Character | anatomical '):
         uv=obj.data.uv_layers.get('MakeHuman source UV')
@@ -44,6 +47,15 @@ assert all(bpy.data.objects.get('Character | eyebrow '+str(side)) for side in (-
 depsgraph=bpy.context.evaluated_depsgraph_get()
 sole_min=min((obj.evaluated_get(depsgraph).matrix_world@v.co).z for obj in scene.objects if obj.name.startswith('Character | sneaker sole') for v in obj.evaluated_get(depsgraph).data.vertices)
 assert abs(sole_min-.051)<.0002,sole_min
+feet={}
+for side in ('left','right'):
+    obj=bpy.data.objects['Character | sneaker sole '+side].evaluated_get(depsgraph)
+    points=[obj.matrix_world@v.co for v in obj.data.vertices]
+    low=min(p.y for p in points);high=max(p.y for p in points)
+    feet[side]={'min_z':min(p.z for p in points),'heel_min_z':min(p.z for p in points if p.y<low+.035),'toe_min_z':min(p.z for p in points if p.y>high-.035)}
+assert abs(feet['right']['min_z']-.051)<.0002,'Forward stance foot is floating'
+assert abs(feet['right']['heel_min_z']-feet['right']['toe_min_z'])<.001,'Stance sole is not flat'
+assert feet['left']['heel_min_z']>feet['left']['toe_min_z']+.04,'Trailing heel is not raised'
 def assert_connected(obj):
     adj=[set() for _ in obj.data.vertices]
     for edge in obj.data.edges:
@@ -95,7 +107,7 @@ for side in ('left','right'):
     bm.free()
     upper=BVHTree.FromObject(shoe,depsgraph)
     laces=[obj for obj in scene.objects if obj.name.startswith('Character | shoe lace '+side)]
-    assert len(laces)==4
+    assert len(laces)==8
     for obj in laces:
         for spline in obj.data.splines:
             for point in spline.points:
@@ -118,5 +130,28 @@ result['skin_source_uvs']=True
 result['reference_upper_body_fit']=True
 result['hand_boundary_edges_under_sleeves']=hand_openings
 result['maximum_lace_surface_distance_m']=lace_gap
+result['foot_contact']=feet
+result['cotton_drape_frames']=scene['cotton_drape_frames']
+result['cotton_drape_maximum_delta_m']=scene['cotton_drape_maximum_delta_m']
+skin_surface=BVHTree.FromObject(bpy.data.objects['Character | anatomical legs'],depsgraph)
+hair=bpy.data.objects['Character | fine calf hair']
+assert len(hair.data.splines)==scene['calf_hair_strands']==2600
+for strand in list(hair.data.splines)[::50]:
+    root=Vector(strand.points[0].co[:3])
+    hit,normal,_,distance=skin_surface.find_nearest(root)
+    assert distance<.0003 and (root-hit).dot(normal)>0,'Detached or buried body hair root'
+result['calf_hair_strands']=len(hair.data.splines)
+result['anatomical_finger_articulation']=True
+garment_surface=BVHTree.FromObject(pants[0],depsgraph)
+for seam in (o for o in scene.objects if o.name.startswith('Character | back pocket seam')):
+    for point in seam.data.splines[0].points:
+        hit,normal,_,distance=garment_surface.find_nearest(Vector(point.co[:3]))
+        assert distance<.003,'Detached pocket stitch'
+clearance=[]
+for vertex in pants[0].evaluated_get(depsgraph).data.vertices:
+    hit,normal,_,distance=skin_surface.find_nearest(vertex.co)
+    if distance is not None and distance<.025 and vertex.co.z<.76:clearance.append((vertex.co-hit).dot(normal))
+assert clearance and min(clearance)>-.0015,('Cloth intersects exposed thigh',min(clearance))
+result['minimum_cloth_thigh_clearance_m']=min(clearance)
 if '--draft' not in sys.argv:(ROOT/'cold-reopen.json').write_text(json.dumps(result,indent=2)+'\n',encoding='utf-8')
 print('ODDSWELL_STREET_SLICE_COLD_CHECK_PASS',json.dumps(result))
