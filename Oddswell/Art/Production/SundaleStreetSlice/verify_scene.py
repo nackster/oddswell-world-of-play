@@ -149,7 +149,32 @@ coat=bpy.data.objects['Character | tailored slate jacket']
 assert_connected(coat)
 assert scene.get('jacket_drape_frames')==45 and 0<scene['jacket_drape_maximum_delta_m']<.13
 assert len(coat.data.vertices)==scene['jacket_drape_controls']
-assert all(coat.data.attributes.get(name) for name in ('Tailored rest','Gravity result'))
+assert all(coat.data.attributes.get(name) for name in ('Tailored rest','Collision fit','Gravity result'))
+assert scene.get('anatomical_jacket_support') and scene['jacket_fabric_ease']==0
+support=bpy.data.objects['Character | internal torso support']
+assert support.hide_render and support.hide_get(),'Internal support became visible'
+assert support.get('source')=='source-assets/makehuman-base.obj'
+assert support.get('body_target')=='caucasian-male-young.target'
+bm=bmesh.new();bm.from_mesh(support.data)
+assert all(e.is_manifold for e in bm.edges) and bm.calc_volume(signed=True)>0,'Broken anatomical collision support'
+bm.free()
+pin=coat.vertex_groups['Collar zipper hem and cuff attachments']
+weights=[next((g.weight for g in v.groups if g.group==pin.index),0) for v in coat.data.vertices]
+fit=coat.data.attributes['Collision fit'].data
+pinned_motion=max((v.co-r.vector).length for v,r,w in zip(coat.data.vertices,fit,weights) if w>.999)
+assert pinned_motion<.000001,'Displacement filtering moved fixed jacket attachments'
+raw_delta=max((v.vector-r.vector).length for v,r in zip(coat.data.attributes['Gravity result'].data,fit))
+assert abs(raw_delta-scene['jacket_drape_maximum_delta_m'])<.000001
+support.hide_set(False);bpy.context.view_layer.update()
+support_surface=BVHTree.FromObject(support,bpy.context.evaluated_depsgraph_get())
+free_clearances=[]
+for v,w in zip(coat.data.vertices,weights):
+    if w>=.80:continue
+    hit,normal,_,distance=support_surface.find_nearest(v.co)
+    free_clearances.append((v.co-hit).dot(normal))
+support.hide_set(True);bpy.context.view_layer.update()
+assert min(free_clearances)>.001,'Free jacket controls penetrate anatomical support'
+
 bm=bmesh.new();bm.from_mesh(coat.data)
 assert all(edge.is_manifold for edge in bm.edges) and bm.calc_volume(signed=True)>0,'Broken jacket drape surface'
 bm.free()
@@ -284,6 +309,9 @@ result['jacket_drape_frames']=scene['jacket_drape_frames']
 result['jacket_drape_controls']=scene['jacket_drape_controls']
 result['jacket_drape_maximum_delta_m']=scene['jacket_drape_maximum_delta_m']
 result['jacket_fabric_ease']=scene['jacket_fabric_ease']
+result['anatomical_jacket_support_vertices']=len(support.data.vertices)
+result['maximum_fixed_jacket_attachment_motion_m']=pinned_motion
+result['minimum_free_jacket_control_clearance_m']=min(free_clearances)
 result['maximum_raglan_surface_distance_m']=maximum_raglan_gap
 result['minimum_fastening_surface_clearance_m']=minimum_fastening_gap
 result['stitched_yoke_panels']=len(panels)

@@ -1,12 +1,70 @@
-"""Native jacket drape with fixed trim attachments and a fitting envelope.
+"""Native jacket drape with fixed attachments and source-derived body support.
 
 The retained result is a static garment study, not gameplay cloth. Original
 tailoring and raw simulated positions remain editable point attributes.
 """
 import bpy
 import bmesh
-from mathutils import Vector
+from pathlib import Path
+from mathutils import Vector, Matrix
 from mathutils.bvhtree import BVHTree
+
+def jacket_anatomy(root,coat):
+    vertices=[];faces=[];joints={};group=''
+    for line in (Path(root)/'source-assets/makehuman-base.obj').read_text(encoding='utf-8').splitlines():
+        a=line.split()
+        if not a:continue
+        if a[0]=='v':vertices.append(Vector(tuple(map(float,a[1:4]))))
+        elif a[0]=='g':group=a[1]
+        elif a[0]=='f':
+            ids=[int(x.split('/')[0])-1 for x in a[1:]]
+            if group=='body':faces.append(ids)
+            if group.startswith('joint-'):joints.setdefault(group,set()).update(ids)
+    for line in (Path(root)/'source-assets/facial-targets/caucasian-male-young.target').read_text(encoding='utf-8').splitlines():
+        a=line.split()
+        if a and not a[0].startswith('#'):vertices[int(a[0])]+=Vector(tuple(map(float,a[1:4])))
+    used={i for f in faces for i in f};low=min(vertices[i].y for i in used);scale=1.8/(max(vertices[i].y for i in used)-low)
+    vertices=[Vector((p.x*scale,p.z*scale,(p.y-low)*scale)) for p in vertices]
+    def joint(n):return sum((vertices[i] for i in joints[n]),Vector())/len(joints[n])
+    def smooth(t):
+        t=max(0,min(1,t));return t*t*(3-2*t)
+    bones={}
+    for side,label in ((1,'l'),(-1,'r')):
+        a,b,c=[joint('joint-'+label+'-'+n) for n in ('shoulder','elbow','hand')]
+        A=Vector((side*.18,.006,1.414));B=Vector((side*.311,-.052,1.15));C=Vector((side*.35,-.015,.90))
+        bones[side]=(a,b,c,A,B,C,(b-a).rotation_difference(B-A),(c-b).rotation_difference(C-B))
+    posed=[]
+    for p in vertices:
+        side=1 if p.x>0 else -1;a,b,c,A,B,C,upper,lower=bones[side]
+        arm=smooth((abs(p.x)-(.155+max(0,1.34-p.z)*.45))/.085)
+        elbow=smooth(((p-b).dot((c-a).normalized())+.035)/.070)
+        q=(A+upper@(p-a)).lerp(B+lower@(p-b),elbow)
+        q.x-=side*.047*smooth((1.18-q.z)/.25)
+        pivot=Vector((side*.23,0,1.405));bend=max(0,min(1,(1.20-q.z)/.13))
+        q=B+Matrix.Rotation(.12*bend,3,'X')@(q-B)
+        q=pivot+Matrix.Rotation(-side*.16,3,'X')@(q-pivot)
+        p=p.lerp(q,arm)
+        p.z-=.04*(1-arm)*smooth((p.z-1.15)/.30)
+        chest=smooth((p.z-.98)/.22);armwidth=max(0,min(1,(abs(p.x)-.21)/.07))
+        p.x*=1-.085*max(chest,armwidth)
+        posed.append(p+Vector((-.75,-2.4,.06)))
+    selected=[]
+    for f in faces:
+        if not all(.85<vertices[i].z<1.54 for i in f):continue
+        if any((vertices[i]-bones[1 if vertices[i].x>0 else -1][2]).dot((bones[1 if vertices[i].x>0 else -1][2]-bones[1 if vertices[i].x>0 else -1][1]).normalized())>-.015 and abs(vertices[i].x)>.40 for i in f):continue
+        selected.append(f)
+    ids=sorted({i for f in selected for i in f});mapping={v:i for i,v in enumerate(ids)}
+    mesh=bpy.data.meshes.new('Posed source torso and arms');mesh.from_pydata([posed[i] for i in ids],[],[[mapping[i] for i in f] for f in selected]);mesh.update()
+    bm=bmesh.new();bm.from_mesh(mesh);bmesh.ops.holes_fill(bm,edges=[e for e in bm.edges if e.is_boundary],sides=0);bmesh.ops.recalc_face_normals(bm,faces=list(bm.faces));bm.to_mesh(mesh);bm.free()
+    obj=bpy.data.objects.new('Character | internal torso support',mesh);bpy.context.scene.collection.objects.link(obj);obj.matrix_world=coat.matrix_world.copy()
+    bpy.context.view_layer.objects.active=obj
+    remesh=obj.modifiers.new('Continuous anatomical support','REMESH');remesh.mode='VOXEL';remesh.voxel_size=.008
+    bpy.ops.object.modifier_apply(modifier=remesh.name)
+    smoothmod=obj.modifiers.new('Relax posed joint transitions','SMOOTH');smoothmod.factor=.5;smoothmod.iterations=4;bpy.ops.object.modifier_apply(modifier=smoothmod.name)
+    sub=obj.modifiers.new('Smooth anatomical contact','SUBSURF');sub.levels=2
+    obj.hide_render=True;obj.display_type='WIRE';obj['source']='source-assets/makehuman-base.obj';obj['body_target']='caucasian-male-young.target';obj['purpose']='Internal cloth collision only; not a gameplay body'
+    obj.modifiers.new('Anatomical cloth contact','COLLISION');obj.collision.thickness_outer=.002
+    return obj
 
 def fit_jacket_fastening():
     scene=bpy.context.scene;bpy.context.view_layer.update()
@@ -45,6 +103,10 @@ def fit_jacket_seams():
             panel['conformed_panel']=True
         wrap=panel.modifiers.new('Sewn against jacket cloth','SHRINKWRAP');wrap.target=coat;wrap.wrap_method='NEAREST_SURFACEPOINT';wrap.offset=.00035
         bpy.ops.object.modifier_apply(modifier=wrap.name)
+        # Nearest-surface wrap can retain the underside sign after a new drape.
+        for vertex in panel.data.vertices:
+            hit,normal,_,distance=surface.find_nearest(vertex.co)
+            vertex.co=hit+normal*.00035
         data=bpy.data.curves.new('Character | yoke boundary stitches','CURVE')
         data.dimensions='3D';data.bevel_depth=.00018;data.bevel_resolution=2
         bm=bmesh.new();bm.from_mesh(panel.data)
@@ -125,49 +187,55 @@ def settle_jacket():
     smooth=coat.modifiers.new('Relax control grid','SMOOTH');smooth.factor=.6;smooth.iterations=3
     bpy.ops.object.modifier_apply(modifier=smooth.name)
     rest=[v.co.copy() for v in coat.data.vertices]
-    body=coat.copy();body.data=coat.data.copy();scene.collection.objects.link(body)
-    body.name='STUDY | under-jacket fitting envelope'
-    bpy.context.view_layer.objects.active=body
-    for v in body.data.vertices:v.co-=v.normal*.019
-    smooth=body.modifiers.new('Round fitting envelope','SMOOTH');smooth.factor=.8;smooth.iterations=12
-    bpy.ops.object.modifier_apply(modifier=smooth.name)
-    body.modifiers.new('Drape contact','COLLISION');body.collision.thickness_outer=.003
+    body=jacket_anatomy(Path(__file__).resolve().parent,coat)
+    bpy.context.view_layer.update()
+    support=BVHTree.FromObject(body,bpy.context.evaluated_depsgraph_get())
     pin=coat.vertex_groups.new(name='Collar zipper hem and cuff attachments')
     origin=Vector((-.75,-2.4,.06))
     for v in coat.data.vertices:
         p=v.co-origin
         neck=max(0,min(1,(p.z-1.442)/.020))
-        hem=max(0,min(1,(.972-p.z)/.027)) if abs(p.x)<.23 else 0
+        hem=max(0,min(1,(1.02-p.z)/.03)) if abs(p.x)<.23 else 0
         cuff=max(0,min(1,(.973-p.z)/.025)) if abs(p.x)>.235 else 0
         zipper=max(0,1-abs(p.x)/.013) if p.y>.06 else 0
         weight=max(neck,hem,cuff,zipper)
         if weight:pin.add([v.index],weight,'REPLACE')
+    weights=[next((g.weight for g in v.groups if g.group==pin.index),0) for v in coat.data.vertices]
+    # Fixed caps at the collar/hem/cuffs stay in place; fit only free cloth.
+    for v,w in zip(coat.data.vertices,weights):
+        hit,normal,_,distance=support.find_nearest(v.co)
+        if w<.80 and (v.co-hit).dot(normal)<.006:v.co=hit+normal*.006
+    fitted=[v.co.copy() for v in coat.data.vertices]
     bpy.context.view_layer.objects.active=coat
     cloth=coat.modifiers.new('Jacket gravity and fabric ease','CLOTH')
-    s=cloth.settings;s.quality=6;s.mass=.22;s.air_damping=5
-    s.tension_stiffness=32;s.compression_stiffness=25;s.shear_stiffness=12;s.bending_stiffness=5
-    s.vertex_group_mass=pin.name;s.pin_stiffness=1;s.shrink_min=-.04
+    s=cloth.settings;s.quality=8;s.mass=.22;s.air_damping=5
+    s.tension_stiffness=32;s.compression_stiffness=25;s.shear_stiffness=12;s.bending_stiffness=2.5
+    s.vertex_group_mass=pin.name;s.pin_stiffness=1;s.shrink_min=0
     c=cloth.collision_settings;c.use_collision=True;c.distance_min=.003
-    c.use_self_collision=True;c.self_distance_min=.003;c.collision_quality=3
+    c.use_self_collision=True;c.self_distance_min=.003;c.collision_quality=4
     cloth.point_cache.frame_start=1;cloth.point_cache.frame_end=45
     for frame in range(1,46):scene.frame_set(frame);bpy.context.view_layer.update()
     bpy.ops.object.modifier_apply(modifier=cloth.name)
     simulated=[v.co.copy() for v in coat.data.vertices]
-    maximum_delta=max((v-r).length for v,r in zip(simulated,rest))
+    maximum_delta=max((v-r).length for v,r in zip(simulated,fitted))
     assert 0<maximum_delta<.13,'Unstable jacket study'
-    for label,values in (('Tailored rest',rest),('Gravity result',simulated)):
+    for label,values in (('Tailored rest',rest),('Collision fit',fitted),('Gravity result',simulated)):
         attribute=coat.data.attributes.new(label,'FLOAT_VECTOR','POINT')
         for datum,position in zip(attribute.data,values):datum.vector=position
     # Filter displacement, preserving the original shaped folds and volume.
     # Smoothing the entire mesh would shrink the cuffs and shoulder silhouette.
-    delta=[v-r for v,r in zip(simulated,rest)]
+    delta=[v-r for v,r in zip(simulated,fitted)]
     neighbors=[[] for _ in rest]
     for edge in coat.data.edges:
         a,b=edge.vertices;neighbors[a].append(b);neighbors[b].append(a)
-    for _ in range(6):
-        delta=[d.lerp(sum((delta[j] for j in ns),Vector())/len(ns),.65) if ns else d for d,ns in zip(delta,neighbors)]
-    for v,r,d in zip(coat.data.vertices,rest,delta):v.co=r+d*.85
-    bpy.data.objects.remove(body,do_unlink=True)
+    for _ in range(7):
+        delta=[d.lerp(sum((delta[j] for j in ns),Vector())/len(ns),.55) if ns else d for d,ns in zip(delta,neighbors)]
+    # Filtering must not move pinned trim through neighboring free-cloth motion.
+    for v,r,d,w in zip(coat.data.vertices,fitted,delta,weights):
+        v.co=r+d*.95*(1-w)
+        hit,normal,_,distance=support.find_nearest(v.co)
+        if w<.80 and (v.co-hit).dot(normal)<.006:v.co=hit+normal*.006
+    body.hide_set(True)
     coat.modifiers.new('Smooth garment surface','SUBSURF').levels=1
     bpy.context.view_layer.update()
     surface=BVHTree.FromObject(coat,bpy.context.evaluated_depsgraph_get())
@@ -177,12 +245,14 @@ def settle_jacket():
         for p in points:
             hit,normal,_,distance=surface.find_nearest(Vector(p.co[:3]))
             assert hit is not None and distance<.08,'Jacket detail lost during drape'
-            p.co=hit+normal*.0015 if obj.type=='MESH' else (*(hit+normal*.0015),1)
+            offset=.0006 if 'front welt pocket' in obj.name else .0015
+            p.co=hit+normal*offset if obj.type=='MESH' else (*(hit+normal*offset),1)
     fit_jacket_seams()
     scene['jacket_drape_frames']=45
     scene['jacket_drape_controls']=len(rest)
     scene['jacket_drape_maximum_delta_m']=maximum_delta
-    scene['jacket_fabric_ease']=.04
+    scene['jacket_fabric_ease']=0
+    scene['anatomical_jacket_support']=True
     scene.frame_set(1)
     fit_jacket_fastening()
     print('ODDSWELL_JACKET_DRAPE_PASS',len(rest),maximum_delta,flush=True)
