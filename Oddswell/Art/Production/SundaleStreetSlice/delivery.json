@@ -1,13 +1,13 @@
 {
   "request": "Complete the new very realistic human goal, then continue the scene roadmap",
   "goal_status": "active",
-  "delivery": "Editable native Blender scene and eight native renders; offline art study",
+  "delivery": "Editable native Blender scene and ten native renders; offline art study",
   "starting_checkpoint": "76ccb76",
-  "previous_checkpoint": "3786385",
+  "previous_checkpoint": "0fb8d78",
   "evidence": {
     "source": "Native scene/garments/plant geometry, CC0 MakeHuman anatomical surfaces, six CC0 Poly Haven stone/bark texture maps and one CC0 photographed sky environment; adapted CC0 Jacaranda model with ten packed 2K maps",
     "reference": "../../Reviews/OddsWellStreetIdentityCandidate/OddsWell_Visual_Direction_Concept.png",
-    "objects": 4721,
+    "objects": 4733,
     "meshes": 3230,
     "materials": 64,
     "packed_texture_maps": 31,
@@ -32,7 +32,9 @@
       "Landscape_Detail",
       "Character_ThreeQuarter",
       "Head_Front",
-      "Head_Profile"
+      "Head_Profile",
+      "Hand_Left",
+      "Hand_Right"
     ],
     "additional_view_resolutions": {
       "Court_and_Arena": [
@@ -62,6 +64,14 @@
       "Head_Profile": [
         1000,
         1100
+      ],
+      "Hand_Left": [
+        1000,
+        1000
+      ],
+      "Hand_Right": [
+        1000,
+        1000
       ]
     },
     "additional_view_samples": 96,
@@ -76,12 +86,13 @@
     "cloth": "40-frame native cotton drape study blended with tailoring; retained CC0 fabric maps and articulated hip/knee/ankle pose",
     "canopy": "Raised Jacaranda branching with adapted CC0 Island Tree 01 broad-leaf clusters; same leaf family in foreground shrubs",
     "eye_optics": "Paired closed eyeballs with transparent corneal zones over recessed iris/pupil surfaces, adjusted pigment and lower wet eyelid margins",
-    "skin_relief": "Finer procedural relief and reduced subsurface scale over unchanged CC0 source color maps"
+    "skin_relief": "Finer procedural relief and reduced subsurface scale over unchanged CC0 source color maps",
+    "hand_surfaces": "Retained anatomical coordinates and editable hand relief shape keys; knuckle/tendon/palm definition and ten fitted keratin nail plates"
   },
   "cold_reopen": {
     "result": "PASS",
     "packed_texture_maps": 31,
-    "cameras": 8,
+    "cameras": 10,
     "court_paint_max_thickness_m": 0.00048000007518567145,
     "collar_stray_faces": 0,
     "head_boundary_edges": 0,
@@ -90,8 +101,8 @@
     "jacket_surface_components": 1,
     "mature_tree_instances": 13,
     "shared_tree_meshes": 3,
-    "mesh_objects": 4050,
-    "native_scene_objects": 4721,
+    "mesh_objects": 4060,
+    "native_scene_objects": 4733,
     "runtime_claim": false,
     "shorts_boundary_edges": 240,
     "shorts_openings": 3,
@@ -99,8 +110,8 @@
     "skin_source_uvs": true,
     "reference_upper_body_fit": true,
     "hand_boundary_edges_under_sleeves": {
-      "left hand": 20,
-      "right hand": 20
+      "left hand": 80,
+      "right hand": 80
     },
     "maximum_lace_surface_distance_m": 0.0066000609658658504,
     "foot_contact": {
@@ -139,55 +150,68 @@
     "minimum_cloth_thigh_clearance_m": 0.0034853005781769753,
     "minimum_pigment_cornea_clearance_m": 0.0003012996166944504,
     "optical_cornea_surfaces": 2,
-    "lower_wet_eyelid_margins": 2
+    "lower_wet_eyelid_margins": 2,
+    "fitted_nail_plates": 10,
+    "minimum_nail_surface_clearance_m": 0.0001403681770852927,
+    "maximum_hand_relief_m": 0.0007995802431273227
   },
   "renders": {
     "StreetSlice_Gameplay.png": {
       "width": 1920,
       "height": 1080,
-      "sha256": "482f78075c7a1a56e6688d04dfb7fdf8a676c77481f5dd7d4f4430622df756c2"
+      "sha256": "e4b67c4f6cf92887c703bc08dec9af414ff19c4b972798a56a89527680070002"
     },
     "StreetSlice_Court_and_Arena.png": {
       "width": 1600,
       "height": 900,
-      "sha256": "06f96bdf25e65d897f8c58457010e4529203998cf136a883cba1769e12ed1eba"
+      "sha256": "e0a00837ba9e6355ceed30b029c7b2af3efadd69a7f451351147bafa1cfda538"
     },
     "StreetSlice_Architecture_Detail.png": {
       "width": 1600,
       "height": 900,
-      "sha256": "5ca47d2aa69cb7626cb1e6ead444b55e89816bfe7d1abc4e74dbfdd8a3524e23"
+      "sha256": "692c493699a441da4f5e7dd664f8cf25557ecea148c1b1cc5626c314e461403e"
     },
     "StreetSlice_Character_Detail.png": {
       "width": 1000,
       "height": 1100,
-      "sha256": "3c38af19efcf474977c2e9f81c60b54f377df2aa2c7a9c0e4259666a36ccc915"
+      "sha256": "2ef039ce6abf1d4cd7553cd2cf8231465b39a7d80a2792326d67d7ba867b91d4"
     },
     "StreetSlice_Landscape_Detail.png": {
       "width": 1000,
       "height": 1100,
-      "sha256": "a2c5714cdb9309eab510e1fdb3f779cb2ef676b87cb48926e7c84691aaa38ee9"
+      "sha256": "0d42f89e094e775c34f67e48ab811e8db32b824c94206667cddd4bfdb474bd60"
     },
     "StreetSlice_Character_ThreeQuarter.png": {
       "width": 1000,
       "height": 1100,
-      "sha256": "3c166774aa75d64f630f7c2e7745114dfca3b68f6023a12f76b567b14f42ba5c"
+      "sha256": "d81677a25a9890beba0f6c111f9e6cdd583eb44114aaf380d538dc4a3e4297fd"
     },
     "StreetSlice_Head_Front.png": {
       "width": 1000,
       "height": 1100,
-      "sha256": "6f3c4017c5896388388eaae5b4f095c79464c9b9760495db3bd0066be172a5d9"
+      "sha256": "151532d429fabdd5ce8b24453c165d9dbd9b71520bf32617166ba684684ad0ff"
     },
     "StreetSlice_Head_Profile.png": {
       "width": 1000,
       "height": 1100,
-      "sha256": "fcc53010cb2d743c43078b24a18f1bc23379b0bd9244b774dd6b8e4724157aa2"
+      "sha256": "4f9190da1f9ab14db7a580e8fe41b0592a2da8357e563be62af6408b37e3725a"
+    },
+    "StreetSlice_Hand_Left.png": {
+      "width": 1000,
+      "height": 1000,
+      "sha256": "6ed76af6e20fd262bcefd91ffe177892cae16e738e42fa9648b3796258dac024"
+    },
+    "StreetSlice_Hand_Right.png": {
+      "width": 1000,
+      "height": 1000,
+      "sha256": "560c2e0899aa3bacd9f5536047896c70735547673ee4df33a72be7e515fc581e"
     }
   },
   "files_sha256": {
     "broadleaf_canopy.py": "f737b396c7c2e02415d6c6d7b9b21727a3ac450038e265a362c1a0263d3e9b3b",
-    "build_scene.py": "b3d34b532813862b1e4eaef1cdf91b796c3b392b96940838baf4be533d15ec71",
+    "build_scene.py": "75bfa9cb22ebf72b81823304d4c88b4ab8dbce9090baf9ee59584eb790b0cd16",
     "develop_character_landscape.py": "b41593dd4d05ec066de289fb36556d1b150bf4f7d45d93ed81ce535117d3fe55",
-    "DevelopmentGoal.md": "8d9cffa5125b2eda582d52347d8b2f8bf04461f31338d9c4c35a2dbd612ff9bd",
+    "DevelopmentGoal.md": "1d462558cf9f6c94d4350222919a86e45b34fc1d6d0accd215c23f3f3d7b13e5",
     "fetch_broadleaf.py": "2b42dbc1c9b7a041008006ffb0f9a025927b3d3a8fbafbaf9508de9f5aabf399",
     "fetch_fabrics.py": "1108de70f7d2e1b2c271c476a4c46813b34f99911ed73a400cca163b0283de34",
     "fetch_face_targets.py": "8081323ae2dee00e4ef3a0535059130410959d4e10aed8af46879dc677fd0d36",
@@ -197,16 +221,17 @@
     "fetch_tree.py": "543452c80b83a56aad4062620b1adfc2677d6c0a2bdef8c7f87b74333fb409da",
     "inspect_details.py": "4389f327017cf2c03acc55831e1d1c7dd9ca17d2b02f0217747785dee12d77f1",
     "mature_trees.py": "9300020af31be8cbb731c4378668fd3a18c89cdbb026cae0a263ce2741a63f7a",
-    "OddsWell_Sundale_StreetSlice.blend": "edad408c62c69be7d48e5c0fd24c5d0ec4a5611c95dd9e979b807ac245dc775d",
-    "README.md": "817cbd21c7a65bb4b8c4065ff6e89f15ec164db8b3c52c3dc070ad60761c06c6",
-    "record_delivery.py": "06b808d95cf3b85365c755ac7d5bec870608a2b499831eb4fc05f6a26fa2b53c",
+    "OddsWell_Sundale_StreetSlice.blend": "c62a162a698551d2b292ddafddd1c1974b57debb681f97487f4a46e7d8a1d6c3",
+    "README.md": "c76c820da064001264eb543627fd9c7fa18357fb5270e67e5df3b519012e4aaa",
+    "record_delivery.py": "5739a6d1e8ed9fe8bd96137e0d73b881c46bb1848c65fef03a6390c259d215f0",
     "refine_character_head.py": "998376234895963b794b29a302866683b2cdc1c19623c15ea7194e04619accb5",
     "refine_eye_margins.py": "62ddc518d25d6f171558bd44cdc2f4c3fb9b8f04ca6bf23f739678abd48aae62",
     "refine_eye_optics.py": "72302f16ca51cabf5215b94a57c30763bd54f135a08c0f21a923d5a46e7ab9e3",
     "refine_fabrics.py": "be6d2403f31f1736235d2e1d97921d045260b41f4507d1395ed9b5585c8f57fa",
+    "refine_hands.py": "188759473b197cfc9b7a835f43990cd97c1b7713c1f1bdc132d89b93e0344734",
     "refine_minerals.py": "a3bc6d0647e83058d89afdaecf5d23c508b2b17ec12731438efdb74e515cc932",
-    "render_views.py": "92a8481a25d6e5cb86979f3ae220a31d48f082b8a5fcba6748c486a8c697c5ea",
-    "ResumeTomorrow.md": "54eca9bb8487c9e74504c0a6b03b680958c7f1db84075774bb6ded5fc182725f",
+    "render_views.py": "9d9e35011e3e136ac0cc699ef3f239bf06ee92690d603726297ecbcba1a99690",
+    "ResumeTomorrow.md": "72e6861e8310342b0e1463acc03ce80b89024a6679b0acabceafed870d6ec8b4",
     "settle_cotton.py": "6b6ba615a4adba5145266174bc31cf5ea23318c1857a962fa766c0c94648e68d",
     "settle_jacket.py": "61f44621c867b5ca47237f29b2f70c559340b4a859e68350aec4f8f2f7282770",
     "source-assets/facial-targets/head-age-incr.target": "ff677345bd81e3f439bdf75496bbee620ca3c3f029955a546837afd283abf73a",
@@ -238,8 +263,8 @@
     "textures/sandstone_blocks_08_diff_4k.jpg": "d1a39585a84abe779ca252fe269b880837e6dd3805298d5b470f75c90afe5293",
     "textures/sandstone_blocks_08_disp_4k.jpg": "3db51669487d6312bfa52621783ab308ebca3ddbd23b061e220cee69847a768c",
     "textures/sandstone_blocks_08_rough_4k.jpg": "e395bdfea1536ddf3a8c97e51b0861270dc75dea722b22633b1cebd4c31ec63a",
-    "verify_scene.py": "edff3a70542020b9864e43f9031824ad0d16de84c85743aa8584f6cf044113d1",
-    "VisualReview.md": "7b7128bd5e278a3510317964574a0165c5bdf1b4340abed5b61ed7df69dc42e6",
+    "verify_scene.py": "5bfc2859b1a62e96dbf49ce4cc80d0e12d92763dbedb6b149af1e64447251fde",
+    "VisualReview.md": "2a3374c5c09cd8a2c1e1582d962e2894959962b36cf2f4498772aa7b67d3c11e",
     "textures/broadleaf/island_tree_01_branches_diff_2k.png": "fcfaaa1262cb8f31327ca084e6f8d69cda0b6af0d1f065a68c5a47b906ec02ff",
     "textures/broadleaf/island_tree_01_branches_nor_gl_2k.png": "2ee3ff83fdf8f01cd9d26d5c4665b866bf69f2557e02582577f23d6d007f9c78",
     "textures/broadleaf/island_tree_01_branches_rough_2k.png": "e6d3c688b07dea15344672516433d7ba681727f5149c8be446dc1a5bbed9afdc",
@@ -256,8 +281,8 @@
     "source-assets/facial-targets.json": "98e709248c904bdb5c214cb4e4d006f6f4ec7363af55a59ec528032a8d72c8fc"
   },
   "render_log": {
-    "path": "C:\\Users\\reali\\Documents\\SaaS\\Oddswell\\client\\OddsWell\\Saved\\NextTen20260912\\optical-final-views.log",
-    "sha256": "9eef73ee15b915eea065dc9551e806ece8d7eb4489276242cdbbd03b031d199c"
+    "path": "C:\\Users\\reali\\Documents\\SaaS\\Oddswell\\client\\OddsWell\\Saved\\NextTen20260912\\hand-surface-final-views.log",
+    "sha256": "7be1b044cd523b801f46948d0c87a10e3ae7e0a4bc8e796f7783b70ebd3dccd6"
   },
   "preview_iterations": [
     {
@@ -545,10 +570,31 @@
       "sha256": "7e00412a98bdb32152b274181a9efa8315307e18e529db0a1fcd908fe6ada9ec"
     }
   ],
+  "hand_studies": [
+    {
+      "log": "hand-surface-study1.log",
+      "sha256": "0ec7a4d57d2778a2c89e027b821f406c3c386fbf025b3c2ecc1f8e80d5bada9d"
+    },
+    {
+      "log": "hand-surface-study2.log",
+      "sha256": "7e4456fbd77120be1df54a0336bad9a51b142be805890499d46e66ce159e2c09"
+    },
+    {
+      "log": "hand-surface-study3.log",
+      "sha256": "632964d6d24dff552089bfe1e4fcff61619a72b7658ee9f35783de946705658c"
+    }
+  ],
   "original_source_bytes_preserved": true,
   "runtime_map_modified": false,
   "runtime_character_modified": false,
-  "visual_review": "Continuing from `3786385`, the eyes now have a continuous closed surface with transparent corneal zones over recessed iris bowls and pupil surfaces. Native comparisons led to smaller pupils and brighter iris pigment after the first refractive study looked too dark. Two fine lower eyelid margins follow the visible skin/eye boundary. Skin relief is finer and its subsurface scale is reduced over the unchanged source color map.",
-  "body_detail_review": "The first optical study made the pupils appear too large and dark. The retained revision reduces their geometric radius and lifts the iris pigment while keeping the actual corneal reflection. A saved-scene check exposed duplicate pole vertices from a tolerance below useful world-coordinate precision; welding at one micrometer closes both eye surfaces. The verifier now traces every iris/pupil vertex toward the front eye surface and requires a transparent hit with positive clearance. These checks establish construction, not lifelike appearance.",
-  "remaining": "The full human-realism goal remains active. The face still feels generic and the skin too uniform; the existing hand close-ups still show soft knuckles and insufficient tendon/nail detail. Next develop hand surface anatomy and facial individuality, continue judging garment fold quality, and review the whole figure against the original concept. Architectural/retail variety and planting realism follow human acceptance. This is an editable native Blender study, not a runtime update or final-art approval."
+  "visual_review": "Continuing from `0fb8d78`, both hands retain unposed anatomical coordinates and joint landmarks. A separate editable shape key adds restrained knuckle, extensor-tendon and palm-crease relief while preserving the posed base surface. Ten curved nail plates are fitted through the source-to-posed surface correspondence, with fine thickness, keratin shading and a subtle free-edge tint. Permanent left/right hand inspection cameras expand the native review set to ten views.",
+  "body_detail_review": "The first thumb footprint missed the tapered source surface. Adaptive fitting then exposed rough thumbnail edges in underside renders, so the retained revision stays on facing surface regions, uses denser plate samples and greater surface clearance. Front and palm studies were reviewed on both hands. The verifier checks the connected hand surfaces, retained shape keys, ten individually identified plates, every nail vertex and face center against the posed skin, and closed outward nail thickness. The retained maximum hand relief is about 0.80 mm and minimum sampled nail clearance about 0.14 mm. Passing these checks does not establish human realism.",
+  "remaining": "The full realism goal remains active. The hands have more definition but still need finer skin/cuticle quality; the face remains generic, and the jacket folds remain too soft in places. Next develop facial individuality and broader skin variation, then reassess the whole character and garment folds against the original reference. Architecture/retail variety and planting realism follow human acceptance. This remains an editable offline Blender study, with static fitted nails rather than an animation rig or runtime update.",
+  "hand_basis_check": {
+    "log": "hand-surface-basis-check.log",
+    "sha256": "42cbd3507b85b75a84601ad4f441d217508f79b4edc9589c372ac8902dd8fe9b",
+    "compared_checkpoint": "0fb8d78",
+    "vertices_per_hand": 26569,
+    "maximum_world_position_difference_m": 0.0
+  }
 }

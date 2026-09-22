@@ -1,7 +1,7 @@
 {
   "result": "PASS",
   "packed_texture_maps": 31,
-  "cameras": 8,
+  "cameras": 10,
   "court_paint_max_thickness_m": 0.00048000007518567145,
   "collar_stray_faces": 0,
   "head_boundary_edges": 0,
@@ -10,8 +10,8 @@
   "jacket_surface_components": 1,
   "mature_tree_instances": 13,
   "shared_tree_meshes": 3,
-  "mesh_objects": 4050,
-  "native_scene_objects": 4721,
+  "mesh_objects": 4060,
+  "native_scene_objects": 4733,
   "runtime_claim": false,
   "shorts_boundary_edges": 240,
   "shorts_openings": 3,
@@ -19,8 +19,8 @@
   "skin_source_uvs": true,
   "reference_upper_body_fit": true,
   "hand_boundary_edges_under_sleeves": {
-    "left hand": 20,
-    "right hand": 20
+    "left hand": 80,
+    "right hand": 80
   },
   "maximum_lace_surface_distance_m": 0.0066000609658658504,
   "foot_contact": {
@@ -59,5 +59,8 @@
   "minimum_cloth_thigh_clearance_m": 0.0034853005781769753,
   "minimum_pigment_cornea_clearance_m": 0.0003012996166944504,
   "optical_cornea_surfaces": 2,
-  "lower_wet_eyelid_margins": 2
+  "lower_wet_eyelid_margins": 2,
+  "fitted_nail_plates": 10,
+  "minimum_nail_surface_clearance_m": 0.0001403681770852927,
+  "maximum_hand_relief_m": 0.0007995802431273227
 }

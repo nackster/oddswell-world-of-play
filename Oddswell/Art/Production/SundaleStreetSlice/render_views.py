@@ -1,4 +1,4 @@
-"""Reopen and validate the scene; render gameplay and seven inspection views."""
+"""Reopen and validate the scene; render gameplay and nine inspection views."""
 import bpy
 import json
 import sys
@@ -54,6 +54,11 @@ views=[
     ('Head_Front',(-.75,-1.15,1.74),(-.75,-2.36,1.69),75,1000,1100),
     ('Head_Profile',(.40,-2.30,1.73),(-.75,-2.36,1.69),75,1000,1100),
 ]
+for side,offset in (('left',(.26,.43,.03)),('right',(-.26,.43,.03))):
+    hand=bpy.data.objects['Character | anatomical '+side+' hand'].evaluated_get(bpy.context.evaluated_depsgraph_get())
+    points=[hand.matrix_world@v.co for v in hand.data.vertices]
+    target=Vector(tuple((min(p[k] for p in points)+max(p[k] for p in points))/2 for k in range(3)))
+    views.append(('Hand_'+side.title(),target+Vector(offset),target,65,1000,1000))
 for name,pos,target,lens,width,height in ([] if '--main-only' in sys.argv else views):
     if selected and name!=selected:continue
     data=bpy.data.cameras.new('CAM | '+name)
@@ -86,6 +91,7 @@ evidence['body_detail']='Individual anatomical finger bends, fitted rib cuffs, c
 evidence['face_detail']='Three pinned CC0 hm08 targets applied in memory; radial iris color, directional fine brows and 96 fitted eyelash strands'
 evidence['eye_optics']='Paired closed eyeballs with transparent corneal zones over recessed iris/pupil surfaces, adjusted pigment and lower wet eyelid margins'
 evidence['skin_relief']='Finer procedural relief and reduced subsurface scale over unchanged CC0 source color maps'
+evidence['hand_surfaces']='Retained anatomical coordinates and editable hand relief shape keys; knuckle/tendon/palm definition and ten fitted keratin nail plates'
 evidence['construction']='Shaped collar and continuous zipper; relaxed forearms; recessed shoe collars, fitted tongue/lacing/bows and broad flat sole contact'
 evidence['jacket']='45-frame native gravity/fabric-ease study; filtered static geometry, retained rest/raw positions, raglan seams and actual teal-panel boundary stitching'
 evidence['jacket_drape_frames']=scene['jacket_drape_frames']

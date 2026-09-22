@@ -1,7 +1,7 @@
 {
   "source": "Native scene/garments/plant geometry, CC0 MakeHuman anatomical surfaces, six CC0 Poly Haven stone/bark texture maps and one CC0 photographed sky environment; adapted CC0 Jacaranda model with ten packed 2K maps",
   "reference": "../../Reviews/OddsWellStreetIdentityCandidate/OddsWell_Visual_Direction_Concept.png",
-  "objects": 4721,
+  "objects": 4733,
   "meshes": 3230,
   "materials": 64,
   "packed_texture_maps": 31,
@@ -26,7 +26,9 @@
     "Landscape_Detail",
     "Character_ThreeQuarter",
     "Head_Front",
-    "Head_Profile"
+    "Head_Profile",
+    "Hand_Left",
+    "Hand_Right"
   ],
   "additional_view_resolutions": {
     "Court_and_Arena": [
@@ -56,6 +58,14 @@
     "Head_Profile": [
       1000,
       1100
+    ],
+    "Hand_Left": [
+      1000,
+      1000
+    ],
+    "Hand_Right": [
+      1000,
+      1000
     ]
   },
   "additional_view_samples": 96,
@@ -70,5 +80,6 @@
   "cloth": "40-frame native cotton drape study blended with tailoring; retained CC0 fabric maps and articulated hip/knee/ankle pose",
   "canopy": "Raised Jacaranda branching with adapted CC0 Island Tree 01 broad-leaf clusters; same leaf family in foreground shrubs",
   "eye_optics": "Paired closed eyeballs with transparent corneal zones over recessed iris/pupil surfaces, adjusted pigment and lower wet eyelid margins",
-  "skin_relief": "Finer procedural relief and reduced subsurface scale over unchanged CC0 source color maps"
+  "skin_relief": "Finer procedural relief and reduced subsurface scale over unchanged CC0 source color maps",
+  "hand_surfaces": "Retained anatomical coordinates and editable hand relief shape keys; knuckle/tendon/palm definition and ten fitted keratin nail plates"
 }

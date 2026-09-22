@@ -8,7 +8,8 @@ from mathutils import Vector
 from mathutils.bvhtree import BVHTree
 
 ROOT=Path(__file__).resolve().parent
-bpy.ops.wm.open_mainfile(filepath=str(ROOT/'OddsWell_Sundale_StreetSlice.blend'))
+scene_path=Path(sys.argv[sys.argv.index('--scene')+1]) if '--scene' in sys.argv else ROOT/'OddsWell_Sundale_StreetSlice.blend'
+bpy.ops.wm.open_mainfile(filepath=str(scene_path))
 scene=bpy.context.scene
 bpy.context.view_layer.update()
 packed=[image for image in bpy.data.images if image.source=='FILE' and image.packed_file]
@@ -131,7 +132,8 @@ assert all(coat.data.attributes.get(name) for name in ('Tailored rest','Gravity 
 bm=bmesh.new();bm.from_mesh(coat.data)
 assert all(edge.is_manifold for edge in bm.edges) and bm.calc_volume(signed=True)>0,'Broken jacket drape surface'
 bm.free()
-hand_openings={}
+hand_openings={};nail_clearances=[];hand_detail_displacements=[]
+assert scene.get('hand_surface_refinement'),'Missing hand surface anatomy'
 for name in ('left hand','right hand'):
     hand=bpy.data.objects['Character | anatomical '+name]
     assert_connected(hand)
@@ -141,6 +143,29 @@ for name in ('left hand','right hand'):
     assert all(edge.is_manifold or edge.is_boundary for edge in bm.edges)
     hand_openings[name]=len(boundary)
     bm.free()
+    source=hand.data.attributes.get('Unposed anatomical position')
+    keys=hand.data.shape_keys.key_blocks
+    assert source and len(source.data)==len(hand.data.vertices) and hand.get('hand_landmarks')
+    assert 'Basis' in keys and 'Hand surface anatomy' in keys
+    deltas=[(a.co-b.co).length for a,b in zip(keys['Basis'].data,keys['Hand surface anatomy'].data)]
+    assert .0003<max(deltas)<.002,'Hand relief missing or excessive'
+    hand_detail_displacements.append(max(deltas))
+    surface=BVHTree.FromObject(hand,depsgraph)
+    side=name.split()[0]
+    nails=[obj for obj in scene.objects if obj.name.startswith('Character | nail '+side)]
+    assert len(nails)==5 and {obj['anatomical_digit'] for obj in nails}==set(range(1,6))
+    for nail in nails:
+        transform=hand.matrix_world.inverted()@nail.matrix_world
+        samples=[v.co for v in nail.data.vertices]+[p.center for p in nail.data.polygons]
+        for point in samples:
+            point=transform@point;hit,normal,_,distance=surface.find_nearest(point)
+            signed=(point-hit).dot(normal)
+            assert signed>.00002 and distance<.0004,('Detached or intersecting nail plate',nail.name,signed,distance)
+            nail_clearances.append(signed)
+        bm=bmesh.new();bm.from_object(nail,depsgraph)
+        assert all(edge.is_manifold for edge in bm.edges),'Open nail thickness'
+        assert bm.calc_volume(signed=True)>0,'Inverted nail plate'
+        bm.free()
 coat_surface=BVHTree.FromObject(coat,depsgraph)
 collar_surface=BVHTree.FromObject(bpy.data.objects['Character | standing collar'],depsgraph)
 assert scene.get('fitted_jacket_fastening')
@@ -265,5 +290,8 @@ result['minimum_cloth_thigh_clearance_m']=min(clearance)
 result['minimum_pigment_cornea_clearance_m']=min(optical_clearances)
 result['optical_cornea_surfaces']=2
 result['lower_wet_eyelid_margins']=2
+result['fitted_nail_plates']=10
+result['minimum_nail_surface_clearance_m']=min(nail_clearances)
+result['maximum_hand_relief_m']=max(hand_detail_displacements)
 if '--draft' not in sys.argv:(ROOT/'cold-reopen.json').write_text(json.dumps(result,indent=2)+'\n',encoding='utf-8')
 print('ODDSWELL_STREET_SLICE_COLD_CHECK_PASS',json.dumps(result))

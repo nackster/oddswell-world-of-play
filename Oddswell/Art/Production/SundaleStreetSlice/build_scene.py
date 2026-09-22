@@ -524,6 +524,10 @@ for region in ('head','legs','left hand','right hand'):
         faces.append(newface[::-1])
         faceuvs.append(source_uvs[::-1])
     anatomy=mesh('Character | anatomical '+region,vertices,faces,skin,True)
+    if 'hand' in region:
+        attribute=anatomy.data.attributes.new(name='Unposed anatomical position',type='FLOAT_VECTOR',domain='POINT')
+        for index,local in indices.items():attribute.data[local].vector=converted[index]
+        anatomy['hand_landmarks']=json.dumps({'wrist':list(wrist),'dorsal':list(palm_normal),'digits':{str(k):[list(p) for p in chain] for k,chain in digits.items()}})
     uv=anatomy.data.uv_layers.new(name='MakeHuman source UV')
     for polygon,source_uvs in zip(anatomy.data.polygons,faceuvs):
         for loop_index,coord in zip(polygon.loop_indices,source_uvs):uv.data[loop_index].uv=coord
@@ -536,6 +540,7 @@ exec(compile((ROOT/'develop_character_landscape.py').read_text(encoding='utf-8')
 exec(compile((ROOT/'refine_character_head.py').read_text(encoding='utf-8'),str(ROOT/'refine_character_head.py'),'exec'))
 exec(compile((ROOT/'refine_eye_margins.py').read_text(encoding='utf-8'),str(ROOT/'refine_eye_margins.py'),'exec'))
 exec(compile((ROOT/'refine_eye_optics.py').read_text(encoding='utf-8'),str(ROOT/'refine_eye_optics.py'),'exec'))
+exec(compile((ROOT/'refine_hands.py').read_text(encoding='utf-8'),str(ROOT/'refine_hands.py'),'exec'))
 exec(compile((ROOT/'refine_fabrics.py').read_text(encoding='utf-8'),str(ROOT/'refine_fabrics.py'),'exec'))
 exec(compile((ROOT/'settle_jacket.py').read_text(encoding='utf-8'),str(ROOT/'settle_jacket.py'),'exec'))
 
