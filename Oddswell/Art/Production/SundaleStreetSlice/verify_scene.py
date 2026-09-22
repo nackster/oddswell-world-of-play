@@ -180,6 +180,13 @@ assert all(edge.is_manifold for edge in bm.edges) and bm.calc_volume(signed=True
 bm.free()
 hand_openings={};nail_clearances=[];hand_detail_displacements=[]
 assert scene.get('hand_surface_refinement'),'Missing hand surface anatomy'
+assert scene.get('epidermal_detail'),'Missing skin and nail-fold development'
+fold_clearances=[];vascular_displacements=[]
+for material_name in ('Character | anatomical face skin','Character | warm neutral skin','Character | hand epidermis'):
+    nodes=bpy.data.materials[material_name].node_tree.nodes
+    assert nodes.get('Fine epidermal pore relief') and nodes.get('CC0 MakeHuman skin')
+    assert 0<nodes['Fine epidermal pore relief'].inputs['Distance'].default_value<.0001
+
 for name in ('left hand','right hand'):
     hand=bpy.data.objects['Character | anatomical '+name]
     assert_connected(hand)
@@ -198,6 +205,28 @@ for name in ('left hand','right hand'):
     hand_detail_displacements.append(max(deltas))
     surface=BVHTree.FromObject(hand,depsgraph)
     side=name.split()[0]
+    assert hand.data.materials[0].name=='Character | hand epidermis'
+    assert 'Dorsal vascular relief' in keys
+    vascular_displacements.extend((a.co-b.co).length for a,b in zip(keys['Dorsal vascular relief'].data,keys['Basis'].data))
+    for attribute in ('Dorsal vascular field','Hand joint creases','Hand joint vascular tone'):
+        values=[d.value for d in hand.data.attributes[attribute].data]
+        assert min(values)>=0 and .5<max(values)<=1,'Missing or invalid anatomical skin field'
+    folds=[o for o in scene.objects if o.name.startswith('Character | nail fold '+side)]
+    assert len(folds)==5 and {o['anatomical_digit'] for o in folds}==set(range(1,6))
+    for fold in folds:
+        bm=bmesh.new();bm.from_mesh(fold.data)
+        assert all(e.is_manifold for e in bm.edges) and bm.calc_volume(signed=True)>0,'Open or inverted skin fold'
+        bm.free()
+        assert fold.data.uv_layers.get('MakeHuman source UV'),'Nail fold lost source texture registration'
+        transform=hand.matrix_world.inverted()@fold.matrix_world
+        distances=[]
+        for vertex in fold.data.vertices:
+            point=transform@vertex.co;hit,normal,_,distance=surface.find_nearest(point)
+            assert distance<.00035,'Detached nail fold'
+            distances.append((point-hit).dot(normal))
+        assert min(distances)<0<max(distances),'Nail fold must sit into the skin'
+        fold_clearances.extend(distances)
+
     nails=[obj for obj in scene.objects if obj.name.startswith('Character | nail '+side)]
     assert len(nails)==5 and {obj['anatomical_digit'] for obj in nails}==set(range(1,6))
     for nail in nails:
@@ -340,6 +369,11 @@ result['minimum_pigment_cornea_clearance_m']=min(optical_clearances)
 result['optical_cornea_surfaces']=2
 result['lower_wet_eyelid_margins']=2
 result['fitted_nail_plates']=10
+assert 0<max(vascular_displacements)<.00025
+result['fitted_nail_folds']=10
+result['maximum_vascular_relief_m']=max(vascular_displacements)
+result['nail_fold_surface_range_m']=[min(fold_clearances),max(fold_clearances)]
+result['epidermal_detail']=True
 result['minimum_nail_surface_clearance_m']=min(nail_clearances)
 result['maximum_hand_relief_m']=max(hand_detail_displacements)
 result['head_character_targets']=head_targets

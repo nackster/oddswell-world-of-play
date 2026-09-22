@@ -10,8 +10,8 @@
   "jacket_surface_components": 1,
   "mature_tree_instances": 13,
   "shared_tree_meshes": 3,
-  "mesh_objects": 4061,
-  "native_scene_objects": 4734,
+  "mesh_objects": 4071,
+  "native_scene_objects": 4744,
   "runtime_claim": false,
   "shorts_boundary_edges": 240,
   "shorts_openings": 3,
@@ -64,6 +64,13 @@
   "optical_cornea_surfaces": 2,
   "lower_wet_eyelid_margins": 2,
   "fitted_nail_plates": 10,
+  "fitted_nail_folds": 10,
+  "maximum_vascular_relief_m": 0.0001924806288392281,
+  "nail_fold_surface_range_m": [
+    -9.50558751959818e-05,
+    0.0001852299083111575
+  ],
+  "epidermal_detail": true,
   "minimum_nail_surface_clearance_m": 0.0001403681770852927,
   "maximum_hand_relief_m": 0.0007995802431273227,
   "head_character_targets": {

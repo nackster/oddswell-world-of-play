@@ -8,7 +8,9 @@ Acceptance requires credible adult proportions and weight through the hips, knee
 
 Work sequence: develop the weight-bearing pose; improve garment drape through native cloth studies; refine hands, footwear and facial detail; review the entire figure under the scene lighting; then continue architectural/retail variety and planting realism. Preserve editable source, original asset bytes, license records and verified checkpoints. Keep the goal active until the visual criteria are actually met.
 
-Current progress after `f73e021`: source-derived anatomical support for jacket drape, preserved pinned attachments, fitted trim and separately retained tailored/fitted/simulated controls. Human realism and the later scene roadmap remain open.
+Current progress after `63cfd9a`: fine pore relief, anatomically located hand crease/color fields, restrained editable vascular relief and ten UV-registered nail folds. Facial expression/brows, cloth quality and whole-human realism remain open.
+
+Previous progress after `f73e021`: source-derived anatomical support for jacket drape, preserved pinned attachments, fitted trim and separately retained tailored/fitted/simulated controls. Human realism and the later scene roadmap remain open.
 
 Previous progress after `e6d5412`: editable adult facial form and asymmetry, local head anchoring, transported brows, refitted eye margins and regional skin response. Whole-human realism, skin quality and garment drape remain open.
 
