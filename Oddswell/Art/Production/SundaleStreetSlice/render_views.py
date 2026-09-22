@@ -85,6 +85,9 @@ evidence['skin']='CC0 MakeHuman young_lightskinned_male_diffuse map on retained 
 evidence['body_detail']='Individual anatomical finger bends, fitted rib cuffs, crossed shoe laces/eyelets, dense pocket stitches and 2600 tapered calf hair curves'
 evidence['face_detail']='Three pinned CC0 hm08 targets applied in memory; radial iris color, directional fine brows and 96 fitted eyelash strands'
 evidence['construction']='Shaped collar and continuous zipper; relaxed forearms; recessed shoe collars, fitted tongue/lacing/bows and broad flat sole contact'
+evidence['jacket']='45-frame native gravity/fabric-ease study; filtered static geometry, retained rest/raw positions, raglan seams and actual teal-panel boundary stitching'
+evidence['jacket_drape_frames']=scene['jacket_drape_frames']
+evidence['jacket_drape_maximum_delta_m']=scene['jacket_drape_maximum_delta_m']
 evidence['cloth']='40-frame native cotton drape study blended with tailoring; retained CC0 fabric maps and articulated hip/knee/ankle pose'
 evidence['canopy']='Raised Jacaranda branching with adapted CC0 Island Tree 01 broad-leaf clusters; same leaf family in foreground shrubs'
 (ROOT/'scene-evidence.json').write_text(json.dumps(evidence,indent=2)+'\n',encoding='utf-8')

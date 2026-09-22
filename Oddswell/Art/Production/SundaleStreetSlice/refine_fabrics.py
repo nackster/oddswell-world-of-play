@@ -27,8 +27,8 @@ for material,asset in ((jacket,'terlenka'),(shorts,'denim_fabric_04'),(shoe_fabr
     links.new(variation.outputs[0],dye.inputs[2]);links.new(dye.outputs[0],bs.inputs['Base Color'])
     rough=nodes.new('ShaderNodeMapRange');rough.inputs['To Min'].default_value=.64;rough.inputs['To Max'].default_value=.91
     if material==jacket:
-        rough.inputs['To Min'].default_value=.46;rough.inputs['To Max'].default_value=.72
-        bs.inputs['Specular IOR Level'].default_value=.32
+        rough.inputs['To Min'].default_value=.65;rough.inputs['To Max'].default_value=.88
+        bs.inputs['Specular IOR Level'].default_value=.24
     links.new(maps['rough'].outputs['Color'],rough.inputs['Value']);links.new(rough.outputs[0],bs.inputs['Roughness'])
     bump=nodes.new('ShaderNodeBump');bump.inputs['Strength'].default_value=.30;bump.inputs['Distance'].default_value=.0007
     links.new(maps['disp'].outputs['Color'],bump.inputs['Height']);links.new(bump.outputs['Normal'],bs.inputs['Normal'])

@@ -11,6 +11,7 @@ scene=bpy.context.scene
 bpy.context.view_layer.update()
 packed=[image for image in bpy.data.images if image.source=='FILE' and image.packed_file]
 assert len(packed)==31
+assert all(image.use_fake_user for image in packed),'Retained packed maps can be lost on repeated saves'
 assert scene.get('source_skin_uvs') and scene.get('reference_upper_body_fit')
 assert scene.get('body_refinement')
 assert scene.get('articulated_walking_pose') and scene.get('photographic_fabric_maps')
@@ -96,7 +97,14 @@ assert shorts_openings==3,'Expected open waist and two leg hems'
 assert len(bm.verts)-len(bm.edges)+len(bm.faces)==-1,'Expected three garment openings'
 bm.free()
 assert scene.get('continuous_jacket')
-assert_connected(bpy.data.objects['Character | tailored slate jacket'])
+coat=bpy.data.objects['Character | tailored slate jacket']
+assert_connected(coat)
+assert scene.get('jacket_drape_frames')==45 and 0<scene['jacket_drape_maximum_delta_m']<.13
+assert len(coat.data.vertices)==scene['jacket_drape_controls']
+assert all(coat.data.attributes.get(name) for name in ('Tailored rest','Gravity result'))
+bm=bmesh.new();bm.from_mesh(coat.data)
+assert all(edge.is_manifold for edge in bm.edges) and bm.calc_volume(signed=True)>0,'Broken jacket drape surface'
+bm.free()
 hand_openings={}
 for name in ('left hand','right hand'):
     hand=bpy.data.objects['Character | anatomical '+name]
@@ -109,6 +117,40 @@ for name in ('left hand','right hand'):
     bm.free()
 from mathutils.bvhtree import BVHTree
 from mathutils import Vector
+coat_surface=BVHTree.FromObject(coat,depsgraph)
+collar_surface=BVHTree.FromObject(bpy.data.objects['Character | standing collar'],depsgraph)
+assert scene.get('fitted_jacket_fastening')
+minimum_fastening_gap=1
+for tape in (o for o in scene.objects if o.name.startswith('Character | front zipper tape')):
+    for point in tape.data.splines[0].points:
+        position=Vector(point.co[:3])
+        hit,normal,_,distance=min((surface.find_nearest(position) for surface in (coat_surface,collar_surface)),key=lambda result:result[3])
+        gap=(position-hit).dot(normal)
+        assert gap>.0003 and distance<.003,'Buried or detached jacket fastening'
+        minimum_fastening_gap=min(minimum_fastening_gap,gap)
+raglan=[o for o in scene.objects if o.name.startswith('Character | raglan topstitch ')]
+assert len(raglan)==4
+maximum_raglan_gap=0
+for seam in raglan:
+    points=[Vector(p.co[:3]) for p in seam.data.splines[0].points]
+    assert max((a-b).length for a,b in zip(points,points[1:]))<.015,'Raglan jumps between garment surfaces'
+    for point in seam.data.splines[0].points:
+        position=Vector(point.co[:3]);hit,normal,_,distance=coat_surface.find_nearest(position)
+        assert 0<(position-hit).dot(normal) and distance<.0015,'Detached or buried raglan stitch'
+        maximum_raglan_gap=max(maximum_raglan_gap,distance)
+for side in (-1,1):
+    ends=[Vector(bpy.data.objects['Character | raglan topstitch '+str(side)+' '+str(front)].data.splines[0].points[-1].co[:3]) for front in (-1,1)]
+    assert (ends[0]-ends[1]).length<.0001,'Raglan ends do not meet at the armhole'
+panels=[o for o in scene.objects if o.type=='MESH' and o.name.startswith('Character | ') and 'yoke' in o.name]
+assert len(panels)==3 and scene.get('conformed_jacket_panels')
+for panel in panels:
+    for vertex in panel.data.vertices:
+        hit,normal,_,distance=coat_surface.find_nearest(vertex.co)
+        assert distance<.0008 and (vertex.co-hit).dot(normal)>0,'Teal panel lifted from or buried in jacket'
+    stitches=bpy.data.objects['Character | yoke topstitch '+panel.name]
+    bm=bmesh.new();bm.from_mesh(panel.data)
+    assert len(stitches.data.splines)==sum(edge.is_boundary for edge in bm.edges)
+    bm.free()
 lace_gap=0
 eyelet_gap=0;tongue_clearance=[]
 for side in ('left','right'):
@@ -168,6 +210,13 @@ result['minimum_tongue_surface_clearance_m']=min(tongue_clearance)
 result['facial_targets']=facial_targets
 result['eyelash_strands']=scene['eyelash_strands']
 result['cotton_drape_frames']=scene['cotton_drape_frames']
+result['jacket_drape_frames']=scene['jacket_drape_frames']
+result['jacket_drape_controls']=scene['jacket_drape_controls']
+result['jacket_drape_maximum_delta_m']=scene['jacket_drape_maximum_delta_m']
+result['jacket_fabric_ease']=scene['jacket_fabric_ease']
+result['maximum_raglan_surface_distance_m']=maximum_raglan_gap
+result['minimum_fastening_surface_clearance_m']=minimum_fastening_gap
+result['stitched_yoke_panels']=len(panels)
 result['cotton_drape_maximum_delta_m']=scene['cotton_drape_maximum_delta_m']
 skin_surface=BVHTree.FromObject(bpy.data.objects['Character | anatomical legs'],depsgraph)
 hair=bpy.data.objects['Character | fine calf hair']

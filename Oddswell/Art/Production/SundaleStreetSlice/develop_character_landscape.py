@@ -20,7 +20,7 @@ for node in sole.node_tree.nodes:
     if node.type=='VALTORGB':
         node.color_ramp.elements[0].color=(.61,.60,.54,1)
         node.color_ramp.elements[1].color=(.65,.64,.58,1)
-jacket.diffuse_color=(.041,.051,.060,1)
+jacket.diffuse_color=(.026,.039,.055,1)
 jacket.node_tree.nodes.get('Principled BSDF').inputs['Sheen Weight'].default_value=.08
 jacket.node_tree.nodes.get('Principled BSDF').inputs['Sheen Roughness'].default_value=.80
 for material,scale,distance in ((skin,1800,.00012),(jacket,1700,.00035),(shorts,2100,.00030),(shoe_fabric,1400,.00045)):

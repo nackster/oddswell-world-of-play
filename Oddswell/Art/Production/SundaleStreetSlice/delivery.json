@@ -3,12 +3,12 @@
   "goal_status": "active",
   "delivery": "Editable native Blender scene and eight native renders; offline art study",
   "starting_checkpoint": "76ccb76",
-  "previous_checkpoint": "3b3caa0",
+  "previous_checkpoint": "f406b8e",
   "evidence": {
     "source": "Native scene/garments/plant geometry, CC0 MakeHuman anatomical surfaces, six CC0 Poly Haven stone/bark texture maps and one CC0 photographed sky environment; adapted CC0 Jacaranda model with ten packed 2K maps",
     "reference": "../../Reviews/OddsWellStreetIdentityCandidate/OddsWell_Visual_Direction_Concept.png",
-    "objects": 4718,
-    "meshes": 3229,
+    "objects": 4719,
+    "meshes": 3230,
     "materials": 64,
     "packed_texture_maps": 31,
     "mature_tree_instances": 13,
@@ -70,6 +70,9 @@
     "body_detail": "Individual anatomical finger bends, fitted rib cuffs, crossed shoe laces/eyelets, dense pocket stitches and 2600 tapered calf hair curves",
     "face_detail": "Three pinned CC0 hm08 targets applied in memory; radial iris color, directional fine brows and 96 fitted eyelash strands",
     "construction": "Shaped collar and continuous zipper; relaxed forearms; recessed shoe collars, fitted tongue/lacing/bows and broad flat sole contact",
+    "jacket": "45-frame native gravity/fabric-ease study; filtered static geometry, retained rest/raw positions, raglan seams and actual teal-panel boundary stitching",
+    "jacket_drape_frames": 45,
+    "jacket_drape_maximum_delta_m": 0.026865200154415483,
     "cloth": "40-frame native cotton drape study blended with tailoring; retained CC0 fabric maps and articulated hip/knee/ankle pose",
     "canopy": "Raised Jacaranda branching with adapted CC0 Island Tree 01 broad-leaf clusters; same leaf family in foreground shrubs"
   },
@@ -86,7 +89,7 @@
     "mature_tree_instances": 13,
     "shared_tree_meshes": 3,
     "mesh_objects": 4050,
-    "native_scene_objects": 4718,
+    "native_scene_objects": 4719,
     "runtime_claim": false,
     "shorts_boundary_edges": 240,
     "shorts_openings": 3,
@@ -121,6 +124,13 @@
     },
     "eyelash_strands": 96,
     "cotton_drape_frames": 40,
+    "jacket_drape_frames": 45,
+    "jacket_drape_controls": 14490,
+    "jacket_drape_maximum_delta_m": 0.026865200154415483,
+    "jacket_fabric_ease": 0.04,
+    "maximum_raglan_surface_distance_m": 0.0005503663560375571,
+    "minimum_fastening_surface_clearance_m": 0.0010951206456013551,
+    "stitched_yoke_panels": 3,
     "cotton_drape_maximum_delta_m": 0.0529472243832398,
     "calf_hair_strands": 2600,
     "anatomical_finger_articulation": true,
@@ -130,49 +140,49 @@
     "StreetSlice_Gameplay.png": {
       "width": 1920,
       "height": 1080,
-      "sha256": "ae34a0c47ccd9c05a26b2a6d0b312e2f8dd83e3d6dcae0374e138f689cd1816c"
+      "sha256": "ee113b2c598e4907af60a3be62bcbad86c03d3580951afc2e2ac6aba3a93b7d3"
     },
     "StreetSlice_Court_and_Arena.png": {
       "width": 1600,
       "height": 900,
-      "sha256": "216b4d8760ce345577a443ba41550993f940ad47d339f779093276d13794c640"
+      "sha256": "51d6ac1660e73663125eccad8bf4386f96bca876fafa886bf2888a81bc6dad0a"
     },
     "StreetSlice_Architecture_Detail.png": {
       "width": 1600,
       "height": 900,
-      "sha256": "0a0ed7469134d0ab95be3ea4922df4b63c1f7d234c93d0ec241a0fdec4717023"
+      "sha256": "cd337aa54663355d505f2c50c35a03b9be6c440e48c304fc4fa104a87078a710"
     },
     "StreetSlice_Character_Detail.png": {
       "width": 1000,
       "height": 1100,
-      "sha256": "091ffb9d45fb471a7358941dd95715f89eb567b80187189bb584f0b3d9b2fa97"
+      "sha256": "71cdf35719574d654a690aa576406c636a89f4dbc45cdd4965ab7fa10e788063"
     },
     "StreetSlice_Landscape_Detail.png": {
       "width": 1000,
       "height": 1100,
-      "sha256": "6a138014dd4b9d2f11470c17c8dd84db160cd56030571a2017efeb4f458c459a"
+      "sha256": "51f506309f1d8284a376bda5d01bc2931ff147908f3656aec2bef4c8addd8e5e"
     },
     "StreetSlice_Character_ThreeQuarter.png": {
       "width": 1000,
       "height": 1100,
-      "sha256": "ae5a3e91a806b1982062ea27ac25960d1678169ebdd4f07ae62562cd7e5f432c"
+      "sha256": "48a05015f2cbabdd9c376b4fbf25a4c6d903764d241aba66f26bb2efb3a95952"
     },
     "StreetSlice_Head_Front.png": {
       "width": 1000,
       "height": 1100,
-      "sha256": "cd5220da3e7ffb6c834eeaa545e79b2f55d4e6347f17ce4e531add314d0dbd92"
+      "sha256": "77bb36ff66aee012b22bec65bd7f7aaf1c7b6e619b8f1463a63988dc096b305c"
     },
     "StreetSlice_Head_Profile.png": {
       "width": 1000,
       "height": 1100,
-      "sha256": "65c2d37d403ed069adb483bc3226eccea332b127a7d6d1f4068c91477f0226db"
+      "sha256": "b68c70c2e4d2eaed63070a50a480b5077dfa8794ec1463c2b6cd26b7a3c71478"
     }
   },
   "files_sha256": {
     "broadleaf_canopy.py": "f737b396c7c2e02415d6c6d7b9b21727a3ac450038e265a362c1a0263d3e9b3b",
-    "build_scene.py": "d282690df9bfb4a8066d3729a28021a7a33e77fd521d6fb3cfa73c418080b121",
-    "develop_character_landscape.py": "4831f6bd0e7390fdbbaf751d9eb62d916af6a5f8e632b3a381051b0bbdd5c176",
-    "DevelopmentGoal.md": "603a32d8757a4c2d5233fc27d615bc3383ce1b3c15e967ec724c740f300acb38",
+    "build_scene.py": "e465ae9fe6d2336a67fbdc3b29d2de64d41a7c11d409e090c501a492d12fd022",
+    "develop_character_landscape.py": "b41593dd4d05ec066de289fb36556d1b150bf4f7d45d93ed81ce535117d3fe55",
+    "DevelopmentGoal.md": "ca67734284ea79205297a0d30d81dacf99a9a203c19fe8878edf3a510eee44c9",
     "fetch_broadleaf.py": "2b42dbc1c9b7a041008006ffb0f9a025927b3d3a8fbafbaf9508de9f5aabf399",
     "fetch_fabrics.py": "1108de70f7d2e1b2c271c476a4c46813b34f99911ed73a400cca163b0283de34",
     "fetch_face_targets.py": "8081323ae2dee00e4ef3a0535059130410959d4e10aed8af46879dc677fd0d36",
@@ -182,16 +192,17 @@
     "fetch_tree.py": "543452c80b83a56aad4062620b1adfc2677d6c0a2bdef8c7f87b74333fb409da",
     "inspect_details.py": "4389f327017cf2c03acc55831e1d1c7dd9ca17d2b02f0217747785dee12d77f1",
     "mature_trees.py": "9300020af31be8cbb731c4378668fd3a18c89cdbb026cae0a263ce2741a63f7a",
-    "OddsWell_Sundale_StreetSlice.blend": "00c7f84303f16d9037e06a2d991f6f3906dd862f7fb63df7f3fabccf90bd0ae3",
-    "README.md": "cbaa276414f8a784afb20875b32f99b52a63f6c71e502b25db4f2866642383e3",
-    "record_delivery.py": "768ea6917d6ad900e69d5a1fa7f5be52928fcb7cd7633fa51fb8d3088183e5d0",
+    "OddsWell_Sundale_StreetSlice.blend": "e7cc7e3bcfb67d86b16d55e8364a22544bd6b2842e36a3573703ac3dd6aaf53a",
+    "README.md": "949511a8a10cb3c9c9f0fe190813b4d7dd764617044bb6ae0365b004df9da0d2",
+    "record_delivery.py": "1ae2abc9eda1f469d10500fe9e36231496bd1fdfb081ed8818ad7c557d486321",
     "refine_character_head.py": "998376234895963b794b29a302866683b2cdc1c19623c15ea7194e04619accb5",
     "refine_eye_margins.py": "a5cc48e1fbb443da5410c9b08cf085df0b9a87ecc0ec3acb8d4d49c0f0e869fc",
-    "refine_fabrics.py": "f817b076bb483d0bc3486b23ee909731bc37c22f6872c0c6f7c7f6d5c6f059d1",
+    "refine_fabrics.py": "be6d2403f31f1736235d2e1d97921d045260b41f4507d1395ed9b5585c8f57fa",
     "refine_minerals.py": "a3bc6d0647e83058d89afdaecf5d23c508b2b17ec12731438efdb74e515cc932",
-    "render_views.py": "0574c921342428703da829c244128511119012c37e1a22aef5a83adca6cada47",
-    "ResumeTomorrow.md": "72fd6ab4f3e0cc814a7de33a7d5fd3caa868b99414f262d6371d7886322193a4",
+    "render_views.py": "c324960d83fdd329f573140ce88a5caedd82deec3e2e9c06b77bad861bd97b8e",
+    "ResumeTomorrow.md": "f3fb4f74de385eb171b9e245118df38edd4d2675f14d5f25a3e6cb5d973671b8",
     "settle_cotton.py": "6b6ba615a4adba5145266174bc31cf5ea23318c1857a962fa766c0c94648e68d",
+    "settle_jacket.py": "61f44621c867b5ca47237f29b2f70c559340b4a859e68350aec4f8f2f7282770",
     "source-assets/facial-targets/head-age-incr.target": "ff677345bd81e3f439bdf75496bbee620ca3c3f029955a546837afd283abf73a",
     "source-assets/facial-targets/l-eye-height2-decr.target": "11f97a658461ab341b75165acc280dd5541a0ebf57d84dab24819a3af8ee5d25",
     "source-assets/facial-targets/r-eye-height2-decr.target": "8fbe66bf11786f68697b5ba720f6f76e1a99f0db066249d369e4476e016f3f64",
@@ -221,8 +232,8 @@
     "textures/sandstone_blocks_08_diff_4k.jpg": "d1a39585a84abe779ca252fe269b880837e6dd3805298d5b470f75c90afe5293",
     "textures/sandstone_blocks_08_disp_4k.jpg": "3db51669487d6312bfa52621783ab308ebca3ddbd23b061e220cee69847a768c",
     "textures/sandstone_blocks_08_rough_4k.jpg": "e395bdfea1536ddf3a8c97e51b0861270dc75dea722b22633b1cebd4c31ec63a",
-    "verify_scene.py": "415e8646124077b374047de2eaaa0465c9d9d16bed4e32fa2212f381ba1d81c5",
-    "VisualReview.md": "eb5f95da00cab8fd339b9469efe9de5b348938a67a00eb4e58ba8a9aab614c63",
+    "verify_scene.py": "25ca7ab707e6de8f28dcd0a84f3765cbdda8367bd04469cfe689e5452a14158e",
+    "VisualReview.md": "11469952a0c70aaca384c9762b5abdc24a636899aca7ece435b8b04d9c99e8f9",
     "textures/broadleaf/island_tree_01_branches_diff_2k.png": "fcfaaa1262cb8f31327ca084e6f8d69cda0b6af0d1f065a68c5a47b906ec02ff",
     "textures/broadleaf/island_tree_01_branches_nor_gl_2k.png": "2ee3ff83fdf8f01cd9d26d5c4665b866bf69f2557e02582577f23d6d007f9c78",
     "textures/broadleaf/island_tree_01_branches_rough_2k.png": "e6d3c688b07dea15344672516433d7ba681727f5149c8be446dc1a5bbed9afdc",
@@ -239,8 +250,8 @@
     "source-assets/facial-targets.json": "98e709248c904bdb5c214cb4e4d006f6f4ec7363af55a59ec528032a8d72c8fc"
   },
   "render_log": {
-    "path": "C:\\Users\\reali\\Documents\\SaaS\\Oddswell\\client\\OddsWell\\Saved\\NextTen20260912\\character-presence-final-views.log",
-    "sha256": "14691778c08d799ca631268946829a06e2b21ade3155eae3a9f0c02442a1eee1"
+    "path": "C:\\Users\\reali\\Documents\\SaaS\\Oddswell\\client\\OddsWell\\Saved\\NextTen20260912\\character-drape-final-views.log",
+    "sha256": "f3c3b7507f465d6349b633fff690957bf564c574f48817e00350300db13fec34"
   },
   "preview_iterations": [
     {
@@ -507,12 +518,17 @@
       "log": "character-presence-preview6.log",
       "sha256": "6750631c48ca2a3eab8b29a9c3e6bca509afac05e21e4a23d44b888bbe624c8d",
       "native_render": "PASS"
+    },
+    {
+      "log": "character-drape-preview1.log",
+      "sha256": "cc03ed01d8bbe4a8b9eb4dc947a03abea42e80acec2cadc8e1bf7a5b5de08dd2",
+      "native_render": "PASS"
     }
   ],
   "original_source_bytes_preserved": true,
   "runtime_map_modified": false,
   "runtime_character_modified": false,
-  "visual_review": "Continuing from `3b3caa0`, the forearms hang closer beneath the elbows and a shaped collar follows the neck, with a smaller continuous zipper and pull. Three pinned CC0 MakeHuman morph targets add restrained facial-age and eyelid changes in memory; the original anatomical OBJ remains unchanged. Native irises now carry radial color variation, finer brows follow a changing hair direction, and 96 tapered eyelashes are rooted at the actual visible lid margins. These details remain subtle and do not establish a lifelike facial expression.",
-  "body_detail_review": "The footwear now has recessed ankle openings with dark inner lining, a denser fitted tongue, crossed laces seated at paired eyelets, bow loops and free ends. The upper and sole profiles use smooth longitudinal interpolation; rounded sole edges surround a broad flat underside. Native close-ups exposed tongue intersections, displaced lace endpoints and an uneven upper/sole join. Those findings led to denser tongue faces, matching endpoint projections and a deeper upper overlap inside the extended sole.",
-  "remaining": "The full realism goal remains active. The next major character work is shoulder/armhole construction and jacket drape, followed by hand tendon/nail detail, convincing eye tissue, skin response and expression. Review the complete figure against the original concept before proceeding to architectural/retail variety and planting realism. This checkpoint is an editable offline model, not an animation rig, gameplay cloth implementation or runtime update."
+  "visual_review": "Continuing from `f406b8e`, the jacket now uses a 45-frame native gravity study on a lighter control mesh, with 4% fabric ease and fixed collar, fastening, hem and cuff attachments. A smooth inner fitting envelope supports the cloth; this is a garment proxy, not newly scanned body anatomy. The retained result blends 85% filtered simulation displacement with the tailored base. Original tailoring and raw simulation positions remain editable point attributes.",
+  "body_detail_review": "The first dense, low-bending-resistance study produced a crumpled leather-like surface and was rejected. A coarser, stiffer study reduced the small wrinkles; strong filtering then made it too rigid. The retained version adds fabric ease and uses six displacement-filter passes to keep broader folds. Native front/rear comparisons also led to a darker slate dye, a more matte fabric response and fitted front/back raglan seams. Stray shoulder lines were traced to old torso-profile yoke stitch ends. All three teal panels now receive stitches from their actual boundary edges. Further close-ups led to nearly flush, subdivided teal panels, removal of the old overlapping sleeve/panel lines, and continuous raglan paths over connected garment faces that meet beneath each arm. The seam search permits face diagonals to avoid the stair-step paths of a rectangular edge grid. A later clearance review caught zipper tape buried by the drape; tape and teeth are fitted to the final jacket/collar front surface, and the saved-scene check now verifies positive tape clearance.",
+  "remaining": "The human-realism goal remains active. This improves the jacket development baseline, but the figure still reads as a digital model. Garment fold sharpness and tailoring, hand tendon/nail detail, skin response, eye tissue and individual facial expression remain unfinished. Continue close-up and whole-figure review against the original reference, then architectural/retail variety and planting realism. The scene is an editable static Blender study; no runtime cloth, animation rig, game-character update or beta-exit credit is claimed."
 }

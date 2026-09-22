@@ -536,6 +536,7 @@ exec(compile((ROOT/'develop_character_landscape.py').read_text(encoding='utf-8')
 exec(compile((ROOT/'refine_character_head.py').read_text(encoding='utf-8'),str(ROOT/'refine_character_head.py'),'exec'))
 exec(compile((ROOT/'refine_eye_margins.py').read_text(encoding='utf-8'),str(ROOT/'refine_eye_margins.py'),'exec'))
 exec(compile((ROOT/'refine_fabrics.py').read_text(encoding='utf-8'),str(ROOT/'refine_fabrics.py'),'exec'))
+exec(compile((ROOT/'settle_jacket.py').read_text(encoding='utf-8'),str(ROOT/'settle_jacket.py'),'exec'))
 
 # Pose the clothed lower body for a short walking stride in this static study.
 from mathutils import Matrix
@@ -666,6 +667,8 @@ for obj in list(scene.objects):
         groups[group]=bpy.data.collections.new(group);scene.collection.children.link(groups[group])
     for collection in list(obj.users_collection):collection.objects.unlink(obj)
     groups[group].objects.link(obj)
+for image in bpy.data.images:
+    if image.packed_file:image.use_fake_user=True
 bpy.ops.wm.save_as_mainfile(filepath=str(ROOT/'OddsWell_Sundale_StreetSlice.blend'),compress=True)
 print('ODDSWELL_STREET_SLICE_MODELED',len(scene.objects),flush=True)
 bpy.ops.render.render(write_still=True)

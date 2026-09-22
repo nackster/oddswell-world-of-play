@@ -1,8 +1,8 @@
 {
   "source": "Native scene/garments/plant geometry, CC0 MakeHuman anatomical surfaces, six CC0 Poly Haven stone/bark texture maps and one CC0 photographed sky environment; adapted CC0 Jacaranda model with ten packed 2K maps",
   "reference": "../../Reviews/OddsWellStreetIdentityCandidate/OddsWell_Visual_Direction_Concept.png",
-  "objects": 4718,
-  "meshes": 3229,
+  "objects": 4719,
+  "meshes": 3230,
   "materials": 64,
   "packed_texture_maps": 31,
   "mature_tree_instances": 13,
@@ -64,6 +64,9 @@
   "body_detail": "Individual anatomical finger bends, fitted rib cuffs, crossed shoe laces/eyelets, dense pocket stitches and 2600 tapered calf hair curves",
   "face_detail": "Three pinned CC0 hm08 targets applied in memory; radial iris color, directional fine brows and 96 fitted eyelash strands",
   "construction": "Shaped collar and continuous zipper; relaxed forearms; recessed shoe collars, fitted tongue/lacing/bows and broad flat sole contact",
+  "jacket": "45-frame native gravity/fabric-ease study; filtered static geometry, retained rest/raw positions, raglan seams and actual teal-panel boundary stitching",
+  "jacket_drape_frames": 45,
+  "jacket_drape_maximum_delta_m": 0.026865200154415483,
   "cloth": "40-frame native cotton drape study blended with tailoring; retained CC0 fabric maps and articulated hip/knee/ankle pose",
   "canopy": "Raised Jacaranda branching with adapted CC0 Island Tree 01 broad-leaf clusters; same leaf family in foreground shrubs"
 }

@@ -8,7 +8,9 @@ Acceptance requires credible adult proportions and weight through the hips, knee
 
 Work sequence: develop the weight-bearing pose; improve garment drape through native cloth studies; refine hands, footwear and facial detail; review the entire figure under the scene lighting; then continue architectural/retail variety and planting realism. Preserve editable source, original asset bytes, license records and verified checkpoints. Keep the goal active until the visual criteria are actually met.
 
-Current progress after `3b3caa0`: fitted collar/zipper and relaxed forearms, subtle source-derived facial targets, radial iris color and finer eye/brow detail, and rebuilt shoe openings/lacing/sole contact. These are development checkpoints; jacket shoulder construction, natural drape, face/skin realism and whole-figure acceptance remain unfinished.
+Current progress after `f406b8e`: native jacket drape with fabric ease, filtered broad folds, fitted raglan seams and actual teal-panel boundary stitches. This remains a development checkpoint. Fine tailoring, hand detail, skin/eyes/expression and whole-character realism remain open before the scene roadmap advances.
+
+Previous progress after `3b3caa0`: fitted collar/zipper and relaxed forearms, subtle source-derived facial targets, radial iris color and finer eye/brow detail, and rebuilt shoe openings/lacing/sole contact. These are development checkpoints; jacket shoulder construction, natural drape, face/skin realism and whole-figure acceptance remain unfinished.
 
 Active owner request, September 12, 2026: spend time developing the character and landscape toward the **first reference picture**, continuing through modeling and native render review.
 
