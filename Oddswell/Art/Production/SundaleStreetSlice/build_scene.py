@@ -524,6 +524,9 @@ for region in ('head','legs','left hand','right hand'):
         faces.append(newface[::-1])
         faceuvs.append(source_uvs[::-1])
     anatomy=mesh('Character | anatomical '+region,vertices,faces,skin,True)
+    if region=='head':
+        attribute=anatomy.data.attributes.new(name='MakeHuman source vertex',type='INT',domain='POINT')
+        for index,local in indices.items():attribute.data[local].value=index
     if 'hand' in region:
         attribute=anatomy.data.attributes.new(name='Unposed anatomical position',type='FLOAT_VECTOR',domain='POINT')
         for index,local in indices.items():attribute.data[local].vector=converted[index]
@@ -538,6 +541,7 @@ skin.node_tree.nodes.get('Principled BSDF').inputs['Subsurface Weight'].default_
 # above and remain ordinary editable meshes in the resulting Blender file.
 exec(compile((ROOT/'develop_character_landscape.py').read_text(encoding='utf-8'),str(ROOT/'develop_character_landscape.py'),'exec'))
 exec(compile((ROOT/'refine_character_head.py').read_text(encoding='utf-8'),str(ROOT/'refine_character_head.py'),'exec'))
+exec(compile((ROOT/'refine_face_character.py').read_text(encoding='utf-8'),str(ROOT/'refine_face_character.py'),'exec'))
 exec(compile((ROOT/'refine_eye_margins.py').read_text(encoding='utf-8'),str(ROOT/'refine_eye_margins.py'),'exec'))
 exec(compile((ROOT/'refine_eye_optics.py').read_text(encoding='utf-8'),str(ROOT/'refine_eye_optics.py'),'exec'))
 exec(compile((ROOT/'refine_hands.py').read_text(encoding='utf-8'),str(ROOT/'refine_hands.py'),'exec'))

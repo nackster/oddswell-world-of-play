@@ -72,7 +72,7 @@
   "render_device": "OPTIX",
   "skin": "CC0 MakeHuman young_lightskinned_male_diffuse map on retained anatomical UVs; original source preserved",
   "body_detail": "Individual anatomical finger bends, fitted rib cuffs, crossed shoe laces/eyelets, dense pocket stitches and 2600 tapered calf hair curves",
-  "face_detail": "Three pinned CC0 hm08 targets applied in memory; radial iris color, directional fine brows and 96 fitted eyelash strands",
+  "face_detail": "Six pinned CC0 hm08 targets: three baseline adjustments and three editable local head forms; authored asymmetry and facial roughness zones; transported brows and fitted eyelid tissue",
   "construction": "Shaped collar and continuous zipper; relaxed forearms; recessed shoe collars, fitted tongue/lacing/bows and broad flat sole contact",
   "jacket": "45-frame native gravity/fabric-ease study; filtered static geometry, retained rest/raw positions, raglan seams and actual teal-panel boundary stitching",
   "jacket_drape_frames": 45,
@@ -81,5 +81,11 @@
   "canopy": "Raised Jacaranda branching with adapted CC0 Island Tree 01 broad-leaf clusters; same leaf family in foreground shrubs",
   "eye_optics": "Paired closed eyeballs with transparent corneal zones over recessed iris/pupil surfaces, adjusted pigment and lower wet eyelid margins",
   "skin_relief": "Finer procedural relief and reduced subsurface scale over unchanged CC0 source color maps",
-  "hand_surfaces": "Retained anatomical coordinates and editable hand relief shape keys; knuckle/tendon/palm definition and ten fitted keratin nail plates"
+  "hand_surfaces": "Retained anatomical coordinates and editable hand relief shape keys; knuckle/tendon/palm definition and ten fitted keratin nail plates",
+  "eyelash_strands": 92,
+  "head_character_targets": {
+    "caucasian-male-young.target": 0.65,
+    "head-fat-decr.target": 0.22,
+    "head-rectangular.target": 0.3
+  }
 }

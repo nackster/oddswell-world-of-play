@@ -33,6 +33,27 @@ assert scene['flat_court_paint'] and scene['clothing_details_posed']
 paint=[obj for obj in scene.objects if obj.name.startswith('Court | ') and obj.type=='CURVE']
 assert paint and all(obj.dimensions.z<.001 for obj in paint)
 head=bpy.data.objects['Character | anatomical head']
+assert scene.get('individual_facial_form') and head.data.attributes.get('MakeHuman source vertex')
+head_keys=head.data.shape_keys.key_blocks
+head_targets=json.loads(scene.get('head_character_targets','{}'))
+assert set(head_targets)=={'caucasian-male-young.target','head-rectangular.target','head-fat-decr.target'}
+assert all(name.removesuffix('.target') in head_keys for name in head_targets)
+assert 'Restrained facial asymmetry' in head_keys and head.data.attributes.get('Facial oil distribution')
+head_deltas=[]
+for key in head_keys:
+    if key.name=='Basis':continue
+    for vertex,point,base in zip(head.data.vertices,key.data,head_keys['Basis'].data):
+        delta=(point.co-base.co).length
+        if vertex.co.z<1.605:assert delta<.000001,'Facial study moved the fitted neck base'
+        head_deltas.append(delta*key.value)
+assert .001<max(head_deltas)<.035,'Missing or excessive facial adjustment'
+face_surface=BVHTree.FromObject(head,bpy.context.evaluated_depsgraph_get())
+for brow in (obj for obj in scene.objects if obj.name.startswith('Character | eyebrow ')):
+    transform=head.matrix_world.inverted()@brow.matrix_world
+    for spline in brow.data.splines:
+        for point in spline.points:
+            position=transform@Vector(point.co[:3]);hit,normal,_,distance=face_surface.find_nearest(position)
+            assert distance<.001 and (position-hit).dot(normal)>0,'Detached or buried brow strand'
 surface_vertices={i for polygon in head.data.polygons for i in polygon.vertices}
 assert scene.get('human_head_refinement') and head.get('anatomical_source')
 assert surface_vertices and all(head.data.vertices[i].co.z>1.54 and abs(head.data.vertices[i].co.x+.75)<(.065 if head.data.vertices[i].co.z<1.59 else .15) for i in surface_vertices),'Head/neck crop extends outside collar'
@@ -293,5 +314,8 @@ result['lower_wet_eyelid_margins']=2
 result['fitted_nail_plates']=10
 result['minimum_nail_surface_clearance_m']=min(nail_clearances)
 result['maximum_hand_relief_m']=max(hand_detail_displacements)
+result['head_character_targets']=head_targets
+result['maximum_weighted_head_target_displacement_m']=max(head_deltas)
+result['retained_head_shape_keys']=len(head_keys)
 if '--draft' not in sys.argv:(ROOT/'cold-reopen.json').write_text(json.dumps(result,indent=2)+'\n',encoding='utf-8')
 print('ODDSWELL_STREET_SLICE_COLD_CHECK_PASS',json.dumps(result))

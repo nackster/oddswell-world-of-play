@@ -8,7 +8,8 @@ def get(url):
     request=urllib.request.Request(url,headers={'User-Agent':'OddsWell-native-character-study'})
     with urllib.request.urlopen(request,timeout=30) as response:return response.read()
 records={}
-for relative in ('head/head-age-incr.target','eyes/l-eye-height2-decr.target','eyes/r-eye-height2-decr.target'):
+for relative in ('head/head-age-incr.target','eyes/l-eye-height2-decr.target','eyes/r-eye-height2-decr.target',
+                 'macrodetails/caucasian-male-young.target','head/head-rectangular.target','head/head-fat-decr.target'):
     path='makehuman/data/targets/'+relative
     metadata=json.loads(get('https://api.github.com/repos/makehumancommunity/makehuman/contents/'+path+'?ref='+COMMIT))
     url='https://raw.githubusercontent.com/makehumancommunity/makehuman/'+COMMIT+'/'+path

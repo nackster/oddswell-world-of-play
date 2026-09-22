@@ -44,7 +44,7 @@
     "l-eye-height2-decr.target": 0.45,
     "r-eye-height2-decr.target": 0.45
   },
-  "eyelash_strands": 96,
+  "eyelash_strands": 92,
   "cotton_drape_frames": 40,
   "jacket_drape_frames": 45,
   "jacket_drape_controls": 14490,
@@ -62,5 +62,12 @@
   "lower_wet_eyelid_margins": 2,
   "fitted_nail_plates": 10,
   "minimum_nail_surface_clearance_m": 0.0001403681770852927,
-  "maximum_hand_relief_m": 0.0007995802431273227
+  "maximum_hand_relief_m": 0.0007995802431273227,
+  "head_character_targets": {
+    "caucasian-male-young.target": 0.65,
+    "head-fat-decr.target": 0.22,
+    "head-rectangular.target": 0.3
+  },
+  "maximum_weighted_head_target_displacement_m": 0.03299465895345445,
+  "retained_head_shape_keys": 5
 }

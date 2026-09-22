@@ -8,7 +8,9 @@ Acceptance requires credible adult proportions and weight through the hips, knee
 
 Work sequence: develop the weight-bearing pose; improve garment drape through native cloth studies; refine hands, footwear and facial detail; review the entire figure under the scene lighting; then continue architectural/retail variety and planting realism. Preserve editable source, original asset bytes, license records and verified checkpoints. Keep the goal active until the visual criteria are actually met.
 
-Current progress after `0fb8d78`: editable hand surface anatomy, fitted nail plates and permanent hand inspection views. Human realism remains open, including facial individuality, skin/cuticle finish and garment folds.
+Current progress after `e6d5412`: editable adult facial form and asymmetry, local head anchoring, transported brows, refitted eye margins and regional skin response. Whole-human realism, skin quality and garment drape remain open.
+
+Previous progress after `0fb8d78`: editable hand surface anatomy, fitted nail plates and permanent hand inspection views. Human realism remains open, including facial individuality, skin/cuticle finish and garment folds.
 
 Previous progress after `3786385`: recessed irises and pupils beneath transparent corneal surfaces, fitted lower eyelid tissue and finer skin relief. Hand surface anatomy, facial individuality, cloth quality and whole-character realism remain unfinished.
 

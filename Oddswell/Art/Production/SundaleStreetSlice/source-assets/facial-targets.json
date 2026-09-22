@@ -21,6 +21,24 @@
       "git_blob_sha1": "dc8a8cd33556d89fc4f9436136dcbb40f078fed0",
       "sha256": "8fbe66bf11786f68697b5ba720f6f76e1a99f0db066249d369e4476e016f3f64",
       "bytes": 8469
+    },
+    "caucasian-male-young.target": {
+      "url": "https://raw.githubusercontent.com/makehumancommunity/makehuman/a8bc2d54ff0ac92e78ff71431b1023eda42bf482/makehuman/data/targets/macrodetails/caucasian-male-young.target",
+      "git_blob_sha1": "c3b82f92c5ced85599199cd184b0faf3b3fc6881",
+      "sha256": "70e228ba7164737dae664454394536fc5935fa48d333c1a97d77e2dc6eacc5f5",
+      "bytes": 396479
+    },
+    "head-rectangular.target": {
+      "url": "https://raw.githubusercontent.com/makehumancommunity/makehuman/a8bc2d54ff0ac92e78ff71431b1023eda42bf482/makehuman/data/targets/head/head-rectangular.target",
+      "git_blob_sha1": "96e3a75213cd895da863a5c405106321f73f5007",
+      "sha256": "bbfcbd4d6334df18515e73abb707b8a948adb74e0aba88a728c8e146dd5f4e4b",
+      "bytes": 10633
+    },
+    "head-fat-decr.target": {
+      "url": "https://raw.githubusercontent.com/makehumancommunity/makehuman/a8bc2d54ff0ac92e78ff71431b1023eda42bf482/makehuman/data/targets/head/head-fat-decr.target",
+      "git_blob_sha1": "f373e9d9fcdf33261258fe5d0cc8752ed0d6da9c",
+      "sha256": "00473b6069f9cf6c05a2f1fd0c0bae20bb4ec45e9552bb5695f1d1533f3cc119",
+      "bytes": 14347
     }
   }
 }

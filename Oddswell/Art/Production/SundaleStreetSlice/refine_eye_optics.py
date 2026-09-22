@@ -39,6 +39,7 @@ def refine_eye_optics():
         bmesh.ops.remove_doubles(bm,verts=list(bm.verts),dist=.000001)
         bmesh.ops.recalc_face_normals(bm,faces=list(bm.faces));bm.to_mesh(data);bm.free()
         eye.data=data
+        eye['support_center']=list(center);eye['support_radius']=radius
         for name in ('iris','pupil'):
             obj=bpy.data.objects['Character | '+name+' '+side]
             for v in obj.data.vertices:

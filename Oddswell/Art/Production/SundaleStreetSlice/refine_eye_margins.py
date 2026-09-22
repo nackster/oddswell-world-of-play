@@ -21,6 +21,8 @@ def fit_eye_margins():
         vertices=[transform@v.co for v in eye.data.vertices]
         center=sum(vertices,Vector())/len(vertices)
         radius=max((v-center).length for v in vertices)
+        if 'support_center' in eye:
+            center=transform@Vector(eye['support_center']);radius=eye['support_radius']
         def hit_at(dx,dz):
             return surface.ray_cast(center+Vector((dx,.12,dz)),Vector((0,-1,0)),.24)
         def visible(dx,dz):
@@ -65,7 +67,7 @@ def fit_eye_margins():
             spline=data.splines.new('POLY');spline.points.add(len(lower)-1)
             for j,(point,co) in enumerate(zip(spline.points,lower)):
                 point.co=(*co,1);point.radius=.2+.8*math.sin(math.pi*j/(len(lower)-1))**.5
-            obj=bpy.data.objects.new(data.name,data);scene.collection.objects.link(obj)
+            obj=bpy.data.objects.new('Character | lower wet margin '+side,data);scene.collection.objects.link(obj)
             obj.matrix_world=head.matrix_world.copy();data.materials.append(wet)
     assert count>=60,'Could not resolve enough visible eyelid margin'
     scene['eyelash_strands']=count
