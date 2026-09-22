@@ -3,7 +3,7 @@
   "goal_status": "active",
   "delivery": "Editable native Blender scene and ten native renders; offline art study",
   "starting_checkpoint": "76ccb76",
-  "previous_checkpoint": "63cfd9a",
+  "previous_checkpoint": "0215059",
   "evidence": {
     "source": "Native scene/garments/plant geometry, CC0 MakeHuman anatomical surfaces, six CC0 Poly Haven stone/bark texture maps and one CC0 photographed sky environment; adapted CC0 Jacaranda model with ten packed 2K maps",
     "reference": "../../Reviews/OddsWellStreetIdentityCandidate/OddsWell_Visual_Direction_Concept.png",
@@ -142,6 +142,8 @@
       "r-eye-height2-decr.target": 0.45
     },
     "eyelash_strands": 92,
+    "individual_brow_strands": 1300,
+    "maximum_resting_eyelid_lift_m": 0.0006480216979980469,
     "cotton_drape_frames": 40,
     "jacket_drape_frames": 45,
     "jacket_drape_controls": 14490,
@@ -176,65 +178,65 @@
       "head-rectangular.target": 0.3
     },
     "maximum_weighted_head_target_displacement_m": 0.03299465895345445,
-    "retained_head_shape_keys": 5
+    "retained_head_shape_keys": 6
   },
   "renders": {
     "StreetSlice_Gameplay.png": {
       "width": 1920,
       "height": 1080,
-      "sha256": "f5cf4662f9d08fd68a87df2a4ae4e93293a08c9cc85f1ecba9c294b858562b1d"
+      "sha256": "212f4a65ea9ea378efc30217b79e8284c3891888a1e510f68784cee06d7e59a0"
     },
     "StreetSlice_Court_and_Arena.png": {
       "width": 1600,
       "height": 900,
-      "sha256": "2c78797f3ed8a6c754b84194ac0529966936961ed84123ea23b8fd17289c876a"
+      "sha256": "c54f5b9c9e35996d3578ab8b5fc8bce9e88ee7cc79a3be6959f8bbb2036d688c"
     },
     "StreetSlice_Architecture_Detail.png": {
       "width": 1600,
       "height": 900,
-      "sha256": "c1f94851148d56bc40b20b3d3e06d428cc28dccfc3becc98917bc8af5eaa3209"
+      "sha256": "2a3495f9ca21554e634b68e2a3b6c7761a0cd0019d84ab472bb02703083e31e5"
     },
     "StreetSlice_Character_Detail.png": {
       "width": 1000,
       "height": 1100,
-      "sha256": "47904f7413d5e3c285f56933668c3b2a10fc0481bf234bfd307a38ffb2773d28"
+      "sha256": "4dbf2831d683ff5f2672652c20f67dfa0f01c258fe4021b2f51b5be95c28570e"
     },
     "StreetSlice_Landscape_Detail.png": {
       "width": 1000,
       "height": 1100,
-      "sha256": "f50e262696e27fd780ee5491da6c35e1c4d2afe27d2c09d052ba8662451ffc09"
+      "sha256": "c3c838a6b6b9372e9aeec5ed5a838d601c210b4cf92de83ac26a487f306d006a"
     },
     "StreetSlice_Character_ThreeQuarter.png": {
       "width": 1000,
       "height": 1100,
-      "sha256": "64ffa00fcb9142223b8070a67c740c4d8f222f6fa8313c506afc2665aa29c263"
+      "sha256": "c804ebceb79cdf7f738880e53984e2fcae01e4b6787feeb1e249531c72df2908"
     },
     "StreetSlice_Head_Front.png": {
       "width": 1000,
       "height": 1100,
-      "sha256": "4a9fd98a93233f93d0b697232f9e3253e71444f3e601e39fa96ba017905a5298"
+      "sha256": "c8c874c59de4cf990a2b44f6408357553ac60260a8075da07e3a634bbeb5a53c"
     },
     "StreetSlice_Head_Profile.png": {
       "width": 1000,
       "height": 1100,
-      "sha256": "cfc28d0e94e63de3b02306d19e5b935ce8c0ea7c3ec23ec418ac18ae7e9c75ca"
+      "sha256": "05da336bf36da666ea9afe8890c2b85f68ed8e58f4c047c083ad219231b4f0c6"
     },
     "StreetSlice_Hand_Left.png": {
       "width": 1000,
       "height": 1000,
-      "sha256": "0c05510a140ec4e3a17ac481ac73b4b0e134eef3832be6b929281ad78bdf0246"
+      "sha256": "bcb009876b181905f58efb08bba3418bd7b101a2d6e71207a6c4649af5fa14d8"
     },
     "StreetSlice_Hand_Right.png": {
       "width": 1000,
       "height": 1000,
-      "sha256": "8fb917ad55d86b4dd86731a4c7be4512b7dd0da10e0658d2601dae945c461cf6"
+      "sha256": "9cbf33cc41612212e43a0f436a0952283aae14854ff5dc521ac08f997a50a027"
     }
   },
   "files_sha256": {
     "broadleaf_canopy.py": "f737b396c7c2e02415d6c6d7b9b21727a3ac450038e265a362c1a0263d3e9b3b",
-    "build_scene.py": "069c2f1d620e2f9fbba6967018f5de1e7d986bea0e5e1bc5ba2141ba0d0da737",
+    "build_scene.py": "f73010fa577000bc286b8ab366eb2326017d6c78a41564f722d213e1e5c137cb",
     "develop_character_landscape.py": "b41593dd4d05ec066de289fb36556d1b150bf4f7d45d93ed81ce535117d3fe55",
-    "DevelopmentGoal.md": "b812ca9c1632f3e752e4f7be05f89acfc5fc059e89f76d0bdb7209a89a8ffc8e",
+    "DevelopmentGoal.md": "326bebd787b58917036e3ad63c827655f5f0d517de16818fcad4be0737f46ee4",
     "fetch_broadleaf.py": "2b42dbc1c9b7a041008006ffb0f9a025927b3d3a8fbafbaf9508de9f5aabf399",
     "fetch_fabrics.py": "1108de70f7d2e1b2c271c476a4c46813b34f99911ed73a400cca163b0283de34",
     "fetch_face_targets.py": "fe55ed6049f8541ab199c862e14c7d3df41e1b96e569a91a48a15f64a303a634",
@@ -244,9 +246,10 @@
     "fetch_tree.py": "543452c80b83a56aad4062620b1adfc2677d6c0a2bdef8c7f87b74333fb409da",
     "inspect_details.py": "4389f327017cf2c03acc55831e1d1c7dd9ca17d2b02f0217747785dee12d77f1",
     "mature_trees.py": "9300020af31be8cbb731c4378668fd3a18c89cdbb026cae0a263ce2741a63f7a",
-    "OddsWell_Sundale_StreetSlice.blend": "037f5b6b4a681017ad397f93eaa9ecdda0fd4057a7dabff71907a6319ce164d4",
-    "README.md": "ac673c43c47a6f83f4f7a4cf96824fab6287c1c72fbb267657ff3708c1e67f2c",
-    "record_delivery.py": "d12bcb1ed8bc6a9c661af142cf15124afd9d509f589cdcbf399a4ba21d167c97",
+    "OddsWell_Sundale_StreetSlice.blend": "fa1e5aef900d25295ab83d0f056ed0922689977a262690088b276177d5bdfd60",
+    "README.md": "00063cadb7c833268dc9b7128387ad12bb260504e9c47fe036046bcb9870a6b6",
+    "record_delivery.py": "7b30d5d436fe8ecb52410583d3fe8344914edec6a6b62b3c9e2937c9d44e736b",
+    "refine_brow_groom.py": "500a1bda0122829acaa6ed068a2d060d28362b378abdf59871529e91fd5dc127",
     "refine_character_head.py": "998376234895963b794b29a302866683b2cdc1c19623c15ea7194e04619accb5",
     "refine_eye_margins.py": "b37cdd86008d69a107163a6cdf45aa80ee8069b4a49cb453da54d9d4ab149718",
     "refine_eye_optics.py": "719ac140980abcc4461ef5cb4384eb5c94b5248d9cda8149f57a86eaae7e22f5",
@@ -256,7 +259,7 @@
     "refine_minerals.py": "a3bc6d0647e83058d89afdaecf5d23c508b2b17ec12731438efdb74e515cc932",
     "refine_skin_surface.py": "6055d5cbcfb953e6b7653cce7e86a00aa77ddfcc7ec0e116002fca6975262b4a",
     "render_views.py": "36f76adc43ec9aacaa536f8b327b5dd024effc76e3b0557c7aa266128fa2e1f7",
-    "ResumeTomorrow.md": "3a79688c00f47d65d2018d38f524e527496c043f357ac2c2a86680512b90b610",
+    "ResumeTomorrow.md": "07d6b6a0e4d762a6ebd137d39c17b50d8dc10089153e1c5dd4a9209bece872b9",
     "settle_cotton.py": "6b6ba615a4adba5145266174bc31cf5ea23318c1857a962fa766c0c94648e68d",
     "settle_jacket.py": "b017f2c99c1e9eabe1d9baff3f6e5afba3d85b138b3d798dc4a491fc5c7f9649",
     "source-assets/facial-targets/caucasian-male-young.target": "70e228ba7164737dae664454394536fc5935fa48d333c1a97d77e2dc6eacc5f5",
@@ -291,8 +294,8 @@
     "textures/sandstone_blocks_08_diff_4k.jpg": "d1a39585a84abe779ca252fe269b880837e6dd3805298d5b470f75c90afe5293",
     "textures/sandstone_blocks_08_disp_4k.jpg": "3db51669487d6312bfa52621783ab308ebca3ddbd23b061e220cee69847a768c",
     "textures/sandstone_blocks_08_rough_4k.jpg": "e395bdfea1536ddf3a8c97e51b0861270dc75dea722b22633b1cebd4c31ec63a",
-    "verify_scene.py": "7bdd3b9f60ee4c4893cdf27e3ab8b380f95fbeeaea1dfec776904e6cf688882b",
-    "VisualReview.md": "1436d84d1e7b5a53b2fcc89e1f2623a577a2b0f3159f7b90cf43f7e13e33e0bd",
+    "verify_scene.py": "a9fd67ea306b81496cdfd9815809183f89de9acfb5599c5e9abe40c9b1ee3fcb",
+    "VisualReview.md": "f8d0a38ff48f3513bb63183ddfa6c526fe8e56a271859051133932fc17132582",
     "textures/broadleaf/island_tree_01_branches_diff_2k.png": "fcfaaa1262cb8f31327ca084e6f8d69cda0b6af0d1f065a68c5a47b906ec02ff",
     "textures/broadleaf/island_tree_01_branches_nor_gl_2k.png": "2ee3ff83fdf8f01cd9d26d5c4665b866bf69f2557e02582577f23d6d007f9c78",
     "textures/broadleaf/island_tree_01_branches_rough_2k.png": "e6d3c688b07dea15344672516433d7ba681727f5149c8be446dc1a5bbed9afdc",
@@ -309,8 +312,8 @@
     "source-assets/facial-targets.json": "c42ca3a63a816d7e1b4b49cb3161ccb0ce31eb18fc76d0167971627e9cb926a9"
   },
   "render_log": {
-    "path": "C:\\Users\\reali\\Documents\\SaaS\\Oddswell\\client\\OddsWell\\Saved\\NextTen20260912\\epidermal-final-views.log",
-    "sha256": "78d41100a1a73ed99321fc8aa22798eb472bf679cae4243d5428cefb3beb70f7"
+    "path": "C:\\Users\\reali\\Documents\\SaaS\\Oddswell\\client\\OddsWell\\Saved\\NextTen20260912\\brow-groom-final-views.log",
+    "sha256": "61003ed5a3b6ca934f841d8c2458311badbad0a8bc9f2bdda5966f8357039ccc"
   },
   "preview_iterations": [
     {
@@ -633,9 +636,23 @@
   "original_source_bytes_preserved": true,
   "runtime_map_modified": false,
   "runtime_character_modified": false,
-  "visual_review": "Continuing from `63cfd9a`, the retained skin texture now has a separate fine pore-relief layer. Hand-specific fields follow the original anatomical joints for crease relief and restrained color variation. A small editable vascular shape control adds back-of-hand definition with matching subdued pigment. Ten closed nail-fold surfaces follow the actual skin beside the proximal nail edges and inherit the original skin UVs. Face and hand scattering/specular response have been adjusted in the native materials.",
-  "body_detail_review": "Front, profile and hand studies were rendered, including a closer hand inspection. The first view did not establish whether the small crease detail was seated correctly, so the macro view was used to inspect it before adding restrained vascular definition. The saved-scene checks retain the original nail-plate clearance and require ten closed, outward nail folds seated partly into the skin. Maximum vascular relief is about 0.192 mm; fold vertices range from about 0.095 mm beneath to 0.185 mm above the hand surface. Pore relief remains a procedural shader layer over the unchanged photographic color map; it is not a scanned displacement map or a claim of photographic realism.",
-  "remaining": "The full human-realism goal remains active. Fine hand and skin cues are improved, but facial expression, sparse brows and broad cloth folds still make the figure look synthetic. Next develop more natural brow/eyelid presentation and facial expression, then continue garment surface refinement and whole-figure review. Architecture/retail variety and planting remain after human acceptance. Preserve the editable native source and original licenses; this checkpoint changes offline art, not a runtime character or animation rig.",
+  "visual_review": "Continuing from `0215059`, the brows now use a wider, tapered distribution of individually fitted strands with varied length, lean, lift and brown tones. A separate editable resting-eyelid control gives a small asymmetric upper-lid lift. Eyelashes and lower wet margins are regenerated against the changed facial surface. The retained anatomical facial controls, skin texture and fitted neck remain intact.",
+  "body_detail_review": "Native front, profile and whole-figure studies were compared. The first brow-only study softened the narrow stripe-like appearance. The first eyelid test was rejected because a shape key initialized from the mixed face duplicated existing facial changes. The corrected control explicitly starts from Basis and adds only local vertical eyelid displacement; both its generator and cold verifier reject larger or nonvertical changes. The retained maximum control lift is about 0.648 mm. Two brows retain 650 tapered strands each; every strand point is checked against the facial surface. These checks establish fitting and bounded edits, not final realism.",
+  "remaining": "The human-realism goal remains active. Brow/eyelid presentation is improved, but the figure still needs whole-body visual refinement, especially broad garment fold transitions and overly simple footwear surfaces. Next address those larger remaining body cues and reassess the complete character against the original concept, including face/skin quality. Architecture/retail variety and planting follow human acceptance. This is editable offline Blender art, with no runtime or animation-rig claim.",
+  "brow_groom_studies": [
+    {
+      "log": "brow-groom-study.log",
+      "sha256": "906de0540846304fcc3b7a1a1d1347e0aacf8dee2a1fe2d344e9367a972962f8"
+    },
+    {
+      "log": "brow-groom-study2.log",
+      "sha256": "0041a9502d684f5fafebc7d4c244a9a016f4d7a12f557b2233135508f0753c59"
+    },
+    {
+      "log": "brow-groom-study3.log",
+      "sha256": "b5042c7778dff2826f05b1c4af53f3773eb0722727229d4ad396d933762b4ff7"
+    }
+  ],
   "epidermal_studies": [
     {
       "log": "epidermal-study.log",

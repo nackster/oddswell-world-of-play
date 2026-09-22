@@ -544,6 +544,7 @@ exec(compile((ROOT/'refine_character_head.py').read_text(encoding='utf-8'),str(R
 exec(compile((ROOT/'refine_face_character.py').read_text(encoding='utf-8'),str(ROOT/'refine_face_character.py'),'exec'))
 exec(compile((ROOT/'refine_eye_margins.py').read_text(encoding='utf-8'),str(ROOT/'refine_eye_margins.py'),'exec'))
 exec(compile((ROOT/'refine_eye_optics.py').read_text(encoding='utf-8'),str(ROOT/'refine_eye_optics.py'),'exec'))
+exec(compile((ROOT/'refine_brow_groom.py').read_text(encoding='utf-8'),str(ROOT/'refine_brow_groom.py'),'exec'))
 exec(compile((ROOT/'refine_hands.py').read_text(encoding='utf-8'),str(ROOT/'refine_hands.py'),'exec'))
 exec(compile((ROOT/'refine_skin_surface.py').read_text(encoding='utf-8'),str(ROOT/'refine_skin_surface.py'),'exec'))
 exec(compile((ROOT/'refine_fabrics.py').read_text(encoding='utf-8'),str(ROOT/'refine_fabrics.py'),'exec'))

@@ -47,8 +47,13 @@ for key in head_keys:
         if vertex.co.z<1.605:assert delta<.000001,'Facial study moved the fitted neck base'
         head_deltas.append(delta*key.value)
 assert .001<max(head_deltas)<.035,'Missing or excessive facial adjustment'
+assert scene.get('brow_groom_refinement') and 'Resting eyelid openness' in head_keys
+expression_delta=[a.co-b.co for a,b in zip(head_keys['Resting eyelid openness'].data,head_keys['Basis'].data)]
+assert 0<max(v.length for v in expression_delta)<.0007,'Eyelid control stacked other facial shapes'
+assert all(abs(v.x)<.000001 and abs(v.y)<.000001 and v.z>=0 for v in expression_delta)
 face_surface=BVHTree.FromObject(head,bpy.context.evaluated_depsgraph_get())
 for brow in (obj for obj in scene.objects if obj.name.startswith('Character | eyebrow ')):
+    assert len(brow.data.splines)==650 and len(brow.data.materials)==3,'Incomplete individual brow groom'
     transform=head.matrix_world.inverted()@brow.matrix_world
     for spline in brow.data.splines:
         for point in spline.points:
@@ -333,6 +338,8 @@ result['maximum_lace_eyelet_gap_m']=eyelet_gap
 result['minimum_tongue_surface_clearance_m']=min(tongue_clearance)
 result['facial_targets']=facial_targets
 result['eyelash_strands']=scene['eyelash_strands']
+result['individual_brow_strands']=1300
+result['maximum_resting_eyelid_lift_m']=max(v.length for v in expression_delta)
 result['cotton_drape_frames']=scene['cotton_drape_frames']
 result['jacket_drape_frames']=scene['jacket_drape_frames']
 result['jacket_drape_controls']=scene['jacket_drape_controls']

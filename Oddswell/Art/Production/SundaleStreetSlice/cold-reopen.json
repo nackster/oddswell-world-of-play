@@ -45,6 +45,8 @@
     "r-eye-height2-decr.target": 0.45
   },
   "eyelash_strands": 92,
+  "individual_brow_strands": 1300,
+  "maximum_resting_eyelid_lift_m": 0.0006480216979980469,
   "cotton_drape_frames": 40,
   "jacket_drape_frames": 45,
   "jacket_drape_controls": 14490,
@@ -79,5 +81,5 @@
     "head-rectangular.target": 0.3
   },
   "maximum_weighted_head_target_displacement_m": 0.03299465895345445,
-  "retained_head_shape_keys": 5
+  "retained_head_shape_keys": 6
 }
