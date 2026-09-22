@@ -1,4 +1,6 @@
 ---
+
+**Eye and skin development:** Continuing from `3786385`, the eyes now have a continuous closed surface with transparent corneal zones over recessed iris bowls and pupil surfaces. Native comparisons led to smaller pupils and brighter iris pigment after the first refractive study looked too dark. Two fine lower eyelid margins follow the visible skin/eye boundary. Skin relief is finer and its subsurface scale is reduced over the unchanged source color map. The full human-realism goal remains active. The face still feels generic and the skin too uniform; the existing hand close-ups still show soft knuckles and insufficient tendon/nail detail. Next develop hand surface anatomy and facial individuality, continue judging garment fold quality, and review the whole figure against the original concept. Architectural/retail variety and planting realism follow human acceptance. This is an editable native Blender study, not a runtime update or final-art approval.
 tags:
   - development
   - plan

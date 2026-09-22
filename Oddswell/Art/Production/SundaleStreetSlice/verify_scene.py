@@ -4,6 +4,8 @@ import bmesh
 import json
 import sys
 from pathlib import Path
+from mathutils import Vector
+from mathutils.bvhtree import BVHTree
 
 ROOT=Path(__file__).resolve().parent
 bpy.ops.wm.open_mainfile(filepath=str(ROOT/'OddsWell_Sundale_StreetSlice.blend'))
@@ -38,12 +40,36 @@ head_boundary_edges=sum(edge.is_boundary for edge in bm.edges)
 assert head_boundary_edges==0
 assert all(edge.is_manifold for edge in bm.edges),'Non-manifold anatomical head'
 bm.free()
+assert scene.get('optical_eye_study'), 'Missing cornea/iris development'
+optical_clearances=[]
 for side in ('l','r'):
     eye=bpy.data.objects.get('Character | eye '+side)
     assert eye is not None and bpy.data.objects.get('Character | iris '+side) and bpy.data.objects.get('Character | pupil '+side)
     bm=bmesh.new();bm.from_mesh(eye.data)
     assert all(edge.is_manifold for edge in bm.edges),'Open eyeball surface'
+    assert bm.calc_volume(signed=True)>0,'Inverted optical eye'
     bm.free()
+    cornea=eye.data.materials.get('Character | transparent cornea')
+    assert cornea and cornea.node_tree.nodes.get('Principled BSDF').inputs['Transmission Weight'].default_value==1
+    surface=BVHTree.FromObject(eye,bpy.context.evaluated_depsgraph_get())
+    for name in ('iris','pupil'):
+        obj=bpy.data.objects['Character | '+name+' '+side]
+        transform=eye.matrix_world.inverted()@obj.matrix_world
+        for v in obj.data.vertices:
+            point=transform@v.co
+            hit,normal,index,distance=surface.ray_cast(point,Vector((0,1,0)),.01)
+            assert hit is not None and distance>.0003,'Pigment intersects corneal surface'
+            assert eye.data.polygons[index].material_index==1,'Opaque sclera covers iris/pupil'
+            optical_clearances.append(distance)
+    wet=bpy.data.objects.get('Character | lower wet margin '+side)
+    assert wet and len(wet.data.splines[0].points)>8,'Missing lower eyelid tissue'
+    skin_surface=BVHTree.FromObject(head,bpy.context.evaluated_depsgraph_get())
+    transform=head.matrix_world.inverted()@wet.matrix_world
+    points=[transform@Vector(p.co[:3]) for p in wet.data.splines[0].points]
+    assert max((b-a).length for a,b in zip(points,points[1:]))<.002,'Discontinuous lower eyelid margin'
+    for point in points:
+        hit,normal,_,distance=skin_surface.find_nearest(point)
+        assert distance<.0002 and (point-hit).dot(normal)>0,'Detached or buried eyelid tissue'
 assert all(bpy.data.objects.get('Character | eyebrow '+str(side)) for side in (-1,1))
 facial_targets=json.loads(scene.get('facial_targets','{}'))
 assert len(facial_targets)==3,'Missing retained anatomical face adjustments'
@@ -115,8 +141,6 @@ for name in ('left hand','right hand'):
     assert all(edge.is_manifold or edge.is_boundary for edge in bm.edges)
     hand_openings[name]=len(boundary)
     bm.free()
-from mathutils.bvhtree import BVHTree
-from mathutils import Vector
 coat_surface=BVHTree.FromObject(coat,depsgraph)
 collar_surface=BVHTree.FromObject(bpy.data.objects['Character | standing collar'],depsgraph)
 assert scene.get('fitted_jacket_fastening')
@@ -238,5 +262,8 @@ for vertex in pants[0].evaluated_get(depsgraph).data.vertices:
     if distance is not None and distance<.025 and vertex.co.z<.76:clearance.append((vertex.co-hit).dot(normal))
 assert clearance and min(clearance)>-.0015,('Cloth intersects exposed thigh',min(clearance))
 result['minimum_cloth_thigh_clearance_m']=min(clearance)
+result['minimum_pigment_cornea_clearance_m']=min(optical_clearances)
+result['optical_cornea_surfaces']=2
+result['lower_wet_eyelid_margins']=2
 if '--draft' not in sys.argv:(ROOT/'cold-reopen.json').write_text(json.dumps(result,indent=2)+'\n',encoding='utf-8')
 print('ODDSWELL_STREET_SLICE_COLD_CHECK_PASS',json.dumps(result))

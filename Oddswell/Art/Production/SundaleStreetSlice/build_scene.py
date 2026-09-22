@@ -535,6 +535,7 @@ skin.node_tree.nodes.get('Principled BSDF').inputs['Subsurface Weight'].default_
 exec(compile((ROOT/'develop_character_landscape.py').read_text(encoding='utf-8'),str(ROOT/'develop_character_landscape.py'),'exec'))
 exec(compile((ROOT/'refine_character_head.py').read_text(encoding='utf-8'),str(ROOT/'refine_character_head.py'),'exec'))
 exec(compile((ROOT/'refine_eye_margins.py').read_text(encoding='utf-8'),str(ROOT/'refine_eye_margins.py'),'exec'))
+exec(compile((ROOT/'refine_eye_optics.py').read_text(encoding='utf-8'),str(ROOT/'refine_eye_optics.py'),'exec'))
 exec(compile((ROOT/'refine_fabrics.py').read_text(encoding='utf-8'),str(ROOT/'refine_fabrics.py'),'exec'))
 exec(compile((ROOT/'settle_jacket.py').read_text(encoding='utf-8'),str(ROOT/'settle_jacket.py'),'exec'))
 

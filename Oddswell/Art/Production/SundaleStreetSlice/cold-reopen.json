@@ -11,7 +11,7 @@
   "mature_tree_instances": 13,
   "shared_tree_meshes": 3,
   "mesh_objects": 4050,
-  "native_scene_objects": 4719,
+  "native_scene_objects": 4721,
   "runtime_claim": false,
   "shorts_boundary_edges": 240,
   "shorts_openings": 3,
@@ -56,5 +56,8 @@
   "cotton_drape_maximum_delta_m": 0.0529472243832398,
   "calf_hair_strands": 2600,
   "anatomical_finger_articulation": true,
-  "minimum_cloth_thigh_clearance_m": 0.0034853005781769753
+  "minimum_cloth_thigh_clearance_m": 0.0034853005781769753,
+  "minimum_pigment_cornea_clearance_m": 0.0003012996166944504,
+  "optical_cornea_surfaces": 2,
+  "lower_wet_eyelid_margins": 2
 }
