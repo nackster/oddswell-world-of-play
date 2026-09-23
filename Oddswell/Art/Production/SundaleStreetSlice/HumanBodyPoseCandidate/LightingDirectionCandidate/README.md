@@ -8,4 +8,6 @@ This lighting also exposes the character gap. The jacket back and rounded sleeve
 
 The [profile review](HumanProfileReview.md) records a later native profile render and isolated arm/stripe studies. It confirms that the sleeve stripe is already torn-looking in this retained scene; naive panel projection produces a clean side view but breaks or doubles the stripe from behind. The retained Blender scene stays unchanged while the connected jacket pattern and joint-aware pose are redesigned.
 
+A separate [continuous signal-stripe candidate](SignalStripeCandidate/README.md) replaces the visible floating-panel graphic with a material band on the connected jacket. It improves OddsWell recognition in profile, full rear and gameplay renders, while leaving the larger character-modeling work open.
+
 A fresh cold reopen of this lighting scene passes with 31 packed maps, ten cameras, connected jacket and shorts, three shorts openings, 2.48 mm sampled shorts-to-thigh clearance, 4.55 mm free-jacket-to-support clearance and the planted right sole at 51 mm. These static checks do not establish photographic realism, cloth motion compatibility or final scene acceptance.
