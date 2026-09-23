@@ -12,6 +12,8 @@ September 23 body checkpoint: a separate editable pose candidate under `HumanBod
 
 September 23 shorts continuation: close garment review rejected a superficial hip taper, projected patch pockets and rigid fly facing. A `t**2` transition sharpened the rear crotch and was rejected. A separate 44 mm gusset mesh under `HumanBodyPoseCandidate/ShortsGussetCandidate/` passes static geometry checks and rounds the rear saddle modestly, but the upper front and left inseam still read as synthetic. The goal remains active; do not promote this to final art or runtime.
 
+September 23 further shorts continuation: `HumanBodyPoseCandidate/ShortsSculptCandidate/` retains a direct mesh-sculpt successor to the gusset. The left inseam bunch is less severe and the front upper thigh has slight volume. A subsequent applied pocket/fly line experiment was rejected as floating detail. Four native renders and a cold reopen support this as an intermediate shape study, not a human-realism acceptance. The upper shorts panel and whole figure still need substantial development.
+
 Current progress after `51106fa`: the shorts outer legs have a restrained taper with per-control anatomical clearance correction. The saved scene retains more than 2 mm exposed-thigh clearance. Seat/crotch cloth quality, face and walking weight remain open.
 
 Current progress after `e0d8edf`: fitted foxing and outsole details plus a native cropped scalp hair layer improve the shoes and head. A shorts-narrowing trial was rejected after it intersected the thigh; the shorts pattern and collision fit remain open. Whole-body realism and reference acceptance remain unfinished.

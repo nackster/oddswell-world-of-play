@@ -11,3 +11,5 @@ The parent `verify_scene.py` accepts the pose-aware head center and rotated eye 
 `PatternReview/ShortsPatternReview.md` retains close front/rear native views and the rejected hip, pocket and fly studies. It identifies the shared hip-to-leg saddle as the next garment mesh to rebuild; the posed Blend is unchanged.
 
 `ShortsGussetCandidate/` now retains a separate 44 mm saddle-gusset topology study with close and full-body renders. It keeps this pose scene's face, hands, jacket and footwear intact. The gusset candidate has less thigh clearance and still falls short of the visual goal, so this parent remains the unchanged verified pose reference.
+
+`ShortsSculptCandidate/` continues from that gusset by softening the concentrated left inseam fold and subtly shaping the front thigh. Its close and whole-figure renders still show an overly simple upper shorts panel. The separate candidate passes static checks with 2.48 mm sampled thigh clearance; it is not final human art.

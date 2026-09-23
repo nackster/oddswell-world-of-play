@@ -2957,6 +2957,7 @@ The preserved Phase 1L.5aq report identity is `4,027` bytes/SHA `3E14CFABBD0FC4C
 - **Boundary:** no replacement of accepted derivatives, animation repair, Unreal import, runtime input, or final-art claim. Next visual pass should model garment compression and shorts fit before architecture/retail/planting expansion.
 - **Close pattern review:** native front/rear garment close-ups in `HumanBodyPoseCandidate/PatternReview/` show a flat upper-front tube and concentrated rear saddle folds. Isolated hip taper, patch-pocket and fly-facing trials were rejected. Rebuild the actual hip-to-leg control-mesh transition before adding construction trim.
 - **Gusset follow-up:** `HumanBodyPoseCandidate/ShortsGussetCandidate/` retains an additive 44 mm crotch-gusset mesh and native close/full-body renders. Static verification passes with 2.30 mm sampled thigh margin and three garment openings. The rear is modestly rounder, but the upper front and left inseam still miss the visual target; retain as a candidate, not source/runtime replacement.
+- **Shorts sculpt follow-up:** `HumanBodyPoseCandidate/ShortsSculptCandidate/` relaxes the left inseam fold and adds shallow front thigh shape in the mesh. Four native renders and a fresh cold reopen pass with 2.48 mm sampled margin. Projected pocket/fly lines were rejected as floating detail. The upper panel and whole human remain visually synthetic, so the goal stays active; next develop real panel construction and cloth behavior before architecture/retail and planting promotion.
 
 ## Future shared simulation layer
 
