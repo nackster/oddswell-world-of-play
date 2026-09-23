@@ -10,6 +10,8 @@ Work sequence: develop the weight-bearing pose; improve garment drape through na
 
 September 23 body checkpoint: a separate editable pose candidate under `HumanBodyPoseCandidate/` shifts the upper body over the planted foot, introduces shoulder counter-rotation and opposing arm swing, and lowers/tapers the jacket shoulder line. Its front/rear renders and cold reopen pass are retained without changing the exact source scene used by the neutral-bind and walk proofs. Visual review still rejects final realism: the jacket shoulders and sleeves remain too smooth, and the shorts seat/crotch remain broad and blocky. Continue with those visible garment/body shapes before architecture or runtime promotion.
 
+September 23 shorts continuation: close garment review rejected a superficial hip taper, projected patch pockets and rigid fly facing. A `t**2` transition sharpened the rear crotch and was rejected. A separate 44 mm gusset mesh under `HumanBodyPoseCandidate/ShortsGussetCandidate/` passes static geometry checks and rounds the rear saddle modestly, but the upper front and left inseam still read as synthetic. The goal remains active; do not promote this to final art or runtime.
+
 Current progress after `51106fa`: the shorts outer legs have a restrained taper with per-control anatomical clearance correction. The saved scene retains more than 2 mm exposed-thigh clearance. Seat/crotch cloth quality, face and walking weight remain open.
 
 Current progress after `e0d8edf`: fitted foxing and outsole details plus a native cropped scalp hair layer improve the shoes and head. A shorts-narrowing trial was rejected after it intersected the thigh; the shorts pattern and collision fit remain open. Whole-body realism and reference acceptance remain unfinished.

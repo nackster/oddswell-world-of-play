@@ -2955,6 +2955,8 @@ The preserved Phase 1L.5aq report identity is `4,027` bytes/SHA `3E14CFABBD0FC4C
 - **Source custody:** retained street-slice Blend SHA-256 `0F398839...AFC6127` remains unchanged. `HumanBodyPoseCandidate/` holds a separate posed Blend and reproducible builder, so the neutral-bind and blocked walk proofs retain their exact source input.
 - **Visible change:** upper-body lean and turn over the planted right foot, opposing arm gesture, and a narrower/lower outer jacket shoulder. The front still shows smooth sleeves and a broad shorts seat/crotch, so the visual model does not yet match the first concept.
 - **Boundary:** no replacement of accepted derivatives, animation repair, Unreal import, runtime input, or final-art claim. Next visual pass should model garment compression and shorts fit before architecture/retail/planting expansion.
+- **Close pattern review:** native front/rear garment close-ups in `HumanBodyPoseCandidate/PatternReview/` show a flat upper-front tube and concentrated rear saddle folds. Isolated hip taper, patch-pocket and fly-facing trials were rejected. Rebuild the actual hip-to-leg control-mesh transition before adding construction trim.
+- **Gusset follow-up:** `HumanBodyPoseCandidate/ShortsGussetCandidate/` retains an additive 44 mm crotch-gusset mesh and native close/full-body renders. Static verification passes with 2.30 mm sampled thigh margin and three garment openings. The rear is modestly rounder, but the upper front and left inseam still miss the visual target; retain as a candidate, not source/runtime replacement.
 
 ## Future shared simulation layer
 
