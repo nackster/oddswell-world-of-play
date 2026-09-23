@@ -1556,6 +1556,10 @@ Layer 2 removes only Debug, NonUFS, UFS, game-executable, and game-PDB cross-run
 
 **`COMPLETE LOCALLY — ONE ADDITIVE BODY-ONLY DERIVATIVE / ACCEPTED TWELVE-BONE NEUTRAL BIND; NO UNREAL IMPORT`.** Four exact refined anatomy meshes are copied without source mutation and combined with a clearly marked low-poly neutral-bind bridge; clothing, footwear, and offline fitting/collision aids are excluded. The output is exactly one `58,324`-vertex body mesh with deterministic semantic identity `91AAB962...B8CF08`, exact DEC-034 `1.80 m` bounds, exact DEC-035 mapping, normalized weights, `0` unweighted/non-normalized vertices, and `0.000000241 m` maximum neutral-bind drift. Existing identity presets/tones, four animations, runtime assets, package inputs, collision/gameplay authority, final-art, performance, and readiness remain unchanged. See [[Development/Reports/Phase 1L5bv Refined Sundale Human Body Derivative Neutral Bind Proof]].
 
+### Phase 1L.5bw refined Sundale starter off-white top neutral-bind proof
+
+**`COMPLETE LOCALLY — ONE starter_offwhite_top DERIVATIVE AROUND THE ACCEPTED BODY; NO UNREAL IMPORT`.** The smallest native open torso envelope proves exact item identity, one material slot, DEC-034 hip-to-shoulder coverage, `0` body intersections, bidirectional vertex-sampled clearance `0.042323500 m` within fail-closed `[0.009, 0.25] m`, normalized shared-skeleton weights, and `0.0 m` neutral drift while retaining the exact 1L.5bv body and twelve-bone/DEC-035 contract. This is not continuous triangle-distance proof. Bottom, jacket, Actions, FBX/UAsset/runtime/package inputs, gameplay authority, finished materials, final art, performance, and readiness remain unchanged. See [[Development/Reports/Phase 1L5bw Refined Sundale Starter Off White Top Neutral Bind Proof]].
+
 ### Exit evidence
 
 The complete loop is visually coherent, readable, accessible at the approved baseline, and within measured PC performance targets. Large catalogs and unseen districts remain out of scope.
