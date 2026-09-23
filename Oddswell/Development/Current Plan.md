@@ -2909,6 +2909,15 @@ The preserved Phase 1L.5aq report identity is `4,027` bytes/SHA `3E14CFABBD0FC4C
 - **Boundary:** Unreal import/UAsset, runtime/client/map/config/package-input, movement/capsule/camera/replication/persistence, economy/wager/simulator/brain, new source/rig/bones/Actions/geometry/clothing, external/paid input, final art, and readiness claims remain `0`.
 - **Next:** Unreal import requires a separate Scope Director gate; this phase stops at deterministic FBX custody. See [[Development/Reports/Phase 1L5bs Deterministic Eight File Character FBX Export and Source Custody Proof]].
 
+### Phase 1L.5bu refined Sundale human-to-runtime shared-skeleton handoff contract status
+
+- **Status:** `COMPLETE LOCALLY — INVENTORY AND FAIL-CLOSED HANDOFF CONTRACT ONLY; NO MESH OR RUNTIME CHANGE`.
+- **Exact source:** the retained `635,844,146`-byte refined street-slice blend is SHA-256 `0F3988395DBE747A66738D9D7BA1D86A14D2531FCF2A5592C471A01B3AFC6127`; delivery and cold-reopen evidence are `378189DD...A6386C` and `8639E91B...B1386`.
+- **Measured bridge gap:** cold-open inspection found `307` Character objects / `229` meshes, but armatures, Actions, armature modifiers, runtime-bone weights, and LOD objects are all `0`. Only `14/229` meshes carry UVs; starter top is absent; shorts and the main jacket shell have no UV or skeletal weights; the sole collision object is a hidden offline cloth aid.
+- **Retained authority:** DEC-034 exact `1.80 m` landmarks, eight preset IDs/four tones, four body/clothing partitions, the DEC-035 twelve-bone mapping, accepted walk/run/jump/land clips with zero root translation, and existing `ACharacter` movement/capsule/camera/replication/save authority remain unchanged.
+- **Contract:** `Oddswell/Art/Production/SundaleStreetSlice/runtime_shared_skeleton_handoff_contract.json` records exact source/contract hashes and fail-closed body/top/bottom/jacket, material, UV, rig, weight, Action, LOD, and collision gates.
+- **Boundary and next:** no source mesh, import, animation, runtime, package input, final-art, performance, or readiness claim changes. A later non-destructive derivative partition/bind proof requires a separate Scope Director gate. See [[Development/Reports/Phase 1L5bu Refined Sundale Human to Runtime Shared Skeleton Handoff Contract]].
+
 ## Future shared simulation layer
 
 Athlete Life Brain v4 is the default for newly generated train, rest, recover, and socialize decisions. It adds only one bounded, one-decision, same-season recent-scoring response above v3's routine behavior. V1-v4 history remains immutable. Expand into longer memory, traits, relationships, nightlife, media, discipline, career decisions, and other sports only after each smaller input passes its own engineering evaluation.
