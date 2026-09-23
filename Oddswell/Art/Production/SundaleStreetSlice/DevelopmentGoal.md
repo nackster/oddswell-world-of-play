@@ -8,6 +8,8 @@ Acceptance requires credible adult proportions and weight through the hips, knee
 
 Work sequence: develop the weight-bearing pose; improve garment drape through native cloth studies; refine hands, footwear and facial detail; review the entire figure under the scene lighting; then continue architectural/retail variety and planting realism. Preserve editable source, original asset bytes, license records and verified checkpoints. Keep the goal active until the visual criteria are actually met.
 
+September 23 body checkpoint: a separate editable pose candidate under `HumanBodyPoseCandidate/` shifts the upper body over the planted foot, introduces shoulder counter-rotation and opposing arm swing, and lowers/tapers the jacket shoulder line. Its front/rear renders and cold reopen pass are retained without changing the exact source scene used by the neutral-bind and walk proofs. Visual review still rejects final realism: the jacket shoulders and sleeves remain too smooth, and the shorts seat/crotch remain broad and blocky. Continue with those visible garment/body shapes before architecture or runtime promotion.
+
 Current progress after `51106fa`: the shorts outer legs have a restrained taper with per-control anatomical clearance correction. The saved scene retains more than 2 mm exposed-thigh clearance. Seat/crotch cloth quality, face and walking weight remain open.
 
 Current progress after `e0d8edf`: fitted foxing and outsole details plus a native cropped scalp hair layer improve the shoes and head. A shorts-narrowing trial was rejected after it intersected the thigh; the shorts pattern and collision fit remain open. Whole-body realism and reference acceptance remain unfinished.

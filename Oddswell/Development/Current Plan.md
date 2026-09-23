@@ -2949,6 +2949,13 @@ The preserved Phase 1L.5aq report identity is `4,027` bytes/SHA `3E14CFABBD0FC4C
 - The diagnostic stopped with exit `1`; no accepted source, weights, action, threshold, or runtime input was repaired, no derivative Blend was written, and later frames/frozen suites were not run.
 - This is failure evidence, not deformation, runtime, final-art, performance, readiness, or Phase 6 credit. See [[Development/Reports/Phase 1L5bz Refined Starter Outfit Walk Deformation Blocked Evidence]].
 
+### Sundale visual human body pose candidate — September 23, 2026
+
+- **Status:** editable offline visual candidate, with native front/rear renders and a fresh cold reopen; the human-realism goal remains active.
+- **Source custody:** retained street-slice Blend SHA-256 `0F398839...AFC6127` remains unchanged. `HumanBodyPoseCandidate/` holds a separate posed Blend and reproducible builder, so the neutral-bind and blocked walk proofs retain their exact source input.
+- **Visible change:** upper-body lean and turn over the planted right foot, opposing arm gesture, and a narrower/lower outer jacket shoulder. The front still shows smooth sleeves and a broad shorts seat/crotch, so the visual model does not yet match the first concept.
+- **Boundary:** no replacement of accepted derivatives, animation repair, Unreal import, runtime input, or final-art claim. Next visual pass should model garment compression and shorts fit before architecture/retail/planting expansion.
+
 ## Future shared simulation layer
 
 Athlete Life Brain v4 is the default for newly generated train, rest, recover, and socialize decisions. It adds only one bounded, one-decision, same-season recent-scoring response above v3's routine behavior. V1-v4 history remains immutable. Expand into longer memory, traits, relationships, nightlife, media, discipline, career decisions, and other sports only after each smaller input passes its own engineering evaluation.

@@ -138,6 +138,8 @@ The tree comparison led to adapting CC0 native branching and leaf geometry inste
 
 ## What remains below the reference
 
+The September 23 `HumanBodyPoseCandidate` keeps the full body and garment details aligned while shifting the torso toward the stance foot, adding contralateral arm swing and reducing the shoulder cap. Rear and front native renders show a modest improvement over the straight upper body. It is not a photoreal character: the jacket drape is still even, the upper arms lack cloth compression, and the shorts have a broad, flat front/seat silhouette. The exact retained source scene stays unchanged because later neutral-bind and blocked walk proofs are keyed to its hash.
+
 The reference has more natural garment drape, richer architectural variation and shop contents, subtler weathering, a more composed mixture of plants, and a more photographic finish. The current character is a static model and the scene is deliberately an offline art study. A successful render and geometric checks do not close those visual gaps.
 
 The next visible priorities are eyelid and eye detail, expression, further finger articulation and a weight-bearing knee/hip pose, cloth behavior at the rear inseam and shoulder seam, varied facade/window arrangements, more convincing retail contents, and less uniformly clean foreground surfaces. Paving scale is established, but wear and small color changes still need refinement. Broad-leaf geometry is now present; crown composition, color balance and selective pruning still need art direction against the reference.

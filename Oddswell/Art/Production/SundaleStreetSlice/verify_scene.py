@@ -2,6 +2,7 @@
 import bpy
 import bmesh
 import json
+import math
 import sys
 from pathlib import Path
 from mathutils import Vector
@@ -61,7 +62,7 @@ for brow in (obj for obj in scene.objects if obj.name.startswith('Character | ey
             assert distance<.001 and (position-hit).dot(normal)>0,'Detached or buried brow strand'
 surface_vertices={i for polygon in head.data.polygons for i in polygon.vertices}
 assert scene.get('human_head_refinement') and head.get('anatomical_source')
-assert surface_vertices and all(head.data.vertices[i].co.z>1.54 and abs(head.data.vertices[i].co.x+.75)<(.065 if head.data.vertices[i].co.z<1.59 else .15) for i in surface_vertices),'Head/neck crop extends outside collar'
+assert surface_vertices and all(head.data.vertices[i].co.z>1.54 and abs(head.data.vertices[i].co.x+.75-scene.get('upper_body_stance_lean_m',0))<(.065 if head.data.vertices[i].co.z<1.59 else .15) for i in surface_vertices),'Head/neck crop extends outside collar'
 bm=bmesh.new();bm.from_mesh(head.data)
 head_boundary_edges=sum(edge.is_boundary for edge in bm.edges)
 assert head_boundary_edges==0
@@ -84,7 +85,8 @@ for side in ('l','r'):
         transform=eye.matrix_world.inverted()@obj.matrix_world
         for v in obj.data.vertices:
             point=transform@v.co
-            hit,normal,index,distance=surface.ray_cast(point,Vector((0,1,0)),.01)
+            yaw=math.radians(scene.get('upper_body_yaw_deg',0))
+            hit,normal,index,distance=surface.ray_cast(point,Vector((-math.sin(yaw),math.cos(yaw),0)),.01)
             assert hit is not None and distance>.0003,'Pigment intersects corneal surface'
             assert eye.data.polygons[index].material_index==1,'Opaque sclera covers iris/pupil'
             optical_clearances.append(distance)
