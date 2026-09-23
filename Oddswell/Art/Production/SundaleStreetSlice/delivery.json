@@ -3,7 +3,7 @@
   "goal_status": "active",
   "delivery": "Editable native Blender scene and ten native renders; offline art study",
   "starting_checkpoint": "76ccb76",
-  "previous_checkpoint": "e0d8edf",
+  "previous_checkpoint": "51106fa",
   "evidence": {
     "source": "Native scene/garments/plant geometry, CC0 MakeHuman anatomical surfaces, six CC0 Poly Haven stone/bark texture maps and one CC0 photographed sky environment; adapted CC0 Jacaranda model with ten packed 2K maps",
     "reference": "../../Reviews/OddsWellStreetIdentityCandidate/OddsWell_Visual_Direction_Concept.png",
@@ -162,7 +162,9 @@
     "cotton_drape_maximum_delta_m": 0.0529472243832398,
     "calf_hair_strands": 2600,
     "anatomical_finger_articulation": true,
-    "minimum_cloth_thigh_clearance_m": 0.0034853005781769753,
+    "minimum_cloth_thigh_clearance_m": 0.003505186425172724,
+    "anatomical_short_leg_max_shift_m": 0.012000024465392238,
+    "short_leg_contact_corrections": 636,
     "minimum_pigment_cornea_clearance_m": 0.0003012996166944504,
     "optical_cornea_surfaces": 2,
     "lower_wet_eyelid_margins": 2,
@@ -188,59 +190,59 @@
     "StreetSlice_Gameplay.png": {
       "width": 1920,
       "height": 1080,
-      "sha256": "43867d166c4076b9b33e1d10f25efe5d35f53dfbfb5f2d45ada44e87804f951e"
+      "sha256": "37515d654efeb2de2028c3d17375ba74d888ba158e939357648a2e434367537b"
     },
     "StreetSlice_Court_and_Arena.png": {
       "width": 1600,
       "height": 900,
-      "sha256": "dcfa2ca2189798fb5eb59d297ba81012529b279c31bb9b1818135a0f3ef0655c"
+      "sha256": "778dac39215d7379571f2f20cd1eccd63d6e7fa22e14c27bf14ad1156966688b"
     },
     "StreetSlice_Architecture_Detail.png": {
       "width": 1600,
       "height": 900,
-      "sha256": "272cc3f6c5aaec7bd151a8005f44e4da04806b9cd05ad504d1e51a7a408edd9a"
+      "sha256": "959e45eb78a232714aa14d9f21b62142d4375522cc008bc4461a173bd4037190"
     },
     "StreetSlice_Character_Detail.png": {
       "width": 1000,
       "height": 1100,
-      "sha256": "cd4e8cd6190a1e62048892a50e97aa5368efd7a062df73e3815e07d9f6153616"
+      "sha256": "6f00315afd05e56eb46b98bbf2b9899d2f660295c7aaf89b315ad071fe1b63df"
     },
     "StreetSlice_Landscape_Detail.png": {
       "width": 1000,
       "height": 1100,
-      "sha256": "90d52904330375bb259fdfa792d42c9238666c3ec69ad1860ffdcad92a8a037a"
+      "sha256": "feb42edf13c29660224558eebcc405227149bb697a632920f92ebdf0e166666e"
     },
     "StreetSlice_Character_ThreeQuarter.png": {
       "width": 1000,
       "height": 1100,
-      "sha256": "3f0159e59f20ea133c4099a2d6471df13963da19a2ec08bdcbc0728db877fcd7"
+      "sha256": "3374a2122a2d1f53f4317c157e2ff15a28d59710de8f084ab92dafa6a56e74a1"
     },
     "StreetSlice_Head_Front.png": {
       "width": 1000,
       "height": 1100,
-      "sha256": "fa41cb7d56d2a3b378c61b4db5c6cab64f3cbab1cdd94185a024829ddc6a2458"
+      "sha256": "9489e2abaccdc128fc7bb4fb8d1b3134ec2fee744cdc92027296e3d4acc753dc"
     },
     "StreetSlice_Head_Profile.png": {
       "width": 1000,
       "height": 1100,
-      "sha256": "ee8dd5b8abe9e5dde643ff1206010aaa7eac3e5fa8b5183eb68760b13d123094"
+      "sha256": "a545f6b25aaf3113990a4e04631794ee7183fa68c59a157dfde7b7e9eb9da15a"
     },
     "StreetSlice_Hand_Left.png": {
       "width": 1000,
       "height": 1000,
-      "sha256": "0108aa4e59eee63ed63b01919ff5a6c425b40b6e0239c402ddd8b19f8baadc18"
+      "sha256": "f771f8eb9a8c9dec9ec937c034672d3360652c558e23c2f710c0521776268cc4"
     },
     "StreetSlice_Hand_Right.png": {
       "width": 1000,
       "height": 1000,
-      "sha256": "4880ab0c9d2c455edb4a6ad47987e6bc4be44def38319868d9e5a66bc8dd7b8b"
+      "sha256": "1bf043bc295de22d9e131a6642032ddcd2eca2cf10e1785051cdfbb862d72a03"
     }
   },
   "files_sha256": {
     "broadleaf_canopy.py": "f737b396c7c2e02415d6c6d7b9b21727a3ac450038e265a362c1a0263d3e9b3b",
-    "build_scene.py": "5859a55c085f5ead445de8f9aa2a3b9b7a0fe880e798bdcccdbe0943b5960012",
+    "build_scene.py": "6748c3f2a956bebda6321331846d19617365393cee83a1c43d7b275b35857592",
     "develop_character_landscape.py": "b41593dd4d05ec066de289fb36556d1b150bf4f7d45d93ed81ce535117d3fe55",
-    "DevelopmentGoal.md": "0391253477fa3b93e924dd2d229095bbb494eb13cdd90a9612a33017eefcbf25",
+    "DevelopmentGoal.md": "ea5d1a537287c7119924861dd553d7e5a982b0db998b412805440b3da13f145c",
     "fetch_broadleaf.py": "2b42dbc1c9b7a041008006ffb0f9a025927b3d3a8fbafbaf9508de9f5aabf399",
     "fetch_fabrics.py": "1108de70f7d2e1b2c271c476a4c46813b34f99911ed73a400cca163b0283de34",
     "fetch_face_targets.py": "fe55ed6049f8541ab199c862e14c7d3df41e1b96e569a91a48a15f64a303a634",
@@ -250,9 +252,9 @@
     "fetch_tree.py": "543452c80b83a56aad4062620b1adfc2677d6c0a2bdef8c7f87b74333fb409da",
     "inspect_details.py": "4389f327017cf2c03acc55831e1d1c7dd9ca17d2b02f0217747785dee12d77f1",
     "mature_trees.py": "9300020af31be8cbb731c4378668fd3a18c89cdbb026cae0a263ce2741a63f7a",
-    "OddsWell_Sundale_StreetSlice.blend": "a1c46fbbae7c40f523fed92cc5a01b3760682297ab114f50871cf4206fb101b3",
-    "README.md": "06ab12c79122ccb84a687e0383e12cdef7ba4051de62aaef7c34cd63833923a1",
-    "record_delivery.py": "69bbe32a70d3558333626fafd066ecf9ec2b60dd6ec9e2bff8d9676cb72201ae",
+    "OddsWell_Sundale_StreetSlice.blend": "0f3988395dbe747a66738d9d7ba1d86a14d2531fcf2a5592c471a01b3afc6127",
+    "README.md": "52007b4149aedd93348d95d9d42c1455881a22271e97f7ba47898dfb781aee0f",
+    "record_delivery.py": "33df265bc9492aee969c2448294bbc0c687cad756bf39b9e5e27c828ef434dcd",
     "refine_brow_groom.py": "500a1bda0122829acaa6ed068a2d060d28362b378abdf59871529e91fd5dc127",
     "refine_character_head.py": "998376234895963b794b29a302866683b2cdc1c19623c15ea7194e04619accb5",
     "refine_eye_margins.py": "b37cdd86008d69a107163a6cdf45aa80ee8069b4a49cb453da54d9d4ab149718",
@@ -263,10 +265,11 @@
     "refine_hands.py": "188759473b197cfc9b7a835f43990cd97c1b7713c1f1bdc132d89b93e0344734",
     "refine_minerals.py": "a3bc6d0647e83058d89afdaecf5d23c508b2b17ec12731438efdb74e515cc932",
     "refine_scalp.py": "a47c8b41d94df6d2e84a7e3e71176616b349932408116e860911a53752dd204a",
+    "refine_short_fit.py": "03afa695c7c59a1a9065cf466d2e18140b9cdc5fc785b2828c875ff1328c61b2",
     "refine_skin_surface.py": "6055d5cbcfb953e6b7653cce7e86a00aa77ddfcc7ec0e116002fca6975262b4a",
     "refine_sole.py": "43f41d90b026440c0741d0c353670c33c32426d969c758f8fa7c02e64bc64771",
     "render_views.py": "36f76adc43ec9aacaa536f8b327b5dd024effc76e3b0557c7aa266128fa2e1f7",
-    "ResumeTomorrow.md": "2722d94d6a16673794aa3bb49839b88f562165759c7a8e37797f53b0a33467b6",
+    "ResumeTomorrow.md": "d6751ce0594f580b901bedb75a4bb8bd143ce93cb20f8e483e1d454b00174ead",
     "settle_cotton.py": "6b6ba615a4adba5145266174bc31cf5ea23318c1857a962fa766c0c94648e68d",
     "settle_jacket.py": "b9eb0a94b8e717d56aab9102bd7f2ab0bba9ccc46b3e66ece82326b2b6e460d9",
     "source-assets/facial-targets/caucasian-male-young.target": "70e228ba7164737dae664454394536fc5935fa48d333c1a97d77e2dc6eacc5f5",
@@ -301,8 +304,8 @@
     "textures/sandstone_blocks_08_diff_4k.jpg": "d1a39585a84abe779ca252fe269b880837e6dd3805298d5b470f75c90afe5293",
     "textures/sandstone_blocks_08_disp_4k.jpg": "3db51669487d6312bfa52621783ab308ebca3ddbd23b061e220cee69847a768c",
     "textures/sandstone_blocks_08_rough_4k.jpg": "e395bdfea1536ddf3a8c97e51b0861270dc75dea722b22633b1cebd4c31ec63a",
-    "verify_scene.py": "66619e44c7265dbdc1d1e71fac3cc6e5212f7599a81843b4bb32dccd44817477",
-    "VisualReview.md": "d0e33a98747a541416b73e8f55ef72ad9223a60ef0830cbb612d86eca17d608b",
+    "verify_scene.py": "e6e59b3a04c1c69bb44344ef8c89303bfaedf5f72e5275cca1436a74f05cdc1a",
+    "VisualReview.md": "c0b6880b915946feeb6885c4641339d9f10f146ceb462152c8a852fe9ed4ed84",
     "textures/broadleaf/island_tree_01_branches_diff_2k.png": "fcfaaa1262cb8f31327ca084e6f8d69cda0b6af0d1f065a68c5a47b906ec02ff",
     "textures/broadleaf/island_tree_01_branches_nor_gl_2k.png": "2ee3ff83fdf8f01cd9d26d5c4665b866bf69f2557e02582577f23d6d007f9c78",
     "textures/broadleaf/island_tree_01_branches_rough_2k.png": "e6d3c688b07dea15344672516433d7ba681727f5149c8be446dc1a5bbed9afdc",
@@ -319,8 +322,8 @@
     "source-assets/facial-targets.json": "c42ca3a63a816d7e1b4b49cb3161ccb0ce31eb18fc76d0167971627e9cb926a9"
   },
   "render_log": {
-    "path": "C:\\Users\\reali\\Documents\\SaaS\\Oddswell\\client\\OddsWell\\Saved\\NextTen20260912\\sole-scalp-final-views.log",
-    "sha256": "e35d8b6039f72590a2cb3926f58f375295d21ae89d2e67c384e1ea0ee55ae3fe"
+    "path": "C:\\Users\\reali\\Documents\\SaaS\\Oddswell\\client\\OddsWell\\Saved\\NextTen20260912\\anatomical-short-final-views.log",
+    "sha256": "e3f34edc4f673aa43107ed537806339ae951e013c1ab9fd62bbaef355423ed6e"
   },
   "preview_iterations": [
     {
@@ -643,9 +646,9 @@
   "original_source_bytes_preserved": true,
   "runtime_map_modified": false,
   "runtime_character_modified": false,
-  "visual_review": "The shoe close-ups show a continuous molded foxing edge, shallow sole groove and reinforced heel canvas. Front and profile head views now show a short cropped hair surface on the anatomical scalp; the rear view preserves the original silhouette.",
-  "body_detail_review": "Seventy-two thousand tapered native hair fibers use a position-dependent hairline and three restrained brown tones. The shoe details follow the posed outsole control mesh. A separate shorts-slimming study was rejected after the nearest exposed-thigh clearance became negative; no shorts geometry from that study was promoted. Native geometry and cold checks establish placement, not photographic realism.",
-  "remaining": "The human-realism goal remains unfinished. The face and expression remain generic, shorts require a collision-aware pattern and drape revision, and the walking pose and whole-body reference match still need work. Architectural, retail and planting realism follow human acceptance. This is offline Blender art, not runtime integration.",
+  "visual_review": "Native front and rear views show a modest reduction in shorts leg volume while the retained jacket, scalp and footwear details remain. The revised cotton is fitted to the posed thigh instead of narrowed blindly.",
+  "body_detail_review": "A first 9 mm shorts taper was rejected because it crossed the exposed thigh. The retained 12 mm maximum outer proposal uses the anatomical leg surface to correct 636 controls. The evaluated shorts retain three garment openings and a minimum exposed-thigh clearance above 2 mm; pocket and hem seams remain seated. This verifies contact at this static pose, not final cloth realism or motion readiness.",
+  "remaining": "The human-realism goal remains unfinished. Shorts seat/crotch folds and the walking weight still need substantial visual work; the face and expression remain generic. Whole-body reference acceptance is unproven. Architectural, retail and planting realism follow human acceptance. This remains editable offline Blender art, not a runtime character or animation rig.",
   "sole_studies": [
     {
       "log": "sole-finish-study.log",
@@ -670,6 +673,10 @@
       "sha256": "06351f2f64b009ea9c016a14281d8d7f1db251679ea113014ddd09a09e6b5f40"
     }
   ],
+  "anatomical_short_fit_study": {
+    "log": "short-fit-study2.log",
+    "sha256": "5f727d0a4bdf3a2386da88ef8c1c3219a620cc160230adf5352056948ff2b7f4"
+  },
   "short_fit_rejected_study": {
     "log": "short-fit-study.log",
     "sha256": "0d04a8bbc1026e4904eb10c8d6e84ea04714f02c4c8eb7405e4ed45aff442bed"

@@ -8,6 +8,8 @@ Acceptance requires credible adult proportions and weight through the hips, knee
 
 Work sequence: develop the weight-bearing pose; improve garment drape through native cloth studies; refine hands, footwear and facial detail; review the entire figure under the scene lighting; then continue architectural/retail variety and planting realism. Preserve editable source, original asset bytes, license records and verified checkpoints. Keep the goal active until the visual criteria are actually met.
 
+Current progress after `51106fa`: the shorts outer legs have a restrained taper with per-control anatomical clearance correction. The saved scene retains more than 2 mm exposed-thigh clearance. Seat/crotch cloth quality, face and walking weight remain open.
+
 Current progress after `e0d8edf`: fitted foxing and outsole details plus a native cropped scalp hair layer improve the shoes and head. A shorts-narrowing trial was rejected after it intersected the thigh; the shorts pattern and collision fit remain open. Whole-body realism and reference acceptance remain unfinished.
 
 Current progress after `b0d6353`: the jacket is an open cloth shell with real thin fabric, a 60-frame anatomical drape and fitted seams. Toe and quarter construction wires are replaced by fine shoe stitches and restrained canvas toe panels. Whole-body realism remains open; next address face/scalp, sole and fabric finish, shorts and pose.

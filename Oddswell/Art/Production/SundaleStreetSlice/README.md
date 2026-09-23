@@ -1,5 +1,7 @@
 # Sundale character and landscape study
 
+**Anatomical shorts fit checkpoint:** A restrained outer-leg taper now follows the posed thigh with explicit cloth clearance. The overall human-realism goal remains open; see [VisualReview.md](VisualReview.md).
+
 **Cropped scalp and sole checkpoint:** Native scalp fibers, molded shoe edges and a reinforced canvas heel extend the editable character. The human-realism goal remains unfinished; see [VisualReview.md](VisualReview.md).
 
 **Open shell jacket checkpoint:** The character now has a real open, thin jacket shell, reproducible anatomical drape, fitted outer seams and finer stitched footwear. The visual-realism goal remains unfinished. See [VisualReview.md](VisualReview.md) and [DevelopmentGoal.md](DevelopmentGoal.md).

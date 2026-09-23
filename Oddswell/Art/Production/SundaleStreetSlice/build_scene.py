@@ -583,6 +583,7 @@ for obj in scene.objects:
 scene['clothing_details_posed']=True
 scene['articulated_walking_pose']=True
 exec(compile((ROOT/'settle_cotton.py').read_text(encoding='utf-8'),str(ROOT/'settle_cotton.py'),'exec'))
+exec(compile((ROOT/'refine_short_fit.py').read_text(encoding='utf-8'),str(ROOT/'refine_short_fit.py'),'exec'))
 
 # Fine, tapered calf hair follows the posed skin. Retain ordinary curves so
 # this surface detail remains editable without a particle cache or add-on.

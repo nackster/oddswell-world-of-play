@@ -132,6 +132,8 @@ def assert_connected(obj):
 pants=[o for o in scene.objects if o.type=='MESH' and o.name.startswith('Character | shorts leg')]
 assert len(pants)==1
 assert_connected(pants[0])
+assert .011<scene.get('anatomical_short_leg_refinement_m',0)<.013
+assert scene.get('short_leg_contact_corrections',0)>0
 bm=bmesh.new();bm.from_mesh(pants[0].data)
 shorts_boundary_edges=sum(edge.is_boundary for edge in bm.edges)
 assert all(edge.is_manifold or edge.is_boundary for edge in bm.edges),'Non-manifold shorts'
@@ -425,8 +427,10 @@ clearance=[]
 for vertex in pants[0].evaluated_get(depsgraph).data.vertices:
     hit,normal,_,distance=skin_surface.find_nearest(vertex.co)
     if distance is not None and distance<.025 and vertex.co.z<.76:clearance.append((vertex.co-hit).dot(normal))
-assert clearance and min(clearance)>-.0015,('Cloth intersects exposed thigh',min(clearance))
+assert clearance and min(clearance)>.002,('Cloth intersects exposed thigh',min(clearance))
 result['minimum_cloth_thigh_clearance_m']=min(clearance)
+result['anatomical_short_leg_max_shift_m']=scene['anatomical_short_leg_refinement_m']
+result['short_leg_contact_corrections']=scene['short_leg_contact_corrections']
 result['minimum_pigment_cornea_clearance_m']=min(optical_clearances)
 result['optical_cornea_surfaces']=2
 result['lower_wet_eyelid_margins']=2
