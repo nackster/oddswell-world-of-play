@@ -8,6 +8,8 @@ Acceptance requires credible adult proportions and weight through the hips, knee
 
 Work sequence: develop the weight-bearing pose; improve garment drape through native cloth studies; refine hands, footwear and facial detail; review the entire figure under the scene lighting; then continue architectural/retail variety and planting realism. Preserve editable source, original asset bytes, license records and verified checkpoints. Keep the goal active until the visual criteria are actually met.
 
+Current progress after `b0d6353`: the jacket is an open cloth shell with real thin fabric, a 60-frame anatomical drape and fitted seams. Toe and quarter construction wires are replaced by fine shoe stitches and restrained canvas toe panels. Whole-body realism remains open; next address face/scalp, sole and fabric finish, shorts and pose.
+
 Current progress after `0215059`: broader individually fitted brow grooming and a bounded editable resting-eyelid control, with refitted lashes/wet margins. Whole-human realism, garment folds and footwear finish remain open.
 
 Previous progress after `63cfd9a`: fine pore relief, anatomically located hand crease/color fields, restrained editable vascular relief and ten UV-registered nail folds. Facial expression/brows, cloth quality and whole-human realism remain open.

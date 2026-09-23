@@ -87,6 +87,16 @@ def fit_jacket_fastening():
     scene['fitted_jacket_fastening']=True
 
 def fit_jacket_seams():
+    coat=bpy.data.objects['Character | tailored slate jacket']
+    modifiers=[(m,m.show_viewport) for m in coat.modifiers if m.type=='SOLIDIFY']
+    for modifier,_ in modifiers:modifier.show_viewport=False
+    try:
+        fit_jacket_outer_seams()
+    finally:
+        for modifier,visible in modifiers:modifier.show_viewport=visible
+        bpy.context.view_layer.update()
+
+def fit_jacket_outer_seams():
     import math
     scene=bpy.context.scene;coat=bpy.data.objects['Character | tailored slate jacket']
     origin=Vector((-.75,-2.4,.06));bpy.context.view_layer.update()
@@ -177,6 +187,31 @@ def fit_jacket_seams():
     evaluated.to_mesh_clear()
     scene['conformed_jacket_panels']=True
 
+def open_jacket_shell(coat):
+    # Clip the solid tailoring at the neck, waist and posed cuff rings.
+    cuffs=[]
+    for suffix,side in ((' left',-1),(' right',1)):
+        cuff=bpy.data.objects['Character | sleeve cuff'+suffix]
+        transform=coat.matrix_world.inverted()@cuff.matrix_world
+        n=384
+        bottom=sum((transform@v.co for v in cuff.data.vertices[:n]),Vector())/n
+        top=sum((transform@v.co for v in cuff.data.vertices[-n:]),Vector())/n
+        direction=(top-bottom).normalized()
+        cuffs.append((side,top-direction*.002,direction))
+    bm=bmesh.new();bm.from_mesh(coat.data)
+    def cut(point,normal,inner,region=None):
+        vertices=[v for v in bm.verts if region is None or region(v.co)]
+        selected=set(vertices)
+        geom=vertices+[e for e in bm.edges if all(v in selected for v in e.verts)]+[f for f in bm.faces if all(v in selected for v in f.verts)]
+        bmesh.ops.bisect_plane(bm,geom=geom,dist=.000001,plane_co=point,plane_no=normal,clear_inner=inner,clear_outer=not inner)
+    cut((0,0,1.000),(0,0,1),True,lambda p:abs(p.x+.75)<.23)
+    cut((0,0,1.532),(0,0,1),False)
+    for side,point,normal in cuffs:
+        cut(point,normal,True,lambda p:side*(p.x+.75)>.23 and p.z<1.12)
+    bmesh.ops.remove_doubles(bm,verts=list(bm.verts),dist=.000001)
+    bm.to_mesh(coat.data);bm.free();coat.data.update()
+    return cuffs
+
 def settle_jacket():
     scene=bpy.context.scene
     coat=bpy.data.objects['Character | tailored slate jacket']
@@ -186,35 +221,35 @@ def settle_jacket():
     bpy.ops.object.modifier_apply(modifier=remesh.name)
     smooth=coat.modifiers.new('Relax control grid','SMOOTH');smooth.factor=.6;smooth.iterations=3
     bpy.ops.object.modifier_apply(modifier=smooth.name)
+    cuffs=open_jacket_shell(coat)
     rest=[v.co.copy() for v in coat.data.vertices]
     body=jacket_anatomy(Path(__file__).resolve().parent,coat)
     bpy.context.view_layer.update()
     support=BVHTree.FromObject(body,bpy.context.evaluated_depsgraph_get())
     pin=coat.vertex_groups.new(name='Collar zipper hem and cuff attachments')
-    origin=Vector((-.75,-2.4,.06))
     for v in coat.data.vertices:
-        p=v.co-origin
-        neck=max(0,min(1,(p.z-1.442)/.020))
-        hem=max(0,min(1,(1.02-p.z)/.03)) if abs(p.x)<.23 else 0
-        cuff=max(0,min(1,(.973-p.z)/.025)) if abs(p.x)>.235 else 0
-        zipper=max(0,1-abs(p.x)/.013) if p.y>.06 else 0
+        p=v.co
+        neck=max(0,min(1,(p.z-1.504)/.020))
+        hem=max(0,min(1,(1.026-p.z)/.020)) if abs(p.x+.75)<.23 else 0
+        cuff=max((max(0,min(1,(.028-(p-point).dot(normal))/.020)) for side,point,normal in cuffs if side*(p.x+.75)>.23),default=0)
+        zipper=max(0,1-abs(p.x+.75)/.013) if p.y>-2.34 else 0
         weight=max(neck,hem,cuff,zipper)
         if weight:pin.add([v.index],weight,'REPLACE')
     weights=[next((g.weight for g in v.groups if g.group==pin.index),0) for v in coat.data.vertices]
-    # Fixed caps at the collar/hem/cuffs stay in place; fit only free cloth.
+    # Sewn edge bands stay in place; fit only free cloth.
     for v,w in zip(coat.data.vertices,weights):
         hit,normal,_,distance=support.find_nearest(v.co)
         if w<.80 and (v.co-hit).dot(normal)<.006:v.co=hit+normal*.006
     fitted=[v.co.copy() for v in coat.data.vertices]
     bpy.context.view_layer.objects.active=coat
     cloth=coat.modifiers.new('Jacket gravity and fabric ease','CLOTH')
-    s=cloth.settings;s.quality=8;s.mass=.22;s.air_damping=5
-    s.tension_stiffness=32;s.compression_stiffness=25;s.shear_stiffness=12;s.bending_stiffness=2.5
+    s=cloth.settings;s.quality=10;s.mass=.22;s.air_damping=5
+    s.tension_stiffness=40;s.compression_stiffness=30;s.shear_stiffness=15;s.bending_stiffness=2.0
     s.vertex_group_mass=pin.name;s.pin_stiffness=1;s.shrink_min=0
     c=cloth.collision_settings;c.use_collision=True;c.distance_min=.003
     c.use_self_collision=True;c.self_distance_min=.003;c.collision_quality=4
-    cloth.point_cache.frame_start=1;cloth.point_cache.frame_end=45
-    for frame in range(1,46):scene.frame_set(frame);bpy.context.view_layer.update()
+    cloth.point_cache.frame_start=1;cloth.point_cache.frame_end=60
+    for frame in range(1,61):scene.frame_set(frame);bpy.context.view_layer.update()
     bpy.ops.object.modifier_apply(modifier=cloth.name)
     simulated=[v.co.copy() for v in coat.data.vertices]
     maximum_delta=max((v-r).length for v,r in zip(simulated,fitted))
@@ -222,17 +257,17 @@ def settle_jacket():
     for label,values in (('Tailored rest',rest),('Collision fit',fitted),('Gravity result',simulated)):
         attribute=coat.data.attributes.new(label,'FLOAT_VECTOR','POINT')
         for datum,position in zip(attribute.data,values):datum.vector=position
-    # Filter displacement, preserving the original shaped folds and volume.
+    # Filter displacement, preserving the original tailored surface.
     # Smoothing the entire mesh would shrink the cuffs and shoulder silhouette.
     delta=[v-r for v,r in zip(simulated,fitted)]
     neighbors=[[] for _ in rest]
     for edge in coat.data.edges:
         a,b=edge.vertices;neighbors[a].append(b);neighbors[b].append(a)
-    for _ in range(7):
-        delta=[d.lerp(sum((delta[j] for j in ns),Vector())/len(ns),.55) if ns else d for d,ns in zip(delta,neighbors)]
+    for _ in range(4):
+        delta=[d.lerp(sum((delta[j] for j in ns),Vector())/len(ns),.50) if ns else d for d,ns in zip(delta,neighbors)]
     # Filtering must not move pinned trim through neighboring free-cloth motion.
     for v,r,d,w in zip(coat.data.vertices,fitted,delta,weights):
-        v.co=r+d*.95*(1-w)
+        v.co=r+d*(1-w)
         hit,normal,_,distance=support.find_nearest(v.co)
         if w<.80 and (v.co-hit).dot(normal)<.006:v.co=hit+normal*.006
     body.hide_set(True)
@@ -248,7 +283,10 @@ def settle_jacket():
             offset=.0006 if 'front welt pocket' in obj.name else .0015
             p.co=hit+normal*offset if obj.type=='MESH' else (*(hit+normal*offset),1)
     fit_jacket_seams()
-    scene['jacket_drape_frames']=45
+    solid=coat.modifiers.new('Actual fabric thickness','SOLIDIFY')
+    solid.thickness=.0012;solid.offset=-1
+    scene['open_jacket_construction']=True
+    scene['jacket_drape_frames']=60
     scene['jacket_drape_controls']=len(rest)
     scene['jacket_drape_maximum_delta_m']=maximum_delta
     scene['jacket_fabric_ease']=0

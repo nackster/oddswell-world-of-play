@@ -152,7 +152,7 @@ bm.free()
 assert scene.get('continuous_jacket')
 coat=bpy.data.objects['Character | tailored slate jacket']
 assert_connected(coat)
-assert scene.get('jacket_drape_frames')==45 and 0<scene['jacket_drape_maximum_delta_m']<.13
+assert scene.get('jacket_drape_frames')==60 and 0<scene['jacket_drape_maximum_delta_m']<.13
 assert len(coat.data.vertices)==scene['jacket_drape_controls']
 assert all(coat.data.attributes.get(name) for name in ('Tailored rest','Collision fit','Gravity result'))
 assert scene.get('anatomical_jacket_support') and scene['jacket_fabric_ease']==0
@@ -166,7 +166,8 @@ bm.free()
 pin=coat.vertex_groups['Collar zipper hem and cuff attachments']
 weights=[next((g.weight for g in v.groups if g.group==pin.index),0) for v in coat.data.vertices]
 fit=coat.data.attributes['Collision fit'].data
-pinned_motion=max((v.co-r.vector).length for v,r,w in zip(coat.data.vertices,fit,weights) if w>.999)
+# Transition-band controls may move proportionally; fully pinned controls may not.
+pinned_motion=max((v.co-r.vector).length for v,r,w in zip(coat.data.vertices,fit,weights) if w==1)
 assert pinned_motion<.000001,'Displacement filtering moved fixed jacket attachments'
 raw_delta=max((v.vector-r.vector).length for v,r in zip(coat.data.attributes['Gravity result'].data,fit))
 assert abs(raw_delta-scene['jacket_drape_maximum_delta_m'])<.000001
@@ -181,8 +182,26 @@ support.hide_set(True);bpy.context.view_layer.update()
 assert min(free_clearances)>.001,'Free jacket controls penetrate anatomical support'
 
 bm=bmesh.new();bm.from_mesh(coat.data)
-assert all(edge.is_manifold for edge in bm.edges) and bm.calc_volume(signed=True)>0,'Broken jacket drape surface'
+assert scene.get('open_jacket_construction')
+assert all(edge.is_manifold or edge.is_boundary for edge in bm.edges),'Broken jacket cloth sheet'
+boundary={e for e in bm.edges if e.is_boundary};jacket_openings=0
+assert all(sum(e.is_boundary for e in v.link_edges)==2 for v in bm.verts if v.is_boundary),'Branched garment boundary'
+while boundary:
+    pending=[boundary.pop()];jacket_openings+=1
+    while pending:
+        edge=pending.pop()
+        for vertex in edge.verts:
+            for other in vertex.link_edges:
+                if other in boundary:boundary.remove(other);pending.append(other)
+assert jacket_openings==4 and len(bm.verts)-len(bm.edges)+len(bm.faces)==-2,'Expected open neck, waist and two cuffs'
 bm.free()
+solid=coat.modifiers['Actual fabric thickness']
+assert solid.type=='SOLIDIFY' and abs(solid.thickness-.0012)<.000001 and solid.offset==-1
+evaluated_coat=coat.evaluated_get(bpy.context.evaluated_depsgraph_get())
+coat_mesh=evaluated_coat.to_mesh();bm=bmesh.new();bm.from_mesh(coat_mesh)
+jacket_fabric_volume=bm.calc_volume(signed=True)
+assert all(e.is_manifold for e in bm.edges) and 0<jacket_fabric_volume<.004,'Broken fabric thickness or solid filled garment'
+bm.free();evaluated_coat.to_mesh_clear()
 hand_openings={};nail_clearances=[];hand_detail_displacements=[]
 assert scene.get('hand_surface_refinement'),'Missing hand surface anatomy'
 assert scene.get('epidermal_detail'),'Missing skin and nail-fold development'
@@ -247,6 +266,11 @@ for name in ('left hand','right hand'):
         assert bm.calc_volume(signed=True)>0,'Inverted nail plate'
         bm.free()
 coat_surface=BVHTree.FromObject(coat,depsgraph)
+solid.show_viewport=False
+bpy.context.view_layer.update()
+outer_coat_surface=BVHTree.FromObject(coat,bpy.context.evaluated_depsgraph_get())
+solid.show_viewport=True
+bpy.context.view_layer.update()
 collar_surface=BVHTree.FromObject(bpy.data.objects['Character | standing collar'],depsgraph)
 assert scene.get('fitted_jacket_fastening')
 minimum_fastening_gap=1
@@ -264,7 +288,7 @@ for seam in raglan:
     points=[Vector(p.co[:3]) for p in seam.data.splines[0].points]
     assert max((a-b).length for a,b in zip(points,points[1:]))<.015,'Raglan jumps between garment surfaces'
     for point in seam.data.splines[0].points:
-        position=Vector(point.co[:3]);hit,normal,_,distance=coat_surface.find_nearest(position)
+        position=Vector(point.co[:3]);hit,normal,_,distance=outer_coat_surface.find_nearest(position)
         assert 0<(position-hit).dot(normal) and distance<.0015,'Detached or buried raglan stitch'
         maximum_raglan_gap=max(maximum_raglan_gap,distance)
 for side in (-1,1):
@@ -274,7 +298,7 @@ panels=[o for o in scene.objects if o.type=='MESH' and o.name.startswith('Charac
 assert len(panels)==3 and scene.get('conformed_jacket_panels')
 for panel in panels:
     for vertex in panel.data.vertices:
-        hit,normal,_,distance=coat_surface.find_nearest(vertex.co)
+        hit,normal,_,distance=outer_coat_surface.find_nearest(vertex.co)
         assert distance<.0008 and (vertex.co-hit).dot(normal)>0,'Teal panel lifted from or buried in jacket'
     stitches=bpy.data.objects['Character | yoke topstitch '+panel.name]
     bm=bmesh.new();bm.from_mesh(panel.data)
@@ -282,8 +306,15 @@ for panel in panels:
     bm.free()
 lace_gap=0
 eyelet_gap=0;tongue_clearance=[]
+assert scene.get('fine_footwear_stitches')
+for label in ('toe cap seam','quarter seam','heel seam'):
+    seams=[o for o in scene.objects if o.name.startswith('Character | shoe lace '+label)]
+    assert len(seams)==(4 if label=='quarter seam' else 2)
+    assert all(len(o.data.splines)>5 and o.data.bevel_depth<.0003 for o in seams),'Raised wire remains on shoe upper'
 for side in ('left','right'):
     shoe=bpy.data.objects['Character | canvas sneaker '+side]
+    assert any(material.name.startswith('Character | warmer canvas toe panels') for material in shoe.data.materials)
+    assert sum(face.material_index==len(shoe.data.materials)-1 for face in shoe.data.polygons)>100,'Missing separate canvas toe panel'
     bm=bmesh.new();bm.from_mesh(shoe.data)
     assert all(edge.is_manifold for edge in bm.edges) and bm.calc_volume(signed=True)>0,'Open or inward shoe surface'
     bm.free()
@@ -343,6 +374,8 @@ result['maximum_resting_eyelid_lift_m']=max(v.length for v in expression_delta)
 result['cotton_drape_frames']=scene['cotton_drape_frames']
 result['jacket_drape_frames']=scene['jacket_drape_frames']
 result['jacket_drape_controls']=scene['jacket_drape_controls']
+result['jacket_open_boundaries']=jacket_openings
+result['jacket_fabric_volume_m3']=jacket_fabric_volume
 result['jacket_drape_maximum_delta_m']=scene['jacket_drape_maximum_delta_m']
 result['jacket_fabric_ease']=scene['jacket_fabric_ease']
 result['anatomical_jacket_support_vertices']=len(support.data.vertices)

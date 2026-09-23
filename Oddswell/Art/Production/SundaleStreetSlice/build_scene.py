@@ -621,6 +621,7 @@ ground_offset=.051-foot_min
 for obj in scene.objects:
     if obj.name.startswith('Character | '):obj.location.z+=ground_offset
 scene['character_ground_offset']=ground_offset
+exec(compile((ROOT/'refine_footwear.py').read_text(encoding='utf-8'),str(ROOT/'refine_footwear.py'),'exec'))
 
 # Physical daylight and photographic contrast, without a generated background.
 world=bpy.data.worlds.new('Sundale | late afternoon sky')
