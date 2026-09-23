@@ -11,7 +11,7 @@
   "mature_tree_instances": 13,
   "shared_tree_meshes": 3,
   "mesh_objects": 4071,
-  "native_scene_objects": 4744,
+  "native_scene_objects": 4749,
   "runtime_claim": false,
   "shorts_boundary_edges": 240,
   "shorts_openings": 3,
@@ -38,6 +38,8 @@
   "stance_contact_width_m": 0.12801814079284668,
   "stance_contact_length_m": 0.3115217685699463,
   "maximum_lace_eyelet_gap_m": 0.0005397453314036824,
+  "scalp_hair_strands": 72000,
+  "molded_sole_details": 4,
   "minimum_tongue_surface_clearance_m": 0.0014140395214781165,
   "facial_targets": {
     "head-age-incr.target": 0.55,

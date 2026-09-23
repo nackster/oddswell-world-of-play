@@ -307,13 +307,26 @@ for panel in panels:
 lace_gap=0
 eyelet_gap=0;tongue_clearance=[]
 assert scene.get('fine_footwear_stitches')
+assert scene.get('molded_sole_details')
 for label in ('toe cap seam','quarter seam','heel seam'):
     seams=[o for o in scene.objects if o.name.startswith('Character | shoe lace '+label)]
     assert len(seams)==(4 if label=='quarter seam' else 2)
     assert all(len(o.data.splines)>5 and o.data.bevel_depth<.0003 for o in seams),'Raised wire remains on shoe upper'
 for side in ('left','right'):
     shoe=bpy.data.objects['Character | canvas sneaker '+side]
+    sole=bpy.data.objects['Character | sneaker sole '+side]
+    sole_surface=BVHTree.FromObject(sole,depsgraph)
+    for label in ('foxing edge','outsole groove'):
+        detail=bpy.data.objects['Character | '+label+' '+side]
+        assert detail.type=='CURVE' and detail.data.splines[0].use_cyclic_u
+        assert len(detail.data.splines[0].points)>100
+        for index in range(0,len(detail.data.splines[0].points),8):
+            point=detail.data.splines[0].points[index]
+            _,_,_,distance=sole_surface.find_nearest(Vector(point.co[:3]))
+            assert distance is not None and distance<.003,'Detached molded sole detail'
     assert any(material.name.startswith('Character | warmer canvas toe panels') for material in shoe.data.materials)
+    assert any(material.name.startswith('Character | reinforced canvas heel') for material in shoe.data.materials)
+    assert sum(face.material_index==len(shoe.data.materials)-1 for face in shoe.data.polygons)>100,'Missing reinforced heel panel'
     assert sum(face.material_index==len(shoe.data.materials)-1 for face in shoe.data.polygons)>100,'Missing separate canvas toe panel'
     bm=bmesh.new();bm.from_mesh(shoe.data)
     assert all(edge.is_manifold for edge in bm.edges) and bm.calc_volume(signed=True)>0,'Open or inward shoe surface'
@@ -341,6 +354,13 @@ for side in ('left','right'):
         assert gap>.0002,'Tongue intersects the shoe upper'
         tongue_clearance.append(gap)
 head_surface=BVHTree.FromObject(head,depsgraph)
+scalp=bpy.data.objects['Character | cropped scalp fibers']
+assert scalp.type=='CURVE' and scene.get('scalp_hair_strands')==len(scalp.data.splines)>65000
+assert len(scalp.data.materials)==3
+for index in range(0,len(scalp.data.splines),137):
+    root=Vector(scalp.data.splines[index].points[0].co[:3])
+    hit,normal,_,distance=head_surface.find_nearest(root)
+    assert hit is not None and 0<(root-hit).dot(normal)<.0003 and root.z>1.68,'Scalp fiber misses head or face boundary'
 lashes=[o for o in scene.objects if o.name.startswith('Character | eyelashes ')]
 assert len(lashes)==2 and sum(len(o.data.splines) for o in lashes)==scene['eyelash_strands']>=60
 for obj in lashes:
@@ -366,6 +386,8 @@ result['foot_contact']=feet
 result['stance_contact_width_m']=contact_width
 result['stance_contact_length_m']=contact_length
 result['maximum_lace_eyelet_gap_m']=eyelet_gap
+result['scalp_hair_strands']=len(scalp.data.splines)
+result['molded_sole_details']=4
 result['minimum_tongue_surface_clearance_m']=min(tongue_clearance)
 result['facial_targets']=facial_targets
 result['eyelash_strands']=scene['eyelash_strands']

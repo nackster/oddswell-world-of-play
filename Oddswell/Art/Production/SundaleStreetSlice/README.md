@@ -1,5 +1,7 @@
 # Sundale character and landscape study
 
+**Cropped scalp and sole checkpoint:** Native scalp fibers, molded shoe edges and a reinforced canvas heel extend the editable character. The human-realism goal remains unfinished; see [VisualReview.md](VisualReview.md).
+
 **Open shell jacket checkpoint:** The character now has a real open, thin jacket shell, reproducible anatomical drape, fitted outer seams and finer stitched footwear. The visual-realism goal remains unfinished. See [VisualReview.md](VisualReview.md) and [DevelopmentGoal.md](DevelopmentGoal.md).
 
 Continuing from `0215059`, the brows now use a wider, tapered distribution of individually fitted strands with varied length, lean, lift and brown tones. A separate editable resting-eyelid control gives a small asymmetric upper-lid lift. Eyelashes and lower wet margins are regenerated against the changed facial surface. The retained anatomical facial controls, skin texture and fitted neck remain intact.

@@ -547,6 +547,7 @@ exec(compile((ROOT/'refine_eye_optics.py').read_text(encoding='utf-8'),str(ROOT/
 exec(compile((ROOT/'refine_brow_groom.py').read_text(encoding='utf-8'),str(ROOT/'refine_brow_groom.py'),'exec'))
 exec(compile((ROOT/'refine_hands.py').read_text(encoding='utf-8'),str(ROOT/'refine_hands.py'),'exec'))
 exec(compile((ROOT/'refine_skin_surface.py').read_text(encoding='utf-8'),str(ROOT/'refine_skin_surface.py'),'exec'))
+exec(compile((ROOT/'refine_scalp.py').read_text(encoding='utf-8'),str(ROOT/'refine_scalp.py'),'exec'))
 exec(compile((ROOT/'refine_fabrics.py').read_text(encoding='utf-8'),str(ROOT/'refine_fabrics.py'),'exec'))
 exec(compile((ROOT/'settle_jacket.py').read_text(encoding='utf-8'),str(ROOT/'settle_jacket.py'),'exec'))
 
@@ -622,6 +623,7 @@ for obj in scene.objects:
     if obj.name.startswith('Character | '):obj.location.z+=ground_offset
 scene['character_ground_offset']=ground_offset
 exec(compile((ROOT/'refine_footwear.py').read_text(encoding='utf-8'),str(ROOT/'refine_footwear.py'),'exec'))
+exec(compile((ROOT/'refine_sole.py').read_text(encoding='utf-8'),str(ROOT/'refine_sole.py'),'exec'))
 
 # Physical daylight and photographic contrast, without a generated background.
 world=bpy.data.worlds.new('Sundale | late afternoon sky')
