@@ -14,6 +14,8 @@ September 23 shorts continuation: close garment review rejected a superficial hi
 
 September 23 further shorts continuation: `HumanBodyPoseCandidate/ShortsSculptCandidate/` retains a direct mesh-sculpt successor to the gusset. The left inseam bunch is less severe and the front upper thigh has slight volume. A subsequent applied pocket/fly line experiment was rejected as floating detail. Four native renders and a cold reopen support this as an intermediate shape study, not a human-realism acceptance. The upper shorts panel and whole figure still need substantial development.
 
+September 23 garment/lighting review: added native gameplay-scale comparison and a separate `HumanBodyPoseCandidate/LightingDirectionCandidate/` with stronger warm directional shadows. The lighting changes only sky and bounce strengths and passes cold scene checks; the human remains unchanged. A loose back-panel overlay and two connected-shell back-ease studies were rejected for bunching, weak broad folds or failed raglan stitch contact. Continue with integrated jacket pattern/sleeve shaping and whole-figure visual review, not more applied wrinkle strips. This does not close the goal.
+
 Current progress after `51106fa`: the shorts outer legs have a restrained taper with per-control anatomical clearance correction. The saved scene retains more than 2 mm exposed-thigh clearance. Seat/crotch cloth quality, face and walking weight remain open.
 
 Current progress after `e0d8edf`: fitted foxing and outsole details plus a native cropped scalp hair layer improve the shoes and head. A shorts-narrowing trial was rejected after it intersected the thigh; the shorts pattern and collision fit remain open. Whole-body realism and reference acceptance remain unfinished.
