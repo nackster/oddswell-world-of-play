@@ -2943,6 +2943,12 @@ The preserved Phase 1L.5aq report identity is `4,027` bytes/SHA `3E14CFABBD0FC4C
 - The accepted body/skeleton remain exact; `45,232` jacket vertices have normalized accepted-bone weights, intersections are `0`, bidirectional vertex-sampled clearance is `0.000085141 m`, and neutral drift is `0.000000241 m`. The per-source ledger proves every approved contributor survives `1,835` penetrating-face removals; wire/isolated geometry is `0/0` and inherited/open boundary evidence is not a watertight claim.
 - No animated deformation, material bake, FBX/UAsset/runtime import, final art, performance, or readiness is claimed. See [[Development/Reports/Phase 1L5by Refined Sundale Signal Jacket Neutral Bind Proof]].
 
+### Phase 1L.5bz refined starter-outfit walk deformation status
+
+- **BLOCKED / UNCOUNTED:** exact accepted body/top/bottom and unchanged current `walk_candidate_v1` passed custody and frame `1`, then frame `2` produced `587` body/bottom triangle overlaps; body/top and top/bottom remained `0`.
+- The diagnostic stopped with exit `1`; no accepted source, weights, action, threshold, or runtime input was repaired, no derivative Blend was written, and later frames/frozen suites were not run.
+- This is failure evidence, not deformation, runtime, final-art, performance, readiness, or Phase 6 credit. See [[Development/Reports/Phase 1L5bz Refined Starter Outfit Walk Deformation Blocked Evidence]].
+
 ## Future shared simulation layer
 
 Athlete Life Brain v4 is the default for newly generated train, rest, recover, and socialize decisions. It adds only one bounded, one-decision, same-season recent-scoring response above v3's routine behavior. V1-v4 history remains immutable. Expand into longer memory, traits, relationships, nightlife, media, discipline, career decisions, and other sports only after each smaller input passes its own engineering evaluation.

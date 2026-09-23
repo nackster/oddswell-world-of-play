@@ -1572,6 +1572,10 @@ Layer 2 removes only Debug, NonUFS, UFS, game-executable, and game-PDB cross-run
 - Exact accepted body/skeleton custody, normalized weights, explicit inclusion/exclusion ledger, zero body intersection, bidirectional vertex-sampled clearance `0.000085141 m`, and neutral drift `0.000000241 m` are locked. Deterministic fit records `1,835` removed penetrating faces.
 - No clips, animated deformation, material bake, FBX/UAsset/runtime import, final art, performance, or readiness claim is included. See [[Development/Reports/Phase 1L5by Refined Sundale Signal Jacket Neutral Bind Proof]].
 
+### Phase 1L.5bz refined starter-outfit walk deformation proof
+
+**`BLOCKED / UNCOUNTED — FAIL-CLOSED AT FRAME 2`.** Exact accepted body/top/bottom, twelve-bone/DEC-035 custody, normalized weights, and the unchanged current walk passed preflight and frame `1`. Frame `2` produced `587` evaluated body/bottom triangle overlaps while body/top and top/bottom stayed `0`. The diagnostic exited `1`; no repair, derivative Blend, later-frame claim, frozen-suite rerun, runtime change, or readiness credit followed. See [[Development/Reports/Phase 1L5bz Refined Starter Outfit Walk Deformation Blocked Evidence]].
+
 ### Exit evidence
 
 The complete loop is visually coherent, readable, accessible at the approved baseline, and within measured PC performance targets. Large catalogs and unseen districts remain out of scope.
