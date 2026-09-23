@@ -2937,6 +2937,12 @@ The preserved Phase 1L.5aq report identity is `4,027` bytes/SHA `3E14CFABBD0FC4C
 - Weights are normalized with no `Waist attachment` authority; coverage is `0.567481–0.960000 m`, intersections are `0`, truthful bidirectional vertex-sampled clearance is `0.004069997 m`, and neutral drift is `0.000000030 m`.
 - This is not continuous triangle-distance evidence, animated deformation, finished UV/material work, Unreal import, runtime replacement, final art, performance, or readiness. Jacket and later import remain separately gated. See [[Development/Reports/Phase 1L5bx Refined Sundale Starter Off White Bottom Neutral Bind Proof]].
 
+### Phase 1L.5by refined Sundale Signal Jacket neutral-bind proof status
+
+- **COMPLETE (technical proof only):** `194` approved visible source surfaces consolidate into one `sundale_signal_jacket` that replaces rather than layers over the starter top.
+- The accepted body/skeleton remain exact; `45,232` jacket vertices have normalized accepted-bone weights, intersections are `0`, bidirectional vertex-sampled clearance is `0.000085141 m`, and neutral drift is `0.000000241 m`. The per-source ledger proves every approved contributor survives `1,835` penetrating-face removals; wire/isolated geometry is `0/0` and inherited/open boundary evidence is not a watertight claim.
+- No animated deformation, material bake, FBX/UAsset/runtime import, final art, performance, or readiness is claimed. See [[Development/Reports/Phase 1L5by Refined Sundale Signal Jacket Neutral Bind Proof]].
+
 ## Future shared simulation layer
 
 Athlete Life Brain v4 is the default for newly generated train, rest, recover, and socialize decisions. It adds only one bounded, one-decision, same-season recent-scoring response above v3's routine behavior. V1-v4 history remains immutable. Expand into longer memory, traits, relationships, nightlife, media, discipline, career decisions, and other sports only after each smaller input passes its own engineering evaluation.

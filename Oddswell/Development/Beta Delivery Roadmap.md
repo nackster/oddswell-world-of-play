@@ -1566,6 +1566,12 @@ Layer 2 removes only Debug, NonUFS, UFS, game-executable, and game-PDB cross-run
 - Normalized root/thigh weights cover the waist, hip, and upper legs; body intersections are `0`; bidirectional vertex-sampled clearance is `0.004069997 m` within `[0.001, 0.15] m`; neutral drift is `0.000000030 m`.
 - No jacket, animated-deformation proof, FBX/UAsset/runtime import, finished UV/material, final-art, performance, or readiness claim is included. See [[Development/Reports/Phase 1L5bx Refined Sundale Starter Off White Bottom Neutral Bind Proof]].
 
+### Phase 1L.5by refined Sundale Signal Jacket neutral-bind proof
+
+- **COMPLETE (technical proof only):** approved visible shell/collar/cuffs/rear-and-sleeve-yokes/zipper and three yoke-topstitch objects consolidate into one separately replaceable `sundale_signal_jacket`; starter top is not layered.
+- Exact accepted body/skeleton custody, normalized weights, explicit inclusion/exclusion ledger, zero body intersection, bidirectional vertex-sampled clearance `0.000085141 m`, and neutral drift `0.000000241 m` are locked. Deterministic fit records `1,835` removed penetrating faces.
+- No clips, animated deformation, material bake, FBX/UAsset/runtime import, final art, performance, or readiness claim is included. See [[Development/Reports/Phase 1L5by Refined Sundale Signal Jacket Neutral Bind Proof]].
+
 ### Exit evidence
 
 The complete loop is visually coherent, readable, accessible at the approved baseline, and within measured PC performance targets. Large catalogs and unseen districts remain out of scope.
