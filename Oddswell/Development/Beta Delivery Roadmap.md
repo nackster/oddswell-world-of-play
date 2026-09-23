@@ -1560,6 +1560,12 @@ Layer 2 removes only Debug, NonUFS, UFS, game-executable, and game-PDB cross-run
 
 **`COMPLETE LOCALLY — ONE starter_offwhite_top DERIVATIVE AROUND THE ACCEPTED BODY; NO UNREAL IMPORT`.** The smallest native open torso envelope proves exact item identity, one material slot, DEC-034 hip-to-shoulder coverage, `0` body intersections, bidirectional vertex-sampled clearance `0.042323500 m` within fail-closed `[0.009, 0.25] m`, normalized shared-skeleton weights, and `0.0 m` neutral drift while retaining the exact 1L.5bv body and twelve-bone/DEC-035 contract. This is not continuous triangle-distance proof. Bottom, jacket, Actions, FBX/UAsset/runtime/package inputs, gameplay authority, finished materials, final art, performance, and readiness remain unchanged. See [[Development/Reports/Phase 1L5bw Refined Sundale Starter Off White Top Neutral Bind Proof]].
 
+### Phase 1L.5bx refined Sundale starter off-white bottom neutral-bind proof
+
+- **COMPLETE (technical proof only):** one exact `starter_offwhite_bottom` retains the source shorts topology (`7,159` vertices / `7,040` polygons), accepted 1.80 m body custody, twelve-bone hierarchy, and DEC-035 mapping.
+- Normalized root/thigh weights cover the waist, hip, and upper legs; body intersections are `0`; bidirectional vertex-sampled clearance is `0.004069997 m` within `[0.001, 0.15] m`; neutral drift is `0.000000030 m`.
+- No jacket, animated-deformation proof, FBX/UAsset/runtime import, finished UV/material, final-art, performance, or readiness claim is included. See [[Development/Reports/Phase 1L5bx Refined Sundale Starter Off White Bottom Neutral Bind Proof]].
+
 ### Exit evidence
 
 The complete loop is visually coherent, readable, accessible at the approved baseline, and within measured PC performance targets. Large catalogs and unseen districts remain out of scope.
