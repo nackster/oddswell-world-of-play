@@ -2918,6 +2918,13 @@ The preserved Phase 1L.5aq report identity is `4,027` bytes/SHA `3E14CFABBD0FC4C
 - **Contract:** `Oddswell/Art/Production/SundaleStreetSlice/runtime_shared_skeleton_handoff_contract.json` records exact source/contract hashes and fail-closed body/top/bottom/jacket, material, UV, rig, weight, Action, LOD, and collision gates.
 - **Boundary and next:** no source mesh, import, animation, runtime, package input, final-art, performance, or readiness claim changes. A later non-destructive derivative partition/bind proof requires a separate Scope Director gate. See [[Development/Reports/Phase 1L5bu Refined Sundale Human to Runtime Shared Skeleton Handoff Contract]].
 
+### Phase 1L.5bv refined Sundale body derivative neutral-bind proof status
+
+- **Status:** `COMPLETE LOCALLY — BODY-ONLY DERIVATIVE / ACCEPTED SHARED-SKELETON NEUTRAL-BIND PROOF; NO IMPORT`.
+- **Custody:** the original refined source remains SHA-256 `0F398839...AFC6127`. The additive derivative has deterministic semantic identity `91AAB962...B8CF08` and mesh identity `F340C34B...BF03CD`.
+- **Proof:** exactly one `58,324`-vertex body mesh at `1.80 m`, exactly the accepted twelve bones/DEC-035 mapping, normalized single-influence weights, unweighted/non-normalized vertices `0/0`, and maximum neutral drift `0.000000241 m`.
+- **Boundary:** the four copied anatomy meshes are supplemented only by a low-poly neutral-bind bridge. Clothing, offline fitting/collision aids, Actions, FBX/UAsset/import, runtime/package input, gameplay authority, final art, performance, and readiness remain unchanged. See [[Development/Reports/Phase 1L5bv Refined Sundale Human Body Derivative Neutral Bind Proof]].
+
 ## Future shared simulation layer
 
 Athlete Life Brain v4 is the default for newly generated train, rest, recover, and socialize decisions. It adds only one bounded, one-decision, same-season recent-scoring response above v3's routine behavior. V1-v4 history remains immutable. Expand into longer memory, traits, relationships, nightlife, media, discipline, career decisions, and other sports only after each smaller input passes its own engineering evaluation.
