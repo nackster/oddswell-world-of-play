@@ -1,0 +1,9 @@
+# Seat and upper-thigh drape candidate
+
+This editable Blender scene starts from the exact [short-crop and fitted-collar human candidate](../README.md), SHA-256 `B0210791690C82BFF6A67BE271F4BBFDEC2616FCE199C4237F75A1067938AD22`. Run `build_seat_drape_candidate.py` in Blender 4.5 to reproduce `OddsWell_Seat_Drape_Candidate.blend`, SHA-256 `333A90FA9F860B636477A5D0BBEA41C332A9524D3A34FE27879B22BF1A1FE9C1`. The parent checkpoint remains unchanged.
+
+The connected shorts mesh gains subtle outward seat fullness and two asymmetrical folds descending toward the upper rear thighs. Maximum control-point movement is 10.10 mm. The back pocket seams are projected back onto the evaluated cloth surface from behind, keeping them visible over the new shape. The front, hems, and three garment openings remain intact.
+
+Review the 64-sample native Cycles renders: [close rear shorts](Seat_Drape_Shorts_Rear.png), [full rear](Seat_Drape_Full_Rear.png), [full front](Seat_Drape_Full_Front.png), and [1600 × 900 gameplay](Seat_Drape_Gameplay.png). A cold reopen passes `verify_scene.py --draft`: the shorts remain one connected surface with three openings and 2.48 mm minimum sampled cloth-to-thigh clearance; the jacket, source anatomy, hand details, lighting, and scene remain intact. This is an offline scene study, with no runtime integration claim.
+
+The added folds improve the shorts silhouette modestly at full-body and gameplay scale. The figure does not yet meet the requested human realism: the jacket is broad and smooth across the shoulders, torso, and sleeves; the hands read stiff; and the footwear is simplified. The next modeling pass should alter jacket pattern and ease around the shoulders and elbows, then refit the OddsWell stripe and seams and review close, full-body, and gameplay views again.

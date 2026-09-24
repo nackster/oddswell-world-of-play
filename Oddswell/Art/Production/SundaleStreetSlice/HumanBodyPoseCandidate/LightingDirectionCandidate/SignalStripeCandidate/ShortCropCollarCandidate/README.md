@@ -9,3 +9,5 @@ The 64-sample native Cycles reviews are [head rear](Short_Crop_Collar_Head_Rear.
 This is a human-silhouette improvement, not final realism acceptance. The standing pose still has rigid-looking hands and smooth, broad sleeves; the back lacks convincing compression and fabric folds, the shorts need stronger weight and contact, and the face needs more natural expression in close frontal review. The next pass should build a joint-aware walking arm/hand pose and garment drape that preserve the signal stripe and fitted neckline, then assess close, full-body and gameplay renders against the original concept.
 
 The [arm gesture review](ArmGestureReview.md) records a later, smaller elbow-bend study. It passed the static checks but was rejected visually because the cuff and hand remained unnatural.
+
+The next retained [seat and upper-thigh drape candidate](SeatDrapeCandidate/README.md) adds modest connected-cloth volume and folds to the shorts while preserving both back pocket seams.
