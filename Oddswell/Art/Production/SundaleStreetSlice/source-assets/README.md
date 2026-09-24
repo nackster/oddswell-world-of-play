@@ -20,6 +20,10 @@ The retained diffuse map and original `.mhmat` come from the official [MakeHuman
 
 The original body UVs are preserved on the exposed head, hands and legs; the fitted neck skirt interpolates them beneath the collar. The shader adjusts saturation/value and roughness while the original image remains unchanged. This is a static derivative anatomy/material study, with no claim of a scan, final character identity or production rig.
 
+## Facial movement source
+
+`faceunits01_cc0.zip` is the unmodified [MakeHuman Faceunits 01](https://static.makehumancommunity.org/assets/assetpacks/faceunits01.html) archive by Mika Suominen, downloaded from `https://files2.makehumancommunity.org/functional/faceunits01.zip`. The [asset-pack index](https://static.makehumancommunity.org/assets/assetpacks.html) lists functional packs as CC0. SHA-256: `D113107BD7EB59F3AF4DF6FC0EC29BFCC593F496D0B336AEC14F086A80CE7146`. The scene currently derives four editable shape keys from its left/right mouth-smile and cheek-squint targets using the retained MakeHuman source-vertex mapping. The archive remains unchanged; no target is treated as a final facial likeness.
+
 ## Fabric surface sources
 
 `fabric-sources.json` retains the URLs, original MD5/SHA-256 identities, authors and physical dimensions of [Terlenka](https://polyhaven.com/a/terlenka) and [Denim Fabric 04](https://polyhaven.com/a/denim_fabric_04). Both are distributed under [Poly Haven CC0](https://polyhaven.com/license), photographed by colormass and processed by Rico Cilliers. Six original 2K diffuse, displacement and roughness maps are retained unchanged. `../fetch_fabrics.py` restores them and checks upstream identities. The native shader uses grayscale diffuse variation with the OddsWell garment colors, physical-scale box projection and fine bump.
