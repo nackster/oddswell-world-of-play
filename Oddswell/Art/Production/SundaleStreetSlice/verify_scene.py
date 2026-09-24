@@ -85,7 +85,8 @@ for side in ('l','r'):
         transform=eye.matrix_world.inverted()@obj.matrix_world
         for v in obj.data.vertices:
             point=transform@v.co
-            yaw=math.radians(scene.get('upper_body_yaw_deg',0))
+            # Pigment rays follow the head when it turns independently of the torso.
+            yaw=math.radians(scene.get('upper_body_yaw_deg',0)+scene.get('head_court_turn_deg',0))
             hit,normal,index,distance=surface.ray_cast(point,Vector((-math.sin(yaw),math.cos(yaw),0)),.01)
             assert hit is not None and distance>.0003,'Pigment intersects corneal surface'
             assert eye.data.polygons[index].material_index==1,'Opaque sclera covers iris/pupil'
