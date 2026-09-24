@@ -1,0 +1,9 @@
+# Shorts front/back panel profile candidate
+
+This editable Blender checkpoint starts from [ShoeCanvas.blend](../ShoeCanvasCandidate/ShoeCanvas.blend), SHA-256 `D2E19CB5416D9FF22B43291D1F7BAE1A704C1279513A0DC63EC986D15A723A33`. Run `build.py` in Blender 4.5.5 with `--render` to reproduce [ShortsPanel.blend](ShortsPanel.blend), SHA-256 `7DED1799872E9E8AA45FF491F94842AA433014735E7B9BCDA8B53551084535BB`, and the native close/full views. Run `render_gameplay.py` for the gameplay-camera review.
+
+The previous upper shorts used nearly constant oval hip rings. This candidate gives the existing connected control rings separate front and rear depth profiles and a narrower waist, grading those changes into the saddle and upper leg rings without moving the lower leg openings. Maximum control displacement is 34.7 mm. The ribbed waistband's lower edge is fitted inward against the new rear surface by at most 26.0 mm, and both back-pocket stitch curves are reprojected. The slate jacket, anatomy, shoes and landscape remain unchanged.
+
+Review [rear close](Shorts_Panel_Rear_Close.png), [front close](Shorts_Panel_Front_Close.png), [full rear](Shorts_Panel_Full_Rear.png) and [gameplay](Shorts_Panel_Gameplay.png). A cold `verify_scene.py --draft` check passes with one connected shorts component, three openings and 2.20 mm minimum sampled thigh clearance.
+
+This is a modest profile change, not a fully rebuilt sewn garment. A further 60-frame cotton resettle was rejected: raw displacement reached 12.7 cm, concentrated the crotch folds and lifted both hems enough to show dark gaps. The accepted checkpoint keeps the earlier retained cloth surface. The next shorts pass needs explicit front/back pattern-piece construction and a better saddle/leg transition before further simulation. Skin/eyes, jacket drape, ankle/shoe silhouette and full reference-level realism remain open. This is offline art, not runtime integration.
