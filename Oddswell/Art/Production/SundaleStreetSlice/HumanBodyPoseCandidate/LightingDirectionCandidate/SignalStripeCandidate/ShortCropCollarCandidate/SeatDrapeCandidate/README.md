@@ -11,3 +11,5 @@ The added folds improve the shorts silhouette modestly at full-body and gameplay
 A later isolated 21 mm lower-back jacket fold study was rejected after its close rear render: it read as an embossed horizontal wave, not believable fabric compression. It remains in ignored scratch space and is not part of this scene. Changing the jacket's panel fit and arm pose remains the next structural task.
 
 A second isolated fit trial narrowed the torso by up to 18 mm and dropped the shoulder by up to 14 mm, then refitted the sewn seams. The full rear still looked broad and the procedural teal band broke at the shoulder transition. This trial was also rejected; a successful fit change must update the band mapping together with the cloth pattern.
+
+The next retained [jacket-ease candidate](JacketEaseCandidate/README.md) uses localized native cloth rest-length expansion and a second collision settle to add lower-back and elbow drape without the hand-sculpted wave.
