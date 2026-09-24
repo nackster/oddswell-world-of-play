@@ -9,3 +9,5 @@ The 64-sample native Cycles views are [close rear](Jacket_Ease_Back_Close.png), 
 The back, waist and sleeves now read less like a smooth shell in close and full-body views. This is an incremental realism checkpoint, not acceptance of the requested human: shoulder volume still appears padded, the hands and walking gesture need joint-aware work, the front face needs more natural expression, and the shoes remain simplified at full-body scale. The material stripe is readable but still has a small shoulder transition. Next prioritize the arm/hand pose and shoulder pattern together, then review the character in profile, front, rear and gameplay views.
 
 The [close hand and cuff review](HandPoseReview/README.md) records the remaining finger-gesture and flared-wrist defects for that next pose pass.
+
+The next retained [hand and cuff candidate](../HandCuffCandidate/README.md) narrows the rib cuffs and uses source hand landmarks to relax the thumb spread while keeping the nail details fitted.
