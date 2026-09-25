@@ -1,5 +1,7 @@
 # Sundale character and landscape study
 
+September 24 continuation: `CrewCutCandidate/CrewCut.blend` retains a more directional graduated short crop on the same verified scalp roots. Matched front, three-quarter and full-rear renders show a modest head improvement. A skin/iris material trial was too subtle and a larger seat-volume trial looked padded, so neither became the new source. The very-real human goal remains open: reconstruct the upper shorts/saddle and continue face, jacket and footwear work before assessing the full scene against the original concept.
+
 **Anatomical shorts fit checkpoint:** A restrained outer-leg taper now follows the posed thigh with explicit cloth clearance. The overall human-realism goal remains open; see [VisualReview.md](VisualReview.md).
 
 **Cropped scalp and sole checkpoint:** Native scalp fibers, molded shoe edges and a reinforced canvas heel extend the editable character. The human-realism goal remains unfinished; see [VisualReview.md](VisualReview.md).

@@ -13,6 +13,7 @@ September 24 evidence from native Cycles studies, retained in ignored `client/Od
 | Strong upper cotton ease | 14.3 mm | Reads as an applied diagonal ridge above the pocket. |
 | Narrow saddle recess | 16.0 mm | Pinches the connected saddle into exposed protruding folds; reject. |
 | Broad rear seat fit | 11.8 mm | Slightly smooths the arch but preserves the flat, blocky upper silhouette. |
+| Paired rear-seat contour | 21.0 mm | Adds a padded profile without correcting the annular shell or saddle; reject. |
 
 A source-derived pelvis raycast audit also found widely varying sampled rear offsets (about 2–115 mm across the upper rings) and negative front offsets down to about -43 mm. Those values depend on an incomplete posed proxy and are **not** continuous collision-clearance proof. They are enough to rule out blindly reusing that proxy for another cotton settle.
 
