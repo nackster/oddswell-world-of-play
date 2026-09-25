@@ -56,6 +56,7 @@ layout={'source_sha256':'EA9524588054A81A69D5C7FC4FDC7B956DFB318DC5D9BDA4C687E22
         'paired_gusset_vertex_range':[1360,1437],
         'leg_tube_start_vertices':{'left':1438,'right':4318},
         'leg_tube_control_rows':36,'rings':rings,'gusset':gusset,'leg_openings':hem}
+layout['garment_detail_objects']=[obj.name for obj in bpy.data.objects if obj.name.startswith('Character | ') and obj.type=='CURVE' and any(word in obj.name for word in ('shorts','pocket','seam','folded hem'))]
 legs=bpy.data.objects['Character | anatomical legs']
 leg_points=[legs.matrix_world@vertex.co for vertex in legs.data.vertices]
 layout['exposed_leg_mesh']={'vertices':len(leg_points),'faces':len(legs.data.polygons),

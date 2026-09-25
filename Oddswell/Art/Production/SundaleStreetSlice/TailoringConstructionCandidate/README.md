@@ -1,0 +1,7 @@
+# Sewn shorts construction checkpoint
+
+`TailoringConstruction.blend` starts from the exact `LegAxisCandidate/LegAxis.blend` source (SHA-256 `EA9524588054A81A69D5C7FC4FDC7B956DFB318DC5D9BDA4C687E22F2CFB1C4C`). It adds editable, fabric-fitted stitch curves along both side seams and a short J-shaped fly. The original shorts mesh, hem facings, anatomical body, jacket, footwear and street scene are unchanged. The saved scene SHA-256 is `F3844EDB5509E0E894B97751E011BDD35DEAB814F2011DD15B979466DDF164E3`.
+
+Review the native Cycles [front](Tailoring_Front.png), [profile](Tailoring_Profile.png), [full rear](Tailoring_Full_Rear.png) and [gameplay](Tailoring_Gameplay.png) views. The added paths make the close front and side views read slightly more like a sewn garment. They are nearly invisible at gameplay scale; this does **not** replace the broad annular upper shorts shell or satisfy the human-realism goal.
+
+The cold `verify_scene.py --draft` check passes with the original three shorts openings and 3.44 mm minimum sampled cloth-to-thigh clearance. `verify_stitches.py` checks 74 left, 83 right and 33 fly stitch segments on the saved scene; every endpoint lies 0.75 mm from the evaluated shorts surface. This is a static surface-fit check, not moving-cloth proof. The next major task remains a connected front/back/saddle panel reconstruction around a registered walking pelvis and thighs, followed by close and full-figure visual review against the original OddsWell concept.

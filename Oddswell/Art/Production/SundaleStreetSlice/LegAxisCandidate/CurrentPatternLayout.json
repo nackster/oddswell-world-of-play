@@ -666,6 +666,28 @@
       ]
     }
   ],
+  "garment_detail_objects": [
+    "Character | front welt pocket",
+    "Character | front welt pocket.001",
+    "Character | inset back pocket stitch left",
+    "Character | inset back pocket stitch right",
+    "Character | pocket mouth topstitch left",
+    "Character | pocket mouth topstitch right",
+    "Character | sewn folded hem left",
+    "Character | sewn folded hem right",
+    "Character | shoe lace heel seam left",
+    "Character | shoe lace heel seam right",
+    "Character | shoe lace quarter seam left",
+    "Character | shoe lace quarter seam left.001",
+    "Character | shoe lace quarter seam right",
+    "Character | shoe lace quarter seam right.001",
+    "Character | shoe lace toe cap seam left",
+    "Character | shoe lace toe cap seam right",
+    "Character | shorts leg hem left",
+    "Character | shorts leg hem left.001",
+    "Character | shorts leg hem right",
+    "Character | shorts leg hem right.001"
+  ],
   "exposed_leg_mesh": {
     "vertices": 816,
     "faces": 776,
