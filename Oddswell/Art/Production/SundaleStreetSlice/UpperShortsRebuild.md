@@ -1,6 +1,8 @@
 # Upper shorts and jacket-waist rebuild
 
-The current editable art source is `PocketPanelCandidate/PocketPanel.blend` (SHA-256 `F4C098DFC315FF9AF49AC3F8ABE15E60D32AF28A062F7E01F5714A24B11A9052`). Its rear pockets and hems are worth retaining, but the upper shorts remain a smooth annular hip shell joined to two leg tubes through a narrow saddle. The source construction is visible in `develop_character_landscape.py`: 17 eighty-point hip rings, two eighty-point leg rings, and a 44 mm tapered gusset. The source-derived pelvic collision trial does not fit this posed shell closely enough to serve as a new cloth target without alignment work.
+The previous editable art source is `PocketPanelCandidate/PocketPanel.blend` (SHA-256 `F4C098DFC315FF9AF49AC3F8ABE15E60D32AF28A062F7E01F5714A24B11A9052`). Its rear pockets and hems are worth retaining, but the upper shorts remain a smooth annular hip shell joined to two leg tubes through a narrow saddle. The source construction is visible in `develop_character_landscape.py`: 17 eighty-point hip rings, two eighty-point leg rings, and a 44 mm tapered gusset. The source-derived pelvic collision trial does not fit this posed shell closely enough to serve as a new cloth target without alignment work.
+
+The next retained checkpoint is `WaistPatternCandidate/WaistPattern.blend`: a coupled waist/rib/jacket contour that reduces the upper shorts circumference to 0.910 m without changing the lower hip substantially. It improves the adult waist-to-hip silhouette but does not replace the annular upper shell or saddle. Use this newer scene as the source for the remaining pattern reconstruction.
 
 September 24 evidence from native Cycles studies, retained in ignored `client/OddsWell/Saved/NextTen20260912/`:
 
