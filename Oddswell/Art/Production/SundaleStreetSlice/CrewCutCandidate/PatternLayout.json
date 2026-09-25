@@ -1,0 +1,141 @@
+{
+  "source_sha256": "974ADD328315034C3DD09C6C4393B825E47FFC994315366552446A313AE89EE5",
+  "mesh": "Character | shorts leg continuous tailoring",
+  "upper_ring_rows": 17,
+  "vertices_per_ring": 80,
+  "front_panel_control_columns": "0..40",
+  "rear_panel_control_columns": "40..79,0",
+  "side_seam_columns": [
+    0,
+    40
+  ],
+  "saddle_bridge_vertex_range": [
+    1360,
+    1398
+  ],
+  "saddle_bridge_height_range_m": [
+    0.715071,
+    0.779948
+  ],
+  "rings": [
+    {
+      "row": 0,
+      "mean_height_m": 0.791444,
+      "front_arc_m": 0.549871,
+      "rear_arc_m": 0.516251,
+      "circumference_m": 1.066122
+    },
+    {
+      "row": 1,
+      "mean_height_m": 0.797972,
+      "front_arc_m": 0.542859,
+      "rear_arc_m": 0.509911,
+      "circumference_m": 1.05277
+    },
+    {
+      "row": 2,
+      "mean_height_m": 0.804895,
+      "front_arc_m": 0.536329,
+      "rear_arc_m": 0.504475,
+      "circumference_m": 1.040804
+    },
+    {
+      "row": 3,
+      "mean_height_m": 0.811894,
+      "front_arc_m": 0.530035,
+      "rear_arc_m": 0.498225,
+      "circumference_m": 1.02826
+    },
+    {
+      "row": 4,
+      "mean_height_m": 0.818724,
+      "front_arc_m": 0.524972,
+      "rear_arc_m": 0.490864,
+      "circumference_m": 1.015836
+    },
+    {
+      "row": 5,
+      "mean_height_m": 0.82544,
+      "front_arc_m": 0.520484,
+      "rear_arc_m": 0.483374,
+      "circumference_m": 1.003858
+    },
+    {
+      "row": 6,
+      "mean_height_m": 0.832265,
+      "front_arc_m": 0.517519,
+      "rear_arc_m": 0.475858,
+      "circumference_m": 0.993377
+    },
+    {
+      "row": 7,
+      "mean_height_m": 0.839006,
+      "front_arc_m": 0.515478,
+      "rear_arc_m": 0.467644,
+      "circumference_m": 0.983123
+    },
+    {
+      "row": 8,
+      "mean_height_m": 0.845948,
+      "front_arc_m": 0.51154,
+      "rear_arc_m": 0.459571,
+      "circumference_m": 0.971111
+    },
+    {
+      "row": 9,
+      "mean_height_m": 0.853019,
+      "front_arc_m": 0.506133,
+      "rear_arc_m": 0.454396,
+      "circumference_m": 0.960528
+    },
+    {
+      "row": 10,
+      "mean_height_m": 0.860122,
+      "front_arc_m": 0.501521,
+      "rear_arc_m": 0.452174,
+      "circumference_m": 0.953695
+    },
+    {
+      "row": 11,
+      "mean_height_m": 0.866638,
+      "front_arc_m": 0.496873,
+      "rear_arc_m": 0.449901,
+      "circumference_m": 0.946774
+    },
+    {
+      "row": 12,
+      "mean_height_m": 0.872752,
+      "front_arc_m": 0.489734,
+      "rear_arc_m": 0.447094,
+      "circumference_m": 0.936828
+    },
+    {
+      "row": 13,
+      "mean_height_m": 0.879324,
+      "front_arc_m": 0.480636,
+      "rear_arc_m": 0.445106,
+      "circumference_m": 0.925742
+    },
+    {
+      "row": 14,
+      "mean_height_m": 0.886378,
+      "front_arc_m": 0.474608,
+      "rear_arc_m": 0.442848,
+      "circumference_m": 0.917456
+    },
+    {
+      "row": 15,
+      "mean_height_m": 0.892951,
+      "front_arc_m": 0.470997,
+      "rear_arc_m": 0.441427,
+      "circumference_m": 0.912424
+    },
+    {
+      "row": 16,
+      "mean_height_m": 0.896939,
+      "front_arc_m": 0.469086,
+      "rear_arc_m": 0.441209,
+      "circumference_m": 0.910295
+    }
+  ]
+}

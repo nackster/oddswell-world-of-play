@@ -4,6 +4,8 @@ The previous editable art source is `PocketPanelCandidate/PocketPanel.blend` (SH
 
 The next retained checkpoint is `WaistPatternCandidate/WaistPattern.blend`: a coupled waist/rib/jacket contour that reduces the upper shorts circumference to 0.910 m without changing the lower hip substantially. It improves the adult waist-to-hip silhouette but does not replace the annular upper shell or saddle. Use this newer scene as the source for the remaining pattern reconstruction.
 
+The later `PanelBalanceCandidate/PanelBalance.blend` is the current fit source. Its measured panel-path audit (`CrewCutCandidate/PatternLayout.json`) found 0.5499 m front arc and 0.5163 m rear arc on the lower upper-shorts ring. A bounded front-to-rear cloth-depth redistribution brings those paths to 0.5340/0.5284 m without opening the waist or moving the leg hems. Native review shows a modest silhouette gain; the 17-ring annular topology and 39-point saddle bridge still require replacement as a coupled pattern. The first transition trial opened dark triangles beneath the jacket band and was rejected; the retained transition ends before that band.
+
 September 24 evidence from native Cycles studies, retained in ignored `client/OddsWell/Saved/NextTen20260912/`:
 
 | Study | Maximum change | Visual decision |
