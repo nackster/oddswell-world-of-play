@@ -1,5 +1,7 @@
 # Sundale character and landscape study
 
+September 25 walking weight-balance checkpoint: `WeightBalanceCandidate/WeightBalance.blend` shifts the clothed upper body 45 mm toward the planted right shoe. Native full-front, full-rear and gameplay renders show a modest improvement in weight-bearing pose; cold scene checks pass. The broad upper shorts, stylized torso and visible dark armhole junction remain open under the human-realism goal.
+
 September 25 sewn-construction checkpoint: `TailoringConstructionCandidate/TailoringConstruction.blend` adds fitted side and fly stitch paths to the exact walking-fit source. Front/profile/full-rear/gameplay Cycles views and cold scene/stitch-contact checks are retained. This is a modest clothing detail improvement; the shorts' annular upper shell and full human realism remain open.
 
 September 25 full-front review: `LegAxisCandidate/Leg_Axis_Full_Front.png` and `Leg_Axis_Knee_Close.png` reveal the remaining stiff torso/shorts and smooth knee contours. Pose-derived pelvic support, support-guided shorts expansion and two local knee sculpts failed visual review and remain ignored studies. `LegAxisCandidate/LegAxis.blend` remains the clean geometry source for the tailoring checkpoint; see [UpperShortsRebuild.md](UpperShortsRebuild.md) for the garment diagnosis. The very-real human goal remains active.
