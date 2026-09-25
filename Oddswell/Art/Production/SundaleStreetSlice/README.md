@@ -1,5 +1,7 @@
 # Sundale character and landscape study
 
+September 24 fit study: a source-derived pelvis intersects much of the current upper shorts, and both a native cloth settle and filtered variants produce visible crotch/hem defects. Those trial scenes were rejected after front/rear render review; `GussetWidthCandidate/GussetWidth.blend` remains the latest clean editable checkpoint. [UpperShortsRebuild.md](UpperShortsRebuild.md) records the measurements and the coupled panel/support rebuild needed next. The very-real human goal is still active.
+
 Latest September 24 gusset checkpoint: `GussetWidthCandidate/GussetWidth.blend` widens the shorts' **existing** paired gusset and blends it through the upper legs. A corrected audit measures 21.5 mm maximum span before and 47.3 mm after; the historical 44 mm property was a nominal design value. Front/rear close renders improve modestly, while full-body and gameplay differences are small. The broad upper shorts panels and overall human realism remain unfinished.
 
 Latest September 24 fit checkpoint: `PanelBalanceCandidate/PanelBalance.blend` uses a measured front/rear arc audit to redistribute lower-hip shorts depth, with a held waistband and refitted back pockets. Matched native front, rear, profile, and full-figure views show a modest improvement without a new band gap. The existing annular shorts shell and saddle still need an actual panel reconstruction before the very-real human goal can be accepted.
