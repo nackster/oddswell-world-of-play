@@ -9,13 +9,18 @@
     0,
     40
   ],
-  "saddle_bridge_vertex_range": [
+  "paired_gusset_vertex_range": [
     1360,
-    1398
+    1437
   ],
-  "saddle_bridge_height_range_m": [
-    0.715071,
-    0.779948
+  "gusset_station_count": 39,
+  "gusset_width_range_m": [
+    0.011332,
+    0.021473
+  ],
+  "gusset_height_range_m": [
+    0.713162,
+    0.782567
   ],
   "rings": [
     {

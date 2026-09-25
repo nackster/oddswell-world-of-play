@@ -1,5 +1,7 @@
 # Sundale character and landscape study
 
+Latest September 24 gusset checkpoint: `GussetWidthCandidate/GussetWidth.blend` widens the shorts' **existing** paired gusset and blends it through the upper legs. A corrected audit measures 21.5 mm maximum span before and 47.3 mm after; the historical 44 mm property was a nominal design value. Front/rear close renders improve modestly, while full-body and gameplay differences are small. The broad upper shorts panels and overall human realism remain unfinished.
+
 Latest September 24 fit checkpoint: `PanelBalanceCandidate/PanelBalance.blend` uses a measured front/rear arc audit to redistribute lower-hip shorts depth, with a held waistband and refitted back pockets. Matched native front, rear, profile, and full-figure views show a modest improvement without a new band gap. The existing annular shorts shell and saddle still need an actual panel reconstruction before the very-real human goal can be accepted.
 
 September 24 continuation: `CrewCutCandidate/CrewCut.blend` retains a more directional graduated short crop on the same verified scalp roots. Matched front, three-quarter and full-rear renders show a modest head improvement. A skin/iris material trial was too subtle and a larger seat-volume trial looked padded, so neither became the new source. The very-real human goal remains open: reconstruct the upper shorts/saddle and continue face, jacket and footwear work before assessing the full scene against the original concept.
