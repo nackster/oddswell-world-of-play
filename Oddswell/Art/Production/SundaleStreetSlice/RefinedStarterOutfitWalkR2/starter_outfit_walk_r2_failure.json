@@ -1,0 +1,57 @@
+{
+  "accepted_source_bottom_mesh_sha256": "ED49AEDD3C65D9E9F5B13E2C9B9B0CF6614ABE19BCD7E666D396D1234E8BDF96",
+  "authorized_single_trial": {
+    "leg_metaball_scale_xyz_m": [
+      0.3,
+      0.36,
+      0.25
+    ],
+    "root_weight": 0.99,
+    "saddle_z_formula_m": ".58 + .04 * abs(2*t-1)^2",
+    "total_thigh_weight": 0.01,
+    "upper_metaball_scale_xyz_m": [
+      0.48,
+      0.4,
+      0.25
+    ],
+    "z_face_cuts_m": [
+      0.62,
+      0.86
+    ]
+  },
+  "boundaries": {
+    "accepted_inputs_mutated": 0,
+    "brain_admin_claim": 0,
+    "derived_blend_written": 0,
+    "frozen_regression_claim": 0,
+    "next_phase": 0,
+    "notion_sync": 0,
+    "package_claim": 0,
+    "phase_credit": 0,
+    "review_images_accepted": 0,
+    "runtime_change": 0
+  },
+  "failure": {
+    "reason": "bounded_profile_trial_did_not_retain_two_leg_openings",
+    "stage": "neutral_topology",
+    "topology": {
+      "boundary_loops": 1,
+      "connected_components": 1,
+      "material_slots": [
+        "MAT__starter_offwhite_bottom_proof"
+      ],
+      "non_manifold_edges_excluding_openings": 0,
+      "polygons": 2825,
+      "vertices": 2415
+    }
+  },
+  "phase": "Phase 1L.5bz-R2 bottom-only topology-and-weight redesign walk proof",
+  "source_custody": {
+    "body_blend": "83D9AFEDA8F0B81EA356E3173751534FE579DB39E6F343EEF952B5715CD3BCAB",
+    "body_manifest": "2299550AA590235BC2D71753BAFE3CE59A2573F8F5900EE817B91E2DB59958A0",
+    "bottom_blend": "18103E29F0D22B14A16457F3A61D49F9EFE48E388D8BF3AFD2AB67FE4F5798CA",
+    "motion_blend": "AC27A075AD8AE7981B4735797D2C83D37BF56A1D24BAFF881659DB23E7194506",
+    "top_blend": "B06360F355AFFCA4E18802467186B3F8CFD4D5512C2BCE1B3A9AF66165F9C935"
+  },
+  "status": "BLOCKED_UNCOUNTED_FAIL_CLOSED_AT_NEUTRAL_TOPOLOGY"
+}
