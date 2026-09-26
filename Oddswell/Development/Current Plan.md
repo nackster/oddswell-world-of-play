@@ -2945,9 +2945,11 @@ The preserved Phase 1L.5aq report identity is `4,027` bytes/SHA `3E14CFABBD0FC4C
 
 ### Phase 1L.5bz refined starter-outfit walk deformation status
 
-- **BLOCKED / UNCOUNTED:** exact accepted body/top/bottom and unchanged current `walk_candidate_v1` passed custody and frame `1`, then frame `2` produced `587` body/bottom triangle overlaps; body/top and top/bottom remained `0`.
-- The diagnostic stopped with exit `1`; no accepted source, weights, action, threshold, or runtime input was repaired, no derivative Blend was written, and later frames/frozen suites were not run.
-- This is failure evidence, not deformation, runtime, final-art, performance, readiness, or Phase 6 credit. See [[Development/Reports/Phase 1L5bz Refined Starter Outfit Walk Deformation Blocked Evidence]].
+- **COMPLETE (technical proof only):** R3 preserves the accepted refined body, twelve-bone/DEC-035 skeleton and exact `walk_candidate_v1`, and derives only corrected technical starter-garment geometry.
+- The bottom is one connected `2,280`-vertex / `2,711`-polygon shell with exactly three openings and normalized root/thigh weights. The top is a narrowed two-panel technical drape; it is explicitly not a connected or finished shirt.
+- All integer frames `1–21` pass evaluated BVH body/top, body/bottom and top/bottom intersection checks at `0`; sampled minimum clearances are `0.001980603 m` top and `0.018012507 m` bottom, root translation stays zero, and frame `21` equals frame `1`.
+- Blender build/cold validation, semantic rebuild identity, native `75/75`, Python `105/105`, Brain Admin and retained packaged locomotion/Studio/camera/two-player character smoke pass. No Unreal or package input changed.
+- **Next character gate:** replace the two-panel top and synthetic bottom silhouette with connected, believable garment panel construction while retaining the proven walk and three-opening bottom contract. Runtime replacement and Phase 1L exit remain separate. See [[Development/Reports/Phase 1L5bz R3 Corrected Technical Starter Outfit Walk Proof]].
 
 ### Sundale visual human body pose candidate — September 23, 2026
 
