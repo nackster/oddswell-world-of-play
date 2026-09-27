@@ -1,0 +1,2139 @@
+{
+  "files": {
+    "blend": {
+      "bytes": 13593552,
+      "sha256": "FC1485ABF4958F07B2FB3837C76DEE8CA12C98578190568632F23C1E98DA9DA3"
+    },
+    "builder": {
+      "bytes": 15623,
+      "sha256": "9A83AD63427F3ACF42A53F8E6F98FEBB7900E40CDD8E3E1FCD4EE1AFFB26183D"
+    },
+    "provenance": {
+      "bytes": 595,
+      "sha256": "C81DC5771426B455B37586D57670EB48C156CC86CE7F82E8777A6B13EBB203ED"
+    },
+    "reviews": {
+      "Front.png": {
+        "bytes": 463694,
+        "sha256": "77F1D6458DD97C38347C37A91D83030184AF23922E84D637C8527D78AF87C90D"
+      },
+      "Profile.png": {
+        "bytes": 456661,
+        "sha256": "FF4E52022453DFCA98F85D042394D0F9D9D133165437627F774756553592FDB1"
+      },
+      "Rear.png": {
+        "bytes": 443706,
+        "sha256": "AFA9271A9C07B6769C7BA3F3DE5C6BB2A7B67C9449BCEA3B65D79CD7F42F045D"
+      },
+      "WalkExtremeFront.png": {
+        "bytes": 480102,
+        "sha256": "30A93F6B7B5EE10AB41F42E0373A31B2F022852455F95770411E779CB1C65CE2"
+      },
+      "WalkExtremeRear.png": {
+        "bytes": 450193,
+        "sha256": "BB6C53E9B986A084FB460AF11D3EF64BAD47D2E627F4FA25CF67F502F74DD48D"
+      }
+    }
+  },
+  "phase": "Phase 1L.5ca connected starter-top pattern walk proof",
+  "semantic": {
+    "accepted_mesh_sha256": {
+      "BODY__refined_sundale_derivative_v1": "F340C34B05FC4D0D20F5625E9B2F9174947B691F59420367E8B738BE1CBF03CD",
+      "starter_offwhite_bottom": "5C0357E1ADDE7B35380222BDF6AD33BFF75A59D28B1AEFDD2404AC8630083618"
+    },
+    "accepted_r3": {
+      "blend": {
+        "bytes": 17071170,
+        "sha256": "9EC9404A9C7C394A100C51D30077C6B81D92154A61E7462368D6CB8742132CF0"
+      },
+      "identity_sha256": "A78AF6C921EC81F6AB636E235789B91B5173A1343A951B560A4A6F3445A3A14E"
+    },
+    "action": {
+      "action_count": 1,
+      "curves": [
+        {
+          "axis": 0,
+          "bone": "root",
+          "channel": "location",
+          "keys": [
+            {
+              "frame": 1.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            },
+            {
+              "frame": 6.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            },
+            {
+              "frame": 11.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            },
+            {
+              "frame": 16.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            },
+            {
+              "frame": 21.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            }
+          ]
+        },
+        {
+          "axis": 1,
+          "bone": "root",
+          "channel": "location",
+          "keys": [
+            {
+              "frame": 1.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            },
+            {
+              "frame": 6.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            },
+            {
+              "frame": 11.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            },
+            {
+              "frame": 16.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            },
+            {
+              "frame": 21.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            }
+          ]
+        },
+        {
+          "axis": 2,
+          "bone": "root",
+          "channel": "location",
+          "keys": [
+            {
+              "frame": 1.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            },
+            {
+              "frame": 6.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            },
+            {
+              "frame": 11.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            },
+            {
+              "frame": 16.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            },
+            {
+              "frame": 21.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            }
+          ]
+        },
+        {
+          "axis": 0,
+          "bone": "spine",
+          "channel": "rotation_euler",
+          "keys": [
+            {
+              "frame": 1.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            },
+            {
+              "frame": 6.0,
+              "interpolation": "LINEAR",
+              "value": 0.052359879
+            },
+            {
+              "frame": 11.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            },
+            {
+              "frame": 16.0,
+              "interpolation": "LINEAR",
+              "value": -0.052359879
+            },
+            {
+              "frame": 21.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            }
+          ]
+        },
+        {
+          "axis": 0,
+          "bone": "thigh.L",
+          "channel": "rotation_euler",
+          "keys": [
+            {
+              "frame": 1.0,
+              "interpolation": "LINEAR",
+              "value": -0.0
+            },
+            {
+              "frame": 6.0,
+              "interpolation": "LINEAR",
+              "value": -0.314159274
+            },
+            {
+              "frame": 11.0,
+              "interpolation": "LINEAR",
+              "value": -0.0
+            },
+            {
+              "frame": 16.0,
+              "interpolation": "LINEAR",
+              "value": 0.314159274
+            },
+            {
+              "frame": 21.0,
+              "interpolation": "LINEAR",
+              "value": -0.0
+            }
+          ]
+        },
+        {
+          "axis": 0,
+          "bone": "thigh.R",
+          "channel": "rotation_euler",
+          "keys": [
+            {
+              "frame": 1.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            },
+            {
+              "frame": 6.0,
+              "interpolation": "LINEAR",
+              "value": 0.314159274
+            },
+            {
+              "frame": 11.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            },
+            {
+              "frame": 16.0,
+              "interpolation": "LINEAR",
+              "value": -0.314159274
+            },
+            {
+              "frame": 21.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            }
+          ]
+        },
+        {
+          "axis": 0,
+          "bone": "upper_arm.L",
+          "channel": "rotation_euler",
+          "keys": [
+            {
+              "frame": 1.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            },
+            {
+              "frame": 6.0,
+              "interpolation": "LINEAR",
+              "value": 0.314159274
+            },
+            {
+              "frame": 11.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            },
+            {
+              "frame": 16.0,
+              "interpolation": "LINEAR",
+              "value": -0.314159274
+            },
+            {
+              "frame": 21.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            }
+          ]
+        },
+        {
+          "axis": 0,
+          "bone": "upper_arm.R",
+          "channel": "rotation_euler",
+          "keys": [
+            {
+              "frame": 1.0,
+              "interpolation": "LINEAR",
+              "value": -0.0
+            },
+            {
+              "frame": 6.0,
+              "interpolation": "LINEAR",
+              "value": -0.314159274
+            },
+            {
+              "frame": 11.0,
+              "interpolation": "LINEAR",
+              "value": -0.0
+            },
+            {
+              "frame": 16.0,
+              "interpolation": "LINEAR",
+              "value": 0.314159274
+            },
+            {
+              "frame": 21.0,
+              "interpolation": "LINEAR",
+              "value": -0.0
+            }
+          ]
+        }
+      ],
+      "cycle_duration_seconds": 0.714285714,
+      "cycles_per_second": 1.4,
+      "fps": 28,
+      "frame_end": 21,
+      "frame_start": 1,
+      "identity_sha256": "7DD9A4E6524BCAC604AEDC755D0464FEC8C8F40BDED1BDE17E87955ED63E1020",
+      "limb_pitch_degrees": 18.0,
+      "loop_end_equality": true,
+      "name": "walk_candidate_v1",
+      "root_translation_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "sample_frames": [
+        1,
+        6,
+        11,
+        16,
+        21
+      ],
+      "spine_sway_degrees": 3.0
+    },
+    "armature": {
+      "bone_count": 12,
+      "hierarchy": [
+        {
+          "head": [
+            0.28,
+            0.0,
+            1.12
+          ],
+          "name": "forearm.L",
+          "parent": "upper_arm.L",
+          "tail": [
+            0.265,
+            0.0,
+            0.78
+          ],
+          "use_deform": true
+        },
+        {
+          "head": [
+            -0.28,
+            0.0,
+            1.12
+          ],
+          "name": "forearm.R",
+          "parent": "upper_arm.R",
+          "tail": [
+            -0.265,
+            0.0,
+            0.78
+          ],
+          "use_deform": true
+        },
+        {
+          "head": [
+            0.0,
+            0.0,
+            1.66
+          ],
+          "name": "head",
+          "parent": "neck",
+          "tail": [
+            0.0,
+            0.0,
+            1.8
+          ],
+          "use_deform": true
+        },
+        {
+          "head": [
+            0.0,
+            0.0,
+            1.45
+          ],
+          "name": "neck",
+          "parent": "spine",
+          "tail": [
+            0.0,
+            0.0,
+            1.66
+          ],
+          "use_deform": true
+        },
+        {
+          "head": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "name": "root",
+          "parent": null,
+          "tail": [
+            0.0,
+            0.0,
+            0.1
+          ],
+          "use_deform": true
+        },
+        {
+          "head": [
+            0.13,
+            0.0,
+            0.53
+          ],
+          "name": "shin.L",
+          "parent": "thigh.L",
+          "tail": [
+            0.13,
+            0.0,
+            0.1
+          ],
+          "use_deform": true
+        },
+        {
+          "head": [
+            -0.13,
+            0.0,
+            0.53
+          ],
+          "name": "shin.R",
+          "parent": "thigh.R",
+          "tail": [
+            -0.13,
+            0.0,
+            0.1
+          ],
+          "use_deform": true
+        },
+        {
+          "head": [
+            0.0,
+            0.0,
+            0.94
+          ],
+          "name": "spine",
+          "parent": "root",
+          "tail": [
+            0.0,
+            0.0,
+            1.45
+          ],
+          "use_deform": true
+        },
+        {
+          "head": [
+            0.155,
+            0.0,
+            0.94
+          ],
+          "name": "thigh.L",
+          "parent": "root",
+          "tail": [
+            0.13,
+            0.0,
+            0.53
+          ],
+          "use_deform": true
+        },
+        {
+          "head": [
+            -0.155,
+            0.0,
+            0.94
+          ],
+          "name": "thigh.R",
+          "parent": "root",
+          "tail": [
+            -0.13,
+            0.0,
+            0.53
+          ],
+          "use_deform": true
+        },
+        {
+          "head": [
+            0.245,
+            0.0,
+            1.45
+          ],
+          "name": "upper_arm.L",
+          "parent": "spine",
+          "tail": [
+            0.28,
+            0.0,
+            1.12
+          ],
+          "use_deform": true
+        },
+        {
+          "head": [
+            -0.245,
+            0.0,
+            1.45
+          ],
+          "name": "upper_arm.R",
+          "parent": "spine",
+          "tail": [
+            -0.28,
+            0.0,
+            1.12
+          ],
+          "use_deform": true
+        }
+      ]
+    },
+    "boundaries": {
+      "action_changed": 0,
+      "body_changed": 0,
+      "bottom_changed": 0,
+      "final_art_claim": false,
+      "readiness_claim": false,
+      "runtime_changed": 0,
+      "skeleton_changed": 0,
+      "top_connected": true
+    },
+    "construction": {
+      "bevel_segments": 3,
+      "bevel_width_m": 0.025,
+      "declared_openings": [
+        "neckline",
+        "waist_hem",
+        "left_arm",
+        "right_arm"
+      ],
+      "forms_xyz_m": [
+        {
+          "center_m": [
+            0.0,
+            0.02,
+            1.25
+          ],
+          "dimensions_m": [
+            0.76,
+            0.58,
+            0.5
+          ],
+          "role": "torso"
+        },
+        {
+          "center_m": [
+            0.32,
+            0.02,
+            1.28
+          ],
+          "dimensions_m": [
+            0.32,
+            0.38,
+            0.36
+          ],
+          "role": "left_sleeve"
+        },
+        {
+          "center_m": [
+            -0.32,
+            0.02,
+            1.28
+          ],
+          "dimensions_m": [
+            0.32,
+            0.38,
+            0.36
+          ],
+          "role": "right_sleeve"
+        }
+      ],
+      "method": "native_connected_boolean_shirt_pattern_with_subdivided_neckline_and_four_declared_openings"
+    },
+    "declared_opening_geometry": [
+      {
+        "edge_count": 44,
+        "max": [
+          -0.38,
+          0.21,
+          1.1
+        ],
+        "min": [
+          -0.48,
+          -0.17,
+          1.1
+        ]
+      },
+      {
+        "edge_count": 60,
+        "max": [
+          0.38,
+          0.31,
+          1.125
+        ],
+        "min": [
+          -0.38,
+          -0.27,
+          1.0
+        ]
+      },
+      {
+        "edge_count": 28,
+        "max": [
+          0.19,
+          0.31,
+          1.5
+        ],
+        "min": [
+          -0.19,
+          -0.27,
+          1.5
+        ]
+      },
+      {
+        "edge_count": 44,
+        "max": [
+          0.48,
+          0.21,
+          1.1
+        ],
+        "min": [
+          0.38,
+          -0.17,
+          1.1
+        ]
+      }
+    ],
+    "deformation": {
+      "continuous_triangle_distance": false,
+      "frame_count": 21,
+      "frames": [
+        {
+          "armature_translation_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "bounds_m": {
+            "BODY__refined_sundale_derivative_v1": {
+              "max": [
+                0.337676,
+                0.294926,
+                1.8
+              ],
+              "min": [
+                -0.337676,
+                -0.294926,
+                0.0
+              ]
+            },
+            "starter_offwhite_bottom": {
+              "max": [
+                0.229165,
+                0.260171,
+                0.913379
+              ],
+              "min": [
+                -0.229165,
+                -0.180172,
+                0.684411
+              ]
+            },
+            "starter_offwhite_top": {
+              "max": [
+                0.48,
+                0.31,
+                1.5
+              ],
+              "min": [
+                -0.48,
+                -0.27,
+                1.0
+              ]
+            }
+          },
+          "frame": 1,
+          "intersections": {
+            "body_bottom": 0,
+            "body_top": 0,
+            "top_bottom": 0
+          },
+          "root_bone_translation_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "time_seconds": 0.0,
+          "vertex_sampled_clearance": {
+            "starter_offwhite_bottom": {
+              "body_to_garment_m": 0.045993786,
+              "garment_to_body_m": 0.046215314,
+              "vertex_sampled_min_m": 0.045993786
+            },
+            "starter_offwhite_top": {
+              "body_to_garment_m": 0.043882728,
+              "garment_to_body_m": 0.045502268,
+              "vertex_sampled_min_m": 0.043882728
+            }
+          }
+        },
+        {
+          "armature_translation_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "bounds_m": {
+            "BODY__refined_sundale_derivative_v1": {
+              "max": [
+                0.339751,
+                0.260432,
+                1.8
+              ],
+              "min": [
+                -0.335461,
+                -0.240132,
+                -0.008645
+              ]
+            },
+            "starter_offwhite_bottom": {
+              "max": [
+                0.229387,
+                0.248477,
+                0.913379
+              ],
+              "min": [
+                -0.227978,
+                -0.168553,
+                0.670933
+              ]
+            },
+            "starter_offwhite_top": {
+              "max": [
+                0.483357,
+                0.338208,
+                1.519722
+              ],
+              "min": [
+                -0.481332,
+                -0.298322,
+                0.980757
+              ]
+            }
+          },
+          "frame": 2,
+          "intersections": {
+            "body_bottom": 0,
+            "body_top": 0,
+            "top_bottom": 0
+          },
+          "root_bone_translation_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "time_seconds": 0.035714286,
+          "vertex_sampled_clearance": {
+            "starter_offwhite_bottom": {
+              "body_to_garment_m": 0.030409398,
+              "garment_to_body_m": 0.029655831,
+              "vertex_sampled_min_m": 0.029655831
+            },
+            "starter_offwhite_top": {
+              "body_to_garment_m": 0.043875974,
+              "garment_to_body_m": 0.045137163,
+              "vertex_sampled_min_m": 0.043875974
+            }
+          }
+        },
+        {
+          "armature_translation_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "bounds_m": {
+            "BODY__refined_sundale_derivative_v1": {
+              "max": [
+                0.341677,
+                0.252447,
+                1.8
+              ],
+              "min": [
+                -0.333114,
+                -0.184378,
+                -0.013989
+              ]
+            },
+            "starter_offwhite_bottom": {
+              "max": [
+                0.229696,
+                0.240529,
+                0.913379
+              ],
+              "min": [
+                -0.22682,
+                -0.15925,
+                0.656985
+              ]
+            },
+            "starter_offwhite_top": {
+              "max": [
+                0.486604,
+                0.365058,
+                1.53921
+              ],
+              "min": [
+                -0.482555,
+                -0.325514,
+                0.963387
+              ]
+            }
+          },
+          "frame": 3,
+          "intersections": {
+            "body_bottom": 0,
+            "body_top": 0,
+            "top_bottom": 0
+          },
+          "root_bone_translation_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "time_seconds": 0.071428571,
+          "vertex_sampled_clearance": {
+            "starter_offwhite_bottom": {
+              "body_to_garment_m": 0.018012507,
+              "garment_to_body_m": 0.018178964,
+              "vertex_sampled_min_m": 0.018012507
+            },
+            "starter_offwhite_top": {
+              "body_to_garment_m": 0.04384166,
+              "garment_to_body_m": 0.044733588,
+              "vertex_sampled_min_m": 0.04384166
+            }
+          }
+        },
+        {
+          "armature_translation_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "bounds_m": {
+            "BODY__refined_sundale_derivative_v1": {
+              "max": [
+                0.343446,
+                0.252447,
+                1.8
+              ],
+              "min": [
+                -0.330644,
+                -0.198128,
+                -0.020337
+              ]
+            },
+            "starter_offwhite_bottom": {
+              "max": [
+                0.230092,
+                0.238027,
+                0.913379
+              ],
+              "min": [
+                -0.225695,
+                -0.156907,
+                0.644159
+              ]
+            },
+            "starter_offwhite_top": {
+              "max": [
+                0.489729,
+                0.390446,
+                1.558388
+              ],
+              "min": [
+                -0.483666,
+                -0.351469,
+                0.94796
+              ]
+            }
+          },
+          "frame": 4,
+          "intersections": {
+            "body_bottom": 0,
+            "body_top": 0,
+            "top_bottom": 0
+          },
+          "root_bone_translation_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "time_seconds": 0.107142857,
+          "vertex_sampled_clearance": {
+            "starter_offwhite_bottom": {
+              "body_to_garment_m": 0.022088779,
+              "garment_to_body_m": 0.022744596,
+              "vertex_sampled_min_m": 0.022088779
+            },
+            "starter_offwhite_top": {
+              "body_to_garment_m": 0.043525666,
+              "garment_to_body_m": 0.041490927,
+              "vertex_sampled_min_m": 0.041490927
+            }
+          }
+        },
+        {
+          "armature_translation_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "bounds_m": {
+            "BODY__refined_sundale_derivative_v1": {
+              "max": [
+                0.345052,
+                0.252447,
+                1.8
+              ],
+              "min": [
+                -0.328062,
+                -0.226034,
+                -0.022912
+              ]
+            },
+            "starter_offwhite_bottom": {
+              "max": [
+                0.230574,
+                0.235359,
+                0.913379
+              ],
+              "min": [
+                -0.22461,
+                -0.155163,
+                0.632506
+              ]
+            },
+            "starter_offwhite_top": {
+              "max": [
+                0.492721,
+                0.41427,
+                1.577181
+              ],
+              "min": [
+                -0.484659,
+                -0.376085,
+                0.934537
+              ]
+            }
+          },
+          "frame": 5,
+          "intersections": {
+            "body_bottom": 0,
+            "body_top": 0,
+            "top_bottom": 0
+          },
+          "root_bone_translation_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "time_seconds": 0.142857143,
+          "vertex_sampled_clearance": {
+            "starter_offwhite_bottom": {
+              "body_to_garment_m": 0.027916905,
+              "garment_to_body_m": 0.027916905,
+              "vertex_sampled_min_m": 0.027916905
+            },
+            "starter_offwhite_top": {
+              "body_to_garment_m": 0.037765026,
+              "garment_to_body_m": 0.035278488,
+              "vertex_sampled_min_m": 0.035278488
+            }
+          }
+        },
+        {
+          "armature_translation_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "bounds_m": {
+            "BODY__refined_sundale_derivative_v1": {
+              "max": [
+                0.346488,
+                0.262138,
+                1.8
+              ],
+              "min": [
+                -0.325376,
+                -0.253019,
+                -0.021706
+              ]
+            },
+            "starter_offwhite_bottom": {
+              "max": [
+                0.231162,
+                0.232536,
+                0.913379
+              ],
+              "min": [
+                -0.223567,
+                -0.153537,
+                0.62207
+              ]
+            },
+            "starter_offwhite_top": {
+              "max": [
+                0.495566,
+                0.436437,
+                1.595556
+              ],
+              "min": [
+                -0.485531,
+                -0.399264,
+                0.92317
+              ]
+            }
+          },
+          "frame": 6,
+          "intersections": {
+            "body_bottom": 0,
+            "body_top": 0,
+            "top_bottom": 0
+          },
+          "root_bone_translation_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "time_seconds": 0.178571429,
+          "vertex_sampled_clearance": {
+            "starter_offwhite_bottom": {
+              "body_to_garment_m": 0.020438444,
+              "garment_to_body_m": 0.020454427,
+              "vertex_sampled_min_m": 0.020438444
+            },
+            "starter_offwhite_top": {
+              "body_to_garment_m": 0.026332714,
+              "garment_to_body_m": 0.02852691,
+              "vertex_sampled_min_m": 0.026332714
+            }
+          }
+        },
+        {
+          "armature_translation_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "bounds_m": {
+            "BODY__refined_sundale_derivative_v1": {
+              "max": [
+                0.345052,
+                0.252447,
+                1.8
+              ],
+              "min": [
+                -0.328062,
+                -0.226034,
+                -0.022912
+              ]
+            },
+            "starter_offwhite_bottom": {
+              "max": [
+                0.230574,
+                0.235359,
+                0.913379
+              ],
+              "min": [
+                -0.22461,
+                -0.155163,
+                0.632506
+              ]
+            },
+            "starter_offwhite_top": {
+              "max": [
+                0.492721,
+                0.41427,
+                1.577181
+              ],
+              "min": [
+                -0.484659,
+                -0.376085,
+                0.934537
+              ]
+            }
+          },
+          "frame": 7,
+          "intersections": {
+            "body_bottom": 0,
+            "body_top": 0,
+            "top_bottom": 0
+          },
+          "root_bone_translation_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "time_seconds": 0.214285714,
+          "vertex_sampled_clearance": {
+            "starter_offwhite_bottom": {
+              "body_to_garment_m": 0.027916905,
+              "garment_to_body_m": 0.027916905,
+              "vertex_sampled_min_m": 0.027916905
+            },
+            "starter_offwhite_top": {
+              "body_to_garment_m": 0.037765026,
+              "garment_to_body_m": 0.035278488,
+              "vertex_sampled_min_m": 0.035278488
+            }
+          }
+        },
+        {
+          "armature_translation_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "bounds_m": {
+            "BODY__refined_sundale_derivative_v1": {
+              "max": [
+                0.343446,
+                0.252447,
+                1.8
+              ],
+              "min": [
+                -0.330644,
+                -0.198128,
+                -0.020337
+              ]
+            },
+            "starter_offwhite_bottom": {
+              "max": [
+                0.230092,
+                0.238027,
+                0.913379
+              ],
+              "min": [
+                -0.225695,
+                -0.156907,
+                0.644159
+              ]
+            },
+            "starter_offwhite_top": {
+              "max": [
+                0.489729,
+                0.390446,
+                1.558388
+              ],
+              "min": [
+                -0.483666,
+                -0.351469,
+                0.94796
+              ]
+            }
+          },
+          "frame": 8,
+          "intersections": {
+            "body_bottom": 0,
+            "body_top": 0,
+            "top_bottom": 0
+          },
+          "root_bone_translation_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "time_seconds": 0.25,
+          "vertex_sampled_clearance": {
+            "starter_offwhite_bottom": {
+              "body_to_garment_m": 0.022088779,
+              "garment_to_body_m": 0.022744596,
+              "vertex_sampled_min_m": 0.022088779
+            },
+            "starter_offwhite_top": {
+              "body_to_garment_m": 0.043525666,
+              "garment_to_body_m": 0.041490927,
+              "vertex_sampled_min_m": 0.041490927
+            }
+          }
+        },
+        {
+          "armature_translation_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "bounds_m": {
+            "BODY__refined_sundale_derivative_v1": {
+              "max": [
+                0.341677,
+                0.252447,
+                1.8
+              ],
+              "min": [
+                -0.333114,
+                -0.184378,
+                -0.013989
+              ]
+            },
+            "starter_offwhite_bottom": {
+              "max": [
+                0.229696,
+                0.240529,
+                0.913379
+              ],
+              "min": [
+                -0.22682,
+                -0.15925,
+                0.656985
+              ]
+            },
+            "starter_offwhite_top": {
+              "max": [
+                0.486604,
+                0.365058,
+                1.53921
+              ],
+              "min": [
+                -0.482555,
+                -0.325514,
+                0.963387
+              ]
+            }
+          },
+          "frame": 9,
+          "intersections": {
+            "body_bottom": 0,
+            "body_top": 0,
+            "top_bottom": 0
+          },
+          "root_bone_translation_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "time_seconds": 0.285714286,
+          "vertex_sampled_clearance": {
+            "starter_offwhite_bottom": {
+              "body_to_garment_m": 0.018012507,
+              "garment_to_body_m": 0.018178964,
+              "vertex_sampled_min_m": 0.018012507
+            },
+            "starter_offwhite_top": {
+              "body_to_garment_m": 0.04384166,
+              "garment_to_body_m": 0.044733588,
+              "vertex_sampled_min_m": 0.04384166
+            }
+          }
+        },
+        {
+          "armature_translation_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "bounds_m": {
+            "BODY__refined_sundale_derivative_v1": {
+              "max": [
+                0.339751,
+                0.260432,
+                1.8
+              ],
+              "min": [
+                -0.335461,
+                -0.240132,
+                -0.008645
+              ]
+            },
+            "starter_offwhite_bottom": {
+              "max": [
+                0.229387,
+                0.248477,
+                0.913379
+              ],
+              "min": [
+                -0.227978,
+                -0.168553,
+                0.670933
+              ]
+            },
+            "starter_offwhite_top": {
+              "max": [
+                0.483357,
+                0.338208,
+                1.519721
+              ],
+              "min": [
+                -0.481332,
+                -0.298322,
+                0.980757
+              ]
+            }
+          },
+          "frame": 10,
+          "intersections": {
+            "body_bottom": 0,
+            "body_top": 0,
+            "top_bottom": 0
+          },
+          "root_bone_translation_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "time_seconds": 0.321428571,
+          "vertex_sampled_clearance": {
+            "starter_offwhite_bottom": {
+              "body_to_garment_m": 0.030409394,
+              "garment_to_body_m": 0.029655831,
+              "vertex_sampled_min_m": 0.029655831
+            },
+            "starter_offwhite_top": {
+              "body_to_garment_m": 0.043875974,
+              "garment_to_body_m": 0.045137163,
+              "vertex_sampled_min_m": 0.043875974
+            }
+          }
+        },
+        {
+          "armature_translation_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "bounds_m": {
+            "BODY__refined_sundale_derivative_v1": {
+              "max": [
+                0.337676,
+                0.294926,
+                1.8
+              ],
+              "min": [
+                -0.337676,
+                -0.294926,
+                0.0
+              ]
+            },
+            "starter_offwhite_bottom": {
+              "max": [
+                0.229165,
+                0.260171,
+                0.913379
+              ],
+              "min": [
+                -0.229165,
+                -0.180172,
+                0.684411
+              ]
+            },
+            "starter_offwhite_top": {
+              "max": [
+                0.48,
+                0.31,
+                1.5
+              ],
+              "min": [
+                -0.48,
+                -0.27,
+                1.0
+              ]
+            }
+          },
+          "frame": 11,
+          "intersections": {
+            "body_bottom": 0,
+            "body_top": 0,
+            "top_bottom": 0
+          },
+          "root_bone_translation_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "time_seconds": 0.357142857,
+          "vertex_sampled_clearance": {
+            "starter_offwhite_bottom": {
+              "body_to_garment_m": 0.045993786,
+              "garment_to_body_m": 0.046215314,
+              "vertex_sampled_min_m": 0.045993786
+            },
+            "starter_offwhite_top": {
+              "body_to_garment_m": 0.043882728,
+              "garment_to_body_m": 0.045502268,
+              "vertex_sampled_min_m": 0.043882728
+            }
+          }
+        },
+        {
+          "armature_translation_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "bounds_m": {
+            "BODY__refined_sundale_derivative_v1": {
+              "max": [
+                0.335461,
+                0.328264,
+                1.8
+              ],
+              "min": [
+                -0.339751,
+                -0.348543,
+                0.012339
+              ]
+            },
+            "starter_offwhite_bottom": {
+              "max": [
+                0.229033,
+                0.272492,
+                0.913379
+              ],
+              "min": [
+                -0.230378,
+                -0.192647,
+                0.688451
+              ]
+            },
+            "starter_offwhite_top": {
+              "max": [
+                0.481332,
+                0.338208,
+                1.519722
+              ],
+              "min": [
+                -0.483357,
+                -0.298322,
+                0.980757
+              ]
+            }
+          },
+          "frame": 12,
+          "intersections": {
+            "body_bottom": 0,
+            "body_top": 0,
+            "top_bottom": 0
+          },
+          "root_bone_translation_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "time_seconds": 0.392857143,
+          "vertex_sampled_clearance": {
+            "starter_offwhite_bottom": {
+              "body_to_garment_m": 0.065144926,
+              "garment_to_body_m": 0.04833281,
+              "vertex_sampled_min_m": 0.04833281
+            },
+            "starter_offwhite_top": {
+              "body_to_garment_m": 0.043678604,
+              "garment_to_body_m": 0.045137044,
+              "vertex_sampled_min_m": 0.043678604
+            }
+          }
+        },
+        {
+          "armature_translation_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "bounds_m": {
+            "BODY__refined_sundale_derivative_v1": {
+              "max": [
+                0.333114,
+                0.364212,
+                1.8
+              ],
+              "min": [
+                -0.341677,
+                -0.400773,
+                0.028323
+              ]
+            },
+            "starter_offwhite_bottom": {
+              "max": [
+                0.228991,
+                0.284776,
+                0.913379
+              ],
+              "min": [
+                -0.231611,
+                -0.205396,
+                0.691957
+              ]
+            },
+            "starter_offwhite_top": {
+              "max": [
+                0.482555,
+                0.365058,
+                1.53921
+              ],
+              "min": [
+                -0.486604,
+                -0.325514,
+                0.963387
+              ]
+            }
+          },
+          "frame": 13,
+          "intersections": {
+            "body_bottom": 0,
+            "body_top": 0,
+            "top_bottom": 0
+          },
+          "root_bone_translation_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "time_seconds": 0.428571429,
+          "vertex_sampled_clearance": {
+            "starter_offwhite_bottom": {
+              "body_to_garment_m": 0.065144874,
+              "garment_to_body_m": 0.050754946,
+              "vertex_sampled_min_m": 0.050754946
+            },
+            "starter_offwhite_top": {
+              "body_to_garment_m": 0.04344726,
+              "garment_to_body_m": 0.044733588,
+              "vertex_sampled_min_m": 0.04344726
+            }
+          }
+        },
+        {
+          "armature_translation_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "bounds_m": {
+            "BODY__refined_sundale_derivative_v1": {
+              "max": [
+                0.330644,
+                0.419283,
+                1.8
+              ],
+              "min": [
+                -0.343446,
+                -0.451409,
+                0.047889
+              ]
+            },
+            "starter_offwhite_bottom": {
+              "max": [
+                0.229038,
+                0.296529,
+                0.913379
+              ],
+              "min": [
+                -0.232859,
+                -0.217928,
+                0.69645
+              ]
+            },
+            "starter_offwhite_top": {
+              "max": [
+                0.483666,
+                0.390446,
+                1.558388
+              ],
+              "min": [
+                -0.489729,
+                -0.351469,
+                0.94796
+              ]
+            }
+          },
+          "frame": 14,
+          "intersections": {
+            "body_bottom": 0,
+            "body_top": 0,
+            "top_bottom": 0
+          },
+          "root_bone_translation_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "time_seconds": 0.464285714,
+          "vertex_sampled_clearance": {
+            "starter_offwhite_bottom": {
+              "body_to_garment_m": 0.065144934,
+              "garment_to_body_m": 0.053111102,
+              "vertex_sampled_min_m": 0.053111102
+            },
+            "starter_offwhite_top": {
+              "body_to_garment_m": 0.041713458,
+              "garment_to_body_m": 0.0442927,
+              "vertex_sampled_min_m": 0.041713458
+            }
+          }
+        },
+        {
+          "armature_translation_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "bounds_m": {
+            "BODY__refined_sundale_derivative_v1": {
+              "max": [
+                0.328062,
+                0.472717,
+                1.8
+              ],
+              "min": [
+                -0.345052,
+                -0.500251,
+                0.070961
+              ]
+            },
+            "starter_offwhite_bottom": {
+              "max": [
+                0.229175,
+                0.307793,
+                0.913379
+              ],
+              "min": [
+                -0.234169,
+                -0.230394,
+                0.701913
+              ]
+            },
+            "starter_offwhite_top": {
+              "max": [
+                0.484659,
+                0.41427,
+                1.577181
+              ],
+              "min": [
+                -0.492721,
+                -0.376085,
+                0.934537
+              ]
+            }
+          },
+          "frame": 15,
+          "intersections": {
+            "body_bottom": 0,
+            "body_top": 0,
+            "top_bottom": 0
+          },
+          "root_bone_translation_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "time_seconds": 0.5,
+          "vertex_sampled_clearance": {
+            "starter_offwhite_bottom": {
+              "body_to_garment_m": 0.065144897,
+              "garment_to_body_m": 0.055280119,
+              "vertex_sampled_min_m": 0.055280119
+            },
+            "starter_offwhite_top": {
+              "body_to_garment_m": 0.035496637,
+              "garment_to_body_m": 0.039946537,
+              "vertex_sampled_min_m": 0.035496637
+            }
+          }
+        },
+        {
+          "armature_translation_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "bounds_m": {
+            "BODY__refined_sundale_derivative_v1": {
+              "max": [
+                0.325376,
+                0.524304,
+                1.8
+              ],
+              "min": [
+                -0.346488,
+                -0.547107,
+                0.097447
+              ]
+            },
+            "starter_offwhite_bottom": {
+              "max": [
+                0.229401,
+                0.318266,
+                0.913379
+              ],
+              "min": [
+                -0.235512,
+                -0.242203,
+                0.708325
+              ]
+            },
+            "starter_offwhite_top": {
+              "max": [
+                0.485531,
+                0.436437,
+                1.595556
+              ],
+              "min": [
+                -0.495566,
+                -0.399264,
+                0.92317
+              ]
+            }
+          },
+          "frame": 16,
+          "intersections": {
+            "body_bottom": 0,
+            "body_top": 0,
+            "top_bottom": 0
+          },
+          "root_bone_translation_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "time_seconds": 0.535714286,
+          "vertex_sampled_clearance": {
+            "starter_offwhite_bottom": {
+              "body_to_garment_m": 0.065144882,
+              "garment_to_body_m": 0.060298122,
+              "vertex_sampled_min_m": 0.060298122
+            },
+            "starter_offwhite_top": {
+              "body_to_garment_m": 0.026332714,
+              "garment_to_body_m": 0.02852691,
+              "vertex_sampled_min_m": 0.026332714
+            }
+          }
+        },
+        {
+          "armature_translation_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "bounds_m": {
+            "BODY__refined_sundale_derivative_v1": {
+              "max": [
+                0.328062,
+                0.472717,
+                1.8
+              ],
+              "min": [
+                -0.345052,
+                -0.500251,
+                0.070961
+              ]
+            },
+            "starter_offwhite_bottom": {
+              "max": [
+                0.229175,
+                0.307793,
+                0.913379
+              ],
+              "min": [
+                -0.234169,
+                -0.230394,
+                0.701913
+              ]
+            },
+            "starter_offwhite_top": {
+              "max": [
+                0.484659,
+                0.41427,
+                1.577181
+              ],
+              "min": [
+                -0.492721,
+                -0.376085,
+                0.934537
+              ]
+            }
+          },
+          "frame": 17,
+          "intersections": {
+            "body_bottom": 0,
+            "body_top": 0,
+            "top_bottom": 0
+          },
+          "root_bone_translation_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "time_seconds": 0.571428571,
+          "vertex_sampled_clearance": {
+            "starter_offwhite_bottom": {
+              "body_to_garment_m": 0.065144897,
+              "garment_to_body_m": 0.055280119,
+              "vertex_sampled_min_m": 0.055280119
+            },
+            "starter_offwhite_top": {
+              "body_to_garment_m": 0.035496637,
+              "garment_to_body_m": 0.039946537,
+              "vertex_sampled_min_m": 0.035496637
+            }
+          }
+        },
+        {
+          "armature_translation_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "bounds_m": {
+            "BODY__refined_sundale_derivative_v1": {
+              "max": [
+                0.330644,
+                0.419283,
+                1.8
+              ],
+              "min": [
+                -0.343446,
+                -0.451409,
+                0.047889
+              ]
+            },
+            "starter_offwhite_bottom": {
+              "max": [
+                0.229038,
+                0.296529,
+                0.913379
+              ],
+              "min": [
+                -0.232859,
+                -0.217928,
+                0.69645
+              ]
+            },
+            "starter_offwhite_top": {
+              "max": [
+                0.483666,
+                0.390446,
+                1.558388
+              ],
+              "min": [
+                -0.489729,
+                -0.351469,
+                0.94796
+              ]
+            }
+          },
+          "frame": 18,
+          "intersections": {
+            "body_bottom": 0,
+            "body_top": 0,
+            "top_bottom": 0
+          },
+          "root_bone_translation_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "time_seconds": 0.607142857,
+          "vertex_sampled_clearance": {
+            "starter_offwhite_bottom": {
+              "body_to_garment_m": 0.065144934,
+              "garment_to_body_m": 0.053111102,
+              "vertex_sampled_min_m": 0.053111102
+            },
+            "starter_offwhite_top": {
+              "body_to_garment_m": 0.041713458,
+              "garment_to_body_m": 0.0442927,
+              "vertex_sampled_min_m": 0.041713458
+            }
+          }
+        },
+        {
+          "armature_translation_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "bounds_m": {
+            "BODY__refined_sundale_derivative_v1": {
+              "max": [
+                0.333114,
+                0.364212,
+                1.8
+              ],
+              "min": [
+                -0.341677,
+                -0.400773,
+                0.028323
+              ]
+            },
+            "starter_offwhite_bottom": {
+              "max": [
+                0.228991,
+                0.284776,
+                0.913379
+              ],
+              "min": [
+                -0.231611,
+                -0.205396,
+                0.691957
+              ]
+            },
+            "starter_offwhite_top": {
+              "max": [
+                0.482555,
+                0.365058,
+                1.53921
+              ],
+              "min": [
+                -0.486604,
+                -0.325514,
+                0.963387
+              ]
+            }
+          },
+          "frame": 19,
+          "intersections": {
+            "body_bottom": 0,
+            "body_top": 0,
+            "top_bottom": 0
+          },
+          "root_bone_translation_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "time_seconds": 0.642857143,
+          "vertex_sampled_clearance": {
+            "starter_offwhite_bottom": {
+              "body_to_garment_m": 0.065144874,
+              "garment_to_body_m": 0.050754946,
+              "vertex_sampled_min_m": 0.050754946
+            },
+            "starter_offwhite_top": {
+              "body_to_garment_m": 0.04344726,
+              "garment_to_body_m": 0.044733588,
+              "vertex_sampled_min_m": 0.04344726
+            }
+          }
+        },
+        {
+          "armature_translation_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "bounds_m": {
+            "BODY__refined_sundale_derivative_v1": {
+              "max": [
+                0.335461,
+                0.328264,
+                1.8
+              ],
+              "min": [
+                -0.339751,
+                -0.348543,
+                0.012339
+              ]
+            },
+            "starter_offwhite_bottom": {
+              "max": [
+                0.229033,
+                0.272492,
+                0.913379
+              ],
+              "min": [
+                -0.230378,
+                -0.192647,
+                0.688451
+              ]
+            },
+            "starter_offwhite_top": {
+              "max": [
+                0.481332,
+                0.338208,
+                1.519721
+              ],
+              "min": [
+                -0.483357,
+                -0.298322,
+                0.980757
+              ]
+            }
+          },
+          "frame": 20,
+          "intersections": {
+            "body_bottom": 0,
+            "body_top": 0,
+            "top_bottom": 0
+          },
+          "root_bone_translation_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "time_seconds": 0.678571429,
+          "vertex_sampled_clearance": {
+            "starter_offwhite_bottom": {
+              "body_to_garment_m": 0.065144926,
+              "garment_to_body_m": 0.048332807,
+              "vertex_sampled_min_m": 0.048332807
+            },
+            "starter_offwhite_top": {
+              "body_to_garment_m": 0.043678604,
+              "garment_to_body_m": 0.045137163,
+              "vertex_sampled_min_m": 0.043678604
+            }
+          }
+        },
+        {
+          "armature_translation_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "bounds_m": {
+            "BODY__refined_sundale_derivative_v1": {
+              "max": [
+                0.337676,
+                0.294926,
+                1.8
+              ],
+              "min": [
+                -0.337676,
+                -0.294926,
+                0.0
+              ]
+            },
+            "starter_offwhite_bottom": {
+              "max": [
+                0.229165,
+                0.260171,
+                0.913379
+              ],
+              "min": [
+                -0.229165,
+                -0.180172,
+                0.684411
+              ]
+            },
+            "starter_offwhite_top": {
+              "max": [
+                0.48,
+                0.31,
+                1.5
+              ],
+              "min": [
+                -0.48,
+                -0.27,
+                1.0
+              ]
+            }
+          },
+          "frame": 21,
+          "intersections": {
+            "body_bottom": 0,
+            "body_top": 0,
+            "top_bottom": 0
+          },
+          "root_bone_translation_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "time_seconds": 0.714285714,
+          "vertex_sampled_clearance": {
+            "starter_offwhite_bottom": {
+              "body_to_garment_m": 0.045993786,
+              "garment_to_body_m": 0.046215314,
+              "vertex_sampled_min_m": 0.045993786
+            },
+            "starter_offwhite_top": {
+              "body_to_garment_m": 0.043882728,
+              "garment_to_body_m": 0.045502268,
+              "vertex_sampled_min_m": 0.043882728
+            }
+          }
+        }
+      ],
+      "loop_endpoint_equal": true,
+      "maximum_accepted_vertex_sampled_min_separation_m": 0.3,
+      "method": "every_integer_frame_evaluated_mesh_bvh_intersection_and_bidirectional_vertex_to_opposite_surface_sampling",
+      "observed_maximum_vertex_sampled_min_separation_m": 0.060298122
+    },
+    "derived_mesh_sha256": {
+      "starter_offwhite_top": "095929FDAE403198912D8BEC21EE0A28EB579AEB5BC2BB9BD2CC25C0A72ED54A"
+    },
+    "identity_sha256": "83C813FEAF9D138E689480869C1FDC9E7AE580DFC33D3732C1EBE431044FC803",
+    "topology": {
+      "starter_offwhite_bottom": {
+        "boundary_loops": 3,
+        "connected_components": 1,
+        "material_slots": [
+          "MAT__starter_offwhite_bottom_proof"
+        ],
+        "non_manifold_edges_excluding_openings": 0,
+        "polygons": 2711,
+        "vertices": 2280
+      },
+      "starter_offwhite_top": {
+        "boundary_loops": 4,
+        "connected_components": 1,
+        "material_slots": [
+          "MAT__starter_offwhite_top_proof.001"
+        ],
+        "non_manifold_edges_excluding_openings": 0,
+        "polygons": 1410,
+        "vertices": 1546
+      }
+    },
+    "weights": {
+      "starter_offwhite_bottom": {
+        "invalid_or_non_normalized": 0,
+        "unweighted": 0,
+        "vertices": 2280
+      },
+      "starter_offwhite_top": {
+        "groups_nonempty_vertices": {
+          "spine": 174,
+          "upper_arm.L": 746,
+          "upper_arm.R": 746
+        },
+        "invalid_or_non_normalized": 0,
+        "unweighted": 0,
+        "vertices": 1546
+      }
+    }
+  },
+  "status": "offline_connected_top_walk_proof_not_runtime_or_final_art"
+}

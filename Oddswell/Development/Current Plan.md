@@ -2951,6 +2951,14 @@ The preserved Phase 1L.5aq report identity is `4,027` bytes/SHA `3E14CFABBD0FC4C
 - Blender build/cold validation, semantic rebuild identity, native `75/75`, Python `105/105`, Brain Admin and retained packaged locomotion/Studio/camera/two-player character smoke pass. No Unreal or package input changed.
 - **Next character gate:** replace the two-panel top and synthetic bottom silhouette with connected, believable garment panel construction while retaining the proven walk and three-opening bottom contract. Runtime replacement and Phase 1L exit remain separate. See [[Development/Reports/Phase 1L5bz R3 Corrected Technical Starter Outfit Walk Proof]].
 
+### Phase 1L.5ca connected starter-top pattern walk status
+
+- **COMPLETE (technical proof only):** one additive derivative of the exact Phase 1L.5bz-R3 custody replaces only the disconnected starter top. Body `F340...F03CD`, R3 bottom `5C03...83618`, the exact DEC-035 twelve-bone hierarchy and `walk_candidate_v1` `7DD9...E1020` remain unchanged.
+- **Connected pattern:** the new `1,546`-vertex / `1,410`-polygon top is one component with exactly four declared openings (neckline, waist and two arms), zero other non-manifold edges, and normalized `spine`/`upper_arm.L`/`upper_arm.R` weights.
+- **Walk proof:** all `21/21` integer frames retain body/top and top/bottom overlaps `0`, minimum sampled body clearance `0.026332714 m`, exact-zero root/armature translation and equal loop endpoints. Semantic identity `83C813FEAF9D138E689480869C1FDC9E7AE580DFC33D3732C1EBE431044FC803` reproduces and cold-validates.
+- **Verification:** native `75/75`, frozen Python `105/105`, Brain Admin and the unchanged retained packaged character suite pass. No Unreal, client, package input, gameplay, authority, economy, wagering, simulator or brain file changed.
+- **Remaining character gate:** the broad beveled top is continuity evidence, not believable fabric. Refine the top silhouette/neckline/sleeves/hem and replace the unchanged synthetic shorts with believable panel construction before any runtime-import gate. Final art, performance, Phase 1L exit and beta readiness remain open. See [[Development/Reports/Phase 1L5ca Connected Starter Top Pattern Walk Proof]].
+
 ### Sundale visual human body pose candidate — September 23, 2026
 
 - **Status:** editable offline visual candidate, with native front/rear renders and a fresh cold reopen; the human-realism goal remains active.
