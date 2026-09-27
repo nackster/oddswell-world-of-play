@@ -1,0 +1,106 @@
+{
+  "boundaries": {
+    "action_changed": 0,
+    "beta_readiness_claim": false,
+    "client_changed": 0,
+    "export_changed": 0,
+    "final_art_claim": false,
+    "geometry_changed": 0,
+    "materials_changed": 0,
+    "package_inputs_changed": 0,
+    "runtime_claim": false,
+    "skeleton_changed": 0,
+    "topology_changed": 0,
+    "unreal_changed": 0,
+    "weights_changed": 0
+  },
+  "criteria": [
+    {
+      "criterion": "separation",
+      "evidence": "The retained 21-frame ledger reports zero body/top, body/bottom and top/bottom evaluated intersections.",
+      "status": "PASS"
+    },
+    {
+      "criterion": "neckline_shoulders_sleeves_hem",
+      "evidence": "Corrected neutral views show rounded shoulders and shorter sleeves, but the central torso remains a flat slab with a rigid straight hem rather than believable cloth continuity.",
+      "status": "FAIL"
+    },
+    {
+      "criterion": "waistband_rise_crotch_legs",
+      "evidence": "Corrected neutral views retain the previously evidenced waistband, balanced rise/crotch split and two tapered legs.",
+      "status": "PASS"
+    },
+    {
+      "criterion": "proportions",
+      "evidence": "The corrected top still dominates the accepted body and shorts through excessive flat upper-torso volume in front/rear/profile.",
+      "status": "FAIL"
+    },
+    {
+      "criterion": "no_rejected_silhouettes",
+      "evidence": "The armor corners are removed, but front/rear/profile still read as a broad box/poncho torso, so the unchanged rejection criterion does not pass.",
+      "status": "FAIL"
+    },
+    {
+      "criterion": "no_exposure_or_collision",
+      "evidence": "All corrected views retain coverage and the 21-frame ledger reports zero evaluated intersections.",
+      "status": "PASS"
+    },
+    {
+      "criterion": "stable_opposing_extremes",
+      "evidence": "Corrected frames 6 and 16 retain coverage; root/armature translation is zero and frame 21 equals frame 1.",
+      "status": "PASS"
+    }
+  ],
+  "files": {
+    "board": {
+      "bytes": 1056777,
+      "sha256": "780E51E73B31A362F5224611EB230DBC45853E07F5B7EB71D9B5B65202D406EB"
+    },
+    "builder": {
+      "bytes": 8982,
+      "sha256": "A6AB31ED6414C0CD8F8BDE6765D1525723413A5D410B52BC8373B7BC6A03558C"
+    },
+    "provenance": {
+      "bytes": 591,
+      "sha256": "664DDD9D09F9ED33DC83B58BC2093F505FAE9619813A2FDFB6E9FA85640487D2"
+    }
+  },
+  "identity_sha256": "4340E545068AF12845EB278D33BC23108EF3180BF311B9E0A57F01A0BEC304EE",
+  "phase": "Phase 1L.5cf corrected combined starter-outfit offline visual acceptance review",
+  "smallest_correction": "Reshape only the top central front/rear torso depth into tapered body-following volume while preserving the corrected shoulders/sleeves/sides and every other accepted identity.",
+  "source_custody": {
+    "action_identity_sha256": "7DD9A4E6524BCAC604AEDC755D0464FEC8C8F40BDED1BDE17E87955ED63E1020",
+    "armature_bone_count": 12,
+    "blend_sha256": "5E4C42EA159EAA4777B3A9D087D1FDAB0AF417C27F3129B022F31E9A2D26F788",
+    "corrected_view_files": {
+      "Front": {
+        "bytes": 472162,
+        "sha256": "7765EACF49262D86C8B2AB23953AE607B254B56B31FEC97BAAFAC44286311F0B"
+      },
+      "Profile": {
+        "bytes": 472524,
+        "sha256": "6820655E7AD20871A14CB72DB8B966E6E01B0BA4E25FF16A3AFCC90007133378"
+      },
+      "Rear": {
+        "bytes": 475354,
+        "sha256": "711C638E28F24E2076CAA5EC66B1E98E389B5BD611D7C51E5288384A10D3CCB6"
+      },
+      "WalkExtremeFront": {
+        "bytes": 496200,
+        "sha256": "EEF139C8672071BD4184708ED5EE6CADE1D0B0641BDC83D60B39AB66644193FE"
+      },
+      "WalkExtremeRear": {
+        "bytes": 491410,
+        "sha256": "C70646F7810E8984F1512C8B185C14F5D00D999125658D6DEC18A0DA3CBF7497"
+      }
+    },
+    "frame_ledger_identity_sha256": "D6B7FF0E57B5A0DC181C08A97841F20B9AFB9D126202701840FC6756D2AF31B4",
+    "mesh_sha256": {
+      "body": "F340C34B05FC4D0D20F5625E9B2F9174947B691F59420367E8B738BE1CBF03CD",
+      "bottom": "E626B69FA039E1E1139ACD203AB6F481CADDC49771ADA7341B8ED3A1D9C82170",
+      "top": "A9DD780C47AC50F1383BA23F4393167E0EC51C62616D868E421C5CD5C3CAAADB"
+    },
+    "semantic_identity_sha256": "7F5D0C4606DF10318372771F7D431AC3884B7858F5304BB22D198BC63301F220"
+  },
+  "verdict": "REJECTED_VISUAL_CORRECTION_REQUIRED"
+}

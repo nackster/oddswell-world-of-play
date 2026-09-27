@@ -2991,6 +2991,13 @@ The preserved Phase 1L.5aq report identity is `4,027` bytes/SHA `3E14CFABBD0FC4C
 - **Walk proof:** `21/21` frames retain body/top and top/bottom overlaps `0`, sampled body clearance at least `0.045855001 m`, exact-zero root/armature translation and equal loop endpoints. Semantic identity `7F5D0C4606DF10318372771F7D431AC3884B7858F5304BB22D198BC63301F220` reproduces and cold-validates.
 - **Next gate:** rerun the Phase 1L.5cd fail-closed combined visual review against this corrected custody. This correction phase does not issue an acceptance verdict and authorizes no export/import, runtime replacement, final-art, performance, Phase 1L exit or beta-readiness claim. See [[Development/Reports/Phase 1L5ce Starter Top Rounded Shoulder Sleeve Side Silhouette Correction Walk Proof]].
 
+### Phase 1L.5cf corrected combined starter-outfit offline visual acceptance status
+
+- **COMPLETE REVIEW / REJECTED:** exact Phase 1L.5ce custody is retained with asset and runtime-input changes `0`. Review identity `4340E545068AF12845EB278D33BC23108EF3180BF311B9E0A57F01A0BEC304EE` ties the deterministic corrected board to the exact five corrected view hashes and retained 21-frame ledger.
+- **Pass:** separation, shorts construction, no exposure/collision and stable opposing extremes.
+- **Fail:** neckline/shoulder/sleeve/hem continuity, balanced proportions and no rejected silhouettes. The corrected outer shoulder/sleeve profile is better, but the unchanged central torso remains broad, flat and box/poncho-like.
+- **Next gate:** reshape only the central top front/rear torso depth into tapered body-following volume. Preserve corrected shoulders/sleeves/sides, body, shorts, topology, weights, materials, DEC-035 and `walk_candidate_v1`. Export/import preparation remains stopped; no runtime, final-art, performance, Phase 1L exit or beta-readiness claim follows. See [[Development/Reports/Phase 1L5cf Corrected Combined Starter Outfit Offline Visual Acceptance Review]].
+
 ### Sundale visual human body pose candidate — September 23, 2026
 
 - **Status:** editable offline visual candidate, with native front/rear renders and a fresh cold reopen; the human-realism goal remains active.
