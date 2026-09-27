@@ -2983,6 +2983,14 @@ The preserved Phase 1L.5aq report identity is `4,027` bytes/SHA `3E14CFABBD0FC4C
 - **Failed visual criteria:** neckline/shoulders/sleeves/hem, balanced proportions and no rejected silhouettes fail. Neutral and walk-extreme views show the starter top remains too broad, flat and box/armor-like.
 - **Smallest correction:** replace only the top shoulder/sleeve/side profile with rounded, body-conforming drape; preserve all other accepted identities. No runtime, final-art, performance, Phase 1L exit or beta-readiness claim follows. See [[Development/Reports/Phase 1L5cd Combined Starter Outfit Offline Visual Acceptance Review]].
 
+### Phase 1L.5ce starter-top rounded shoulder/sleeve/side silhouette correction status
+
+- **COMPLETE (targeted correction proof only):** exact Phase 1L.5cc/review custody is retained and only `312` targeted starter-top shoulder/sleeve/side vertices move. Derived top identity is `A9DD780C47AC50F1383BA23F4393167E0EC51C62616D868E421C5CD5C3CAAADB`.
+- **No non-target drift:** all `186` non-target top vertices, neckline, waist hem, central panel pattern, topology, item/material/color identity and weights remain exact. Body `F340...F03CD`, shorts `E626...2170`, DEC-035 and walk `7DD9...E1020` remain exact.
+- **Measured shape change:** lateral span reduces from `1.320000172 m` to `1.000800133 m`; maximum targeted displacement is `0.194568373 m`. Direct before/after neutral front/rear/profile and opposing extremes retain rounded shoulder/sleeve/side evidence.
+- **Walk proof:** `21/21` frames retain body/top and top/bottom overlaps `0`, sampled body clearance at least `0.045855001 m`, exact-zero root/armature translation and equal loop endpoints. Semantic identity `7F5D0C4606DF10318372771F7D431AC3884B7858F5304BB22D198BC63301F220` reproduces and cold-validates.
+- **Next gate:** rerun the Phase 1L.5cd fail-closed combined visual review against this corrected custody. This correction phase does not issue an acceptance verdict and authorizes no export/import, runtime replacement, final-art, performance, Phase 1L exit or beta-readiness claim. See [[Development/Reports/Phase 1L5ce Starter Top Rounded Shoulder Sleeve Side Silhouette Correction Walk Proof]].
+
 ### Sundale visual human body pose candidate — September 23, 2026
 
 - **Status:** editable offline visual candidate, with native front/rear renders and a fresh cold reopen; the human-realism goal remains active.
