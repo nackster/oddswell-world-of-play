@@ -2959,6 +2959,14 @@ The preserved Phase 1L.5aq report identity is `4,027` bytes/SHA `3E14CFABBD0FC4C
 - **Verification:** native `75/75`, frozen Python `105/105`, Brain Admin and the unchanged retained packaged character suite pass. No Unreal, client, package input, gameplay, authority, economy, wagering, simulator or brain file changed.
 - **Remaining character gate:** the broad beveled top is continuity evidence, not believable fabric. Refine the top silhouette/neckline/sleeves/hem and replace the unchanged synthetic shorts with believable panel construction before any runtime-import gate. Final art, performance, Phase 1L exit and beta readiness remain open. See [[Development/Reports/Phase 1L5ca Connected Starter Top Pattern Walk Proof]].
 
+### Phase 1L.5cb believable starter-shorts panel walk status
+
+- **COMPLETE (technical proof only):** exact Phase 1L.5ca custody is retained and only `starter_offwhite_bottom` is replaced. Body `F340...F03CD`, connected top `0959...54A`, the DEC-035 twelve-bone hierarchy and `walk_candidate_v1` `7DD9...E1020` remain unchanged.
+- **Connected pattern:** the new `5,862`-vertex / `7,157`-polygon bottom is one component with exactly three declared openings and zero other non-manifold edges. Front/rear leg panels, tapered rise, connected crotch/gusset, waistband, hems, inseam and outseams are all nonempty; pockets, fly, logos, extras and cloth physics remain absent.
+- **Walk proof:** all `21/21` integer frames retain body/bottom and top/bottom overlaps `0`, sampled body clearance at least `0.018486369 m`, exact-zero root/armature translation and equal loop endpoints. Required root/thigh weights are normalized with unweighted count `0`. Semantic identity `3D1E437BB1FAEDD41008A158D8EEBA652FDAC00515E68296D7B4F6B14441AC8F` reproduces and cold-validates.
+- **Verification:** native `75/75`, frozen Python `105/105`, Brain Admin and the unchanged retained packaged locomotion/Studio/camera/two-player suite pass. No Unreal, client, package input, gameplay, authority, economy, wagering, simulator or brain file changed.
+- **Remaining character gate:** this closes the shorts shell/saddle/skirt blocker at technical-proof fidelity. The connected top remains broad, and neither garment proves final fabric, UV/material production, LODs, Unreal import, runtime performance, Phase 1L exit or beta readiness. See [[Development/Reports/Phase 1L5cb Believable Starter Shorts Panel Walk Proof]].
+
 ### Sundale visual human body pose candidate — September 23, 2026
 
 - **Status:** editable offline visual candidate, with native front/rear renders and a fresh cold reopen; the human-realism goal remains active.
