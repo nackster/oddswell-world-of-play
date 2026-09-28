@@ -3028,6 +3028,15 @@ The preserved Phase 1L.5aq report identity is `4,027` bytes/SHA `3E14CFABBD0FC4C
 - **Fail:** neckline/shoulder/sleeve/hem continuity, proportions and no rejected silhouettes. Waist inset ratio `0.132244` passes its `0.080000` floor, but top/body neutral width is `1.000800 / 0.675352 m`, ratio `1.481894` above the `1.400000` ceiling.
 - **Next gate:** reduce only the preserved outer shoulder/sleeve span while retaining the central depth/waist taper and every non-target identity. Export/import preparation remains stopped; no runtime, final-art, performance, Phase 1L exit or beta-readiness claim follows. See [[Development/Reports/Phase 1L5cj Waist Tapered Combined Starter Outfit Offline Visual Acceptance Review]].
 
+### Phase 1L.5ck outer shoulder/sleeve-span correction status
+
+- **COMPLETE (targeted correction proof only):** exact repaired Phase 1L.5ci custody is retained and only `X` on `152` outer shoulder/sleeve vertices changes. Derived top identity is `4D290EAEF2CDC94F6F68982C0166FF5E7B85C6B36200170FF2B24AFF4F379FBE`.
+- **No protected drift:** all other `346` top coordinates, every `Y`/`Z`, and all accepted central depth/waist taper coordinates reproduce exactly. Body, shorts, topology, item/material/color identity, weights, DEC-035 and walk `7DD9...E1020` remain exact.
+- **Measured span:** top/body width ratio falls from `1.481894083` to `1.398999964`, under the `1.4` ceiling. Maximum target displacement is `0.027991354 m`.
+- **Opening disclosure:** exactly `18` arm-opening boundary vertices change; left/right outer opening bounds narrow, while waist and neckline geometry remain exact. The top remains one component with four openings and zero other non-manifold edges.
+- **Walk proof:** `21/21` frames retain body/top and top/bottom overlaps `0`, sampled body clearance at least `0.033464938 m`, exact-zero translations and equal endpoints. Semantic identity `BB7BE19929C7C89270CC39D029FBE21D9D8140E57BB2A91B55DE96DCC75F8F18` reproduces and cold-validates.
+- **Next gate:** rerun the unchanged fail-closed combined review. This correction issues no acceptance verdict; export/import preparation remains stopped. See [[Development/Reports/Phase 1L5ck Outer Shoulder Sleeve Span Correction Walk Proof]].
+
 ### Sundale visual human body pose candidate — September 23, 2026
 
 - **Status:** editable offline visual candidate, with native front/rear renders and a fresh cold reopen; the human-realism goal remains active.
