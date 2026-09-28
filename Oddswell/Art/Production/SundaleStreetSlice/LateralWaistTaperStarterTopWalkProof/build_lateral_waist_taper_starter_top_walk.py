@@ -67,13 +67,28 @@ def band_half_width(obj, indices):
     return round(max(abs(obj.data.vertices[index].co.x) for index in indices), 9)
 
 
-def lateral_waist_taper(top):
+def boundary_vertex_indices(obj):
+    edge_faces = {}
+    for polygon in obj.data.polygons:
+        vertices = polygon.vertices
+        for offset, start in enumerate(vertices):
+            edge = tuple(sorted((start, vertices[(offset + 1) % len(vertices)])))
+            edge_faces[edge] = edge_faces.get(edge, 0) + 1
+    return {index for edge, faces in edge_faces.items() if faces == 1 for index in edge}
+
+
+def lateral_waist_taper(top, source_manifest):
     before = {vertex.index: tuple(vertex.co) for vertex in top.data.vertices}
     shoulder_sleeve = {vertex.index for vertex in top.data.vertices if vertex.co.z > 1.35 or abs(vertex.co.x) > 0.40}
+    inherited_opening_protection = set(source_manifest["semantic"]["correction"]["protected_opening_boundary_indices"])
+    protected_openings = boundary_vertex_indices(top)
+    if not inherited_opening_protection <= protected_openings:
+        raise RuntimeError("inherited opening protection is not a subset of the exact source boundaries")
     target = {
         vertex.index
         for vertex in top.data.vertices
         if vertex.index not in shoulder_sleeve
+        and vertex.index not in protected_openings
         and 0.999 <= vertex.co.z <= 1.35
         and abs(vertex.co.x) >= 0.197999
         and abs(vertex.co.y - 0.02) > 0.10
@@ -95,7 +110,7 @@ def lateral_waist_taper(top):
         vertex.co.x = math.copysign(abs(vertex.co.x) * scale, vertex.co.x)
     top.data.update()
     protected = set(before) - target
-    if target & protected or target & shoulder_sleeve:
+    if target & protected or target & shoulder_sleeve or target & protected_openings:
         raise RuntimeError("target/protected ledger overlap")
     if any(tuple(top.data.vertices[index].co) != before[index] for index in protected):
         raise RuntimeError("protected coordinate drift")
@@ -111,6 +126,10 @@ def lateral_waist_taper(top):
         "target_vertex_indices": sorted(target),
         "protected_vertex_count": len(protected),
         "protected_shoulder_sleeve_indices": sorted(shoulder_sleeve),
+        "inherited_protected_opening_boundary_indices": sorted(inherited_opening_protection),
+        "protected_opening_boundary_indices": sorted(protected_openings),
+        "target_opening_boundary_overlap_count": len(target & protected_openings),
+        "target_inherited_opening_boundary_overlap_count": len(target & inherited_opening_protection),
         "source_target_coordinate_sha256": semantic_sha([[index, *before[index]] for index in sorted(target)]),
         "derived_target_coordinate_sha256": semantic_sha([[index, *tuple(top.data.vertices[index].co)] for index in sorted(target)]),
         "source_protected_coordinate_sha256": semantic_sha([[index, *before[index]] for index in sorted(protected)]),
@@ -169,7 +188,7 @@ def build():
     }
     if (before["body"], before["top"], before["bottom"], before["action"]["identity_sha256"]) != (BODY_SHA, SOURCE_TOP_SHA, BOTTOM_SHA, ACTION_SHA):
         raise RuntimeError("accepted source identity drift")
-    correction = lateral_waist_taper(top)
+    correction = lateral_waist_taper(top, accepted)
     after = {
         "body": semantic_sha(base["mesh_semantic"](body)),
         "bottom": semantic_sha(base["mesh_semantic"](bottom)),
@@ -185,6 +204,9 @@ def build():
     topology = {TOP: r3["topology_proof"](top, (1, 4, 0), "lateral-taper starter top"), BOTTOM: r3["topology_proof"](bottom, (1, 3, 0), "accepted starter shorts")}
     weights = {TOP: base["weight_check"](top, {"spine", "upper_arm.L", "upper_arm.R"}), BOTTOM: base["weight_check"](bottom, {"root", "thigh.L", "thigh.R"})}
     deformation = base["frame_proof"](bpy.context.scene, body, top, bottom, armature)
+    opening_geometry = renderer["opening_proof"](top)
+    if opening_geometry != accepted["semantic"]["declared_opening_geometry"]:
+        raise RuntimeError("source opening geometry changed")
     semantic = {
         "accepted_phase_1l5cg": {"identity_sha256": SOURCE_IDENTITY, "blend": accepted["files"]["blend"]},
         "accepted_mesh_sha256": {BODY: BODY_SHA, BOTTOM: BOTTOM_SHA},
@@ -193,14 +215,14 @@ def build():
         "correction": correction,
         "construction": {"method": "coordinate_only_central_front_rear_lateral_waist_taper", "excluded": ["shoulders", "sleeves", "depth_y", "height_z", "topology", "weights", "materials", "body", "shorts", "skeleton", "action"]},
         "topology": topology,
-        "declared_opening_geometry": renderer["opening_proof"](top),
+        "declared_opening_geometry": opening_geometry,
         "panel_roles": source_phase["rounded"]["role_counts"](top),
         "weights": weights,
         "material_semantic": after["materials"],
         "armature": {"bone_count": 12, "hierarchy": after["armature"]},
         "action": after["action"],
         "deformation": deformation,
-        "boundaries": {"body_changed": 0, "bottom_changed": 0, "skeleton_changed": 0, "action_changed": 0, "materials_changed": 0, "topology_changed": 0, "target_y_changed": 0, "target_z_changed": 0, "protected_top_vertices_changed": 0, "runtime_changed": 0, "final_acceptance_verdict": None, "readiness_claim": False},
+        "boundaries": {"body_changed": 0, "bottom_changed": 0, "skeleton_changed": 0, "action_changed": 0, "materials_changed": 0, "topology_changed": 0, "opening_geometry_changed": 0, "target_y_changed": 0, "target_z_changed": 0, "protected_top_vertices_changed": 0, "runtime_changed": 0, "final_acceptance_verdict": None, "readiness_claim": False},
     }
     if correction["source_protected_coordinate_sha256"] != correction["derived_protected_coordinate_sha256"] or correction["source_all_yz_sha256"] != correction["derived_all_yz_sha256"]:
         raise RuntimeError("protected or Y/Z identity drift")
@@ -211,6 +233,7 @@ def build():
         "# Phase 1L.5ci provenance\n\n"
         "- Additive derivative of exact Phase 1L.5cg custody after the Phase 1L.5ch rejection.\n"
         "- Only central front/rear starter-top lateral X coordinates taper toward the waist.\n"
+        "- All exact source opening-boundary vertices are protected; target/opening overlap is zero and opening geometry reproduces exactly.\n"
         "- Shoulders, sleeves, accepted Y-depth taper, every Z coordinate, topology, weights, materials, body, shorts, armature and walk remain exact.\n"
         "- Before/after evidence is a correction proof, not an acceptance verdict.\n"
         "- No export, runtime, final-art, performance or readiness claim is included.\n",
@@ -228,7 +251,7 @@ def build():
 
 def validate_saved():
     manifest = json.loads(MANIFEST.read_text(encoding="utf-8"))
-    source_custody()
+    accepted = source_custody()
     for name, path in (("blend", OUTPUT), ("builder", Path(__file__)), ("provenance", PROVENANCE)):
         if manifest["files"][name] != receipt(path):
             raise RuntimeError(f"{name} custody drift")
@@ -246,8 +269,21 @@ def validate_saved():
         raise RuntimeError("material drift")
     if r3["topology_proof"](top, (1, 4, 0), "lateral-taper starter top") != semantic["topology"][TOP]:
         raise RuntimeError("topology drift")
-    if renderer["opening_proof"](top) != semantic["declared_opening_geometry"]:
+    opening_geometry = renderer["opening_proof"](top)
+    if opening_geometry != semantic["declared_opening_geometry"] or opening_geometry != accepted["semantic"]["declared_opening_geometry"]:
         raise RuntimeError("opening drift")
+    correction = semantic["correction"]
+    if correction["target_opening_boundary_overlap_count"] != 0:
+        raise RuntimeError("target/opening boundary overlap")
+    if correction["target_inherited_opening_boundary_overlap_count"] != 0:
+        raise RuntimeError("target/inherited opening boundary overlap")
+    inherited_openings = set(accepted["semantic"]["correction"]["protected_opening_boundary_indices"])
+    if set(correction["inherited_protected_opening_boundary_indices"]) != inherited_openings:
+        raise RuntimeError("inherited opening protection drift")
+    if set(correction["protected_opening_boundary_indices"]) != boundary_vertex_indices(top):
+        raise RuntimeError("source opening boundary ledger drift")
+    if set(correction["target_vertex_indices"]) & set(correction["protected_opening_boundary_indices"]):
+        raise RuntimeError("target/opening boundary ledger overlap")
     base["weight_check"](top, {"spine", "upper_arm.L", "upper_arm.R"})
     if prior["armature_semantic"](armature) != semantic["armature"]["hierarchy"]:
         raise RuntimeError("armature drift")

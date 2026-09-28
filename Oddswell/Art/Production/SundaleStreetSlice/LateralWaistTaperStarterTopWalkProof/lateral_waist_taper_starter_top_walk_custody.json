@@ -2,36 +2,36 @@
   "files": {
     "blend": {
       "bytes": 13905337,
-      "sha256": "71BB14A4278CB5D1CF704D03E8E66067086A33BD871B9B9DE9B86B2D4967AEC3"
+      "sha256": "5A9ED444693F30AABE68E55B29C2DA588423ED256BEDE94472FA349D48E1543B"
     },
     "builder": {
-      "bytes": 15102,
-      "sha256": "8BAE343DB7AAE08DF037A36D79CA22071E29064D76C45FC1ACBCBDD514D18463"
+      "bytes": 17708,
+      "sha256": "232387F6EF7C8B413D98433E5A4682A799E222883F42215FDE5B6D587CDAFF7E"
     },
     "provenance": {
-      "bytes": 497,
-      "sha256": "0F90180C1CEFB6E30C5A044EB90AE2D44F61B9B311A8736D005F0E63ED8FE791"
+      "bytes": 630,
+      "sha256": "5E1010C953C2DFE0D59EAD4D48EDAE891BB859754E9DD4FCF4DD0E0AEDB88186"
     },
     "reviews": {
       "After_Front.png": {
-        "bytes": 475260,
-        "sha256": "1D335E528D3B818FF622A88DB8D1F8EC436F2FDBEAC5C0417D1114E7444E8ECB"
+        "bytes": 475899,
+        "sha256": "101526459A07C42F0D667AF3218A824C529F2B6B15F1D970CAD6EEDD3614A90E"
       },
       "After_Profile.png": {
-        "bytes": 471494,
-        "sha256": "2AEE113FE84384B89DA4497E8A28B1CD6761A97CB342CBAE9E45F62882B9AA1D"
+        "bytes": 472293,
+        "sha256": "331A4B76808A77FCC342BE97C187A72D281269B27F6981ED51B3C23E2F31F4ED"
       },
       "After_Rear.png": {
-        "bytes": 477792,
-        "sha256": "2C2474E26DBD3F4A9490C6FBA6302526C03253712790268F20E0EC17CB3D396A"
+        "bytes": 478379,
+        "sha256": "D977D324212D412D81A5EAA0C13224CA6214B94D56FA4401341D5E6A73FF8FC8"
       },
       "After_WalkExtremeFront.png": {
-        "bytes": 498067,
-        "sha256": "2981372A0142785415F483BC942F2D15CD3372D6C66AD055A29E46546038C77A"
+        "bytes": 499672,
+        "sha256": "C04573ACA61AAF3C7667ACB3C628BF18C119341D76175D5E038F0E321CF63C7A"
       },
       "After_WalkExtremeRear.png": {
-        "bytes": 492781,
-        "sha256": "DA43C049F6E61DCF99CB51D8722BDFAD8B06536C860BB709A5D61B3740D89BF3"
+        "bytes": 494780,
+        "sha256": "30C5068E86E58C3D10E182160646C230C4C9563F74BB963B4EBB804361FF2942"
       },
       "BeforeAfter.html": {
         "bytes": 1583,
@@ -546,6 +546,7 @@
       "bottom_changed": 0,
       "final_acceptance_verdict": null,
       "materials_changed": 0,
+      "opening_geometry_changed": 0,
       "protected_top_vertices_changed": 0,
       "readiness_claim": false,
       "runtime_changed": 0,
@@ -575,18 +576,18 @@
         "x"
       ],
       "derived_all_yz_sha256": "3DF7DC181777A7ACCCFAE2767A49D12AD89DCC99B2812148A584DD3BA5690FED",
-      "derived_protected_coordinate_sha256": "1A1C203FBA7B6A174D43719908C8DAD681EA8096364FB49A1D0BEB0AA128E850",
-      "derived_target_coordinate_sha256": "7E87090ADC7195F82A50032CADE03488B81833D63B63D71313FAA6913B7492B6",
+      "derived_protected_coordinate_sha256": "9436B1815572DD0FBD55ECD596F1B9C03FD59F439E92E8890329D076C5D15DEA",
+      "derived_target_coordinate_sha256": "5508BBC1F365603A8A2DEF293B483AE948349BAB0902D06B25DA7390626F3EDE",
       "half_width_m": {
         "lower": {
-          "derived": 0.340560019,
-          "reduction": 0.055440009,
-          "source": 0.396000028
+          "derived": 0.335717112,
+          "reduction": 0.051162898,
+          "source": 0.38688001
         },
         "middle": {
           "derived": 0.376908571,
-          "reduction": 0.019431412,
-          "source": 0.396339983
+          "reduction": 0.01075977,
+          "source": 0.387668341
         },
         "upper": {
           "derived": 0.386879742,
@@ -594,7 +595,131 @@
           "source": 0.387668371
         }
       },
-      "maximum_target_vertex_displacement_m": 0.055440009,
+      "inherited_protected_opening_boundary_indices": [
+        30,
+        31,
+        32,
+        33,
+        47,
+        48,
+        56,
+        57,
+        58,
+        59,
+        61,
+        62,
+        70,
+        71,
+        73,
+        74,
+        82,
+        83,
+        85,
+        86,
+        96,
+        99,
+        101,
+        102,
+        175,
+        177,
+        204,
+        205,
+        225,
+        226,
+        230,
+        231,
+        246,
+        249,
+        252,
+        253,
+        268,
+        271,
+        274,
+        275,
+        294,
+        297,
+        302,
+        303,
+        365,
+        369,
+        370,
+        373
+      ],
+      "maximum_target_vertex_displacement_m": 0.051162899,
+      "protected_opening_boundary_indices": [
+        2,
+        3,
+        4,
+        5,
+        17,
+        18,
+        30,
+        31,
+        32,
+        33,
+        47,
+        48,
+        56,
+        57,
+        58,
+        59,
+        61,
+        62,
+        70,
+        71,
+        73,
+        74,
+        82,
+        83,
+        85,
+        86,
+        96,
+        99,
+        101,
+        102,
+        104,
+        105,
+        115,
+        116,
+        125,
+        126,
+        135,
+        137,
+        154,
+        155,
+        175,
+        177,
+        204,
+        205,
+        225,
+        226,
+        230,
+        231,
+        246,
+        249,
+        252,
+        253,
+        268,
+        271,
+        274,
+        275,
+        294,
+        297,
+        302,
+        303,
+        328,
+        329,
+        346,
+        347,
+        358,
+        365,
+        367,
+        369,
+        370,
+        373,
+        375,
+        379
+      ],
       "protected_shoulder_sleeve_indices": [
         0,
         1,
@@ -887,22 +1012,18 @@
         496,
         497
       ],
-      "protected_vertex_count": 370,
+      "protected_vertex_count": 390,
       "source_all_yz_sha256": "3DF7DC181777A7ACCCFAE2767A49D12AD89DCC99B2812148A584DD3BA5690FED",
-      "source_protected_coordinate_sha256": "1A1C203FBA7B6A174D43719908C8DAD681EA8096364FB49A1D0BEB0AA128E850",
-      "source_target_coordinate_sha256": "7284A3DA3C753D374F1EE7AAECBAF6A845E60D7F14C7BFA98E9524881CF58834",
-      "target_vertex_count": 128,
+      "source_protected_coordinate_sha256": "9436B1815572DD0FBD55ECD596F1B9C03FD59F439E92E8890329D076C5D15DEA",
+      "source_target_coordinate_sha256": "38E2A69683DEE8CC61EA2A6F89AFFBA4C439560D95BF329EFF7366437EB9A9FD",
+      "target_inherited_opening_boundary_overlap_count": 0,
+      "target_opening_boundary_overlap_count": 0,
+      "target_vertex_count": 108,
       "target_vertex_indices": [
         16,
-        17,
-        18,
         19,
         28,
         29,
-        30,
-        31,
-        32,
-        33,
         34,
         35,
         36,
@@ -910,19 +1031,13 @@
         38,
         39,
         84,
-        85,
-        86,
         87,
         88,
         89,
         90,
         91,
         100,
-        101,
-        102,
         103,
-        104,
-        105,
         106,
         107,
         153,
@@ -932,9 +1047,7 @@
         172,
         173,
         174,
-        175,
         176,
-        177,
         178,
         179,
         180,
@@ -950,8 +1063,6 @@
         191,
         192,
         202,
-        204,
-        205,
         207,
         208,
         211,
@@ -959,8 +1070,6 @@
         215,
         272,
         273,
-        274,
-        275,
         276,
         277,
         278,
@@ -975,8 +1084,6 @@
         288,
         300,
         301,
-        302,
-        303,
         304,
         305,
         306,
@@ -1026,7 +1133,7 @@
     "declared_opening_geometry": [
       {
         "max": [
-          -0.365562,
+          -0.38688,
           0.292039,
           1.2
         ],
@@ -1070,7 +1177,7 @@
           1.2
         ],
         "min": [
-          0.374501,
+          0.389245,
           -0.228243,
           1.2
         ],
@@ -1190,7 +1297,7 @@
               "min": [
                 -0.501473,
                 -0.308273,
-                0.981395
+                0.981039
               ]
             }
           },
@@ -1259,7 +1366,7 @@
               "min": [
                 -0.502387,
                 -0.328142,
-                0.964646
+                0.963958
               ]
             }
           },
@@ -1327,8 +1434,8 @@
               ],
               "min": [
                 -0.503165,
-                -0.349267,
-                0.949818
+                -0.349368,
+                0.948824
               ]
             }
           },
@@ -1391,13 +1498,13 @@
             "starter_offwhite_top": {
               "max": [
                 0.50688,
-                0.411169,
+                0.412012,
                 1.604324
               ],
               "min": [
                 -0.503796,
-                -0.371981,
-                0.93697
+                -0.373066,
+                0.935697
               ]
             }
           },
@@ -1460,13 +1567,13 @@
             "starter_offwhite_top": {
               "max": [
                 0.508533,
-                0.432641,
+                0.43365,
                 1.618088
               ],
               "min": [
                 -0.504276,
-                -0.393906,
-                0.926154
+                -0.395293,
+                0.924628
               ]
             }
           },
@@ -1529,13 +1636,13 @@
             "starter_offwhite_top": {
               "max": [
                 0.50688,
-                0.411169,
+                0.412012,
                 1.604324
               ],
               "min": [
                 -0.503796,
-                -0.371981,
-                0.93697
+                -0.373066,
+                0.935697
               ]
             }
           },
@@ -1603,8 +1710,8 @@
               ],
               "min": [
                 -0.503165,
-                -0.349267,
-                0.949818
+                -0.349368,
+                0.948824
               ]
             }
           },
@@ -1673,7 +1780,7 @@
               "min": [
                 -0.502387,
                 -0.328142,
-                0.964646
+                0.963958
               ]
             }
           },
@@ -1742,7 +1849,7 @@
               "min": [
                 -0.501473,
                 -0.308273,
-                0.981395
+                0.981039
               ]
             }
           },
@@ -1880,7 +1987,7 @@
               "min": [
                 -0.503488,
                 -0.308273,
-                0.981713
+                0.981476
               ]
             }
           },
@@ -1949,7 +2056,7 @@
               "min": [
                 -0.506529,
                 -0.328141,
-                0.965235
+                0.964776
               ]
             }
           },
@@ -2017,8 +2124,8 @@
               ],
               "min": [
                 -0.509512,
-                -0.349267,
-                0.950628
+                -0.349368,
+                0.949966
               ]
             }
           },
@@ -2081,13 +2188,13 @@
             "starter_offwhite_top": {
               "max": [
                 0.503796,
-                0.411169,
+                0.412012,
                 1.604324
               ],
               "min": [
                 -0.512425,
-                -0.371981,
-                0.937952
+                -0.373066,
+                0.937103
               ]
             }
           },
@@ -2150,13 +2257,13 @@
             "starter_offwhite_top": {
               "max": [
                 0.504276,
-                0.432641,
+                0.43365,
                 1.618088
               ],
               "min": [
                 -0.515257,
-                -0.393906,
-                0.927257
+                -0.395293,
+                0.92624
               ]
             }
           },
@@ -2219,13 +2326,13 @@
             "starter_offwhite_top": {
               "max": [
                 0.503796,
-                0.411169,
+                0.412012,
                 1.604324
               ],
               "min": [
                 -0.512425,
-                -0.371981,
-                0.937952
+                -0.373066,
+                0.937103
               ]
             }
           },
@@ -2293,8 +2400,8 @@
               ],
               "min": [
                 -0.509512,
-                -0.349267,
-                0.950628
+                -0.349368,
+                0.949966
               ]
             }
           },
@@ -2363,7 +2470,7 @@
               "min": [
                 -0.506529,
                 -0.328141,
-                0.965235
+                0.964776
               ]
             }
           },
@@ -2432,7 +2539,7 @@
               "min": [
                 -0.503488,
                 -0.308273,
-                0.981713
+                0.981476
               ]
             }
           },
@@ -2537,9 +2644,9 @@
       "observed_maximum_vertex_sampled_min_separation_m": 0.040899202
     },
     "derived_mesh_sha256": {
-      "starter_offwhite_top": "A5B26521C08C7D40B30E05CA95742D13D8547606E27BE03D157C475A42C99881"
+      "starter_offwhite_top": "BB29047CAB30C3071FD6875A789E93CF275C2E2A44997957CFB85DCDD36FD3AB"
     },
-    "identity_sha256": "43D395DCEDC6DD38A7DFA1FEA134A3ACB3D9070D188C6F71043F5CF174FF63FA",
+    "identity_sha256": "38F71CB35B20672E114E27B8C79206564CAE358B5A3C053509A510D7485539FD",
     "material_semantic": [
       {
         "diffuse_color": [

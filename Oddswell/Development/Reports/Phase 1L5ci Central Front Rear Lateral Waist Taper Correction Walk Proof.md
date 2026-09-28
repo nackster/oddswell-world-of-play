@@ -23,21 +23,21 @@ The retained neutral front/rear/profile and opposing walk extremes show a monoto
 - Source depth-tapered top: `1C7F8649211C44B9039F12902E266C438C5EF6DA4DF224D7FBD1FCF108AEC353`.
 - Accepted shorts: `E626B69FA039E1E1139ACD203AB6F481CADDC49771ADA7341B8ED3A1D9C82170`.
 - Exact walk action: `7DD9A4E6524BCAC604AEDC755D0464FEC8C8F40BDED1BDE17E87955ED63E1020`.
-- Derived waist-tapered top: `A5B26521C08C7D40B30E05CA95742D13D8547606E27BE03D157C475A42C99881`.
-- Derived semantic identity: `43D395DCEDC6DD38A7DFA1FEA134A3ACB3D9070D188C6F71043F5CF174FF63FA`.
-- Final Blend: `13,905,337` bytes, SHA-256 `71BB14A4278CB5D1CF704D03E8E66067086A33BD871B9B9DE9B86B2D4967AEC3`.
+- Derived waist-tapered top: `BB29047CAB30C3071FD6875A789E93CF275C2E2A44997957CFB85DCDD36FD3AB`.
+- Derived semantic identity: `38F71CB35B20672E114E27B8C79206564CAE358B5A3C053509A510D7485539FD`.
+- Final Blend: `13,905,337` bytes, SHA-256 `5A9ED444693F30AABE68E55B29C2DA588423ED256BEDE94472FA349D48E1543B`.
 
-Exactly `128/498` top vertices change, and only their `X` coordinate changes. The other `370` vertex coordinates reproduce exactly under source and derived SHA-256 `1A1C203FBA7B6A174D43719908C8DAD681EA8096364FB49A1D0BEB0AA128E850`. Every `Y` and `Z` coordinate reproduces exactly under SHA-256 `3DF7DC181777A7ACCCFAE2767A49D12AD89DCC99B2812148A584DD3BA5690FED`. The protected ledger includes all shoulder/sleeve vertices; target/protected overlap is `0`. Topology, four openings, item/material/color identity and weights remain unchanged.
+Exactly `108/498` top vertices change, and only their `X` coordinate changes. The other `390` vertex coordinates reproduce exactly under source and derived SHA-256 `9436B1815572DD0FBD55ECD596F1B9C03FD59F439E92E8890329D076C5D15DEA`. Every `Y` and `Z` coordinate reproduces exactly under SHA-256 `3DF7DC181777A7ACCCFAE2767A49D12AD89DCC99B2812148A584DD3BA5690FED`. The protected ledger includes every shoulder/sleeve vertex and all `72` exact source opening-boundary vertices. All `48` protected opening-boundary indices inherited from Phase 1L.5cg are present; target/full-opening and target/inherited-opening overlaps are both `0`. Source and derived four-opening geometry are exactly equal. Topology, item/material/color identity and weights remain unchanged.
 
 ## Measured taper and walk proof
 
 | Band | Source half-width | Derived half-width | Reduction |
 |---|---:|---:|---:|
-| Lower | `0.396000028 m` | `0.340560019 m` | `0.055440009 m` |
-| Middle | `0.396339983 m` | `0.376908571 m` | `0.019431412 m` |
+| Lower | `0.386880010 m` | `0.335717112 m` | `0.051162898 m` |
+| Middle | `0.387668341 m` | `0.376908571 m` | `0.010759770 m` |
 | Upper | `0.387668371 m` | `0.386879742 m` | `0.000788629 m` |
 
-- Maximum target displacement: `0.055440009 m`.
+- Maximum target displacement: `0.051162899 m`.
 - Topology: `498` vertices / `464` polygons / one component / exactly four openings / zero other non-manifold edges.
 - Normalized spine/upper-arm weights retain unweighted and invalid counts `0`.
 - All integer frames `1–21` retain body/top and top/bottom evaluated intersections `0`.
@@ -48,12 +48,12 @@ The `Review/BeforeAfter.html` board pairs exact Phase 1L.5cg front/rear/profile 
 
 ## Verification
 
-- Deterministic semantic rebuild: PASS; identity `43D3...63FA` reproduced.
+- Deterministic semantic rebuild: PASS; derived mesh `BB29...D3AB` and identity `38F7...39FD` reproduced across two clean builds.
 - Saved-source cold reopen and all custody assertions: PASS.
-- Full frozen native automation: `75/75` PASS, exit `0`, failure markers `0`; log SHA-256 `15DD9972F7126A5E9F3D10A89E28E9FCC59CA06EFEBEAABB71DB8E09D3AA30B1`.
-- Isolated frozen Python regression: `105/105` PASS in `148.427s` (`9 + 2 + 8 + 46 + 40`), with Phase 1H under the fixed allowlisted Python `3.12.14`.
+- Full frozen native automation: `75/75` PASS, exit `0`, failure markers `0`; log SHA-256 `4F7E8FBDE776EBD7E267612EDCEEE0676E51230108A4A223759C98D22C8173EE`.
+- Isolated frozen Python regression: `105/105` PASS in `150.608s` (`9 + 2 + 8 + 46 + 40`), with Phase 1H under the fixed allowlisted Python `3.12.14`.
 - Brain Admin self-check: PASS, exit `0`; stdout SHA-256 `D0EC87F0C4586A63F332837562B25BD44C57F02FB788B6FDE599102AE2C3BA44`.
-- Retained packaged locomotion, Studio/prompt presentation, camera, listen server and client checks: PASS; final marker `ODDSWELL_PACKAGED_CHARACTER_PASS`.
+- Retained packaged locomotion/character motion, Studio/prompt presentation, camera, listen-server shared city/appearance/motion and client appearance markers: PASS.
 - Retained package remains `50` files / `1,038,710,362` bytes / Python files `0`.
 
 ## Boundary

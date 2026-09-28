@@ -3015,10 +3015,10 @@ The preserved Phase 1L.5aq report identity is `4,027` bytes/SHA `3E14CFABBD0FC4C
 
 ### Phase 1L.5ci central front/rear lateral waist-taper correction status
 
-- **COMPLETE (targeted correction proof only):** exact Phase 1L.5cg custody is retained and only the `X` coordinate of `128` central front/rear top vertices changes. Derived top identity is `A5B26521C08C7D40B30E05CA95742D13D8547606E27BE03D157C475A42C99881`.
-- **No protected drift:** all other `370` top coordinates and all `498` `Y`/`Z` coordinate pairs reproduce exactly. Shoulders, sleeves, accepted depth taper, topology, item/material/color identity, weights, body, shorts, DEC-035 and walk `7DD9...E1020` remain exact.
-- **Measured taper:** lower/middle/upper half-width reductions are `0.055440009 / 0.019431412 / 0.000788629 m`; maximum target displacement is `0.055440009 m`. Direct before/after neutral front/rear/profile and opposing extremes are retained.
-- **Walk proof:** `21/21` frames retain body/top and top/bottom overlaps `0`, sampled body clearance at least `0.033464938 m`, exact-zero translations and equal loop endpoints. Semantic identity `43D395DCEDC6DD38A7DFA1FEA134A3ACB3D9070D188C6F71043F5CF174FF63FA` reproduces and cold-validates.
+- **COMPLETE (repaired targeted correction proof only):** exact Phase 1L.5cg custody is retained and only the `X` coordinate of `108` central front/rear top vertices changes. Derived top identity is `BB29047CAB30C3071FD6875A789E93CF275C2E2A44997957CFB85DCDD36FD3AB`.
+- **No protected drift:** all other `390` top coordinates and all `498` `Y`/`Z` coordinate pairs reproduce exactly. All `72` exact source opening-boundary vertices are protected, including the `48` inherited Phase 1L.5cg protected indices; target overlap is `0` for both ledgers and source-versus-derived opening geometry is exactly equal. Shoulders, sleeves, accepted depth taper, topology, item/material/color identity, weights, body, shorts, DEC-035 and walk `7DD9...E1020` remain exact.
+- **Measured taper:** lower/middle/upper half-width reductions are `0.051162898 / 0.010759770 / 0.000788629 m`; maximum target displacement is `0.051162899 m`. Direct before/after neutral front/rear/profile and opposing extremes are retained.
+- **Walk proof:** `21/21` frames retain body/top and top/bottom overlaps `0`, sampled body clearance at least `0.033464938 m`, exact-zero translations and equal loop endpoints. Semantic identity `38F71CB35B20672E114E27B8C79206564CAE358B5A3C053509A510D7485539FD` reproduces and cold-validates.
 - **Next gate:** rerun the unchanged fail-closed combined outfit review against this exact waist-tapered custody. This correction issues no acceptance verdict and authorizes no export/import, runtime replacement, final-art, performance, Phase 1L exit or beta-readiness claim. See [[Development/Reports/Phase 1L5ci Central Front Rear Lateral Waist Taper Correction Walk Proof]].
 
 ### Sundale visual human body pose candidate — September 23, 2026
