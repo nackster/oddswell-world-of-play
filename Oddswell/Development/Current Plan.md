@@ -2998,6 +2998,14 @@ The preserved Phase 1L.5aq report identity is `4,027` bytes/SHA `3E14CFABBD0FC4C
 - **Fail:** neckline/shoulder/sleeve/hem continuity, balanced proportions and no rejected silhouettes. The corrected outer shoulder/sleeve profile is better, but the unchanged central torso remains broad, flat and box/poncho-like.
 - **Next gate:** reshape only the central top front/rear torso depth into tapered body-following volume. Preserve corrected shoulders/sleeves/sides, body, shorts, topology, weights, materials, DEC-035 and `walk_candidate_v1`. Export/import preparation remains stopped; no runtime, final-art, performance, Phase 1L exit or beta-readiness claim follows. See [[Development/Reports/Phase 1L5cf Corrected Combined Starter Outfit Offline Visual Acceptance Review]].
 
+### Phase 1L.5cg starter-top central torso-depth taper correction status
+
+- **COMPLETE (targeted correction proof only):** exact Phase 1L.5ce custody is retained and only the `Y` depth coordinate of `114` central front/rear top vertices changes. Derived top identity is `1C7F8649211C44B9039F12902E266C438C5EF6DA4DF224D7FBD1FCF108AEC353`.
+- **No protected drift:** all other `384` top coordinates—including the `312` prior shoulder/sleeve/side targets and all `48` opening-boundary indices—reproduce exactly. Topology, item/material/color identity, weights, body, shorts, DEC-035 and walk `7DD9...E1020` remain exact.
+- **Measured taper:** lower/middle/upper mean depth reductions are `0.020377081 / 0.006175698 / 0.017112179 m`; maximum target displacement is `0.028001666 m`. Direct before/after neutral front/rear/profile and opposing extremes are retained.
+- **Walk proof:** `21/21` frames retain body/top and top/bottom overlaps `0`, sampled body clearance at least `0.033464938 m`, exact-zero translations and equal loop endpoints. Semantic identity `8B8008D832BFB0D1C1753D24AE2AF99C5CAE6CE24B8ED30439438904A0A55A61` reproduces and cold-validates.
+- **Next gate:** rerun the unchanged fail-closed combined outfit review against this exact tapered custody. This correction issues no acceptance verdict and authorizes no export/import, runtime replacement, final-art, performance, Phase 1L exit or beta-readiness claim. See [[Development/Reports/Phase 1L5cg Starter Top Central Torso Depth Taper Correction Walk Proof]].
+
 ### Sundale visual human body pose candidate — September 23, 2026
 
 - **Status:** editable offline visual candidate, with native front/rear renders and a fresh cold reopen; the human-realism goal remains active.
