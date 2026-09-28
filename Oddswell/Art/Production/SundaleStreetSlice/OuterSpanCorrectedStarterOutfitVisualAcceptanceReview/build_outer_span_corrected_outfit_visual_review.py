@@ -30,6 +30,11 @@ EXPECTED = {
 VIEWS = ("Front", "Rear", "Profile", "WalkExtremeFront", "WalkExtremeRear")
 MAXIMUM_TOP_TO_BODY_WIDTH_RATIO = 1.4
 MINIMUM_WAIST_INSET_RATIO = 0.08
+BOUNDED_CORRECTION = (
+    "Correct only the top shoulder-cap, sleeve and hem articulation so the exact retained neutral and "
+    "opposing-extreme views show a continuous garment silhouette without rigid raised plates or hem "
+    "collapse; preserve custody, the accepted width ratio, topology, four openings and all non-target assets."
+)
 
 
 def sha256(path: Path) -> str:
@@ -97,7 +102,38 @@ def measurements(source: dict, waist: dict) -> dict:
     }
 
 
-def criteria(source: dict, measured: dict) -> list[dict]:
+def visual_observations(views: dict) -> dict:
+    """Record the fail-closed human review of the exact custody-checked view set."""
+    return {
+        "view_identity_sha256": identity(views),
+        "neckline_shoulders_sleeves_hem": {
+            "pass": False,
+            "views": ["Front", "Rear", "Profile", "WalkExtremeFront", "WalkExtremeRear"],
+            "evidence": (
+                "The exact views show rigid squared shoulder caps, abrupt sleeve blocks and a hem that "
+                "lifts or folds into disconnected-looking planes at both opposing walk extremes."
+            ),
+        },
+        "no_rejected_silhouettes": {
+            "pass": False,
+            "views": ["Front", "Rear", "Profile", "WalkExtremeFront", "WalkExtremeRear"],
+            "evidence": (
+                "Although the measured width and waist-taper thresholds pass, the neutral profile remains "
+                "slab-like and both walk extremes retain an armor-like, plate-folded top silhouette."
+            ),
+        },
+        "stable_opposing_extremes": {
+            "pass": False,
+            "views": ["WalkExtremeFront", "WalkExtremeRear"],
+            "evidence": (
+                "Mechanical loop and translation checks pass, but frames 6 and 16 do not support "
+                "qualitative garment stability: shoulder caps rise into plates and the hem collapses unevenly."
+            ),
+        },
+    }
+
+
+def criteria(source: dict, measured: dict, observations: dict) -> list[dict]:
     semantic = source["semantic"]
     frames = semantic["deformation"]["frames"]
     zero_overlap = all(all(value == 0 for value in row["intersections"].values()) for row in frames)
@@ -111,33 +147,36 @@ def criteria(source: dict, measured: dict) -> list[dict]:
     status = lambda passed: "PASS" if passed else "FAIL"
     ratio = measured["top_to_body_width_ratio"]
     ratio_limit = measured["maximum_top_to_body_width_ratio"]
-    silhouette_evidence = (
-        f"Waist inset ratio {measured['waist_inset_ratio']:.6f} passes the {measured['minimum_waist_inset_ratio']:.6f} floor and outer width ratio {ratio:.6f} passes the {ratio_limit:.6f} ceiling across neutral and opposing-extreme evidence."
-        if measured["top_contract_pass"] and taper_pass and proportion_pass
-        else f"Waist inset ratio is {measured['waist_inset_ratio']:.6f} and outer width ratio is {ratio:.6f}; at least one unchanged silhouette contract is not met."
-    )
+    neckline = observations["neckline_shoulders_sleeves_hem"]
+    silhouette = observations["no_rejected_silhouettes"]
+    opposing = observations["stable_opposing_extremes"]
+    neckline_pass = measured["top_contract_pass"] and proportion_pass and neckline["pass"]
+    silhouette_pass = measured["top_contract_pass"] and taper_pass and proportion_pass and silhouette["pass"]
+    opposing_pass = stable and opposing["pass"]
     return [
         {"criterion": "separation", "status": status(zero_overlap), "evidence": "The retained 21-frame ledger reports zero body/top, body/bottom and top/bottom evaluated intersections."},
-        {"criterion": "neckline_shoulders_sleeves_hem", "status": status(measured["top_contract_pass"] and proportion_pass), "evidence": f"The exact connected four-opening top and nonempty neckline/shoulder/sleeve/hem roles remain intact; neutral outer width ratio is {ratio:.6f} against the {ratio_limit:.6f} review ceiling."},
+        {"criterion": "neckline_shoulders_sleeves_hem", "status": status(neckline_pass), "evidence": f"The connected four-opening contract and {ratio:.6f} width ratio pass, but visual acceptance fails: {neckline['evidence']}"},
         {"criterion": "waistband_rise_crotch_legs", "status": status(measured["shorts_contract_pass"]), "evidence": "The exact accepted connected shorts retain three openings, zero other non-manifold edges, waistband/rise/crotch evidence and two legs."},
         {"criterion": "proportions", "status": status(proportion_pass), "evidence": f"Neutral top width is {measured['neutral_top_width_m']:.6f} m versus body width {measured['neutral_body_width_m']:.6f} m, ratio {ratio:.6f}; the unchanged review ceiling is {ratio_limit:.6f}."},
-        {"criterion": "no_rejected_silhouettes", "status": status(measured["top_contract_pass"] and taper_pass and proportion_pass), "evidence": silhouette_evidence},
+        {"criterion": "no_rejected_silhouettes", "status": status(silhouette_pass), "evidence": f"Waist inset {measured['waist_inset_ratio']:.6f} and outer width {ratio:.6f} pass their numeric gates, but visual acceptance fails: {silhouette['evidence']}"},
         {"criterion": "no_exposure_or_collision", "status": status(zero_overlap), "evidence": "All five exact views retain coverage and the 21-frame ledger reports zero evaluated intersections."},
-        {"criterion": "stable_opposing_extremes", "status": status(stable), "evidence": "Exact frames 6 and 16 retain coverage; root/armature translation is zero and frame 21 equals frame 1."},
+        {"criterion": "stable_opposing_extremes", "status": status(opposing_pass), "evidence": opposing["evidence"]},
     ]
 
 
 def expected_result(source: dict, waist: dict, views: dict) -> dict:
     measured = measurements(source, waist)
-    checks = criteria(source, measured)
+    observations = visual_observations(views)
+    checks = criteria(source, measured, observations)
     verdict = "ACCEPTED_FOR_TECHNICAL_EXPORT_IMPORT_PREPARATION" if all(row["status"] == "PASS" for row in checks) else "REJECTED_VISUAL_CORRECTION_REQUIRED"
     semantic = source["semantic"]
     result = {
         "phase": "Phase 1L.5cl outer-span-corrected combined starter-outfit offline visual acceptance review",
         "verdict": verdict,
         "criteria": checks,
+        "visual_observations": observations,
         "measurements": measured,
-        "smallest_correction": None,
+        "smallest_correction": None if verdict == "ACCEPTED_FOR_TECHNICAL_EXPORT_IMPORT_PREPARATION" else BOUNDED_CORRECTION,
         "source_custody": {
             "blend": source["files"]["blend"],
             "semantic_identity_sha256": EXPECTED["semantic"],
@@ -151,9 +190,6 @@ def expected_result(source: dict, waist: dict, views: dict) -> dict:
         },
         "boundaries": {"geometry_changed": 0, "weights_changed": 0, "topology_changed": 0, "materials_changed": 0, "action_changed": 0, "skeleton_changed": 0, "export_changed": 0, "unreal_changed": 0, "client_changed": 0, "package_inputs_changed": 0, "runtime_claim": False, "final_art_claim": False, "beta_readiness_claim": False, "future_technical_export_import_preparation_eligible": verdict == "ACCEPTED_FOR_TECHNICAL_EXPORT_IMPORT_PREPARATION"},
     }
-    if verdict == "REJECTED_VISUAL_CORRECTION_REQUIRED":
-        failed = ", ".join(row["criterion"] for row in checks if row["status"] == "FAIL")
-        result["smallest_correction"] = f"Correct only the first failing unchanged criterion: {failed.split(',')[0]}."
     result["identity_sha256"] = identity(result)
     return result
 

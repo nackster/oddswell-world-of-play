@@ -3039,10 +3039,10 @@ The preserved Phase 1L.5aq report identity is `4,027` bytes/SHA `3E14CFABBD0FC4C
 
 ### Phase 1L.5cl outer-span-corrected combined outfit review status
 
-- **COMPLETE REVIEW / ACCEPTED FOR FUTURE TECHNICAL PREPARATION ONLY:** exact Phase 1L.5ck custody, views, opening identities and 21-frame ledger are retained; geometry and every runtime-input change remain `0`. Review identity is `A4B82973B31924E3C03BAC252E9131CDA73E349E325F74B0F4083BACE485CAE1`.
-- **All seven pass:** separation; neckline/shoulders/sleeves/hem; waistband/rise/crotch/legs; proportions; no rejected silhouettes; no exposure/collision; stable opposing extremes.
-- **Measured gate:** neutral top/body width ratio is `1.399001 ≤ 1.400000`; waist inset ratio is `0.132244 ≥ 0.080000`.
-- **Next gate boundary:** only a future separately scoped technical export/import preparation phase is eligible. This review performs no export/import, runtime replacement, final-art approval, Phase 1L exit or beta-readiness determination. See [[Development/Reports/Phase 1L5cl Outer Span Corrected Combined Starter Outfit Offline Visual Acceptance Review]].
+- **COMPLETE REVIEW / REJECTED_VISUAL_CORRECTION_REQUIRED:** exact Phase 1L.5ck custody, views, opening identities and 21-frame ledger are retained; geometry and every runtime-input change remain `0`. Review identity is `C45BEE5EEA0A2B709BB0551B9C2CFD2F845F34780EB1FF8AF45663356F777B27`.
+- **Four pass / three fail:** separation, shorts construction, numeric proportions and no exposure/collision pass. Neckline/shoulders/sleeves/hem, no rejected silhouettes and qualitative opposing-extreme stability fail on the exact views.
+- **Measured gate:** neutral top/body width ratio is `1.399001 ≤ 1.400000`; waist inset ratio is `0.132244 ≥ 0.080000`, but numeric gates do not override the rigid shoulder plates, abrupt sleeve blocks, slab-like profile and uneven hem collapse.
+- **Next gate boundary:** export/import preparation remains stopped. The one smallest correction is top-only shoulder-cap, sleeve and hem articulation while preserving custody, accepted ratio, topology, four openings and all non-target assets. No runtime, final-art, Phase 1L exit or readiness claim is made. See [[Development/Reports/Phase 1L5cl Outer Span Corrected Combined Starter Outfit Offline Visual Acceptance Review]].
 
 ### Sundale visual human body pose candidate — September 23, 2026
 

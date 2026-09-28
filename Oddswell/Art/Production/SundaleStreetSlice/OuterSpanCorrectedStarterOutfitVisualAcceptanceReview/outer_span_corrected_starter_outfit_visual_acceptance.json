@@ -5,7 +5,7 @@
     "client_changed": 0,
     "export_changed": 0,
     "final_art_claim": false,
-    "future_technical_export_import_preparation_eligible": true,
+    "future_technical_export_import_preparation_eligible": false,
     "geometry_changed": 0,
     "materials_changed": 0,
     "package_inputs_changed": 0,
@@ -23,8 +23,8 @@
     },
     {
       "criterion": "neckline_shoulders_sleeves_hem",
-      "evidence": "The exact connected four-opening top and nonempty neckline/shoulder/sleeve/hem roles remain intact; neutral outer width ratio is 1.399001 against the 1.400000 review ceiling.",
-      "status": "PASS"
+      "evidence": "The connected four-opening contract and 1.399001 width ratio pass, but visual acceptance fails: The exact views show rigid squared shoulder caps, abrupt sleeve blocks and a hem that lifts or folds into disconnected-looking planes at both opposing walk extremes.",
+      "status": "FAIL"
     },
     {
       "criterion": "waistband_rise_crotch_legs",
@@ -38,8 +38,8 @@
     },
     {
       "criterion": "no_rejected_silhouettes",
-      "evidence": "Waist inset ratio 0.132244 passes the 0.080000 floor and outer width ratio 1.399001 passes the 1.400000 ceiling across neutral and opposing-extreme evidence.",
-      "status": "PASS"
+      "evidence": "Waist inset 0.132244 and outer width 1.399001 pass their numeric gates, but visual acceptance fails: Although the measured width and waist-taper thresholds pass, the neutral profile remains slab-like and both walk extremes retain an armor-like, plate-folded top silhouette.",
+      "status": "FAIL"
     },
     {
       "criterion": "no_exposure_or_collision",
@@ -48,25 +48,25 @@
     },
     {
       "criterion": "stable_opposing_extremes",
-      "evidence": "Exact frames 6 and 16 retain coverage; root/armature translation is zero and frame 21 equals frame 1.",
-      "status": "PASS"
+      "evidence": "Mechanical loop and translation checks pass, but frames 6 and 16 do not support qualitative garment stability: shoulder caps rise into plates and the hem collapses unevenly.",
+      "status": "FAIL"
     }
   ],
   "files": {
     "board": {
-      "bytes": 1058017,
-      "sha256": "6334D3D0E02AEFB7D78A325464CAFFE5932436DBD4B58A1828770663AD0F570C"
+      "bytes": 1061052,
+      "sha256": "23A9473E1FED2F920084D508C36AC19FB5B09F05F734B64362DF76C804932623"
     },
     "builder": {
-      "bytes": 13336,
-      "sha256": "0906873A1F46D73343EB50A8047947FD760ABC531DC4DDF7B695BF88E7C980FF"
+      "bytes": 14867,
+      "sha256": "A5A222C2A82C669F42833EB2802C2D5EF117C3C98E5EC048E49FBFCDEDFA4711"
     },
     "provenance": {
-      "bytes": 719,
-      "sha256": "CDB9BBDB10D228705996A94BF26EDB962555D4A64FA89BA9339A877CC530BD7B"
+      "bytes": 859,
+      "sha256": "E3DAF7AC9C596CA219E5F045803237AA61805559CED0F9BD63966C5567E9F48A"
     }
   },
-  "identity_sha256": "A4B82973B31924E3C03BAC252E9131CDA73E349E325F74B0F4083BACE485CAE1",
+  "identity_sha256": "C45BEE5EEA0A2B709BB0551B9C2CFD2F845F34780EB1FF8AF45663356F777B27",
   "measurements": {
     "maximum_top_to_body_width_ratio": 1.4,
     "minimum_waist_inset_ratio": 0.08,
@@ -78,7 +78,7 @@
     "waist_inset_ratio": 0.132244272
   },
   "phase": "Phase 1L.5cl outer-span-corrected combined starter-outfit offline visual acceptance review",
-  "smallest_correction": null,
+  "smallest_correction": "Correct only the top shoulder-cap, sleeve and hem articulation so the exact retained neutral and opposing-extreme views show a continuous garment silhouette without rigid raised plates or hem collapse; preserve custody, the accepted width ratio, topology, four openings and all non-target assets.",
   "source_custody": {
     "action_identity_sha256": "7DD9A4E6524BCAC604AEDC755D0464FEC8C8F40BDED1BDE17E87955ED63E1020",
     "armature_bone_count": 12,
@@ -118,5 +118,38 @@
       }
     }
   },
-  "verdict": "ACCEPTED_FOR_TECHNICAL_EXPORT_IMPORT_PREPARATION"
+  "verdict": "REJECTED_VISUAL_CORRECTION_REQUIRED",
+  "visual_observations": {
+    "neckline_shoulders_sleeves_hem": {
+      "evidence": "The exact views show rigid squared shoulder caps, abrupt sleeve blocks and a hem that lifts or folds into disconnected-looking planes at both opposing walk extremes.",
+      "pass": false,
+      "views": [
+        "Front",
+        "Rear",
+        "Profile",
+        "WalkExtremeFront",
+        "WalkExtremeRear"
+      ]
+    },
+    "no_rejected_silhouettes": {
+      "evidence": "Although the measured width and waist-taper thresholds pass, the neutral profile remains slab-like and both walk extremes retain an armor-like, plate-folded top silhouette.",
+      "pass": false,
+      "views": [
+        "Front",
+        "Rear",
+        "Profile",
+        "WalkExtremeFront",
+        "WalkExtremeRear"
+      ]
+    },
+    "stable_opposing_extremes": {
+      "evidence": "Mechanical loop and translation checks pass, but frames 6 and 16 do not support qualitative garment stability: shoulder caps rise into plates and the hem collapses unevenly.",
+      "pass": false,
+      "views": [
+        "WalkExtremeFront",
+        "WalkExtremeRear"
+      ]
+    },
+    "view_identity_sha256": "4EBCDC4E585AA2FE6B681624045B716ED6DC50481FB81C255347533103F18B8E"
+  }
 }
