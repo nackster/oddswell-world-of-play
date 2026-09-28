@@ -1,0 +1,122 @@
+{
+  "boundaries": {
+    "action_changed": 0,
+    "beta_readiness_claim": false,
+    "client_changed": 0,
+    "export_changed": 0,
+    "final_art_claim": false,
+    "future_technical_export_import_preparation_eligible": true,
+    "geometry_changed": 0,
+    "materials_changed": 0,
+    "package_inputs_changed": 0,
+    "runtime_claim": false,
+    "skeleton_changed": 0,
+    "topology_changed": 0,
+    "unreal_changed": 0,
+    "weights_changed": 0
+  },
+  "criteria": [
+    {
+      "criterion": "separation",
+      "evidence": "The retained 21-frame ledger reports zero body/top, body/bottom and top/bottom evaluated intersections.",
+      "status": "PASS"
+    },
+    {
+      "criterion": "neckline_shoulders_sleeves_hem",
+      "evidence": "The exact connected four-opening top and nonempty neckline/shoulder/sleeve/hem roles remain intact; neutral outer width ratio is 1.399001 against the 1.400000 review ceiling.",
+      "status": "PASS"
+    },
+    {
+      "criterion": "waistband_rise_crotch_legs",
+      "evidence": "The exact accepted connected shorts retain three openings, zero other non-manifold edges, waistband/rise/crotch evidence and two legs.",
+      "status": "PASS"
+    },
+    {
+      "criterion": "proportions",
+      "evidence": "Neutral top width is 0.944818 m versus body width 0.675352 m, ratio 1.399001; the unchanged review ceiling is 1.400000.",
+      "status": "PASS"
+    },
+    {
+      "criterion": "no_rejected_silhouettes",
+      "evidence": "Waist inset ratio 0.132244 passes the 0.080000 floor and outer width ratio 1.399001 passes the 1.400000 ceiling across neutral and opposing-extreme evidence.",
+      "status": "PASS"
+    },
+    {
+      "criterion": "no_exposure_or_collision",
+      "evidence": "All five exact views retain coverage and the 21-frame ledger reports zero evaluated intersections.",
+      "status": "PASS"
+    },
+    {
+      "criterion": "stable_opposing_extremes",
+      "evidence": "Exact frames 6 and 16 retain coverage; root/armature translation is zero and frame 21 equals frame 1.",
+      "status": "PASS"
+    }
+  ],
+  "files": {
+    "board": {
+      "bytes": 1058017,
+      "sha256": "6334D3D0E02AEFB7D78A325464CAFFE5932436DBD4B58A1828770663AD0F570C"
+    },
+    "builder": {
+      "bytes": 13336,
+      "sha256": "0906873A1F46D73343EB50A8047947FD760ABC531DC4DDF7B695BF88E7C980FF"
+    },
+    "provenance": {
+      "bytes": 719,
+      "sha256": "CDB9BBDB10D228705996A94BF26EDB962555D4A64FA89BA9339A877CC530BD7B"
+    }
+  },
+  "identity_sha256": "A4B82973B31924E3C03BAC252E9131CDA73E349E325F74B0F4083BACE485CAE1",
+  "measurements": {
+    "maximum_top_to_body_width_ratio": 1.4,
+    "minimum_waist_inset_ratio": 0.08,
+    "neutral_body_width_m": 0.675352,
+    "neutral_top_width_m": 0.944818,
+    "shorts_contract_pass": true,
+    "top_contract_pass": true,
+    "top_to_body_width_ratio": 1.399000817,
+    "waist_inset_ratio": 0.132244272
+  },
+  "phase": "Phase 1L.5cl outer-span-corrected combined starter-outfit offline visual acceptance review",
+  "smallest_correction": null,
+  "source_custody": {
+    "action_identity_sha256": "7DD9A4E6524BCAC604AEDC755D0464FEC8C8F40BDED1BDE17E87955ED63E1020",
+    "armature_bone_count": 12,
+    "blend": {
+      "bytes": 13905337,
+      "sha256": "5A452DCF36B861D4271D6D9CD1303161330C112BCEBD32AF2548F2C2F35161C7"
+    },
+    "frame_ledger_identity_sha256": "26C61ACFE18C84C59836C8EA81D911FA3BC49150859247C3730BB066AF960DC2",
+    "mesh_sha256": {
+      "body": "F340C34B05FC4D0D20F5625E9B2F9174947B691F59420367E8B738BE1CBF03CD",
+      "bottom": "E626B69FA039E1E1139ACD203AB6F481CADDC49771ADA7341B8ED3A1D9C82170",
+      "top": "4D290EAEF2CDC94F6F68982C0166FF5E7B85C6B36200170FF2B24AFF4F379FBE"
+    },
+    "opening_boundary_identity_sha256": "B93835657A71D0088459699AF655B2A329C9AA6C16B5775070A001EE121C171E",
+    "opening_geometry_identity_sha256": "C90E1A6D9A2F1D9A259281D275EC1922250596BBFE862DC65AC5A8A5EC4D0D95",
+    "semantic_identity_sha256": "BB7BE19929C7C89270CC39D029FBE21D9D8140E57BB2A91B55DE96DCC75F8F18",
+    "view_files": {
+      "Front": {
+        "bytes": 475387,
+        "sha256": "65B80D7989AFF083B6C7F94235BA57C5EBE22D02DAD3FDE41EC31840C0196CA3"
+      },
+      "Profile": {
+        "bytes": 472497,
+        "sha256": "D6F8C442A8F9D84D198BAF69904FB4A906EDFE2583B6C72C74099A746C216547"
+      },
+      "Rear": {
+        "bytes": 478093,
+        "sha256": "DB58DB833C78129B41C069EDA1124308FE19E9609ADF637F1AC60A62AF867940"
+      },
+      "WalkExtremeFront": {
+        "bytes": 496893,
+        "sha256": "B90A1236DDC0DDF4B100E73A6FF95E9143545433E251179CA7B82487322D7BBD"
+      },
+      "WalkExtremeRear": {
+        "bytes": 492683,
+        "sha256": "9BD4EBD22A593FF1FCFECA429FEB1871F5A0D04E64944011F052CF2357D8F87E"
+      }
+    }
+  },
+  "verdict": "ACCEPTED_FOR_TECHNICAL_EXPORT_IMPORT_PREPARATION"
+}

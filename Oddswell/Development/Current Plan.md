@@ -3037,6 +3037,13 @@ The preserved Phase 1L.5aq report identity is `4,027` bytes/SHA `3E14CFABBD0FC4C
 - **Walk proof:** `21/21` frames retain body/top and top/bottom overlaps `0`, sampled body clearance at least `0.033464938 m`, exact-zero translations and equal endpoints. Semantic identity `BB7BE19929C7C89270CC39D029FBE21D9D8140E57BB2A91B55DE96DCC75F8F18` reproduces and cold-validates.
 - **Next gate:** rerun the unchanged fail-closed combined review. This correction issues no acceptance verdict; export/import preparation remains stopped. See [[Development/Reports/Phase 1L5ck Outer Shoulder Sleeve Span Correction Walk Proof]].
 
+### Phase 1L.5cl outer-span-corrected combined outfit review status
+
+- **COMPLETE REVIEW / ACCEPTED FOR FUTURE TECHNICAL PREPARATION ONLY:** exact Phase 1L.5ck custody, views, opening identities and 21-frame ledger are retained; geometry and every runtime-input change remain `0`. Review identity is `A4B82973B31924E3C03BAC252E9131CDA73E349E325F74B0F4083BACE485CAE1`.
+- **All seven pass:** separation; neckline/shoulders/sleeves/hem; waistband/rise/crotch/legs; proportions; no rejected silhouettes; no exposure/collision; stable opposing extremes.
+- **Measured gate:** neutral top/body width ratio is `1.399001 ≤ 1.400000`; waist inset ratio is `0.132244 ≥ 0.080000`.
+- **Next gate boundary:** only a future separately scoped technical export/import preparation phase is eligible. This review performs no export/import, runtime replacement, final-art approval, Phase 1L exit or beta-readiness determination. See [[Development/Reports/Phase 1L5cl Outer Span Corrected Combined Starter Outfit Offline Visual Acceptance Review]].
+
 ### Sundale visual human body pose candidate — September 23, 2026
 
 - **Status:** editable offline visual candidate, with native front/rear renders and a fresh cold reopen; the human-realism goal remains active.
