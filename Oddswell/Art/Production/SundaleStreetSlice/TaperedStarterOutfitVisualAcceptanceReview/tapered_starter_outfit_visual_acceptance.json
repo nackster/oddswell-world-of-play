@@ -1,0 +1,106 @@
+{
+  "boundaries": {
+    "action_changed": 0,
+    "beta_readiness_claim": false,
+    "client_changed": 0,
+    "export_changed": 0,
+    "final_art_claim": false,
+    "geometry_changed": 0,
+    "materials_changed": 0,
+    "package_inputs_changed": 0,
+    "runtime_claim": false,
+    "skeleton_changed": 0,
+    "topology_changed": 0,
+    "unreal_changed": 0,
+    "weights_changed": 0
+  },
+  "criteria": [
+    {
+      "criterion": "separation",
+      "evidence": "The retained 21-frame ledger reports zero body/top, body/bottom and top/bottom evaluated intersections.",
+      "status": "PASS"
+    },
+    {
+      "criterion": "neckline_shoulders_sleeves_hem",
+      "evidence": "The tapered views retain rounded shoulders, but the torso-to-sleeve width transition and rigid straight hem still read as one oversized rectangular slab.",
+      "status": "FAIL"
+    },
+    {
+      "criterion": "waistband_rise_crotch_legs",
+      "evidence": "Neutral views retain the accepted waistband, balanced rise/crotch split and two tapered shorts legs.",
+      "status": "PASS"
+    },
+    {
+      "criterion": "proportions",
+      "evidence": "Front/rear and both walk extremes show the top still substantially overpowering the body and shorts in lateral width.",
+      "status": "FAIL"
+    },
+    {
+      "criterion": "no_rejected_silhouettes",
+      "evidence": "The depth taper is visible in profile, but front/rear and opposing extremes still read as a broad box/poncho torso.",
+      "status": "FAIL"
+    },
+    {
+      "criterion": "no_exposure_or_collision",
+      "evidence": "All five tapered views retain coverage and the 21-frame ledger reports zero evaluated intersections.",
+      "status": "PASS"
+    },
+    {
+      "criterion": "stable_opposing_extremes",
+      "evidence": "Tapered frames 6 and 16 retain coverage; root/armature translation is zero and frame 21 equals frame 1.",
+      "status": "PASS"
+    }
+  ],
+  "files": {
+    "board": {
+      "bytes": 1057787,
+      "sha256": "279E0868974C9CFD91E13CBFBF1C0EB2BB7E78E8D430C80436EDA432BB4172F9"
+    },
+    "builder": {
+      "bytes": 9028,
+      "sha256": "800237785FB2083BC850E53ACDD56F3411A7675BAC1246E21D4B9B8E3C2AF3AF"
+    },
+    "provenance": {
+      "bytes": 626,
+      "sha256": "5F338004E41C7C5817FEF148A1DB1CF522E4F4A2C1773A7C5DE438CE1CC6FFC1"
+    }
+  },
+  "identity_sha256": "8C592DD18048263EDB4D95CF9C24E49A376D62C234862FAF8FAC5379DA4E9637",
+  "phase": "Phase 1L.5ch tapered combined starter-outfit offline visual acceptance review",
+  "smallest_correction": "Reshape only the top central front/rear lateral silhouette into a waist-tapered panel while preserving shoulders, sleeves, depth taper, openings and every other accepted identity.",
+  "source_custody": {
+    "action_identity_sha256": "7DD9A4E6524BCAC604AEDC755D0464FEC8C8F40BDED1BDE17E87955ED63E1020",
+    "armature_bone_count": 12,
+    "blend_sha256": "4AE2F2B1E695F1DA7D09EB8D7F862CBADCFEB93D35413326A854A15169F03C35",
+    "frame_ledger_identity_sha256": "7CA68167E035D763AF96FF7607178161C182C0908781CEC6373E887B1E4B1592",
+    "mesh_sha256": {
+      "body": "F340C34B05FC4D0D20F5625E9B2F9174947B691F59420367E8B738BE1CBF03CD",
+      "bottom": "E626B69FA039E1E1139ACD203AB6F481CADDC49771ADA7341B8ED3A1D9C82170",
+      "top": "1C7F8649211C44B9039F12902E266C438C5EF6DA4DF224D7FBD1FCF108AEC353"
+    },
+    "semantic_identity_sha256": "8B8008D832BFB0D1C1753D24AE2AF99C5CAE6CE24B8ED30439438904A0A55A61",
+    "tapered_view_files": {
+      "Front": {
+        "bytes": 473512,
+        "sha256": "0B557CDD8D4273B59B9385F69D9E4BEA540B8BFC6BDA560005FFDFE12169213C"
+      },
+      "Profile": {
+        "bytes": 472016,
+        "sha256": "F4FD17AD977A197DED6707349BC7C156398AB1658ED900B0EE1E1B910B2DF08D"
+      },
+      "Rear": {
+        "bytes": 475696,
+        "sha256": "3FAED762B4FF737219DDD22BBEFE4ED85602056CD1E03CBD81011BB1CEC80912"
+      },
+      "WalkExtremeFront": {
+        "bytes": 497517,
+        "sha256": "080193B407B9B2ACE364297837D3B9F9BF1FD9DE7F36D25A6DB52A5146099B81"
+      },
+      "WalkExtremeRear": {
+        "bytes": 491938,
+        "sha256": "DABAA8BCCF0E9516D17E86A1D3B80A9896B11F46EED84858304C17B5E0C5B8E5"
+      }
+    }
+  },
+  "verdict": "REJECTED_VISUAL_CORRECTION_REQUIRED"
+}

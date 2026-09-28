@@ -3006,6 +3006,13 @@ The preserved Phase 1L.5aq report identity is `4,027` bytes/SHA `3E14CFABBD0FC4C
 - **Walk proof:** `21/21` frames retain body/top and top/bottom overlaps `0`, sampled body clearance at least `0.033464938 m`, exact-zero translations and equal loop endpoints. Semantic identity `8B8008D832BFB0D1C1753D24AE2AF99C5CAE6CE24B8ED30439438904A0A55A61` reproduces and cold-validates.
 - **Next gate:** rerun the unchanged fail-closed combined outfit review against this exact tapered custody. This correction issues no acceptance verdict and authorizes no export/import, runtime replacement, final-art, performance, Phase 1L exit or beta-readiness claim. See [[Development/Reports/Phase 1L5cg Starter Top Central Torso Depth Taper Correction Walk Proof]].
 
+### Phase 1L.5ch tapered combined starter-outfit offline visual acceptance status
+
+- **COMPLETE REVIEW / REJECTED:** exact Phase 1L.5cg custody is retained with asset and runtime-input changes `0`. Review identity `8C592DD18048263EDB4D95CF9C24E49A376D62C234862FAF8FAC5379DA4E9637` ties the deterministic board to exact tapered-view hashes and retained 21-frame ledger.
+- **Pass:** separation, shorts construction, no exposure/collision and stable opposing extremes.
+- **Fail:** neckline/shoulder/sleeve/hem continuity, balanced proportions and no rejected silhouettes. The depth taper is visible in profile, but the front/rear and walk extremes remain oversized, rectangular and box/poncho-like.
+- **Next gate:** reshape only the central top front/rear lateral silhouette into a waist-tapered panel. Preserve shoulders, sleeves, accepted depth taper, openings, body, shorts, topology, weights, materials, DEC-035 and `walk_candidate_v1`. Export/import preparation remains stopped; no runtime, final-art, performance, Phase 1L exit or beta-readiness claim follows. See [[Development/Reports/Phase 1L5ch Tapered Combined Starter Outfit Offline Visual Acceptance Review]].
+
 ### Sundale visual human body pose candidate — September 23, 2026
 
 - **Status:** editable offline visual candidate, with native front/rear renders and a fresh cold reopen; the human-realism goal remains active.
