@@ -3021,6 +3021,13 @@ The preserved Phase 1L.5aq report identity is `4,027` bytes/SHA `3E14CFABBD0FC4C
 - **Walk proof:** `21/21` frames retain body/top and top/bottom overlaps `0`, sampled body clearance at least `0.033464938 m`, exact-zero translations and equal loop endpoints. Semantic identity `38F71CB35B20672E114E27B8C79206564CAE358B5A3C053509A510D7485539FD` reproduces and cold-validates.
 - **Next gate:** rerun the unchanged fail-closed combined outfit review against this exact waist-tapered custody. This correction issues no acceptance verdict and authorizes no export/import, runtime replacement, final-art, performance, Phase 1L exit or beta-readiness claim. See [[Development/Reports/Phase 1L5ci Central Front Rear Lateral Waist Taper Correction Walk Proof]].
 
+### Phase 1L.5cj waist-tapered combined outfit review status
+
+- **COMPLETE REVIEW / REJECTED:** exact repaired Phase 1L.5ci custody, views, opening identities and 21-frame ledger are retained; geometry and every runtime input change remain `0`. Review identity is `EA35D9D160E659D8494D5C2A34ED883504EE030DA0D6F4F3881E2303ECB613BD`.
+- **Pass:** separation, accepted shorts construction, no exposure/collision and stable opposing extremes.
+- **Fail:** neckline/shoulder/sleeve/hem continuity, proportions and no rejected silhouettes. Waist inset ratio `0.132244` passes its `0.080000` floor, but top/body neutral width is `1.000800 / 0.675352 m`, ratio `1.481894` above the `1.400000` ceiling.
+- **Next gate:** reduce only the preserved outer shoulder/sleeve span while retaining the central depth/waist taper and every non-target identity. Export/import preparation remains stopped; no runtime, final-art, performance, Phase 1L exit or beta-readiness claim follows. See [[Development/Reports/Phase 1L5cj Waist Tapered Combined Starter Outfit Offline Visual Acceptance Review]].
+
 ### Sundale visual human body pose candidate — September 23, 2026
 
 - **Status:** editable offline visual candidate, with native front/rear renders and a fresh cold reopen; the human-realism goal remains active.
