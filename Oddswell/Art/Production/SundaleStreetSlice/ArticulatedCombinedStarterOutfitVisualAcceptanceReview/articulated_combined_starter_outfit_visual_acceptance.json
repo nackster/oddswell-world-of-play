@@ -1,0 +1,169 @@
+{
+  "boundaries": {
+    "action_changes": 0,
+    "asset_changes": 0,
+    "client_changes": 0,
+    "export_changes": 0,
+    "export_import_preparation_eligible": false,
+    "geometry_changes": 0,
+    "material_changes": 0,
+    "package_input_changes": 0,
+    "readiness_claim": false,
+    "runtime_input_changes": 0,
+    "skeleton_changes": 0,
+    "topology_changes": 0,
+    "unreal_changes": 0,
+    "weight_changes": 0
+  },
+  "criteria": [
+    {
+      "criterion": "separation",
+      "evidence": "The exact retained 21-frame ledger reports zero body/top, body/bottom and top/bottom evaluated intersections.",
+      "status": "PASS"
+    },
+    {
+      "criterion": "neckline_shoulders_sleeves_hem",
+      "evidence": "The one-component/four-opening contract passes, but the unchanged qualitative criterion fails: The corrected shoulder line and hem remain stable, but both outer sleeves still terminate as abrupt rectangular blocks instead of continuous rounded armhole caps.",
+      "status": "FAIL"
+    },
+    {
+      "criterion": "waistband_rise_crotch_legs",
+      "evidence": "The exact accepted shorts retain one component, three openings, zero other non-manifold edges and two readable legs.",
+      "status": "PASS"
+    },
+    {
+      "criterion": "proportions",
+      "evidence": "Neutral top width is 0.944817 m versus body width 0.675352 m, ratio 1.399000; the unchanged ceiling is 1.400000. This numeric pass does not override qualitative failures.",
+      "status": "PASS"
+    },
+    {
+      "criterion": "no_rejected_silhouettes",
+      "evidence": "Width ratio 1.399000 and waist inset 0.132244 pass their numeric gates, but the unchanged qualitative criterion fails: The numeric width and waist-taper gates pass, but the neutral and opposing-extreme views retain detached-looking sleeve blocks and an armor-like outer top silhouette.",
+      "status": "FAIL"
+    },
+    {
+      "criterion": "no_exposure_or_collision",
+      "evidence": "All five exact views retain body coverage without visible interpenetration. The retained ledger also reports zero evaluated intersections.",
+      "status": "PASS"
+    },
+    {
+      "criterion": "stable_opposing_extremes",
+      "evidence": "Frames 6 and 16 keep the corrected shoulder line and lower hem near the neutral silhouette; the prior raised plates and uneven hem collapse do not recur. Root/armature translation remains zero and frame 21 equals frame 1.",
+      "status": "PASS"
+    }
+  ],
+  "files": {
+    "board": {
+      "bytes": 1045713,
+      "sha256": "8B534681A614AD6FF1D7B3756DD67CEFA35772D92B3E33BC32B215C39CF94F61"
+    },
+    "builder": {
+      "bytes": 14387,
+      "sha256": "7A20272BE414A257875CA2BCC5ECAFB1CF577CE9585E44BB5930457C5826FD44"
+    },
+    "provenance": {
+      "bytes": 636,
+      "sha256": "821F7C87B98C29427E392920E93E61FDA99C981005F6BBF1662EE3E96B71446D"
+    }
+  },
+  "identity_sha256": "31F420AB306F577D947D712888A03F5FB13A89C622D882044F06C338F83387C5",
+  "measurements": {
+    "maximum_top_to_body_width_ratio": 1.4,
+    "minimum_waist_inset_ratio": 0.08,
+    "neutral_body_width_m": 0.675352,
+    "neutral_top_width_m": 0.944817424,
+    "outer_sleeve_armhole_x_min_m": 0.389245,
+    "outer_sleeve_armhole_z_range_m": [
+      1.2,
+      1.4
+    ],
+    "top_to_body_width_ratio": 1.398999964,
+    "waist_inset_ratio": 0.132244272
+  },
+  "phase": "Phase 1L.5cn articulated combined starter-outfit offline visual acceptance review",
+  "smallest_correction": "Correct only the top outer sleeve/armhole block geometry within |X| >= 0.389245 m and 1.20 m <= Z <= 1.40 m into a continuous rounded cap; preserve the 1L.5cm articulation weights, central torso, waist and neckline boundaries, four-opening contract and all non-target assets.",
+  "source_custody": {
+    "action_identity_sha256": "7DD9A4E6524BCAC604AEDC755D0464FEC8C8F40BDED1BDE17E87955ED63E1020",
+    "armature_bone_count": 12,
+    "blend": {
+      "bytes": 13907177,
+      "sha256": "10315DEC1E2F1EAB3F3D7DDA6828AB5B9867957B9D108C5A2F462201D3E059FC"
+    },
+    "frame_ledger_identity_sha256": "84589A1CAC04FFF8E0176E794C8430F7806FD0B3E0913457373D6DDEB465F261",
+    "mesh_sha256": {
+      "body": "F340C34B05FC4D0D20F5625E9B2F9174947B691F59420367E8B738BE1CBF03CD",
+      "bottom": "E626B69FA039E1E1139ACD203AB6F481CADDC49771ADA7341B8ED3A1D9C82170",
+      "top": "9ED01AAA3F060F237D2CCADCD5ED7E15F65E864F013DC0BCB51266A31A34FA58"
+    },
+    "opening_identity_sha256": "C90E1A6D9A2F1D9A259281D275EC1922250596BBFE862DC65AC5A8A5EC4D0D95",
+    "semantic_identity_sha256": "6E219986ED018BFF27BB61AD308346C33217795B5C883893806E661D589579B0",
+    "topology_identity_sha256": "64BD03BA4EAB3A529B303860427453B47C2807C8AF25F520329CC2E5078C8FE3",
+    "view_files": {
+      "Front": {
+        "bytes": 475792,
+        "sha256": "69E2CD778C351B8DE4ED5F5BFD72559995C4AC9D449982C8F672028D04201EBD"
+      },
+      "Profile": {
+        "bytes": 474960,
+        "sha256": "A7A95784F9E24D2F3E319089A5AC2FB97A734A2D79272311A8073FB05394FEA6"
+      },
+      "Rear": {
+        "bytes": 478532,
+        "sha256": "1DC0B9AAB7995D4D0ACE7BF738C6C2AC340FE9C3ABACEF61CFA1F64CBDF470D3"
+      },
+      "WalkExtremeFront": {
+        "bytes": 487257,
+        "sha256": "B8BA8BEAF7C99C8230CA2305A0FBF8CBC83466DE75F5E1943E4B51B3DFAC1BDB"
+      },
+      "WalkExtremeRear": {
+        "bytes": 483576,
+        "sha256": "829F338AC0D2548A0705C51EC70A0E8CCE867FCEEC621E478D8D47783FF4F4C8"
+      }
+    }
+  },
+  "verdict": "REJECTED_VISUAL_CORRECTION_REQUIRED",
+  "visual_observations": {
+    "coverage": {
+      "evidence": "All five exact views retain body coverage without visible interpenetration.",
+      "pass": true,
+      "views": [
+        "Front",
+        "Rear",
+        "Profile",
+        "WalkExtremeFront",
+        "WalkExtremeRear"
+      ]
+    },
+    "neckline_shoulders_sleeves_hem": {
+      "evidence": "The corrected shoulder line and hem remain stable, but both outer sleeves still terminate as abrupt rectangular blocks instead of continuous rounded armhole caps.",
+      "pass": false,
+      "views": [
+        "Front",
+        "Rear",
+        "Profile",
+        "WalkExtremeFront",
+        "WalkExtremeRear"
+      ]
+    },
+    "no_rejected_silhouettes": {
+      "evidence": "The numeric width and waist-taper gates pass, but the neutral and opposing-extreme views retain detached-looking sleeve blocks and an armor-like outer top silhouette.",
+      "pass": false,
+      "views": [
+        "Front",
+        "Rear",
+        "Profile",
+        "WalkExtremeFront",
+        "WalkExtremeRear"
+      ]
+    },
+    "stable_opposing_extremes": {
+      "evidence": "Frames 6 and 16 keep the corrected shoulder line and lower hem near the neutral silhouette; the prior raised plates and uneven hem collapse do not recur.",
+      "pass": true,
+      "views": [
+        "WalkExtremeFront",
+        "WalkExtremeRear"
+      ]
+    },
+    "view_identity_sha256": "912F1D0FD8FC980AEC8972B70F13AAAA76A3F4FC9D2086A079A5E298562C99F0"
+  }
+}

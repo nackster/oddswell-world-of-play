@@ -3051,6 +3051,13 @@ The preserved Phase 1L.5aq report identity is `4,027` bytes/SHA `3E14CFABBD0FC4C
 - **Retained contracts:** top/body ratio `1.398999964 ≤ 1.4`; one component/four openings/zero other non-manifold edges; body, shorts, item/material/color, DEC-035 and action unchanged; `21/21` frames intersections `0`, translations `0`, endpoint equality true.
 - **Next gate:** rerun the exact unchanged fail-closed combined review. Export/import preparation remains stopped. See [[Development/Reports/Phase 1L5cm Shoulder Cap Sleeve Hem Articulation Correction Walk Proof]].
 
+### Phase 1L.5cn articulated combined starter-outfit offline visual acceptance status
+
+- **COMPLETE REVIEW / REJECTED_VISUAL_CORRECTION_REQUIRED:** exact Phase 1L.5cm custody, topology/opening identities, views and 21-frame ledger are retained; geometry and every runtime-input change remain `0`. Review identity is `31F420AB306F577D947D712888A03F5FB13A89C622D882044F06C338F83387C5`.
+- **Five pass / two fail:** separation, shorts construction, numeric proportions, no exposure/collision and opposing-extreme stability pass. Neckline/shoulders/sleeves/hem and no rejected silhouettes fail because both outer sleeves remain abrupt rectangular blocks instead of continuous rounded armhole caps.
+- **Measured gate:** neutral top/body width ratio is `1.398999964 ≤ 1.4`; waist inset is `0.132244272 ≥ 0.08`, but numeric gates do not override qualitative failures.
+- **Next gate boundary:** export/import preparation remains stopped. The one smallest correction is only top outer sleeve/armhole geometry within `|X| >= 0.389245 m` and `1.20–1.40 m Z`, preserving Phase 1L.5cm articulation weights, central torso, waist/neckline boundaries, four openings and every non-target asset. No runtime, final-art, Phase 1L exit or readiness claim is made. See [[Development/Reports/Phase 1L5cn Articulated Combined Starter Outfit Offline Visual Acceptance Review]].
+
 ### Sundale visual human body pose candidate — September 23, 2026
 
 - **Status:** editable offline visual candidate, with native front/rear renders and a fresh cold reopen; the human-realism goal remains active.
