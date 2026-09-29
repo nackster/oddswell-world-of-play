@@ -3058,6 +3058,13 @@ The preserved Phase 1L.5aq report identity is `4,027` bytes/SHA `3E14CFABBD0FC4C
 - **Measured gate:** neutral top/body width ratio is `1.398999964 ≤ 1.4`; waist inset is `0.132244272 ≥ 0.08`, but numeric gates do not override qualitative failures.
 - **Next gate boundary:** export/import preparation remains stopped. The one smallest correction is only top outer sleeve/armhole geometry within `|X| >= 0.389245 m` and `1.20–1.40 m Z`, preserving Phase 1L.5cm articulation weights, central torso, waist/neckline boundaries, four openings and every non-target asset. No runtime, final-art, Phase 1L exit or readiness claim is made. See [[Development/Reports/Phase 1L5cn Articulated Combined Starter Outfit Offline Visual Acceptance Review]].
 
+### Phase 1L.5co outer sleeve / armhole rounded-cap correction status
+
+- **COMPLETE TARGETED OFFLINE PROOF / NO ACCEPTANCE VERDICT:** exact Phase 1L.5cm custody is retained; derived top is `519C4F12ADB179FDA71E1E11B043798018FF344369CCB1AE5799A7040DEF4C47` and semantic identity is `2384397B3BAB50C3CC01222F8EE9EDE598A430444FC7FEC3C233CA46272CD07A`.
+- **Bounded edit:** `130/155` approved outer sleeve/armhole coordinates change. All other `343` coordinates, every articulation weight and all `48` waist/neckline boundary vertices reproduce exactly. The targeted `21` arm-opening boundary coordinates are explicitly disclosed; `20` change.
+- **Retained contracts:** top/body ratio `1.377059677 ≤ 1.4`; one component/four openings/zero other non-manifold edges; body, shorts, item/material/color, DEC-035 and action unchanged; `21/21` frames intersections `0`, translations `0`, endpoint equality true.
+- **Next gate:** rerun the exact unchanged fail-closed combined review. Export/import preparation remains stopped. See [[Development/Reports/Phase 1L5co Outer Sleeve Armhole Rounded Cap Correction Walk Proof]].
+
 ### Sundale visual human body pose candidate — September 23, 2026
 
 - **Status:** editable offline visual candidate, with native front/rear renders and a fresh cold reopen; the human-realism goal remains active.
