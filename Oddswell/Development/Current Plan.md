@@ -3044,6 +3044,13 @@ The preserved Phase 1L.5aq report identity is `4,027` bytes/SHA `3E14CFABBD0FC4C
 - **Measured gate:** neutral top/body width ratio is `1.399001 ≤ 1.400000`; waist inset ratio is `0.132244 ≥ 0.080000`, but numeric gates do not override the rigid shoulder plates, abrupt sleeve blocks, slab-like profile and uneven hem collapse.
 - **Next gate boundary:** export/import preparation remains stopped. The one smallest correction is top-only shoulder-cap, sleeve and hem articulation while preserving custody, accepted ratio, topology, four openings and all non-target assets. No runtime, final-art, Phase 1L exit or readiness claim is made. See [[Development/Reports/Phase 1L5cl Outer Span Corrected Combined Starter Outfit Offline Visual Acceptance Review]].
 
+### Phase 1L.5cm shoulder-cap / sleeve / hem articulation correction status
+
+- **COMPLETE TARGETED OFFLINE PROOF / NO ACCEPTANCE VERDICT:** exact Phase 1L.5ck custody is retained; derived top is `9ED01AAA3F060F237D2CCADCD5ED7E15F65E864F013DC0BCB51266A31A34FA58` and semantic identity is `6E219986ED018BFF27BB61AD308346C33217795B5C883893806E661D589579B0`.
+- **Bounded edit:** `113` outer cap/sleeve coordinates and `268` normalized shoulder/sleeve/hem weights change. `385` non-target coordinates, `230` non-target weights and every central taper coordinate reproduce exactly.
+- **Retained contracts:** top/body ratio `1.398999964 ≤ 1.4`; one component/four openings/zero other non-manifold edges; body, shorts, item/material/color, DEC-035 and action unchanged; `21/21` frames intersections `0`, translations `0`, endpoint equality true.
+- **Next gate:** rerun the exact unchanged fail-closed combined review. Export/import preparation remains stopped. See [[Development/Reports/Phase 1L5cm Shoulder Cap Sleeve Hem Articulation Correction Walk Proof]].
+
 ### Sundale visual human body pose candidate — September 23, 2026
 
 - **Status:** editable offline visual candidate, with native front/rear renders and a fresh cold reopen; the human-realism goal remains active.
