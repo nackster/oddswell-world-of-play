@@ -3072,6 +3072,13 @@ The preserved Phase 1L.5aq report identity is `4,027` bytes/SHA `3E14CFABBD0FC4C
 - **Measured gate:** neutral top/body width ratio is `1.377059677 ≤ 1.4`; waist inset is `0.132244272 ≥ 0.08`, but numeric gates do not override qualitative failures.
 - **Next gate boundary:** export/import preparation remains stopped. The one smallest correction is only the upper shoulder-yoke-to-cap transition within `0.24 m <= |X| < 0.389245 m`, `1.38 m <= Z <= 1.56 m`, including its normalized spine/upper-arm blend, while preserving central torso, waist, neckline, accepted cap/openings and every non-target asset. See [[Development/Reports/Phase 1L5cp Rounded Cap Combined Starter Outfit Offline Visual Acceptance Review]].
 
+### Phase 1L.5cq yoke-to-cap transition / normalized blend correction status
+
+- **COMPLETE TARGETED OFFLINE PROOF / NO ACCEPTANCE VERDICT:** exact Phase 1L.5co custody is retained; derived top is `EAB37355BDA56874B10BCA2BEE45BD4FDAFAE9F0B7B7826BFDBA85C1BB9807E8` and semantic identity is `D9ABDAF676F2352EA8629EE4FC375A1F5567830AD5D721093669D942CB91F78A`.
+- **Bounded edit:** all `66` in-window coordinates and normalized spine/matching-upper-arm records change. All other `432` coordinate and weight records reproduce exactly; protected taper/cap/opening overlap is `0`, no group is added and every target sum is `1`.
+- **Retained contracts:** width `0.930000007 m` and ratio `1.377059677`; one component/four openings/zero other non-manifold edges; body, shorts, item/material/color, DEC-035 and action unchanged; `21/21` frames intersections `0`, translations `0`, endpoint equality true.
+- **Next gate:** rerun the exact unchanged fail-closed combined review. Export/import preparation remains stopped. See [[Development/Reports/Phase 1L5cq Yoke to Cap Transition and Normalized Blend Correction Walk Proof]].
+
 ### Sundale visual human body pose candidate — September 23, 2026
 
 - **Status:** editable offline visual candidate, with native front/rear renders and a fresh cold reopen; the human-realism goal remains active.

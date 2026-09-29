@@ -1,0 +1,9553 @@
+{
+  "files": {
+    "blend": {
+      "bytes": 13907177,
+      "sha256": "A256E5F7B1B0750623A9B9F9B5085A45850AE1E525B0CD32F07447C791568A1E"
+    },
+    "builder": {
+      "bytes": 18871,
+      "sha256": "82BFD9F7F24F40857B9FB47D926678F2E31D90D5AD08D159693AADA3752127CF"
+    },
+    "provenance": {
+      "bytes": 582,
+      "sha256": "2AD782900A91C90972546A28F7584329EB43E3AF67B50AA6315A86FE63569C3F"
+    },
+    "reviews": {
+      "After_Front.png": {
+        "bytes": 475755,
+        "sha256": "33FD17FD1A3FC8DF4E6A8EFC888B124AA4B9B44283BA67ADDCD159809FF0B0C2"
+      },
+      "After_Profile.png": {
+        "bytes": 474490,
+        "sha256": "1A43404BB5C4C87F702E83E4066A0009A5FBF9CC2CC3B818C0F5CA4C4F2832F5"
+      },
+      "After_Rear.png": {
+        "bytes": 478097,
+        "sha256": "C235759869446145DC3197FAF8F43BE4C66CBECE9647D09C4886BB6FB3C2F81B"
+      },
+      "After_WalkExtremeFront.png": {
+        "bytes": 485745,
+        "sha256": "74FCAC96B2EE845DC6B22694887F2F30A6AE78B69634EC8126D9040B1902DDC4"
+      },
+      "After_WalkExtremeRear.png": {
+        "bytes": 482428,
+        "sha256": "0EA6A6088897CAC14394B74D720DDF2EC1F178E27CE402C8B8D266FBF18F8B19"
+      },
+      "BeforeAfter.html": {
+        "bytes": 1610,
+        "sha256": "5A088E77F963768E6C7CB9A6042BA00A93F469383DC22BDF0EB2877293526605"
+      },
+      "Before_Front.png": {
+        "bytes": 475424,
+        "sha256": "9B5DB761457F598E8C4E2BC57C210A38D50E1836384528C14F0860BC69AC0BD5"
+      },
+      "Before_Profile.png": {
+        "bytes": 474331,
+        "sha256": "DF3C3CF0634AC997E13DC24670F164D92EE76DFBD855A8D6151272CAEDA9CA14"
+      },
+      "Before_Rear.png": {
+        "bytes": 478349,
+        "sha256": "78CD9CEC3E6D8257380FFCEBCD2792FBD38BE3013A3F8A4DBEFDD1D82E7DA9E6"
+      },
+      "Before_WalkExtremeFront.png": {
+        "bytes": 486215,
+        "sha256": "3182394B2DF865502D688B33F51098CB9DF773FBD961C926DC61BA945B22816F"
+      },
+      "Before_WalkExtremeRear.png": {
+        "bytes": 482425,
+        "sha256": "763CF6EC0E838EE703E5ECD7BDF848290EA47194AEA9D8AC66DA4644C30693EE"
+      }
+    }
+  },
+  "phase": "Phase 1L.5cq yoke-to-cap transition and normalized blend correction walk proof",
+  "semantic": {
+    "accepted_mesh_sha256": {
+      "BODY__refined_sundale_derivative_v1": "F340C34B05FC4D0D20F5625E9B2F9174947B691F59420367E8B738BE1CBF03CD",
+      "starter_offwhite_bottom": "E626B69FA039E1E1139ACD203AB6F481CADDC49771ADA7341B8ED3A1D9C82170"
+    },
+    "accepted_phase_1l5co": {
+      "blend": {
+        "bytes": 13907177,
+        "sha256": "7EF2728BF1F091FF5A4DEF57815CCF7159DCE21A19528AA5595E848B07139363"
+      },
+      "identity_sha256": "2384397B3BAB50C3CC01222F8EE9EDE598A430444FC7FEC3C233CA46272CD07A"
+    },
+    "action": {
+      "action_count": 1,
+      "curves": [
+        {
+          "axis": 0,
+          "bone": "root",
+          "channel": "location",
+          "keys": [
+            {
+              "frame": 1.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            },
+            {
+              "frame": 6.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            },
+            {
+              "frame": 11.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            },
+            {
+              "frame": 16.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            },
+            {
+              "frame": 21.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            }
+          ]
+        },
+        {
+          "axis": 1,
+          "bone": "root",
+          "channel": "location",
+          "keys": [
+            {
+              "frame": 1.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            },
+            {
+              "frame": 6.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            },
+            {
+              "frame": 11.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            },
+            {
+              "frame": 16.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            },
+            {
+              "frame": 21.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            }
+          ]
+        },
+        {
+          "axis": 2,
+          "bone": "root",
+          "channel": "location",
+          "keys": [
+            {
+              "frame": 1.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            },
+            {
+              "frame": 6.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            },
+            {
+              "frame": 11.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            },
+            {
+              "frame": 16.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            },
+            {
+              "frame": 21.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            }
+          ]
+        },
+        {
+          "axis": 0,
+          "bone": "spine",
+          "channel": "rotation_euler",
+          "keys": [
+            {
+              "frame": 1.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            },
+            {
+              "frame": 6.0,
+              "interpolation": "LINEAR",
+              "value": 0.052359879
+            },
+            {
+              "frame": 11.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            },
+            {
+              "frame": 16.0,
+              "interpolation": "LINEAR",
+              "value": -0.052359879
+            },
+            {
+              "frame": 21.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            }
+          ]
+        },
+        {
+          "axis": 0,
+          "bone": "thigh.L",
+          "channel": "rotation_euler",
+          "keys": [
+            {
+              "frame": 1.0,
+              "interpolation": "LINEAR",
+              "value": -0.0
+            },
+            {
+              "frame": 6.0,
+              "interpolation": "LINEAR",
+              "value": -0.314159274
+            },
+            {
+              "frame": 11.0,
+              "interpolation": "LINEAR",
+              "value": -0.0
+            },
+            {
+              "frame": 16.0,
+              "interpolation": "LINEAR",
+              "value": 0.314159274
+            },
+            {
+              "frame": 21.0,
+              "interpolation": "LINEAR",
+              "value": -0.0
+            }
+          ]
+        },
+        {
+          "axis": 0,
+          "bone": "thigh.R",
+          "channel": "rotation_euler",
+          "keys": [
+            {
+              "frame": 1.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            },
+            {
+              "frame": 6.0,
+              "interpolation": "LINEAR",
+              "value": 0.314159274
+            },
+            {
+              "frame": 11.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            },
+            {
+              "frame": 16.0,
+              "interpolation": "LINEAR",
+              "value": -0.314159274
+            },
+            {
+              "frame": 21.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            }
+          ]
+        },
+        {
+          "axis": 0,
+          "bone": "upper_arm.L",
+          "channel": "rotation_euler",
+          "keys": [
+            {
+              "frame": 1.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            },
+            {
+              "frame": 6.0,
+              "interpolation": "LINEAR",
+              "value": 0.314159274
+            },
+            {
+              "frame": 11.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            },
+            {
+              "frame": 16.0,
+              "interpolation": "LINEAR",
+              "value": -0.314159274
+            },
+            {
+              "frame": 21.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            }
+          ]
+        },
+        {
+          "axis": 0,
+          "bone": "upper_arm.R",
+          "channel": "rotation_euler",
+          "keys": [
+            {
+              "frame": 1.0,
+              "interpolation": "LINEAR",
+              "value": -0.0
+            },
+            {
+              "frame": 6.0,
+              "interpolation": "LINEAR",
+              "value": -0.314159274
+            },
+            {
+              "frame": 11.0,
+              "interpolation": "LINEAR",
+              "value": -0.0
+            },
+            {
+              "frame": 16.0,
+              "interpolation": "LINEAR",
+              "value": 0.314159274
+            },
+            {
+              "frame": 21.0,
+              "interpolation": "LINEAR",
+              "value": -0.0
+            }
+          ]
+        }
+      ],
+      "cycle_duration_seconds": 0.714285714,
+      "cycles_per_second": 1.4,
+      "fps": 28,
+      "frame_end": 21,
+      "frame_start": 1,
+      "identity_sha256": "7DD9A4E6524BCAC604AEDC755D0464FEC8C8F40BDED1BDE17E87955ED63E1020",
+      "limb_pitch_degrees": 18.0,
+      "loop_end_equality": true,
+      "name": "walk_candidate_v1",
+      "root_translation_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "sample_frames": [
+        1,
+        6,
+        11,
+        16,
+        21
+      ],
+      "spine_sway_degrees": 3.0
+    },
+    "armature": {
+      "bone_count": 12,
+      "hierarchy": [
+        {
+          "head": [
+            0.28,
+            0.0,
+            1.12
+          ],
+          "name": "forearm.L",
+          "parent": "upper_arm.L",
+          "tail": [
+            0.265,
+            0.0,
+            0.78
+          ],
+          "use_deform": true
+        },
+        {
+          "head": [
+            -0.28,
+            0.0,
+            1.12
+          ],
+          "name": "forearm.R",
+          "parent": "upper_arm.R",
+          "tail": [
+            -0.265,
+            0.0,
+            0.78
+          ],
+          "use_deform": true
+        },
+        {
+          "head": [
+            0.0,
+            0.0,
+            1.66
+          ],
+          "name": "head",
+          "parent": "neck",
+          "tail": [
+            0.0,
+            0.0,
+            1.8
+          ],
+          "use_deform": true
+        },
+        {
+          "head": [
+            0.0,
+            0.0,
+            1.45
+          ],
+          "name": "neck",
+          "parent": "spine",
+          "tail": [
+            0.0,
+            0.0,
+            1.66
+          ],
+          "use_deform": true
+        },
+        {
+          "head": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "name": "root",
+          "parent": null,
+          "tail": [
+            0.0,
+            0.0,
+            0.1
+          ],
+          "use_deform": true
+        },
+        {
+          "head": [
+            0.13,
+            0.0,
+            0.53
+          ],
+          "name": "shin.L",
+          "parent": "thigh.L",
+          "tail": [
+            0.13,
+            0.0,
+            0.1
+          ],
+          "use_deform": true
+        },
+        {
+          "head": [
+            -0.13,
+            0.0,
+            0.53
+          ],
+          "name": "shin.R",
+          "parent": "thigh.R",
+          "tail": [
+            -0.13,
+            0.0,
+            0.1
+          ],
+          "use_deform": true
+        },
+        {
+          "head": [
+            0.0,
+            0.0,
+            0.94
+          ],
+          "name": "spine",
+          "parent": "root",
+          "tail": [
+            0.0,
+            0.0,
+            1.45
+          ],
+          "use_deform": true
+        },
+        {
+          "head": [
+            0.155,
+            0.0,
+            0.94
+          ],
+          "name": "thigh.L",
+          "parent": "root",
+          "tail": [
+            0.13,
+            0.0,
+            0.53
+          ],
+          "use_deform": true
+        },
+        {
+          "head": [
+            -0.155,
+            0.0,
+            0.94
+          ],
+          "name": "thigh.R",
+          "parent": "root",
+          "tail": [
+            -0.13,
+            0.0,
+            0.53
+          ],
+          "use_deform": true
+        },
+        {
+          "head": [
+            0.245,
+            0.0,
+            1.45
+          ],
+          "name": "upper_arm.L",
+          "parent": "spine",
+          "tail": [
+            0.28,
+            0.0,
+            1.12
+          ],
+          "use_deform": true
+        },
+        {
+          "head": [
+            -0.245,
+            0.0,
+            1.45
+          ],
+          "name": "upper_arm.R",
+          "parent": "spine",
+          "tail": [
+            -0.28,
+            0.0,
+            1.12
+          ],
+          "use_deform": true
+        }
+      ]
+    },
+    "boundaries": {
+      "action_changed": 0,
+      "body_changed": 0,
+      "bottom_changed": 0,
+      "depth_waist_tapers_changed": 0,
+      "export_import_preparation_stopped": true,
+      "final_acceptance_verdict": null,
+      "materials_changed": 0,
+      "opening_geometry_changed": 0,
+      "outer_caps_changed": 0,
+      "outside_window_coordinates_changed": 0,
+      "outside_window_weights_changed": 0,
+      "readiness_claim": false,
+      "runtime_changed": 0,
+      "skeleton_changed": 0,
+      "topology_changed": 0
+    },
+    "construction": {
+      "excluded": [
+        "outside_window_coordinates_and_weights",
+        "torso_depth_waist_tapers",
+        "waist_neck_openings",
+        "accepted_outer_caps",
+        "topology",
+        "item_material_color",
+        "body",
+        "shorts",
+        "skeleton",
+        "action"
+      ],
+      "method": "bounded_yoke_cap_coordinate_and_normalized_matching_arm_blend"
+    },
+    "correction": {
+      "approved_source_coordinate_window": {
+        "absolute_x_max_exclusive_m": 0.389245,
+        "absolute_x_min_m": 0.24,
+        "z_max_m": 1.56,
+        "z_min_m": 1.38
+      },
+      "body_width_m": 0.675352,
+      "coordinate_changed_vertex_count": 66,
+      "coordinate_changed_vertex_indices": [
+        20,
+        21,
+        22,
+        23,
+        25,
+        26,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        92,
+        93,
+        94,
+        95,
+        97,
+        98,
+        108,
+        109,
+        110,
+        111,
+        112,
+        113,
+        163,
+        164,
+        168,
+        170,
+        190,
+        193,
+        194,
+        195,
+        196,
+        197,
+        198,
+        199,
+        200,
+        201,
+        291,
+        292,
+        296,
+        298,
+        314,
+        317,
+        318,
+        319,
+        320,
+        321,
+        322,
+        323,
+        324,
+        325,
+        364,
+        368,
+        371,
+        372,
+        404,
+        405,
+        406,
+        407,
+        460,
+        461,
+        462,
+        463,
+        486,
+        489
+      ],
+      "derived_protected_coordinate_sha256": "72F6A69828A42C6733940E7ECC1C393D39B74EFFE985D7179EC807FE19781E6A",
+      "derived_protected_weight_sha256": "BA38369BAC437EBFCE7A03A55961D8B4BE214348346E5A383231C30210AEB47D",
+      "derived_target_coordinate_sha256": "0141340706F60B94554B8AE77269D91FC4455758331D29708C09C94E1389CC63",
+      "derived_target_coordinates": [
+        [
+          20,
+          -0.38688001,
+          -0.230246484,
+          1.374963045
+        ],
+        [
+          21,
+          -0.38688001,
+          0.270246476,
+          1.374962926
+        ],
+        [
+          22,
+          -0.38688001,
+          -0.204852194,
+          1.422035694
+        ],
+        [
+          23,
+          -0.386879981,
+          0.24485223,
+          1.422035694
+        ],
+        [
+          25,
+          -0.38688001,
+          -0.18003878,
+          1.470238566
+        ],
+        [
+          26,
+          -0.38688001,
+          0.220038787,
+          1.470238566
+        ],
+        [
+          40,
+          -0.263999999,
+          -0.26332882,
+          1.395683169
+        ],
+        [
+          41,
+          -0.263999999,
+          0.303328812,
+          1.395682931
+        ],
+        [
+          42,
+          -0.263999999,
+          -0.237698153,
+          1.477728248
+        ],
+        [
+          43,
+          -0.263999999,
+          0.277698159,
+          1.477728128
+        ],
+        [
+          44,
+          -0.263999999,
+          -0.214900613,
+          1.541579366
+        ],
+        [
+          45,
+          -0.263999999,
+          0.254900604,
+          1.541579366
+        ],
+        [
+          92,
+          0.263999999,
+          -0.26332882,
+          1.395683169
+        ],
+        [
+          93,
+          0.263999999,
+          0.303328782,
+          1.395682931
+        ],
+        [
+          94,
+          0.263999999,
+          -0.237698123,
+          1.477728128
+        ],
+        [
+          95,
+          0.263999999,
+          0.277698129,
+          1.47772789
+        ],
+        [
+          97,
+          0.263999999,
+          -0.214900613,
+          1.541579366
+        ],
+        [
+          98,
+          0.263999999,
+          0.254900604,
+          1.541579366
+        ],
+        [
+          108,
+          0.38688001,
+          -0.230246484,
+          1.374963045
+        ],
+        [
+          109,
+          0.38688001,
+          0.270246476,
+          1.374962926
+        ],
+        [
+          110,
+          0.38688001,
+          -0.204852179,
+          1.422035813
+        ],
+        [
+          111,
+          0.38688001,
+          0.2448522,
+          1.422035694
+        ],
+        [
+          112,
+          0.38688001,
+          -0.18003878,
+          1.470238566
+        ],
+        [
+          113,
+          0.38688001,
+          0.220038787,
+          1.470238566
+        ],
+        [
+          163,
+          -0.386879981,
+          -0.218348846,
+          1.399892211
+        ],
+        [
+          164,
+          -0.386879981,
+          0.258348823,
+          1.399892092
+        ],
+        [
+          168,
+          -0.386879981,
+          -0.192046806,
+          1.445063829
+        ],
+        [
+          170,
+          -0.38688001,
+          0.232046813,
+          1.44506371
+        ],
+        [
+          190,
+          -0.330000043,
+          -0.246143565,
+          1.384269118
+        ],
+        [
+          193,
+          -0.330000043,
+          0.286143571,
+          1.384269118
+        ],
+        [
+          194,
+          -0.330000043,
+          -0.219128028,
+          1.447365403
+        ],
+        [
+          195,
+          -0.264000028,
+          -0.251014829,
+          1.438786387
+        ],
+        [
+          196,
+          -0.264000028,
+          0.291014791,
+          1.438786268
+        ],
+        [
+          197,
+          -0.330000043,
+          0.259128064,
+          1.447365284
+        ],
+        [
+          198,
+          -0.330000013,
+          -0.194767982,
+          1.502465844
+        ],
+        [
+          199,
+          -0.263999999,
+          -0.225761473,
+          1.511093736
+        ],
+        [
+          200,
+          -0.264000028,
+          0.265761465,
+          1.511093616
+        ],
+        [
+          201,
+          -0.330000013,
+          0.234767988,
+          1.502465844
+        ],
+        [
+          291,
+          0.263999999,
+          -0.251014799,
+          1.438786507
+        ],
+        [
+          292,
+          0.263999999,
+          0.291014791,
+          1.438786268
+        ],
+        [
+          296,
+          0.263999999,
+          -0.225761473,
+          1.511093736
+        ],
+        [
+          298,
+          0.263999999,
+          0.265761465,
+          1.511093616
+        ],
+        [
+          314,
+          0.330000043,
+          -0.246143565,
+          1.384269118
+        ],
+        [
+          317,
+          0.330000043,
+          0.286143571,
+          1.384269118
+        ],
+        [
+          318,
+          0.330000043,
+          -0.219128028,
+          1.447365403
+        ],
+        [
+          319,
+          0.38688001,
+          -0.218348831,
+          1.399892092
+        ],
+        [
+          320,
+          0.38688001,
+          0.258348882,
+          1.399892092
+        ],
+        [
+          321,
+          0.330000043,
+          0.259128034,
+          1.447365284
+        ],
+        [
+          322,
+          0.330000013,
+          -0.194767982,
+          1.502465844
+        ],
+        [
+          323,
+          0.38688001,
+          -0.192046806,
+          1.445063829
+        ],
+        [
+          324,
+          0.38688001,
+          0.232046813,
+          1.44506371
+        ],
+        [
+          325,
+          0.330000013,
+          0.234767988,
+          1.502465844
+        ],
+        [
+          364,
+          -0.38688001,
+          0.020000003,
+          1.470238566
+        ],
+        [
+          368,
+          -0.264000028,
+          0.019999996,
+          1.541579366
+        ],
+        [
+          371,
+          0.263999999,
+          0.019999996,
+          1.541579366
+        ],
+        [
+          372,
+          0.38688001,
+          0.020000001,
+          1.470238566
+        ],
+        [
+          404,
+          -0.330000013,
+          -0.233368203,
+          1.417791724
+        ],
+        [
+          405,
+          -0.330000013,
+          0.27336818,
+          1.417791724
+        ],
+        [
+          406,
+          -0.329999983,
+          -0.206254333,
+          1.47480607
+        ],
+        [
+          407,
+          -0.330000013,
+          0.24625437,
+          1.47480607
+        ],
+        [
+          460,
+          0.330000013,
+          -0.233368233,
+          1.417791724
+        ],
+        [
+          461,
+          0.330000013,
+          0.27336818,
+          1.417791724
+        ],
+        [
+          462,
+          0.329999983,
+          -0.206254333,
+          1.47480607
+        ],
+        [
+          463,
+          0.329999983,
+          0.24625434,
+          1.47480607
+        ],
+        [
+          486,
+          -0.330000013,
+          0.019999998,
+          1.502465725
+        ],
+        [
+          489,
+          0.330000013,
+          0.020000001,
+          1.502465725
+        ]
+      ],
+      "derived_target_weight_sha256": "B1FE3A2957DFBDE92F404B7021F00498FBA4D2C12F78BEF005B043E5317FCEF1",
+      "derived_target_weights": [
+        [
+          20,
+          [
+            [
+              "spine",
+              0.914518356
+            ],
+            [
+              "upper_arm.R",
+              0.085481651
+            ]
+          ]
+        ],
+        [
+          21,
+          [
+            [
+              "spine",
+              0.914518356
+            ],
+            [
+              "upper_arm.R",
+              0.085481651
+            ]
+          ]
+        ],
+        [
+          22,
+          [
+            [
+              "spine",
+              0.912204266
+            ],
+            [
+              "upper_arm.R",
+              0.087795712
+            ]
+          ]
+        ],
+        [
+          23,
+          [
+            [
+              "spine",
+              0.912204266
+            ],
+            [
+              "upper_arm.R",
+              0.087795705
+            ]
+          ]
+        ],
+        [
+          25,
+          [
+            [
+              "spine",
+              0.907787383
+            ],
+            [
+              "upper_arm.R",
+              0.092212602
+            ]
+          ]
+        ],
+        [
+          26,
+          [
+            [
+              "spine",
+              0.907787383
+            ],
+            [
+              "upper_arm.R",
+              0.092212602
+            ]
+          ]
+        ],
+        [
+          40,
+          [
+            [
+              "spine",
+              0.978944957
+            ],
+            [
+              "upper_arm.R",
+              0.021055037
+            ]
+          ]
+        ],
+        [
+          41,
+          [
+            [
+              "spine",
+              0.978944957
+            ],
+            [
+              "upper_arm.R",
+              0.021055037
+            ]
+          ]
+        ],
+        [
+          42,
+          [
+            [
+              "spine",
+              0.977652609
+            ],
+            [
+              "upper_arm.R",
+              0.0223474
+            ]
+          ]
+        ],
+        [
+          43,
+          [
+            [
+              "spine",
+              0.977652609
+            ],
+            [
+              "upper_arm.R",
+              0.022347396
+            ]
+          ]
+        ],
+        [
+          44,
+          [
+            [
+              "spine",
+              0.976720333
+            ],
+            [
+              "upper_arm.R",
+              0.023279641
+            ]
+          ]
+        ],
+        [
+          45,
+          [
+            [
+              "spine",
+              0.976720333
+            ],
+            [
+              "upper_arm.R",
+              0.023279641
+            ]
+          ]
+        ],
+        [
+          92,
+          [
+            [
+              "spine",
+              0.978944957
+            ],
+            [
+              "upper_arm.L",
+              0.021055037
+            ]
+          ]
+        ],
+        [
+          93,
+          [
+            [
+              "spine",
+              0.978944957
+            ],
+            [
+              "upper_arm.L",
+              0.021055037
+            ]
+          ]
+        ],
+        [
+          94,
+          [
+            [
+              "spine",
+              0.977652609
+            ],
+            [
+              "upper_arm.L",
+              0.022347396
+            ]
+          ]
+        ],
+        [
+          95,
+          [
+            [
+              "spine",
+              0.977652609
+            ],
+            [
+              "upper_arm.L",
+              0.022347393
+            ]
+          ]
+        ],
+        [
+          97,
+          [
+            [
+              "spine",
+              0.976720333
+            ],
+            [
+              "upper_arm.L",
+              0.023279641
+            ]
+          ]
+        ],
+        [
+          98,
+          [
+            [
+              "spine",
+              0.976720333
+            ],
+            [
+              "upper_arm.L",
+              0.023279641
+            ]
+          ]
+        ],
+        [
+          108,
+          [
+            [
+              "spine",
+              0.914518356
+            ],
+            [
+              "upper_arm.L",
+              0.085481651
+            ]
+          ]
+        ],
+        [
+          109,
+          [
+            [
+              "spine",
+              0.914518356
+            ],
+            [
+              "upper_arm.L",
+              0.085481651
+            ]
+          ]
+        ],
+        [
+          110,
+          [
+            [
+              "spine",
+              0.912204266
+            ],
+            [
+              "upper_arm.L",
+              0.08779572
+            ]
+          ]
+        ],
+        [
+          111,
+          [
+            [
+              "spine",
+              0.912204266
+            ],
+            [
+              "upper_arm.L",
+              0.087795712
+            ]
+          ]
+        ],
+        [
+          112,
+          [
+            [
+              "spine",
+              0.907787383
+            ],
+            [
+              "upper_arm.L",
+              0.092212602
+            ]
+          ]
+        ],
+        [
+          113,
+          [
+            [
+              "spine",
+              0.907787383
+            ],
+            [
+              "upper_arm.L",
+              0.092212602
+            ]
+          ]
+        ],
+        [
+          163,
+          [
+            [
+              "spine",
+              0.913715363
+            ],
+            [
+              "upper_arm.R",
+              0.086284637
+            ]
+          ]
+        ],
+        [
+          164,
+          [
+            [
+              "spine",
+              0.913715363
+            ],
+            [
+              "upper_arm.R",
+              0.08628463
+            ]
+          ]
+        ],
+        [
+          168,
+          [
+            [
+              "spine",
+              0.910125077
+            ],
+            [
+              "upper_arm.R",
+              0.089874953
+            ]
+          ]
+        ],
+        [
+          170,
+          [
+            [
+              "spine",
+              0.910125077
+            ],
+            [
+              "upper_arm.R",
+              0.089874946
+            ]
+          ]
+        ],
+        [
+          190,
+          [
+            [
+              "spine",
+              0.938507736
+            ],
+            [
+              "upper_arm.R",
+              0.061492246
+            ]
+          ]
+        ],
+        [
+          193,
+          [
+            [
+              "spine",
+              0.938507736
+            ],
+            [
+              "upper_arm.R",
+              0.061492246
+            ]
+          ]
+        ],
+        [
+          194,
+          [
+            [
+              "spine",
+              0.935724795
+            ],
+            [
+              "upper_arm.R",
+              0.064275183
+            ]
+          ]
+        ],
+        [
+          195,
+          [
+            [
+              "spine",
+              0.978396297
+            ],
+            [
+              "upper_arm.R",
+              0.021603681
+            ]
+          ]
+        ],
+        [
+          196,
+          [
+            [
+              "spine",
+              0.978396297
+            ],
+            [
+              "upper_arm.R",
+              0.021603679
+            ]
+          ]
+        ],
+        [
+          197,
+          [
+            [
+              "spine",
+              0.935724795
+            ],
+            [
+              "upper_arm.R",
+              0.064275175
+            ]
+          ]
+        ],
+        [
+          198,
+          [
+            [
+              "spine",
+              0.932560682
+            ],
+            [
+              "upper_arm.R",
+              0.06743931
+            ]
+          ]
+        ],
+        [
+          199,
+          [
+            [
+              "spine",
+              0.97705996
+            ],
+            [
+              "upper_arm.R",
+              0.022940014
+            ]
+          ]
+        ],
+        [
+          200,
+          [
+            [
+              "spine",
+              0.97705996
+            ],
+            [
+              "upper_arm.R",
+              0.022940025
+            ]
+          ]
+        ],
+        [
+          201,
+          [
+            [
+              "spine",
+              0.932560682
+            ],
+            [
+              "upper_arm.R",
+              0.06743931
+            ]
+          ]
+        ],
+        [
+          291,
+          [
+            [
+              "spine",
+              0.978396356
+            ],
+            [
+              "upper_arm.L",
+              0.021603672
+            ]
+          ]
+        ],
+        [
+          292,
+          [
+            [
+              "spine",
+              0.978396356
+            ],
+            [
+              "upper_arm.L",
+              0.021603668
+            ]
+          ]
+        ],
+        [
+          296,
+          [
+            [
+              "spine",
+              0.97705996
+            ],
+            [
+              "upper_arm.L",
+              0.022940014
+            ]
+          ]
+        ],
+        [
+          298,
+          [
+            [
+              "spine",
+              0.97705996
+            ],
+            [
+              "upper_arm.L",
+              0.022940012
+            ]
+          ]
+        ],
+        [
+          314,
+          [
+            [
+              "spine",
+              0.938507736
+            ],
+            [
+              "upper_arm.L",
+              0.061492246
+            ]
+          ]
+        ],
+        [
+          317,
+          [
+            [
+              "spine",
+              0.938507736
+            ],
+            [
+              "upper_arm.L",
+              0.061492246
+            ]
+          ]
+        ],
+        [
+          318,
+          [
+            [
+              "spine",
+              0.935724795
+            ],
+            [
+              "upper_arm.L",
+              0.064275183
+            ]
+          ]
+        ],
+        [
+          319,
+          [
+            [
+              "spine",
+              0.913715363
+            ],
+            [
+              "upper_arm.L",
+              0.08628463
+            ]
+          ]
+        ],
+        [
+          320,
+          [
+            [
+              "spine",
+              0.913715363
+            ],
+            [
+              "upper_arm.L",
+              0.08628463
+            ]
+          ]
+        ],
+        [
+          321,
+          [
+            [
+              "spine",
+              0.935724795
+            ],
+            [
+              "upper_arm.L",
+              0.064275175
+            ]
+          ]
+        ],
+        [
+          322,
+          [
+            [
+              "spine",
+              0.932560682
+            ],
+            [
+              "upper_arm.L",
+              0.06743931
+            ]
+          ]
+        ],
+        [
+          323,
+          [
+            [
+              "spine",
+              0.910125077
+            ],
+            [
+              "upper_arm.L",
+              0.089874953
+            ]
+          ]
+        ],
+        [
+          324,
+          [
+            [
+              "spine",
+              0.910125077
+            ],
+            [
+              "upper_arm.L",
+              0.089874946
+            ]
+          ]
+        ],
+        [
+          325,
+          [
+            [
+              "spine",
+              0.932560682
+            ],
+            [
+              "upper_arm.L",
+              0.06743931
+            ]
+          ]
+        ],
+        [
+          364,
+          [
+            [
+              "spine",
+              0.907787383
+            ],
+            [
+              "upper_arm.R",
+              0.092212602
+            ]
+          ]
+        ],
+        [
+          368,
+          [
+            [
+              "spine",
+              0.976720333
+            ],
+            [
+              "upper_arm.R",
+              0.023279654
+            ]
+          ]
+        ],
+        [
+          371,
+          [
+            [
+              "spine",
+              0.976720333
+            ],
+            [
+              "upper_arm.L",
+              0.023279641
+            ]
+          ]
+        ],
+        [
+          372,
+          [
+            [
+              "spine",
+              0.907787383
+            ],
+            [
+              "upper_arm.L",
+              0.092212602
+            ]
+          ]
+        ],
+        [
+          404,
+          [
+            [
+              "spine",
+              0.937419593
+            ],
+            [
+              "upper_arm.R",
+              0.062580414
+            ]
+          ]
+        ],
+        [
+          405,
+          [
+            [
+              "spine",
+              0.937419593
+            ],
+            [
+              "upper_arm.R",
+              0.062580414
+            ]
+          ]
+        ],
+        [
+          406,
+          [
+            [
+              "spine",
+              0.93399334
+            ],
+            [
+              "upper_arm.R",
+              0.066006653
+            ]
+          ]
+        ],
+        [
+          407,
+          [
+            [
+              "spine",
+              0.93399334
+            ],
+            [
+              "upper_arm.R",
+              0.066006668
+            ]
+          ]
+        ],
+        [
+          460,
+          [
+            [
+              "spine",
+              0.937419593
+            ],
+            [
+              "upper_arm.L",
+              0.062580414
+            ]
+          ]
+        ],
+        [
+          461,
+          [
+            [
+              "spine",
+              0.937419593
+            ],
+            [
+              "upper_arm.L",
+              0.062580414
+            ]
+          ]
+        ],
+        [
+          462,
+          [
+            [
+              "spine",
+              0.93399334
+            ],
+            [
+              "upper_arm.L",
+              0.066006653
+            ]
+          ]
+        ],
+        [
+          463,
+          [
+            [
+              "spine",
+              0.93399334
+            ],
+            [
+              "upper_arm.L",
+              0.066006653
+            ]
+          ]
+        ],
+        [
+          486,
+          [
+            [
+              "spine",
+              0.932560682
+            ],
+            [
+              "upper_arm.R",
+              0.06743931
+            ]
+          ]
+        ],
+        [
+          489,
+          [
+            [
+              "spine",
+              0.932560682
+            ],
+            [
+              "upper_arm.L",
+              0.06743931
+            ]
+          ]
+        ]
+      ],
+      "derived_top_to_body_width_ratio": 1.377059677,
+      "derived_top_width_m": 0.930000007,
+      "maximum_coordinate_displacement_m": 0.029610131,
+      "maximum_influence_delta": 0.014341176,
+      "protected_vertex_count": 432,
+      "protected_vertex_indices": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        24,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        46,
+        47,
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55,
+        56,
+        57,
+        58,
+        59,
+        60,
+        61,
+        62,
+        63,
+        64,
+        65,
+        66,
+        67,
+        68,
+        69,
+        70,
+        71,
+        72,
+        73,
+        74,
+        75,
+        76,
+        77,
+        78,
+        79,
+        80,
+        81,
+        82,
+        83,
+        84,
+        85,
+        86,
+        87,
+        88,
+        89,
+        90,
+        91,
+        96,
+        99,
+        100,
+        101,
+        102,
+        103,
+        104,
+        105,
+        106,
+        107,
+        114,
+        115,
+        116,
+        117,
+        118,
+        119,
+        120,
+        121,
+        122,
+        123,
+        124,
+        125,
+        126,
+        127,
+        128,
+        129,
+        130,
+        131,
+        132,
+        133,
+        134,
+        135,
+        136,
+        137,
+        138,
+        139,
+        140,
+        141,
+        142,
+        143,
+        144,
+        145,
+        146,
+        147,
+        148,
+        149,
+        150,
+        151,
+        152,
+        153,
+        154,
+        155,
+        156,
+        157,
+        158,
+        159,
+        160,
+        161,
+        162,
+        165,
+        166,
+        167,
+        169,
+        171,
+        172,
+        173,
+        174,
+        175,
+        176,
+        177,
+        178,
+        179,
+        180,
+        181,
+        182,
+        183,
+        184,
+        185,
+        186,
+        187,
+        188,
+        189,
+        191,
+        192,
+        202,
+        203,
+        204,
+        205,
+        206,
+        207,
+        208,
+        209,
+        210,
+        211,
+        212,
+        213,
+        214,
+        215,
+        216,
+        217,
+        218,
+        219,
+        220,
+        221,
+        222,
+        223,
+        224,
+        225,
+        226,
+        227,
+        228,
+        229,
+        230,
+        231,
+        232,
+        233,
+        234,
+        235,
+        236,
+        237,
+        238,
+        239,
+        240,
+        241,
+        242,
+        243,
+        244,
+        245,
+        246,
+        247,
+        248,
+        249,
+        250,
+        251,
+        252,
+        253,
+        254,
+        255,
+        256,
+        257,
+        258,
+        259,
+        260,
+        261,
+        262,
+        263,
+        264,
+        265,
+        266,
+        267,
+        268,
+        269,
+        270,
+        271,
+        272,
+        273,
+        274,
+        275,
+        276,
+        277,
+        278,
+        279,
+        280,
+        281,
+        282,
+        283,
+        284,
+        285,
+        286,
+        287,
+        288,
+        289,
+        290,
+        293,
+        294,
+        295,
+        297,
+        299,
+        300,
+        301,
+        302,
+        303,
+        304,
+        305,
+        306,
+        307,
+        308,
+        309,
+        310,
+        311,
+        312,
+        313,
+        315,
+        316,
+        326,
+        327,
+        328,
+        329,
+        330,
+        331,
+        332,
+        333,
+        334,
+        335,
+        336,
+        337,
+        338,
+        339,
+        340,
+        341,
+        342,
+        343,
+        344,
+        345,
+        346,
+        347,
+        348,
+        349,
+        350,
+        351,
+        352,
+        353,
+        354,
+        355,
+        356,
+        357,
+        358,
+        359,
+        360,
+        361,
+        362,
+        363,
+        365,
+        366,
+        367,
+        369,
+        370,
+        373,
+        374,
+        375,
+        376,
+        377,
+        378,
+        379,
+        380,
+        381,
+        382,
+        383,
+        384,
+        385,
+        386,
+        387,
+        388,
+        389,
+        390,
+        391,
+        392,
+        393,
+        394,
+        395,
+        396,
+        397,
+        398,
+        399,
+        400,
+        401,
+        402,
+        403,
+        408,
+        409,
+        410,
+        411,
+        412,
+        413,
+        414,
+        415,
+        416,
+        417,
+        418,
+        419,
+        420,
+        421,
+        422,
+        423,
+        424,
+        425,
+        426,
+        427,
+        428,
+        429,
+        430,
+        431,
+        432,
+        433,
+        434,
+        435,
+        436,
+        437,
+        438,
+        439,
+        440,
+        441,
+        442,
+        443,
+        444,
+        445,
+        446,
+        447,
+        448,
+        449,
+        450,
+        451,
+        452,
+        453,
+        454,
+        455,
+        456,
+        457,
+        458,
+        459,
+        464,
+        465,
+        466,
+        467,
+        468,
+        469,
+        470,
+        471,
+        472,
+        473,
+        474,
+        475,
+        476,
+        477,
+        478,
+        479,
+        480,
+        481,
+        482,
+        483,
+        484,
+        485,
+        487,
+        488,
+        490,
+        491,
+        492,
+        493,
+        494,
+        495,
+        496,
+        497
+      ],
+      "source_protected_coordinate_sha256": "72F6A69828A42C6733940E7ECC1C393D39B74EFFE985D7179EC807FE19781E6A",
+      "source_protected_weight_sha256": "BA38369BAC437EBFCE7A03A55961D8B4BE214348346E5A383231C30210AEB47D",
+      "source_target_coordinate_sha256": "B2301C394B430D82B5C73C84953998B9643C2769C201B56500277F64E6AB69B9",
+      "source_target_coordinates": [
+        [
+          20,
+          -0.38688001,
+          -0.238557667,
+          1.386227608
+        ],
+        [
+          21,
+          -0.38688001,
+          0.278557658,
+          1.386227489
+        ],
+        [
+          22,
+          -0.38688001,
+          -0.215160415,
+          1.438366175
+        ],
+        [
+          23,
+          -0.386879981,
+          0.255160451,
+          1.438366055
+        ],
+        [
+          25,
+          -0.38688001,
+          -0.194208369,
+          1.496238232
+        ],
+        [
+          26,
+          -0.38688001,
+          0.234208375,
+          1.496238232
+        ],
+        [
+          40,
+          -0.263999999,
+          -0.263980567,
+          1.396492958
+        ],
+        [
+          41,
+          -0.263999999,
+          0.303980559,
+          1.39649272
+        ],
+        [
+          42,
+          -0.263999999,
+          -0.238768518,
+          1.479336023
+        ],
+        [
+          43,
+          -0.263999999,
+          0.278768539,
+          1.479335904
+        ],
+        [
+          44,
+          -0.263999999,
+          -0.216191322,
+          1.543762684
+        ],
+        [
+          45,
+          -0.263999999,
+          0.256191313,
+          1.543762684
+        ],
+        [
+          92,
+          0.263999999,
+          -0.263980567,
+          1.396492958
+        ],
+        [
+          93,
+          0.263999999,
+          0.303980529,
+          1.39649272
+        ],
+        [
+          94,
+          0.263999999,
+          -0.238768488,
+          1.479335904
+        ],
+        [
+          95,
+          0.263999999,
+          0.27876851,
+          1.479335666
+        ],
+        [
+          97,
+          0.263999999,
+          -0.216191322,
+          1.543762684
+        ],
+        [
+          98,
+          0.263999999,
+          0.256191313,
+          1.543762684
+        ],
+        [
+          108,
+          0.38688001,
+          -0.238557667,
+          1.386227608
+        ],
+        [
+          109,
+          0.38688001,
+          0.278557658,
+          1.386227489
+        ],
+        [
+          110,
+          0.38688001,
+          -0.215160415,
+          1.438366294
+        ],
+        [
+          111,
+          0.38688001,
+          0.255160421,
+          1.438366175
+        ],
+        [
+          112,
+          0.38688001,
+          -0.194208369,
+          1.496238232
+        ],
+        [
+          113,
+          0.38688001,
+          0.234208375,
+          1.496238232
+        ],
+        [
+          163,
+          -0.386879981,
+          -0.227301404,
+          1.412914634
+        ],
+        [
+          164,
+          -0.386879981,
+          0.267301381,
+          1.412914515
+        ],
+        [
+          168,
+          -0.386879981,
+          -0.204231307,
+          1.465946078
+        ],
+        [
+          170,
+          -0.38688001,
+          0.244231299,
+          1.465945959
+        ],
+        [
+          190,
+          -0.330000043,
+          -0.251924127,
+          1.391741276
+        ],
+        [
+          193,
+          -0.330000043,
+          0.291924149,
+          1.391741276
+        ],
+        [
+          194,
+          -0.330000043,
+          -0.227552146,
+          1.460371971
+        ],
+        [
+          195,
+          -0.264000028,
+          -0.251851231,
+          1.439934969
+        ],
+        [
+          196,
+          -0.264000028,
+          0.291851193,
+          1.43993485
+        ],
+        [
+          197,
+          -0.330000043,
+          0.267552167,
+          1.460371852
+        ],
+        [
+          198,
+          -0.330000013,
+          -0.20572722,
+          1.521764874
+        ],
+        [
+          199,
+          -0.263999999,
+          -0.226991683,
+          1.513067365
+        ],
+        [
+          200,
+          -0.264000028,
+          0.266991675,
+          1.513067245
+        ],
+        [
+          201,
+          -0.330000013,
+          0.245727211,
+          1.521764874
+        ],
+        [
+          291,
+          0.263999999,
+          -0.251851201,
+          1.439935088
+        ],
+        [
+          292,
+          0.263999999,
+          0.291851193,
+          1.43993485
+        ],
+        [
+          296,
+          0.263999999,
+          -0.226991683,
+          1.513067365
+        ],
+        [
+          298,
+          0.263999999,
+          0.266991675,
+          1.513067245
+        ],
+        [
+          314,
+          0.330000043,
+          -0.251924127,
+          1.391741276
+        ],
+        [
+          317,
+          0.330000043,
+          0.291924149,
+          1.391741276
+        ],
+        [
+          318,
+          0.330000043,
+          -0.227552146,
+          1.460371971
+        ],
+        [
+          319,
+          0.38688001,
+          -0.227301389,
+          1.412914515
+        ],
+        [
+          320,
+          0.38688001,
+          0.26730144,
+          1.412914515
+        ],
+        [
+          321,
+          0.330000043,
+          0.267552137,
+          1.460371852
+        ],
+        [
+          322,
+          0.330000013,
+          -0.20572722,
+          1.521764874
+        ],
+        [
+          323,
+          0.38688001,
+          -0.204231307,
+          1.465946078
+        ],
+        [
+          324,
+          0.38688001,
+          0.244231299,
+          1.465945959
+        ],
+        [
+          325,
+          0.330000013,
+          0.245727211,
+          1.521764874
+        ],
+        [
+          364,
+          -0.38688001,
+          0.020000003,
+          1.496238232
+        ],
+        [
+          368,
+          -0.264000028,
+          0.019999996,
+          1.543762684
+        ],
+        [
+          371,
+          0.263999999,
+          0.019999996,
+          1.543762684
+        ],
+        [
+          372,
+          0.38688001,
+          0.020000001,
+          1.496238232
+        ],
+        [
+          404,
+          -0.330000013,
+          -0.24019894,
+          1.427427888
+        ],
+        [
+          405,
+          -0.330000013,
+          0.280198932,
+          1.427427888
+        ],
+        [
+          406,
+          -0.329999983,
+          -0.216167703,
+          1.491255999
+        ],
+        [
+          407,
+          -0.330000013,
+          0.25616774,
+          1.491255999
+        ],
+        [
+          460,
+          0.330000013,
+          -0.24019897,
+          1.427427888
+        ],
+        [
+          461,
+          0.330000013,
+          0.280198932,
+          1.427427888
+        ],
+        [
+          462,
+          0.329999983,
+          -0.216167703,
+          1.491255999
+        ],
+        [
+          463,
+          0.329999983,
+          0.25616771,
+          1.491255999
+        ],
+        [
+          486,
+          -0.330000013,
+          0.019999998,
+          1.521764755
+        ],
+        [
+          489,
+          0.330000013,
+          0.020000001,
+          1.521764755
+        ]
+      ],
+      "source_target_weight_sha256": "3403BAB3296723D1BFE058F5F0B1D3235410FC1745D43D963CD6E859FBD61F48",
+      "source_target_weights": [
+        [
+          20,
+          [
+            [
+              "spine",
+              0.900177181
+            ],
+            [
+              "upper_arm.R",
+              0.099822827
+            ]
+          ]
+        ],
+        [
+          21,
+          [
+            [
+              "spine",
+              0.900177181
+            ],
+            [
+              "upper_arm.R",
+              0.099822827
+            ]
+          ]
+        ],
+        [
+          22,
+          [
+            [
+              "spine",
+              0.900177181
+            ],
+            [
+              "upper_arm.R",
+              0.099822827
+            ]
+          ]
+        ],
+        [
+          23,
+          [
+            [
+              "spine",
+              0.900177181
+            ],
+            [
+              "upper_arm.R",
+              0.099822804
+            ]
+          ]
+        ],
+        [
+          25,
+          [
+            [
+              "spine",
+              0.900177181
+            ],
+            [
+              "upper_arm.R",
+              0.099822827
+            ]
+          ]
+        ],
+        [
+          26,
+          [
+            [
+              "spine",
+              0.900177181
+            ],
+            [
+              "upper_arm.R",
+              0.099822827
+            ]
+          ]
+        ],
+        [
+          40,
+          [
+            [
+              "spine",
+              0.976639986
+            ],
+            [
+              "upper_arm.R",
+              0.023359999
+            ]
+          ]
+        ],
+        [
+          41,
+          [
+            [
+              "spine",
+              0.976639986
+            ],
+            [
+              "upper_arm.R",
+              0.023359999
+            ]
+          ]
+        ],
+        [
+          42,
+          [
+            [
+              "spine",
+              0.976639986
+            ],
+            [
+              "upper_arm.R",
+              0.023359999
+            ]
+          ]
+        ],
+        [
+          43,
+          [
+            [
+              "spine",
+              0.976639986
+            ],
+            [
+              "upper_arm.R",
+              0.023359999
+            ]
+          ]
+        ],
+        [
+          44,
+          [
+            [
+              "spine",
+              0.976639986
+            ],
+            [
+              "upper_arm.R",
+              0.023359999
+            ]
+          ]
+        ],
+        [
+          45,
+          [
+            [
+              "spine",
+              0.976639986
+            ],
+            [
+              "upper_arm.R",
+              0.023359999
+            ]
+          ]
+        ],
+        [
+          92,
+          [
+            [
+              "spine",
+              0.976639986
+            ],
+            [
+              "upper_arm.L",
+              0.023359999
+            ]
+          ]
+        ],
+        [
+          93,
+          [
+            [
+              "spine",
+              0.976639986
+            ],
+            [
+              "upper_arm.L",
+              0.023359999
+            ]
+          ]
+        ],
+        [
+          94,
+          [
+            [
+              "spine",
+              0.976639986
+            ],
+            [
+              "upper_arm.L",
+              0.023359999
+            ]
+          ]
+        ],
+        [
+          95,
+          [
+            [
+              "spine",
+              0.976639986
+            ],
+            [
+              "upper_arm.L",
+              0.023359999
+            ]
+          ]
+        ],
+        [
+          97,
+          [
+            [
+              "spine",
+              0.976639986
+            ],
+            [
+              "upper_arm.L",
+              0.023359999
+            ]
+          ]
+        ],
+        [
+          98,
+          [
+            [
+              "spine",
+              0.976639986
+            ],
+            [
+              "upper_arm.L",
+              0.023359999
+            ]
+          ]
+        ],
+        [
+          108,
+          [
+            [
+              "spine",
+              0.900177181
+            ],
+            [
+              "upper_arm.L",
+              0.099822827
+            ]
+          ]
+        ],
+        [
+          109,
+          [
+            [
+              "spine",
+              0.900177181
+            ],
+            [
+              "upper_arm.L",
+              0.099822827
+            ]
+          ]
+        ],
+        [
+          110,
+          [
+            [
+              "spine",
+              0.900177181
+            ],
+            [
+              "upper_arm.L",
+              0.099822827
+            ]
+          ]
+        ],
+        [
+          111,
+          [
+            [
+              "spine",
+              0.900177181
+            ],
+            [
+              "upper_arm.L",
+              0.099822827
+            ]
+          ]
+        ],
+        [
+          112,
+          [
+            [
+              "spine",
+              0.900177181
+            ],
+            [
+              "upper_arm.L",
+              0.099822827
+            ]
+          ]
+        ],
+        [
+          113,
+          [
+            [
+              "spine",
+              0.900177181
+            ],
+            [
+              "upper_arm.L",
+              0.099822827
+            ]
+          ]
+        ],
+        [
+          163,
+          [
+            [
+              "spine",
+              0.900177181
+            ],
+            [
+              "upper_arm.R",
+              0.099822804
+            ]
+          ]
+        ],
+        [
+          164,
+          [
+            [
+              "spine",
+              0.900177181
+            ],
+            [
+              "upper_arm.R",
+              0.099822804
+            ]
+          ]
+        ],
+        [
+          168,
+          [
+            [
+              "spine",
+              0.900177181
+            ],
+            [
+              "upper_arm.R",
+              0.099822804
+            ]
+          ]
+        ],
+        [
+          170,
+          [
+            [
+              "spine",
+              0.900177181
+            ],
+            [
+              "upper_arm.R",
+              0.099822827
+            ]
+          ]
+        ],
+        [
+          190,
+          [
+            [
+              "spine",
+              0.942031205
+            ],
+            [
+              "upper_arm.R",
+              0.05796878
+            ]
+          ]
+        ],
+        [
+          193,
+          [
+            [
+              "spine",
+              0.942031205
+            ],
+            [
+              "upper_arm.R",
+              0.05796878
+            ]
+          ]
+        ],
+        [
+          194,
+          [
+            [
+              "spine",
+              0.942031205
+            ],
+            [
+              "upper_arm.R",
+              0.05796878
+            ]
+          ]
+        ],
+        [
+          195,
+          [
+            [
+              "spine",
+              0.976639986
+            ],
+            [
+              "upper_arm.R",
+              0.023360008
+            ]
+          ]
+        ],
+        [
+          196,
+          [
+            [
+              "spine",
+              0.976639986
+            ],
+            [
+              "upper_arm.R",
+              0.023360008
+            ]
+          ]
+        ],
+        [
+          197,
+          [
+            [
+              "spine",
+              0.942031205
+            ],
+            [
+              "upper_arm.R",
+              0.05796878
+            ]
+          ]
+        ],
+        [
+          198,
+          [
+            [
+              "spine",
+              0.942031264
+            ],
+            [
+              "upper_arm.R",
+              0.057968758
+            ]
+          ]
+        ],
+        [
+          199,
+          [
+            [
+              "spine",
+              0.976639986
+            ],
+            [
+              "upper_arm.R",
+              0.023359999
+            ]
+          ]
+        ],
+        [
+          200,
+          [
+            [
+              "spine",
+              0.976639986
+            ],
+            [
+              "upper_arm.R",
+              0.023360008
+            ]
+          ]
+        ],
+        [
+          201,
+          [
+            [
+              "spine",
+              0.942031264
+            ],
+            [
+              "upper_arm.R",
+              0.057968758
+            ]
+          ]
+        ],
+        [
+          291,
+          [
+            [
+              "spine",
+              0.976639986
+            ],
+            [
+              "upper_arm.L",
+              0.023359999
+            ]
+          ]
+        ],
+        [
+          292,
+          [
+            [
+              "spine",
+              0.976639986
+            ],
+            [
+              "upper_arm.L",
+              0.023359999
+            ]
+          ]
+        ],
+        [
+          296,
+          [
+            [
+              "spine",
+              0.976639986
+            ],
+            [
+              "upper_arm.L",
+              0.023359999
+            ]
+          ]
+        ],
+        [
+          298,
+          [
+            [
+              "spine",
+              0.976639986
+            ],
+            [
+              "upper_arm.L",
+              0.023359999
+            ]
+          ]
+        ],
+        [
+          314,
+          [
+            [
+              "spine",
+              0.942031205
+            ],
+            [
+              "upper_arm.L",
+              0.05796878
+            ]
+          ]
+        ],
+        [
+          317,
+          [
+            [
+              "spine",
+              0.942031205
+            ],
+            [
+              "upper_arm.L",
+              0.05796878
+            ]
+          ]
+        ],
+        [
+          318,
+          [
+            [
+              "spine",
+              0.942031205
+            ],
+            [
+              "upper_arm.L",
+              0.05796878
+            ]
+          ]
+        ],
+        [
+          319,
+          [
+            [
+              "spine",
+              0.900177181
+            ],
+            [
+              "upper_arm.L",
+              0.099822827
+            ]
+          ]
+        ],
+        [
+          320,
+          [
+            [
+              "spine",
+              0.900177181
+            ],
+            [
+              "upper_arm.L",
+              0.099822827
+            ]
+          ]
+        ],
+        [
+          321,
+          [
+            [
+              "spine",
+              0.942031205
+            ],
+            [
+              "upper_arm.L",
+              0.05796878
+            ]
+          ]
+        ],
+        [
+          322,
+          [
+            [
+              "spine",
+              0.942031264
+            ],
+            [
+              "upper_arm.L",
+              0.057968758
+            ]
+          ]
+        ],
+        [
+          323,
+          [
+            [
+              "spine",
+              0.900177181
+            ],
+            [
+              "upper_arm.L",
+              0.099822827
+            ]
+          ]
+        ],
+        [
+          324,
+          [
+            [
+              "spine",
+              0.900177181
+            ],
+            [
+              "upper_arm.L",
+              0.099822827
+            ]
+          ]
+        ],
+        [
+          325,
+          [
+            [
+              "spine",
+              0.942031264
+            ],
+            [
+              "upper_arm.L",
+              0.057968758
+            ]
+          ]
+        ],
+        [
+          364,
+          [
+            [
+              "spine",
+              0.900177181
+            ],
+            [
+              "upper_arm.R",
+              0.099822827
+            ]
+          ]
+        ],
+        [
+          368,
+          [
+            [
+              "spine",
+              0.976639986
+            ],
+            [
+              "upper_arm.R",
+              0.023360008
+            ]
+          ]
+        ],
+        [
+          371,
+          [
+            [
+              "spine",
+              0.976639986
+            ],
+            [
+              "upper_arm.L",
+              0.023359999
+            ]
+          ]
+        ],
+        [
+          372,
+          [
+            [
+              "spine",
+              0.900177181
+            ],
+            [
+              "upper_arm.L",
+              0.099822827
+            ]
+          ]
+        ],
+        [
+          404,
+          [
+            [
+              "spine",
+              0.942031264
+            ],
+            [
+              "upper_arm.R",
+              0.057968758
+            ]
+          ]
+        ],
+        [
+          405,
+          [
+            [
+              "spine",
+              0.942031264
+            ],
+            [
+              "upper_arm.R",
+              0.057968758
+            ]
+          ]
+        ],
+        [
+          406,
+          [
+            [
+              "spine",
+              0.942031264
+            ],
+            [
+              "upper_arm.R",
+              0.057968739
+            ]
+          ]
+        ],
+        [
+          407,
+          [
+            [
+              "spine",
+              0.942031264
+            ],
+            [
+              "upper_arm.R",
+              0.057968758
+            ]
+          ]
+        ],
+        [
+          460,
+          [
+            [
+              "spine",
+              0.942031264
+            ],
+            [
+              "upper_arm.L",
+              0.057968758
+            ]
+          ]
+        ],
+        [
+          461,
+          [
+            [
+              "spine",
+              0.942031264
+            ],
+            [
+              "upper_arm.L",
+              0.057968758
+            ]
+          ]
+        ],
+        [
+          462,
+          [
+            [
+              "spine",
+              0.942031264
+            ],
+            [
+              "upper_arm.L",
+              0.057968739
+            ]
+          ]
+        ],
+        [
+          463,
+          [
+            [
+              "spine",
+              0.942031264
+            ],
+            [
+              "upper_arm.L",
+              0.057968739
+            ]
+          ]
+        ],
+        [
+          486,
+          [
+            [
+              "spine",
+              0.942031264
+            ],
+            [
+              "upper_arm.R",
+              0.057968758
+            ]
+          ]
+        ],
+        [
+          489,
+          [
+            [
+              "spine",
+              0.942031264
+            ],
+            [
+              "upper_arm.L",
+              0.057968758
+            ]
+          ]
+        ]
+      ],
+      "source_top_width_m": 0.930000007,
+      "target_depth_taper_overlap_count": 0,
+      "target_opening_boundary_overlap_count": 0,
+      "target_outer_cap_overlap_count": 0,
+      "target_protected_overlap_count": 0,
+      "target_vertex_count": 66,
+      "target_vertex_indices": [
+        20,
+        21,
+        22,
+        23,
+        25,
+        26,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        92,
+        93,
+        94,
+        95,
+        97,
+        98,
+        108,
+        109,
+        110,
+        111,
+        112,
+        113,
+        163,
+        164,
+        168,
+        170,
+        190,
+        193,
+        194,
+        195,
+        196,
+        197,
+        198,
+        199,
+        200,
+        201,
+        291,
+        292,
+        296,
+        298,
+        314,
+        317,
+        318,
+        319,
+        320,
+        321,
+        322,
+        323,
+        324,
+        325,
+        364,
+        368,
+        371,
+        372,
+        404,
+        405,
+        406,
+        407,
+        460,
+        461,
+        462,
+        463,
+        486,
+        489
+      ],
+      "target_waist_taper_overlap_count": 0,
+      "target_weight_sum": 1.0,
+      "vertex_groups_added": 0,
+      "weight_changed_vertex_count": 66,
+      "weight_changed_vertex_indices": [
+        20,
+        21,
+        22,
+        23,
+        25,
+        26,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        92,
+        93,
+        94,
+        95,
+        97,
+        98,
+        108,
+        109,
+        110,
+        111,
+        112,
+        113,
+        163,
+        164,
+        168,
+        170,
+        190,
+        193,
+        194,
+        195,
+        196,
+        197,
+        198,
+        199,
+        200,
+        201,
+        291,
+        292,
+        296,
+        298,
+        314,
+        317,
+        318,
+        319,
+        320,
+        321,
+        322,
+        323,
+        324,
+        325,
+        364,
+        368,
+        371,
+        372,
+        404,
+        405,
+        406,
+        407,
+        460,
+        461,
+        462,
+        463,
+        486,
+        489
+      ]
+    },
+    "deformation": {
+      "continuous_triangle_distance": false,
+      "frame_count": 21,
+      "frames": [
+        {
+          "armature_translation_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "bounds_m": {
+            "BODY__refined_sundale_derivative_v1": {
+              "max": [
+                0.337676,
+                0.294926,
+                1.8
+              ],
+              "min": [
+                -0.337676,
+                -0.294926,
+                0.0
+              ]
+            },
+            "starter_offwhite_bottom": {
+              "max": [
+                0.217571,
+                0.268441,
+                0.91
+              ],
+              "min": [
+                -0.217571,
+                -0.188441,
+                0.66
+              ]
+            },
+            "starter_offwhite_top": {
+              "max": [
+                0.465,
+                0.329525,
+                1.56
+              ],
+              "min": [
+                -0.465,
+                -0.289525,
+                1.0
+              ]
+            }
+          },
+          "frame": 1,
+          "intersections": {
+            "body_bottom": 0,
+            "body_top": 0,
+            "top_bottom": 0
+          },
+          "root_bone_translation_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "time_seconds": 0.0,
+          "vertex_sampled_clearance": {
+            "starter_offwhite_bottom": {
+              "body_to_garment_m": 0.024369193,
+              "garment_to_body_m": 0.024378324,
+              "vertex_sampled_min_m": 0.024369193
+            },
+            "starter_offwhite_top": {
+              "body_to_garment_m": 0.039794017,
+              "garment_to_body_m": 0.053740367,
+              "vertex_sampled_min_m": 0.039794017
+            }
+          }
+        },
+        {
+          "armature_translation_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "bounds_m": {
+            "BODY__refined_sundale_derivative_v1": {
+              "max": [
+                0.339751,
+                0.260432,
+                1.8
+              ],
+              "min": [
+                -0.335461,
+                -0.240132,
+                -0.008645
+              ]
+            },
+            "starter_offwhite_bottom": {
+              "max": [
+                0.218075,
+                0.258993,
+                0.91
+              ],
+              "min": [
+                -0.216513,
+                -0.179071,
+                0.643979
+              ]
+            },
+            "starter_offwhite_top": {
+              "max": [
+                0.465384,
+                0.348215,
+                1.56
+              ],
+              "min": [
+                -0.465635,
+                -0.308273,
+                0.998152
+              ]
+            }
+          },
+          "frame": 2,
+          "intersections": {
+            "body_bottom": 0,
+            "body_top": 0,
+            "top_bottom": 0
+          },
+          "root_bone_translation_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "time_seconds": 0.035714286,
+          "vertex_sampled_clearance": {
+            "starter_offwhite_bottom": {
+              "body_to_garment_m": 0.018496821,
+              "garment_to_body_m": 0.019780062,
+              "vertex_sampled_min_m": 0.018496821
+            },
+            "starter_offwhite_top": {
+              "body_to_garment_m": 0.039794035,
+              "garment_to_body_m": 0.053740401,
+              "vertex_sampled_min_m": 0.039794035
+            }
+          }
+        },
+        {
+          "armature_translation_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "bounds_m": {
+            "BODY__refined_sundale_derivative_v1": {
+              "max": [
+                0.341677,
+                0.252447,
+                1.8
+              ],
+              "min": [
+                -0.333114,
+                -0.184378,
+                -0.013989
+              ]
+            },
+            "starter_offwhite_bottom": {
+              "max": [
+                0.218692,
+                0.258414,
+                0.91
+              ],
+              "min": [
+                -0.215494,
+                -0.178754,
+                0.629103
+              ]
+            },
+            "starter_offwhite_top": {
+              "max": [
+                0.46726,
+                0.367908,
+                1.56
+              ],
+              "min": [
+                -0.46608,
+                -0.328142,
+                0.996487
+              ]
+            }
+          },
+          "frame": 3,
+          "intersections": {
+            "body_bottom": 0,
+            "body_top": 0,
+            "top_bottom": 0
+          },
+          "root_bone_translation_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "time_seconds": 0.071428571,
+          "vertex_sampled_clearance": {
+            "starter_offwhite_bottom": {
+              "body_to_garment_m": 0.022336131,
+              "garment_to_body_m": 0.022325311,
+              "vertex_sampled_min_m": 0.022325311
+            },
+            "starter_offwhite_top": {
+              "body_to_garment_m": 0.039794039,
+              "garment_to_body_m": 0.053740386,
+              "vertex_sampled_min_m": 0.039794039
+            }
+          }
+        },
+        {
+          "armature_translation_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "bounds_m": {
+            "BODY__refined_sundale_derivative_v1": {
+              "max": [
+                0.343446,
+                0.252447,
+                1.8
+              ],
+              "min": [
+                -0.330644,
+                -0.198128,
+                -0.020337
+              ]
+            },
+            "starter_offwhite_bottom": {
+              "max": [
+                0.219405,
+                0.260672,
+                0.91
+              ],
+              "min": [
+                -0.214517,
+                -0.181435,
+                0.615431
+              ]
+            },
+            "starter_offwhite_top": {
+              "max": [
+                0.469099,
+                0.386183,
+                1.56
+              ],
+              "min": [
+                -0.466332,
+                -0.346708,
+                0.995012
+              ]
+            }
+          },
+          "frame": 4,
+          "intersections": {
+            "body_bottom": 0,
+            "body_top": 0,
+            "top_bottom": 0
+          },
+          "root_bone_translation_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "time_seconds": 0.107142857,
+          "vertex_sampled_clearance": {
+            "starter_offwhite_bottom": {
+              "body_to_garment_m": 0.030784516,
+              "garment_to_body_m": 0.030773994,
+              "vertex_sampled_min_m": 0.030773994
+            },
+            "starter_offwhite_top": {
+              "body_to_garment_m": 0.039793994,
+              "garment_to_body_m": 0.053740375,
+              "vertex_sampled_min_m": 0.039793994
+            }
+          }
+        },
+        {
+          "armature_translation_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "bounds_m": {
+            "BODY__refined_sundale_derivative_v1": {
+              "max": [
+                0.345052,
+                0.252447,
+                1.8
+              ],
+              "min": [
+                -0.328062,
+                -0.226034,
+                -0.022912
+              ]
+            },
+            "starter_offwhite_bottom": {
+              "max": [
+                0.220211,
+                0.263242,
+                0.91
+              ],
+              "min": [
+                -0.213585,
+                -0.18452,
+                0.603018
+              ]
+            },
+            "starter_offwhite_top": {
+              "max": [
+                0.470893,
+                0.402969,
+                1.56
+              ],
+              "min": [
+                -0.46639,
+                -0.363899,
+                0.993733
+              ]
+            }
+          },
+          "frame": 5,
+          "intersections": {
+            "body_bottom": 0,
+            "body_top": 0,
+            "top_bottom": 0
+          },
+          "root_bone_translation_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "time_seconds": 0.142857143,
+          "vertex_sampled_clearance": {
+            "starter_offwhite_bottom": {
+              "body_to_garment_m": 0.028289523,
+              "garment_to_body_m": 0.028375559,
+              "vertex_sampled_min_m": 0.028289523
+            },
+            "starter_offwhite_top": {
+              "body_to_garment_m": 0.039793987,
+              "garment_to_body_m": 0.05169867,
+              "vertex_sampled_min_m": 0.039793987
+            }
+          }
+        },
+        {
+          "armature_translation_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "bounds_m": {
+            "BODY__refined_sundale_derivative_v1": {
+              "max": [
+                0.346488,
+                0.262138,
+                1.8
+              ],
+              "min": [
+                -0.325376,
+                -0.253019,
+                -0.021706
+              ]
+            },
+            "starter_offwhite_bottom": {
+              "max": [
+                0.221107,
+                0.265663,
+                0.91
+              ],
+              "min": [
+                -0.212719,
+                -0.187652,
+                0.59191
+              ]
+            },
+            "starter_offwhite_top": {
+              "max": [
+                0.472634,
+                0.418198,
+                1.56
+              ],
+              "min": [
+                -0.466255,
+                -0.379646,
+                0.992654
+              ]
+            }
+          },
+          "frame": 6,
+          "intersections": {
+            "body_bottom": 0,
+            "body_top": 0,
+            "top_bottom": 0
+          },
+          "root_bone_translation_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "time_seconds": 0.178571429,
+          "vertex_sampled_clearance": {
+            "starter_offwhite_bottom": {
+              "body_to_garment_m": 0.018486369,
+              "garment_to_body_m": 0.01850754,
+              "vertex_sampled_min_m": 0.018486369
+            },
+            "starter_offwhite_top": {
+              "body_to_garment_m": 0.022626763,
+              "garment_to_body_m": 0.029329021,
+              "vertex_sampled_min_m": 0.022626763
+            }
+          }
+        },
+        {
+          "armature_translation_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "bounds_m": {
+            "BODY__refined_sundale_derivative_v1": {
+              "max": [
+                0.345052,
+                0.252447,
+                1.8
+              ],
+              "min": [
+                -0.328062,
+                -0.226034,
+                -0.022912
+              ]
+            },
+            "starter_offwhite_bottom": {
+              "max": [
+                0.220211,
+                0.263242,
+                0.91
+              ],
+              "min": [
+                -0.213585,
+                -0.18452,
+                0.603018
+              ]
+            },
+            "starter_offwhite_top": {
+              "max": [
+                0.470893,
+                0.402969,
+                1.56
+              ],
+              "min": [
+                -0.46639,
+                -0.363899,
+                0.993733
+              ]
+            }
+          },
+          "frame": 7,
+          "intersections": {
+            "body_bottom": 0,
+            "body_top": 0,
+            "top_bottom": 0
+          },
+          "root_bone_translation_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "time_seconds": 0.214285714,
+          "vertex_sampled_clearance": {
+            "starter_offwhite_bottom": {
+              "body_to_garment_m": 0.028289523,
+              "garment_to_body_m": 0.028375559,
+              "vertex_sampled_min_m": 0.028289523
+            },
+            "starter_offwhite_top": {
+              "body_to_garment_m": 0.039793987,
+              "garment_to_body_m": 0.05169867,
+              "vertex_sampled_min_m": 0.039793987
+            }
+          }
+        },
+        {
+          "armature_translation_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "bounds_m": {
+            "BODY__refined_sundale_derivative_v1": {
+              "max": [
+                0.343446,
+                0.252447,
+                1.8
+              ],
+              "min": [
+                -0.330644,
+                -0.198128,
+                -0.020337
+              ]
+            },
+            "starter_offwhite_bottom": {
+              "max": [
+                0.219405,
+                0.260672,
+                0.91
+              ],
+              "min": [
+                -0.214517,
+                -0.181435,
+                0.615431
+              ]
+            },
+            "starter_offwhite_top": {
+              "max": [
+                0.469099,
+                0.386183,
+                1.56
+              ],
+              "min": [
+                -0.466332,
+                -0.346708,
+                0.995012
+              ]
+            }
+          },
+          "frame": 8,
+          "intersections": {
+            "body_bottom": 0,
+            "body_top": 0,
+            "top_bottom": 0
+          },
+          "root_bone_translation_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "time_seconds": 0.25,
+          "vertex_sampled_clearance": {
+            "starter_offwhite_bottom": {
+              "body_to_garment_m": 0.030784516,
+              "garment_to_body_m": 0.030773994,
+              "vertex_sampled_min_m": 0.030773994
+            },
+            "starter_offwhite_top": {
+              "body_to_garment_m": 0.039793994,
+              "garment_to_body_m": 0.053740375,
+              "vertex_sampled_min_m": 0.039793994
+            }
+          }
+        },
+        {
+          "armature_translation_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "bounds_m": {
+            "BODY__refined_sundale_derivative_v1": {
+              "max": [
+                0.341677,
+                0.252447,
+                1.8
+              ],
+              "min": [
+                -0.333114,
+                -0.184378,
+                -0.013989
+              ]
+            },
+            "starter_offwhite_bottom": {
+              "max": [
+                0.218692,
+                0.258414,
+                0.91
+              ],
+              "min": [
+                -0.215494,
+                -0.178754,
+                0.629103
+              ]
+            },
+            "starter_offwhite_top": {
+              "max": [
+                0.46726,
+                0.367908,
+                1.56
+              ],
+              "min": [
+                -0.46608,
+                -0.328142,
+                0.996487
+              ]
+            }
+          },
+          "frame": 9,
+          "intersections": {
+            "body_bottom": 0,
+            "body_top": 0,
+            "top_bottom": 0
+          },
+          "root_bone_translation_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "time_seconds": 0.285714286,
+          "vertex_sampled_clearance": {
+            "starter_offwhite_bottom": {
+              "body_to_garment_m": 0.022336131,
+              "garment_to_body_m": 0.022325311,
+              "vertex_sampled_min_m": 0.022325311
+            },
+            "starter_offwhite_top": {
+              "body_to_garment_m": 0.039794039,
+              "garment_to_body_m": 0.053740386,
+              "vertex_sampled_min_m": 0.039794039
+            }
+          }
+        },
+        {
+          "armature_translation_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "bounds_m": {
+            "BODY__refined_sundale_derivative_v1": {
+              "max": [
+                0.339751,
+                0.260432,
+                1.8
+              ],
+              "min": [
+                -0.335461,
+                -0.240132,
+                -0.008645
+              ]
+            },
+            "starter_offwhite_bottom": {
+              "max": [
+                0.218075,
+                0.258993,
+                0.91
+              ],
+              "min": [
+                -0.216513,
+                -0.179071,
+                0.643979
+              ]
+            },
+            "starter_offwhite_top": {
+              "max": [
+                0.465384,
+                0.348215,
+                1.56
+              ],
+              "min": [
+                -0.465635,
+                -0.308273,
+                0.998152
+              ]
+            }
+          },
+          "frame": 10,
+          "intersections": {
+            "body_bottom": 0,
+            "body_top": 0,
+            "top_bottom": 0
+          },
+          "root_bone_translation_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "time_seconds": 0.321428571,
+          "vertex_sampled_clearance": {
+            "starter_offwhite_bottom": {
+              "body_to_garment_m": 0.018496815,
+              "garment_to_body_m": 0.019780062,
+              "vertex_sampled_min_m": 0.018496815
+            },
+            "starter_offwhite_top": {
+              "body_to_garment_m": 0.039794009,
+              "garment_to_body_m": 0.053740405,
+              "vertex_sampled_min_m": 0.039794009
+            }
+          }
+        },
+        {
+          "armature_translation_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "bounds_m": {
+            "BODY__refined_sundale_derivative_v1": {
+              "max": [
+                0.337676,
+                0.294926,
+                1.8
+              ],
+              "min": [
+                -0.337676,
+                -0.294926,
+                0.0
+              ]
+            },
+            "starter_offwhite_bottom": {
+              "max": [
+                0.217571,
+                0.268441,
+                0.91
+              ],
+              "min": [
+                -0.217571,
+                -0.188441,
+                0.66
+              ]
+            },
+            "starter_offwhite_top": {
+              "max": [
+                0.465,
+                0.329525,
+                1.56
+              ],
+              "min": [
+                -0.465,
+                -0.289525,
+                1.0
+              ]
+            }
+          },
+          "frame": 11,
+          "intersections": {
+            "body_bottom": 0,
+            "body_top": 0,
+            "top_bottom": 0
+          },
+          "root_bone_translation_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "time_seconds": 0.357142857,
+          "vertex_sampled_clearance": {
+            "starter_offwhite_bottom": {
+              "body_to_garment_m": 0.024369193,
+              "garment_to_body_m": 0.024378324,
+              "vertex_sampled_min_m": 0.024369193
+            },
+            "starter_offwhite_top": {
+              "body_to_garment_m": 0.039794017,
+              "garment_to_body_m": 0.053740367,
+              "vertex_sampled_min_m": 0.039794017
+            }
+          }
+        },
+        {
+          "armature_translation_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "bounds_m": {
+            "BODY__refined_sundale_derivative_v1": {
+              "max": [
+                0.335461,
+                0.328264,
+                1.8
+              ],
+              "min": [
+                -0.339751,
+                -0.348543,
+                0.012339
+              ]
+            },
+            "starter_offwhite_bottom": {
+              "max": [
+                0.217341,
+                0.285138,
+                0.91
+              ],
+              "min": [
+                -0.218946,
+                -0.205293,
+                0.658722
+              ]
+            },
+            "starter_offwhite_top": {
+              "max": [
+                0.464874,
+                0.348215,
+                1.56
+              ],
+              "min": [
+                -0.467458,
+                -0.308273,
+                0.99859
+              ]
+            }
+          },
+          "frame": 12,
+          "intersections": {
+            "body_bottom": 0,
+            "body_top": 0,
+            "top_bottom": 0
+          },
+          "root_bone_translation_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "time_seconds": 0.392857143,
+          "vertex_sampled_clearance": {
+            "starter_offwhite_bottom": {
+              "body_to_garment_m": 0.025598252,
+              "garment_to_body_m": 0.025927655,
+              "vertex_sampled_min_m": 0.025598252
+            },
+            "starter_offwhite_top": {
+              "body_to_garment_m": 0.039793987,
+              "garment_to_body_m": 0.053740337,
+              "vertex_sampled_min_m": 0.039793987
+            }
+          }
+        },
+        {
+          "armature_translation_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "bounds_m": {
+            "BODY__refined_sundale_derivative_v1": {
+              "max": [
+                0.333114,
+                0.364212,
+                1.8
+              ],
+              "min": [
+                -0.341677,
+                -0.400773,
+                0.028323
+              ]
+            },
+            "starter_offwhite_bottom": {
+              "max": [
+                0.217196,
+                0.300792,
+                0.91
+              ],
+              "min": [
+                -0.220374,
+                -0.221412,
+                0.658534
+              ]
+            },
+            "starter_offwhite_top": {
+              "max": [
+                0.464735,
+                0.367908,
+                1.56
+              ],
+              "min": [
+                -0.469917,
+                -0.328141,
+                0.997364
+              ]
+            }
+          },
+          "frame": 13,
+          "intersections": {
+            "body_bottom": 0,
+            "body_top": 0,
+            "top_bottom": 0
+          },
+          "root_bone_translation_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "time_seconds": 0.428571429,
+          "vertex_sampled_clearance": {
+            "starter_offwhite_bottom": {
+              "body_to_garment_m": 0.034628052,
+              "garment_to_body_m": 0.035265692,
+              "vertex_sampled_min_m": 0.034628052
+            },
+            "starter_offwhite_top": {
+              "body_to_garment_m": 0.039793968,
+              "garment_to_body_m": 0.053740349,
+              "vertex_sampled_min_m": 0.039793968
+            }
+          }
+        },
+        {
+          "armature_translation_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "bounds_m": {
+            "BODY__refined_sundale_derivative_v1": {
+              "max": [
+                0.330644,
+                0.419283,
+                1.8
+              ],
+              "min": [
+                -0.343446,
+                -0.451409,
+                0.047889
+              ]
+            },
+            "starter_offwhite_bottom": {
+              "max": [
+                0.217136,
+                0.315281,
+                0.91
+              ],
+              "min": [
+                -0.221834,
+                -0.236675,
+                0.659437
+              ]
+            },
+            "starter_offwhite_top": {
+              "max": [
+                0.464586,
+                0.386183,
+                1.56
+              ],
+              "min": [
+                -0.472367,
+                -0.346708,
+                0.996327
+              ]
+            }
+          },
+          "frame": 14,
+          "intersections": {
+            "body_bottom": 0,
+            "body_top": 0,
+            "top_bottom": 0
+          },
+          "root_bone_translation_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "time_seconds": 0.464285714,
+          "vertex_sampled_clearance": {
+            "starter_offwhite_bottom": {
+              "body_to_garment_m": 0.040899202,
+              "garment_to_body_m": 0.040907968,
+              "vertex_sampled_min_m": 0.040899202
+            },
+            "starter_offwhite_top": {
+              "body_to_garment_m": 0.039793935,
+              "garment_to_body_m": 0.053740308,
+              "vertex_sampled_min_m": 0.039793935
+            }
+          }
+        },
+        {
+          "armature_translation_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "bounds_m": {
+            "BODY__refined_sundale_derivative_v1": {
+              "max": [
+                0.328062,
+                0.472717,
+                1.8
+              ],
+              "min": [
+                -0.345052,
+                -0.500251,
+                0.070961
+              ]
+            },
+            "starter_offwhite_bottom": {
+              "max": [
+                0.217163,
+                0.328548,
+                0.91
+              ],
+              "min": [
+                -0.223322,
+                -0.25102,
+                0.661429
+              ]
+            },
+            "starter_offwhite_top": {
+              "max": [
+                0.464426,
+                0.402969,
+                1.56
+              ],
+              "min": [
+                -0.474799,
+                -0.363899,
+                0.995483
+              ]
+            }
+          },
+          "frame": 15,
+          "intersections": {
+            "body_bottom": 0,
+            "body_top": 0,
+            "top_bottom": 0
+          },
+          "root_bone_translation_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "time_seconds": 0.5,
+          "vertex_sampled_clearance": {
+            "starter_offwhite_bottom": {
+              "body_to_garment_m": 0.040873673,
+              "garment_to_body_m": 0.04089183,
+              "vertex_sampled_min_m": 0.040873673
+            },
+            "starter_offwhite_top": {
+              "body_to_garment_m": 0.039793938,
+              "garment_to_body_m": 0.037604254,
+              "vertex_sampled_min_m": 0.037604254
+            }
+          }
+        },
+        {
+          "armature_translation_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "bounds_m": {
+            "BODY__refined_sundale_derivative_v1": {
+              "max": [
+                0.325376,
+                0.524304,
+                1.8
+              ],
+              "min": [
+                -0.346488,
+                -0.547107,
+                0.097447
+              ]
+            },
+            "starter_offwhite_bottom": {
+              "max": [
+                0.217275,
+                0.340541,
+                0.91
+              ],
+              "min": [
+                -0.224831,
+                -0.264392,
+                0.664499
+              ]
+            },
+            "starter_offwhite_top": {
+              "max": [
+                0.464255,
+                0.418198,
+                1.56
+              ],
+              "min": [
+                -0.477202,
+                -0.379646,
+                0.994835
+              ]
+            }
+          },
+          "frame": 16,
+          "intersections": {
+            "body_bottom": 0,
+            "body_top": 0,
+            "top_bottom": 0
+          },
+          "root_bone_translation_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "time_seconds": 0.535714286,
+          "vertex_sampled_clearance": {
+            "starter_offwhite_bottom": {
+              "body_to_garment_m": 0.040867627,
+              "garment_to_body_m": 0.040898561,
+              "vertex_sampled_min_m": 0.040867627
+            },
+            "starter_offwhite_top": {
+              "body_to_garment_m": 0.021611767,
+              "garment_to_body_m": 0.026024006,
+              "vertex_sampled_min_m": 0.021611767
+            }
+          }
+        },
+        {
+          "armature_translation_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "bounds_m": {
+            "BODY__refined_sundale_derivative_v1": {
+              "max": [
+                0.328062,
+                0.472717,
+                1.8
+              ],
+              "min": [
+                -0.345052,
+                -0.500251,
+                0.070961
+              ]
+            },
+            "starter_offwhite_bottom": {
+              "max": [
+                0.217163,
+                0.328548,
+                0.91
+              ],
+              "min": [
+                -0.223322,
+                -0.25102,
+                0.661429
+              ]
+            },
+            "starter_offwhite_top": {
+              "max": [
+                0.464426,
+                0.402969,
+                1.56
+              ],
+              "min": [
+                -0.474799,
+                -0.363899,
+                0.995483
+              ]
+            }
+          },
+          "frame": 17,
+          "intersections": {
+            "body_bottom": 0,
+            "body_top": 0,
+            "top_bottom": 0
+          },
+          "root_bone_translation_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "time_seconds": 0.571428571,
+          "vertex_sampled_clearance": {
+            "starter_offwhite_bottom": {
+              "body_to_garment_m": 0.040873673,
+              "garment_to_body_m": 0.04089183,
+              "vertex_sampled_min_m": 0.040873673
+            },
+            "starter_offwhite_top": {
+              "body_to_garment_m": 0.039793938,
+              "garment_to_body_m": 0.037604254,
+              "vertex_sampled_min_m": 0.037604254
+            }
+          }
+        },
+        {
+          "armature_translation_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "bounds_m": {
+            "BODY__refined_sundale_derivative_v1": {
+              "max": [
+                0.330644,
+                0.419283,
+                1.8
+              ],
+              "min": [
+                -0.343446,
+                -0.451409,
+                0.047889
+              ]
+            },
+            "starter_offwhite_bottom": {
+              "max": [
+                0.217136,
+                0.315281,
+                0.91
+              ],
+              "min": [
+                -0.221834,
+                -0.236675,
+                0.659437
+              ]
+            },
+            "starter_offwhite_top": {
+              "max": [
+                0.464586,
+                0.386183,
+                1.56
+              ],
+              "min": [
+                -0.472367,
+                -0.346708,
+                0.996327
+              ]
+            }
+          },
+          "frame": 18,
+          "intersections": {
+            "body_bottom": 0,
+            "body_top": 0,
+            "top_bottom": 0
+          },
+          "root_bone_translation_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "time_seconds": 0.607142857,
+          "vertex_sampled_clearance": {
+            "starter_offwhite_bottom": {
+              "body_to_garment_m": 0.040899202,
+              "garment_to_body_m": 0.040907968,
+              "vertex_sampled_min_m": 0.040899202
+            },
+            "starter_offwhite_top": {
+              "body_to_garment_m": 0.039793935,
+              "garment_to_body_m": 0.053740308,
+              "vertex_sampled_min_m": 0.039793935
+            }
+          }
+        },
+        {
+          "armature_translation_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "bounds_m": {
+            "BODY__refined_sundale_derivative_v1": {
+              "max": [
+                0.333114,
+                0.364212,
+                1.8
+              ],
+              "min": [
+                -0.341677,
+                -0.400773,
+                0.028323
+              ]
+            },
+            "starter_offwhite_bottom": {
+              "max": [
+                0.217196,
+                0.300792,
+                0.91
+              ],
+              "min": [
+                -0.220374,
+                -0.221412,
+                0.658534
+              ]
+            },
+            "starter_offwhite_top": {
+              "max": [
+                0.464735,
+                0.367908,
+                1.56
+              ],
+              "min": [
+                -0.469917,
+                -0.328141,
+                0.997364
+              ]
+            }
+          },
+          "frame": 19,
+          "intersections": {
+            "body_bottom": 0,
+            "body_top": 0,
+            "top_bottom": 0
+          },
+          "root_bone_translation_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "time_seconds": 0.642857143,
+          "vertex_sampled_clearance": {
+            "starter_offwhite_bottom": {
+              "body_to_garment_m": 0.034628052,
+              "garment_to_body_m": 0.035265692,
+              "vertex_sampled_min_m": 0.034628052
+            },
+            "starter_offwhite_top": {
+              "body_to_garment_m": 0.039793968,
+              "garment_to_body_m": 0.053740349,
+              "vertex_sampled_min_m": 0.039793968
+            }
+          }
+        },
+        {
+          "armature_translation_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "bounds_m": {
+            "BODY__refined_sundale_derivative_v1": {
+              "max": [
+                0.335461,
+                0.328264,
+                1.8
+              ],
+              "min": [
+                -0.339751,
+                -0.348543,
+                0.012339
+              ]
+            },
+            "starter_offwhite_bottom": {
+              "max": [
+                0.217341,
+                0.285138,
+                0.91
+              ],
+              "min": [
+                -0.218946,
+                -0.205293,
+                0.658722
+              ]
+            },
+            "starter_offwhite_top": {
+              "max": [
+                0.464874,
+                0.348215,
+                1.56
+              ],
+              "min": [
+                -0.467458,
+                -0.308273,
+                0.99859
+              ]
+            }
+          },
+          "frame": 20,
+          "intersections": {
+            "body_bottom": 0,
+            "body_top": 0,
+            "top_bottom": 0
+          },
+          "root_bone_translation_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "time_seconds": 0.678571429,
+          "vertex_sampled_clearance": {
+            "starter_offwhite_bottom": {
+              "body_to_garment_m": 0.02559826,
+              "garment_to_body_m": 0.025927655,
+              "vertex_sampled_min_m": 0.02559826
+            },
+            "starter_offwhite_top": {
+              "body_to_garment_m": 0.039793987,
+              "garment_to_body_m": 0.053740337,
+              "vertex_sampled_min_m": 0.039793987
+            }
+          }
+        },
+        {
+          "armature_translation_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "bounds_m": {
+            "BODY__refined_sundale_derivative_v1": {
+              "max": [
+                0.337676,
+                0.294926,
+                1.8
+              ],
+              "min": [
+                -0.337676,
+                -0.294926,
+                0.0
+              ]
+            },
+            "starter_offwhite_bottom": {
+              "max": [
+                0.217571,
+                0.268441,
+                0.91
+              ],
+              "min": [
+                -0.217571,
+                -0.188441,
+                0.66
+              ]
+            },
+            "starter_offwhite_top": {
+              "max": [
+                0.465,
+                0.329525,
+                1.56
+              ],
+              "min": [
+                -0.465,
+                -0.289525,
+                1.0
+              ]
+            }
+          },
+          "frame": 21,
+          "intersections": {
+            "body_bottom": 0,
+            "body_top": 0,
+            "top_bottom": 0
+          },
+          "root_bone_translation_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "time_seconds": 0.714285714,
+          "vertex_sampled_clearance": {
+            "starter_offwhite_bottom": {
+              "body_to_garment_m": 0.024369193,
+              "garment_to_body_m": 0.024378324,
+              "vertex_sampled_min_m": 0.024369193
+            },
+            "starter_offwhite_top": {
+              "body_to_garment_m": 0.039794017,
+              "garment_to_body_m": 0.053740367,
+              "vertex_sampled_min_m": 0.039794017
+            }
+          }
+        }
+      ],
+      "loop_endpoint_equal": true,
+      "maximum_accepted_vertex_sampled_min_separation_m": 0.3,
+      "method": "every_integer_frame_evaluated_mesh_bvh_intersection_and_bidirectional_vertex_to_opposite_surface_sampling",
+      "observed_maximum_vertex_sampled_min_separation_m": 0.040899202
+    },
+    "derived_mesh_sha256": {
+      "starter_offwhite_top": "EAB37355BDA56874B10BCA2BEE45BD4FDAFAE9F0B7B7826BFDBA85C1BB9807E8"
+    },
+    "identity_sha256": "D9ABDAF676F2352EA8629EE4FC375A1F5567830AD5D721093669D942CB91F78A",
+    "material_semantic": [
+      {
+        "diffuse_color": [
+          0.899999976,
+          0.870000005,
+          0.790000021,
+          1.0
+        ],
+        "name": "MAT__starter_top_front_panel"
+      },
+      {
+        "diffuse_color": [
+          0.829999983,
+          0.800000012,
+          0.730000019,
+          1.0
+        ],
+        "name": "MAT__starter_top_rear_panel"
+      },
+      {
+        "diffuse_color": [
+          0.870000005,
+          0.839999974,
+          0.769999981,
+          1.0
+        ],
+        "name": "MAT__starter_top_sleeve_panel"
+      },
+      {
+        "diffuse_color": [
+          0.769999981,
+          0.74000001,
+          0.680000007,
+          1.0
+        ],
+        "name": "MAT__starter_top_seam_band"
+      }
+    ],
+    "opening_geometry": {
+      "contract": "one component / four openings / zero other non-manifold edges",
+      "derived": [
+        {
+          "max": [
+            -0.38688,
+            0.292039,
+            1.2
+          ],
+          "min": [
+            -0.415,
+            -0.252039,
+            1.2
+          ],
+          "vertex_count": 12
+        },
+        {
+          "max": [
+            0.3905,
+            0.3214,
+            1.0
+          ],
+          "min": [
+            -0.396,
+            -0.2814,
+            1.0
+          ],
+          "vertex_count": 28
+        },
+        {
+          "max": [
+            0.132,
+            0.292965,
+            1.56
+          ],
+          "min": [
+            -0.132,
+            -0.252965,
+            1.5
+          ],
+          "vertex_count": 20
+        },
+        {
+          "max": [
+            0.415,
+            0.238454,
+            1.2
+          ],
+          "min": [
+            0.389245,
+            -0.198454,
+            1.2
+          ],
+          "vertex_count": 12
+        }
+      ],
+      "source": [
+        {
+          "max": [
+            -0.38688,
+            0.292039,
+            1.2
+          ],
+          "min": [
+            -0.415,
+            -0.252039,
+            1.2
+          ],
+          "vertex_count": 12
+        },
+        {
+          "max": [
+            0.3905,
+            0.3214,
+            1.0
+          ],
+          "min": [
+            -0.396,
+            -0.2814,
+            1.0
+          ],
+          "vertex_count": 28
+        },
+        {
+          "max": [
+            0.132,
+            0.292965,
+            1.56
+          ],
+          "min": [
+            -0.132,
+            -0.252965,
+            1.5
+          ],
+          "vertex_count": 20
+        },
+        {
+          "max": [
+            0.415,
+            0.238454,
+            1.2
+          ],
+          "min": [
+            0.389245,
+            -0.198454,
+            1.2
+          ],
+          "vertex_count": 12
+        }
+      ]
+    },
+    "panel_roles": {
+      "front_panel": 232,
+      "hem": 28,
+      "left_sleeve": 140,
+      "neckline": 36,
+      "rear_panel": 232,
+      "right_sleeve": 140,
+      "side_seam": 44
+    },
+    "source_mesh_sha256": {
+      "starter_offwhite_top": "519C4F12ADB179FDA71E1E11B043798018FF344369CCB1AE5799A7040DEF4C47"
+    },
+    "topology": {
+      "starter_offwhite_bottom": {
+        "boundary_loops": 3,
+        "connected_components": 1,
+        "material_slots": [
+          "MAT__starter_shorts_front_panel",
+          "MAT__starter_shorts_rear_panel",
+          "MAT__starter_shorts_seam_band"
+        ],
+        "non_manifold_edges_excluding_openings": 0,
+        "polygons": 7157,
+        "vertices": 5862
+      },
+      "starter_offwhite_top": {
+        "boundary_loops": 4,
+        "connected_components": 1,
+        "material_slots": [
+          "MAT__starter_top_front_panel",
+          "MAT__starter_top_rear_panel",
+          "MAT__starter_top_sleeve_panel",
+          "MAT__starter_top_seam_band"
+        ],
+        "non_manifold_edges_excluding_openings": 0,
+        "polygons": 464,
+        "vertices": 498
+      }
+    },
+    "weight_semantic": [
+      [
+        [
+          "upper_arm.R",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.879415929
+        ],
+        [
+          "upper_arm.R",
+          0.120584048
+        ]
+      ],
+      [
+        [
+          "upper_arm.R",
+          1.0
+        ]
+      ],
+      [
+        [
+          "upper_arm.R",
+          1.0
+        ]
+      ],
+      [
+        [
+          "upper_arm.R",
+          1.0
+        ]
+      ],
+      [
+        [
+          "upper_arm.R",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.879415929
+        ],
+        [
+          "upper_arm.R",
+          0.120584048
+        ]
+      ],
+      [
+        [
+          "upper_arm.R",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.860352576
+        ],
+        [
+          "upper_arm.R",
+          0.139647424
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.879415929
+        ],
+        [
+          "upper_arm.R",
+          0.120584048
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.879415929
+        ],
+        [
+          "upper_arm.R",
+          0.120584048
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.860352576
+        ],
+        [
+          "upper_arm.R",
+          0.139647424
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.860352576
+        ],
+        [
+          "upper_arm.R",
+          0.139647424
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.879415989
+        ],
+        [
+          "upper_arm.R",
+          0.120584026
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.879415989
+        ],
+        [
+          "upper_arm.R",
+          0.120584026
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.860352576
+        ],
+        [
+          "upper_arm.R",
+          0.139647424
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.902326643
+        ],
+        [
+          "upper_arm.R",
+          0.097673379
+        ]
+      ],
+      [
+        [
+          "upper_arm.R",
+          1.0
+        ]
+      ],
+      [
+        [
+          "upper_arm.R",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.902326643
+        ],
+        [
+          "upper_arm.R",
+          0.097673357
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.914518356
+        ],
+        [
+          "upper_arm.R",
+          0.085481651
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.914518356
+        ],
+        [
+          "upper_arm.R",
+          0.085481651
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.912204266
+        ],
+        [
+          "upper_arm.R",
+          0.087795712
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.912204266
+        ],
+        [
+          "upper_arm.R",
+          0.087795705
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.879415929
+        ],
+        [
+          "upper_arm.R",
+          0.120584048
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.907787383
+        ],
+        [
+          "upper_arm.R",
+          0.092212602
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.907787383
+        ],
+        [
+          "upper_arm.R",
+          0.092212602
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.879415929
+        ],
+        [
+          "upper_arm.R",
+          0.120584048
+        ]
+      ],
+      [
+        [
+          "upper_arm.R",
+          1.0
+        ]
+      ],
+      [
+        [
+          "upper_arm.R",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.957759976
+        ],
+        [
+          "upper_arm.R",
+          0.042240001
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.902539968
+        ],
+        [
+          "upper_arm.R",
+          0.097460009
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.902539968
+        ],
+        [
+          "upper_arm.R",
+          0.097460009
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.957759976
+        ],
+        [
+          "upper_arm.R",
+          0.042240001
+        ]
+      ],
+      [
+        [
+          "upper_arm.R",
+          1.0
+        ]
+      ],
+      [
+        [
+          "upper_arm.R",
+          1.0
+        ]
+      ],
+      [
+        [
+          "upper_arm.R",
+          1.0
+        ]
+      ],
+      [
+        [
+          "upper_arm.R",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.977171659
+        ],
+        [
+          "upper_arm.R",
+          0.022828327
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.977171659
+        ],
+        [
+          "upper_arm.R",
+          0.022828327
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.978944957
+        ],
+        [
+          "upper_arm.R",
+          0.021055037
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.978944957
+        ],
+        [
+          "upper_arm.R",
+          0.021055037
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.977652609
+        ],
+        [
+          "upper_arm.R",
+          0.0223474
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.977652609
+        ],
+        [
+          "upper_arm.R",
+          0.022347396
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.976720333
+        ],
+        [
+          "upper_arm.R",
+          0.023279641
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.976720333
+        ],
+        [
+          "upper_arm.R",
+          0.023279641
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "upper_arm.L",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.957759976
+        ],
+        [
+          "upper_arm.L",
+          0.042240001
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.957759976
+        ],
+        [
+          "upper_arm.L",
+          0.042240001
+        ]
+      ],
+      [
+        [
+          "upper_arm.L",
+          1.0
+        ]
+      ],
+      [
+        [
+          "upper_arm.L",
+          1.0
+        ]
+      ],
+      [
+        [
+          "upper_arm.L",
+          1.0
+        ]
+      ],
+      [
+        [
+          "upper_arm.L",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.977171659
+        ],
+        [
+          "upper_arm.L",
+          0.022828327
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.978944957
+        ],
+        [
+          "upper_arm.L",
+          0.021055037
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.978944957
+        ],
+        [
+          "upper_arm.L",
+          0.021055037
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.977652609
+        ],
+        [
+          "upper_arm.L",
+          0.022347396
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.977652609
+        ],
+        [
+          "upper_arm.L",
+          0.022347393
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.976720333
+        ],
+        [
+          "upper_arm.L",
+          0.023279641
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.976720333
+        ],
+        [
+          "upper_arm.L",
+          0.023279641
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "upper_arm.L",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.913031757
+        ],
+        [
+          "upper_arm.L",
+          0.086968265
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.913031757
+        ],
+        [
+          "upper_arm.L",
+          0.086968265
+        ]
+      ],
+      [
+        [
+          "upper_arm.L",
+          1.0
+        ]
+      ],
+      [
+        [
+          "upper_arm.L",
+          1.0
+        ]
+      ],
+      [
+        [
+          "upper_arm.L",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.902326643
+        ],
+        [
+          "upper_arm.L",
+          0.097673379
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.902326643
+        ],
+        [
+          "upper_arm.L",
+          0.097673379
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.914518356
+        ],
+        [
+          "upper_arm.L",
+          0.085481651
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.914518356
+        ],
+        [
+          "upper_arm.L",
+          0.085481651
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.912204266
+        ],
+        [
+          "upper_arm.L",
+          0.08779572
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.912204266
+        ],
+        [
+          "upper_arm.L",
+          0.087795712
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.907787383
+        ],
+        [
+          "upper_arm.L",
+          0.092212602
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.907787383
+        ],
+        [
+          "upper_arm.L",
+          0.092212602
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.879415989
+        ],
+        [
+          "upper_arm.L",
+          0.120584026
+        ]
+      ],
+      [
+        [
+          "upper_arm.L",
+          1.0
+        ]
+      ],
+      [
+        [
+          "upper_arm.L",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.879415989
+        ],
+        [
+          "upper_arm.L",
+          0.120584026
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.879415929
+        ],
+        [
+          "upper_arm.L",
+          0.120584048
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.879415929
+        ],
+        [
+          "upper_arm.L",
+          0.120584048
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.879415989
+        ],
+        [
+          "upper_arm.L",
+          0.120584026
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.879415989
+        ],
+        [
+          "upper_arm.L",
+          0.120584026
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.879415989
+        ],
+        [
+          "upper_arm.L",
+          0.120584026
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.879415989
+        ],
+        [
+          "upper_arm.L",
+          0.120584026
+        ]
+      ],
+      [
+        [
+          "upper_arm.L",
+          1.0
+        ]
+      ],
+      [
+        [
+          "upper_arm.L",
+          1.0
+        ]
+      ],
+      [
+        [
+          "upper_arm.L",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.861627817
+        ],
+        [
+          "upper_arm.L",
+          0.138372168
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.861627817
+        ],
+        [
+          "upper_arm.L",
+          0.138372168
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.861627817
+        ],
+        [
+          "upper_arm.L",
+          0.138372168
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.860352576
+        ],
+        [
+          "upper_arm.L",
+          0.139647424
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.860352576
+        ],
+        [
+          "upper_arm.L",
+          0.139647424
+        ]
+      ],
+      [
+        [
+          "upper_arm.R",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.866683304
+        ],
+        [
+          "upper_arm.R",
+          0.133316696
+        ]
+      ],
+      [
+        [
+          "upper_arm.R",
+          1.0
+        ]
+      ],
+      [
+        [
+          "upper_arm.R",
+          1.0
+        ]
+      ],
+      [
+        [
+          "upper_arm.R",
+          1.0
+        ]
+      ],
+      [
+        [
+          "upper_arm.R",
+          1.0
+        ]
+      ],
+      [
+        [
+          "upper_arm.R",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.866683304
+        ],
+        [
+          "upper_arm.R",
+          0.133316696
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.860352576
+        ],
+        [
+          "upper_arm.R",
+          0.139647424
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.866683304
+        ],
+        [
+          "upper_arm.R",
+          0.133316696
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.879415989
+        ],
+        [
+          "upper_arm.R",
+          0.120584026
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.860352576
+        ],
+        [
+          "upper_arm.R",
+          0.139647424
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.879415929
+        ],
+        [
+          "upper_arm.R",
+          0.120584048
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.866683304
+        ],
+        [
+          "upper_arm.R",
+          0.133316696
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.860352576
+        ],
+        [
+          "upper_arm.R",
+          0.139647424
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.866683304
+        ],
+        [
+          "upper_arm.R",
+          0.133316696
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.879415989
+        ],
+        [
+          "upper_arm.R",
+          0.120584026
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.860352576
+        ],
+        [
+          "upper_arm.R",
+          0.139647424
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.879415989
+        ],
+        [
+          "upper_arm.R",
+          0.120584026
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.866683304
+        ],
+        [
+          "upper_arm.R",
+          0.133316696
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.896547139
+        ],
+        [
+          "upper_arm.R",
+          0.103452839
+        ]
+      ],
+      [
+        [
+          "upper_arm.R",
+          1.0
+        ]
+      ],
+      [
+        [
+          "upper_arm.R",
+          1.0
+        ]
+      ],
+      [
+        [
+          "upper_arm.R",
+          1.0
+        ]
+      ],
+      [
+        [
+          "upper_arm.R",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.896547139
+        ],
+        [
+          "upper_arm.R",
+          0.103452839
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.896547139
+        ],
+        [
+          "upper_arm.R",
+          0.103452861
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.90017736
+        ],
+        [
+          "upper_arm.R",
+          0.099822633
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.90017736
+        ],
+        [
+          "upper_arm.R",
+          0.099822633
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.896547139
+        ],
+        [
+          "upper_arm.R",
+          0.103452861
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.896547139
+        ],
+        [
+          "upper_arm.R",
+          0.103452839
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.913715363
+        ],
+        [
+          "upper_arm.R",
+          0.086284637
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.913715363
+        ],
+        [
+          "upper_arm.R",
+          0.08628463
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.896547139
+        ],
+        [
+          "upper_arm.R",
+          0.103452839
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.879415929
+        ],
+        [
+          "upper_arm.R",
+          0.120584048
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.896547139
+        ],
+        [
+          "upper_arm.R",
+          0.103452861
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.910125077
+        ],
+        [
+          "upper_arm.R",
+          0.089874953
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.879415929
+        ],
+        [
+          "upper_arm.R",
+          0.120584048
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.910125077
+        ],
+        [
+          "upper_arm.R",
+          0.089874946
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.896547139
+        ],
+        [
+          "upper_arm.R",
+          0.103452861
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.931975722
+        ],
+        [
+          "upper_arm.R",
+          0.068024278
+        ]
+      ],
+      [
+        [
+          "upper_arm.R",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.959999979
+        ],
+        [
+          "upper_arm.R",
+          0.039999999
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.934687495
+        ],
+        [
+          "upper_arm.R",
+          0.065312505
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.931975722
+        ],
+        [
+          "upper_arm.R",
+          0.068024278
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.934687495
+        ],
+        [
+          "upper_arm.R",
+          0.065312505
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.959999979
+        ],
+        [
+          "upper_arm.R",
+          0.039999999
+        ]
+      ],
+      [
+        [
+          "upper_arm.R",
+          1.0
+        ]
+      ],
+      [
+        [
+          "upper_arm.R",
+          1.0
+        ]
+      ],
+      [
+        [
+          "upper_arm.R",
+          1.0
+        ]
+      ],
+      [
+        [
+          "upper_arm.R",
+          1.0
+        ]
+      ],
+      [
+        [
+          "upper_arm.R",
+          1.0
+        ]
+      ],
+      [
+        [
+          "upper_arm.R",
+          1.0
+        ]
+      ],
+      [
+        [
+          "upper_arm.R",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.947223306
+        ],
+        [
+          "upper_arm.R",
+          0.052776705
+        ]
+      ],
+      [
+        [
+          "upper_arm.R",
+          1.0
+        ]
+      ],
+      [
+        [
+          "upper_arm.R",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.947223306
+        ],
+        [
+          "upper_arm.R",
+          0.052776705
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.938507736
+        ],
+        [
+          "upper_arm.R",
+          0.061492246
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.976639986
+        ],
+        [
+          "upper_arm.R",
+          0.023360008
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.976639986
+        ],
+        [
+          "upper_arm.R",
+          0.023360008
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.938507736
+        ],
+        [
+          "upper_arm.R",
+          0.061492246
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.935724795
+        ],
+        [
+          "upper_arm.R",
+          0.064275183
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.978396297
+        ],
+        [
+          "upper_arm.R",
+          0.021603681
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.978396297
+        ],
+        [
+          "upper_arm.R",
+          0.021603679
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.935724795
+        ],
+        [
+          "upper_arm.R",
+          0.064275175
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.932560682
+        ],
+        [
+          "upper_arm.R",
+          0.06743931
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.97705996
+        ],
+        [
+          "upper_arm.R",
+          0.022940014
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.97705996
+        ],
+        [
+          "upper_arm.R",
+          0.022940025
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.932560682
+        ],
+        [
+          "upper_arm.R",
+          0.06743931
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.381023586
+        ],
+        [
+          "upper_arm.R",
+          0.618976414
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.959999979
+        ],
+        [
+          "upper_arm.R",
+          0.039999999
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.959999979
+        ],
+        [
+          "upper_arm.R",
+          0.039999999
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.381023586
+        ],
+        [
+          "upper_arm.R",
+          0.618976414
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.381023586
+        ],
+        [
+          "upper_arm.R",
+          0.618976414
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.381023586
+        ],
+        [
+          "upper_arm.R",
+          0.618976414
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.980000019
+        ],
+        [
+          "upper_arm.R",
+          0.02
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.980000019
+        ],
+        [
+          "upper_arm.R",
+          0.02
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.980000019
+        ],
+        [
+          "upper_arm.R",
+          0.02
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.980000019
+        ],
+        [
+          "upper_arm.R",
+          0.02
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.980000019
+        ],
+        [
+          "upper_arm.R",
+          0.02
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.980000019
+        ],
+        [
+          "upper_arm.R",
+          0.02
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.980000019
+        ],
+        [
+          "upper_arm.R",
+          0.02
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.980000019
+        ],
+        [
+          "upper_arm.R",
+          0.02
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.381023794
+        ],
+        [
+          "upper_arm.L",
+          0.618976176
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.959999979
+        ],
+        [
+          "upper_arm.L",
+          0.039999999
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.959999979
+        ],
+        [
+          "upper_arm.L",
+          0.039999999
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.959999979
+        ],
+        [
+          "upper_arm.L",
+          0.039999999
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.959999979
+        ],
+        [
+          "upper_arm.L",
+          0.039999999
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.381023794
+        ],
+        [
+          "upper_arm.L",
+          0.618976176
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.381023794
+        ],
+        [
+          "upper_arm.L",
+          0.618976176
+        ]
+      ],
+      [
+        [
+          "upper_arm.L",
+          1.0
+        ]
+      ],
+      [
+        [
+          "upper_arm.L",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.381023794
+        ],
+        [
+          "upper_arm.L",
+          0.618976176
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.980000019
+        ],
+        [
+          "upper_arm.L",
+          0.02
+        ]
+      ],
+      [
+        [
+          "upper_arm.L",
+          1.0
+        ]
+      ],
+      [
+        [
+          "upper_arm.L",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.980000019
+        ],
+        [
+          "upper_arm.L",
+          0.02
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.980000019
+        ],
+        [
+          "upper_arm.L",
+          0.02
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.976639986
+        ],
+        [
+          "upper_arm.L",
+          0.023359999
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.976639986
+        ],
+        [
+          "upper_arm.L",
+          0.023359999
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.980000019
+        ],
+        [
+          "upper_arm.L",
+          0.02
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.980000019
+        ],
+        [
+          "upper_arm.L",
+          0.02
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.978396356
+        ],
+        [
+          "upper_arm.L",
+          0.021603672
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.978396356
+        ],
+        [
+          "upper_arm.L",
+          0.021603668
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.980000019
+        ],
+        [
+          "upper_arm.L",
+          0.02
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.980000019
+        ],
+        [
+          "upper_arm.L",
+          0.02
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.97705996
+        ],
+        [
+          "upper_arm.L",
+          0.022940014
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.97705996
+        ],
+        [
+          "upper_arm.L",
+          0.022940012
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.980000019
+        ],
+        [
+          "upper_arm.L",
+          0.02
+        ]
+      ],
+      [
+        [
+          "upper_arm.L",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.937232554
+        ],
+        [
+          "upper_arm.L",
+          0.062767431
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.935968459
+        ],
+        [
+          "upper_arm.L",
+          0.064031556
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.935968459
+        ],
+        [
+          "upper_arm.L",
+          0.064031556
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.937232614
+        ],
+        [
+          "upper_arm.L",
+          0.062767416
+        ]
+      ],
+      [
+        [
+          "upper_arm.L",
+          1.0
+        ]
+      ],
+      [
+        [
+          "upper_arm.L",
+          1.0
+        ]
+      ],
+      [
+        [
+          "upper_arm.L",
+          1.0
+        ]
+      ],
+      [
+        [
+          "upper_arm.L",
+          1.0
+        ]
+      ],
+      [
+        [
+          "upper_arm.L",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.947223306
+        ],
+        [
+          "upper_arm.L",
+          0.052776705
+        ]
+      ],
+      [
+        [
+          "upper_arm.L",
+          1.0
+        ]
+      ],
+      [
+        [
+          "upper_arm.L",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.947223306
+        ],
+        [
+          "upper_arm.L",
+          0.052776705
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.938507736
+        ],
+        [
+          "upper_arm.L",
+          0.061492246
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.90017736
+        ],
+        [
+          "upper_arm.L",
+          0.099822633
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.90017736
+        ],
+        [
+          "upper_arm.L",
+          0.099822633
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.938507736
+        ],
+        [
+          "upper_arm.L",
+          0.061492246
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.935724795
+        ],
+        [
+          "upper_arm.L",
+          0.064275183
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.913715363
+        ],
+        [
+          "upper_arm.L",
+          0.08628463
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.913715363
+        ],
+        [
+          "upper_arm.L",
+          0.08628463
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.935724795
+        ],
+        [
+          "upper_arm.L",
+          0.064275175
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.932560682
+        ],
+        [
+          "upper_arm.L",
+          0.06743931
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.910125077
+        ],
+        [
+          "upper_arm.L",
+          0.089874953
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.910125077
+        ],
+        [
+          "upper_arm.L",
+          0.089874946
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.932560682
+        ],
+        [
+          "upper_arm.L",
+          0.06743931
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.896547139
+        ],
+        [
+          "upper_arm.L",
+          0.103452861
+        ]
+      ],
+      [
+        [
+          "upper_arm.L",
+          1.0
+        ]
+      ],
+      [
+        [
+          "upper_arm.L",
+          1.0
+        ]
+      ],
+      [
+        [
+          "upper_arm.L",
+          1.0
+        ]
+      ],
+      [
+        [
+          "upper_arm.L",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.896547139
+        ],
+        [
+          "upper_arm.L",
+          0.103452861
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.896547139
+        ],
+        [
+          "upper_arm.L",
+          0.103452861
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.879415929
+        ],
+        [
+          "upper_arm.L",
+          0.120584048
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.879415929
+        ],
+        [
+          "upper_arm.L",
+          0.120584048
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.896547139
+        ],
+        [
+          "upper_arm.L",
+          0.103452861
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.896676779
+        ],
+        [
+          "upper_arm.L",
+          0.103323206
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.879415989
+        ],
+        [
+          "upper_arm.L",
+          0.120584026
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.879415989
+        ],
+        [
+          "upper_arm.L",
+          0.120584026
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.896676779
+        ],
+        [
+          "upper_arm.L",
+          0.103323206
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.896547139
+        ],
+        [
+          "upper_arm.L",
+          0.103452861
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.883818984
+        ],
+        [
+          "upper_arm.L",
+          0.116181001
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.883818984
+        ],
+        [
+          "upper_arm.L",
+          0.116181001
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.896547139
+        ],
+        [
+          "upper_arm.L",
+          0.103452861
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.867099881
+        ],
+        [
+          "upper_arm.L",
+          0.132900104
+        ]
+      ],
+      [
+        [
+          "upper_arm.L",
+          1.0
+        ]
+      ],
+      [
+        [
+          "upper_arm.L",
+          1.0
+        ]
+      ],
+      [
+        [
+          "upper_arm.L",
+          1.0
+        ]
+      ],
+      [
+        [
+          "upper_arm.L",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.867099881
+        ],
+        [
+          "upper_arm.L",
+          0.132900104
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.867099881
+        ],
+        [
+          "upper_arm.L",
+          0.132900104
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.861627817
+        ],
+        [
+          "upper_arm.L",
+          0.138372183
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.861627817
+        ],
+        [
+          "upper_arm.L",
+          0.138372183
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.867099881
+        ],
+        [
+          "upper_arm.L",
+          0.132900104
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.866683304
+        ],
+        [
+          "upper_arm.L",
+          0.133316696
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.861487687
+        ],
+        [
+          "upper_arm.L",
+          0.138512298
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.861487687
+        ],
+        [
+          "upper_arm.L",
+          0.138512313
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.866683304
+        ],
+        [
+          "upper_arm.L",
+          0.133316696
+        ]
+      ],
+      [
+        [
+          "upper_arm.R",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.860352576
+        ],
+        [
+          "upper_arm.R",
+          0.139647424
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.860352576
+        ],
+        [
+          "upper_arm.R",
+          0.139647424
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.861353576
+        ],
+        [
+          "upper_arm.R",
+          0.138646424
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.875352323
+        ],
+        [
+          "upper_arm.R",
+          0.124647699
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.883818984
+        ],
+        [
+          "upper_arm.R",
+          0.116181001
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.907787383
+        ],
+        [
+          "upper_arm.R",
+          0.092212602
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.902539968
+        ],
+        [
+          "upper_arm.R",
+          0.097460024
+        ]
+      ],
+      [
+        [
+          "upper_arm.R",
+          1.0
+        ]
+      ],
+      [
+        [
+          "upper_arm.R",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.976720333
+        ],
+        [
+          "upper_arm.R",
+          0.023279654
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.976720333
+        ],
+        [
+          "upper_arm.L",
+          0.023279641
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.907787383
+        ],
+        [
+          "upper_arm.L",
+          0.092212602
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.905078411
+        ],
+        [
+          "upper_arm.L",
+          0.094921619
+        ]
+      ],
+      [
+        [
+          "upper_arm.L",
+          1.0
+        ]
+      ],
+      [
+        [
+          "upper_arm.L",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.879415929
+        ],
+        [
+          "upper_arm.L",
+          0.120584048
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.879415929
+        ],
+        [
+          "upper_arm.L",
+          0.120584048
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.860352576
+        ],
+        [
+          "upper_arm.L",
+          0.139647424
+        ]
+      ],
+      [
+        [
+          "upper_arm.L",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.860586762
+        ],
+        [
+          "upper_arm.L",
+          0.139413267
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.860586762
+        ],
+        [
+          "upper_arm.L",
+          0.139413267
+        ]
+      ],
+      [
+        [
+          "upper_arm.R",
+          1.0
+        ]
+      ],
+      [
+        [
+          "upper_arm.R",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.866683304
+        ],
+        [
+          "upper_arm.R",
+          0.133316696
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.866683304
+        ],
+        [
+          "upper_arm.R",
+          0.133316696
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.866683304
+        ],
+        [
+          "upper_arm.R",
+          0.133316696
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.866683304
+        ],
+        [
+          "upper_arm.R",
+          0.133316696
+        ]
+      ],
+      [
+        [
+          "upper_arm.R",
+          1.0
+        ]
+      ],
+      [
+        [
+          "upper_arm.R",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.896547139
+        ],
+        [
+          "upper_arm.R",
+          0.103452861
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.896547139
+        ],
+        [
+          "upper_arm.R",
+          0.103452861
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.896547139
+        ],
+        [
+          "upper_arm.R",
+          0.103452839
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.896547139
+        ],
+        [
+          "upper_arm.R",
+          0.103452839
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.896547139
+        ],
+        [
+          "upper_arm.R",
+          0.103452839
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.896547139
+        ],
+        [
+          "upper_arm.R",
+          0.103452861
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.952205122
+        ],
+        [
+          "upper_arm.R",
+          0.047794867
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.952205122
+        ],
+        [
+          "upper_arm.R",
+          0.047794867
+        ]
+      ],
+      [
+        [
+          "upper_arm.R",
+          1.0
+        ]
+      ],
+      [
+        [
+          "upper_arm.R",
+          1.0
+        ]
+      ],
+      [
+        [
+          "upper_arm.R",
+          1.0
+        ]
+      ],
+      [
+        [
+          "upper_arm.R",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.945505679
+        ],
+        [
+          "upper_arm.R",
+          0.05449431
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.945505679
+        ],
+        [
+          "upper_arm.R",
+          0.05449431
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.937419593
+        ],
+        [
+          "upper_arm.R",
+          0.062580414
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.937419593
+        ],
+        [
+          "upper_arm.R",
+          0.062580414
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.93399334
+        ],
+        [
+          "upper_arm.R",
+          0.066006653
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.93399334
+        ],
+        [
+          "upper_arm.R",
+          0.066006668
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.959999979
+        ],
+        [
+          "upper_arm.R",
+          0.039999999
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.959999979
+        ],
+        [
+          "upper_arm.R",
+          0.039999999
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.381023586
+        ],
+        [
+          "upper_arm.R",
+          0.618976414
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.381023586
+        ],
+        [
+          "upper_arm.R",
+          0.618976414
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.381023586
+        ],
+        [
+          "upper_arm.R",
+          0.618976414
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.381023586
+        ],
+        [
+          "upper_arm.R",
+          0.618976414
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.980000019
+        ],
+        [
+          "upper_arm.R",
+          0.02
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.980000019
+        ],
+        [
+          "upper_arm.R",
+          0.02
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.980000019
+        ],
+        [
+          "upper_arm.R",
+          0.02
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.980000019
+        ],
+        [
+          "upper_arm.R",
+          0.02
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.980000019
+        ],
+        [
+          "upper_arm.R",
+          0.02
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.980000019
+        ],
+        [
+          "upper_arm.R",
+          0.02
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.959999979
+        ],
+        [
+          "upper_arm.L",
+          0.039999999
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.959999979
+        ],
+        [
+          "upper_arm.L",
+          0.039999999
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.381023586
+        ],
+        [
+          "upper_arm.L",
+          0.618976414
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.381023586
+        ],
+        [
+          "upper_arm.L",
+          0.618976414
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.381023586
+        ],
+        [
+          "upper_arm.L",
+          0.618976414
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.381023586
+        ],
+        [
+          "upper_arm.L",
+          0.618976414
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.980000019
+        ],
+        [
+          "upper_arm.L",
+          0.02
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.980000019
+        ],
+        [
+          "upper_arm.L",
+          0.02
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.980000019
+        ],
+        [
+          "upper_arm.L",
+          0.02
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.980000019
+        ],
+        [
+          "upper_arm.L",
+          0.02
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.980000019
+        ],
+        [
+          "upper_arm.L",
+          0.02
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.980000019
+        ],
+        [
+          "upper_arm.L",
+          0.02
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.952933609
+        ],
+        [
+          "upper_arm.L",
+          0.047066398
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.952933609
+        ],
+        [
+          "upper_arm.L",
+          0.047066409
+        ]
+      ],
+      [
+        [
+          "upper_arm.L",
+          1.0
+        ]
+      ],
+      [
+        [
+          "upper_arm.L",
+          1.0
+        ]
+      ],
+      [
+        [
+          "upper_arm.L",
+          1.0
+        ]
+      ],
+      [
+        [
+          "upper_arm.L",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.945505679
+        ],
+        [
+          "upper_arm.L",
+          0.05449431
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.945505679
+        ],
+        [
+          "upper_arm.L",
+          0.05449431
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.937419593
+        ],
+        [
+          "upper_arm.L",
+          0.062580414
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.937419593
+        ],
+        [
+          "upper_arm.L",
+          0.062580414
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.93399334
+        ],
+        [
+          "upper_arm.L",
+          0.066006653
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.93399334
+        ],
+        [
+          "upper_arm.L",
+          0.066006653
+        ]
+      ],
+      [
+        [
+          "upper_arm.L",
+          1.0
+        ]
+      ],
+      [
+        [
+          "upper_arm.L",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.896547139
+        ],
+        [
+          "upper_arm.L",
+          0.103452861
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.896547139
+        ],
+        [
+          "upper_arm.L",
+          0.103452861
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.896547139
+        ],
+        [
+          "upper_arm.L",
+          0.103452861
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.896547139
+        ],
+        [
+          "upper_arm.L",
+          0.103452861
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.897066474
+        ],
+        [
+          "upper_arm.L",
+          0.102933526
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.897066474
+        ],
+        [
+          "upper_arm.L",
+          0.102933526
+        ]
+      ],
+      [
+        [
+          "upper_arm.L",
+          1.0
+        ]
+      ],
+      [
+        [
+          "upper_arm.L",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.867099881
+        ],
+        [
+          "upper_arm.L",
+          0.132900104
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.867099881
+        ],
+        [
+          "upper_arm.L",
+          0.132900104
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.867029727
+        ],
+        [
+          "upper_arm.L",
+          0.132970288
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.867029667
+        ],
+        [
+          "upper_arm.L",
+          0.132970303
+        ]
+      ],
+      [
+        [
+          "upper_arm.R",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.860352576
+        ],
+        [
+          "upper_arm.R",
+          0.139647424
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.860424221
+        ],
+        [
+          "upper_arm.R",
+          0.139575794
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.866683304
+        ],
+        [
+          "upper_arm.R",
+          0.133316696
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.879415929
+        ],
+        [
+          "upper_arm.R",
+          0.120584048
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.897066474
+        ],
+        [
+          "upper_arm.R",
+          0.102933526
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.906784773
+        ],
+        [
+          "upper_arm.R",
+          0.09321522
+        ]
+      ],
+      [
+        [
+          "upper_arm.R",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.932560682
+        ],
+        [
+          "upper_arm.R",
+          0.06743931
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.980000019
+        ],
+        [
+          "upper_arm.R",
+          0.02
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.980000019
+        ],
+        [
+          "upper_arm.L",
+          0.02
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.932560682
+        ],
+        [
+          "upper_arm.L",
+          0.06743931
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.907913029
+        ],
+        [
+          "upper_arm.L",
+          0.092086971
+        ]
+      ],
+      [
+        [
+          "upper_arm.L",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.896547139
+        ],
+        [
+          "upper_arm.L",
+          0.103452861
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.880270779
+        ],
+        [
+          "upper_arm.L",
+          0.119729191
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.866683304
+        ],
+        [
+          "upper_arm.L",
+          0.133316696
+        ]
+      ],
+      [
+        [
+          "upper_arm.L",
+          1.0
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.860586762
+        ],
+        [
+          "upper_arm.L",
+          0.139413267
+        ]
+      ],
+      [
+        [
+          "spine",
+          0.860543728
+        ],
+        [
+          "upper_arm.L",
+          0.139456302
+        ]
+      ]
+    ],
+    "weights": {
+      "starter_offwhite_bottom": {
+        "invalid_or_non_normalized": 0,
+        "unweighted": 0,
+        "vertices": 5862
+      },
+      "starter_offwhite_top": {
+        "invalid_or_non_normalized": 0,
+        "unweighted": 0,
+        "vertices": 498
+      }
+    }
+  },
+  "status": "offline_targeted_yoke_cap_correction_not_visual_acceptance_or_runtime"
+}
