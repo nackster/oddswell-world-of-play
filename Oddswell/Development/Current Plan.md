@@ -3065,6 +3065,13 @@ The preserved Phase 1L.5aq report identity is `4,027` bytes/SHA `3E14CFABBD0FC4C
 - **Retained contracts:** top/body ratio `1.377059677 ≤ 1.4`; one component/four openings/zero other non-manifold edges; body, shorts, item/material/color, DEC-035 and action unchanged; `21/21` frames intersections `0`, translations `0`, endpoint equality true.
 - **Next gate:** rerun the exact unchanged fail-closed combined review. Export/import preparation remains stopped. See [[Development/Reports/Phase 1L5co Outer Sleeve Armhole Rounded Cap Correction Walk Proof]].
 
+### Phase 1L.5cp rounded-cap combined starter-outfit offline visual acceptance status
+
+- **COMPLETE REVIEW / REJECTED_VISUAL_CORRECTION_REQUIRED:** exact Phase 1L.5co custody, topology/opening identities, views and 21-frame ledger are retained; geometry and every runtime-input change remain `0`. Review identity is `6149951BF5B4DFF12A794C9B68DA96049828099D0CC7729F3FF6139EA9390ED0`.
+- **Four pass / three fail:** separation, shorts construction, numeric proportions and no exposure/collision pass. Neckline/shoulders/sleeves/hem, no rejected silhouettes and qualitative opposing-extreme stability fail because the shoulder remains a raised shelf, the profile remains slab/poncho-like and the cap changes from a frame-6 bulbous fold to a frame-16 spike.
+- **Measured gate:** neutral top/body width ratio is `1.377059677 ≤ 1.4`; waist inset is `0.132244272 ≥ 0.08`, but numeric gates do not override qualitative failures.
+- **Next gate boundary:** export/import preparation remains stopped. The one smallest correction is only the upper shoulder-yoke-to-cap transition within `0.24 m <= |X| < 0.389245 m`, `1.38 m <= Z <= 1.56 m`, including its normalized spine/upper-arm blend, while preserving central torso, waist, neckline, accepted cap/openings and every non-target asset. See [[Development/Reports/Phase 1L5cp Rounded Cap Combined Starter Outfit Offline Visual Acceptance Review]].
+
 ### Sundale visual human body pose candidate — September 23, 2026
 
 - **Status:** editable offline visual candidate, with native front/rear renders and a fresh cold reopen; the human-realism goal remains active.
