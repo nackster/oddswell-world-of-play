@@ -3079,6 +3079,13 @@ The preserved Phase 1L.5aq report identity is `4,027` bytes/SHA `3E14CFABBD0FC4C
 - **Retained contracts:** width `0.930000007 m` and ratio `1.377059677`; one component/four openings/zero other non-manifold edges; body, shorts, item/material/color, DEC-035 and action unchanged; `21/21` frames intersections `0`, translations `0`, endpoint equality true.
 - **Next gate:** rerun the exact unchanged fail-closed combined review. Export/import preparation remains stopped. See [[Development/Reports/Phase 1L5cq Yoke to Cap Transition and Normalized Blend Correction Walk Proof]].
 
+### Phase 1L.5cr yoke-blended combined review status
+
+- **COMPLETE REVIEW / REJECTED:** exact Phase 1L.5cq custody, five views and `21`-frame ledger are retained with asset/runtime-input changes `0`; verdict `REJECTED_VISUAL_CORRECTION_REQUIRED`, identity `BE49807FAFAE402609B9CB7DC52109795D29E2DF31025ED7440600E6C0601202`.
+- **Passes:** separation, shorts construction, numeric proportions and coverage/collision.
+- **Failures:** neckline/shoulders/sleeves/hem, no rejected silhouettes and stable opposing extremes. The profile remains slab-like; frame `6` has a large left bulge and frame `16` a right spike plus tilted hem.
+- **Stopped boundary:** export/import preparation remains ineligible. Exactly one smallest future top-only side/underarm-to-hem transition coordinate/normalized-blend correction is recorded, but no correction or seventh phase follows in this nightly batch. See [[Development/Reports/Phase 1L5cr Yoke Blended Combined Starter Outfit Offline Visual Acceptance Review]].
+
 ### Sundale visual human body pose candidate — September 23, 2026
 
 - **Status:** editable offline visual candidate, with native front/rear renders and a fresh cold reopen; the human-realism goal remains active.

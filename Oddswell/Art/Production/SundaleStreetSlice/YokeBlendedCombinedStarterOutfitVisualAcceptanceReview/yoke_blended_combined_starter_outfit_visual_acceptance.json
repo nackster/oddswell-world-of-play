@@ -1,0 +1,165 @@
+{
+  "boundaries": {
+    "action_changes": 0,
+    "asset_changes": 0,
+    "client_changes": 0,
+    "export_changes": 0,
+    "export_import_preparation_eligible": false,
+    "geometry_changes": 0,
+    "material_changes": 0,
+    "package_input_changes": 0,
+    "readiness_claim": false,
+    "runtime_input_changes": 0,
+    "skeleton_changes": 0,
+    "topology_changes": 0,
+    "unreal_changes": 0,
+    "weight_changes": 0
+  },
+  "criteria": [
+    {
+      "criterion": "separation",
+      "evidence": "The exact retained 21-frame ledger reports zero body/top, body/bottom and top/bottom evaluated intersections.",
+      "status": "PASS"
+    },
+    {
+      "criterion": "neckline_shoulders_sleeves_hem",
+      "evidence": "The topology/opening contract passes, but the unchanged qualitative criterion fails: The yoke blend softens the neutral shoulder transition, but the retained frame-6 left sleeve/side forms a large angular bulge and frame 16 retains a sharp right triangular spike with a visibly tilted lower hem.",
+      "status": "FAIL"
+    },
+    {
+      "criterion": "waistband_rise_crotch_legs",
+      "evidence": "The exact accepted shorts retain one component, three openings, zero other non-manifold edges and two readable legs.",
+      "status": "PASS"
+    },
+    {
+      "criterion": "proportions",
+      "evidence": "Neutral top width is 0.930000007 m versus body width 0.675352 m, ratio 1.377059677; the unchanged ceiling is 1.4. This numeric pass does not override qualitative failures.",
+      "status": "PASS"
+    },
+    {
+      "criterion": "no_rejected_silhouettes",
+      "evidence": "Width ratio 1.377059677 and waist inset 0.132244272 pass their numeric gates, but the unchanged qualitative criterion fails: The exact neutral profile still reads as a broad horizontal slab with a detached mid-torso ledge, and the front/rear remain box/poncho-like despite passing the numeric width and waist gates.",
+      "status": "FAIL"
+    },
+    {
+      "criterion": "no_exposure_or_collision",
+      "evidence": "All five exact views retain coverage without visible body/garment or garment/garment penetration. The retained ledger reports zero evaluated intersections and minimum sampled clearance 0.018486369 m.",
+      "status": "PASS"
+    },
+    {
+      "criterion": "stable_opposing_extremes",
+      "evidence": "The exact frame-6 view carries its dominant deformation as a left lateral bulge, while frame 16 changes to a right outward spike and diagonal hem; mechanical loop closure does not establish qualitative stability. Root/armature translation remains zero and frame 21 equals frame 1.",
+      "status": "FAIL"
+    }
+  ],
+  "files": {
+    "board": {
+      "bytes": 1040897,
+      "sha256": "B46F1139D58FD619CB079896D27B078067AA512718B5EC11E8F9BA2669520678"
+    },
+    "builder": {
+      "bytes": 15424,
+      "sha256": "BDFAD06CF3C1D7799A8B2501C1D9D638017CF2531C9DD77FDBFD49F604C6D2E7"
+    },
+    "provenance": {
+      "bytes": 555,
+      "sha256": "3B2E9A020D5181CB72C5A57172FDD6A52CEED22B66FA4696E3286550916089B2"
+    }
+  },
+  "identity_sha256": "BE49807FAFAE402609B9CB7DC52109795D29E2DF31025ED7440600E6C0601202",
+  "measurements": {
+    "maximum_top_to_body_width_ratio": 1.4,
+    "minimum_sampled_clearance_m": 0.018486369,
+    "minimum_waist_inset_ratio": 0.08,
+    "neutral_body_width_m": 0.675352,
+    "neutral_top_width_m": 0.930000007,
+    "top_to_body_width_ratio": 1.377059677,
+    "waist_inset_ratio": 0.132244272
+  },
+  "phase": "Phase 1L.5cr yoke-blended combined starter-outfit offline visual acceptance review",
+  "smallest_correction": "Correct only the top side/underarm-to-hem transition coordinates and normalized spine/matching-upper-arm blend, symmetrically reducing the neutral profile slab and removing the frame-6 lateral bulge, frame-16 triangular spike and hem tilt; preserve the neckline, corrected yoke/caps, central front/rear pattern, waist opening, outer width, topology and every non-target asset.",
+  "source_custody": {
+    "action_identity_sha256": "7DD9A4E6524BCAC604AEDC755D0464FEC8C8F40BDED1BDE17E87955ED63E1020",
+    "armature_bone_count": 12,
+    "blend": {
+      "bytes": 13907177,
+      "sha256": "A256E5F7B1B0750623A9B9F9B5085A45850AE1E525B0CD32F07447C791568A1E"
+    },
+    "frame_ledger_identity_sha256": "4DE37C1F83A7E0EAB04E3943DBE3CBB9CDE52FA0AFA242105D54D18D3CC6927C",
+    "mesh_sha256": {
+      "body": "F340C34B05FC4D0D20F5625E9B2F9174947B691F59420367E8B738BE1CBF03CD",
+      "bottom": "E626B69FA039E1E1139ACD203AB6F481CADDC49771ADA7341B8ED3A1D9C82170",
+      "top": "EAB37355BDA56874B10BCA2BEE45BD4FDAFAE9F0B7B7826BFDBA85C1BB9807E8"
+    },
+    "opening_identity_sha256": "EB01DC302C225D73C0D44245D773DBDE975488734A6FBE2E7FFC60BB31F28309",
+    "semantic_identity_sha256": "D9ABDAF676F2352EA8629EE4FC375A1F5567830AD5D721093669D942CB91F78A",
+    "topology_identity_sha256": "64BD03BA4EAB3A529B303860427453B47C2807C8AF25F520329CC2E5078C8FE3",
+    "view_files": {
+      "Front": {
+        "bytes": 475755,
+        "sha256": "33FD17FD1A3FC8DF4E6A8EFC888B124AA4B9B44283BA67ADDCD159809FF0B0C2"
+      },
+      "Profile": {
+        "bytes": 474490,
+        "sha256": "1A43404BB5C4C87F702E83E4066A0009A5FBF9CC2CC3B818C0F5CA4C4F2832F5"
+      },
+      "Rear": {
+        "bytes": 478097,
+        "sha256": "C235759869446145DC3197FAF8F43BE4C66CBECE9647D09C4886BB6FB3C2F81B"
+      },
+      "WalkExtremeFront": {
+        "bytes": 485745,
+        "sha256": "74FCAC96B2EE845DC6B22694887F2F30A6AE78B69634EC8126D9040B1902DDC4"
+      },
+      "WalkExtremeRear": {
+        "bytes": 482428,
+        "sha256": "0EA6A6088897CAC14394B74D720DDF2EC1F178E27CE402C8B8D266FBF18F8B19"
+      }
+    }
+  },
+  "verdict": "REJECTED_VISUAL_CORRECTION_REQUIRED",
+  "visual_observations": {
+    "coverage": {
+      "evidence": "All five exact views retain coverage without visible body/garment or garment/garment penetration.",
+      "pass": true,
+      "views": [
+        "Front",
+        "Rear",
+        "Profile",
+        "WalkExtremeFront",
+        "WalkExtremeRear"
+      ]
+    },
+    "neckline_shoulders_sleeves_hem": {
+      "evidence": "The yoke blend softens the neutral shoulder transition, but the retained frame-6 left sleeve/side forms a large angular bulge and frame 16 retains a sharp right triangular spike with a visibly tilted lower hem.",
+      "pass": false,
+      "views": [
+        "Front",
+        "Rear",
+        "Profile",
+        "WalkExtremeFront",
+        "WalkExtremeRear"
+      ]
+    },
+    "no_rejected_silhouettes": {
+      "evidence": "The exact neutral profile still reads as a broad horizontal slab with a detached mid-torso ledge, and the front/rear remain box/poncho-like despite passing the numeric width and waist gates.",
+      "pass": false,
+      "views": [
+        "Front",
+        "Rear",
+        "Profile",
+        "WalkExtremeFront",
+        "WalkExtremeRear"
+      ]
+    },
+    "stable_opposing_extremes": {
+      "evidence": "The exact frame-6 view carries its dominant deformation as a left lateral bulge, while frame 16 changes to a right outward spike and diagonal hem; mechanical loop closure does not establish qualitative stability.",
+      "pass": false,
+      "views": [
+        "WalkExtremeFront",
+        "WalkExtremeRear"
+      ]
+    },
+    "view_identity_sha256": "FCAD92B64614EF784F78DC208BA70551B1611673CFD906CB8D11CC024DCE6937"
+  }
+}
