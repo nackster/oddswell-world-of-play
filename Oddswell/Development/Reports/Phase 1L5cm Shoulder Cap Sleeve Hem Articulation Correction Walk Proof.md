@@ -29,7 +29,7 @@ Export/import preparation remains stopped. This phase is not runtime integration
 
 - Derived top: `9ED01AAA3F060F237D2CCADCD5ED7E15F65E864F013DC0BCB51266A31A34FA58`.
 - Derived semantic identity: `6E219986ED018BFF27BB61AD308346C33217795B5C883893806E661D589579B0`.
-- Derived Blend: `13,907,177` bytes, SHA-256 `47028E717DEFFD5CE3D90BBE8F06DAB7B1957B6D49DA53CC714632011E1AD80B`.
+- Derived Blend: `13,907,177` bytes, SHA-256 `10315DEC1E2F1EAB3F3D7DDA6828AB5B9867957B9D108C5A2F462201D3E059FC`.
 - Coordinate target: `113` outer cap/sleeve vertices; protected coordinates: `385`; target/protected overlap: `0`.
 - Weight target: `268` shoulder/sleeve/hem vertices; protected weights: `230`; target/protected overlap: `0`.
 - Central depth- and waist-taper coordinate overlap: `0`; every non-target coordinate and weight reproduces exactly.
