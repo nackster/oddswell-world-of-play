@@ -55,7 +55,7 @@ The one smallest future correction is only the top side/underarm-to-hem transiti
 
 - Deterministic build and independent validation: PASS; rejection identity `BE49...1202` and board `B46F...0678` reproduce.
 - Full frozen native suite: PASS, `75/75`, zero non-success results; log SHA-256 `0CE1CEDA6A04003DFBD1FC15698C34072175AA300727796D27F56841823E3EC8`.
-- Isolated Python regression: PASS, `105/105` (`9` Phase 0A, `2` Phase 0B, `8` Phase 0C, `46` Phase 0D and `40` Phase 1H) in `167.130 s`.
+- Isolated Python regression: PASS, `105/105` (`9` Phase 0A, `2` Phase 0B, `8` Phase 0C, `46` Phase 0D and `40` Phase 1H) in `166.360 s`.
 - Brain Admin self-check: PASS; exact `43`-byte output SHA-256 `D0EC87F0C4586A63F332837562B25BD44C57F02FB788B6FDE599102AE2C3BA44`.
 - Retained packaged Windows verification: PASS. Locomotion plus character motion, studio plus interaction-prompt presentation, camera orbit and local server/client shared-city skeletal appearance/motion checks all emitted required PASS markers and exited `0`. Log SHA-256 receipts are locomotion `D3F8C71047643CE8EDA2FCF42B9FC2157FF5D049E6ECBD24012BE2B2FB9DA0BA`, studio `E9C6411BCA84133B827737EFC180C09E7C8A9DDB994D5E0428D1A9CFCE9FA938`, camera `D283B73D1251AFCA0B82B43716BA6D246DD5095DDEB55DEE98F53251E74D28AC`, server `36BCD7CE3A598D5D117E4FD591BF39261808111D951152C016004A783AC5C5C8` and client `8C937B2DD658C3C02AE9374052F7D7A7957FDAF175B1CC6E3C7C3FEF1C17D5E8`.
 - Package/process audit: retained package remains `50` files / `1,038,710,362` bytes / zero Python files; packaged executable SHA-256 `87399C0938F0B4EAA9F076E9E7406F42CFAEC2A7D4891FEE74D99599B864A071`. After verification there are zero OddsWell/Unreal/Blender/task-Python processes and UDP port `17777` is free.
