@@ -180,8 +180,14 @@ bm.free()
 pin=coat.vertex_groups['Collar zipper hem and cuff attachments']
 weights=[next((g.weight for g in v.groups if g.group==pin.index),0) for v in coat.data.vertices]
 fit=coat.data.attributes['Collision fit'].data
+attachment_fit=fit
+if scene.get('anatomical_neckline_attachment'):
+    targets=coat.data.attributes.get('Anatomical attachment targets')
+    assert targets and targets.domain=='POINT' and targets.data_type=='FLOAT_VECTOR'
+    assert len(targets.data)==len(coat.data.vertices)
+    attachment_fit=targets.data
 # Transition-band controls may move proportionally; fully pinned controls may not.
-pinned_motion=max((v.co-r.vector).length for v,r,w in zip(coat.data.vertices,fit,weights) if w==1)
+pinned_motion=max((v.co-r.vector).length for v,r,w in zip(coat.data.vertices,attachment_fit,weights) if w==1)
 assert pinned_motion<.000001,'Displacement filtering moved fixed jacket attachments'
 raw_delta=max((v.vector-r.vector).length for v,r in zip(coat.data.attributes['Gravity result'].data,fit))
 assert abs(raw_delta-scene['jacket_drape_maximum_delta_m'])<.000001
