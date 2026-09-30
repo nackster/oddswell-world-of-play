@@ -1,5 +1,7 @@
 # Sundale character and landscape study
 
+September 29 torso/hip continuation: [BodyFlowCandidate/README.md](BodyFlowCandidate/README.md) records a native waist contour, pelvic tilt and opposing chest rotation with one editable stance-blend control driving 244 character parts. Close/full/gameplay review and geometry checks accompany the saved scene. Its measured visible-character evaluation is 3,587,204 triangles, establishing the hair/detail baking and LOD work required before a controlled Unreal import. The upper shorts construction and whole-human realism remain open; the active goal and later scene roadmap continue.
+
 September 25 walking weight-balance checkpoint: `WeightBalanceCandidate/WeightBalance.blend` shifts the clothed upper body 45 mm toward the planted right shoe. Native full-front, full-rear and gameplay renders show a modest improvement in weight-bearing pose; cold scene checks pass. The broad upper shorts, stylized torso and visible dark armhole junction remain open under the human-realism goal.
 
 September 25 sewn-construction checkpoint: `TailoringConstructionCandidate/TailoringConstruction.blend` adds fitted side and fly stitch paths to the exact walking-fit source. Front/profile/full-rear/gameplay Cycles views and cold scene/stitch-contact checks are retained. This is a modest clothing detail improvement; the shorts' annular upper shell and full human realism remain open.
