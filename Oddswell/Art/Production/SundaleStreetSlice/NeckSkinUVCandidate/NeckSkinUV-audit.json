@@ -1,0 +1,18 @@
+{
+  "result": "PASS",
+  "unchanged_geometry_objects": 4720,
+  "unchanged_packed_source_maps": 31,
+  "original_uv_layers_preserved": 893,
+  "repaired_skirt_faces": 50,
+  "maximum_old_strip_uv_area": 0.0,
+  "minimum_new_strip_uv_area": 3.605976972753666e-05,
+  "upper_neck_face_uv_controls_checked": 17244,
+  "maximum_upper_uv_change": 0.0,
+  "face_skin_material_users": [
+    "Character | anatomical head"
+  ],
+  "source_scene_sha256": "9A6BB3CA8D257CD7E130D0CDDC460264D7B645D4669E4D68416F7CA35E80730F",
+  "runtime_claim": false,
+  "minimum_strip_uv_triangle_area": 1.1781402260879759e-05,
+  "maximum_bottom_uv_edge_discontinuity": 0.0
+}
