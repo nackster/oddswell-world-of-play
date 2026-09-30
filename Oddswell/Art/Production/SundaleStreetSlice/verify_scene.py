@@ -44,6 +44,14 @@ assert 'Restrained facial asymmetry' in head_keys and head.data.attributes.get('
 head_deltas=[]
 for key in head_keys:
     if key.name=='Basis':continue
+    if key.name=='Continuous lower neck':
+        assert scene.get('continuous_lower_neck') and head.data.attributes.get('Before lower neck continuation')
+        assert abs(key.value-1)<.000001 and abs(scene['lower_neck_maximum_extension_m']-.025)<.000001
+        neck_deltas=[head.matrix_world.to_3x3()@(point.co-base.co) for point,base in zip(key.data,head_keys['Basis'].data)]
+        assert all(abs(d.x)<.000001 and abs(d.y)<.000001 and -.025001<=d.z<=.000001 for d in neck_deltas)
+        assert all(d.length<.000001 for d,base in zip(neck_deltas,head_keys['Basis'].data) if (head.matrix_world@base.co).z>=1.499)
+        assert max(d.length for d in neck_deltas)>.0249,'Missing lower neck continuation'
+        continue
     for vertex,point,base in zip(head.data.vertices,key.data,head_keys['Basis'].data):
         delta=(point.co-base.co).length
         if vertex.co.z<1.605:assert delta<.000001,'Facial study moved the fitted neck base'
