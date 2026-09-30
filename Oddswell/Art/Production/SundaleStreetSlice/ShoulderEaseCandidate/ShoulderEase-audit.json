@@ -1,0 +1,86 @@
+{
+  "result": "PASS",
+  "controls": 6274,
+  "faces": 6144,
+  "openings": 4,
+  "midsurface_nonadjacent_overlap_pairs": 0,
+  "thick_shell_nonadjacent_overlap_pairs": 0,
+  "fabric_volume_m3": 0.0009657711824942091,
+  "free_evaluated_points_checked": 96716,
+  "minimum_free_evaluated_clearance_m": 0.00374086608280777,
+  "worst_free_point_world_m": [
+    -0.8116090893745422,
+    -2.349187135696411,
+    1.4523918628692627
+  ],
+  "gravity_frames": 60,
+  "maximum_gravity_motion_m": 0.06355836816908667,
+  "mean_cloth_body_normal_alignment": 0.9309734832197055,
+  "fully_pinned_motion_m": 0.0,
+  "stance_driver_parts": 244,
+  "packed_maps": 31,
+  "cloth_and_support_checked_subdivision_levels": [
+    2,
+    2
+  ],
+  "visible_character_evaluated_viewport_triangles": 3348356,
+  "largest_character_parts": [
+    {
+      "name": "Character | cropped scalp fibers",
+      "triangles": 1728000
+    },
+    {
+      "name": "Character | shorts leg continuous tailoring",
+      "triangles": 330240
+    },
+    {
+      "name": "Character | standing collar",
+      "triangles": 150528
+    },
+    {
+      "name": "Character | anatomical head",
+      "triangles": 139152
+    },
+    {
+      "name": "Character | tailored slate jacket",
+      "triangles": 99360
+    },
+    {
+      "name": "Character | fine calf hair",
+      "triangles": 93600
+    }
+  ],
+  "shoulder_rounding_iterations": 32,
+  "maximum_shoulder_control_motion_m": 0.02879534152545047,
+  "original_shoulder_restore_error_m": 0.0,
+  "shoulder_peak_controls": [
+    {
+      "control": 975,
+      "old_world_m": [
+        -0.8248687386512756,
+        -2.324735403060913,
+        1.4738520383834839
+      ],
+      "new_world_m": [
+        -0.8335868716239929,
+        -2.3261308670043945,
+        1.4678361415863037
+      ],
+      "height_reduction_m": 0.006015896797180176
+    },
+    {
+      "control": 6256,
+      "old_world_m": [
+        -0.5378605127334595,
+        -2.3538458347320557,
+        1.4556971788406372
+      ],
+      "new_world_m": [
+        -0.5206822156906128,
+        -2.359006404876709,
+        1.4398330450057983
+      ],
+      "height_reduction_m": 0.015864133834838867
+    }
+  ]
+}

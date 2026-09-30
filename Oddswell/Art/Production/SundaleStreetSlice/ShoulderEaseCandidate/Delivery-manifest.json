@@ -1,0 +1,114 @@
+{
+  "result": "PASS",
+  "source": "Oddswell/Art/Production/SundaleStreetSlice/NeckCollarCandidate/NeckCollar.blend",
+  "source_sha256": "1808A6254A566651C0731EE23C5E74FB7A126572863584D7366511D5336260C7",
+  "scene": "ShoulderEase.blend",
+  "blender": "4.5.5 LTS",
+  "native_review_views": 6,
+  "samples": {
+    "figure": 12,
+    "gameplay": 24
+  },
+  "files": [
+    {
+      "path": "audit.py",
+      "sha256": "3CEA9C3672DBE1BF9780845292D2378BFCEF00EBA84AB6C6BD5685B9608716D0",
+      "bytes": 8895
+    },
+    {
+      "path": "audit_collar.py",
+      "sha256": "8B1D27D1E0C7CE9D113A61620FFA68FB9CAE8AA47A4E99564B07A2EC2263056D",
+      "bytes": 6469
+    },
+    {
+      "path": "build.py",
+      "sha256": "C6074452C1855863A8742AF45E2D8BCCBDBE62B3BD9C9D2E06E197D81239530B",
+      "bytes": 5646
+    },
+    {
+      "path": "cold-check.json",
+      "sha256": "7D4366EF004FDAFBEC97D9180C5546344542AC8908AC18ADF7DC739BA905DC72",
+      "bytes": 3229
+    },
+    {
+      "path": "Collar-audit.json",
+      "sha256": "5E38F95ED57B773E7FD75158C8E181AA89481165DC4D529264B3E9587CFAAC31",
+      "bytes": 1119
+    },
+    {
+      "path": "README.md",
+      "sha256": "F57DEBE5BC697FDE57AE2D099BBC88501C4506A073A4ACE97498621FDF88DB3D",
+      "bytes": 4234
+    },
+    {
+      "path": "render.py",
+      "sha256": "EEFA7E4F782E908A47516CA80B44C8057A7E8C9F80BC29C3EED8E43F48FB28C1",
+      "bytes": 1954
+    },
+    {
+      "path": "ShoulderEase-audit.json",
+      "sha256": "6C7298403BAEB8E013486A240579BD9366BBB10F4E5188D173BD798A035756B4",
+      "bytes": 2147
+    },
+    {
+      "path": "ShoulderEase.blend",
+      "sha256": "9A6BB3CA8D257CD7E130D0CDDC460264D7B645D4669E4D68416F7CA35E80730F",
+      "bytes": 640332905
+    },
+    {
+      "path": "ShoulderEase_Front.png",
+      "sha256": "63D00B6CECC3E2C1F5C2F997B60B429D55070E7F0FF76965DC1C7575E2EF420D",
+      "bytes": 852604
+    },
+    {
+      "path": "ShoulderEase_Gameplay.png",
+      "sha256": "E9D6FE0380E4EBDC47913F81BE34E220673A12EED1E70543BD2B3B4CD39F3F9E",
+      "bytes": 1632715
+    },
+    {
+      "path": "ShoulderEase_NeckClose.png",
+      "sha256": "7729266A92FF828FFB81604B296520C5366777444F96F3669F701E707066ABAA",
+      "bytes": 961117
+    },
+    {
+      "path": "ShoulderEase_Profile.png",
+      "sha256": "D95CEB996AF1A65FD1CA12422B80DD63E7DCA6AAE663313266D51BA7039363C1",
+      "bytes": 960573
+    },
+    {
+      "path": "ShoulderEase_Rear.png",
+      "sha256": "1F766280D443F29D9B9123D162BB3DDE0EC25B5622D496859EE6CC492DF4AFAC",
+      "bytes": 1091843
+    },
+    {
+      "path": "ShoulderEase_TorsoFront.png",
+      "sha256": "DB9344EF1AB47CA568C2BE86E3205E66EF47C770B0BB4AE9BF74C46D7F05270A",
+      "bytes": 869835
+    }
+  ],
+  "source_dependencies": [
+    {
+      "path": "Oddswell/Art/Production/SundaleStreetSlice/BodyFlowCandidate/build.py",
+      "sha256": "F151FCCF82E6320F43C22403F8161E79E2B18EF8D51EC3354DB3AB82EFF441EF"
+    },
+    {
+      "path": "Oddswell/Art/Production/SundaleStreetSlice/RaglanPatternCandidate/build.py",
+      "sha256": "66D10AA97DCAE1EA9C4A5C9003B1F17C76E5D4320D603F6C123DEA75FF71495C"
+    },
+    {
+      "path": "Oddswell/Art/Production/SundaleStreetSlice/RaglanPatternCandidate/finish.py",
+      "sha256": "384454A60507DC14968796407D15532E090DFB82061248C8C615D1AA7426C5B1"
+    },
+    {
+      "path": "Oddswell/Art/Production/SundaleStreetSlice/verify_scene.py",
+      "sha256": "05FC57D6B261B50330A1EA3DD983C57D7F6B5E50BCF013947B17438FA75B4BE2"
+    }
+  ],
+  "static_jacket_screen": "PASS",
+  "static_collar_screen": "PASS",
+  "scene_cold_check": "PASS",
+  "goal_status": "active",
+  "runtime_claim": false,
+  "final_art_approval": false,
+  "next": "Chest/underarm cloth and collar attachment, neck texture mapping and facial individuality; whole-reference review, then architecture/retail/planting and gated engine handoff."
+}
