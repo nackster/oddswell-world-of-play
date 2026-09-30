@@ -1,0 +1,77 @@
+{
+  "result": "PASS",
+  "openings": 3,
+  "controls": 5279,
+  "faces": 5120,
+  "whole_midsurface_nonadjacent_overlap_pairs": 0,
+  "whole_thick_shell_nonadjacent_overlap_pairs": 0,
+  "fabric_volume_m3": 0.00036502738849915193,
+  "clearance": {
+    "anatomical legs": {
+      "min_m": 0.005437662359327078,
+      "inside_samples": 0,
+      "samples": 21180,
+      "worst_point": [
+        -0.932525098323822,
+        -2.4051671028137207,
+        0.69961017370224
+      ]
+    },
+    "posed pelvic fitting support": {
+      "min_m": 0.004191552332486026,
+      "inside_samples": 0,
+      "samples": 47089,
+      "worst_point": [
+        -0.9113805294036865,
+        -2.3259425163269043,
+        0.8116866946220398
+      ]
+    }
+  },
+  "gravity_frames": 35,
+  "maximum_gravity_motion_m": 0.021788625282612998,
+  "maximum_final_clearance_adjustment_m": 0.014802870638475876,
+  "maximum_crotch_fillet_m": 0.010877061582928926,
+  "native_stance_control_driven_parts": 244,
+  "new_pattern_inverse_stance_restore_error_m": 0.0,
+  "runtime_import_ready": false,
+  "maximum_sewn_detail_surface_distance_m": {
+    "Character | inset back pocket stitch left": 0.00038109568413347006,
+    "Character | pocket mouth topstitch left": 0.00024118029978126287,
+    "Character | inset back pocket stitch right": 0.00045117491390556097,
+    "Character | pocket mouth topstitch right": 0.00013612076872959733,
+    "Character | shorts leg hem left": 0.0010600038804113865,
+    "Character | shorts leg hem left.001": 0.001060313661582768,
+    "Character | shorts leg hem right": 0.0010597166838124394,
+    "Character | shorts leg hem right.001": 0.0010598943335935473
+  },
+  "visible_character_evaluated_viewport_triangles": 3462436,
+  "visible_character_objects": 313,
+  "visible_character_materials": 35,
+  "largest_character_parts": [
+    {
+      "name": "Character | cropped scalp fibers",
+      "triangles": 1728000
+    },
+    {
+      "name": "Character | shorts leg continuous tailoring",
+      "triangles": 330240
+    },
+    {
+      "name": "Character | tailored slate jacket",
+      "triangles": 208288
+    },
+    {
+      "name": "Character | standing collar",
+      "triangles": 150528
+    },
+    {
+      "name": "Character | anatomical head",
+      "triangles": 139152
+    },
+    {
+      "name": "Character | fine calf hair",
+      "triangles": 93600
+    }
+  ]
+}

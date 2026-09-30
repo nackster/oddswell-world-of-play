@@ -1,0 +1,75 @@
+{
+  "date": "2026-09-29",
+  "source": "BodyFlowCandidate/BodyFlow.blend",
+  "source_sha256": "13B5DE6E9BA2471F2A19F538B806FB05C052B35E0CC50D56CD65E5178E82B18A",
+  "native_control": "Body flow | stance blend",
+  "static_cloth_screen": "Zero whole midsurface and thick-shell nonadjacent BVH overlap pairs",
+  "runtime_import_ready": false,
+  "files": [
+    {
+      "name": "audit.py",
+      "bytes": 7676,
+      "sha256": "F324821639F374714102ACFD1A05CE49029DFE1CF90BB4EC814A33E2380D8056"
+    },
+    {
+      "name": "build.py",
+      "bytes": 15658,
+      "sha256": "879FE87E8E3DC8B21B115C127F3125D11DB3CCFF609BFFFF888DF8014E70A98E"
+    },
+    {
+      "name": "cold-check.json",
+      "bytes": 3229,
+      "sha256": "A290F4223DB96A178DCE62D3B2EF7C782462A4C2318077942CCECE52561A6576"
+    },
+    {
+      "name": "FourPanelCotton_Front.png",
+      "bytes": 855575,
+      "sha256": "E7081C42EABA4085E78B03DC2F9BF4949956A84356712F8E3842164918BD4658"
+    },
+    {
+      "name": "FourPanelCotton_Gameplay.png",
+      "bytes": 1632537,
+      "sha256": "498A4B72790EE0061E8E6BBC5B1232E4216B01AD155F476D045BDC968695AF9B"
+    },
+    {
+      "name": "FourPanelCotton_Profile.png",
+      "bytes": 966032,
+      "sha256": "5927D416ACB015153EA88436ECED55D064B7BAAFD9225F95D99301343455DBFD"
+    },
+    {
+      "name": "FourPanelCotton_Rear.png",
+      "bytes": 1098023,
+      "sha256": "A29252BFE8B0BADFA5A26BA7651DF85FF673A4790F020D90B195AE7D111E83E9"
+    },
+    {
+      "name": "FourPanelCotton_ShortsRear.png",
+      "bytes": 991501,
+      "sha256": "AFFA515C33249CA6A8C1F518803C90CE23A3C465EC26D7E45EAE5D4BB606ECAE"
+    },
+    {
+      "name": "FourPanelCotton-audit.json",
+      "bytes": 2347,
+      "sha256": "03E71857C6D264D7196A96AAF172DD074F5958F80728B3EEBB01DD9BBD8A491C"
+    },
+    {
+      "name": "FourPanelCotton.blend",
+      "bytes": 641169054,
+      "sha256": "39078A975AB485FDBB543A57C06C32F127A5C7BC6EDE2C3E9880A2CF0A854B20"
+    },
+    {
+      "name": "panel-layout.json",
+      "bytes": 77264,
+      "sha256": "E25C9B6C35BCBA2C66B2C4820C9B6ED42DA3301121ECE91E299521D7F9867CBC"
+    },
+    {
+      "name": "README.md",
+      "bytes": 3935,
+      "sha256": "B7B11D6895548B06FDE20FE97EDA14F1D906A9FDDB478B431130BEAD22921E72"
+    },
+    {
+      "name": "render.py",
+      "bytes": 1907,
+      "sha256": "198426200DB58060B3621FAF9619C19620AED80CAA26410363CB406C47F647E0"
+    }
+  ]
+}

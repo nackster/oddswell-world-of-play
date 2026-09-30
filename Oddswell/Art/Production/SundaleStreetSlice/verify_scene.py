@@ -20,7 +20,8 @@ assert scene.get('source_skin_uvs') and scene.get('reference_upper_body_fit')
 assert scene.get('body_refinement')
 assert scene.get('articulated_walking_pose') and scene.get('photographic_fabric_maps')
 assert scene.get('anatomical_finger_articulation')
-assert scene.get('cotton_drape_frames')==40 and 0<scene['cotton_drape_maximum_delta_m']<.12
+expected_cotton_frames=scene['four_panel_shorts_gravity_frames'] if scene.get('four_panel_shorts_study') else 40
+assert scene.get('cotton_drape_frames')==expected_cotton_frames and 0<scene['cotton_drape_maximum_delta_m']<.12
 for obj in scene.objects:
     if obj.name.startswith('Character | anatomical '):
         uv=obj.data.uv_layers.get('MakeHuman source UV')
