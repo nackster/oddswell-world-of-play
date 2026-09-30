@@ -3088,6 +3088,14 @@ The preserved Phase 1L.5aq report identity is `4,027` bytes/SHA `3E14CFABBD0FC4C
 - **Failures:** neckline/shoulders/sleeves/hem, no rejected silhouettes and stable opposing extremes. The profile remains slab-like; frame `6` has a large left bulge and frame `16` a right spike plus tilted hem.
 - **Stopped boundary:** export/import preparation remains ineligible. Exactly one smallest future top-only side/underarm-to-hem transition coordinate/normalized-blend correction is recorded, but no correction or seventh phase follows in this nightly batch. See [[Development/Reports/Phase 1L5cr Yoke Blended Combined Starter Outfit Offline Visual Acceptance Review]].
 
+### Phase 1L.5cs side / underarm-to-hem transition correction status
+
+- **COMPLETE TARGETED OFFLINE PROOF / NO ACCEPTANCE VERDICT:** exact Phase 1L.5cq custody is retained; derived top is `AF724E26CA5CEF052FDFC209FE4B26E2F10642B700B907A9BDC519DEA6DD9BD8` and semantic identity is `37257F8E8066BD5E1BAD5C6C92884275B8E56B54D73F497775674761F0C21839`.
+- **Bounded edit:** `48` vertices on a predeclared `24`-pair bilateral side strip change `X/Y` coordinates and normalized weights; `16` paired waist-opening anchors change weights only. The other `450` coordinates and `434` weights remain exact. Central depth, neckline, yoke, caps, target `Z`, opening geometry and all non-top custody remain exact; waist taper has zero outward regression.
+- **Measured reductions:** neutral-profile target depth `0.616801232 -> 0.584710002 m`; frame-6 left and frame-16 right target extent `0.387268066 -> 0.359232068 m`; frame-6/16 hem ranges `0.016934097 -> 0.003166914 m` and `0.016874254 -> 0.003271818 m`.
+- **Retained contracts:** width/ratio `0.930000007 m / 1.377059677`; one component/four openings/zero other non-manifold edges; all `21` frames intersections `0`, translations `0`, endpoint equality true. Native `75/75`, Python `105/105`, Brain Admin and retained packaged character checks pass.
+- **Next gate:** rerun the exact unchanged fail-closed combined review. Export/import preparation remains stopped. See [[Development/Reports/Phase 1L5cs Side Underarm to Hem Transition Coordinate and Normalized Blend Correction Walk Proof]].
+
 ### Sundale visual human body pose candidate — September 23, 2026
 
 - **Status:** editable offline visual candidate, with native front/rear renders and a fresh cold reopen; the human-realism goal remains active.
