@@ -1,0 +1,9 @@
+# Whole-figure review — October 6, 2026
+
+Matched native front and rear torso views show a rounder shoulder transition and a softer underarm crease. The long triangular rear shoulder fold is reduced, and the reconstructed raglan stitches no longer project as stray lines beside the figure. The chest counters the turning pelvis through the retained walk, keeping the torso and hips connected rather than rigid. The slate jacket, restrained teal, cotton shorts, warm mineral/brick street and blue court continue the intended OddsWell visual family.
+
+The figure remains below the owner's very-real human target. The hands keep a fixed finger gesture, cuff openings and wrist joins remain loose, the shorts seat and pockets still look manufactured, and footwear and facial individuality need further work. A static render or positive sampled body gap does not establish natural cloth response or collision-free motion over every subframe. Architecture and planting have not changed in this checkpoint.
+
+Next, use the retained anatomical hand/digit landmarks to add restrained native finger articulation, carrying nails and nail folds with their digits. Refine the cuff-to-wrist fit and inspect both hands in opposing walking poses. Improve the shorts' hip/seat fit and pocket construction, then continue skin, facial individuality and shoes. Review the whole character against [the original reference](../../../Reviews/OddsWellStreetIdentityCandidate/OddsWell_Visual_Direction_Concept.png). Follow that review with deeper and more varied storefronts, the open arena approach, layered civic planting and warm canopy lighting.
+
+This is progress on the Beta Game Bible's avatar/clothing and visual consistency work. It does not close a beta roadmap phase or change the separate accepted runtime skeleton/animation, starter-outfit review, physical first-hour evidence or stopped export/import status. The human/landscape goal stays active.
