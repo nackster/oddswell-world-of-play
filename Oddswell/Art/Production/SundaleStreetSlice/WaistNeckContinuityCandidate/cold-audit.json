@@ -1,0 +1,354 @@
+{
+  "candidate_sha256": "2900363715a0056444b9b85509a00dcc01ab6c5e5cfee4fcac32a537af513079",
+  "source_sha256": "9775f815af14570a673dc000ea9535c05ef35f06c6b0aeea1260a3105396cb20",
+  "original_mesh_curve_count": 4765,
+  "packed_maps": 31,
+  "original_controls_edges_uv_old_keys_maps_and_all_rest_six_poses_exact": true,
+  "allowed_added_key": "Continuous knitted waist fit",
+  "frames": [
+    {
+      "frame": 1,
+      "maximum_shell_layer_displacement_m": 0.001200133482146047,
+      "maximum_knit_edge_m": 0.001500128572409607,
+      "maximum_sampled_upper_join_distance_m": 0.000650085392408073,
+      "join_samples": 96
+    },
+    {
+      "frame": 2,
+      "maximum_shell_layer_displacement_m": 0.0012001309481561493,
+      "maximum_knit_edge_m": 0.0015001239637436794,
+      "maximum_sampled_upper_join_distance_m": 0.0006501873140223324,
+      "join_samples": 96
+    },
+    {
+      "frame": 3,
+      "maximum_shell_layer_displacement_m": 0.0012001338151758636,
+      "maximum_knit_edge_m": 0.001500121382316187,
+      "maximum_sampled_upper_join_distance_m": 0.0006500236340798438,
+      "join_samples": 96
+    },
+    {
+      "frame": 4,
+      "maximum_shell_layer_displacement_m": 0.0012001322506749893,
+      "maximum_knit_edge_m": 0.001500119156127443,
+      "maximum_sampled_upper_join_distance_m": 0.0006500932504422963,
+      "join_samples": 96
+    },
+    {
+      "frame": 5,
+      "maximum_shell_layer_displacement_m": 0.0012001312205011144,
+      "maximum_knit_edge_m": 0.0015001219424152818,
+      "maximum_sampled_upper_join_distance_m": 0.000650267640594393,
+      "join_samples": 96
+    },
+    {
+      "frame": 6,
+      "maximum_shell_layer_displacement_m": 0.0012001323690857227,
+      "maximum_knit_edge_m": 0.0015001186587869529,
+      "maximum_sampled_upper_join_distance_m": 0.0006499773589894176,
+      "join_samples": 96
+    },
+    {
+      "frame": 7,
+      "maximum_shell_layer_displacement_m": 0.0012001335191493645,
+      "maximum_knit_edge_m": 0.001500120739326905,
+      "maximum_sampled_upper_join_distance_m": 0.0006500560557469726,
+      "join_samples": 96
+    },
+    {
+      "frame": 8,
+      "maximum_shell_layer_displacement_m": 0.0012001336775235506,
+      "maximum_knit_edge_m": 0.0015001189027206425,
+      "maximum_sampled_upper_join_distance_m": 0.000649841211270541,
+      "join_samples": 96
+    },
+    {
+      "frame": 9,
+      "maximum_shell_layer_displacement_m": 0.0012001334880665778,
+      "maximum_knit_edge_m": 0.0015001195587362904,
+      "maximum_sampled_upper_join_distance_m": 0.0006501744501292706,
+      "join_samples": 96
+    },
+    {
+      "frame": 10,
+      "maximum_shell_layer_displacement_m": 0.0012001372239157388,
+      "maximum_knit_edge_m": 0.0015001182573620086,
+      "maximum_sampled_upper_join_distance_m": 0.0006499275332316756,
+      "join_samples": 96
+    },
+    {
+      "frame": 11,
+      "maximum_shell_layer_displacement_m": 0.0012001344353511423,
+      "maximum_knit_edge_m": 0.0015001203923730897,
+      "maximum_sampled_upper_join_distance_m": 0.0006501544849015772,
+      "join_samples": 96
+    },
+    {
+      "frame": 12,
+      "maximum_shell_layer_displacement_m": 0.001200130261372919,
+      "maximum_knit_edge_m": 0.0015001188908792022,
+      "maximum_sampled_upper_join_distance_m": 0.0006500525632873178,
+      "join_samples": 96
+    },
+    {
+      "frame": 13,
+      "maximum_shell_layer_displacement_m": 0.0012001313877564158,
+      "maximum_knit_edge_m": 0.0015001267263398317,
+      "maximum_sampled_upper_join_distance_m": 0.0006500003510154784,
+      "join_samples": 96
+    },
+    {
+      "frame": 14,
+      "maximum_shell_layer_displacement_m": 0.0012001354714427787,
+      "maximum_knit_edge_m": 0.0015001210981220633,
+      "maximum_sampled_upper_join_distance_m": 0.0006500979070551693,
+      "join_samples": 96
+    },
+    {
+      "frame": 15,
+      "maximum_shell_layer_displacement_m": 0.0012001232810279624,
+      "maximum_knit_edge_m": 0.001500090082746456,
+      "maximum_sampled_upper_join_distance_m": 0.000650199712254107,
+      "join_samples": 96
+    },
+    {
+      "frame": 16,
+      "maximum_shell_layer_displacement_m": 0.0012000956375158842,
+      "maximum_knit_edge_m": 0.001500064542419974,
+      "maximum_sampled_upper_join_distance_m": 0.00064997433219105,
+      "join_samples": 96
+    },
+    {
+      "frame": 17,
+      "maximum_shell_layer_displacement_m": 0.001200089432587803,
+      "maximum_knit_edge_m": 0.0015000661718603174,
+      "maximum_sampled_upper_join_distance_m": 0.0006501275347545743,
+      "join_samples": 96
+    },
+    {
+      "frame": 18,
+      "maximum_shell_layer_displacement_m": 0.001200088751701566,
+      "maximum_knit_edge_m": 0.0015000666644814683,
+      "maximum_sampled_upper_join_distance_m": 0.0006498930742964149,
+      "join_samples": 96
+    },
+    {
+      "frame": 19,
+      "maximum_shell_layer_displacement_m": 0.0012000856729068015,
+      "maximum_knit_edge_m": 0.0015000666644814683,
+      "maximum_sampled_upper_join_distance_m": 0.0006500109448097646,
+      "join_samples": 96
+    },
+    {
+      "frame": 20,
+      "maximum_shell_layer_displacement_m": 0.0012000903147789618,
+      "maximum_knit_edge_m": 0.0015000636945418856,
+      "maximum_sampled_upper_join_distance_m": 0.00065006990917027,
+      "join_samples": 96
+    },
+    {
+      "frame": 21,
+      "maximum_shell_layer_displacement_m": 0.001200088923403349,
+      "maximum_knit_edge_m": 0.0015000691749521276,
+      "maximum_sampled_upper_join_distance_m": 0.0006502002943307161,
+      "join_samples": 96
+    },
+    {
+      "frame": 22,
+      "maximum_shell_layer_displacement_m": 0.001200085749876767,
+      "maximum_knit_edge_m": 0.0015000653097729142,
+      "maximum_sampled_upper_join_distance_m": 0.0006500001181848347,
+      "join_samples": 96
+    },
+    {
+      "frame": 23,
+      "maximum_shell_layer_displacement_m": 0.0012000823513520543,
+      "maximum_knit_edge_m": 0.0015000649782007042,
+      "maximum_sampled_upper_join_distance_m": 0.0006499869050458074,
+      "join_samples": 96
+    },
+    {
+      "frame": 24,
+      "maximum_shell_layer_displacement_m": 0.0012000886273657765,
+      "maximum_knit_edge_m": 0.001500075555318084,
+      "maximum_sampled_upper_join_distance_m": 0.0006501419702544808,
+      "join_samples": 96
+    },
+    {
+      "frame": 25,
+      "maximum_shell_layer_displacement_m": 0.001200083920358562,
+      "maximum_knit_edge_m": 0.001500070169665755,
+      "maximum_sampled_upper_join_distance_m": 0.0006500881281681359,
+      "join_samples": 96
+    },
+    {
+      "frame": 26,
+      "maximum_shell_layer_displacement_m": 0.0012000830381627026,
+      "maximum_knit_edge_m": 0.0015000667592162864,
+      "maximum_sampled_upper_join_distance_m": 0.0006501900497823954,
+      "join_samples": 96
+    },
+    {
+      "frame": 27,
+      "maximum_shell_layer_displacement_m": 0.0012000842341596172,
+      "maximum_knit_edge_m": 0.0015000654518752675,
+      "maximum_sampled_upper_join_distance_m": 0.0006498860893771052,
+      "join_samples": 96
+    },
+    {
+      "frame": 28,
+      "maximum_shell_layer_displacement_m": 0.0012000848143953148,
+      "maximum_knit_edge_m": 0.0015000680949765854,
+      "maximum_sampled_upper_join_distance_m": 0.0006500614690594375,
+      "join_samples": 96
+    },
+    {
+      "frame": 29,
+      "maximum_shell_layer_displacement_m": 0.0012000823409906837,
+      "maximum_knit_edge_m": 0.0015000685781236345,
+      "maximum_sampled_upper_join_distance_m": 0.000650267640594393,
+      "join_samples": 96
+    },
+    {
+      "frame": 30,
+      "maximum_shell_layer_displacement_m": 0.0012000832513107548,
+      "maximum_knit_edge_m": 0.0015000639846678217,
+      "maximum_sampled_upper_join_distance_m": 0.0006501150783151388,
+      "join_samples": 96
+    },
+    {
+      "frame": 31,
+      "maximum_shell_layer_displacement_m": 0.0012000868807426123,
+      "maximum_knit_edge_m": 0.0015000671760494152,
+      "maximum_sampled_upper_join_distance_m": 0.0006500109448097646,
+      "join_samples": 96
+    },
+    {
+      "frame": 32,
+      "maximum_shell_layer_displacement_m": 0.0012000866143083468,
+      "maximum_knit_edge_m": 0.0015000648313615592,
+      "maximum_sampled_upper_join_distance_m": 0.0006499005830846727,
+      "join_samples": 96
+    },
+    {
+      "frame": 33,
+      "maximum_shell_layer_displacement_m": 0.0012000856906691018,
+      "maximum_knit_edge_m": 0.0015000645151836739,
+      "maximum_sampled_upper_join_distance_m": 0.0006501744501292706,
+      "join_samples": 96
+    },
+    {
+      "frame": 34,
+      "maximum_shell_layer_displacement_m": 0.001200094198780646,
+      "maximum_knit_edge_m": 0.001500065840288298,
+      "maximum_sampled_upper_join_distance_m": 0.00064997433219105,
+      "join_samples": 96
+    },
+    {
+      "frame": 35,
+      "maximum_shell_layer_displacement_m": 0.0012000900009794964,
+      "maximum_knit_edge_m": 0.0015000683128664504,
+      "maximum_sampled_upper_join_distance_m": 0.0006502917385660112,
+      "join_samples": 96
+    },
+    {
+      "frame": 36,
+      "maximum_shell_layer_displacement_m": 0.001200090101632164,
+      "maximum_knit_edge_m": 0.0015000715906840784,
+      "maximum_sampled_upper_join_distance_m": 0.0006500525632873178,
+      "join_samples": 96
+    },
+    {
+      "frame": 37,
+      "maximum_shell_layer_displacement_m": 0.0012000933225130713,
+      "maximum_knit_edge_m": 0.0015000703780818601,
+      "maximum_sampled_upper_join_distance_m": 0.000650045636575669,
+      "join_samples": 96
+    },
+    {
+      "frame": 38,
+      "maximum_shell_layer_displacement_m": 0.0012000894562707956,
+      "maximum_knit_edge_m": 0.0015000746979727893,
+      "maximum_sampled_upper_join_distance_m": 0.0006500072777271271,
+      "join_samples": 96
+    },
+    {
+      "frame": 39,
+      "maximum_shell_layer_displacement_m": 0.0012000888701165914,
+      "maximum_knit_edge_m": 0.0015000626773243849,
+      "maximum_sampled_upper_join_distance_m": 0.0006502223550342023,
+      "join_samples": 96
+    },
+    {
+      "frame": 40,
+      "maximum_shell_layer_displacement_m": 0.001200086620229109,
+      "maximum_knit_edge_m": 0.0015000678770866888,
+      "maximum_sampled_upper_join_distance_m": 0.00064997433219105,
+      "join_samples": 96
+    },
+    {
+      "frame": 41,
+      "maximum_shell_layer_displacement_m": 0.0012000878043809413,
+      "maximum_knit_edge_m": 0.0015000677302478274,
+      "maximum_sampled_upper_join_distance_m": 0.0006501501193270087,
+      "join_samples": 96
+    },
+    {
+      "frame": 42,
+      "maximum_shell_layer_displacement_m": 0.0012000850038599716,
+      "maximum_knit_edge_m": 0.0015000649450434792,
+      "maximum_sampled_upper_join_distance_m": 0.000649863388389349,
+      "join_samples": 96
+    },
+    {
+      "frame": 43,
+      "maximum_shell_layer_displacement_m": 0.0012000791304417014,
+      "maximum_knit_edge_m": 0.0015000629035043544,
+      "maximum_sampled_upper_join_distance_m": 0.0006500786985270679,
+      "join_samples": 96
+    },
+    {
+      "frame": 44,
+      "maximum_shell_layer_displacement_m": 0.0012000768390902875,
+      "maximum_knit_edge_m": 0.0015000412374399734,
+      "maximum_sampled_upper_join_distance_m": 0.00065006990917027,
+      "join_samples": 96
+    },
+    {
+      "frame": 45,
+      "maximum_shell_layer_displacement_m": 0.0012000773778839075,
+      "maximum_knit_edge_m": 0.001500042260593036,
+      "maximum_sampled_upper_join_distance_m": 0.0006502578034996986,
+      "join_samples": 96
+    },
+    {
+      "frame": 46,
+      "maximum_shell_layer_displacement_m": 0.001200075755581506,
+      "maximum_knit_edge_m": 0.0015000430942727929,
+      "maximum_sampled_upper_join_distance_m": 0.0006500592571683228,
+      "join_samples": 96
+    },
+    {
+      "frame": 47,
+      "maximum_shell_layer_displacement_m": 0.0012000736655317491,
+      "maximum_knit_edge_m": 0.001500041431649636,
+      "maximum_sampled_upper_join_distance_m": 0.0006500391173176467,
+      "join_samples": 96
+    },
+    {
+      "frame": 48,
+      "maximum_shell_layer_displacement_m": 0.0012000744707638146,
+      "maximum_knit_edge_m": 0.0015000432174299904,
+      "maximum_sampled_upper_join_distance_m": 0.0006501192692667246,
+      "join_samples": 96
+    },
+    {
+      "frame": 49,
+      "maximum_shell_layer_displacement_m": 0.0012000797047590705,
+      "maximum_knit_edge_m": 0.0015000506021065484,
+      "maximum_sampled_upper_join_distance_m": 0.0006500881281681359,
+      "join_samples": 96
+    }
+  ],
+  "scope": "All 49 authored integer frames at render subdivision levels: exact simple-shell layer displacement, bounded knit edges and sampled upper seam distance. Not complete garment/body collision, self-intersection or animated-subframe certification."
+}
