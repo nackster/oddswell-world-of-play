@@ -1,0 +1,22 @@
+{
+  "Walk surface | Character | raglan topstitch -1 -1": {
+    "controls": 920,
+    "binding": "Native jacket weight transfer, armature deformation, nearest-surface projection above the actual moving jacket.",
+    "offset_m": 0.0005499999970197678
+  },
+  "Walk surface | Character | raglan topstitch -1 1": {
+    "controls": 848,
+    "binding": "Native jacket weight transfer, armature deformation, nearest-surface projection above the actual moving jacket.",
+    "offset_m": 0.0005499999970197678
+  },
+  "Walk surface | Character | raglan topstitch 1 -1": {
+    "controls": 864,
+    "binding": "Native jacket weight transfer, armature deformation, nearest-surface projection above the actual moving jacket.",
+    "offset_m": 0.0005499999970197678
+  },
+  "Walk surface | Character | raglan topstitch 1 1": {
+    "controls": 1000,
+    "binding": "Native jacket weight transfer, armature deformation, nearest-surface projection above the actual moving jacket.",
+    "offset_m": 0.0005499999970197678
+  }
+}
