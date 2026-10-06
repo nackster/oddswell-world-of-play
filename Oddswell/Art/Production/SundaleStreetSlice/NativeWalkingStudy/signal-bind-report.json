@@ -1,0 +1,6 @@
+{
+  "material": "Character | slate weave with continuous teal signal",
+  "rest_attribute": "Walk rest surface coordinate",
+  "replaced_position_links": 1,
+  "reason": "The old world-space signal mask stayed in the street when the skinned jacket moved."
+}
