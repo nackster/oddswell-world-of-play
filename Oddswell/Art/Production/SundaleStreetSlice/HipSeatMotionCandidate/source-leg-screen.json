@@ -1,0 +1,252 @@
+{
+  "source_sha256": "dc0b0884a33e515d982cccc89c315de5f693fd170220028d786b43af8ae90750",
+  "screen_version": 2,
+  "scope": "Rest-registered 0.60\u20130.70 m shorts band against skin faces, excluding artificial leg-cap faces; both objects at render subdivision levels",
+  "frames": {
+    "1": {
+      "minimum_signed_m": 0.005660680588334799,
+      "negative_samples": 0,
+      "samples": 2643
+    },
+    "2": {
+      "minimum_signed_m": 0.005664382362738252,
+      "negative_samples": 0,
+      "samples": 2643
+    },
+    "3": {
+      "minimum_signed_m": 0.00560448388569057,
+      "negative_samples": 0,
+      "samples": 2643
+    },
+    "4": {
+      "minimum_signed_m": 0.005702708964236081,
+      "negative_samples": 0,
+      "samples": 2643
+    },
+    "5": {
+      "minimum_signed_m": 0.005637699650833383,
+      "negative_samples": 0,
+      "samples": 2643
+    },
+    "6": {
+      "minimum_signed_m": 0.005572148395003751,
+      "negative_samples": 0,
+      "samples": 2643
+    },
+    "7": {
+      "minimum_signed_m": 0.005514147342182696,
+      "negative_samples": 0,
+      "samples": 2643
+    },
+    "8": {
+      "minimum_signed_m": 0.005467639770358801,
+      "negative_samples": 0,
+      "samples": 2643
+    },
+    "9": {
+      "minimum_signed_m": 0.005432047299109399,
+      "negative_samples": 0,
+      "samples": 2643
+    },
+    "10": {
+      "minimum_signed_m": 0.005295258481055498,
+      "negative_samples": 0,
+      "samples": 2643
+    },
+    "11": {
+      "minimum_signed_m": 0.00539621221832931,
+      "negative_samples": 0,
+      "samples": 2643
+    },
+    "12": {
+      "minimum_signed_m": 0.00539681816007942,
+      "negative_samples": 0,
+      "samples": 2643
+    },
+    "13": {
+      "minimum_signed_m": 0.005415349034592509,
+      "negative_samples": 0,
+      "samples": 2643
+    },
+    "14": {
+      "minimum_signed_m": 0.005436567822471261,
+      "negative_samples": 0,
+      "samples": 2643
+    },
+    "15": {
+      "minimum_signed_m": 0.0054611185332760215,
+      "negative_samples": 0,
+      "samples": 2643
+    },
+    "16": {
+      "minimum_signed_m": 0.005488776718266308,
+      "negative_samples": 0,
+      "samples": 2643
+    },
+    "17": {
+      "minimum_signed_m": 0.004083813193574315,
+      "negative_samples": 0,
+      "samples": 2643
+    },
+    "18": {
+      "minimum_signed_m": 0.005555529030971229,
+      "negative_samples": 0,
+      "samples": 2643
+    },
+    "19": {
+      "minimum_signed_m": 0.002824281655193772,
+      "negative_samples": 0,
+      "samples": 2643
+    },
+    "20": {
+      "minimum_signed_m": 0.005493669823408709,
+      "negative_samples": 0,
+      "samples": 2643
+    },
+    "21": {
+      "minimum_signed_m": 0.005534078343771398,
+      "negative_samples": 0,
+      "samples": 2643
+    },
+    "22": {
+      "minimum_signed_m": 0.005735063925385475,
+      "negative_samples": 0,
+      "samples": 2643
+    },
+    "23": {
+      "minimum_signed_m": 0.003046120073122438,
+      "negative_samples": 0,
+      "samples": 2643
+    },
+    "24": {
+      "minimum_signed_m": 0.005616722162812948,
+      "negative_samples": 0,
+      "samples": 2643
+    },
+    "25": {
+      "minimum_signed_m": 0.005660774186253548,
+      "negative_samples": 0,
+      "samples": 2643
+    },
+    "26": {
+      "minimum_signed_m": 0.005664474796503782,
+      "negative_samples": 0,
+      "samples": 2643
+    },
+    "27": {
+      "minimum_signed_m": 0.005604432430118322,
+      "negative_samples": 0,
+      "samples": 2643
+    },
+    "28": {
+      "minimum_signed_m": 0.005702774913515896,
+      "negative_samples": 0,
+      "samples": 2643
+    },
+    "29": {
+      "minimum_signed_m": 0.0056374593114014715,
+      "negative_samples": 0,
+      "samples": 2643
+    },
+    "30": {
+      "minimum_signed_m": 0.005572651803959161,
+      "negative_samples": 0,
+      "samples": 2643
+    },
+    "31": {
+      "minimum_signed_m": 0.005514334072358906,
+      "negative_samples": 0,
+      "samples": 2643
+    },
+    "32": {
+      "minimum_signed_m": 0.005467685637995601,
+      "negative_samples": 0,
+      "samples": 2643
+    },
+    "33": {
+      "minimum_signed_m": 0.0054321205243468285,
+      "negative_samples": 0,
+      "samples": 2643
+    },
+    "34": {
+      "minimum_signed_m": 0.005294912261888385,
+      "negative_samples": 0,
+      "samples": 2643
+    },
+    "35": {
+      "minimum_signed_m": 0.005396575783379376,
+      "negative_samples": 0,
+      "samples": 2643
+    },
+    "36": {
+      "minimum_signed_m": 0.005396739114075899,
+      "negative_samples": 0,
+      "samples": 2643
+    },
+    "37": {
+      "minimum_signed_m": 0.0054153058445081115,
+      "negative_samples": 0,
+      "samples": 2643
+    },
+    "38": {
+      "minimum_signed_m": 0.005436597974039614,
+      "negative_samples": 0,
+      "samples": 2643
+    },
+    "39": {
+      "minimum_signed_m": 0.005460823304019868,
+      "negative_samples": 0,
+      "samples": 2643
+    },
+    "40": {
+      "minimum_signed_m": 0.005488858441822231,
+      "negative_samples": 0,
+      "samples": 2643
+    },
+    "41": {
+      "minimum_signed_m": 0.004083754978637444,
+      "negative_samples": 0,
+      "samples": 2643
+    },
+    "42": {
+      "minimum_signed_m": 0.005555339943384752,
+      "negative_samples": 0,
+      "samples": 2643
+    },
+    "43": {
+      "minimum_signed_m": 0.002824276885803556,
+      "negative_samples": 0,
+      "samples": 2643
+    },
+    "44": {
+      "minimum_signed_m": 0.005493691112860688,
+      "negative_samples": 0,
+      "samples": 2643
+    },
+    "45": {
+      "minimum_signed_m": 0.0055341171100735664,
+      "negative_samples": 0,
+      "samples": 2643
+    },
+    "46": {
+      "minimum_signed_m": 0.005734775681048632,
+      "negative_samples": 0,
+      "samples": 2643
+    },
+    "47": {
+      "minimum_signed_m": 0.0030462012873613276,
+      "negative_samples": 0,
+      "samples": 2643
+    },
+    "48": {
+      "minimum_signed_m": 0.005616676528006792,
+      "negative_samples": 0,
+      "samples": 2643
+    },
+    "49": {
+      "minimum_signed_m": 0.005660521565005183,
+      "negative_samples": 0,
+      "samples": 2643
+    }
+  }
+}

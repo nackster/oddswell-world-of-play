@@ -1,0 +1,95 @@
+{
+  "date": "2026-10-06",
+  "status": "reviewed offline hip/seat and garment-attachment checkpoint; human/landscape goal active",
+  "source": {
+    "path": "../HandArticulationCandidate/HandMotion.blend",
+    "sha256": "dc0b0884a33e515d982cccc89c315de5f693fd170220028d786b43af8ae90750",
+    "bytes": 648454756
+  },
+  "files": {
+    "HipSeat.blend": {
+      "sha256": "9775f815af14570a673dc000ea9535c05ef35f06c6b0aeea1260a3105396cb20",
+      "bytes": 646349072
+    },
+    "build.py": {
+      "sha256": "195f31c407cc75546e205aea739a4cc56b0a665335196560f38c3519c61e745a",
+      "bytes": 7891
+    },
+    "bind_uv.py": {
+      "sha256": "019e78f03d9513104558e5b099e9748a7747e8277d0344f0ecacb009775f3bd7",
+      "bytes": 5998
+    },
+    "turned_hem.py": {
+      "sha256": "0bd622ec438b772abb9ad66db9869fab4ef23e629d95fee825c9e023bd914f8f",
+      "bytes": 3489
+    },
+    "audit.py": {
+      "sha256": "e04eea631ca3fac827054f0e8f4a3276b524de3cb1fa3c76ecafc9a21320c614",
+      "bytes": 6958
+    },
+    "render.py": {
+      "sha256": "408098397d3376ce5c5fa2f95e6f8eceab8ce3ed647a11d33c8d87d97125832a",
+      "bytes": 388
+    },
+    "build-report.json": {
+      "sha256": "ab7ab91090766b52509bb4e9043ce1682b0cfcf33ac53b4551b82b044de28d44",
+      "bytes": 5787
+    },
+    "cold-audit.json": {
+      "sha256": "f46f0a1447afd0286ce6df6c663fd74c74dd834027d81d88e5b61491a2232060",
+      "bytes": 191756
+    },
+    "source-leg-screen.json": {
+      "sha256": "88ffda231e3efec422f6d0d9e8079022730a39d96583694979bcd4414fbd5c87",
+      "bytes": 6064
+    },
+    "README.md": {
+      "sha256": "1de8b1569e2196fc509cfa20dab4e5fd1485aab6d467b74702b31b604f0a6045",
+      "bytes": 4057
+    },
+    "WholeFigureReview.md": {
+      "sha256": "81d8ef206ce83e0ff99496fda9a0f9aadcb56d7b355bc487584ea167d139cb28",
+      "bytes": 2526
+    },
+    "HipSeatWalking.mp4": {
+      "sha256": "5352fb2d560316f288e3365b1e7faaddc2c166d247d3363d278979e4b028a357",
+      "bytes": 807800
+    },
+    "preview-info.json": {
+      "sha256": "805aa774a943cb706eb675963b6d78168d8719d32e874af096bbb847570f6caf",
+      "bytes": 127
+    },
+    "Contact_Profile.png": {
+      "sha256": "ad9669a97acec26215ee106423f467e2ab71b7417ba639114511ede6befc41dc",
+      "bytes": 959862
+    },
+    "Passing_Profile.png": {
+      "sha256": "618722265d763e5069ba2a0299a537d1063cbaeebab43d0aee343fae5e1c0337",
+      "bytes": 962419
+    },
+    "OppositeContact_Profile.png": {
+      "sha256": "d4bc8f9a4eb0e8f03b15e5119a38c6248621f5a7c6399299f170dc0445796c4f",
+      "bytes": 970138
+    },
+    "Passing_Rear.png": {
+      "sha256": "30abf7ac9887a6d6aefa3797f368172d6c34ba2d8b73289432f23e0886176932",
+      "bytes": 1095422
+    },
+    "Passing_Front.png": {
+      "sha256": "49c931cfa5e6b21f4c1d30b262d09e59b11118d9ea3f664bcf33b6dbc88b085c",
+      "bytes": 850165
+    },
+    "Torso_Front.png": {
+      "sha256": "816e90113c4b091f27a56f208d43db12d32cfd3c6fbccb05b91cabae1f53a312",
+      "bytes": 865139
+    },
+    "Hips_Rear.png": {
+      "sha256": "a0a1b9fcbbda0403e0e80fbc8397f16417eb030b280580eb68d708488e78daad",
+      "bytes": 1061928
+    },
+    "Gameplay.png": {
+      "sha256": "b6c05f50936a120cf053c1aca7cce8831938523956fe20b3071706c3b4436c32",
+      "bytes": 1627152
+    }
+  }
+}
