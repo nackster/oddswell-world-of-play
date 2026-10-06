@@ -1,0 +1,23 @@
+{
+  "source_sha256": "9ebfbc9007d4752a568c094d988f36ee9c1fbe342f27f683d7d29d5aa24b8d6f",
+  "inner_panel_key": {
+    "name": "Anatomical inner thigh cotton ease",
+    "controls_changed": 1422,
+    "maximum_control_change_m": 0.07606475489485887,
+    "method": "One editable fit against actual closed subdivided skin in armature rest position, 4.5 mm stand-off, stable cut-panel sides and graded medial/lower panel selection. Shared saddle controls remain joined."
+  },
+  "saddle_weight_controls_changed": 1433,
+  "saddle_support": "Grade opposing thigh/shin influence into pelvis across upper central saddle, preserving total native bone influence.",
+  "lower_hem_clearance": "Remove unsupported lower fade. Medial stand-off 4.5 mm; retained lateral stand-off 12 mm. No post-subdivision projection trial retained.",
+  "outer_transition": {
+    "factor": 0.45,
+    "iterations": 20,
+    "scope": "Both outer panels, graded around the existing sharp upper-thigh crease."
+  },
+  "inner_fold_bend_radius": {
+    "factor": 0.5,
+    "iterations": 4,
+    "scope": "Graded cotton atlas region around the diagnosed inner-layer fold; symmetric front/rear and left/right support."
+  },
+  "shell": "Native normal extrusion, nominal 1 mm; inherited non-manifold constraints are not retained."
+}
