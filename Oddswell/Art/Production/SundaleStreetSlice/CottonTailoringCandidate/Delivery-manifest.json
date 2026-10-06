@@ -1,0 +1,99 @@
+{
+  "date": "2026-10-06",
+  "status": "Reviewed offline cotton tailoring and actual-pocket stitch checkpoint; human/landscape goal active",
+  "source": {
+    "path": "../WaistNeckContinuityCandidate/WaistNeck.blend",
+    "sha256": "2900363715a0056444b9b85509a00dcc01ab6c5e5cfee4fcac32a537af513079",
+    "bytes": 646373933
+  },
+  "files": {
+    "CottonDetail.blend": {
+      "sha256": "9ebfbc9007d4752a568c094d988f36ee9c1fbe342f27f683d7d29d5aa24b8d6f",
+      "bytes": 646391391
+    },
+    "build.py": {
+      "sha256": "24f09770c1ec17070f738ed955114e69c1bfc8d170ace354d29ad09ca4f96851",
+      "bytes": 8319
+    },
+    "audit.py": {
+      "sha256": "50c9989c583b647bb44297e21cf0fb1bf4c3b7d478054500479c3e26713614f7",
+      "bytes": 5054
+    },
+    "render.py": {
+      "sha256": "0970b31ff921f1c1723af35a75dda7b8a56deb6cd2cda592496abf169f4cd366",
+      "bytes": 1200
+    },
+    "build-report.json": {
+      "sha256": "edf755a8663def69c3912049e32a6638640d2f7e95400910badba9f216aca906",
+      "bytes": 1827
+    },
+    "cold-audit.json": {
+      "sha256": "d52555af8a74e6191545c513a38ee778af1b5bd03775ddb851feda5de027f4f8",
+      "bytes": 125452
+    },
+    "README.md": {
+      "sha256": "ff412a66c253ad69bdf6cc771d4628cc0a3f3fdfc8f2c90e6adade965900493a",
+      "bytes": 3569
+    },
+    "WholeFigureReview.md": {
+      "sha256": "e7ebaf06858bb57f61698dc9a53dcd7f7a31561fe1947d95fb51791180a91225",
+      "bytes": 3425
+    },
+    "CottonTailoringWalking.mp4": {
+      "sha256": "24e5276ca38912ff50566a365bb243c283a698d2b2b569abbedbe776fd477206",
+      "bytes": 803792
+    },
+    "preview-info.json": {
+      "sha256": "5ad7dbf72a013afa5b02edf5818cd33f1f36321ac54228f198d863f821a7197c",
+      "bytes": 138
+    },
+    "render-provenance.json": {
+      "sha256": "0b8433bee5f01e56bb54d15609991e518fc2400a153ab98887f4076cb139bd40",
+      "bytes": 650
+    },
+    "Contact_Profile.png": {
+      "sha256": "abdf5635edb5e4fcfbf3416df921ea3f9c2001c59ff69d57c5b3e43df6c32938",
+      "bytes": 959431
+    },
+    "Passing_Profile.png": {
+      "sha256": "030b7fe1ba51fbec7d04f9fedc35bea7f149932647cfa3d6dce2585a27c36b7a",
+      "bytes": 962003
+    },
+    "OppositeContact_Profile.png": {
+      "sha256": "dbbdbd2929b584a643d0f145037ca817bbf534673d02426fa17879bb3a6be7dd",
+      "bytes": 966386
+    },
+    "Passing_Rear.png": {
+      "sha256": "3ebef3ef2418209fafc10583eb1ecdc8a9974a3e0de43970419985a11e2a3ac5",
+      "bytes": 1093724
+    },
+    "Passing_Front.png": {
+      "sha256": "404ef5965dd06e805c54d23f0d2f4518b93781949b24e1c9171eef45037a6981",
+      "bytes": 849920
+    },
+    "Torso_Front.png": {
+      "sha256": "ebcc7b08bebf620b605b407466474170a0fc0b08cf06810c0dcbc2f61eb8fdc0",
+      "bytes": 863848
+    },
+    "Hips_Rear.png": {
+      "sha256": "71d10b51e19109d46f89e0992d8a4a3dc9dac7148888b64798e3284e40e61f4a",
+      "bytes": 1058586
+    },
+    "Gameplay.png": {
+      "sha256": "d7f4500ea785473aec7c6087e2ee5dd78179a4376262a7b82a6ee3ade37d12aa",
+      "bytes": 1627010
+    },
+    "Cotton_RearClose.png": {
+      "sha256": "ed2b488f744672152987bfaf4fd1706d764771a27dace71c144b7896a3ae6fab",
+      "bytes": 1175172
+    },
+    "Cotton_FrontClose.png": {
+      "sha256": "e23804da091d03e8b0b60f064265acfc6227dc7c0610eb5b9d3d431452f91d70",
+      "bytes": 1080676
+    },
+    "source-leg-screen.json": {
+      "sha256": "8df5e8f5765267fa16985ae9ee14cc573ea7d18c308b3192cf8903f58a5f830a",
+      "bytes": 6176
+    }
+  }
+}

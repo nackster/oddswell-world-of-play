@@ -1,0 +1,41 @@
+{
+  "matched_and_close": {
+    "candidate_sha256": "9ebfbc9007d4752a568c094d988f36ee9c1fbe342f27f683d7d29d5aa24b8d6f",
+    "renderer": "Blender 4.5.5 LTS / Cycles / OPTIX",
+    "frames": [
+      1,
+      7,
+      13
+    ]
+  },
+  "preview": {
+    "candidate_sha256": "9ebfbc9007d4752a568c094d988f36ee9c1fbe342f27f683d7d29d5aa24b8d6f",
+    "renderer": "Blender 4.5.5 LTS / Cycles / OPTIX",
+    "frames": [
+      1,
+      3,
+      5,
+      7,
+      9,
+      11,
+      13,
+      15,
+      17,
+      19,
+      21,
+      23,
+      25,
+      27,
+      29,
+      31,
+      33,
+      35,
+      37,
+      39,
+      41,
+      43,
+      45,
+      47
+    ]
+  }
+}

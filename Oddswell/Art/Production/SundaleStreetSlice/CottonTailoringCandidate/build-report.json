@@ -1,0 +1,35 @@
+{
+  "source_sha256": "2900363715a0056444b9b85509a00dcc01ab6c5e5cfee4fcac32a537af513079",
+  "directional_folds": {
+    "attribute": "Cotton directional fold relief",
+    "maximum_control_relief_m": 0.002643852960318327,
+    "placement": "After shared armature, hip relaxation and leg clearance; before subdivision on garment and its actual registered midsurface. Outward-only, localized seat/upper-thigh ridges and small waistband gathers. Authored tailoring, not dynamic cloth simulation."
+  },
+  "pockets": {
+    "Character | sewn cotton back pocket left": {
+      "subdivision": 2,
+      "edge_base_clearance_m": 0.00045,
+      "maximum_patch_ease_m": 0.0015000681160017848,
+      "thickness_m": 0.00035,
+      "topstitch_surface": "Cotton | actual pocket sewing surface left",
+      "topstitch_clearance_range_m": [
+        0.00034,
+        0.00058
+      ],
+      "topstitch_registration": "Inset grid and mouth paths in the actual pocket atlas, with small tangential/normal offsets retaining rounded thread cross sections; follows the softly sewn edge rather than the underlying shorts."
+    },
+    "Character | sewn cotton back pocket right": {
+      "subdivision": 2,
+      "edge_base_clearance_m": 0.00045,
+      "maximum_patch_ease_m": 0.0015000681160017848,
+      "thickness_m": 0.00035,
+      "topstitch_surface": "Cotton | actual pocket sewing surface right",
+      "topstitch_clearance_range_m": [
+        0.00034,
+        0.00058
+      ],
+      "topstitch_registration": "Inset grid and mouth paths in the actual pocket atlas, with small tangential/normal offsets retaining rounded thread cross sections; follows the softly sewn edge rather than the underlying shorts."
+    }
+  },
+  "material": "Retained licensed packed cotton image textures; diffuse roughness 0.30 and fiber sheen 0.22. No new bitmap assets."
+}
