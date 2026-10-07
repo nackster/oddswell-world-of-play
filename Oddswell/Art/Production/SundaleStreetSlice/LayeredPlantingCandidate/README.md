@@ -1,0 +1,9 @@
+# Sundale layered civic planting
+
+`LayeredPlanting.blend` continues the reviewed `RetailDepthCandidate/RetailDepth.blend`, SHA-256 `6c799e05c928b6feae19a257144b6e47cdaff5539dda3a6e4a22b64599290b91`.
+
+Twenty-three existing planter/tree beds receive native branching shrubs, low leafy rosettes, curved narrow grasses, small lavender florets and soil leaf litter. Three varied shrub crowns replace the main planters' sparse angular arrangements; lower patches connect their roots to the soil. Existing low tree-base foliage stays visible. The original replaced plants are retained and hidden, with explicit names recorded in `build-report.json`. All original soil, planter/seat geometry, trees, architecture, retail, character and scene lighting remain in place.
+
+The new plant surfaces and materials are authored native geometry; no bitmap is added. Existing licensed assets and all 31 packed maps remain preserved. A fixed seed reproduces the variation. Run `build.py`, `audit.py` and `render.py` with Blender 4.5.5 LTS and `--python-exit-code 1 --python`. The mesh/tube helpers are reused from `../build_scene.py`, and the cold audit uses custody helpers from `../HipSeatMotionCandidate/audit.py`.
+
+Six matched source/candidate images review a planter, a tree base and the original gameplay camera, all at native walk frame 7. The audit reopens source and candidate independently and compares original controls, edges, old UVs/keys, packed maps, shaders, rig rest/six poses, walk keyframes, original object transforms and six-pose visible human geometry. Added surfaces are checked for finite coordinates and vertical bounds relative to their soil. These checks do not establish full plant/stone collision freedom, botanical accuracy, runtime performance or final reference fidelity. See `WholeSceneReview.md` for remaining work.
