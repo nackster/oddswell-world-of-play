@@ -1,0 +1,114 @@
+{
+  "candidate_sha256": "2cfb15e7fe5f96feff0a48e1b744a254e22ba24bbe3e330ca37c201862785cdb",
+  "source_sha256": "3acafeea461315270a579cbddfd3031d98a4478ed2441740ae57ade55a516fe5",
+  "files": {
+    "AfterBody_FrontTorso.png": {
+      "sha256": "396af5bbf21ae1ed412d339dc3dc3ad91a88abf30a645a931a690a2226ec8907",
+      "bytes": 1119064
+    },
+    "AfterBody_SideTorso.png": {
+      "sha256": "d2c6b60f587e1891c3be077470afc7447639586dd19ec8956f32da5dc846b994",
+      "bytes": 1284021
+    },
+    "After_FrontTorso.png": {
+      "sha256": "d43d4af0847fffe994925e37ad5f48a91e53f728607d71b7e146c9a153227ff7",
+      "bytes": 1086659
+    },
+    "After_Full.png": {
+      "sha256": "878717abe65d034ad43ea0e4d4afc09ee7a816241524182188a51cb7b37c3ad5",
+      "bytes": 970029
+    },
+    "After_Gameplay.png": {
+      "sha256": "9984b928adaeea3ead89ecadada7c6a24ac9db0c5272763c2534318d07a93897",
+      "bytes": 3543428
+    },
+    "After_RearTorso.png": {
+      "sha256": "b2ae1dc7eb52445f6553214f92beb099637fab4c7ff8ed947abbb8369da28332",
+      "bytes": 1444464
+    },
+    "After_SideTorso.png": {
+      "sha256": "ce4e099199756ef1672c0a19d90a45881ca059e185e9b613340a8b12f43e0060",
+      "bytes": 1269240
+    },
+    "BeforeBody_FrontTorso.png": {
+      "sha256": "70248ffc8677199388f3ae721f867b717244d08f41acdd283a700b226c76e120",
+      "bytes": 1118342
+    },
+    "BeforeBody_SideTorso.png": {
+      "sha256": "2158e6badbb7d77a8d2f2c8f2972487cc62d1c497fbca7d30f7d3a9f98b9f24f",
+      "bytes": 1283442
+    },
+    "Before_FrontTorso.png": {
+      "sha256": "2d7e3e9e05e9dae2f72889870f478b1c4255f84dbb0a3c45ec78eebd07286bd6",
+      "bytes": 1086621
+    },
+    "Before_Full.png": {
+      "sha256": "3a93d74522474ba93faa3b28a593a08495b26d66c76bc08972c6443e083e0beb",
+      "bytes": 971301
+    },
+    "Before_Gameplay.png": {
+      "sha256": "9e5a83ddc53589971108840e0860deaa96345198d8c95d7fddf6c86a2df6ec39",
+      "bytes": 3543669
+    },
+    "Before_RearTorso.png": {
+      "sha256": "8f3546376732039abf7d87924b3f0b11a15b1f427e75029660ea28233f4f38ff",
+      "bytes": 1443537
+    },
+    "Before_SideTorso.png": {
+      "sha256": "a878f88b163d1ad0f228976281fc8a0eba3f3272116e4743c140e71d51ee961d",
+      "bytes": 1266584
+    },
+    "ChestContour.blend": {
+      "sha256": "2cfb15e7fe5f96feff0a48e1b744a254e22ba24bbe3e330ca37c201862785cdb",
+      "bytes": 731659551
+    },
+    "ChestWalking.mp4": {
+      "sha256": "15497085b9a1cacef48b91ac0c24affe4d82588542f51629a7d560941ad3540c",
+      "bytes": 373987
+    },
+    "README.md": {
+      "sha256": "f78fd8e4e38f2d2f2c897038891f761211096eaec17096a153cbd53d6481e26b",
+      "bytes": 1219
+    },
+    "WholeFigureReview.md": {
+      "sha256": "33b1ca11b2c8b4785217455a6a4c0646f8ae1321e0739a0a173865d2030d3ced",
+      "bytes": 2910
+    },
+    "audit.py": {
+      "sha256": "9da5a3d49da50cc43d9eb7cd623c4d93ee73c3c941c388b3c24c4842da26283e",
+      "bytes": 5960
+    },
+    "body-render-provenance.json": {
+      "sha256": "9860110259e1bdae68a4326526d318469ab15d8354814e7f107c31963245c9f4",
+      "bytes": 537
+    },
+    "build-report.json": {
+      "sha256": "828befa18c4cb25b92af6ab6f19b3f7c6a7bffc46c80619d61b2d267165a5db2",
+      "bytes": 263512
+    },
+    "build.py": {
+      "sha256": "2714ec11d03f387831cf94b34e68d7e5917754ced7eb72e91463908a7abef09a",
+      "bytes": 3349
+    },
+    "cold-audit.json": {
+      "sha256": "0c49c4c7a0af2510763214ea504c8ab8f167d88f362d2a214ab5057193c0a0c0",
+      "bytes": 195619
+    },
+    "material.py": {
+      "sha256": "e8c2d36bf373c54c27e29669bf07b4b59fa19526af32d097c81c80c4a9a4fbdf",
+      "bytes": 2987
+    },
+    "render-provenance.json": {
+      "sha256": "0f9a898f40c8f78190ae7d6384bece31a896acd0e5092b82527e437ecc578e26",
+      "bytes": 404
+    },
+    "render-walk.py": {
+      "sha256": "61304dc6b077c6c15c6298f58d93bff4980d8ca8ed10277cb968a0a974eb2e04",
+      "bytes": 2350
+    },
+    "render.py": {
+      "sha256": "27dde38f78dbc4c368c2ca7ae66e69e10f17e52cd61267914b3de6a70cd50b5d",
+      "bytes": 3583
+    }
+  }
+}
