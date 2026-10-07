@@ -1,0 +1,23 @@
+{
+  "candidate_sha256": "3acafeea461315270a579cbddfd3031d98a4478ed2441740ae57ade55a516fe5",
+  "source_sha256": "a46587e5990c80822b118c019168576708366377b37663422bde60d420d322fb",
+  "renderer": "Blender 4.5.5 LTS / Cycles / OPTIX",
+  "matched_views": [
+    "SideTorso",
+    "FrontTorso"
+  ],
+  "frames": [
+    13
+  ],
+  "native_geometry": true,
+  "temporary_diagnostic_material": {
+    "base_color": [
+      0.32,
+      0.18,
+      0.11,
+      1
+    ],
+    "roughness": 0.8
+  },
+  "saved_native_materials_and_visibility_changed": false
+}
