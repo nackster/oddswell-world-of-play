@@ -1,0 +1,103 @@
+{
+  "candidate_sha256": "8b2f0e5634f1198bbdbb5054c961668cb86825764ada8d24355296cbc290de7a",
+  "source_sha256": "3d4b732f51a6d2b79a0ed18a9b4f94b67c843cefd1b14a968bc62bf4591f4dc3",
+  "files": {
+    "ShoulderChest.blend": {
+      "sha256": "8b2f0e5634f1198bbdbb5054c961668cb86825764ada8d24355296cbc290de7a",
+      "bytes": 648055094
+    },
+    "build.py": {
+      "sha256": "0eb868630760a098ead3fd8ab3a18bff49749f9ca2a922b82175c366cd73672e",
+      "bytes": 5701
+    },
+    "cloth_folds.py": {
+      "sha256": "9b2ac6e5a8be5ea2eeab6f622a0edb0c9aaa97e8d289655e4544327a3d624084",
+      "bytes": 3363
+    },
+    "neck_clearance.py": {
+      "sha256": "923ca29249ed4f7c1e4f57b817ae41cf43823962a515ebf36eed1236416853e9",
+      "bytes": 2504
+    },
+    "audit.py": {
+      "sha256": "032d916c4e7ad6aeb8deb6080d33bb05b815ab0ba5e00b9ba70906922f58c495",
+      "bytes": 7188
+    },
+    "render.py": {
+      "sha256": "fa6e7dc537d5ada5e11a8750aac9e99d0c311d4a3114e943153b44be124769f3",
+      "bytes": 1270
+    },
+    "build-report.json": {
+      "sha256": "ab9a441cc49f7c13be7a5a29b7419130563baa547fd21d193d99e19695b640eb",
+      "bytes": 27381
+    },
+    "cold-audit.json": {
+      "sha256": "c0bac7a5624383be342914a7abb7cd93ec7bebd398b4bcc3b7b25277655ced91",
+      "bytes": 71152
+    },
+    "render-provenance.json": {
+      "sha256": "3ab0a72dcc3dd297cf1324078fd2be81637b5679c18f53e7a0660df74b6b6cda",
+      "bytes": 650
+    },
+    "preview-info.json": {
+      "sha256": "4e39d2b86337a76efb77c946395df45d9af61b7fc7aa7cb36c2438b1f81cede8",
+      "bytes": 2707
+    },
+    "ShoulderWalking.mp4": {
+      "sha256": "1aaa0b458f1856d6756c4a6e4bd94c7d733d2e1949ffac808ed87d23ab9d8023",
+      "bytes": 802254
+    },
+    "README.md": {
+      "sha256": "7c9a3097d93e84df000c3f811d3e51571af929101f929c47badab21e3adb5e8d",
+      "bytes": 2523
+    },
+    "WholeFigureReview.md": {
+      "sha256": "bfbf5986a6c101f743362934c28334715c870d28f224f2a52fa71f7709f1f517",
+      "bytes": 2466
+    },
+    "Contact_Profile.png": {
+      "sha256": "69594622fbbef49ff9af40e7dd135ba21b7671f9e99f7ad94941cb530953a925",
+      "bytes": 959234
+    },
+    "Passing_Profile.png": {
+      "sha256": "f67062d118db795835550c4f31f02c0b5025d95a122358695733568644cc3b3c",
+      "bytes": 960730
+    },
+    "OppositeContact_Profile.png": {
+      "sha256": "d4fb6fcc361e38c48a8321b10c306d5def8972e35e197dc210663a2a37f53d61",
+      "bytes": 965525
+    },
+    "Passing_Rear.png": {
+      "sha256": "845f807374c4b8815bc338eea053d6afd80ccd366d5109180055091d97209881",
+      "bytes": 1093959
+    },
+    "Passing_Front.png": {
+      "sha256": "7ae413ddf21369689580987338107191c90b7728cf6a86832cda618dd4064020",
+      "bytes": 849699
+    },
+    "Torso_Front.png": {
+      "sha256": "dfea8b506f1155758755f09083fd95da66815e88b56ca1ad7ab039269e761720",
+      "bytes": 861530
+    },
+    "Hips_Rear.png": {
+      "sha256": "2cba1ce169eaa3810ae230835dce539ce181e6c41bd5ff99cea4edb73b1badd5",
+      "bytes": 1060580
+    },
+    "Gameplay.png": {
+      "sha256": "66a77b2390dea0fdf965ed948f7de270eed916093d0baec2925d088a71f64937",
+      "bytes": 1627376
+    },
+    "Shoulder_FrontClose.png": {
+      "sha256": "8fda56c0742732fe7f7f10b6ca11fd188dbbee839a4e2e2ce27f9ea670b756f5",
+      "bytes": 866908
+    },
+    "Fabric_FrontClose.png": {
+      "sha256": "5af04b0a2242f276e03cd2b574c46ee05d602bd8ed2497f569a64a73298e5332",
+      "bytes": 846669
+    },
+    "Shoulders_RearClose.png": {
+      "sha256": "952509d86251c9169a9125d46db55fcddf36ba226c6b35a28d879344792caa88",
+      "bytes": 1189170
+    }
+  },
+  "scope": "Editable native shoulder/anatomical collar fit and licensed woven-panel finish. The full human/landscape goal remains active. No runtime, import, physical first-hour or beta credit."
+}

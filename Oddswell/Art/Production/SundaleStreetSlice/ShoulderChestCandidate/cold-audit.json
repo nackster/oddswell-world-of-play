@@ -1,0 +1,3416 @@
+{
+  "candidate_sha256": "8b2f0e5634f1198bbdbb5054c961668cb86825764ada8d24355296cbc290de7a",
+  "source_sha256": "3d4b732f51a6d2b79a0ed18a9b4f94b67c843cefd1b14a968bc62bf4591f4dc3",
+  "original_mesh_curve_count": 4767,
+  "packed_maps": 31,
+  "original_controls_edges_uv_old_keys_maps_rest_and_six_poses_exact": true,
+  "unedited_support_shorts_legs_shoes_six_pose_evaluated_geometry_exact": true,
+  "uvs": {
+    "Character | tailored slate jacket": {
+      "hash": "aa7a75a31970fea872133f226cecef35526688e0b890fce46e27c5cd40eff069",
+      "loops": 24576,
+      "zero_area_nondegenerate_triangles": 0,
+      "original_zero_area_triangles": 0
+    },
+    "Walk cage | refined jacket surface": {
+      "hash": "aa7a75a31970fea872133f226cecef35526688e0b890fce46e27c5cd40eff069",
+      "loops": 24576,
+      "zero_area_nondegenerate_triangles": 0,
+      "original_zero_area_triangles": 0
+    }
+  },
+  "source_sewn_details_six_pose_bounds": {
+    "Walk surface | Character | front welt pocket": {
+      "maximum_sampled_gap_m": 0.0032025515101850033,
+      "maximum_edge_m": 0.005373161819296724
+    },
+    "Walk surface | Character | front welt pocket.001": {
+      "maximum_sampled_gap_m": 0.003235091920942068,
+      "maximum_edge_m": 0.005815205394432428
+    }
+  },
+  "frames": [
+    {
+      "frame": 1,
+      "shell_self_pairs": 0,
+      "body_pair_count": 886,
+      "body_pair_sha256": "2d20f9c3d2386ec826d9efd0e406f2b905497f04103f1db9a3128c6b342e62fe",
+      "body_pair_examples": [
+        [
+          109,
+          20390
+        ],
+        [
+          109,
+          20514
+        ],
+        [
+          109,
+          20523
+        ],
+        [
+          109,
+          20524
+        ],
+        [
+          116,
+          20512
+        ],
+        [
+          116,
+          20514
+        ],
+        [
+          125,
+          20705
+        ],
+        [
+          125,
+          20712
+        ],
+        [
+          125,
+          20818
+        ],
+        [
+          125,
+          20828
+        ],
+        [
+          126,
+          20704
+        ],
+        [
+          126,
+          20705
+        ]
+      ],
+      "source_body_pair_count": 893,
+      "source_body_pair_sha256": "e454b1226252f068d45e57ed75740619219f0c1cb6aa978e7eb91ec6ce5be189",
+      "body_pairs_exact_to_source": false,
+      "sewn_details": {
+        "Walk surface | Character | front welt pocket": {
+          "maximum_sampled_gap_m": 0.0032024832908064127,
+          "maximum_edge_m": 0.004554180258774664
+        },
+        "Walk surface | Character | front welt pocket.001": {
+          "maximum_sampled_gap_m": 0.0032320476602762938,
+          "maximum_edge_m": 0.005650755237573269
+        }
+      }
+    },
+    {
+      "frame": 2,
+      "shell_self_pairs": 0,
+      "body_pair_count": 886,
+      "body_pair_sha256": "3d6fd2bed947bc6a9d750cf5b7896257e157c1a21f0cff5b09882a052d0f17cf",
+      "body_pair_examples": [
+        [
+          109,
+          20390
+        ],
+        [
+          109,
+          20514
+        ],
+        [
+          109,
+          20523
+        ],
+        [
+          109,
+          20524
+        ],
+        [
+          116,
+          20512
+        ],
+        [
+          116,
+          20514
+        ],
+        [
+          125,
+          20705
+        ],
+        [
+          125,
+          20712
+        ],
+        [
+          125,
+          20818
+        ],
+        [
+          125,
+          20828
+        ],
+        [
+          126,
+          20704
+        ],
+        [
+          126,
+          20705
+        ]
+      ],
+      "source_body_pair_count": 893,
+      "source_body_pair_sha256": "b7e639cba8179e43bebd58ea24639499ce2c8e7392f72fdc2859891e3ac13365",
+      "body_pairs_exact_to_source": false,
+      "sewn_details": {
+        "Walk surface | Character | front welt pocket": {
+          "maximum_sampled_gap_m": 0.0032025910913944244,
+          "maximum_edge_m": 0.004555253249707728
+        },
+        "Walk surface | Character | front welt pocket.001": {
+          "maximum_sampled_gap_m": 0.003232433460652828,
+          "maximum_edge_m": 0.0056450472755218625
+        }
+      }
+    },
+    {
+      "frame": 3,
+      "shell_self_pairs": 0,
+      "body_pair_count": 886,
+      "body_pair_sha256": "a03c327c380e2f243a732b7dee95bb5365e1efdbe2fd463ad88e678747e3f7ec",
+      "body_pair_examples": [
+        [
+          109,
+          20389
+        ],
+        [
+          109,
+          20390
+        ],
+        [
+          109,
+          20514
+        ],
+        [
+          109,
+          20524
+        ],
+        [
+          116,
+          20512
+        ],
+        [
+          116,
+          20514
+        ],
+        [
+          125,
+          20705
+        ],
+        [
+          125,
+          20712
+        ],
+        [
+          125,
+          20818
+        ],
+        [
+          125,
+          20828
+        ],
+        [
+          126,
+          20704
+        ],
+        [
+          126,
+          20705
+        ]
+      ],
+      "source_body_pair_count": 893,
+      "source_body_pair_sha256": "050a28ba836c30c8c3188d11d227534ab1c4807c044b979eb97d95374b234193",
+      "body_pairs_exact_to_source": false,
+      "sewn_details": {
+        "Walk surface | Character | front welt pocket": {
+          "maximum_sampled_gap_m": 0.0032022721134126186,
+          "maximum_edge_m": 0.004560761166252835
+        },
+        "Walk surface | Character | front welt pocket.001": {
+          "maximum_sampled_gap_m": 0.0032320476602762938,
+          "maximum_edge_m": 0.005630142662900236
+        }
+      }
+    },
+    {
+      "frame": 4,
+      "shell_self_pairs": 0,
+      "body_pair_count": 886,
+      "body_pair_sha256": "e65fbee098c285cbbcdc632b053b3cbb7478664e0fd3f4643147a0f08c7655f0",
+      "body_pair_examples": [
+        [
+          109,
+          20389
+        ],
+        [
+          109,
+          20390
+        ],
+        [
+          109,
+          20514
+        ],
+        [
+          109,
+          20524
+        ],
+        [
+          116,
+          20512
+        ],
+        [
+          116,
+          20514
+        ],
+        [
+          125,
+          20705
+        ],
+        [
+          125,
+          20712
+        ],
+        [
+          125,
+          20818
+        ],
+        [
+          125,
+          20828
+        ],
+        [
+          126,
+          20704
+        ],
+        [
+          126,
+          20705
+        ]
+      ],
+      "source_body_pair_count": 893,
+      "source_body_pair_sha256": "86cebed9274b80bac252ba239a4965c07895b75c35755474f523459e0b4d866d",
+      "body_pairs_exact_to_source": false,
+      "sewn_details": {
+        "Walk surface | Character | front welt pocket": {
+          "maximum_sampled_gap_m": 0.003202283289283514,
+          "maximum_edge_m": 0.004571130084570118
+        },
+        "Walk surface | Character | front welt pocket.001": {
+          "maximum_sampled_gap_m": 0.0032323822379112244,
+          "maximum_edge_m": 0.005611386775549841
+        }
+      }
+    },
+    {
+      "frame": 5,
+      "shell_self_pairs": 0,
+      "body_pair_count": 885,
+      "body_pair_sha256": "c6f087e661ccfd01491c2600a0f09e212efd14a6df1977e6fd3bed87d565e9c0",
+      "body_pair_examples": [
+        [
+          109,
+          20389
+        ],
+        [
+          109,
+          20390
+        ],
+        [
+          109,
+          20514
+        ],
+        [
+          109,
+          20524
+        ],
+        [
+          116,
+          20512
+        ],
+        [
+          116,
+          20514
+        ],
+        [
+          125,
+          20705
+        ],
+        [
+          125,
+          20712
+        ],
+        [
+          125,
+          20818
+        ],
+        [
+          125,
+          20828
+        ],
+        [
+          126,
+          20704
+        ],
+        [
+          126,
+          20705
+        ]
+      ],
+      "source_body_pair_count": 893,
+      "source_body_pair_sha256": "6561254f2fbb98fd82c91ea9dd9e09776501ef3ddaf486f84c7eb4b22faf7752",
+      "body_pairs_exact_to_source": false,
+      "sewn_details": {
+        "Walk surface | Character | front welt pocket": {
+          "maximum_sampled_gap_m": 0.0032021135557442904,
+          "maximum_edge_m": 0.004591478800279945
+        },
+        "Walk surface | Character | front welt pocket.001": {
+          "maximum_sampled_gap_m": 0.003232622519135475,
+          "maximum_edge_m": 0.005596332711557426
+        }
+      }
+    },
+    {
+      "frame": 6,
+      "shell_self_pairs": 0,
+      "body_pair_count": 885,
+      "body_pair_sha256": "b7c4f9e2b3c4e427bf96bd35fa1602b604d27602d6c517565f3e26094dee27aa",
+      "body_pair_examples": [
+        [
+          109,
+          20389
+        ],
+        [
+          109,
+          20390
+        ],
+        [
+          109,
+          20514
+        ],
+        [
+          109,
+          20524
+        ],
+        [
+          116,
+          20512
+        ],
+        [
+          116,
+          20514
+        ],
+        [
+          125,
+          20705
+        ],
+        [
+          125,
+          20712
+        ],
+        [
+          125,
+          20818
+        ],
+        [
+          125,
+          20828
+        ],
+        [
+          126,
+          20704
+        ],
+        [
+          126,
+          20705
+        ]
+      ],
+      "source_body_pair_count": 893,
+      "source_body_pair_sha256": "7e18092e14f882d60330b6df64cc0b9cc45bad3e9e09624ee3b504c1759f645e",
+      "body_pairs_exact_to_source": false,
+      "sewn_details": {
+        "Walk surface | Character | front welt pocket": {
+          "maximum_sampled_gap_m": 0.0032020006328821182,
+          "maximum_edge_m": 0.004647804584693202
+        },
+        "Walk surface | Character | front welt pocket.001": {
+          "maximum_sampled_gap_m": 0.003233030904084444,
+          "maximum_edge_m": 0.005593018553180827
+        }
+      }
+    },
+    {
+      "frame": 7,
+      "shell_self_pairs": 0,
+      "body_pair_count": 885,
+      "body_pair_sha256": "4ffdfa65bc94e8a84036de4cc4c29b914968dc13a3ec15e7d5bfaa98b9d465dc",
+      "body_pair_examples": [
+        [
+          109,
+          20389
+        ],
+        [
+          109,
+          20390
+        ],
+        [
+          109,
+          20514
+        ],
+        [
+          109,
+          20524
+        ],
+        [
+          116,
+          20512
+        ],
+        [
+          116,
+          20514
+        ],
+        [
+          125,
+          20705
+        ],
+        [
+          125,
+          20712
+        ],
+        [
+          125,
+          20818
+        ],
+        [
+          125,
+          20828
+        ],
+        [
+          126,
+          20704
+        ],
+        [
+          126,
+          20705
+        ]
+      ],
+      "source_body_pair_count": 893,
+      "source_body_pair_sha256": "c0966ad4ee0642452e257a20ff04e9c76b5868398a94a4bfe52b622a1d8d4832",
+      "body_pairs_exact_to_source": false,
+      "sewn_details": {
+        "Walk surface | Character | front welt pocket": {
+          "maximum_sampled_gap_m": 0.003201844869181514,
+          "maximum_edge_m": 0.004766654909589626
+        },
+        "Walk surface | Character | front welt pocket.001": {
+          "maximum_sampled_gap_m": 0.0032334879506379366,
+          "maximum_edge_m": 0.0056052034735564115
+        }
+      }
+    },
+    {
+      "frame": 8,
+      "shell_self_pairs": 0,
+      "body_pair_count": 885,
+      "body_pair_sha256": "9fb361684426816d23ae9c46617620b336b75de58b568a9b69c33d76bba26dc3",
+      "body_pair_examples": [
+        [
+          109,
+          20389
+        ],
+        [
+          109,
+          20390
+        ],
+        [
+          109,
+          20514
+        ],
+        [
+          109,
+          20524
+        ],
+        [
+          116,
+          20512
+        ],
+        [
+          116,
+          20514
+        ],
+        [
+          125,
+          20705
+        ],
+        [
+          125,
+          20712
+        ],
+        [
+          125,
+          20818
+        ],
+        [
+          125,
+          20828
+        ],
+        [
+          126,
+          20704
+        ],
+        [
+          126,
+          20705
+        ]
+      ],
+      "source_body_pair_count": 893,
+      "source_body_pair_sha256": "5f0de6667a09034c56c2627c435dc207d16742179eb24e72817ca9f59e19204d",
+      "body_pairs_exact_to_source": false,
+      "sewn_details": {
+        "Walk surface | Character | front welt pocket": {
+          "maximum_sampled_gap_m": 0.003201578976586461,
+          "maximum_edge_m": 0.004902259533189814
+        },
+        "Walk surface | Character | front welt pocket.001": {
+          "maximum_sampled_gap_m": 0.0032338278833776712,
+          "maximum_edge_m": 0.005636131581300833
+        }
+      }
+    },
+    {
+      "frame": 9,
+      "shell_self_pairs": 0,
+      "body_pair_count": 886,
+      "body_pair_sha256": "b2e53be756d8c275042407c4c08a67aec21f1341002f7ce9f70a05d05d931a40",
+      "body_pair_examples": [
+        [
+          109,
+          20389
+        ],
+        [
+          109,
+          20390
+        ],
+        [
+          109,
+          20514
+        ],
+        [
+          109,
+          20524
+        ],
+        [
+          116,
+          20512
+        ],
+        [
+          116,
+          20514
+        ],
+        [
+          125,
+          20705
+        ],
+        [
+          125,
+          20712
+        ],
+        [
+          125,
+          20818
+        ],
+        [
+          125,
+          20828
+        ],
+        [
+          126,
+          20704
+        ],
+        [
+          126,
+          20705
+        ]
+      ],
+      "source_body_pair_count": 891,
+      "source_body_pair_sha256": "1607fe28c7e9d5f7899520888fff2cbd5f5fd6ebb3fcab0ea249c73171d15498",
+      "body_pairs_exact_to_source": false,
+      "sewn_details": {
+        "Walk surface | Character | front welt pocket": {
+          "maximum_sampled_gap_m": 0.0032014509197324514,
+          "maximum_edge_m": 0.005042858542883632
+        },
+        "Walk surface | Character | front welt pocket.001": {
+          "maximum_sampled_gap_m": 0.003234511474147439,
+          "maximum_edge_m": 0.005681013828788186
+        }
+      }
+    },
+    {
+      "frame": 10,
+      "shell_self_pairs": 0,
+      "body_pair_count": 885,
+      "body_pair_sha256": "9a2daa55fd87c82e0417d3686b451a78603e0291c0918fc5ca1543b120b064ec",
+      "body_pair_examples": [
+        [
+          109,
+          20389
+        ],
+        [
+          109,
+          20390
+        ],
+        [
+          109,
+          20514
+        ],
+        [
+          109,
+          20524
+        ],
+        [
+          116,
+          20512
+        ],
+        [
+          116,
+          20514
+        ],
+        [
+          125,
+          20705
+        ],
+        [
+          125,
+          20712
+        ],
+        [
+          125,
+          20818
+        ],
+        [
+          125,
+          20828
+        ],
+        [
+          126,
+          20704
+        ],
+        [
+          126,
+          20705
+        ]
+      ],
+      "source_body_pair_count": 891,
+      "source_body_pair_sha256": "022d9d90e12ead0b08f80aed30e069dd1c1e9a130dee3a82f7153489d697c6ed",
+      "body_pairs_exact_to_source": false,
+      "sewn_details": {
+        "Walk surface | Character | front welt pocket": {
+          "maximum_sampled_gap_m": 0.0032013882882893085,
+          "maximum_edge_m": 0.005173159629947845
+        },
+        "Walk surface | Character | front welt pocket.001": {
+          "maximum_sampled_gap_m": 0.0032346982043236494,
+          "maximum_edge_m": 0.0057298212470907935
+        }
+      }
+    },
+    {
+      "frame": 11,
+      "shell_self_pairs": 0,
+      "body_pair_count": 885,
+      "body_pair_sha256": "ff3cc8adcbd7618204f09b29f614dd8fc9058e630f6eb90f353a357a5fb36e1e",
+      "body_pair_examples": [
+        [
+          109,
+          20389
+        ],
+        [
+          109,
+          20390
+        ],
+        [
+          109,
+          20514
+        ],
+        [
+          109,
+          20524
+        ],
+        [
+          116,
+          20512
+        ],
+        [
+          116,
+          20514
+        ],
+        [
+          125,
+          20705
+        ],
+        [
+          125,
+          20712
+        ],
+        [
+          125,
+          20818
+        ],
+        [
+          125,
+          20828
+        ],
+        [
+          126,
+          20704
+        ],
+        [
+          126,
+          20705
+        ]
+      ],
+      "source_body_pair_count": 891,
+      "source_body_pair_sha256": "9f454ece49e7a7926d9d5f61d24add39645523e00491e440d672a4c8716a6939",
+      "body_pairs_exact_to_source": false,
+      "sewn_details": {
+        "Walk surface | Character | front welt pocket": {
+          "maximum_sampled_gap_m": 0.003201028797775507,
+          "maximum_edge_m": 0.005279909461972541
+        },
+        "Walk surface | Character | front welt pocket.001": {
+          "maximum_sampled_gap_m": 0.003234838368371129,
+          "maximum_edge_m": 0.005773540688379044
+        }
+      }
+    },
+    {
+      "frame": 12,
+      "shell_self_pairs": 0,
+      "body_pair_count": 884,
+      "body_pair_sha256": "8619ae1fb0e189031a96d9c58a1a3116dbe5fd01c8a2b99d545f9a6e1f19329b",
+      "body_pair_examples": [
+        [
+          109,
+          20389
+        ],
+        [
+          109,
+          20390
+        ],
+        [
+          109,
+          20514
+        ],
+        [
+          109,
+          20524
+        ],
+        [
+          116,
+          20512
+        ],
+        [
+          116,
+          20514
+        ],
+        [
+          125,
+          20705
+        ],
+        [
+          125,
+          20712
+        ],
+        [
+          125,
+          20818
+        ],
+        [
+          125,
+          20828
+        ],
+        [
+          126,
+          20704
+        ],
+        [
+          126,
+          20705
+        ]
+      ],
+      "source_body_pair_count": 890,
+      "source_body_pair_sha256": "f82985d9feb6daa043162bb3ec2063accfc7ddf146b4f141efd3ab09e32fcc5c",
+      "body_pairs_exact_to_source": false,
+      "sewn_details": {
+        "Walk surface | Character | front welt pocket": {
+          "maximum_sampled_gap_m": 0.003201159415766597,
+          "maximum_edge_m": 0.005349185637152022
+        },
+        "Walk surface | Character | front welt pocket.001": {
+          "maximum_sampled_gap_m": 0.003235004609450698,
+          "maximum_edge_m": 0.005803926191027014
+        }
+      }
+    },
+    {
+      "frame": 13,
+      "shell_self_pairs": 0,
+      "body_pair_count": 884,
+      "body_pair_sha256": "8619ae1fb0e189031a96d9c58a1a3116dbe5fd01c8a2b99d545f9a6e1f19329b",
+      "body_pair_examples": [
+        [
+          109,
+          20389
+        ],
+        [
+          109,
+          20390
+        ],
+        [
+          109,
+          20514
+        ],
+        [
+          109,
+          20524
+        ],
+        [
+          116,
+          20512
+        ],
+        [
+          116,
+          20514
+        ],
+        [
+          125,
+          20705
+        ],
+        [
+          125,
+          20712
+        ],
+        [
+          125,
+          20818
+        ],
+        [
+          125,
+          20828
+        ],
+        [
+          126,
+          20704
+        ],
+        [
+          126,
+          20705
+        ]
+      ],
+      "source_body_pair_count": 890,
+      "source_body_pair_sha256": "f82985d9feb6daa043162bb3ec2063accfc7ddf146b4f141efd3ab09e32fcc5c",
+      "body_pairs_exact_to_source": false,
+      "sewn_details": {
+        "Walk surface | Character | front welt pocket": {
+          "maximum_sampled_gap_m": 0.003200998529791832,
+          "maximum_edge_m": 0.005373161819296724
+        },
+        "Walk surface | Character | front welt pocket.001": {
+          "maximum_sampled_gap_m": 0.0032351582776755095,
+          "maximum_edge_m": 0.005815205394432428
+        }
+      }
+    },
+    {
+      "frame": 14,
+      "shell_self_pairs": 0,
+      "body_pair_count": 884,
+      "body_pair_sha256": "8619ae1fb0e189031a96d9c58a1a3116dbe5fd01c8a2b99d545f9a6e1f19329b",
+      "body_pair_examples": [
+        [
+          109,
+          20389
+        ],
+        [
+          109,
+          20390
+        ],
+        [
+          109,
+          20514
+        ],
+        [
+          109,
+          20524
+        ],
+        [
+          116,
+          20512
+        ],
+        [
+          116,
+          20514
+        ],
+        [
+          125,
+          20705
+        ],
+        [
+          125,
+          20712
+        ],
+        [
+          125,
+          20818
+        ],
+        [
+          125,
+          20828
+        ],
+        [
+          126,
+          20704
+        ],
+        [
+          126,
+          20705
+        ]
+      ],
+      "source_body_pair_count": 890,
+      "source_body_pair_sha256": "f82985d9feb6daa043162bb3ec2063accfc7ddf146b4f141efd3ab09e32fcc5c",
+      "body_pairs_exact_to_source": false,
+      "sewn_details": {
+        "Walk surface | Character | front welt pocket": {
+          "maximum_sampled_gap_m": 0.003201102837920189,
+          "maximum_edge_m": 0.0053493469458346125
+        },
+        "Walk surface | Character | front welt pocket.001": {
+          "maximum_sampled_gap_m": 0.0032350660767406225,
+          "maximum_edge_m": 0.0058038722995139005
+        }
+      }
+    },
+    {
+      "frame": 15,
+      "shell_self_pairs": 0,
+      "body_pair_count": 885,
+      "body_pair_sha256": "ff3cc8adcbd7618204f09b29f614dd8fc9058e630f6eb90f353a357a5fb36e1e",
+      "body_pair_examples": [
+        [
+          109,
+          20389
+        ],
+        [
+          109,
+          20390
+        ],
+        [
+          109,
+          20514
+        ],
+        [
+          109,
+          20524
+        ],
+        [
+          116,
+          20512
+        ],
+        [
+          116,
+          20514
+        ],
+        [
+          125,
+          20705
+        ],
+        [
+          125,
+          20712
+        ],
+        [
+          125,
+          20818
+        ],
+        [
+          125,
+          20828
+        ],
+        [
+          126,
+          20704
+        ],
+        [
+          126,
+          20705
+        ]
+      ],
+      "source_body_pair_count": 891,
+      "source_body_pair_sha256": "9f454ece49e7a7926d9d5f61d24add39645523e00491e440d672a4c8716a6939",
+      "body_pairs_exact_to_source": false,
+      "sewn_details": {
+        "Walk surface | Character | front welt pocket": {
+          "maximum_sampled_gap_m": 0.0032011999282985926,
+          "maximum_edge_m": 0.005279526738915131
+        },
+        "Walk surface | Character | front welt pocket.001": {
+          "maximum_sampled_gap_m": 0.0032349831890314817,
+          "maximum_edge_m": 0.005773908918182969
+        }
+      }
+    },
+    {
+      "frame": 16,
+      "shell_self_pairs": 0,
+      "body_pair_count": 885,
+      "body_pair_sha256": "9a2daa55fd87c82e0417d3686b451a78603e0291c0918fc5ca1543b120b064ec",
+      "body_pair_examples": [
+        [
+          109,
+          20389
+        ],
+        [
+          109,
+          20390
+        ],
+        [
+          109,
+          20514
+        ],
+        [
+          109,
+          20524
+        ],
+        [
+          116,
+          20512
+        ],
+        [
+          116,
+          20514
+        ],
+        [
+          125,
+          20705
+        ],
+        [
+          125,
+          20712
+        ],
+        [
+          125,
+          20818
+        ],
+        [
+          125,
+          20828
+        ],
+        [
+          126,
+          20704
+        ],
+        [
+          126,
+          20705
+        ]
+      ],
+      "source_body_pair_count": 891,
+      "source_body_pair_sha256": "022d9d90e12ead0b08f80aed30e069dd1c1e9a130dee3a82f7153489d697c6ed",
+      "body_pairs_exact_to_source": false,
+      "sewn_details": {
+        "Walk surface | Character | front welt pocket": {
+          "maximum_sampled_gap_m": 0.003201314015313983,
+          "maximum_edge_m": 0.005173131148602242
+        },
+        "Walk surface | Character | front welt pocket.001": {
+          "maximum_sampled_gap_m": 0.0032346686348319054,
+          "maximum_edge_m": 0.005729444885827708
+        }
+      }
+    },
+    {
+      "frame": 17,
+      "shell_self_pairs": 0,
+      "body_pair_count": 886,
+      "body_pair_sha256": "b2e53be756d8c275042407c4c08a67aec21f1341002f7ce9f70a05d05d931a40",
+      "body_pair_examples": [
+        [
+          109,
+          20389
+        ],
+        [
+          109,
+          20390
+        ],
+        [
+          109,
+          20514
+        ],
+        [
+          109,
+          20524
+        ],
+        [
+          116,
+          20512
+        ],
+        [
+          116,
+          20514
+        ],
+        [
+          125,
+          20705
+        ],
+        [
+          125,
+          20712
+        ],
+        [
+          125,
+          20818
+        ],
+        [
+          125,
+          20828
+        ],
+        [
+          126,
+          20704
+        ],
+        [
+          126,
+          20705
+        ]
+      ],
+      "source_body_pair_count": 891,
+      "source_body_pair_sha256": "1607fe28c7e9d5f7899520888fff2cbd5f5fd6ebb3fcab0ea249c73171d15498",
+      "body_pairs_exact_to_source": false,
+      "sewn_details": {
+        "Walk surface | Character | front welt pocket": {
+          "maximum_sampled_gap_m": 0.003201459301635623,
+          "maximum_edge_m": 0.0050426311351585325
+        },
+        "Walk surface | Character | front welt pocket.001": {
+          "maximum_sampled_gap_m": 0.003234426025301218,
+          "maximum_edge_m": 0.005681016400293164
+        }
+      }
+    },
+    {
+      "frame": 18,
+      "shell_self_pairs": 0,
+      "body_pair_count": 885,
+      "body_pair_sha256": "9fb361684426816d23ae9c46617620b336b75de58b568a9b69c33d76bba26dc3",
+      "body_pair_examples": [
+        [
+          109,
+          20389
+        ],
+        [
+          109,
+          20390
+        ],
+        [
+          109,
+          20514
+        ],
+        [
+          109,
+          20524
+        ],
+        [
+          116,
+          20512
+        ],
+        [
+          116,
+          20514
+        ],
+        [
+          125,
+          20705
+        ],
+        [
+          125,
+          20712
+        ],
+        [
+          125,
+          20818
+        ],
+        [
+          125,
+          20828
+        ],
+        [
+          126,
+          20704
+        ],
+        [
+          126,
+          20705
+        ]
+      ],
+      "source_body_pair_count": 893,
+      "source_body_pair_sha256": "5f0de6667a09034c56c2627c435dc207d16742179eb24e72817ca9f59e19204d",
+      "body_pairs_exact_to_source": false,
+      "sewn_details": {
+        "Walk surface | Character | front welt pocket": {
+          "maximum_sampled_gap_m": 0.003201565705239773,
+          "maximum_edge_m": 0.004901974163301362
+        },
+        "Walk surface | Character | front welt pocket.001": {
+          "maximum_sampled_gap_m": 0.0032339158933609724,
+          "maximum_edge_m": 0.005635553186364285
+        }
+      }
+    },
+    {
+      "frame": 19,
+      "shell_self_pairs": 0,
+      "body_pair_count": 885,
+      "body_pair_sha256": "4ffdfa65bc94e8a84036de4cc4c29b914968dc13a3ec15e7d5bfaa98b9d465dc",
+      "body_pair_examples": [
+        [
+          109,
+          20389
+        ],
+        [
+          109,
+          20390
+        ],
+        [
+          109,
+          20514
+        ],
+        [
+          109,
+          20524
+        ],
+        [
+          116,
+          20512
+        ],
+        [
+          116,
+          20514
+        ],
+        [
+          125,
+          20705
+        ],
+        [
+          125,
+          20712
+        ],
+        [
+          125,
+          20818
+        ],
+        [
+          125,
+          20828
+        ],
+        [
+          126,
+          20704
+        ],
+        [
+          126,
+          20705
+        ]
+      ],
+      "source_body_pair_count": 893,
+      "source_body_pair_sha256": "c0966ad4ee0642452e257a20ff04e9c76b5868398a94a4bfe52b622a1d8d4832",
+      "body_pairs_exact_to_source": false,
+      "sewn_details": {
+        "Walk surface | Character | front welt pocket": {
+          "maximum_sampled_gap_m": 0.003201778046786785,
+          "maximum_edge_m": 0.00476669824565004
+        },
+        "Walk surface | Character | front welt pocket.001": {
+          "maximum_sampled_gap_m": 0.0032336111180484295,
+          "maximum_edge_m": 0.005605116583189262
+        }
+      }
+    },
+    {
+      "frame": 20,
+      "shell_self_pairs": 0,
+      "body_pair_count": 885,
+      "body_pair_sha256": "b7c4f9e2b3c4e427bf96bd35fa1602b604d27602d6c517565f3e26094dee27aa",
+      "body_pair_examples": [
+        [
+          109,
+          20389
+        ],
+        [
+          109,
+          20390
+        ],
+        [
+          109,
+          20514
+        ],
+        [
+          109,
+          20524
+        ],
+        [
+          116,
+          20512
+        ],
+        [
+          116,
+          20514
+        ],
+        [
+          125,
+          20705
+        ],
+        [
+          125,
+          20712
+        ],
+        [
+          125,
+          20818
+        ],
+        [
+          125,
+          20828
+        ],
+        [
+          126,
+          20704
+        ],
+        [
+          126,
+          20705
+        ]
+      ],
+      "source_body_pair_count": 893,
+      "source_body_pair_sha256": "7e18092e14f882d60330b6df64cc0b9cc45bad3e9e09624ee3b504c1759f645e",
+      "body_pairs_exact_to_source": false,
+      "sewn_details": {
+        "Walk surface | Character | front welt pocket": {
+          "maximum_sampled_gap_m": 0.0032020097132772207,
+          "maximum_edge_m": 0.004648021154474152
+        },
+        "Walk surface | Character | front welt pocket.001": {
+          "maximum_sampled_gap_m": 0.003233142662793398,
+          "maximum_edge_m": 0.005592940742560693
+        }
+      }
+    },
+    {
+      "frame": 21,
+      "shell_self_pairs": 0,
+      "body_pair_count": 885,
+      "body_pair_sha256": "c6f087e661ccfd01491c2600a0f09e212efd14a6df1977e6fd3bed87d565e9c0",
+      "body_pair_examples": [
+        [
+          109,
+          20389
+        ],
+        [
+          109,
+          20390
+        ],
+        [
+          109,
+          20514
+        ],
+        [
+          109,
+          20524
+        ],
+        [
+          116,
+          20512
+        ],
+        [
+          116,
+          20514
+        ],
+        [
+          125,
+          20705
+        ],
+        [
+          125,
+          20712
+        ],
+        [
+          125,
+          20818
+        ],
+        [
+          125,
+          20828
+        ],
+        [
+          126,
+          20704
+        ],
+        [
+          126,
+          20705
+        ]
+      ],
+      "source_body_pair_count": 893,
+      "source_body_pair_sha256": "6561254f2fbb98fd82c91ea9dd9e09776501ef3ddaf486f84c7eb4b22faf7752",
+      "body_pairs_exact_to_source": false,
+      "sewn_details": {
+        "Walk surface | Character | front welt pocket": {
+          "maximum_sampled_gap_m": 0.0032021920196712017,
+          "maximum_edge_m": 0.004591245941412078
+        },
+        "Walk surface | Character | front welt pocket.001": {
+          "maximum_sampled_gap_m": 0.0032328725792467594,
+          "maximum_edge_m": 0.00559637563598298
+        }
+      }
+    },
+    {
+      "frame": 22,
+      "shell_self_pairs": 0,
+      "body_pair_count": 886,
+      "body_pair_sha256": "e65fbee098c285cbbcdc632b053b3cbb7478664e0fd3f4643147a0f08c7655f0",
+      "body_pair_examples": [
+        [
+          109,
+          20389
+        ],
+        [
+          109,
+          20390
+        ],
+        [
+          109,
+          20514
+        ],
+        [
+          109,
+          20524
+        ],
+        [
+          116,
+          20512
+        ],
+        [
+          116,
+          20514
+        ],
+        [
+          125,
+          20705
+        ],
+        [
+          125,
+          20712
+        ],
+        [
+          125,
+          20818
+        ],
+        [
+          125,
+          20828
+        ],
+        [
+          126,
+          20704
+        ],
+        [
+          126,
+          20705
+        ]
+      ],
+      "source_body_pair_count": 893,
+      "source_body_pair_sha256": "86cebed9274b80bac252ba239a4965c07895b75c35755474f523459e0b4d866d",
+      "body_pairs_exact_to_source": false,
+      "sewn_details": {
+        "Walk surface | Character | front welt pocket": {
+          "maximum_sampled_gap_m": 0.003202264430001378,
+          "maximum_edge_m": 0.004570981094695018
+        },
+        "Walk surface | Character | front welt pocket.001": {
+          "maximum_sampled_gap_m": 0.0032324993517249823,
+          "maximum_edge_m": 0.005611009926426115
+        }
+      }
+    },
+    {
+      "frame": 23,
+      "shell_self_pairs": 0,
+      "body_pair_count": 886,
+      "body_pair_sha256": "6f9ab63f96242ac3df03d47dadfec18decb2ba7f5031e969d6d78d18deb8bfa6",
+      "body_pair_examples": [
+        [
+          109,
+          20390
+        ],
+        [
+          109,
+          20514
+        ],
+        [
+          109,
+          20523
+        ],
+        [
+          109,
+          20524
+        ],
+        [
+          116,
+          20512
+        ],
+        [
+          116,
+          20514
+        ],
+        [
+          125,
+          20705
+        ],
+        [
+          125,
+          20712
+        ],
+        [
+          125,
+          20818
+        ],
+        [
+          125,
+          20828
+        ],
+        [
+          126,
+          20704
+        ],
+        [
+          126,
+          20705
+        ]
+      ],
+      "source_body_pair_count": 893,
+      "source_body_pair_sha256": "39385a2d76cc145c76804e106220480b88924b8599f716c3fe298d1c7e5d62e5",
+      "body_pairs_exact_to_source": false,
+      "sewn_details": {
+        "Walk surface | Character | front welt pocket": {
+          "maximum_sampled_gap_m": 0.003202419960871339,
+          "maximum_edge_m": 0.004560455686101358
+        },
+        "Walk surface | Character | front welt pocket.001": {
+          "maximum_sampled_gap_m": 0.003232161980122328,
+          "maximum_edge_m": 0.005630025252196787
+        }
+      }
+    },
+    {
+      "frame": 24,
+      "shell_self_pairs": 0,
+      "body_pair_count": 886,
+      "body_pair_sha256": "3d6fd2bed947bc6a9d750cf5b7896257e157c1a21f0cff5b09882a052d0f17cf",
+      "body_pair_examples": [
+        [
+          109,
+          20390
+        ],
+        [
+          109,
+          20514
+        ],
+        [
+          109,
+          20523
+        ],
+        [
+          109,
+          20524
+        ],
+        [
+          116,
+          20512
+        ],
+        [
+          116,
+          20514
+        ],
+        [
+          125,
+          20705
+        ],
+        [
+          125,
+          20712
+        ],
+        [
+          125,
+          20818
+        ],
+        [
+          125,
+          20828
+        ],
+        [
+          126,
+          20704
+        ],
+        [
+          126,
+          20705
+        ]
+      ],
+      "source_body_pair_count": 893,
+      "source_body_pair_sha256": "b7e639cba8179e43bebd58ea24639499ce2c8e7392f72fdc2859891e3ac13365",
+      "body_pairs_exact_to_source": false,
+      "sewn_details": {
+        "Walk surface | Character | front welt pocket": {
+          "maximum_sampled_gap_m": 0.0032024371903389692,
+          "maximum_edge_m": 0.004555586467436145
+        },
+        "Walk surface | Character | front welt pocket.001": {
+          "maximum_sampled_gap_m": 0.0032321212347596884,
+          "maximum_edge_m": 0.005645017892326324
+        }
+      }
+    },
+    {
+      "frame": 25,
+      "shell_self_pairs": 0,
+      "body_pair_count": 886,
+      "body_pair_sha256": "2d20f9c3d2386ec826d9efd0e406f2b905497f04103f1db9a3128c6b342e62fe",
+      "body_pair_examples": [
+        [
+          109,
+          20390
+        ],
+        [
+          109,
+          20514
+        ],
+        [
+          109,
+          20523
+        ],
+        [
+          109,
+          20524
+        ],
+        [
+          116,
+          20512
+        ],
+        [
+          116,
+          20514
+        ],
+        [
+          125,
+          20705
+        ],
+        [
+          125,
+          20712
+        ],
+        [
+          125,
+          20818
+        ],
+        [
+          125,
+          20828
+        ],
+        [
+          126,
+          20704
+        ],
+        [
+          126,
+          20705
+        ]
+      ],
+      "source_body_pair_count": 893,
+      "source_body_pair_sha256": "e454b1226252f068d45e57ed75740619219f0c1cb6aa978e7eb91ec6ce5be189",
+      "body_pairs_exact_to_source": false,
+      "sewn_details": {
+        "Walk surface | Character | front welt pocket": {
+          "maximum_sampled_gap_m": 0.0032025515101850033,
+          "maximum_edge_m": 0.004554346909938913
+        },
+        "Walk surface | Character | front welt pocket.001": {
+          "maximum_sampled_gap_m": 0.0032319198362529278,
+          "maximum_edge_m": 0.005650892647818131
+        }
+      }
+    },
+    {
+      "frame": 26,
+      "shell_self_pairs": 0,
+      "body_pair_count": 886,
+      "body_pair_sha256": "3d6fd2bed947bc6a9d750cf5b7896257e157c1a21f0cff5b09882a052d0f17cf",
+      "body_pair_examples": [
+        [
+          109,
+          20390
+        ],
+        [
+          109,
+          20514
+        ],
+        [
+          109,
+          20523
+        ],
+        [
+          109,
+          20524
+        ],
+        [
+          116,
+          20512
+        ],
+        [
+          116,
+          20514
+        ],
+        [
+          125,
+          20705
+        ],
+        [
+          125,
+          20712
+        ],
+        [
+          125,
+          20818
+        ],
+        [
+          125,
+          20828
+        ],
+        [
+          126,
+          20704
+        ],
+        [
+          126,
+          20705
+        ]
+      ],
+      "source_body_pair_count": 893,
+      "source_body_pair_sha256": "b7e639cba8179e43bebd58ea24639499ce2c8e7392f72fdc2859891e3ac13365",
+      "body_pairs_exact_to_source": false,
+      "sewn_details": {
+        "Walk surface | Character | front welt pocket": {
+          "maximum_sampled_gap_m": 0.00320253218524158,
+          "maximum_edge_m": 0.004555281364023325
+        },
+        "Walk surface | Character | front welt pocket.001": {
+          "maximum_sampled_gap_m": 0.003232021816074848,
+          "maximum_edge_m": 0.005644762892530802
+        }
+      }
+    },
+    {
+      "frame": 27,
+      "shell_self_pairs": 0,
+      "body_pair_count": 886,
+      "body_pair_sha256": "a03c327c380e2f243a732b7dee95bb5365e1efdbe2fd463ad88e678747e3f7ec",
+      "body_pair_examples": [
+        [
+          109,
+          20389
+        ],
+        [
+          109,
+          20390
+        ],
+        [
+          109,
+          20514
+        ],
+        [
+          109,
+          20524
+        ],
+        [
+          116,
+          20512
+        ],
+        [
+          116,
+          20514
+        ],
+        [
+          125,
+          20705
+        ],
+        [
+          125,
+          20712
+        ],
+        [
+          125,
+          20818
+        ],
+        [
+          125,
+          20828
+        ],
+        [
+          126,
+          20704
+        ],
+        [
+          126,
+          20705
+        ]
+      ],
+      "source_body_pair_count": 893,
+      "source_body_pair_sha256": "050a28ba836c30c8c3188d11d227534ab1c4807c044b979eb97d95374b234193",
+      "body_pairs_exact_to_source": false,
+      "sewn_details": {
+        "Walk surface | Character | front welt pocket": {
+          "maximum_sampled_gap_m": 0.0032023312523961067,
+          "maximum_edge_m": 0.004560558042740556
+        },
+        "Walk surface | Character | front welt pocket.001": {
+          "maximum_sampled_gap_m": 0.0032319966703653336,
+          "maximum_edge_m": 0.005629681355696848
+        }
+      }
+    },
+    {
+      "frame": 28,
+      "shell_self_pairs": 0,
+      "body_pair_count": 886,
+      "body_pair_sha256": "e65fbee098c285cbbcdc632b053b3cbb7478664e0fd3f4643147a0f08c7655f0",
+      "body_pair_examples": [
+        [
+          109,
+          20389
+        ],
+        [
+          109,
+          20390
+        ],
+        [
+          109,
+          20514
+        ],
+        [
+          109,
+          20524
+        ],
+        [
+          116,
+          20512
+        ],
+        [
+          116,
+          20514
+        ],
+        [
+          125,
+          20705
+        ],
+        [
+          125,
+          20712
+        ],
+        [
+          125,
+          20818
+        ],
+        [
+          125,
+          20828
+        ],
+        [
+          126,
+          20704
+        ],
+        [
+          126,
+          20705
+        ]
+      ],
+      "source_body_pair_count": 893,
+      "source_body_pair_sha256": "86cebed9274b80bac252ba239a4965c07895b75c35755474f523459e0b4d866d",
+      "body_pairs_exact_to_source": false,
+      "sewn_details": {
+        "Walk surface | Character | front welt pocket": {
+          "maximum_sampled_gap_m": 0.0032022972591221333,
+          "maximum_edge_m": 0.004571288569846447
+        },
+        "Walk surface | Character | front welt pocket.001": {
+          "maximum_sampled_gap_m": 0.0032322045881301165,
+          "maximum_edge_m": 0.005610941665401613
+        }
+      }
+    },
+    {
+      "frame": 29,
+      "shell_self_pairs": 0,
+      "body_pair_count": 885,
+      "body_pair_sha256": "c6f087e661ccfd01491c2600a0f09e212efd14a6df1977e6fd3bed87d565e9c0",
+      "body_pair_examples": [
+        [
+          109,
+          20389
+        ],
+        [
+          109,
+          20390
+        ],
+        [
+          109,
+          20514
+        ],
+        [
+          109,
+          20524
+        ],
+        [
+          116,
+          20512
+        ],
+        [
+          116,
+          20514
+        ],
+        [
+          125,
+          20705
+        ],
+        [
+          125,
+          20712
+        ],
+        [
+          125,
+          20818
+        ],
+        [
+          125,
+          20828
+        ],
+        [
+          126,
+          20704
+        ],
+        [
+          126,
+          20705
+        ]
+      ],
+      "source_body_pair_count": 893,
+      "source_body_pair_sha256": "6561254f2fbb98fd82c91ea9dd9e09776501ef3ddaf486f84c7eb4b22faf7752",
+      "body_pairs_exact_to_source": false,
+      "sewn_details": {
+        "Walk surface | Character | front welt pocket": {
+          "maximum_sampled_gap_m": 0.0032020912040024996,
+          "maximum_edge_m": 0.004591390398621687
+        },
+        "Walk surface | Character | front welt pocket.001": {
+          "maximum_sampled_gap_m": 0.0032326846849173307,
+          "maximum_edge_m": 0.005596599455220994
+        }
+      }
+    },
+    {
+      "frame": 30,
+      "shell_self_pairs": 0,
+      "body_pair_count": 885,
+      "body_pair_sha256": "b7c4f9e2b3c4e427bf96bd35fa1602b604d27602d6c517565f3e26094dee27aa",
+      "body_pair_examples": [
+        [
+          109,
+          20389
+        ],
+        [
+          109,
+          20390
+        ],
+        [
+          109,
+          20514
+        ],
+        [
+          109,
+          20524
+        ],
+        [
+          116,
+          20512
+        ],
+        [
+          116,
+          20514
+        ],
+        [
+          125,
+          20705
+        ],
+        [
+          125,
+          20712
+        ],
+        [
+          125,
+          20818
+        ],
+        [
+          125,
+          20828
+        ],
+        [
+          126,
+          20704
+        ],
+        [
+          126,
+          20705
+        ]
+      ],
+      "source_body_pair_count": 893,
+      "source_body_pair_sha256": "7e18092e14f882d60330b6df64cc0b9cc45bad3e9e09624ee3b504c1759f645e",
+      "body_pairs_exact_to_source": false,
+      "sewn_details": {
+        "Walk surface | Character | front welt pocket": {
+          "maximum_sampled_gap_m": 0.0032020555809140205,
+          "maximum_edge_m": 0.004648095482304252
+        },
+        "Walk surface | Character | front welt pocket.001": {
+          "maximum_sampled_gap_m": 0.0032331300899386406,
+          "maximum_edge_m": 0.005592664554902887
+        }
+      }
+    },
+    {
+      "frame": 31,
+      "shell_self_pairs": 0,
+      "body_pair_count": 885,
+      "body_pair_sha256": "4ffdfa65bc94e8a84036de4cc4c29b914968dc13a3ec15e7d5bfaa98b9d465dc",
+      "body_pair_examples": [
+        [
+          109,
+          20389
+        ],
+        [
+          109,
+          20390
+        ],
+        [
+          109,
+          20514
+        ],
+        [
+          109,
+          20524
+        ],
+        [
+          116,
+          20512
+        ],
+        [
+          116,
+          20514
+        ],
+        [
+          125,
+          20705
+        ],
+        [
+          125,
+          20712
+        ],
+        [
+          125,
+          20818
+        ],
+        [
+          125,
+          20828
+        ],
+        [
+          126,
+          20704
+        ],
+        [
+          126,
+          20705
+        ]
+      ],
+      "source_body_pair_count": 893,
+      "source_body_pair_sha256": "c0966ad4ee0642452e257a20ff04e9c76b5868398a94a4bfe52b622a1d8d4832",
+      "body_pairs_exact_to_source": false,
+      "sewn_details": {
+        "Walk surface | Character | front welt pocket": {
+          "maximum_sampled_gap_m": 0.0032018369529396296,
+          "maximum_edge_m": 0.004766818729514275
+        },
+        "Walk surface | Character | front welt pocket.001": {
+          "maximum_sampled_gap_m": 0.003233478404581547,
+          "maximum_edge_m": 0.005605373700943306
+        }
+      }
+    },
+    {
+      "frame": 32,
+      "shell_self_pairs": 0,
+      "body_pair_count": 885,
+      "body_pair_sha256": "9fb361684426816d23ae9c46617620b336b75de58b568a9b69c33d76bba26dc3",
+      "body_pair_examples": [
+        [
+          109,
+          20389
+        ],
+        [
+          109,
+          20390
+        ],
+        [
+          109,
+          20514
+        ],
+        [
+          109,
+          20524
+        ],
+        [
+          116,
+          20512
+        ],
+        [
+          116,
+          20514
+        ],
+        [
+          125,
+          20705
+        ],
+        [
+          125,
+          20712
+        ],
+        [
+          125,
+          20818
+        ],
+        [
+          125,
+          20828
+        ],
+        [
+          126,
+          20704
+        ],
+        [
+          126,
+          20705
+        ]
+      ],
+      "source_body_pair_count": 893,
+      "source_body_pair_sha256": "5f0de6667a09034c56c2627c435dc207d16742179eb24e72817ca9f59e19204d",
+      "body_pairs_exact_to_source": false,
+      "sewn_details": {
+        "Walk surface | Character | front welt pocket": {
+          "maximum_sampled_gap_m": 0.0032015591859817505,
+          "maximum_edge_m": 0.004902214728549685
+        },
+        "Walk surface | Character | front welt pocket.001": {
+          "maximum_sampled_gap_m": 0.003234060248360038,
+          "maximum_edge_m": 0.005636096685231554
+        }
+      }
+    },
+    {
+      "frame": 33,
+      "shell_self_pairs": 0,
+      "body_pair_count": 886,
+      "body_pair_sha256": "b2e53be756d8c275042407c4c08a67aec21f1341002f7ce9f70a05d05d931a40",
+      "body_pair_examples": [
+        [
+          109,
+          20389
+        ],
+        [
+          109,
+          20390
+        ],
+        [
+          109,
+          20514
+        ],
+        [
+          109,
+          20524
+        ],
+        [
+          116,
+          20512
+        ],
+        [
+          116,
+          20514
+        ],
+        [
+          125,
+          20705
+        ],
+        [
+          125,
+          20712
+        ],
+        [
+          125,
+          20818
+        ],
+        [
+          125,
+          20828
+        ],
+        [
+          126,
+          20704
+        ],
+        [
+          126,
+          20705
+        ]
+      ],
+      "source_body_pair_count": 891,
+      "source_body_pair_sha256": "1607fe28c7e9d5f7899520888fff2cbd5f5fd6ebb3fcab0ea249c73171d15498",
+      "body_pairs_exact_to_source": false,
+      "sewn_details": {
+        "Walk surface | Character | front welt pocket": {
+          "maximum_sampled_gap_m": 0.003201461862772703,
+          "maximum_edge_m": 0.0050426388681364944
+        },
+        "Walk surface | Character | front welt pocket.001": {
+          "maximum_sampled_gap_m": 0.0032345387153327465,
+          "maximum_edge_m": 0.005680607286228543
+        }
+      }
+    },
+    {
+      "frame": 34,
+      "shell_self_pairs": 0,
+      "body_pair_count": 885,
+      "body_pair_sha256": "9a2daa55fd87c82e0417d3686b451a78603e0291c0918fc5ca1543b120b064ec",
+      "body_pair_examples": [
+        [
+          109,
+          20389
+        ],
+        [
+          109,
+          20390
+        ],
+        [
+          109,
+          20514
+        ],
+        [
+          109,
+          20524
+        ],
+        [
+          116,
+          20512
+        ],
+        [
+          116,
+          20514
+        ],
+        [
+          125,
+          20705
+        ],
+        [
+          125,
+          20712
+        ],
+        [
+          125,
+          20818
+        ],
+        [
+          125,
+          20828
+        ],
+        [
+          126,
+          20704
+        ],
+        [
+          126,
+          20705
+        ]
+      ],
+      "source_body_pair_count": 891,
+      "source_body_pair_sha256": "022d9d90e12ead0b08f80aed30e069dd1c1e9a130dee3a82f7153489d697c6ed",
+      "body_pairs_exact_to_source": false,
+      "sewn_details": {
+        "Walk surface | Character | front welt pocket": {
+          "maximum_sampled_gap_m": 0.0032014299649745226,
+          "maximum_edge_m": 0.005173233118127658
+        },
+        "Walk surface | Character | front welt pocket.001": {
+          "maximum_sampled_gap_m": 0.0032345252111554146,
+          "maximum_edge_m": 0.005729752913405156
+        }
+      }
+    },
+    {
+      "frame": 35,
+      "shell_self_pairs": 0,
+      "body_pair_count": 885,
+      "body_pair_sha256": "ff3cc8adcbd7618204f09b29f614dd8fc9058e630f6eb90f353a357a5fb36e1e",
+      "body_pair_examples": [
+        [
+          109,
+          20389
+        ],
+        [
+          109,
+          20390
+        ],
+        [
+          109,
+          20514
+        ],
+        [
+          109,
+          20524
+        ],
+        [
+          116,
+          20512
+        ],
+        [
+          116,
+          20514
+        ],
+        [
+          125,
+          20705
+        ],
+        [
+          125,
+          20712
+        ],
+        [
+          125,
+          20818
+        ],
+        [
+          125,
+          20828
+        ],
+        [
+          126,
+          20704
+        ],
+        [
+          126,
+          20705
+        ]
+      ],
+      "source_body_pair_count": 891,
+      "source_body_pair_sha256": "9f454ece49e7a7926d9d5f61d24add39645523e00491e440d672a4c8716a6939",
+      "body_pairs_exact_to_source": false,
+      "sewn_details": {
+        "Walk surface | Character | front welt pocket": {
+          "maximum_sampled_gap_m": 0.0032011428847908974,
+          "maximum_edge_m": 0.005279741725283109
+        },
+        "Walk surface | Character | front welt pocket.001": {
+          "maximum_sampled_gap_m": 0.0032350418623536825,
+          "maximum_edge_m": 0.005773411041324638
+        }
+      }
+    },
+    {
+      "frame": 36,
+      "shell_self_pairs": 0,
+      "body_pair_count": 884,
+      "body_pair_sha256": "8619ae1fb0e189031a96d9c58a1a3116dbe5fd01c8a2b99d545f9a6e1f19329b",
+      "body_pair_examples": [
+        [
+          109,
+          20389
+        ],
+        [
+          109,
+          20390
+        ],
+        [
+          109,
+          20514
+        ],
+        [
+          109,
+          20524
+        ],
+        [
+          116,
+          20512
+        ],
+        [
+          116,
+          20514
+        ],
+        [
+          125,
+          20705
+        ],
+        [
+          125,
+          20712
+        ],
+        [
+          125,
+          20818
+        ],
+        [
+          125,
+          20828
+        ],
+        [
+          126,
+          20704
+        ],
+        [
+          126,
+          20705
+        ]
+      ],
+      "source_body_pair_count": 890,
+      "source_body_pair_sha256": "f82985d9feb6daa043162bb3ec2063accfc7ddf146b4f141efd3ab09e32fcc5c",
+      "body_pairs_exact_to_source": false,
+      "sewn_details": {
+        "Walk surface | Character | front welt pocket": {
+          "maximum_sampled_gap_m": 0.003201159415766597,
+          "maximum_edge_m": 0.005349063557887655
+        },
+        "Walk surface | Character | front welt pocket.001": {
+          "maximum_sampled_gap_m": 0.003235064446926117,
+          "maximum_edge_m": 0.005804016524910751
+        }
+      }
+    },
+    {
+      "frame": 37,
+      "shell_self_pairs": 0,
+      "body_pair_count": 884,
+      "body_pair_sha256": "8619ae1fb0e189031a96d9c58a1a3116dbe5fd01c8a2b99d545f9a6e1f19329b",
+      "body_pair_examples": [
+        [
+          109,
+          20389
+        ],
+        [
+          109,
+          20390
+        ],
+        [
+          109,
+          20514
+        ],
+        [
+          109,
+          20524
+        ],
+        [
+          116,
+          20512
+        ],
+        [
+          116,
+          20514
+        ],
+        [
+          125,
+          20705
+        ],
+        [
+          125,
+          20712
+        ],
+        [
+          125,
+          20818
+        ],
+        [
+          125,
+          20828
+        ],
+        [
+          126,
+          20704
+        ],
+        [
+          126,
+          20705
+        ]
+      ],
+      "source_body_pair_count": 890,
+      "source_body_pair_sha256": "f82985d9feb6daa043162bb3ec2063accfc7ddf146b4f141efd3ab09e32fcc5c",
+      "body_pairs_exact_to_source": false,
+      "sewn_details": {
+        "Walk surface | Character | front welt pocket": {
+          "maximum_sampled_gap_m": 0.00320113031193614,
+          "maximum_edge_m": 0.005373236042014303
+        },
+        "Walk surface | Character | front welt pocket.001": {
+          "maximum_sampled_gap_m": 0.0032350823748856783,
+          "maximum_edge_m": 0.005814902387115689
+        }
+      }
+    },
+    {
+      "frame": 38,
+      "shell_self_pairs": 0,
+      "body_pair_count": 884,
+      "body_pair_sha256": "8619ae1fb0e189031a96d9c58a1a3116dbe5fd01c8a2b99d545f9a6e1f19329b",
+      "body_pair_examples": [
+        [
+          109,
+          20389
+        ],
+        [
+          109,
+          20390
+        ],
+        [
+          109,
+          20514
+        ],
+        [
+          109,
+          20524
+        ],
+        [
+          116,
+          20512
+        ],
+        [
+          116,
+          20514
+        ],
+        [
+          125,
+          20705
+        ],
+        [
+          125,
+          20712
+        ],
+        [
+          125,
+          20818
+        ],
+        [
+          125,
+          20828
+        ],
+        [
+          126,
+          20704
+        ],
+        [
+          126,
+          20705
+        ]
+      ],
+      "source_body_pair_count": 890,
+      "source_body_pair_sha256": "f82985d9feb6daa043162bb3ec2063accfc7ddf146b4f141efd3ab09e32fcc5c",
+      "body_pairs_exact_to_source": false,
+      "sewn_details": {
+        "Walk surface | Character | front welt pocket": {
+          "maximum_sampled_gap_m": 0.003201102837920189,
+          "maximum_edge_m": 0.0053492290358292515
+        },
+        "Walk surface | Character | front welt pocket.001": {
+          "maximum_sampled_gap_m": 0.003235151991248131,
+          "maximum_edge_m": 0.005803896025552935
+        }
+      }
+    },
+    {
+      "frame": 39,
+      "shell_self_pairs": 0,
+      "body_pair_count": 885,
+      "body_pair_sha256": "ff3cc8adcbd7618204f09b29f614dd8fc9058e630f6eb90f353a357a5fb36e1e",
+      "body_pair_examples": [
+        [
+          109,
+          20389
+        ],
+        [
+          109,
+          20390
+        ],
+        [
+          109,
+          20514
+        ],
+        [
+          109,
+          20524
+        ],
+        [
+          116,
+          20512
+        ],
+        [
+          116,
+          20514
+        ],
+        [
+          125,
+          20705
+        ],
+        [
+          125,
+          20712
+        ],
+        [
+          125,
+          20818
+        ],
+        [
+          125,
+          20828
+        ],
+        [
+          126,
+          20704
+        ],
+        [
+          126,
+          20705
+        ]
+      ],
+      "source_body_pair_count": 891,
+      "source_body_pair_sha256": "9f454ece49e7a7926d9d5f61d24add39645523e00491e440d672a4c8716a6939",
+      "body_pairs_exact_to_source": false,
+      "sewn_details": {
+        "Walk surface | Character | front welt pocket": {
+          "maximum_sampled_gap_m": 0.0032011428847908974,
+          "maximum_edge_m": 0.005279785027267377
+        },
+        "Walk surface | Character | front welt pocket.001": {
+          "maximum_sampled_gap_m": 0.0032349179964512587,
+          "maximum_edge_m": 0.0057733781958917785
+        }
+      }
+    },
+    {
+      "frame": 40,
+      "shell_self_pairs": 0,
+      "body_pair_count": 885,
+      "body_pair_sha256": "9a2daa55fd87c82e0417d3686b451a78603e0291c0918fc5ca1543b120b064ec",
+      "body_pair_examples": [
+        [
+          109,
+          20389
+        ],
+        [
+          109,
+          20390
+        ],
+        [
+          109,
+          20514
+        ],
+        [
+          109,
+          20524
+        ],
+        [
+          116,
+          20512
+        ],
+        [
+          116,
+          20514
+        ],
+        [
+          125,
+          20705
+        ],
+        [
+          125,
+          20712
+        ],
+        [
+          125,
+          20818
+        ],
+        [
+          125,
+          20828
+        ],
+        [
+          126,
+          20704
+        ],
+        [
+          126,
+          20705
+        ]
+      ],
+      "source_body_pair_count": 891,
+      "source_body_pair_sha256": "022d9d90e12ead0b08f80aed30e069dd1c1e9a130dee3a82f7153489d697c6ed",
+      "body_pairs_exact_to_source": false,
+      "sewn_details": {
+        "Walk surface | Character | front welt pocket": {
+          "maximum_sampled_gap_m": 0.0032012411393225193,
+          "maximum_edge_m": 0.0051730576589738555
+        },
+        "Walk surface | Character | front welt pocket.001": {
+          "maximum_sampled_gap_m": 0.0032346686348319054,
+          "maximum_edge_m": 0.005729537589504842
+        }
+      }
+    },
+    {
+      "frame": 41,
+      "shell_self_pairs": 0,
+      "body_pair_count": 886,
+      "body_pair_sha256": "b2e53be756d8c275042407c4c08a67aec21f1341002f7ce9f70a05d05d931a40",
+      "body_pair_examples": [
+        [
+          109,
+          20389
+        ],
+        [
+          109,
+          20390
+        ],
+        [
+          109,
+          20514
+        ],
+        [
+          109,
+          20524
+        ],
+        [
+          116,
+          20512
+        ],
+        [
+          116,
+          20514
+        ],
+        [
+          125,
+          20705
+        ],
+        [
+          125,
+          20712
+        ],
+        [
+          125,
+          20818
+        ],
+        [
+          125,
+          20828
+        ],
+        [
+          126,
+          20704
+        ],
+        [
+          126,
+          20705
+        ]
+      ],
+      "source_body_pair_count": 891,
+      "source_body_pair_sha256": "1607fe28c7e9d5f7899520888fff2cbd5f5fd6ebb3fcab0ea249c73171d15498",
+      "body_pairs_exact_to_source": false,
+      "sewn_details": {
+        "Walk surface | Character | front welt pocket": {
+          "maximum_sampled_gap_m": 0.003201461862772703,
+          "maximum_edge_m": 0.005042666936717796
+        },
+        "Walk surface | Character | front welt pocket.001": {
+          "maximum_sampled_gap_m": 0.00323430891148746,
+          "maximum_edge_m": 0.005680708311704312
+        }
+      }
+    },
+    {
+      "frame": 42,
+      "shell_self_pairs": 0,
+      "body_pair_count": 885,
+      "body_pair_sha256": "9fb361684426816d23ae9c46617620b336b75de58b568a9b69c33d76bba26dc3",
+      "body_pair_examples": [
+        [
+          109,
+          20389
+        ],
+        [
+          109,
+          20390
+        ],
+        [
+          109,
+          20514
+        ],
+        [
+          109,
+          20524
+        ],
+        [
+          116,
+          20512
+        ],
+        [
+          116,
+          20514
+        ],
+        [
+          125,
+          20705
+        ],
+        [
+          125,
+          20712
+        ],
+        [
+          125,
+          20818
+        ],
+        [
+          125,
+          20828
+        ],
+        [
+          126,
+          20704
+        ],
+        [
+          126,
+          20705
+        ]
+      ],
+      "source_body_pair_count": 893,
+      "source_body_pair_sha256": "5f0de6667a09034c56c2627c435dc207d16742179eb24e72817ca9f59e19204d",
+      "body_pairs_exact_to_source": false,
+      "sewn_details": {
+        "Walk surface | Character | front welt pocket": {
+          "maximum_sampled_gap_m": 0.003201498417183757,
+          "maximum_edge_m": 0.004902214728549685
+        },
+        "Walk surface | Character | front welt pocket.001": {
+          "maximum_sampled_gap_m": 0.0032339608296751976,
+          "maximum_edge_m": 0.00563587048084692
+        }
+      }
+    },
+    {
+      "frame": 43,
+      "shell_self_pairs": 0,
+      "body_pair_count": 885,
+      "body_pair_sha256": "4ffdfa65bc94e8a84036de4cc4c29b914968dc13a3ec15e7d5bfaa98b9d465dc",
+      "body_pair_examples": [
+        [
+          109,
+          20389
+        ],
+        [
+          109,
+          20390
+        ],
+        [
+          109,
+          20514
+        ],
+        [
+          109,
+          20524
+        ],
+        [
+          116,
+          20512
+        ],
+        [
+          116,
+          20514
+        ],
+        [
+          125,
+          20705
+        ],
+        [
+          125,
+          20712
+        ],
+        [
+          125,
+          20818
+        ],
+        [
+          125,
+          20828
+        ],
+        [
+          126,
+          20704
+        ],
+        [
+          126,
+          20705
+        ]
+      ],
+      "source_body_pair_count": 893,
+      "source_body_pair_sha256": "c0966ad4ee0642452e257a20ff04e9c76b5868398a94a4bfe52b622a1d8d4832",
+      "body_pairs_exact_to_source": false,
+      "sewn_details": {
+        "Walk surface | Character | front welt pocket": {
+          "maximum_sampled_gap_m": 0.0032017179764807224,
+          "maximum_edge_m": 0.00476674155746646
+        },
+        "Walk surface | Character | front welt pocket.001": {
+          "maximum_sampled_gap_m": 0.003233599243685603,
+          "maximum_edge_m": 0.005605269208347711
+        }
+      }
+    },
+    {
+      "frame": 44,
+      "shell_self_pairs": 0,
+      "body_pair_count": 885,
+      "body_pair_sha256": "b7c4f9e2b3c4e427bf96bd35fa1602b604d27602d6c517565f3e26094dee27aa",
+      "body_pair_examples": [
+        [
+          109,
+          20389
+        ],
+        [
+          109,
+          20390
+        ],
+        [
+          109,
+          20514
+        ],
+        [
+          109,
+          20524
+        ],
+        [
+          116,
+          20512
+        ],
+        [
+          116,
+          20514
+        ],
+        [
+          125,
+          20705
+        ],
+        [
+          125,
+          20712
+        ],
+        [
+          125,
+          20818
+        ],
+        [
+          125,
+          20828
+        ],
+        [
+          126,
+          20704
+        ],
+        [
+          126,
+          20705
+        ]
+      ],
+      "source_body_pair_count": 893,
+      "source_body_pair_sha256": "7e18092e14f882d60330b6df64cc0b9cc45bad3e9e09624ee3b504c1759f645e",
+      "body_pairs_exact_to_source": false,
+      "sewn_details": {
+        "Walk surface | Character | front welt pocket": {
+          "maximum_sampled_gap_m": 0.0032020690850913525,
+          "maximum_edge_m": 0.004647979598122678
+        },
+        "Walk surface | Character | front welt pocket.001": {
+          "maximum_sampled_gap_m": 0.003233065828680992,
+          "maximum_edge_m": 0.005592827195653762
+        }
+      }
+    },
+    {
+      "frame": 45,
+      "shell_self_pairs": 0,
+      "body_pair_count": 885,
+      "body_pair_sha256": "c6f087e661ccfd01491c2600a0f09e212efd14a6df1977e6fd3bed87d565e9c0",
+      "body_pair_examples": [
+        [
+          109,
+          20389
+        ],
+        [
+          109,
+          20390
+        ],
+        [
+          109,
+          20514
+        ],
+        [
+          109,
+          20524
+        ],
+        [
+          116,
+          20512
+        ],
+        [
+          116,
+          20514
+        ],
+        [
+          125,
+          20705
+        ],
+        [
+          125,
+          20712
+        ],
+        [
+          125,
+          20818
+        ],
+        [
+          125,
+          20828
+        ],
+        [
+          126,
+          20704
+        ],
+        [
+          126,
+          20705
+        ]
+      ],
+      "source_body_pair_count": 893,
+      "source_body_pair_sha256": "6561254f2fbb98fd82c91ea9dd9e09776501ef3ddaf486f84c7eb4b22faf7752",
+      "body_pairs_exact_to_source": false,
+      "sewn_details": {
+        "Walk surface | Character | front welt pocket": {
+          "maximum_sampled_gap_m": 0.0032021976076066494,
+          "maximum_edge_m": 0.004591414521839508
+        },
+        "Walk surface | Character | front welt pocket.001": {
+          "maximum_sampled_gap_m": 0.0032326169312000275,
+          "maximum_edge_m": 0.005596094234273728
+        }
+      }
+    },
+    {
+      "frame": 46,
+      "shell_self_pairs": 0,
+      "body_pair_count": 886,
+      "body_pair_sha256": "e65fbee098c285cbbcdc632b053b3cbb7478664e0fd3f4643147a0f08c7655f0",
+      "body_pair_examples": [
+        [
+          109,
+          20389
+        ],
+        [
+          109,
+          20390
+        ],
+        [
+          109,
+          20514
+        ],
+        [
+          109,
+          20524
+        ],
+        [
+          116,
+          20512
+        ],
+        [
+          116,
+          20514
+        ],
+        [
+          125,
+          20705
+        ],
+        [
+          125,
+          20712
+        ],
+        [
+          125,
+          20818
+        ],
+        [
+          125,
+          20828
+        ],
+        [
+          126,
+          20704
+        ],
+        [
+          126,
+          20705
+        ]
+      ],
+      "source_body_pair_count": 893,
+      "source_body_pair_sha256": "86cebed9274b80bac252ba239a4965c07895b75c35755474f523459e0b4d866d",
+      "body_pairs_exact_to_source": false,
+      "sewn_details": {
+        "Walk surface | Character | front welt pocket": {
+          "maximum_sampled_gap_m": 0.0032023643143475056,
+          "maximum_edge_m": 0.00457119074360898
+        },
+        "Walk surface | Character | front welt pocket.001": {
+          "maximum_sampled_gap_m": 0.0032324506901204586,
+          "maximum_edge_m": 0.005611078227142473
+        }
+      }
+    },
+    {
+      "frame": 47,
+      "shell_self_pairs": 0,
+      "body_pair_count": 886,
+      "body_pair_sha256": "6f9ab63f96242ac3df03d47dadfec18decb2ba7f5031e969d6d78d18deb8bfa6",
+      "body_pair_examples": [
+        [
+          109,
+          20390
+        ],
+        [
+          109,
+          20514
+        ],
+        [
+          109,
+          20523
+        ],
+        [
+          109,
+          20524
+        ],
+        [
+          116,
+          20512
+        ],
+        [
+          116,
+          20514
+        ],
+        [
+          125,
+          20705
+        ],
+        [
+          125,
+          20712
+        ],
+        [
+          125,
+          20818
+        ],
+        [
+          125,
+          20828
+        ],
+        [
+          126,
+          20704
+        ],
+        [
+          126,
+          20705
+        ]
+      ],
+      "source_body_pair_count": 893,
+      "source_body_pair_sha256": "39385a2d76cc145c76804e106220480b88924b8599f716c3fe298d1c7e5d62e5",
+      "body_pairs_exact_to_source": false,
+      "sewn_details": {
+        "Walk surface | Character | front welt pocket": {
+          "maximum_sampled_gap_m": 0.003202419960871339,
+          "maximum_edge_m": 0.004560326989185614
+        },
+        "Walk surface | Character | front welt pocket.001": {
+          "maximum_sampled_gap_m": 0.003232110757380724,
+          "maximum_edge_m": 0.0056298739645570285
+        }
+      }
+    },
+    {
+      "frame": 48,
+      "shell_self_pairs": 0,
+      "body_pair_count": 886,
+      "body_pair_sha256": "3d6fd2bed947bc6a9d750cf5b7896257e157c1a21f0cff5b09882a052d0f17cf",
+      "body_pair_examples": [
+        [
+          109,
+          20390
+        ],
+        [
+          109,
+          20514
+        ],
+        [
+          109,
+          20523
+        ],
+        [
+          109,
+          20524
+        ],
+        [
+          116,
+          20512
+        ],
+        [
+          116,
+          20514
+        ],
+        [
+          125,
+          20705
+        ],
+        [
+          125,
+          20712
+        ],
+        [
+          125,
+          20818
+        ],
+        [
+          125,
+          20828
+        ],
+        [
+          126,
+          20704
+        ],
+        [
+          126,
+          20705
+        ]
+      ],
+      "source_body_pair_count": 893,
+      "source_body_pair_sha256": "b7e639cba8179e43bebd58ea24639499ce2c8e7392f72fdc2859891e3ac13365",
+      "body_pairs_exact_to_source": false,
+      "sewn_details": {
+        "Walk surface | Character | front welt pocket": {
+          "maximum_sampled_gap_m": 0.0032024371903389692,
+          "maximum_edge_m": 0.004555303401132972
+        },
+        "Walk surface | Character | front welt pocket.001": {
+          "maximum_sampled_gap_m": 0.003231958718970418,
+          "maximum_edge_m": 0.0056449666173775245
+        }
+      }
+    },
+    {
+      "frame": 49,
+      "shell_self_pairs": 0,
+      "body_pair_count": 888,
+      "body_pair_sha256": "d4d864521b02de86ebb719d819f3887add258e2a40748f20958a82edd2167592",
+      "body_pair_examples": [
+        [
+          109,
+          20390
+        ],
+        [
+          109,
+          20514
+        ],
+        [
+          109,
+          20523
+        ],
+        [
+          109,
+          20524
+        ],
+        [
+          116,
+          20512
+        ],
+        [
+          116,
+          20514
+        ],
+        [
+          125,
+          20705
+        ],
+        [
+          125,
+          20712
+        ],
+        [
+          125,
+          20818
+        ],
+        [
+          125,
+          20828
+        ],
+        [
+          126,
+          20704
+        ],
+        [
+          126,
+          20705
+        ]
+      ],
+      "source_body_pair_count": 895,
+      "source_body_pair_sha256": "60ce50a14c372354d0ebd3b7317562295aed02d0b0a6429b2fb27ca5becb8ecf",
+      "body_pairs_exact_to_source": false,
+      "sewn_details": {
+        "Walk surface | Character | front welt pocket": {
+          "maximum_sampled_gap_m": 0.0032025515101850033,
+          "maximum_edge_m": 0.0045541862374531995
+        },
+        "Walk surface | Character | front welt pocket.001": {
+          "maximum_sampled_gap_m": 0.0032319214660674334,
+          "maximum_edge_m": 0.005650648445576178
+        }
+      }
+    }
+  ],
+  "scope": "Complete evaluated jacket shell self/body-support screens at render subdivision in all 49 authored integer frames, compared with hash-pinned immediate-source cold results. Sampled visible front welt contact and edge length compared with six source poses. Preserved controls/old UVs/old keys/maps/rest/six full poses; two new UV layers and one shared shoulder key, outward front tension relief and jacket shader copy. No claim of complete-body collision freedom, animated subframes, physical cloth simulation, final photographic human realism or runtime compatibility."
+}
