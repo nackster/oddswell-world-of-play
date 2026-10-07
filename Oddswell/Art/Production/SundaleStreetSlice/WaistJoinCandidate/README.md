@@ -1,0 +1,7 @@
+# Waist attachment and posterior cloth checkpoint
+
+`WaistJoin.blend` continues the retained `SeatFlowCandidate/SeatFlow.blend`. The open 160-control waist boundary is excluded from posterior smoothing. Existing smoothing influence fades over 60 mm of shortest native-edge distance below that edge. This changes 423 declared smoothing weights; original anatomy, mesh controls, old fields, bone/fitting weights, texture maps and native walk remain editable.
+
+Run `build.py` offline with Blender 4.5.5 to reproduce the candidate from the pinned retained source. `audit.py` checks cold custody, exact unedited human geometry and all 49 authored integer walking frames. `render.py` produces matched source/candidate views; copied source views originate from the retained SeatFlow render. Use `--after-only --skip-gameplay` for body views and a fresh process with `--after-only --gameplay-only` for the full street camera, avoiding accumulated render caches. `render-walk.py -- --preview` renders the actual candidate's 24-frame walking preview. Scripts find the repository through `.git` and require retained source/audit helpers.
+
+The waist edge is pinned against this smoothing modifier; it still follows its existing native pose and garment construction. This is an editable garment correction, not simulated cloth, a full body collision proof or a runtime update. The complete human/landscape goal and separate starter-outfit, handoff and beta gates remain active or unchanged as recorded in the roadmap.
