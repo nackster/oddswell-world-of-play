@@ -1,0 +1,15 @@
+{
+  "candidate_sha256": "6c799e05c928b6feae19a257144b6e47cdaff5539dda3a6e4a22b64599290b91",
+  "renderer": "Blender 4.5.5 LTS / Cycles / OPTIX",
+  "candidate_views": [
+    "After_Storefront",
+    "After_Interior",
+    "Gameplay"
+  ],
+  "source_views": [
+    "Before_Storefront",
+    "Before_Interior"
+  ],
+  "source_sha256": "8b2f0e5634f1198bbdbb5054c961668cb86825764ada8d24355296cbc290de7a",
+  "geometry": "Native meshes, curves, text and retained licensed textures; no generated image background"
+}
