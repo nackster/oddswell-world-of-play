@@ -1,0 +1,26 @@
+{
+  "source_sha256": "1389c758ebc819e0a78250cf02006255ad178076896cdcd4279f4d7970ca9b4d",
+  "upper_fold_attribute": "Upper cotton gathered ease",
+  "maximum_control_relief_m": 0.0035359268076717854,
+  "pockets": {
+    "Character | sewn cotton back pocket left": {
+      "new_registration": "Tailored rear cotton patch UV",
+      "preserved_column_direction": 1,
+      "nominal_contact_width_m": 0.125,
+      "nominal_contact_height_m": 0.105,
+      "maximum_ease_m": 0.0016502285143360496,
+      "method": "Matching contact patterns at existing mouths project straight onto rear cloth and bind to evaluated triangle indices and normalized barycentric weights, followed by a 1.2 mm final surface fit. Original controls/UVs/registration preserved. Threads use a separate unique rectangular pocket atlas.",
+      "evaluated_cloth_vertex_count": 82559
+    },
+    "Character | sewn cotton back pocket right": {
+      "new_registration": "Tailored rear cotton patch UV",
+      "preserved_column_direction": 1,
+      "nominal_contact_width_m": 0.125,
+      "nominal_contact_height_m": 0.105,
+      "maximum_ease_m": 0.0016502285143360496,
+      "method": "Matching contact patterns at existing mouths project straight onto rear cloth and bind to evaluated triangle indices and normalized barycentric weights, followed by a 1.2 mm final surface fit. Original controls/UVs/registration preserved. Threads use a separate unique rectangular pocket atlas.",
+      "evaluated_cloth_vertex_count": 82559
+    }
+  },
+  "candidate_sha256": "a46587e5990c80822b118c019168576708366377b37663422bde60d420d322fb"
+}

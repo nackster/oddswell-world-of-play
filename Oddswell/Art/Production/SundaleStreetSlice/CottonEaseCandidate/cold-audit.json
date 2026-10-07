@@ -1,0 +1,2904 @@
+{
+  "candidate_sha256": "a46587e5990c80822b118c019168576708366377b37663422bde60d420d322fb",
+  "source_sha256": "1389c758ebc819e0a78250cf02006255ad178076896cdcd4279f4d7970ca9b4d",
+  "original_mesh_curve_count": 5322,
+  "packed_maps": 31,
+  "original_controls_edges_uv_keys_old_attributes_weights_maps_rest_six_poses_exact": true,
+  "native_walk_curves_shader_world_lights_text_transforms_visibility_exact": true,
+  "unchanged_visible_character_objects": 296,
+  "unchanged_human_six_pose_geometry_exact": true,
+  "frames": [
+    {
+      "frame": 1,
+      "whole_shorts_shell_leg_intersection_pairs": 0,
+      "whole_shorts_shell_nonadjacent_self_intersection_pairs": 0,
+      "body_pair_samples": [],
+      "self_pair_samples": [],
+      "shorts_details": {
+        "Character | sewn cotton back pocket left": {
+          "maximum_edge_m": 0.0037397803711380533,
+          "maximum_sampled_cloth_distance_m": 0.001590183237567544,
+          "samples": 1189
+        },
+        "Character | sewn cotton back pocket right": {
+          "maximum_edge_m": 0.0034658726569009543,
+          "maximum_sampled_cloth_distance_m": 0.0015815823571756482,
+          "samples": 1189
+        },
+        "Walk surface | Character | inset back pocket stitch left": {
+          "maximum_edge_m": 0.010973286017230728,
+          "maximum_sampled_cloth_distance_m": 0.0017974277725443244,
+          "samples": 43
+        },
+        "Walk surface | Character | pocket mouth topstitch left": {
+          "maximum_edge_m": 0.006895712262034623,
+          "maximum_sampled_cloth_distance_m": 0.0017916737124323845,
+          "samples": 21
+        },
+        "Walk surface | Character | inset back pocket stitch right": {
+          "maximum_edge_m": 0.013057968452854469,
+          "maximum_sampled_cloth_distance_m": 0.0018075426341965795,
+          "samples": 43
+        },
+        "Walk surface | Character | pocket mouth topstitch right": {
+          "maximum_edge_m": 0.006055271628933476,
+          "maximum_sampled_cloth_distance_m": 0.0017838950734585524,
+          "samples": 21
+        },
+        "Walk surface | Character | shorts sewn side seam left": {
+          "maximum_edge_m": 0.003244402161910908,
+          "maximum_sampled_cloth_distance_m": 0.00045959814451634884,
+          "samples": 148
+        },
+        "Walk surface | Character | shorts sewn side seam right": {
+          "maximum_edge_m": 0.004689504400092642,
+          "maximum_sampled_cloth_distance_m": 0.0004639204707928002,
+          "samples": 166
+        },
+        "Walk surface | Character | shorts sewn fly topstitch": {
+          "maximum_edge_m": 0.010471386292724783,
+          "maximum_sampled_cloth_distance_m": 0.0004932075971737504,
+          "samples": 66
+        },
+        "Hip study | continuous turned cotton hems": {
+          "maximum_edge_m": 0.006666086244624484,
+          "maximum_sampled_cloth_distance_m": 0.0005001869867555797,
+          "samples": 203
+        }
+      }
+    },
+    {
+      "frame": 2,
+      "whole_shorts_shell_leg_intersection_pairs": 0,
+      "whole_shorts_shell_nonadjacent_self_intersection_pairs": 0,
+      "body_pair_samples": [],
+      "self_pair_samples": [],
+      "shorts_details": {
+        "Character | sewn cotton back pocket left": {
+          "maximum_edge_m": 0.003734479564437176,
+          "maximum_sampled_cloth_distance_m": 0.0015903740422800183,
+          "samples": 1189
+        },
+        "Character | sewn cotton back pocket right": {
+          "maximum_edge_m": 0.0034514889405970334,
+          "maximum_sampled_cloth_distance_m": 0.001580950920470059,
+          "samples": 1189
+        },
+        "Walk surface | Character | inset back pocket stitch left": {
+          "maximum_edge_m": 0.01095012478242777,
+          "maximum_sampled_cloth_distance_m": 0.001797522883862257,
+          "samples": 43
+        },
+        "Walk surface | Character | pocket mouth topstitch left": {
+          "maximum_edge_m": 0.006893661395184508,
+          "maximum_sampled_cloth_distance_m": 0.0017915446078404784,
+          "samples": 21
+        },
+        "Walk surface | Character | inset back pocket stitch right": {
+          "maximum_edge_m": 0.012998931607528894,
+          "maximum_sampled_cloth_distance_m": 0.0018074637046083808,
+          "samples": 43
+        },
+        "Walk surface | Character | pocket mouth topstitch right": {
+          "maximum_edge_m": 0.006051578684861326,
+          "maximum_sampled_cloth_distance_m": 0.0017839270876720548,
+          "samples": 21
+        },
+        "Walk surface | Character | shorts sewn side seam left": {
+          "maximum_edge_m": 0.0032464471450311056,
+          "maximum_sampled_cloth_distance_m": 0.0004595884820446372,
+          "samples": 148
+        },
+        "Walk surface | Character | shorts sewn side seam right": {
+          "maximum_edge_m": 0.004714397347733488,
+          "maximum_sampled_cloth_distance_m": 0.0004638802201952785,
+          "samples": 166
+        },
+        "Walk surface | Character | shorts sewn fly topstitch": {
+          "maximum_edge_m": 0.010471376741358965,
+          "maximum_sampled_cloth_distance_m": 0.000493199157062918,
+          "samples": 66
+        },
+        "Hip study | continuous turned cotton hems": {
+          "maximum_edge_m": 0.006666120933408544,
+          "maximum_sampled_cloth_distance_m": 0.0005002676625736058,
+          "samples": 203
+        }
+      }
+    },
+    {
+      "frame": 3,
+      "whole_shorts_shell_leg_intersection_pairs": 0,
+      "whole_shorts_shell_nonadjacent_self_intersection_pairs": 0,
+      "body_pair_samples": [],
+      "self_pair_samples": [],
+      "shorts_details": {
+        "Character | sewn cotton back pocket left": {
+          "maximum_edge_m": 0.003809152212606908,
+          "maximum_sampled_cloth_distance_m": 0.0015891536604613066,
+          "samples": 1189
+        },
+        "Character | sewn cotton back pocket right": {
+          "maximum_edge_m": 0.0034322976551810704,
+          "maximum_sampled_cloth_distance_m": 0.001580671058036387,
+          "samples": 1189
+        },
+        "Walk surface | Character | inset back pocket stitch left": {
+          "maximum_edge_m": 0.011156869598175353,
+          "maximum_sampled_cloth_distance_m": 0.0017978332471102476,
+          "samples": 43
+        },
+        "Walk surface | Character | pocket mouth topstitch left": {
+          "maximum_edge_m": 0.006915735816930651,
+          "maximum_sampled_cloth_distance_m": 0.0017914801137521863,
+          "samples": 21
+        },
+        "Walk surface | Character | inset back pocket stitch right": {
+          "maximum_edge_m": 0.012914560368987905,
+          "maximum_sampled_cloth_distance_m": 0.0018069430952891707,
+          "samples": 43
+        },
+        "Walk surface | Character | pocket mouth topstitch right": {
+          "maximum_edge_m": 0.00604649447633809,
+          "maximum_sampled_cloth_distance_m": 0.001783752697519958,
+          "samples": 21
+        },
+        "Walk surface | Character | shorts sewn side seam left": {
+          "maximum_edge_m": 0.003216075785512215,
+          "maximum_sampled_cloth_distance_m": 0.00045953321387059987,
+          "samples": 148
+        },
+        "Walk surface | Character | shorts sewn side seam right": {
+          "maximum_edge_m": 0.004737234551414571,
+          "maximum_sampled_cloth_distance_m": 0.0004638696846086532,
+          "samples": 166
+        },
+        "Walk surface | Character | shorts sewn fly topstitch": {
+          "maximum_edge_m": 0.010471260558162478,
+          "maximum_sampled_cloth_distance_m": 0.0004925454268231988,
+          "samples": 66
+        },
+        "Hip study | continuous turned cotton hems": {
+          "maximum_edge_m": 0.006665876027413669,
+          "maximum_sampled_cloth_distance_m": 0.0005003599217161536,
+          "samples": 203
+        }
+      }
+    },
+    {
+      "frame": 4,
+      "whole_shorts_shell_leg_intersection_pairs": 0,
+      "whole_shorts_shell_nonadjacent_self_intersection_pairs": 0,
+      "body_pair_samples": [],
+      "self_pair_samples": [],
+      "shorts_details": {
+        "Character | sewn cotton back pocket left": {
+          "maximum_edge_m": 0.003905687935492737,
+          "maximum_sampled_cloth_distance_m": 0.0015875478275120258,
+          "samples": 1189
+        },
+        "Character | sewn cotton back pocket right": {
+          "maximum_edge_m": 0.0034065116446921695,
+          "maximum_sampled_cloth_distance_m": 0.0015799843240529299,
+          "samples": 1189
+        },
+        "Walk surface | Character | inset back pocket stitch left": {
+          "maximum_edge_m": 0.011494485653752055,
+          "maximum_sampled_cloth_distance_m": 0.0017972344066947699,
+          "samples": 43
+        },
+        "Walk surface | Character | pocket mouth topstitch left": {
+          "maximum_edge_m": 0.0069433551723253805,
+          "maximum_sampled_cloth_distance_m": 0.0017908131703734398,
+          "samples": 21
+        },
+        "Walk surface | Character | inset back pocket stitch right": {
+          "maximum_edge_m": 0.012804871922690277,
+          "maximum_sampled_cloth_distance_m": 0.0018064741743728518,
+          "samples": 43
+        },
+        "Walk surface | Character | pocket mouth topstitch right": {
+          "maximum_edge_m": 0.00604017113797903,
+          "maximum_sampled_cloth_distance_m": 0.0017844932153820992,
+          "samples": 21
+        },
+        "Walk surface | Character | shorts sewn side seam left": {
+          "maximum_edge_m": 0.0031916241019236046,
+          "maximum_sampled_cloth_distance_m": 0.0004595861828420311,
+          "samples": 148
+        },
+        "Walk surface | Character | shorts sewn side seam right": {
+          "maximum_edge_m": 0.00476003146965485,
+          "maximum_sampled_cloth_distance_m": 0.0004638067912310362,
+          "samples": 166
+        },
+        "Walk surface | Character | shorts sewn fly topstitch": {
+          "maximum_edge_m": 0.010471124956994258,
+          "maximum_sampled_cloth_distance_m": 0.0004932048614136875,
+          "samples": 66
+        },
+        "Hip study | continuous turned cotton hems": {
+          "maximum_edge_m": 0.006665819779627006,
+          "maximum_sampled_cloth_distance_m": 0.0005001110839657485,
+          "samples": 203
+        }
+      }
+    },
+    {
+      "frame": 5,
+      "whole_shorts_shell_leg_intersection_pairs": 0,
+      "whole_shorts_shell_nonadjacent_self_intersection_pairs": 0,
+      "body_pair_samples": [],
+      "self_pair_samples": [],
+      "shorts_details": {
+        "Character | sewn cotton back pocket left": {
+          "maximum_edge_m": 0.004009681474162271,
+          "maximum_sampled_cloth_distance_m": 0.001584867131896317,
+          "samples": 1189
+        },
+        "Character | sewn cotton back pocket right": {
+          "maximum_edge_m": 0.0033747560789201244,
+          "maximum_sampled_cloth_distance_m": 0.0015788397286087275,
+          "samples": 1189
+        },
+        "Walk surface | Character | inset back pocket stitch left": {
+          "maximum_edge_m": 0.01192354963821701,
+          "maximum_sampled_cloth_distance_m": 0.0017947128508239985,
+          "samples": 43
+        },
+        "Walk surface | Character | pocket mouth topstitch left": {
+          "maximum_edge_m": 0.006974476358268961,
+          "maximum_sampled_cloth_distance_m": 0.0017907613655552268,
+          "samples": 21
+        },
+        "Walk surface | Character | inset back pocket stitch right": {
+          "maximum_edge_m": 0.01266476740070198,
+          "maximum_sampled_cloth_distance_m": 0.0018060188740491867,
+          "samples": 43
+        },
+        "Walk surface | Character | pocket mouth topstitch right": {
+          "maximum_edge_m": 0.0060325799037426455,
+          "maximum_sampled_cloth_distance_m": 0.0017848570132628083,
+          "samples": 21
+        },
+        "Walk surface | Character | shorts sewn side seam left": {
+          "maximum_edge_m": 0.0031845153352633424,
+          "maximum_sampled_cloth_distance_m": 0.00045983438030816615,
+          "samples": 148
+        },
+        "Walk surface | Character | shorts sewn side seam right": {
+          "maximum_edge_m": 0.0047284943221729565,
+          "maximum_sampled_cloth_distance_m": 0.0004633102798834443,
+          "samples": 166
+        },
+        "Walk surface | Character | shorts sewn fly topstitch": {
+          "maximum_edge_m": 0.010471040736190738,
+          "maximum_sampled_cloth_distance_m": 0.0004930999130010605,
+          "samples": 66
+        },
+        "Hip study | continuous turned cotton hems": {
+          "maximum_edge_m": 0.006666470386404721,
+          "maximum_sampled_cloth_distance_m": 0.0005003883852623403,
+          "samples": 203
+        }
+      }
+    },
+    {
+      "frame": 6,
+      "whole_shorts_shell_leg_intersection_pairs": 0,
+      "whole_shorts_shell_nonadjacent_self_intersection_pairs": 0,
+      "body_pair_samples": [],
+      "self_pair_samples": [],
+      "shorts_details": {
+        "Character | sewn cotton back pocket left": {
+          "maximum_edge_m": 0.00401448050901818,
+          "maximum_sampled_cloth_distance_m": 0.001576990820467472,
+          "samples": 1189
+        },
+        "Character | sewn cotton back pocket right": {
+          "maximum_edge_m": 0.003333279634932328,
+          "maximum_sampled_cloth_distance_m": 0.0015778436791151762,
+          "samples": 1189
+        },
+        "Walk surface | Character | inset back pocket stitch left": {
+          "maximum_edge_m": 0.01253546093189134,
+          "maximum_sampled_cloth_distance_m": 0.0017951721092686057,
+          "samples": 43
+        },
+        "Walk surface | Character | pocket mouth topstitch left": {
+          "maximum_edge_m": 0.007006182687789043,
+          "maximum_sampled_cloth_distance_m": 0.0017908475128933787,
+          "samples": 21
+        },
+        "Walk surface | Character | inset back pocket stitch right": {
+          "maximum_edge_m": 0.012487055873548394,
+          "maximum_sampled_cloth_distance_m": 0.0018047087360173464,
+          "samples": 43
+        },
+        "Walk surface | Character | pocket mouth topstitch right": {
+          "maximum_edge_m": 0.0060244442864776536,
+          "maximum_sampled_cloth_distance_m": 0.0017857500351965427,
+          "samples": 21
+        },
+        "Walk surface | Character | shorts sewn side seam left": {
+          "maximum_edge_m": 0.0031983954578397064,
+          "maximum_sampled_cloth_distance_m": 0.00046037245192565024,
+          "samples": 148
+        },
+        "Walk surface | Character | shorts sewn side seam right": {
+          "maximum_edge_m": 0.0047578507110078334,
+          "maximum_sampled_cloth_distance_m": 0.00046340006520040333,
+          "samples": 166
+        },
+        "Walk surface | Character | shorts sewn fly topstitch": {
+          "maximum_edge_m": 0.010471039087413514,
+          "maximum_sampled_cloth_distance_m": 0.0004928517737425864,
+          "samples": 66
+        },
+        "Hip study | continuous turned cotton hems": {
+          "maximum_edge_m": 0.006665552220929119,
+          "maximum_sampled_cloth_distance_m": 0.0005002919351682067,
+          "samples": 203
+        }
+      }
+    },
+    {
+      "frame": 7,
+      "whole_shorts_shell_leg_intersection_pairs": 0,
+      "whole_shorts_shell_nonadjacent_self_intersection_pairs": 0,
+      "body_pair_samples": [],
+      "self_pair_samples": [],
+      "shorts_details": {
+        "Character | sewn cotton back pocket left": {
+          "maximum_edge_m": 0.004331246759481813,
+          "maximum_sampled_cloth_distance_m": 0.0015756351640447974,
+          "samples": 1189
+        },
+        "Character | sewn cotton back pocket right": {
+          "maximum_edge_m": 0.0032821306002016664,
+          "maximum_sampled_cloth_distance_m": 0.0015767383156344295,
+          "samples": 1189
+        },
+        "Walk surface | Character | inset back pocket stitch left": {
+          "maximum_edge_m": 0.013222760927024003,
+          "maximum_sampled_cloth_distance_m": 0.0017957297386601567,
+          "samples": 43
+        },
+        "Walk surface | Character | pocket mouth topstitch left": {
+          "maximum_edge_m": 0.0070351851236774045,
+          "maximum_sampled_cloth_distance_m": 0.0017903029220178723,
+          "samples": 21
+        },
+        "Walk surface | Character | inset back pocket stitch right": {
+          "maximum_edge_m": 0.01226477885114531,
+          "maximum_sampled_cloth_distance_m": 0.0018031091894954443,
+          "samples": 43
+        },
+        "Walk surface | Character | pocket mouth topstitch right": {
+          "maximum_edge_m": 0.006014811213197405,
+          "maximum_sampled_cloth_distance_m": 0.0017864513210952282,
+          "samples": 21
+        },
+        "Walk surface | Character | shorts sewn side seam left": {
+          "maximum_edge_m": 0.0032290528745695496,
+          "maximum_sampled_cloth_distance_m": 0.0004605351423379034,
+          "samples": 148
+        },
+        "Walk surface | Character | shorts sewn side seam right": {
+          "maximum_edge_m": 0.0047960467065839285,
+          "maximum_sampled_cloth_distance_m": 0.0004633483767975122,
+          "samples": 166
+        },
+        "Walk surface | Character | shorts sewn fly topstitch": {
+          "maximum_edge_m": 0.010470880776447604,
+          "maximum_sampled_cloth_distance_m": 0.0004924678942188621,
+          "samples": 66
+        },
+        "Hip study | continuous turned cotton hems": {
+          "maximum_edge_m": 0.006666298250136623,
+          "maximum_sampled_cloth_distance_m": 0.0005001581157557666,
+          "samples": 203
+        }
+      }
+    },
+    {
+      "frame": 8,
+      "whole_shorts_shell_leg_intersection_pairs": 0,
+      "whole_shorts_shell_nonadjacent_self_intersection_pairs": 0,
+      "body_pair_samples": [],
+      "self_pair_samples": [],
+      "shorts_details": {
+        "Character | sewn cotton back pocket left": {
+          "maximum_edge_m": 0.00452996768447103,
+          "maximum_sampled_cloth_distance_m": 0.0015760757960379124,
+          "samples": 1189
+        },
+        "Character | sewn cotton back pocket right": {
+          "maximum_edge_m": 0.003216989826516343,
+          "maximum_sampled_cloth_distance_m": 0.0015751081518828869,
+          "samples": 1189
+        },
+        "Walk surface | Character | inset back pocket stitch left": {
+          "maximum_edge_m": 0.013819916073708144,
+          "maximum_sampled_cloth_distance_m": 0.0017963675782084465,
+          "samples": 43
+        },
+        "Walk surface | Character | pocket mouth topstitch left": {
+          "maximum_edge_m": 0.007059144173834422,
+          "maximum_sampled_cloth_distance_m": 0.0017906822031363845,
+          "samples": 21
+        },
+        "Walk surface | Character | inset back pocket stitch right": {
+          "maximum_edge_m": 0.01198425273199193,
+          "maximum_sampled_cloth_distance_m": 0.0018005651654675603,
+          "samples": 43
+        },
+        "Walk surface | Character | pocket mouth topstitch right": {
+          "maximum_edge_m": 0.006003263393046964,
+          "maximum_sampled_cloth_distance_m": 0.001787023851647973,
+          "samples": 21
+        },
+        "Walk surface | Character | shorts sewn side seam left": {
+          "maximum_edge_m": 0.0032646348369967542,
+          "maximum_sampled_cloth_distance_m": 0.00046089908573776484,
+          "samples": 148
+        },
+        "Walk surface | Character | shorts sewn side seam right": {
+          "maximum_edge_m": 0.004848910902970082,
+          "maximum_sampled_cloth_distance_m": 0.0004631832998711616,
+          "samples": 166
+        },
+        "Walk surface | Character | shorts sewn fly topstitch": {
+          "maximum_edge_m": 0.010471006971576787,
+          "maximum_sampled_cloth_distance_m": 0.0004927357076667249,
+          "samples": 66
+        },
+        "Hip study | continuous turned cotton hems": {
+          "maximum_edge_m": 0.006665992056161311,
+          "maximum_sampled_cloth_distance_m": 0.0005001986282877624,
+          "samples": 203
+        }
+      }
+    },
+    {
+      "frame": 9,
+      "whole_shorts_shell_leg_intersection_pairs": 0,
+      "whole_shorts_shell_nonadjacent_self_intersection_pairs": 0,
+      "body_pair_samples": [],
+      "self_pair_samples": [],
+      "shorts_details": {
+        "Character | sewn cotton back pocket left": {
+          "maximum_edge_m": 0.004761178641370077,
+          "maximum_sampled_cloth_distance_m": 0.0015769284218549728,
+          "samples": 1189
+        },
+        "Character | sewn cotton back pocket right": {
+          "maximum_edge_m": 0.0031360147248301593,
+          "maximum_sampled_cloth_distance_m": 0.001573024201206863,
+          "samples": 1189
+        },
+        "Walk surface | Character | inset back pocket stitch left": {
+          "maximum_edge_m": 0.014333340894249598,
+          "maximum_sampled_cloth_distance_m": 0.0017964313738048077,
+          "samples": 43
+        },
+        "Walk surface | Character | pocket mouth topstitch left": {
+          "maximum_edge_m": 0.0070778933878841675,
+          "maximum_sampled_cloth_distance_m": 0.0017900815000757575,
+          "samples": 21
+        },
+        "Walk surface | Character | inset back pocket stitch right": {
+          "maximum_edge_m": 0.011626130568794588,
+          "maximum_sampled_cloth_distance_m": 0.0017996708629652858,
+          "samples": 43
+        },
+        "Walk surface | Character | pocket mouth topstitch right": {
+          "maximum_edge_m": 0.005990233815040682,
+          "maximum_sampled_cloth_distance_m": 0.0017884689150378108,
+          "samples": 21
+        },
+        "Walk surface | Character | shorts sewn side seam left": {
+          "maximum_edge_m": 0.0032992932398392535,
+          "maximum_sampled_cloth_distance_m": 0.00046136853052303195,
+          "samples": 148
+        },
+        "Walk surface | Character | shorts sewn side seam right": {
+          "maximum_edge_m": 0.004883158607947521,
+          "maximum_sampled_cloth_distance_m": 0.000463117758044973,
+          "samples": 166
+        },
+        "Walk surface | Character | shorts sewn fly topstitch": {
+          "maximum_edge_m": 0.010471276398563913,
+          "maximum_sampled_cloth_distance_m": 0.0004927378031425178,
+          "samples": 66
+        },
+        "Hip study | continuous turned cotton hems": {
+          "maximum_edge_m": 0.006665935174058826,
+          "maximum_sampled_cloth_distance_m": 0.0005001160316169262,
+          "samples": 203
+        }
+      }
+    },
+    {
+      "frame": 10,
+      "whole_shorts_shell_leg_intersection_pairs": 0,
+      "whole_shorts_shell_nonadjacent_self_intersection_pairs": 0,
+      "body_pair_samples": [],
+      "self_pair_samples": [],
+      "shorts_details": {
+        "Character | sewn cotton back pocket left": {
+          "maximum_edge_m": 0.004824206157701118,
+          "maximum_sampled_cloth_distance_m": 0.0015772976912558079,
+          "samples": 1189
+        },
+        "Character | sewn cotton back pocket right": {
+          "maximum_edge_m": 0.003050993590504332,
+          "maximum_sampled_cloth_distance_m": 0.0015748358564451337,
+          "samples": 1189
+        },
+        "Walk surface | Character | inset back pocket stitch left": {
+          "maximum_edge_m": 0.014501526318669525,
+          "maximum_sampled_cloth_distance_m": 0.0017968234606087208,
+          "samples": 43
+        },
+        "Walk surface | Character | pocket mouth topstitch left": {
+          "maximum_edge_m": 0.007086669824155416,
+          "maximum_sampled_cloth_distance_m": 0.001789996400475502,
+          "samples": 21
+        },
+        "Walk surface | Character | inset back pocket stitch right": {
+          "maximum_edge_m": 0.011175446835419852,
+          "maximum_sampled_cloth_distance_m": 0.001797525561414659,
+          "samples": 43
+        },
+        "Walk surface | Character | pocket mouth topstitch right": {
+          "maximum_edge_m": 0.005975441845386506,
+          "maximum_sampled_cloth_distance_m": 0.0017901702085509896,
+          "samples": 21
+        },
+        "Walk surface | Character | shorts sewn side seam left": {
+          "maximum_edge_m": 0.003315200440434191,
+          "maximum_sampled_cloth_distance_m": 0.0004616602964233607,
+          "samples": 148
+        },
+        "Walk surface | Character | shorts sewn side seam right": {
+          "maximum_edge_m": 0.0051227755735511514,
+          "maximum_sampled_cloth_distance_m": 0.00046505621867254376,
+          "samples": 166
+        },
+        "Walk surface | Character | shorts sewn fly topstitch": {
+          "maximum_edge_m": 0.010471317009840046,
+          "maximum_sampled_cloth_distance_m": 0.0004927654517814517,
+          "samples": 66
+        },
+        "Hip study | continuous turned cotton hems": {
+          "maximum_edge_m": 0.006666115322501433,
+          "maximum_sampled_cloth_distance_m": 0.0005001965910196304,
+          "samples": 203
+        }
+      }
+    },
+    {
+      "frame": 11,
+      "whole_shorts_shell_leg_intersection_pairs": 0,
+      "whole_shorts_shell_nonadjacent_self_intersection_pairs": 0,
+      "body_pair_samples": [],
+      "self_pair_samples": [],
+      "shorts_details": {
+        "Character | sewn cotton back pocket left": {
+          "maximum_edge_m": 0.004779413206607865,
+          "maximum_sampled_cloth_distance_m": 0.0015771373873576522,
+          "samples": 1189
+        },
+        "Character | sewn cotton back pocket right": {
+          "maximum_edge_m": 0.003072723182033119,
+          "maximum_sampled_cloth_distance_m": 0.0015738033689558506,
+          "samples": 1189
+        },
+        "Walk surface | Character | inset back pocket stitch left": {
+          "maximum_edge_m": 0.014286950245448618,
+          "maximum_sampled_cloth_distance_m": 0.0017964803846552968,
+          "samples": 43
+        },
+        "Walk surface | Character | pocket mouth topstitch left": {
+          "maximum_edge_m": 0.007085520801710168,
+          "maximum_sampled_cloth_distance_m": 0.0017900146776810288,
+          "samples": 21
+        },
+        "Walk surface | Character | inset back pocket stitch right": {
+          "maximum_edge_m": 0.011297408477948443,
+          "maximum_sampled_cloth_distance_m": 0.0017981290584430099,
+          "samples": 43
+        },
+        "Walk surface | Character | pocket mouth topstitch right": {
+          "maximum_edge_m": 0.005975419186949105,
+          "maximum_sampled_cloth_distance_m": 0.0017900324892252684,
+          "samples": 21
+        },
+        "Walk surface | Character | shorts sewn side seam left": {
+          "maximum_edge_m": 0.0032957649279801706,
+          "maximum_sampled_cloth_distance_m": 0.00046177583863027394,
+          "samples": 148
+        },
+        "Walk surface | Character | shorts sewn side seam right": {
+          "maximum_edge_m": 0.005061781976756342,
+          "maximum_sampled_cloth_distance_m": 0.000464584183646366,
+          "samples": 166
+        },
+        "Walk surface | Character | shorts sewn fly topstitch": {
+          "maximum_edge_m": 0.010471313092506651,
+          "maximum_sampled_cloth_distance_m": 0.0004927162663079798,
+          "samples": 66
+        },
+        "Hip study | continuous turned cotton hems": {
+          "maximum_edge_m": 0.0066662418481620135,
+          "maximum_sampled_cloth_distance_m": 0.0005000861128792167,
+          "samples": 203
+        }
+      }
+    },
+    {
+      "frame": 12,
+      "whole_shorts_shell_leg_intersection_pairs": 0,
+      "whole_shorts_shell_nonadjacent_self_intersection_pairs": 0,
+      "body_pair_samples": [],
+      "self_pair_samples": [],
+      "shorts_details": {
+        "Character | sewn cotton back pocket left": {
+          "maximum_edge_m": 0.004569221394522523,
+          "maximum_sampled_cloth_distance_m": 0.0015766844153404236,
+          "samples": 1189
+        },
+        "Character | sewn cotton back pocket right": {
+          "maximum_edge_m": 0.003087393038187639,
+          "maximum_sampled_cloth_distance_m": 0.0015731619205325842,
+          "samples": 1189
+        },
+        "Walk surface | Character | inset back pocket stitch left": {
+          "maximum_edge_m": 0.013705827978072491,
+          "maximum_sampled_cloth_distance_m": 0.0017961253179237247,
+          "samples": 43
+        },
+        "Walk surface | Character | pocket mouth topstitch left": {
+          "maximum_edge_m": 0.007074603116073568,
+          "maximum_sampled_cloth_distance_m": 0.0017902711406350136,
+          "samples": 21
+        },
+        "Walk surface | Character | inset back pocket stitch right": {
+          "maximum_edge_m": 0.011371071365365705,
+          "maximum_sampled_cloth_distance_m": 0.001798209617845714,
+          "samples": 43
+        },
+        "Walk surface | Character | pocket mouth topstitch right": {
+          "maximum_edge_m": 0.005975559746355384,
+          "maximum_sampled_cloth_distance_m": 0.0017896086210384965,
+          "samples": 21
+        },
+        "Walk surface | Character | shorts sewn side seam left": {
+          "maximum_edge_m": 0.003247777929914666,
+          "maximum_sampled_cloth_distance_m": 0.00046172839938662946,
+          "samples": 148
+        },
+        "Walk surface | Character | shorts sewn side seam right": {
+          "maximum_edge_m": 0.005065835889672804,
+          "maximum_sampled_cloth_distance_m": 0.00046451049274764955,
+          "samples": 166
+        },
+        "Walk surface | Character | shorts sewn fly topstitch": {
+          "maximum_edge_m": 0.010471485835134834,
+          "maximum_sampled_cloth_distance_m": 0.0004926759283989668,
+          "samples": 66
+        },
+        "Hip study | continuous turned cotton hems": {
+          "maximum_edge_m": 0.006666122203962842,
+          "maximum_sampled_cloth_distance_m": 0.0005001398385502398,
+          "samples": 203
+        }
+      }
+    },
+    {
+      "frame": 13,
+      "whole_shorts_shell_leg_intersection_pairs": 0,
+      "whole_shorts_shell_nonadjacent_self_intersection_pairs": 0,
+      "body_pair_samples": [],
+      "self_pair_samples": [],
+      "shorts_details": {
+        "Character | sewn cotton back pocket left": {
+          "maximum_edge_m": 0.004314027972105994,
+          "maximum_sampled_cloth_distance_m": 0.0015766225988045335,
+          "samples": 1189
+        },
+        "Character | sewn cotton back pocket right": {
+          "maximum_edge_m": 0.0030528413588925556,
+          "maximum_sampled_cloth_distance_m": 0.0015737644862383604,
+          "samples": 1189
+        },
+        "Walk surface | Character | inset back pocket stitch left": {
+          "maximum_edge_m": 0.012782511371399827,
+          "maximum_sampled_cloth_distance_m": 0.0017958354437723756,
+          "samples": 43
+        },
+        "Walk surface | Character | pocket mouth topstitch left": {
+          "maximum_edge_m": 0.007051558368242551,
+          "maximum_sampled_cloth_distance_m": 0.0017904835985973477,
+          "samples": 21
+        },
+        "Walk surface | Character | inset back pocket stitch right": {
+          "maximum_edge_m": 0.011183360845158488,
+          "maximum_sampled_cloth_distance_m": 0.0017973511712625623,
+          "samples": 43
+        },
+        "Walk surface | Character | pocket mouth topstitch right": {
+          "maximum_edge_m": 0.005969099710936368,
+          "maximum_sampled_cloth_distance_m": 0.0017899685772135854,
+          "samples": 21
+        },
+        "Walk surface | Character | shorts sewn side seam left": {
+          "maximum_edge_m": 0.003183577762836547,
+          "maximum_sampled_cloth_distance_m": 0.0004615622165147215,
+          "samples": 148
+        },
+        "Walk surface | Character | shorts sewn side seam right": {
+          "maximum_edge_m": 0.005114091442998822,
+          "maximum_sampled_cloth_distance_m": 0.0004646088054869324,
+          "samples": 166
+        },
+        "Walk surface | Character | shorts sewn fly topstitch": {
+          "maximum_edge_m": 0.0104717375239702,
+          "maximum_sampled_cloth_distance_m": 0.0004929548595100641,
+          "samples": 66
+        },
+        "Hip study | continuous turned cotton hems": {
+          "maximum_edge_m": 0.006666218364607884,
+          "maximum_sampled_cloth_distance_m": 0.000500121561344713,
+          "samples": 203
+        }
+      }
+    },
+    {
+      "frame": 14,
+      "whole_shorts_shell_leg_intersection_pairs": 0,
+      "whole_shorts_shell_nonadjacent_self_intersection_pairs": 0,
+      "body_pair_samples": [],
+      "self_pair_samples": [],
+      "shorts_details": {
+        "Character | sewn cotton back pocket left": {
+          "maximum_edge_m": 0.004301849416280971,
+          "maximum_sampled_cloth_distance_m": 0.0015766179421916604,
+          "samples": 1189
+        },
+        "Character | sewn cotton back pocket right": {
+          "maximum_edge_m": 0.003034342330600064,
+          "maximum_sampled_cloth_distance_m": 0.0015742924297228456,
+          "samples": 1189
+        },
+        "Walk surface | Character | inset back pocket stitch left": {
+          "maximum_edge_m": 0.01284493266846304,
+          "maximum_sampled_cloth_distance_m": 0.0017958611715584993,
+          "samples": 43
+        },
+        "Walk surface | Character | pocket mouth topstitch left": {
+          "maximum_edge_m": 0.007049002466017126,
+          "maximum_sampled_cloth_distance_m": 0.0017905207350850105,
+          "samples": 21
+        },
+        "Walk surface | Character | inset back pocket stitch right": {
+          "maximum_edge_m": 0.011077090053617228,
+          "maximum_sampled_cloth_distance_m": 0.0017968384781852365,
+          "samples": 43
+        },
+        "Walk surface | Character | pocket mouth topstitch right": {
+          "maximum_edge_m": 0.005965565083353648,
+          "maximum_sampled_cloth_distance_m": 0.0017904771957546473,
+          "samples": 21
+        },
+        "Walk surface | Character | shorts sewn side seam left": {
+          "maximum_edge_m": 0.003192405713090693,
+          "maximum_sampled_cloth_distance_m": 0.0004616755759343505,
+          "samples": 148
+        },
+        "Walk surface | Character | shorts sewn side seam right": {
+          "maximum_edge_m": 0.005202858687476095,
+          "maximum_sampled_cloth_distance_m": 0.00046495802234858274,
+          "samples": 166
+        },
+        "Walk surface | Character | shorts sewn fly topstitch": {
+          "maximum_edge_m": 0.01047166053860472,
+          "maximum_sampled_cloth_distance_m": 0.0004928973503410816,
+          "samples": 66
+        },
+        "Hip study | continuous turned cotton hems": {
+          "maximum_edge_m": 0.006665880666385197,
+          "maximum_sampled_cloth_distance_m": 0.0005001615500077605,
+          "samples": 203
+        }
+      }
+    },
+    {
+      "frame": 15,
+      "whole_shorts_shell_leg_intersection_pairs": 0,
+      "whole_shorts_shell_nonadjacent_self_intersection_pairs": 0,
+      "body_pair_samples": [],
+      "self_pair_samples": [],
+      "shorts_details": {
+        "Character | sewn cotton back pocket left": {
+          "maximum_edge_m": 0.004269129496887218,
+          "maximum_sampled_cloth_distance_m": 0.0015768916346132755,
+          "samples": 1189
+        },
+        "Character | sewn cotton back pocket right": {
+          "maximum_edge_m": 0.0030676774734277575,
+          "maximum_sampled_cloth_distance_m": 0.0015737246721982956,
+          "samples": 1189
+        },
+        "Walk surface | Character | inset back pocket stitch left": {
+          "maximum_edge_m": 0.012809975089682924,
+          "maximum_sampled_cloth_distance_m": 0.0017957064555957913,
+          "samples": 43
+        },
+        "Walk surface | Character | pocket mouth topstitch left": {
+          "maximum_edge_m": 0.007042987891346155,
+          "maximum_sampled_cloth_distance_m": 0.0017905341228470206,
+          "samples": 21
+        },
+        "Walk surface | Character | inset back pocket stitch right": {
+          "maximum_edge_m": 0.011271651372396798,
+          "maximum_sampled_cloth_distance_m": 0.0017979155527427793,
+          "samples": 43
+        },
+        "Walk surface | Character | pocket mouth topstitch right": {
+          "maximum_edge_m": 0.005972332816168432,
+          "maximum_sampled_cloth_distance_m": 0.0017897947691380978,
+          "samples": 21
+        },
+        "Walk surface | Character | shorts sewn side seam left": {
+          "maximum_edge_m": 0.0031947595499972033,
+          "maximum_sampled_cloth_distance_m": 0.0004615579382516444,
+          "samples": 148
+        },
+        "Walk surface | Character | shorts sewn side seam right": {
+          "maximum_edge_m": 0.005085001015622859,
+          "maximum_sampled_cloth_distance_m": 0.0004645298467949033,
+          "samples": 166
+        },
+        "Walk surface | Character | shorts sewn fly topstitch": {
+          "maximum_edge_m": 0.0104716845059227,
+          "maximum_sampled_cloth_distance_m": 0.0004926436813548207,
+          "samples": 66
+        },
+        "Hip study | continuous turned cotton hems": {
+          "maximum_edge_m": 0.006666271283495018,
+          "maximum_sampled_cloth_distance_m": 0.000500120164360851,
+          "samples": 203
+        }
+      }
+    },
+    {
+      "frame": 16,
+      "whole_shorts_shell_leg_intersection_pairs": 0,
+      "whole_shorts_shell_nonadjacent_self_intersection_pairs": 0,
+      "body_pair_samples": [],
+      "self_pair_samples": [],
+      "shorts_details": {
+        "Character | sewn cotton back pocket left": {
+          "maximum_edge_m": 0.004212349504699439,
+          "maximum_sampled_cloth_distance_m": 0.0015770263271406293,
+          "samples": 1189
+        },
+        "Character | sewn cotton back pocket right": {
+          "maximum_edge_m": 0.0031373527146441866,
+          "maximum_sampled_cloth_distance_m": 0.001572790089994669,
+          "samples": 1189
+        },
+        "Walk surface | Character | inset back pocket stitch left": {
+          "maximum_edge_m": 0.012704755899160043,
+          "maximum_sampled_cloth_distance_m": 0.0017956907395273447,
+          "samples": 43
+        },
+        "Walk surface | Character | pocket mouth topstitch left": {
+          "maximum_edge_m": 0.007034605702055189,
+          "maximum_sampled_cloth_distance_m": 0.0017905754502862692,
+          "samples": 21
+        },
+        "Walk surface | Character | inset back pocket stitch right": {
+          "maximum_edge_m": 0.011631784456636766,
+          "maximum_sampled_cloth_distance_m": 0.0017992063658311963,
+          "samples": 43
+        },
+        "Walk surface | Character | pocket mouth topstitch right": {
+          "maximum_edge_m": 0.005985753460989202,
+          "maximum_sampled_cloth_distance_m": 0.0017886762507259846,
+          "samples": 21
+        },
+        "Walk surface | Character | shorts sewn side seam left": {
+          "maximum_edge_m": 0.003192842326588039,
+          "maximum_sampled_cloth_distance_m": 0.00046134230797179043,
+          "samples": 148
+        },
+        "Walk surface | Character | shorts sewn side seam right": {
+          "maximum_edge_m": 0.0049859173498695165,
+          "maximum_sampled_cloth_distance_m": 0.0004635908408090472,
+          "samples": 166
+        },
+        "Walk surface | Character | shorts sewn fly topstitch": {
+          "maximum_edge_m": 0.01047129069724703,
+          "maximum_sampled_cloth_distance_m": 0.0004927205736748874,
+          "samples": 66
+        },
+        "Hip study | continuous turned cotton hems": {
+          "maximum_edge_m": 0.006666020934056661,
+          "maximum_sampled_cloth_distance_m": 0.0005000925157219172,
+          "samples": 203
+        }
+      }
+    },
+    {
+      "frame": 17,
+      "whole_shorts_shell_leg_intersection_pairs": 0,
+      "whole_shorts_shell_nonadjacent_self_intersection_pairs": 0,
+      "body_pair_samples": [],
+      "self_pair_samples": [],
+      "shorts_details": {
+        "Character | sewn cotton back pocket left": {
+          "maximum_edge_m": 0.004106182542582574,
+          "maximum_sampled_cloth_distance_m": 0.001577503513544798,
+          "samples": 1189
+        },
+        "Character | sewn cotton back pocket right": {
+          "maximum_edge_m": 0.003236002563134202,
+          "maximum_sampled_cloth_distance_m": 0.001575065078213811,
+          "samples": 1189
+        },
+        "Walk surface | Character | inset back pocket stitch left": {
+          "maximum_edge_m": 0.01252945337159709,
+          "maximum_sampled_cloth_distance_m": 0.0017953806091099977,
+          "samples": 43
+        },
+        "Walk surface | Character | pocket mouth topstitch left": {
+          "maximum_edge_m": 0.0070229883901628005,
+          "maximum_sampled_cloth_distance_m": 0.001790683250874281,
+          "samples": 21
+        },
+        "Walk surface | Character | inset back pocket stitch right": {
+          "maximum_edge_m": 0.012061340006398047,
+          "maximum_sampled_cloth_distance_m": 0.0018009038176387548,
+          "samples": 43
+        },
+        "Walk surface | Character | pocket mouth topstitch right": {
+          "maximum_edge_m": 0.006003210561906577,
+          "maximum_sampled_cloth_distance_m": 0.0017870079027488828,
+          "samples": 21
+        },
+        "Walk surface | Character | shorts sewn side seam left": {
+          "maximum_edge_m": 0.003187883756999386,
+          "maximum_sampled_cloth_distance_m": 0.00046108613605611026,
+          "samples": 148
+        },
+        "Walk surface | Character | shorts sewn side seam right": {
+          "maximum_edge_m": 0.0048630235124675755,
+          "maximum_sampled_cloth_distance_m": 0.00046313958591781557,
+          "samples": 166
+        },
+        "Walk surface | Character | shorts sewn fly topstitch": {
+          "maximum_edge_m": 0.010471260026337411,
+          "maximum_sampled_cloth_distance_m": 0.0004928928101435304,
+          "samples": 66
+        },
+        "Hip study | continuous turned cotton hems": {
+          "maximum_edge_m": 0.006666011328002597,
+          "maximum_sampled_cloth_distance_m": 0.0005000501405447721,
+          "samples": 203
+        }
+      }
+    },
+    {
+      "frame": 18,
+      "whole_shorts_shell_leg_intersection_pairs": 0,
+      "whole_shorts_shell_nonadjacent_self_intersection_pairs": 0,
+      "body_pair_samples": [],
+      "self_pair_samples": [],
+      "shorts_details": {
+        "Character | sewn cotton back pocket left": {
+          "maximum_edge_m": 0.00399501154778055,
+          "maximum_sampled_cloth_distance_m": 0.0015780172543600202,
+          "samples": 1189
+        },
+        "Character | sewn cotton back pocket right": {
+          "maximum_edge_m": 0.0033437284607363655,
+          "maximum_sampled_cloth_distance_m": 0.0015775163192301989,
+          "samples": 1189
+        },
+        "Walk surface | Character | inset back pocket stitch left": {
+          "maximum_edge_m": 0.01227889217918712,
+          "maximum_sampled_cloth_distance_m": 0.0017951374175027013,
+          "samples": 43
+        },
+        "Walk surface | Character | pocket mouth topstitch left": {
+          "maximum_edge_m": 0.007008508032413683,
+          "maximum_sampled_cloth_distance_m": 0.0017906742868945003,
+          "samples": 21
+        },
+        "Walk surface | Character | inset back pocket stitch right": {
+          "maximum_edge_m": 0.012522075113748624,
+          "maximum_sampled_cloth_distance_m": 0.0018045427277684212,
+          "samples": 43
+        },
+        "Walk surface | Character | pocket mouth topstitch right": {
+          "maximum_edge_m": 0.006021948160267337,
+          "maximum_sampled_cloth_distance_m": 0.0017854560865089297,
+          "samples": 21
+        },
+        "Walk surface | Character | shorts sewn side seam left": {
+          "maximum_edge_m": 0.0031814837125916633,
+          "maximum_sampled_cloth_distance_m": 0.00046085682697594166,
+          "samples": 148
+        },
+        "Walk surface | Character | shorts sewn side seam right": {
+          "maximum_edge_m": 0.004781233893723732,
+          "maximum_sampled_cloth_distance_m": 0.00046330029726959765,
+          "samples": 166
+        },
+        "Walk surface | Character | shorts sewn fly topstitch": {
+          "maximum_edge_m": 0.01047097947662231,
+          "maximum_sampled_cloth_distance_m": 0.0004930944996885955,
+          "samples": 66
+        },
+        "Hip study | continuous turned cotton hems": {
+          "maximum_edge_m": 0.0066661745864034,
+          "maximum_sampled_cloth_distance_m": 0.000500160560477525,
+          "samples": 203
+        }
+      }
+    },
+    {
+      "frame": 19,
+      "whole_shorts_shell_leg_intersection_pairs": 0,
+      "whole_shorts_shell_nonadjacent_self_intersection_pairs": 0,
+      "body_pair_samples": [],
+      "self_pair_samples": [],
+      "shorts_details": {
+        "Character | sewn cotton back pocket left": {
+          "maximum_edge_m": 0.003880304916887688,
+          "maximum_sampled_cloth_distance_m": 0.0015786559088155627,
+          "samples": 1189
+        },
+        "Character | sewn cotton back pocket right": {
+          "maximum_edge_m": 0.0034435900480634784,
+          "maximum_sampled_cloth_distance_m": 0.0015800261171534657,
+          "samples": 1189
+        },
+        "Walk surface | Character | inset back pocket stitch left": {
+          "maximum_edge_m": 0.011989159191726252,
+          "maximum_sampled_cloth_distance_m": 0.0017948298482224345,
+          "samples": 43
+        },
+        "Walk surface | Character | pocket mouth topstitch left": {
+          "maximum_edge_m": 0.006990252185115866,
+          "maximum_sampled_cloth_distance_m": 0.001790726324543357,
+          "samples": 21
+        },
+        "Walk surface | Character | inset back pocket stitch right": {
+          "maximum_edge_m": 0.012947164330774742,
+          "maximum_sampled_cloth_distance_m": 0.0018072975799441338,
+          "samples": 43
+        },
+        "Walk surface | Character | pocket mouth topstitch right": {
+          "maximum_edge_m": 0.006039965300249529,
+          "maximum_sampled_cloth_distance_m": 0.0017840896034613252,
+          "samples": 21
+        },
+        "Walk surface | Character | shorts sewn side seam left": {
+          "maximum_edge_m": 0.0031753930506517817,
+          "maximum_sampled_cloth_distance_m": 0.00046046581701375544,
+          "samples": 148
+        },
+        "Walk surface | Character | shorts sewn side seam right": {
+          "maximum_edge_m": 0.004788690405994297,
+          "maximum_sampled_cloth_distance_m": 0.00046371479402296245,
+          "samples": 166
+        },
+        "Walk surface | Character | shorts sewn fly topstitch": {
+          "maximum_edge_m": 0.010470924826807856,
+          "maximum_sampled_cloth_distance_m": 0.0004927813424728811,
+          "samples": 66
+        },
+        "Hip study | continuous turned cotton hems": {
+          "maximum_edge_m": 0.006666386158499078,
+          "maximum_sampled_cloth_distance_m": 0.0005000829696655273,
+          "samples": 203
+        }
+      }
+    },
+    {
+      "frame": 20,
+      "whole_shorts_shell_leg_intersection_pairs": 0,
+      "whole_shorts_shell_nonadjacent_self_intersection_pairs": 0,
+      "body_pair_samples": [],
+      "self_pair_samples": [],
+      "shorts_details": {
+        "Character | sewn cotton back pocket left": {
+          "maximum_edge_m": 0.003978214781840517,
+          "maximum_sampled_cloth_distance_m": 0.0015839028637856245,
+          "samples": 1189
+        },
+        "Character | sewn cotton back pocket right": {
+          "maximum_edge_m": 0.0035225790124522355,
+          "maximum_sampled_cloth_distance_m": 0.0015815920196473598,
+          "samples": 1189
+        },
+        "Walk surface | Character | inset back pocket stitch left": {
+          "maximum_edge_m": 0.011653063221126204,
+          "maximum_sampled_cloth_distance_m": 0.0017950686160475016,
+          "samples": 43
+        },
+        "Walk surface | Character | pocket mouth topstitch left": {
+          "maximum_edge_m": 0.0069681955569534,
+          "maximum_sampled_cloth_distance_m": 0.0017909149173647165,
+          "samples": 21
+        },
+        "Walk surface | Character | inset back pocket stitch right": {
+          "maximum_edge_m": 0.01328513962311875,
+          "maximum_sampled_cloth_distance_m": 0.0018082467140629888,
+          "samples": 43
+        },
+        "Walk surface | Character | pocket mouth topstitch right": {
+          "maximum_edge_m": 0.006055336314118775,
+          "maximum_sampled_cloth_distance_m": 0.0017834189347922802,
+          "samples": 21
+        },
+        "Walk surface | Character | shorts sewn side seam left": {
+          "maximum_edge_m": 0.0031735895653686595,
+          "maximum_sampled_cloth_distance_m": 0.0004602207918651402,
+          "samples": 148
+        },
+        "Walk surface | Character | shorts sewn side seam right": {
+          "maximum_edge_m": 0.004777157182192675,
+          "maximum_sampled_cloth_distance_m": 0.0004631802730727941,
+          "samples": 166
+        },
+        "Walk surface | Character | shorts sewn fly topstitch": {
+          "maximum_edge_m": 0.010470837283365453,
+          "maximum_sampled_cloth_distance_m": 0.0004931176663376391,
+          "samples": 66
+        },
+        "Hip study | continuous turned cotton hems": {
+          "maximum_edge_m": 0.006666333445170388,
+          "maximum_sampled_cloth_distance_m": 0.0005000918754376471,
+          "samples": 203
+        }
+      }
+    },
+    {
+      "frame": 21,
+      "whole_shorts_shell_leg_intersection_pairs": 0,
+      "whole_shorts_shell_nonadjacent_self_intersection_pairs": 0,
+      "body_pair_samples": [],
+      "self_pair_samples": [],
+      "shorts_details": {
+        "Character | sewn cotton back pocket left": {
+          "maximum_edge_m": 0.003868535842184241,
+          "maximum_sampled_cloth_distance_m": 0.0015892833471298218,
+          "samples": 1189
+        },
+        "Character | sewn cotton back pocket right": {
+          "maximum_edge_m": 0.00359472313071813,
+          "maximum_sampled_cloth_distance_m": 0.001583001110702753,
+          "samples": 1189
+        },
+        "Walk surface | Character | inset back pocket stitch left": {
+          "maximum_edge_m": 0.011190713274816607,
+          "maximum_sampled_cloth_distance_m": 0.0017965345177799463,
+          "samples": 43
+        },
+        "Walk surface | Character | pocket mouth topstitch left": {
+          "maximum_edge_m": 0.0069349249830864355,
+          "maximum_sampled_cloth_distance_m": 0.0017912951298058033,
+          "samples": 21
+        },
+        "Walk surface | Character | inset back pocket stitch right": {
+          "maximum_edge_m": 0.013550980115582225,
+          "maximum_sampled_cloth_distance_m": 0.0018080645240843296,
+          "samples": 43
+        },
+        "Walk surface | Character | pocket mouth topstitch right": {
+          "maximum_edge_m": 0.006067165663280591,
+          "maximum_sampled_cloth_distance_m": 0.0017830489668995142,
+          "samples": 21
+        },
+        "Walk surface | Character | shorts sewn side seam left": {
+          "maximum_edge_m": 0.0031854211981561867,
+          "maximum_sampled_cloth_distance_m": 0.00045988665078766644,
+          "samples": 148
+        },
+        "Walk surface | Character | shorts sewn side seam right": {
+          "maximum_edge_m": 0.0048071177834975035,
+          "maximum_sampled_cloth_distance_m": 0.0004630801558960229,
+          "samples": 166
+        },
+        "Walk surface | Character | shorts sewn fly topstitch": {
+          "maximum_edge_m": 0.010470778755991292,
+          "maximum_sampled_cloth_distance_m": 0.0004930966533720493,
+          "samples": 66
+        },
+        "Hip study | continuous turned cotton hems": {
+          "maximum_edge_m": 0.006666175694931799,
+          "maximum_sampled_cloth_distance_m": 0.0005001068930141628,
+          "samples": 203
+        }
+      }
+    },
+    {
+      "frame": 22,
+      "whole_shorts_shell_leg_intersection_pairs": 0,
+      "whole_shorts_shell_nonadjacent_self_intersection_pairs": 0,
+      "body_pair_samples": [],
+      "self_pair_samples": [],
+      "shorts_details": {
+        "Character | sewn cotton back pocket left": {
+          "maximum_edge_m": 0.00382637232959129,
+          "maximum_sampled_cloth_distance_m": 0.0015894509851932526,
+          "samples": 1189
+        },
+        "Character | sewn cotton back pocket right": {
+          "maximum_edge_m": 0.0036451918861028347,
+          "maximum_sampled_cloth_distance_m": 0.001583850011229515,
+          "samples": 1189
+        },
+        "Walk surface | Character | inset back pocket stitch left": {
+          "maximum_edge_m": 0.011117742218187013,
+          "maximum_sampled_cloth_distance_m": 0.0017971355700865388,
+          "samples": 43
+        },
+        "Walk surface | Character | pocket mouth topstitch left": {
+          "maximum_edge_m": 0.006921372974090546,
+          "maximum_sampled_cloth_distance_m": 0.0017911093309521675,
+          "samples": 21
+        },
+        "Walk surface | Character | inset back pocket stitch right": {
+          "maximum_edge_m": 0.013737197180342093,
+          "maximum_sampled_cloth_distance_m": 0.001807835535146296,
+          "samples": 43
+        },
+        "Walk surface | Character | pocket mouth topstitch right": {
+          "maximum_edge_m": 0.0060756116417167525,
+          "maximum_sampled_cloth_distance_m": 0.0017828367417678237,
+          "samples": 21
+        },
+        "Walk surface | Character | shorts sewn side seam left": {
+          "maximum_edge_m": 0.0032032502006842907,
+          "maximum_sampled_cloth_distance_m": 0.0004596940125338733,
+          "samples": 148
+        },
+        "Walk surface | Character | shorts sewn side seam right": {
+          "maximum_edge_m": 0.004819863906688754,
+          "maximum_sampled_cloth_distance_m": 0.00046322622802108526,
+          "samples": 166
+        },
+        "Walk surface | Character | shorts sewn fly topstitch": {
+          "maximum_edge_m": 0.010470792642089641,
+          "maximum_sampled_cloth_distance_m": 0.0004930795403197408,
+          "samples": 66
+        },
+        "Hip study | continuous turned cotton hems": {
+          "maximum_edge_m": 0.0066661038960194605,
+          "maximum_sampled_cloth_distance_m": 0.000500102702062577,
+          "samples": 203
+        }
+      }
+    },
+    {
+      "frame": 23,
+      "whole_shorts_shell_leg_intersection_pairs": 0,
+      "whole_shorts_shell_nonadjacent_self_intersection_pairs": 0,
+      "body_pair_samples": [],
+      "self_pair_samples": [],
+      "shorts_details": {
+        "Character | sewn cotton back pocket left": {
+          "maximum_edge_m": 0.003791648943635754,
+          "maximum_sampled_cloth_distance_m": 0.0015898384153842926,
+          "samples": 1189
+        },
+        "Character | sewn cotton back pocket right": {
+          "maximum_edge_m": 0.0036183404921197146,
+          "maximum_sampled_cloth_distance_m": 0.001583594479598105,
+          "samples": 1189
+        },
+        "Walk surface | Character | inset back pocket stitch left": {
+          "maximum_edge_m": 0.011055934066080231,
+          "maximum_sampled_cloth_distance_m": 0.0017974523361772299,
+          "samples": 43
+        },
+        "Walk surface | Character | pocket mouth topstitch left": {
+          "maximum_edge_m": 0.006910503541933073,
+          "maximum_sampled_cloth_distance_m": 0.001791203860193491,
+          "samples": 21
+        },
+        "Walk surface | Character | inset back pocket stitch right": {
+          "maximum_edge_m": 0.01364233740366873,
+          "maximum_sampled_cloth_distance_m": 0.0018078574212267995,
+          "samples": 43
+        },
+        "Walk surface | Character | pocket mouth topstitch right": {
+          "maximum_edge_m": 0.006073570682933068,
+          "maximum_sampled_cloth_distance_m": 0.001782556646503508,
+          "samples": 21
+        },
+        "Walk surface | Character | shorts sewn side seam left": {
+          "maximum_edge_m": 0.003219513795098346,
+          "maximum_sampled_cloth_distance_m": 0.00045960000716149807,
+          "samples": 148
+        },
+        "Walk surface | Character | shorts sewn side seam right": {
+          "maximum_edge_m": 0.004793910134230775,
+          "maximum_sampled_cloth_distance_m": 0.000463248259620741,
+          "samples": 166
+        },
+        "Walk surface | Character | shorts sewn fly topstitch": {
+          "maximum_edge_m": 0.010471056662425529,
+          "maximum_sampled_cloth_distance_m": 0.0004931004950776696,
+          "samples": 66
+        },
+        "Hip study | continuous turned cotton hems": {
+          "maximum_edge_m": 0.006665950881600446,
+          "maximum_sampled_cloth_distance_m": 0.0005000715027563274,
+          "samples": 203
+        }
+      }
+    },
+    {
+      "frame": 24,
+      "whole_shorts_shell_leg_intersection_pairs": 0,
+      "whole_shorts_shell_nonadjacent_self_intersection_pairs": 0,
+      "body_pair_samples": [],
+      "self_pair_samples": [],
+      "shorts_details": {
+        "Character | sewn cotton back pocket left": {
+          "maximum_edge_m": 0.0037984151892792306,
+          "maximum_sampled_cloth_distance_m": 0.0015891522634774446,
+          "samples": 1189
+        },
+        "Character | sewn cotton back pocket right": {
+          "maximum_edge_m": 0.0035505270910109335,
+          "maximum_sampled_cloth_distance_m": 0.0015826845774427056,
+          "samples": 1189
+        },
+        "Walk surface | Character | inset back pocket stitch left": {
+          "maximum_edge_m": 0.011153538551804232,
+          "maximum_sampled_cloth_distance_m": 0.0017978261457756162,
+          "samples": 43
+        },
+        "Walk surface | Character | pocket mouth topstitch left": {
+          "maximum_edge_m": 0.006911590780821355,
+          "maximum_sampled_cloth_distance_m": 0.0017913638148456812,
+          "samples": 21
+        },
+        "Walk surface | Character | inset back pocket stitch right": {
+          "maximum_edge_m": 0.01339960556222302,
+          "maximum_sampled_cloth_distance_m": 0.0018079644069075584,
+          "samples": 43
+        },
+        "Walk surface | Character | pocket mouth topstitch right": {
+          "maximum_edge_m": 0.006066895580814847,
+          "maximum_sampled_cloth_distance_m": 0.0017829440766945481,
+          "samples": 21
+        },
+        "Walk surface | Character | shorts sewn side seam left": {
+          "maximum_edge_m": 0.0032223862412188637,
+          "maximum_sampled_cloth_distance_m": 0.00045959671842865646,
+          "samples": 148
+        },
+        "Walk surface | Character | shorts sewn side seam right": {
+          "maximum_edge_m": 0.0047543288938527275,
+          "maximum_sampled_cloth_distance_m": 0.00046327992458827794,
+          "samples": 166
+        },
+        "Walk surface | Character | shorts sewn fly topstitch": {
+          "maximum_edge_m": 0.010471084687654177,
+          "maximum_sampled_cloth_distance_m": 0.0004930704599246383,
+          "samples": 66
+        },
+        "Hip study | continuous turned cotton hems": {
+          "maximum_edge_m": 0.006666060168226956,
+          "maximum_sampled_cloth_distance_m": 0.0005000922828912735,
+          "samples": 203
+        }
+      }
+    },
+    {
+      "frame": 25,
+      "whole_shorts_shell_leg_intersection_pairs": 0,
+      "whole_shorts_shell_nonadjacent_self_intersection_pairs": 0,
+      "body_pair_samples": [],
+      "self_pair_samples": [],
+      "shorts_details": {
+        "Character | sewn cotton back pocket left": {
+          "maximum_edge_m": 0.003739589477439501,
+          "maximum_sampled_cloth_distance_m": 0.001590484636835754,
+          "samples": 1189
+        },
+        "Character | sewn cotton back pocket right": {
+          "maximum_edge_m": 0.0034652197028670214,
+          "maximum_sampled_cloth_distance_m": 0.001581421704031527,
+          "samples": 1189
+        },
+        "Walk surface | Character | inset back pocket stitch left": {
+          "maximum_edge_m": 0.01097337169049201,
+          "maximum_sampled_cloth_distance_m": 0.0017974235815927386,
+          "samples": 43
+        },
+        "Walk surface | Character | pocket mouth topstitch left": {
+          "maximum_edge_m": 0.006895012545350783,
+          "maximum_sampled_cloth_distance_m": 0.0017913446063175797,
+          "samples": 21
+        },
+        "Walk surface | Character | inset back pocket stitch right": {
+          "maximum_edge_m": 0.013057799940556456,
+          "maximum_sampled_cloth_distance_m": 0.0018071468221023679,
+          "samples": 43
+        },
+        "Walk surface | Character | pocket mouth topstitch right": {
+          "maximum_edge_m": 0.006055480283193172,
+          "maximum_sampled_cloth_distance_m": 0.0017835969338193536,
+          "samples": 21
+        },
+        "Walk surface | Character | shorts sewn side seam left": {
+          "maximum_edge_m": 0.003244343152464413,
+          "maximum_sampled_cloth_distance_m": 0.00045960204442963004,
+          "samples": 148
+        },
+        "Walk surface | Character | shorts sewn side seam right": {
+          "maximum_edge_m": 0.004689528294366834,
+          "maximum_sampled_cloth_distance_m": 0.00046378461411222816,
+          "samples": 166
+        },
+        "Walk surface | Character | shorts sewn fly topstitch": {
+          "maximum_edge_m": 0.010471356783617613,
+          "maximum_sampled_cloth_distance_m": 0.0004931135918013752,
+          "samples": 66
+        },
+        "Hip study | continuous turned cotton hems": {
+          "maximum_edge_m": 0.006665961557932252,
+          "maximum_sampled_cloth_distance_m": 0.0005000820383429527,
+          "samples": 203
+        }
+      }
+    },
+    {
+      "frame": 26,
+      "whole_shorts_shell_leg_intersection_pairs": 0,
+      "whole_shorts_shell_nonadjacent_self_intersection_pairs": 0,
+      "body_pair_samples": [],
+      "self_pair_samples": [],
+      "shorts_details": {
+        "Character | sewn cotton back pocket left": {
+          "maximum_edge_m": 0.003733464123848297,
+          "maximum_sampled_cloth_distance_m": 0.0015906562330201268,
+          "samples": 1189
+        },
+        "Character | sewn cotton back pocket right": {
+          "maximum_edge_m": 0.0034517141846626426,
+          "maximum_sampled_cloth_distance_m": 0.0015811547636985779,
+          "samples": 1189
+        },
+        "Walk surface | Character | inset back pocket stitch left": {
+          "maximum_edge_m": 0.010949698319181982,
+          "maximum_sampled_cloth_distance_m": 0.0017977464012801647,
+          "samples": 43
+        },
+        "Walk surface | Character | pocket mouth topstitch left": {
+          "maximum_edge_m": 0.006893400611918361,
+          "maximum_sampled_cloth_distance_m": 0.0017913433257490396,
+          "samples": 21
+        },
+        "Walk surface | Character | inset back pocket stitch right": {
+          "maximum_edge_m": 0.012998619494097599,
+          "maximum_sampled_cloth_distance_m": 0.0018071209779009223,
+          "samples": 43
+        },
+        "Walk surface | Character | pocket mouth topstitch right": {
+          "maximum_edge_m": 0.006051474366220402,
+          "maximum_sampled_cloth_distance_m": 0.0017837544437497854,
+          "samples": 21
+        },
+        "Walk surface | Character | shorts sewn side seam left": {
+          "maximum_edge_m": 0.0032463757758352716,
+          "maximum_sampled_cloth_distance_m": 0.0004595833015628159,
+          "samples": 148
+        },
+        "Walk surface | Character | shorts sewn side seam right": {
+          "maximum_edge_m": 0.004714419919149838,
+          "maximum_sampled_cloth_distance_m": 0.000463844568002969,
+          "samples": 166
+        },
+        "Walk surface | Character | shorts sewn fly topstitch": {
+          "maximum_edge_m": 0.010471347253938768,
+          "maximum_sampled_cloth_distance_m": 0.0004930996801704168,
+          "samples": 66
+        },
+        "Hip study | continuous turned cotton hems": {
+          "maximum_edge_m": 0.006666191845316942,
+          "maximum_sampled_cloth_distance_m": 0.0005000546225346625,
+          "samples": 203
+        }
+      }
+    },
+    {
+      "frame": 27,
+      "whole_shorts_shell_leg_intersection_pairs": 0,
+      "whole_shorts_shell_nonadjacent_self_intersection_pairs": 0,
+      "body_pair_samples": [],
+      "self_pair_samples": [],
+      "shorts_details": {
+        "Character | sewn cotton back pocket left": {
+          "maximum_edge_m": 0.0038092671131120287,
+          "maximum_sampled_cloth_distance_m": 0.0015889923088252544,
+          "samples": 1189
+        },
+        "Character | sewn cotton back pocket right": {
+          "maximum_edge_m": 0.003431795661596081,
+          "maximum_sampled_cloth_distance_m": 0.0015804562717676163,
+          "samples": 1189
+        },
+        "Walk surface | Character | inset back pocket stitch left": {
+          "maximum_edge_m": 0.011157168425402922,
+          "maximum_sampled_cloth_distance_m": 0.0017976925009861588,
+          "samples": 43
+        },
+        "Walk surface | Character | pocket mouth topstitch left": {
+          "maximum_edge_m": 0.006915391712132061,
+          "maximum_sampled_cloth_distance_m": 0.0017911115428432822,
+          "samples": 21
+        },
+        "Walk surface | Character | inset back pocket stitch right": {
+          "maximum_edge_m": 0.012914601942725446,
+          "maximum_sampled_cloth_distance_m": 0.0018069776706397533,
+          "samples": 43
+        },
+        "Walk surface | Character | pocket mouth topstitch right": {
+          "maximum_edge_m": 0.006046391897046377,
+          "maximum_sampled_cloth_distance_m": 0.0017840228974819183,
+          "samples": 21
+        },
+        "Walk surface | Character | shorts sewn side seam left": {
+          "maximum_edge_m": 0.0032160662764687104,
+          "maximum_sampled_cloth_distance_m": 0.00045959773706272244,
+          "samples": 148
+        },
+        "Walk surface | Character | shorts sewn side seam right": {
+          "maximum_edge_m": 0.004737432352468386,
+          "maximum_sampled_cloth_distance_m": 0.00046381287393160164,
+          "samples": 166
+        },
+        "Walk surface | Character | shorts sewn fly topstitch": {
+          "maximum_edge_m": 0.010471230929273257,
+          "maximum_sampled_cloth_distance_m": 0.000492973776999861,
+          "samples": 66
+        },
+        "Hip study | continuous turned cotton hems": {
+          "maximum_edge_m": 0.006666187905786265,
+          "maximum_sampled_cloth_distance_m": 0.0005000855890102684,
+          "samples": 203
+        }
+      }
+    },
+    {
+      "frame": 28,
+      "whole_shorts_shell_leg_intersection_pairs": 0,
+      "whole_shorts_shell_nonadjacent_self_intersection_pairs": 0,
+      "body_pair_samples": [],
+      "self_pair_samples": [],
+      "shorts_details": {
+        "Character | sewn cotton back pocket left": {
+          "maximum_edge_m": 0.003905775171250749,
+          "maximum_sampled_cloth_distance_m": 0.0015875865938141942,
+          "samples": 1189
+        },
+        "Character | sewn cotton back pocket right": {
+          "maximum_edge_m": 0.0034066795738812946,
+          "maximum_sampled_cloth_distance_m": 0.0015799376415088773,
+          "samples": 1189
+        },
+        "Walk surface | Character | inset back pocket stitch left": {
+          "maximum_edge_m": 0.011494545307240889,
+          "maximum_sampled_cloth_distance_m": 0.0017973411595448852,
+          "samples": 43
+        },
+        "Walk surface | Character | pocket mouth topstitch left": {
+          "maximum_edge_m": 0.006943480685117464,
+          "maximum_sampled_cloth_distance_m": 0.0017910826718434691,
+          "samples": 21
+        },
+        "Walk surface | Character | inset back pocket stitch right": {
+          "maximum_edge_m": 0.012804869410656342,
+          "maximum_sampled_cloth_distance_m": 0.0018067199271172285,
+          "samples": 43
+        },
+        "Walk surface | Character | pocket mouth topstitch right": {
+          "maximum_edge_m": 0.006039946214273061,
+          "maximum_sampled_cloth_distance_m": 0.0017845756374299526,
+          "samples": 21
+        },
+        "Walk surface | Character | shorts sewn side seam left": {
+          "maximum_edge_m": 0.00319160072596889,
+          "maximum_sampled_cloth_distance_m": 0.000459526723716408,
+          "samples": 148
+        },
+        "Walk surface | Character | shorts sewn side seam right": {
+          "maximum_edge_m": 0.004760104941109344,
+          "maximum_sampled_cloth_distance_m": 0.0004637009697034955,
+          "samples": 166
+        },
+        "Walk surface | Character | shorts sewn fly topstitch": {
+          "maximum_edge_m": 0.010471154282183285,
+          "maximum_sampled_cloth_distance_m": 0.0004929415299557149,
+          "samples": 66
+        },
+        "Hip study | continuous turned cotton hems": {
+          "maximum_edge_m": 0.006665698908383783,
+          "maximum_sampled_cloth_distance_m": 0.0005000888486392796,
+          "samples": 203
+        }
+      }
+    },
+    {
+      "frame": 29,
+      "whole_shorts_shell_leg_intersection_pairs": 0,
+      "whole_shorts_shell_nonadjacent_self_intersection_pairs": 0,
+      "body_pair_samples": [],
+      "self_pair_samples": [],
+      "shorts_details": {
+        "Character | sewn cotton back pocket left": {
+          "maximum_edge_m": 0.004009603275592643,
+          "maximum_sampled_cloth_distance_m": 0.0015848033362999558,
+          "samples": 1189
+        },
+        "Character | sewn cotton back pocket right": {
+          "maximum_edge_m": 0.0033744889212860394,
+          "maximum_sampled_cloth_distance_m": 0.0015788833843544126,
+          "samples": 1189
+        },
+        "Walk surface | Character | inset back pocket stitch left": {
+          "maximum_edge_m": 0.011923508747025151,
+          "maximum_sampled_cloth_distance_m": 0.0017947304295375943,
+          "samples": 43
+        },
+        "Walk surface | Character | pocket mouth topstitch left": {
+          "maximum_edge_m": 0.006974382994742412,
+          "maximum_sampled_cloth_distance_m": 0.0017908400623127818,
+          "samples": 21
+        },
+        "Walk surface | Character | inset back pocket stitch right": {
+          "maximum_edge_m": 0.012664879466607302,
+          "maximum_sampled_cloth_distance_m": 0.001805893494747579,
+          "samples": 43
+        },
+        "Walk surface | Character | pocket mouth topstitch right": {
+          "maximum_edge_m": 0.006032999917082537,
+          "maximum_sampled_cloth_distance_m": 0.0017849853029474616,
+          "samples": 21
+        },
+        "Walk surface | Character | shorts sewn side seam left": {
+          "maximum_edge_m": 0.0031845733314329583,
+          "maximum_sampled_cloth_distance_m": 0.00045977492118254304,
+          "samples": 148
+        },
+        "Walk surface | Character | shorts sewn side seam right": {
+          "maximum_edge_m": 0.0047284143727583374,
+          "maximum_sampled_cloth_distance_m": 0.00046340381959453225,
+          "samples": 166
+        },
+        "Walk surface | Character | shorts sewn fly topstitch": {
+          "maximum_edge_m": 0.010471026393737178,
+          "maximum_sampled_cloth_distance_m": 0.0004929293063469231,
+          "samples": 66
+        },
+        "Hip study | continuous turned cotton hems": {
+          "maximum_edge_m": 0.006666066103217178,
+          "maximum_sampled_cloth_distance_m": 0.0005001166719011962,
+          "samples": 203
+        }
+      }
+    },
+    {
+      "frame": 30,
+      "whole_shorts_shell_leg_intersection_pairs": 0,
+      "whole_shorts_shell_nonadjacent_self_intersection_pairs": 0,
+      "body_pair_samples": [],
+      "self_pair_samples": [],
+      "shorts_details": {
+        "Character | sewn cotton back pocket left": {
+          "maximum_edge_m": 0.0040142902437989274,
+          "maximum_sampled_cloth_distance_m": 0.0015773418126627803,
+          "samples": 1189
+        },
+        "Character | sewn cotton back pocket right": {
+          "maximum_edge_m": 0.0033333991551085618,
+          "maximum_sampled_cloth_distance_m": 0.001577874063514173,
+          "samples": 1189
+        },
+        "Walk surface | Character | inset back pocket stitch left": {
+          "maximum_edge_m": 0.012535295096161183,
+          "maximum_sampled_cloth_distance_m": 0.0017952222842723131,
+          "samples": 43
+        },
+        "Walk surface | Character | pocket mouth topstitch left": {
+          "maximum_edge_m": 0.00700615815305918,
+          "maximum_sampled_cloth_distance_m": 0.0017904994310811162,
+          "samples": 21
+        },
+        "Walk surface | Character | inset back pocket stitch right": {
+          "maximum_edge_m": 0.012487279242835872,
+          "maximum_sampled_cloth_distance_m": 0.001804754021577537,
+          "samples": 43
+        },
+        "Walk surface | Character | pocket mouth topstitch right": {
+          "maximum_edge_m": 0.006024389038936974,
+          "maximum_sampled_cloth_distance_m": 0.0017856367630884051,
+          "samples": 21
+        },
+        "Walk surface | Character | shorts sewn side seam left": {
+          "maximum_edge_m": 0.003198386580473696,
+          "maximum_sampled_cloth_distance_m": 0.00046018505236133933,
+          "samples": 148
+        },
+        "Walk surface | Character | shorts sewn side seam right": {
+          "maximum_edge_m": 0.004757783913244489,
+          "maximum_sampled_cloth_distance_m": 0.0004633431672118604,
+          "samples": 166
+        },
+        "Walk surface | Character | shorts sewn fly topstitch": {
+          "maximum_edge_m": 0.010471039087413514,
+          "maximum_sampled_cloth_distance_m": 0.0004928249400109053,
+          "samples": 66
+        },
+        "Hip study | continuous turned cotton hems": {
+          "maximum_edge_m": 0.006666191457332963,
+          "maximum_sampled_cloth_distance_m": 0.000500174704939127,
+          "samples": 203
+        }
+      }
+    },
+    {
+      "frame": 31,
+      "whole_shorts_shell_leg_intersection_pairs": 0,
+      "whole_shorts_shell_nonadjacent_self_intersection_pairs": 0,
+      "body_pair_samples": [],
+      "self_pair_samples": [],
+      "shorts_details": {
+        "Character | sewn cotton back pocket left": {
+          "maximum_edge_m": 0.0043316083377049,
+          "maximum_sampled_cloth_distance_m": 0.0015757587971165776,
+          "samples": 1189
+        },
+        "Character | sewn cotton back pocket right": {
+          "maximum_edge_m": 0.0032821956109816567,
+          "maximum_sampled_cloth_distance_m": 0.0015765671851113439,
+          "samples": 1189
+        },
+        "Walk surface | Character | inset back pocket stitch left": {
+          "maximum_edge_m": 0.013222815265096215,
+          "maximum_sampled_cloth_distance_m": 0.0017956946976482868,
+          "samples": 43
+        },
+        "Walk surface | Character | pocket mouth topstitch left": {
+          "maximum_edge_m": 0.00703556497840977,
+          "maximum_sampled_cloth_distance_m": 0.0017904797568917274,
+          "samples": 21
+        },
+        "Walk surface | Character | inset back pocket stitch right": {
+          "maximum_edge_m": 0.012264881184621323,
+          "maximum_sampled_cloth_distance_m": 0.0018029799684882164,
+          "samples": 43
+        },
+        "Walk surface | Character | pocket mouth topstitch right": {
+          "maximum_edge_m": 0.006014738633827334,
+          "maximum_sampled_cloth_distance_m": 0.0017863024258986115,
+          "samples": 21
+        },
+        "Walk surface | Character | shorts sewn side seam left": {
+          "maximum_edge_m": 0.003229107291683412,
+          "maximum_sampled_cloth_distance_m": 0.0004605351423379034,
+          "samples": 148
+        },
+        "Walk surface | Character | shorts sewn side seam right": {
+          "maximum_edge_m": 0.004796102863177824,
+          "maximum_sampled_cloth_distance_m": 0.0004633483767975122,
+          "samples": 166
+        },
+        "Walk surface | Character | shorts sewn fly topstitch": {
+          "maximum_edge_m": 0.010470851296961329,
+          "maximum_sampled_cloth_distance_m": 0.0004927513073198497,
+          "samples": 66
+        },
+        "Hip study | continuous turned cotton hems": {
+          "maximum_edge_m": 0.006665972013600453,
+          "maximum_sampled_cloth_distance_m": 0.0005001131212338805,
+          "samples": 203
+        }
+      }
+    },
+    {
+      "frame": 32,
+      "whole_shorts_shell_leg_intersection_pairs": 0,
+      "whole_shorts_shell_nonadjacent_self_intersection_pairs": 0,
+      "body_pair_samples": [],
+      "self_pair_samples": [],
+      "shorts_details": {
+        "Character | sewn cotton back pocket left": {
+          "maximum_edge_m": 0.004530172901086596,
+          "maximum_sampled_cloth_distance_m": 0.00157626299187541,
+          "samples": 1189
+        },
+        "Character | sewn cotton back pocket right": {
+          "maximum_edge_m": 0.00321652180406696,
+          "maximum_sampled_cloth_distance_m": 0.0015750292222946882,
+          "samples": 1189
+        },
+        "Walk surface | Character | inset back pocket stitch left": {
+          "maximum_edge_m": 0.013820092245065755,
+          "maximum_sampled_cloth_distance_m": 0.0017961333505809307,
+          "samples": 43
+        },
+        "Walk surface | Character | pocket mouth topstitch left": {
+          "maximum_edge_m": 0.007059353066192473,
+          "maximum_sampled_cloth_distance_m": 0.0017902805702760816,
+          "samples": 21
+        },
+        "Walk surface | Character | inset back pocket stitch right": {
+          "maximum_edge_m": 0.011984761296380235,
+          "maximum_sampled_cloth_distance_m": 0.0018004269804805517,
+          "samples": 43
+        },
+        "Walk surface | Character | pocket mouth topstitch right": {
+          "maximum_edge_m": 0.006003661582039009,
+          "maximum_sampled_cloth_distance_m": 0.0017872849712148309,
+          "samples": 21
+        },
+        "Walk surface | Character | shorts sewn side seam left": {
+          "maximum_edge_m": 0.0032645248704381456,
+          "maximum_sampled_cloth_distance_m": 0.0004608853778336197,
+          "samples": 148
+        },
+        "Walk surface | Character | shorts sewn side seam right": {
+          "maximum_edge_m": 0.004848927432266163,
+          "maximum_sampled_cloth_distance_m": 0.0004630991315934807,
+          "samples": 166
+        },
+        "Walk surface | Character | shorts sewn fly topstitch": {
+          "maximum_edge_m": 0.010471007974519594,
+          "maximum_sampled_cloth_distance_m": 0.0004929075948894024,
+          "samples": 66
+        },
+        "Hip study | continuous turned cotton hems": {
+          "maximum_edge_m": 0.00666586180455414,
+          "maximum_sampled_cloth_distance_m": 0.0005001149256713688,
+          "samples": 203
+        }
+      }
+    },
+    {
+      "frame": 33,
+      "whole_shorts_shell_leg_intersection_pairs": 0,
+      "whole_shorts_shell_nonadjacent_self_intersection_pairs": 0,
+      "body_pair_samples": [],
+      "self_pair_samples": [],
+      "shorts_details": {
+        "Character | sewn cotton back pocket left": {
+          "maximum_edge_m": 0.00476079126227523,
+          "maximum_sampled_cloth_distance_m": 0.0015768436715006828,
+          "samples": 1189
+        },
+        "Character | sewn cotton back pocket right": {
+          "maximum_edge_m": 0.0031363921903303127,
+          "maximum_sampled_cloth_distance_m": 0.0015730828745290637,
+          "samples": 1189
+        },
+        "Walk surface | Character | inset back pocket stitch left": {
+          "maximum_edge_m": 0.014333497583847006,
+          "maximum_sampled_cloth_distance_m": 0.001796427182853222,
+          "samples": 43
+        },
+        "Walk surface | Character | pocket mouth topstitch left": {
+          "maximum_edge_m": 0.007077735076654767,
+          "maximum_sampled_cloth_distance_m": 0.0017900941893458366,
+          "samples": 21
+        },
+        "Walk surface | Character | inset back pocket stitch right": {
+          "maximum_edge_m": 0.011616129499127178,
+          "maximum_sampled_cloth_distance_m": 0.0017995674861595035,
+          "samples": 43
+        },
+        "Walk surface | Character | pocket mouth topstitch right": {
+          "maximum_edge_m": 0.005989585999095982,
+          "maximum_sampled_cloth_distance_m": 0.0017885614652186632,
+          "samples": 21
+        },
+        "Walk surface | Character | shorts sewn side seam left": {
+          "maximum_edge_m": 0.0032995042534958814,
+          "maximum_sampled_cloth_distance_m": 0.00046138110337778926,
+          "samples": 148
+        },
+        "Walk surface | Character | shorts sewn side seam right": {
+          "maximum_edge_m": 0.004883065970322066,
+          "maximum_sampled_cloth_distance_m": 0.0004631752672139555,
+          "samples": 166
+        },
+        "Walk surface | Character | shorts sewn fly topstitch": {
+          "maximum_edge_m": 0.010471218269927493,
+          "maximum_sampled_cloth_distance_m": 0.0004927793052047491,
+          "samples": 66
+        },
+        "Hip study | continuous turned cotton hems": {
+          "maximum_edge_m": 0.006665942763483665,
+          "maximum_sampled_cloth_distance_m": 0.0005000881501473486,
+          "samples": 203
+        }
+      }
+    },
+    {
+      "frame": 34,
+      "whole_shorts_shell_leg_intersection_pairs": 0,
+      "whole_shorts_shell_nonadjacent_self_intersection_pairs": 0,
+      "body_pair_samples": [],
+      "self_pair_samples": [],
+      "shorts_details": {
+        "Character | sewn cotton back pocket left": {
+          "maximum_edge_m": 0.00482426014985858,
+          "maximum_sampled_cloth_distance_m": 0.0015773378545418382,
+          "samples": 1189
+        },
+        "Character | sewn cotton back pocket right": {
+          "maximum_edge_m": 0.0030507851355338874,
+          "maximum_sampled_cloth_distance_m": 0.0015745774144306779,
+          "samples": 1189
+        },
+        "Walk surface | Character | inset back pocket stitch left": {
+          "maximum_edge_m": 0.0145019401284974,
+          "maximum_sampled_cloth_distance_m": 0.0017964954022318125,
+          "samples": 43
+        },
+        "Walk surface | Character | pocket mouth topstitch left": {
+          "maximum_edge_m": 0.0070865710025903375,
+          "maximum_sampled_cloth_distance_m": 0.0017901213141158223,
+          "samples": 21
+        },
+        "Walk surface | Character | inset back pocket stitch right": {
+          "maximum_edge_m": 0.011175275112801952,
+          "maximum_sampled_cloth_distance_m": 0.001797714619897306,
+          "samples": 43
+        },
+        "Walk surface | Character | pocket mouth topstitch right": {
+          "maximum_edge_m": 0.0059750996777808586,
+          "maximum_sampled_cloth_distance_m": 0.0017900917446240783,
+          "samples": 21
+        },
+        "Walk surface | Character | shorts sewn side seam left": {
+          "maximum_edge_m": 0.0033153866697329545,
+          "maximum_sampled_cloth_distance_m": 0.00046167391701601446,
+          "samples": 148
+        },
+        "Walk surface | Character | shorts sewn side seam right": {
+          "maximum_edge_m": 0.0051225457435916995,
+          "maximum_sampled_cloth_distance_m": 0.00046496823779307306,
+          "samples": 166
+        },
+        "Walk surface | Character | shorts sewn fly topstitch": {
+          "maximum_edge_m": 0.010471317009840046,
+          "maximum_sampled_cloth_distance_m": 0.0004927654517814517,
+          "samples": 66
+        },
+        "Hip study | continuous turned cotton hems": {
+          "maximum_edge_m": 0.0066660995130204325,
+          "maximum_sampled_cloth_distance_m": 0.0005001120152883232,
+          "samples": 203
+        }
+      }
+    },
+    {
+      "frame": 35,
+      "whole_shorts_shell_leg_intersection_pairs": 0,
+      "whole_shorts_shell_nonadjacent_self_intersection_pairs": 0,
+      "body_pair_samples": [],
+      "self_pair_samples": [],
+      "shorts_details": {
+        "Character | sewn cotton back pocket left": {
+          "maximum_edge_m": 0.004779873720217714,
+          "maximum_sampled_cloth_distance_m": 0.0015773434424772859,
+          "samples": 1189
+        },
+        "Character | sewn cotton back pocket right": {
+          "maximum_edge_m": 0.0030731510245717037,
+          "maximum_sampled_cloth_distance_m": 0.0015739259542897344,
+          "samples": 1189
+        },
+        "Walk surface | Character | inset back pocket stitch left": {
+          "maximum_edge_m": 0.014287000528606077,
+          "maximum_sampled_cloth_distance_m": 0.0017964746803045273,
+          "samples": 43
+        },
+        "Walk surface | Character | pocket mouth topstitch left": {
+          "maximum_edge_m": 0.007085588831978002,
+          "maximum_sampled_cloth_distance_m": 0.001790112815797329,
+          "samples": 21
+        },
+        "Walk surface | Character | inset back pocket stitch right": {
+          "maximum_edge_m": 0.011297664062447471,
+          "maximum_sampled_cloth_distance_m": 0.001798258046619594,
+          "samples": 43
+        },
+        "Walk surface | Character | pocket mouth topstitch right": {
+          "maximum_edge_m": 0.00597534516086066,
+          "maximum_sampled_cloth_distance_m": 0.0017896436620503664,
+          "samples": 21
+        },
+        "Walk surface | Character | shorts sewn side seam left": {
+          "maximum_edge_m": 0.003295775565304971,
+          "maximum_sampled_cloth_distance_m": 0.00046190869761630893,
+          "samples": 148
+        },
+        "Walk surface | Character | shorts sewn side seam right": {
+          "maximum_edge_m": 0.005061781976756342,
+          "maximum_sampled_cloth_distance_m": 0.00046461171586997807,
+          "samples": 166
+        },
+        "Walk surface | Character | shorts sewn fly topstitch": {
+          "maximum_edge_m": 0.010471383790886624,
+          "maximum_sampled_cloth_distance_m": 0.0004926706897094846,
+          "samples": 66
+        },
+        "Hip study | continuous turned cotton hems": {
+          "maximum_edge_m": 0.006666105601465775,
+          "maximum_sampled_cloth_distance_m": 0.0005000531673431396,
+          "samples": 203
+        }
+      }
+    },
+    {
+      "frame": 36,
+      "whole_shorts_shell_leg_intersection_pairs": 0,
+      "whole_shorts_shell_nonadjacent_self_intersection_pairs": 0,
+      "body_pair_samples": [],
+      "self_pair_samples": [],
+      "shorts_details": {
+        "Character | sewn cotton back pocket left": {
+          "maximum_edge_m": 0.004569232214638413,
+          "maximum_sampled_cloth_distance_m": 0.0015767338918522,
+          "samples": 1189
+        },
+        "Character | sewn cotton back pocket right": {
+          "maximum_edge_m": 0.0030870458199199857,
+          "maximum_sampled_cloth_distance_m": 0.0015734289772808552,
+          "samples": 1189
+        },
+        "Walk surface | Character | inset back pocket stitch left": {
+          "maximum_edge_m": 0.013705928323166942,
+          "maximum_sampled_cloth_distance_m": 0.001796089462004602,
+          "samples": 43
+        },
+        "Walk surface | Character | pocket mouth topstitch left": {
+          "maximum_edge_m": 0.007074982865325959,
+          "maximum_sampled_cloth_distance_m": 0.001790391281247139,
+          "samples": 21
+        },
+        "Walk surface | Character | inset back pocket stitch right": {
+          "maximum_edge_m": 0.011371090071421765,
+          "maximum_sampled_cloth_distance_m": 0.0017983739962801337,
+          "samples": 43
+        },
+        "Walk surface | Character | pocket mouth topstitch right": {
+          "maximum_edge_m": 0.005975078030035899,
+          "maximum_sampled_cloth_distance_m": 0.0017895043129101396,
+          "samples": 21
+        },
+        "Walk surface | Character | shorts sewn side seam left": {
+          "maximum_edge_m": 0.0032479388066053725,
+          "maximum_sampled_cloth_distance_m": 0.00046174603630788624,
+          "samples": 148
+        },
+        "Walk surface | Character | shorts sewn side seam right": {
+          "maximum_edge_m": 0.005065884184349914,
+          "maximum_sampled_cloth_distance_m": 0.0004645702429115772,
+          "samples": 166
+        },
+        "Walk surface | Character | shorts sewn fly topstitch": {
+          "maximum_edge_m": 0.010471426791613322,
+          "maximum_sampled_cloth_distance_m": 0.0004926759283989668,
+          "samples": 66
+        },
+        "Hip study | continuous turned cotton hems": {
+          "maximum_edge_m": 0.006666271598994696,
+          "maximum_sampled_cloth_distance_m": 0.000500098685733974,
+          "samples": 203
+        }
+      }
+    },
+    {
+      "frame": 37,
+      "whole_shorts_shell_leg_intersection_pairs": 0,
+      "whole_shorts_shell_nonadjacent_self_intersection_pairs": 0,
+      "body_pair_samples": [],
+      "self_pair_samples": [],
+      "shorts_details": {
+        "Character | sewn cotton back pocket left": {
+          "maximum_edge_m": 0.004314620560393433,
+          "maximum_sampled_cloth_distance_m": 0.0015767127042636275,
+          "samples": 1189
+        },
+        "Character | sewn cotton back pocket right": {
+          "maximum_edge_m": 0.003052727463277323,
+          "maximum_sampled_cloth_distance_m": 0.001573840156197548,
+          "samples": 1189
+        },
+        "Walk surface | Character | inset back pocket stitch left": {
+          "maximum_edge_m": 0.012782644169542222,
+          "maximum_sampled_cloth_distance_m": 0.001795752439647913,
+          "samples": 43
+        },
+        "Walk surface | Character | pocket mouth topstitch left": {
+          "maximum_edge_m": 0.007051988244043376,
+          "maximum_sampled_cloth_distance_m": 0.0017904636915773153,
+          "samples": 21
+        },
+        "Walk surface | Character | inset back pocket stitch right": {
+          "maximum_edge_m": 0.011183202741788089,
+          "maximum_sampled_cloth_distance_m": 0.0017976084491237998,
+          "samples": 43
+        },
+        "Walk surface | Character | pocket mouth topstitch right": {
+          "maximum_edge_m": 0.005968690889925248,
+          "maximum_sampled_cloth_distance_m": 0.0017902008257806301,
+          "samples": 21
+        },
+        "Walk surface | Character | shorts sewn side seam left": {
+          "maximum_edge_m": 0.0031837707181395164,
+          "maximum_sampled_cloth_distance_m": 0.00046162123908288777,
+          "samples": 148
+        },
+        "Walk surface | Character | shorts sewn side seam right": {
+          "maximum_edge_m": 0.005114095933479955,
+          "maximum_sampled_cloth_distance_m": 0.000464551238110289,
+          "samples": 166
+        },
+        "Walk surface | Character | shorts sewn fly topstitch": {
+          "maximum_edge_m": 0.010471712461617527,
+          "maximum_sampled_cloth_distance_m": 0.0004928580019623041,
+          "samples": 66
+        },
+        "Hip study | continuous turned cotton hems": {
+          "maximum_edge_m": 0.006666005763903699,
+          "maximum_sampled_cloth_distance_m": 0.0005000884993933141,
+          "samples": 203
+        }
+      }
+    },
+    {
+      "frame": 38,
+      "whole_shorts_shell_leg_intersection_pairs": 0,
+      "whole_shorts_shell_nonadjacent_self_intersection_pairs": 0,
+      "body_pair_samples": [],
+      "self_pair_samples": [],
+      "shorts_details": {
+        "Character | sewn cotton back pocket left": {
+          "maximum_edge_m": 0.004302214390077333,
+          "maximum_sampled_cloth_distance_m": 0.0015766529832035303,
+          "samples": 1189
+        },
+        "Character | sewn cotton back pocket right": {
+          "maximum_edge_m": 0.003034481438395164,
+          "maximum_sampled_cloth_distance_m": 0.0015741789247840643,
+          "samples": 1189
+        },
+        "Walk surface | Character | inset back pocket stitch left": {
+          "maximum_edge_m": 0.01284493266846304,
+          "maximum_sampled_cloth_distance_m": 0.0017958158859983087,
+          "samples": 43
+        },
+        "Walk surface | Character | pocket mouth topstitch left": {
+          "maximum_edge_m": 0.007049575593161318,
+          "maximum_sampled_cloth_distance_m": 0.0017904783599078655,
+          "samples": 21
+        },
+        "Walk surface | Character | inset back pocket stitch right": {
+          "maximum_edge_m": 0.011077095739450928,
+          "maximum_sampled_cloth_distance_m": 0.0017967381281778216,
+          "samples": 43
+        },
+        "Walk surface | Character | pocket mouth topstitch right": {
+          "maximum_edge_m": 0.005965484356599977,
+          "maximum_sampled_cloth_distance_m": 0.0017905953573063016,
+          "samples": 21
+        },
+        "Walk surface | Character | shorts sewn side seam left": {
+          "maximum_edge_m": 0.0031923644122114256,
+          "maximum_sampled_cloth_distance_m": 0.0004617346276063472,
+          "samples": 148
+        },
+        "Walk surface | Character | shorts sewn side seam right": {
+          "maximum_edge_m": 0.005202858687476095,
+          "maximum_sampled_cloth_distance_m": 0.0004648428875952959,
+          "samples": 166
+        },
+        "Walk surface | Character | shorts sewn fly topstitch": {
+          "maximum_edge_m": 0.010471646490129204,
+          "maximum_sampled_cloth_distance_m": 0.0004926793044432998,
+          "samples": 66
+        },
+        "Hip study | continuous turned cotton hems": {
+          "maximum_edge_m": 0.00666602455817466,
+          "maximum_sampled_cloth_distance_m": 0.0005001109675504267,
+          "samples": 203
+        }
+      }
+    },
+    {
+      "frame": 39,
+      "whole_shorts_shell_leg_intersection_pairs": 0,
+      "whole_shorts_shell_nonadjacent_self_intersection_pairs": 0,
+      "body_pair_samples": [],
+      "self_pair_samples": [],
+      "shorts_details": {
+        "Character | sewn cotton back pocket left": {
+          "maximum_edge_m": 0.004269228331253561,
+          "maximum_sampled_cloth_distance_m": 0.0015768916346132755,
+          "samples": 1189
+        },
+        "Character | sewn cotton back pocket right": {
+          "maximum_edge_m": 0.003067969387112752,
+          "maximum_sampled_cloth_distance_m": 0.001573649002239108,
+          "samples": 1189
+        },
+        "Walk surface | Character | inset back pocket stitch left": {
+          "maximum_edge_m": 0.012810049525757785,
+          "maximum_sampled_cloth_distance_m": 0.0017955346265807748,
+          "samples": 43
+        },
+        "Walk surface | Character | pocket mouth topstitch left": {
+          "maximum_edge_m": 0.007043382486674872,
+          "maximum_sampled_cloth_distance_m": 0.0017905120039358735,
+          "samples": 21
+        },
+        "Walk surface | Character | inset back pocket stitch right": {
+          "maximum_edge_m": 0.011271730910985198,
+          "maximum_sampled_cloth_distance_m": 0.0017979037947952747,
+          "samples": 43
+        },
+        "Walk surface | Character | pocket mouth topstitch right": {
+          "maximum_edge_m": 0.005972114841677036,
+          "maximum_sampled_cloth_distance_m": 0.0017896409844979644,
+          "samples": 21
+        },
+        "Walk surface | Character | shorts sewn side seam left": {
+          "maximum_edge_m": 0.0031945308699494416,
+          "maximum_sampled_cloth_distance_m": 0.0004615579382516444,
+          "samples": 148
+        },
+        "Walk surface | Character | shorts sewn side seam right": {
+          "maximum_edge_m": 0.00508494619525451,
+          "maximum_sampled_cloth_distance_m": 0.00046456436393782496,
+          "samples": 166
+        },
+        "Walk surface | Character | shorts sewn fly topstitch": {
+          "maximum_edge_m": 0.010471670338056632,
+          "maximum_sampled_cloth_distance_m": 0.0004928226699121296,
+          "samples": 66
+        },
+        "Hip study | continuous turned cotton hems": {
+          "maximum_edge_m": 0.00666596935198477,
+          "maximum_sampled_cloth_distance_m": 0.0005000953678973019,
+          "samples": 203
+        }
+      }
+    },
+    {
+      "frame": 40,
+      "whole_shorts_shell_leg_intersection_pairs": 0,
+      "whole_shorts_shell_nonadjacent_self_intersection_pairs": 0,
+      "body_pair_samples": [],
+      "self_pair_samples": [],
+      "shorts_details": {
+        "Character | sewn cotton back pocket left": {
+          "maximum_edge_m": 0.00421221596131959,
+          "maximum_sampled_cloth_distance_m": 0.0015769705642014742,
+          "samples": 1189
+        },
+        "Character | sewn cotton back pocket right": {
+          "maximum_edge_m": 0.0031375742089640277,
+          "maximum_sampled_cloth_distance_m": 0.0015726183773949742,
+          "samples": 1189
+        },
+        "Walk surface | Character | inset back pocket stitch left": {
+          "maximum_edge_m": 0.012704802269521084,
+          "maximum_sampled_cloth_distance_m": 0.0017954889917746186,
+          "samples": 43
+        },
+        "Walk surface | Character | pocket mouth topstitch left": {
+          "maximum_edge_m": 0.007034655320188879,
+          "maximum_sampled_cloth_distance_m": 0.001790672424249351,
+          "samples": 21
+        },
+        "Walk surface | Character | inset back pocket stitch right": {
+          "maximum_edge_m": 0.01163187351035509,
+          "maximum_sampled_cloth_distance_m": 0.00179929134901613,
+          "samples": 43
+        },
+        "Walk surface | Character | pocket mouth topstitch right": {
+          "maximum_edge_m": 0.005985465835044932,
+          "maximum_sampled_cloth_distance_m": 0.001788696856237948,
+          "samples": 21
+        },
+        "Walk surface | Character | shorts sewn side seam left": {
+          "maximum_edge_m": 0.003192781144650271,
+          "maximum_sampled_cloth_distance_m": 0.00046134230797179043,
+          "samples": 148
+        },
+        "Walk surface | Character | shorts sewn side seam right": {
+          "maximum_edge_m": 0.004985908936076111,
+          "maximum_sampled_cloth_distance_m": 0.0004636482335627079,
+          "samples": 166
+        },
+        "Walk surface | Character | shorts sewn fly topstitch": {
+          "maximum_edge_m": 0.010471270246704207,
+          "maximum_sampled_cloth_distance_m": 0.0004928446724079549,
+          "samples": 66
+        },
+        "Hip study | continuous turned cotton hems": {
+          "maximum_edge_m": 0.006666132538932431,
+          "maximum_sampled_cloth_distance_m": 0.0005000454257242382,
+          "samples": 203
+        }
+      }
+    },
+    {
+      "frame": 41,
+      "whole_shorts_shell_leg_intersection_pairs": 0,
+      "whole_shorts_shell_nonadjacent_self_intersection_pairs": 0,
+      "body_pair_samples": [],
+      "self_pair_samples": [],
+      "shorts_details": {
+        "Character | sewn cotton back pocket left": {
+          "maximum_edge_m": 0.004105952838251329,
+          "maximum_sampled_cloth_distance_m": 0.0015775039792060852,
+          "samples": 1189
+        },
+        "Character | sewn cotton back pocket right": {
+          "maximum_edge_m": 0.003235793207165331,
+          "maximum_sampled_cloth_distance_m": 0.0015750048914924264,
+          "samples": 1189
+        },
+        "Walk surface | Character | inset back pocket stitch left": {
+          "maximum_edge_m": 0.012529611651038582,
+          "maximum_sampled_cloth_distance_m": 0.0017954176291823387,
+          "samples": 43
+        },
+        "Walk surface | Character | pocket mouth topstitch left": {
+          "maximum_edge_m": 0.007023104696375038,
+          "maximum_sampled_cloth_distance_m": 0.001790683250874281,
+          "samples": 21
+        },
+        "Walk surface | Character | inset back pocket stitch right": {
+          "maximum_edge_m": 0.012061619292019968,
+          "maximum_sampled_cloth_distance_m": 0.001800795434974134,
+          "samples": 43
+        },
+        "Walk surface | Character | pocket mouth topstitch right": {
+          "maximum_edge_m": 0.006003008567810048,
+          "maximum_sampled_cloth_distance_m": 0.0017868494614958763,
+          "samples": 21
+        },
+        "Walk surface | Character | shorts sewn side seam left": {
+          "maximum_edge_m": 0.003187797435559404,
+          "maximum_sampled_cloth_distance_m": 0.00046108613605611026,
+          "samples": 148
+        },
+        "Walk surface | Character | shorts sewn side seam right": {
+          "maximum_edge_m": 0.004862858263612832,
+          "maximum_sampled_cloth_distance_m": 0.00046314994688145816,
+          "samples": 166
+        },
+        "Walk surface | Character | shorts sewn fly topstitch": {
+          "maximum_edge_m": 0.010471281821812705,
+          "maximum_sampled_cloth_distance_m": 0.0004927943809889257,
+          "samples": 66
+        },
+        "Hip study | continuous turned cotton hems": {
+          "maximum_edge_m": 0.006666124495916407,
+          "maximum_sampled_cloth_distance_m": 0.000500058988109231,
+          "samples": 203
+        }
+      }
+    },
+    {
+      "frame": 42,
+      "whole_shorts_shell_leg_intersection_pairs": 0,
+      "whole_shorts_shell_nonadjacent_self_intersection_pairs": 0,
+      "body_pair_samples": [],
+      "self_pair_samples": [],
+      "shorts_details": {
+        "Character | sewn cotton back pocket left": {
+          "maximum_edge_m": 0.0039947354842944805,
+          "maximum_sampled_cloth_distance_m": 0.0015780447283759713,
+          "samples": 1189
+        },
+        "Character | sewn cotton back pocket right": {
+          "maximum_edge_m": 0.0033435940899536583,
+          "maximum_sampled_cloth_distance_m": 0.0015774633502587676,
+          "samples": 1189
+        },
+        "Walk surface | Character | inset back pocket stitch left": {
+          "maximum_edge_m": 0.012278881991117697,
+          "maximum_sampled_cloth_distance_m": 0.001795038697309792,
+          "samples": 43
+        },
+        "Walk surface | Character | pocket mouth topstitch left": {
+          "maximum_edge_m": 0.0070085171021203475,
+          "maximum_sampled_cloth_distance_m": 0.001790673821233213,
+          "samples": 21
+        },
+        "Walk surface | Character | inset back pocket stitch right": {
+          "maximum_edge_m": 0.012522109994885993,
+          "maximum_sampled_cloth_distance_m": 0.0018048037309199572,
+          "samples": 43
+        },
+        "Walk surface | Character | pocket mouth topstitch right": {
+          "maximum_edge_m": 0.006021935669603184,
+          "maximum_sampled_cloth_distance_m": 0.0017853118479251862,
+          "samples": 21
+        },
+        "Walk surface | Character | shorts sewn side seam left": {
+          "maximum_edge_m": 0.0031814464419101175,
+          "maximum_sampled_cloth_distance_m": 0.0004607975424733013,
+          "samples": 148
+        },
+        "Walk surface | Character | shorts sewn side seam right": {
+          "maximum_edge_m": 0.004781333484177959,
+          "maximum_sampled_cloth_distance_m": 0.0004632433701772243,
+          "samples": 166
+        },
+        "Walk surface | Character | shorts sewn fly topstitch": {
+          "maximum_edge_m": 0.010471038268877549,
+          "maximum_sampled_cloth_distance_m": 0.0004928811104036868,
+          "samples": 66
+        },
+        "Hip study | continuous turned cotton hems": {
+          "maximum_edge_m": 0.00666609147609352,
+          "maximum_sampled_cloth_distance_m": 0.000500019290484488,
+          "samples": 203
+        }
+      }
+    },
+    {
+      "frame": 43,
+      "whole_shorts_shell_leg_intersection_pairs": 0,
+      "whole_shorts_shell_nonadjacent_self_intersection_pairs": 0,
+      "body_pair_samples": [],
+      "self_pair_samples": [],
+      "shorts_details": {
+        "Character | sewn cotton back pocket left": {
+          "maximum_edge_m": 0.003880214896420683,
+          "maximum_sampled_cloth_distance_m": 0.0015788690652698278,
+          "samples": 1189
+        },
+        "Character | sewn cotton back pocket right": {
+          "maximum_edge_m": 0.003443306429228008,
+          "maximum_sampled_cloth_distance_m": 0.0015798648819327354,
+          "samples": 1189
+        },
+        "Walk surface | Character | inset back pocket stitch left": {
+          "maximum_edge_m": 0.011988896562371327,
+          "maximum_sampled_cloth_distance_m": 0.0017949353205040097,
+          "samples": 43
+        },
+        "Walk surface | Character | pocket mouth topstitch left": {
+          "maximum_edge_m": 0.006990682381343282,
+          "maximum_sampled_cloth_distance_m": 0.0017907640431076288,
+          "samples": 21
+        },
+        "Walk surface | Character | inset back pocket stitch right": {
+          "maximum_edge_m": 0.012947500195327857,
+          "maximum_sampled_cloth_distance_m": 0.0018073037499561906,
+          "samples": 43
+        },
+        "Walk surface | Character | pocket mouth topstitch right": {
+          "maximum_edge_m": 0.006039977552758202,
+          "maximum_sampled_cloth_distance_m": 0.001784101128578186,
+          "samples": 21
+        },
+        "Walk surface | Character | shorts sewn side seam left": {
+          "maximum_edge_m": 0.0031754513364986793,
+          "maximum_sampled_cloth_distance_m": 0.00046046581701375544,
+          "samples": 148
+        },
+        "Walk surface | Character | shorts sewn side seam right": {
+          "maximum_edge_m": 0.004788738575621903,
+          "maximum_sampled_cloth_distance_m": 0.0004636581288650632,
+          "samples": 166
+        },
+        "Walk surface | Character | shorts sewn fly topstitch": {
+          "maximum_edge_m": 0.01047090999561263,
+          "maximum_sampled_cloth_distance_m": 0.0004928146372549236,
+          "samples": 66
+        },
+        "Hip study | continuous turned cotton hems": {
+          "maximum_edge_m": 0.006666044341560532,
+          "maximum_sampled_cloth_distance_m": 0.000500065740197897,
+          "samples": 203
+        }
+      }
+    },
+    {
+      "frame": 44,
+      "whole_shorts_shell_leg_intersection_pairs": 0,
+      "whole_shorts_shell_nonadjacent_self_intersection_pairs": 0,
+      "body_pair_samples": [],
+      "self_pair_samples": [],
+      "shorts_details": {
+        "Character | sewn cotton back pocket left": {
+          "maximum_edge_m": 0.0039780758934932015,
+          "maximum_sampled_cloth_distance_m": 0.0015839412808418274,
+          "samples": 1189
+        },
+        "Character | sewn cotton back pocket right": {
+          "maximum_edge_m": 0.0035224775302148126,
+          "maximum_sampled_cloth_distance_m": 0.0015816334635019302,
+          "samples": 1189
+        },
+        "Walk surface | Character | inset back pocket stitch left": {
+          "maximum_edge_m": 0.011653140594181573,
+          "maximum_sampled_cloth_distance_m": 0.0017952171619981527,
+          "samples": 43
+        },
+        "Walk surface | Character | pocket mouth topstitch left": {
+          "maximum_edge_m": 0.006968074981935584,
+          "maximum_sampled_cloth_distance_m": 0.0017909965245053172,
+          "samples": 21
+        },
+        "Walk surface | Character | inset back pocket stitch right": {
+          "maximum_edge_m": 0.01328572146736079,
+          "maximum_sampled_cloth_distance_m": 0.0018081135349348187,
+          "samples": 43
+        },
+        "Walk surface | Character | pocket mouth topstitch right": {
+          "maximum_edge_m": 0.0060550169864017405,
+          "maximum_sampled_cloth_distance_m": 0.0017835007747635245,
+          "samples": 21
+        },
+        "Walk surface | Character | shorts sewn side seam left": {
+          "maximum_edge_m": 0.003173535421555898,
+          "maximum_sampled_cloth_distance_m": 0.00046022352762520313,
+          "samples": 148
+        },
+        "Walk surface | Character | shorts sewn side seam right": {
+          "maximum_edge_m": 0.004777309439438745,
+          "maximum_sampled_cloth_distance_m": 0.00046324587310664356,
+          "samples": 166
+        },
+        "Walk surface | Character | shorts sewn fly topstitch": {
+          "maximum_edge_m": 0.010470806488302174,
+          "maximum_sampled_cloth_distance_m": 0.000493041705340147,
+          "samples": 66
+        },
+        "Hip study | continuous turned cotton hems": {
+          "maximum_edge_m": 0.006666096562595339,
+          "maximum_sampled_cloth_distance_m": 0.0005000541568733752,
+          "samples": 203
+        }
+      }
+    },
+    {
+      "frame": 45,
+      "whole_shorts_shell_leg_intersection_pairs": 0,
+      "whole_shorts_shell_nonadjacent_self_intersection_pairs": 0,
+      "body_pair_samples": [],
+      "self_pair_samples": [],
+      "shorts_details": {
+        "Character | sewn cotton back pocket left": {
+          "maximum_edge_m": 0.003868478846424195,
+          "maximum_sampled_cloth_distance_m": 0.0015892843948677182,
+          "samples": 1189
+        },
+        "Character | sewn cotton back pocket right": {
+          "maximum_edge_m": 0.003594705772430695,
+          "maximum_sampled_cloth_distance_m": 0.0015829328913241625,
+          "samples": 1189
+        },
+        "Walk surface | Character | inset back pocket stitch left": {
+          "maximum_edge_m": 0.011190314625789474,
+          "maximum_sampled_cloth_distance_m": 0.0017966360319405794,
+          "samples": 43
+        },
+        "Walk surface | Character | pocket mouth topstitch left": {
+          "maximum_edge_m": 0.006934926980772788,
+          "maximum_sampled_cloth_distance_m": 0.0017912185285240412,
+          "samples": 21
+        },
+        "Walk surface | Character | inset back pocket stitch right": {
+          "maximum_edge_m": 0.013551063876747113,
+          "maximum_sampled_cloth_distance_m": 0.0018080417066812515,
+          "samples": 43
+        },
+        "Walk surface | Character | pocket mouth topstitch right": {
+          "maximum_edge_m": 0.006066995802845494,
+          "maximum_sampled_cloth_distance_m": 0.0017830203287303448,
+          "samples": 21
+        },
+        "Walk surface | Character | shorts sewn side seam left": {
+          "maximum_edge_m": 0.0031854174328869423,
+          "maximum_sampled_cloth_distance_m": 0.0004598941595759243,
+          "samples": 148
+        },
+        "Walk surface | Character | shorts sewn side seam right": {
+          "maximum_edge_m": 0.004807086518507756,
+          "maximum_sampled_cloth_distance_m": 0.0004630237817764282,
+          "samples": 166
+        },
+        "Walk surface | Character | shorts sewn fly topstitch": {
+          "maximum_edge_m": 0.01047076330028005,
+          "maximum_sampled_cloth_distance_m": 0.0004930142895318568,
+          "samples": 66
+        },
+        "Hip study | continuous turned cotton hems": {
+          "maximum_edge_m": 0.0066658962035052935,
+          "maximum_sampled_cloth_distance_m": 0.0005000527016818523,
+          "samples": 203
+        }
+      }
+    },
+    {
+      "frame": 46,
+      "whole_shorts_shell_leg_intersection_pairs": 0,
+      "whole_shorts_shell_nonadjacent_self_intersection_pairs": 0,
+      "body_pair_samples": [],
+      "self_pair_samples": [],
+      "shorts_details": {
+        "Character | sewn cotton back pocket left": {
+          "maximum_edge_m": 0.0038262849139716467,
+          "maximum_sampled_cloth_distance_m": 0.0015894914977252483,
+          "samples": 1189
+        },
+        "Character | sewn cotton back pocket right": {
+          "maximum_edge_m": 0.003645197652009859,
+          "maximum_sampled_cloth_distance_m": 0.0015837200917303562,
+          "samples": 1189
+        },
+        "Walk surface | Character | inset back pocket stitch left": {
+          "maximum_edge_m": 0.011117827640906255,
+          "maximum_sampled_cloth_distance_m": 0.0017971505876630545,
+          "samples": 43
+        },
+        "Walk surface | Character | pocket mouth topstitch left": {
+          "maximum_edge_m": 0.006921383967087509,
+          "maximum_sampled_cloth_distance_m": 0.0017912050243467093,
+          "samples": 21
+        },
+        "Walk surface | Character | inset back pocket stitch right": {
+          "maximum_edge_m": 0.013737308208554852,
+          "maximum_sampled_cloth_distance_m": 0.0018077325075864792,
+          "samples": 43
+        },
+        "Walk surface | Character | pocket mouth topstitch right": {
+          "maximum_edge_m": 0.006075491135249419,
+          "maximum_sampled_cloth_distance_m": 0.001782634761184454,
+          "samples": 21
+        },
+        "Walk surface | Character | shorts sewn side seam left": {
+          "maximum_edge_m": 0.003203240138944778,
+          "maximum_sampled_cloth_distance_m": 0.00045969279017299414,
+          "samples": 148
+        },
+        "Walk surface | Character | shorts sewn side seam right": {
+          "maximum_edge_m": 0.00481999845474154,
+          "maximum_sampled_cloth_distance_m": 0.0004632379568647593,
+          "samples": 166
+        },
+        "Walk surface | Character | shorts sewn fly topstitch": {
+          "maximum_edge_m": 0.010470792642089641,
+          "maximum_sampled_cloth_distance_m": 0.0004931020666845143,
+          "samples": 66
+        },
+        "Hip study | continuous turned cotton hems": {
+          "maximum_edge_m": 0.006666042363224587,
+          "maximum_sampled_cloth_distance_m": 0.0005000878591090441,
+          "samples": 203
+        }
+      }
+    },
+    {
+      "frame": 47,
+      "whole_shorts_shell_leg_intersection_pairs": 0,
+      "whole_shorts_shell_nonadjacent_self_intersection_pairs": 0,
+      "body_pair_samples": [],
+      "self_pair_samples": [],
+      "shorts_details": {
+        "Character | sewn cotton back pocket left": {
+          "maximum_edge_m": 0.003791342575031342,
+          "maximum_sampled_cloth_distance_m": 0.0015897189732640982,
+          "samples": 1189
+        },
+        "Character | sewn cotton back pocket right": {
+          "maximum_edge_m": 0.00361827366985264,
+          "maximum_sampled_cloth_distance_m": 0.0015835650265216827,
+          "samples": 1189
+        },
+        "Walk surface | Character | inset back pocket stitch left": {
+          "maximum_edge_m": 0.01105598221925402,
+          "maximum_sampled_cloth_distance_m": 0.0017974512884393334,
+          "samples": 43
+        },
+        "Walk surface | Character | pocket mouth topstitch left": {
+          "maximum_edge_m": 0.006910689118189493,
+          "maximum_sampled_cloth_distance_m": 0.0017913361079990864,
+          "samples": 21
+        },
+        "Walk surface | Character | inset back pocket stitch right": {
+          "maximum_edge_m": 0.013642374203843318,
+          "maximum_sampled_cloth_distance_m": 0.0018077970016747713,
+          "samples": 43
+        },
+        "Walk surface | Character | pocket mouth topstitch right": {
+          "maximum_edge_m": 0.006073910597508832,
+          "maximum_sampled_cloth_distance_m": 0.0017827542033046484,
+          "samples": 21
+        },
+        "Walk surface | Character | shorts sewn side seam left": {
+          "maximum_edge_m": 0.0032196648731038667,
+          "maximum_sampled_cloth_distance_m": 0.00045960000716149807,
+          "samples": 148
+        },
+        "Walk surface | Character | shorts sewn side seam right": {
+          "maximum_edge_m": 0.004793759637459534,
+          "maximum_sampled_cloth_distance_m": 0.000463279546238482,
+          "samples": 166
+        },
+        "Walk surface | Character | shorts sewn fly topstitch": {
+          "maximum_edge_m": 0.010471071477127171,
+          "maximum_sampled_cloth_distance_m": 0.0004930180148221552,
+          "samples": 66
+        },
+        "Hip study | continuous turned cotton hems": {
+          "maximum_edge_m": 0.006666096221505649,
+          "maximum_sampled_cloth_distance_m": 0.0005000257515348494,
+          "samples": 203
+        }
+      }
+    },
+    {
+      "frame": 48,
+      "whole_shorts_shell_leg_intersection_pairs": 0,
+      "whole_shorts_shell_nonadjacent_self_intersection_pairs": 0,
+      "body_pair_samples": [],
+      "self_pair_samples": [],
+      "shorts_details": {
+        "Character | sewn cotton back pocket left": {
+          "maximum_edge_m": 0.0037981462767752725,
+          "maximum_sampled_cloth_distance_m": 0.001589098828844726,
+          "samples": 1189
+        },
+        "Character | sewn cotton back pocket right": {
+          "maximum_edge_m": 0.0035506598637475312,
+          "maximum_sampled_cloth_distance_m": 0.0015827069291844964,
+          "samples": 1189
+        },
+        "Walk surface | Character | inset back pocket stitch left": {
+          "maximum_edge_m": 0.011153620910084797,
+          "maximum_sampled_cloth_distance_m": 0.0017978899413719773,
+          "samples": 43
+        },
+        "Walk surface | Character | pocket mouth topstitch left": {
+          "maximum_edge_m": 0.006911767146141353,
+          "maximum_sampled_cloth_distance_m": 0.001791199203580618,
+          "samples": 21
+        },
+        "Walk surface | Character | inset back pocket stitch right": {
+          "maximum_edge_m": 0.013399428168700583,
+          "maximum_sampled_cloth_distance_m": 0.0018078478751704097,
+          "samples": 43
+        },
+        "Walk surface | Character | pocket mouth topstitch right": {
+          "maximum_edge_m": 0.006066737230514423,
+          "maximum_sampled_cloth_distance_m": 0.0017828234704211354,
+          "samples": 21
+        },
+        "Walk surface | Character | shorts sewn side seam left": {
+          "maximum_edge_m": 0.003222293417343701,
+          "maximum_sampled_cloth_distance_m": 0.0004595986974891275,
+          "samples": 148
+        },
+        "Walk surface | Character | shorts sewn side seam right": {
+          "maximum_edge_m": 0.004754358267007386,
+          "maximum_sampled_cloth_distance_m": 0.00046327090240083635,
+          "samples": 166
+        },
+        "Walk surface | Character | shorts sewn fly topstitch": {
+          "maximum_edge_m": 0.010471003469928115,
+          "maximum_sampled_cloth_distance_m": 0.0004930211580358446,
+          "samples": 66
+        },
+        "Hip study | continuous turned cotton hems": {
+          "maximum_edge_m": 0.0066660302544314385,
+          "maximum_sampled_cloth_distance_m": 0.0005000623059459031,
+          "samples": 203
+        }
+      }
+    },
+    {
+      "frame": 49,
+      "whole_shorts_shell_leg_intersection_pairs": 0,
+      "whole_shorts_shell_nonadjacent_self_intersection_pairs": 0,
+      "body_pair_samples": [],
+      "self_pair_samples": [],
+      "shorts_details": {
+        "Character | sewn cotton back pocket left": {
+          "maximum_edge_m": 0.0037398132326752135,
+          "maximum_sampled_cloth_distance_m": 0.0015904272440820932,
+          "samples": 1189
+        },
+        "Character | sewn cotton back pocket right": {
+          "maximum_edge_m": 0.003465450851939984,
+          "maximum_sampled_cloth_distance_m": 0.0015814251964911819,
+          "samples": 1189
+        },
+        "Walk surface | Character | inset back pocket stitch left": {
+          "maximum_edge_m": 0.010973217822914522,
+          "maximum_sampled_cloth_distance_m": 0.0017974748043343425,
+          "samples": 43
+        },
+        "Walk surface | Character | pocket mouth topstitch left": {
+          "maximum_edge_m": 0.00689508788216961,
+          "maximum_sampled_cloth_distance_m": 0.0017914146883413196,
+          "samples": 21
+        },
+        "Walk surface | Character | inset back pocket stitch right": {
+          "maximum_edge_m": 0.013057703220861385,
+          "maximum_sampled_cloth_distance_m": 0.0018073450773954391,
+          "samples": 43
+        },
+        "Walk surface | Character | pocket mouth topstitch right": {
+          "maximum_edge_m": 0.006055503544683783,
+          "maximum_sampled_cloth_distance_m": 0.0017835457110777497,
+          "samples": 21
+        },
+        "Walk surface | Character | shorts sewn side seam left": {
+          "maximum_edge_m": 0.00324436347650421,
+          "maximum_sampled_cloth_distance_m": 0.00045960204442963004,
+          "samples": 148
+        },
+        "Walk surface | Character | shorts sewn side seam right": {
+          "maximum_edge_m": 0.004689513700237423,
+          "maximum_sampled_cloth_distance_m": 0.000463795498944819,
+          "samples": 166
+        },
+        "Walk surface | Character | shorts sewn fly topstitch": {
+          "maximum_edge_m": 0.010471367504835226,
+          "maximum_sampled_cloth_distance_m": 0.0004932006704621017,
+          "samples": 66
+        },
+        "Hip study | continuous turned cotton hems": {
+          "maximum_edge_m": 0.006666088683419036,
+          "maximum_sampled_cloth_distance_m": 0.0005000543314963579,
+          "samples": 203
+        }
+      }
+    }
+  ],
+  "scope": "49 authored integer frames at render subdivision: complete shorts shell versus actual anatomical legs including closure faces; nonadjacent shell self intersections; eight sewn details UV validity and two pocket triangle-index/weight validity, bounded edge stretch and sampled cloth distance. Excludes upper pelvic anatomy, animated subframes, full body collision, physical cloth simulation, runtime and final visual acceptance."
+}
