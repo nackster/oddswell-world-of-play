@@ -1,0 +1,1555 @@
+{
+  "source_sha256": "2cfb15e7fe5f96feff0a48e1b744a254e22ba24bbe3e330ca37c201862785cdb",
+  "candidate_sha256": "ec5b658a9f7724687c6589587436979411f00e1e91b52fcf1de44a6b8daa4a7a",
+  "method": "Render-subdivision complete visible pocket geometry. Corresponding nearest atlas endpoints, choosing the rear-facing shell point when thickness duplicates coordinates. Euclidean endpoint distances, not cloth geodesic dimensions or physical strain. All 49 authored integer frames.",
+  "summary": {
+    "source": {
+      "left": {
+        "mouth_width_m": {
+          "min_m": 0.13161773461401194,
+          "max_m": 0.1334120534687547,
+          "range_m": 0.0017943188547427658
+        },
+        "center_height_m": {
+          "min_m": 0.11661860489702162,
+          "max_m": 0.16956684226837598,
+          "range_m": 0.05294823737135436
+        },
+        "bottom_width_m": {
+          "min_m": 0.11470927523765674,
+          "max_m": 0.14018674034134132,
+          "range_m": 0.02547746510368458
+        }
+      },
+      "right": {
+        "mouth_width_m": {
+          "min_m": 0.12177868327935158,
+          "max_m": 0.12573721575401747,
+          "range_m": 0.003958532474665891
+        },
+        "center_height_m": {
+          "min_m": 0.07624978442042821,
+          "max_m": 0.1298671417792296,
+          "range_m": 0.05361735735880138
+        },
+        "bottom_width_m": {
+          "min_m": 0.11052185787053251,
+          "max_m": 0.12196201073948214,
+          "range_m": 0.01144015286894963
+        }
+      }
+    },
+    "candidate": {
+      "left": {
+        "mouth_width_m": {
+          "min_m": 0.11570894655822866,
+          "max_m": 0.12304151106468753,
+          "range_m": 0.007332564506458861
+        },
+        "center_height_m": {
+          "min_m": 0.0972640722215287,
+          "max_m": 0.1015774623546842,
+          "range_m": 0.004313390133155501
+        },
+        "bottom_width_m": {
+          "min_m": 0.10459444290585891,
+          "max_m": 0.10641699218587439,
+          "range_m": 0.0018225492800154758
+        }
+      },
+      "right": {
+        "mouth_width_m": {
+          "min_m": 0.11517487133184834,
+          "max_m": 0.12061881106674045,
+          "range_m": 0.005443939734892114
+        },
+        "center_height_m": {
+          "min_m": 0.09699716420214709,
+          "max_m": 0.11025628225530106,
+          "range_m": 0.013259118053153968
+        },
+        "bottom_width_m": {
+          "min_m": 0.10426297155738028,
+          "max_m": 0.10670131072148738,
+          "range_m": 0.0024383391641071006
+        }
+      }
+    }
+  },
+  "frames": {
+    "source": [
+      {
+        "frame": 1,
+        "pockets": {
+          "left": {
+            "mouth_width_m": 0.13161773461401194,
+            "center_height_m": 0.11717022856857746,
+            "bottom_width_m": 0.11581349820269471
+          },
+          "right": {
+            "mouth_width_m": 0.12573710261490717,
+            "center_height_m": 0.11471314344833047,
+            "bottom_width_m": 0.1158596268890825
+          }
+        }
+      },
+      {
+        "frame": 2,
+        "pockets": {
+          "left": {
+            "mouth_width_m": 0.13162506531114604,
+            "center_height_m": 0.11661860489702162,
+            "bottom_width_m": 0.11618102525795443
+          },
+          "right": {
+            "mouth_width_m": 0.125536332314893,
+            "center_height_m": 0.11385259151147584,
+            "bottom_width_m": 0.11504378132585087
+          }
+        }
+      },
+      {
+        "frame": 3,
+        "pockets": {
+          "left": {
+            "mouth_width_m": 0.13174248879587097,
+            "center_height_m": 0.12252504692042186,
+            "bottom_width_m": 0.11528375128162455
+          },
+          "right": {
+            "mouth_width_m": 0.12523063024359174,
+            "center_height_m": 0.11228985948508503,
+            "bottom_width_m": 0.11429970323409641
+          }
+        }
+      },
+      {
+        "frame": 4,
+        "pockets": {
+          "left": {
+            "mouth_width_m": 0.13193013230220146,
+            "center_height_m": 0.13033264162548955,
+            "bottom_width_m": 0.11587032669233364
+          },
+          "right": {
+            "mouth_width_m": 0.12483330475528592,
+            "center_height_m": 0.11005731455390388,
+            "bottom_width_m": 0.11366316507866903
+          }
+        }
+      },
+      {
+        "frame": 5,
+        "pockets": {
+          "left": {
+            "mouth_width_m": 0.1321751337487545,
+            "center_height_m": 0.13919184425207856,
+            "bottom_width_m": 0.11859477279087598
+          },
+          "right": {
+            "mouth_width_m": 0.12436791282564014,
+            "center_height_m": 0.10707942198198668,
+            "bottom_width_m": 0.11322988388700916
+          }
+        }
+      },
+      {
+        "frame": 6,
+        "pockets": {
+          "left": {
+            "mouth_width_m": 0.13243618689851946,
+            "center_height_m": 0.14825231080178053,
+            "bottom_width_m": 0.12297996573228231
+          },
+          "right": {
+            "mouth_width_m": 0.12386670471173945,
+            "center_height_m": 0.10325746692645832,
+            "bottom_width_m": 0.11314463961040841
+          }
+        }
+      },
+      {
+        "frame": 7,
+        "pockets": {
+          "left": {
+            "mouth_width_m": 0.13269560078317927,
+            "center_height_m": 0.15643428684206956,
+            "bottom_width_m": 0.12816795744394066
+          },
+          "right": {
+            "mouth_width_m": 0.12337219069974124,
+            "center_height_m": 0.09849788834954792,
+            "bottom_width_m": 0.11359322768143178
+          }
+        }
+      },
+      {
+        "frame": 8,
+        "pockets": {
+          "left": {
+            "mouth_width_m": 0.132929443940538,
+            "center_height_m": 0.16286589285580974,
+            "bottom_width_m": 0.1330731267952302
+          },
+          "right": {
+            "mouth_width_m": 0.12293863718839644,
+            "center_height_m": 0.09266563154629531,
+            "bottom_width_m": 0.11485420758834443
+          }
+        }
+      },
+      {
+        "frame": 9,
+        "pockets": {
+          "left": {
+            "mouth_width_m": 0.13312841079808588,
+            "center_height_m": 0.1678121271006456,
+            "bottom_width_m": 0.1372640621030379
+          },
+          "right": {
+            "mouth_width_m": 0.1226503986062759,
+            "center_height_m": 0.08531253334632236,
+            "bottom_width_m": 0.11752788944911235
+          }
+        }
+      },
+      {
+        "frame": 10,
+        "pockets": {
+          "left": {
+            "mouth_width_m": 0.13327940406578245,
+            "center_height_m": 0.1695666385426347,
+            "bottom_width_m": 0.13969114749195166
+          },
+          "right": {
+            "mouth_width_m": 0.12259400851529714,
+            "center_height_m": 0.07702774599306529,
+            "bottom_width_m": 0.12196100347685256
+          }
+        }
+      },
+      {
+        "frame": 11,
+        "pockets": {
+          "left": {
+            "mouth_width_m": 0.1333767972536751,
+            "center_height_m": 0.16798912441514458,
+            "bottom_width_m": 0.14018649744025774
+          },
+          "right": {
+            "mouth_width_m": 0.12209526903626546,
+            "center_height_m": 0.07952758689499714,
+            "bottom_width_m": 0.11924835492718243
+          }
+        }
+      },
+      {
+        "frame": 12,
+        "pockets": {
+          "left": {
+            "mouth_width_m": 0.13341190561755603,
+            "center_height_m": 0.16313960965242336,
+            "bottom_width_m": 0.13894270756123978
+          },
+          "right": {
+            "mouth_width_m": 0.12177868327935158,
+            "center_height_m": 0.08111807043532787,
+            "bottom_width_m": 0.11754954596595255
+          }
+        }
+      },
+      {
+        "frame": 13,
+        "pockets": {
+          "left": {
+            "mouth_width_m": 0.13336585025666237,
+            "center_height_m": 0.15456320441524785,
+            "bottom_width_m": 0.13628002260179592
+          },
+          "right": {
+            "mouth_width_m": 0.12182618668657415,
+            "center_height_m": 0.07793067031314707,
+            "bottom_width_m": 0.11935331582719975
+          }
+        }
+      },
+      {
+        "frame": 14,
+        "pockets": {
+          "left": {
+            "mouth_width_m": 0.13328838814775615,
+            "center_height_m": 0.15460928114621436,
+            "bottom_width_m": 0.13498818594112344
+          },
+          "right": {
+            "mouth_width_m": 0.12193958387291035,
+            "center_height_m": 0.07624978442042821,
+            "bottom_width_m": 0.12045277865405274
+          }
+        }
+      },
+      {
+        "frame": 15,
+        "pockets": {
+          "left": {
+            "mouth_width_m": 0.13317699337296676,
+            "center_height_m": 0.15366986858040158,
+            "bottom_width_m": 0.13319060161526086
+          },
+          "right": {
+            "mouth_width_m": 0.12197879722543102,
+            "center_height_m": 0.07951241777734613,
+            "bottom_width_m": 0.11856694714876805
+          }
+        }
+      },
+      {
+        "frame": 16,
+        "pockets": {
+          "left": {
+            "mouth_width_m": 0.13303482482162032,
+            "center_height_m": 0.1519719931382866,
+            "bottom_width_m": 0.13094732101334566
+          },
+          "right": {
+            "mouth_width_m": 0.12211012697615624,
+            "center_height_m": 0.08591146916874054,
+            "bottom_width_m": 0.11570460469455934
+          }
+        }
+      },
+      {
+        "frame": 17,
+        "pockets": {
+          "left": {
+            "mouth_width_m": 0.1328663034676824,
+            "center_height_m": 0.14946717469007204,
+            "bottom_width_m": 0.12832137017416567
+          },
+          "right": {
+            "mouth_width_m": 0.12241961876762364,
+            "center_height_m": 0.0942664385009525,
+            "bottom_width_m": 0.1131217659295964
+          }
+        }
+      },
+      {
+        "frame": 18,
+        "pockets": {
+          "left": {
+            "mouth_width_m": 0.13267596177671018,
+            "center_height_m": 0.14610593026032606,
+            "bottom_width_m": 0.12540447371797134
+          },
+          "right": {
+            "mouth_width_m": 0.12290243788896361,
+            "center_height_m": 0.10350949355288748,
+            "bottom_width_m": 0.11134900745187613
+          }
+        }
+      },
+      {
+        "frame": 19,
+        "pockets": {
+          "left": {
+            "mouth_width_m": 0.1324718112762773,
+            "center_height_m": 0.14156518446522007,
+            "bottom_width_m": 0.12239677905142603
+          },
+          "right": {
+            "mouth_width_m": 0.12349966541321274,
+            "center_height_m": 0.11241343188989827,
+            "bottom_width_m": 0.11052192315462817
+          }
+        }
+      },
+      {
+        "frame": 20,
+        "pockets": {
+          "left": {
+            "mouth_width_m": 0.13225957178351858,
+            "center_height_m": 0.13553914158989852,
+            "bottom_width_m": 0.11969965276999148
+          },
+          "right": {
+            "mouth_width_m": 0.12412796564264587,
+            "center_height_m": 0.11969975294382534,
+            "bottom_width_m": 0.1105289592716416
+          }
+        }
+      },
+      {
+        "frame": 21,
+        "pockets": {
+          "left": {
+            "mouth_width_m": 0.13202204073936993,
+            "center_height_m": 0.12591288152152855,
+            "bottom_width_m": 0.11824448243351655
+          },
+          "right": {
+            "mouth_width_m": 0.12470707392661443,
+            "center_height_m": 0.1255950621854105,
+            "bottom_width_m": 0.11084886805530965
+          }
+        }
+      },
+      {
+        "frame": 22,
+        "pockets": {
+          "left": {
+            "mouth_width_m": 0.13186428963729116,
+            "center_height_m": 0.12310102712200237,
+            "bottom_width_m": 0.1169532597742686
+          },
+          "right": {
+            "mouth_width_m": 0.12518294164850244,
+            "center_height_m": 0.12986712530753672,
+            "bottom_width_m": 0.11125022066303547
+          }
+        }
+      },
+      {
+        "frame": 23,
+        "pockets": {
+          "left": {
+            "mouth_width_m": 0.1317440008962613,
+            "center_height_m": 0.12075275792204238,
+            "bottom_width_m": 0.11607341178208176
+          },
+          "right": {
+            "mouth_width_m": 0.1255122657588013,
+            "center_height_m": 0.12776910037152725,
+            "bottom_width_m": 0.1124763462803051
+          }
+        }
+      },
+      {
+        "frame": 24,
+        "pockets": {
+          "left": {
+            "mouth_width_m": 0.13168454331831098,
+            "center_height_m": 0.12192407321901716,
+            "bottom_width_m": 0.11470927523765674
+          },
+          "right": {
+            "mouth_width_m": 0.1256973217630525,
+            "center_height_m": 0.12231555420357705,
+            "bottom_width_m": 0.11404377226371064
+          }
+        }
+      },
+      {
+        "frame": 25,
+        "pockets": {
+          "left": {
+            "mouth_width_m": 0.1316179238406772,
+            "center_height_m": 0.11717017235496167,
+            "bottom_width_m": 0.11581369728271906
+          },
+          "right": {
+            "mouth_width_m": 0.12573701480765048,
+            "center_height_m": 0.11471284815662464,
+            "bottom_width_m": 0.11585931005106677
+          }
+        }
+      },
+      {
+        "frame": 26,
+        "pockets": {
+          "left": {
+            "mouth_width_m": 0.1316254836439356,
+            "center_height_m": 0.11661902609875041,
+            "bottom_width_m": 0.11618098766764595
+          },
+          "right": {
+            "mouth_width_m": 0.125536575065313,
+            "center_height_m": 0.11385272921462322,
+            "bottom_width_m": 0.115044033176532
+          }
+        }
+      },
+      {
+        "frame": 27,
+        "pockets": {
+          "left": {
+            "mouth_width_m": 0.13174231681568208,
+            "center_height_m": 0.12252523812007318,
+            "bottom_width_m": 0.11528386842016593
+          },
+          "right": {
+            "mouth_width_m": 0.12523079762365158,
+            "center_height_m": 0.11228957749161347,
+            "bottom_width_m": 0.11430003984946452
+          }
+        }
+      },
+      {
+        "frame": 28,
+        "pockets": {
+          "left": {
+            "mouth_width_m": 0.1319320540186642,
+            "center_height_m": 0.13033239479034026,
+            "bottom_width_m": 0.11587001104232386
+          },
+          "right": {
+            "mouth_width_m": 0.12483335737423035,
+            "center_height_m": 0.11005719119967634,
+            "bottom_width_m": 0.11366268117544007
+          }
+        }
+      },
+      {
+        "frame": 29,
+        "pockets": {
+          "left": {
+            "mouth_width_m": 0.13217585134376503,
+            "center_height_m": 0.13919174655731148,
+            "bottom_width_m": 0.11859488469581171
+          },
+          "right": {
+            "mouth_width_m": 0.12436760670938027,
+            "center_height_m": 0.1070792069396419,
+            "bottom_width_m": 0.11323046478037278
+          }
+        }
+      },
+      {
+        "frame": 30,
+        "pockets": {
+          "left": {
+            "mouth_width_m": 0.13243667425770167,
+            "center_height_m": 0.14825248067362756,
+            "bottom_width_m": 0.12298034343316881
+          },
+          "right": {
+            "mouth_width_m": 0.12386682528332697,
+            "center_height_m": 0.1032576042611459,
+            "bottom_width_m": 0.11314473965148279
+          }
+        }
+      },
+      {
+        "frame": 31,
+        "pockets": {
+          "left": {
+            "mouth_width_m": 0.1326956253753034,
+            "center_height_m": 0.15643466685613927,
+            "bottom_width_m": 0.1281681618119204
+          },
+          "right": {
+            "mouth_width_m": 0.12337205328635346,
+            "center_height_m": 0.09849775830278194,
+            "bottom_width_m": 0.11359340198482003
+          }
+        }
+      },
+      {
+        "frame": 32,
+        "pockets": {
+          "left": {
+            "mouth_width_m": 0.132929801855394,
+            "center_height_m": 0.16286577905298288,
+            "bottom_width_m": 0.13307313641827376
+          },
+          "right": {
+            "mouth_width_m": 0.12293881849738297,
+            "center_height_m": 0.09266514361201061,
+            "bottom_width_m": 0.11485472303046475
+          }
+        }
+      },
+      {
+        "frame": 33,
+        "pockets": {
+          "left": {
+            "mouth_width_m": 0.13312884321730284,
+            "center_height_m": 0.16781208130400738,
+            "bottom_width_m": 0.1372645947164485
+          },
+          "right": {
+            "mouth_width_m": 0.12265061875276365,
+            "center_height_m": 0.0853125103617647,
+            "bottom_width_m": 0.11752740161030864
+          }
+        }
+      },
+      {
+        "frame": 34,
+        "pockets": {
+          "left": {
+            "mouth_width_m": 0.1332790182652363,
+            "center_height_m": 0.16956684226837598,
+            "bottom_width_m": 0.13969093081388945
+          },
+          "right": {
+            "mouth_width_m": 0.12259425054446497,
+            "center_height_m": 0.07702903966794065,
+            "bottom_width_m": 0.12196201073948214
+          }
+        }
+      },
+      {
+        "frame": 35,
+        "pockets": {
+          "left": {
+            "mouth_width_m": 0.1333772400507068,
+            "center_height_m": 0.1679887861237246,
+            "bottom_width_m": 0.14018674034134132
+          },
+          "right": {
+            "mouth_width_m": 0.12209543672933684,
+            "center_height_m": 0.07952789338500886,
+            "bottom_width_m": 0.11924811184253192
+          }
+        }
+      },
+      {
+        "frame": 36,
+        "pockets": {
+          "left": {
+            "mouth_width_m": 0.1334120534687547,
+            "center_height_m": 0.1631395812090405,
+            "bottom_width_m": 0.13894301840904777
+          },
+          "right": {
+            "mouth_width_m": 0.1217787493599391,
+            "center_height_m": 0.08111816838318185,
+            "bottom_width_m": 0.11754967916809965
+          }
+        }
+      },
+      {
+        "frame": 37,
+        "pockets": {
+          "left": {
+            "mouth_width_m": 0.13336573710668834,
+            "center_height_m": 0.15456326706526965,
+            "bottom_width_m": 0.13628056333220612
+          },
+          "right": {
+            "mouth_width_m": 0.12182626982247308,
+            "center_height_m": 0.07793054968612724,
+            "bottom_width_m": 0.1193536474573196
+          }
+        }
+      },
+      {
+        "frame": 38,
+        "pockets": {
+          "left": {
+            "mouth_width_m": 0.13328867135043063,
+            "center_height_m": 0.15460915572754927,
+            "bottom_width_m": 0.13498827994391022
+          },
+          "right": {
+            "mouth_width_m": 0.1219400795981791,
+            "center_height_m": 0.07625010990644289,
+            "bottom_width_m": 0.12045295793614459
+          }
+        }
+      },
+      {
+        "frame": 39,
+        "pockets": {
+          "left": {
+            "mouth_width_m": 0.1331770907848947,
+            "center_height_m": 0.15367010538484455,
+            "bottom_width_m": 0.13319072529335968
+          },
+          "right": {
+            "mouth_width_m": 0.12197891485391912,
+            "center_height_m": 0.0795131781069205,
+            "bottom_width_m": 0.11856727140530317
+          }
+        }
+      },
+      {
+        "frame": 40,
+        "pockets": {
+          "left": {
+            "mouth_width_m": 0.13303498758529247,
+            "center_height_m": 0.1519722781481822,
+            "bottom_width_m": 0.13094740235902388
+          },
+          "right": {
+            "mouth_width_m": 0.1221103327832997,
+            "center_height_m": 0.0859108971191667,
+            "bottom_width_m": 0.11570520058092872
+          }
+        }
+      },
+      {
+        "frame": 41,
+        "pockets": {
+          "left": {
+            "mouth_width_m": 0.13286619523154047,
+            "center_height_m": 0.14946724886285698,
+            "bottom_width_m": 0.12832084761613954
+          },
+          "right": {
+            "mouth_width_m": 0.12241989585128353,
+            "center_height_m": 0.09426649160423622,
+            "bottom_width_m": 0.11312213605668246
+          }
+        }
+      },
+      {
+        "frame": 42,
+        "pockets": {
+          "left": {
+            "mouth_width_m": 0.13267612618710617,
+            "center_height_m": 0.1461060975310554,
+            "bottom_width_m": 0.1254046767875292
+          },
+          "right": {
+            "mouth_width_m": 0.1229025508741815,
+            "center_height_m": 0.10350933855745661,
+            "bottom_width_m": 0.11134894921427646
+          }
+        }
+      },
+      {
+        "frame": 43,
+        "pockets": {
+          "left": {
+            "mouth_width_m": 0.132471785022329,
+            "center_height_m": 0.14156531870643801,
+            "bottom_width_m": 0.12239674207621838
+          },
+          "right": {
+            "mouth_width_m": 0.12349970619697365,
+            "center_height_m": 0.1124130860961378,
+            "bottom_width_m": 0.11052185787053251
+          }
+        }
+      },
+      {
+        "frame": 44,
+        "pockets": {
+          "left": {
+            "mouth_width_m": 0.13225950774870734,
+            "center_height_m": 0.13553930126068292,
+            "bottom_width_m": 0.11969976114980924
+          },
+          "right": {
+            "mouth_width_m": 0.12412819448158798,
+            "center_height_m": 0.11969938902307042,
+            "bottom_width_m": 0.11052933763068842
+          }
+        }
+      },
+      {
+        "frame": 45,
+        "pockets": {
+          "left": {
+            "mouth_width_m": 0.13201941312223767,
+            "center_height_m": 0.12591290463578614,
+            "bottom_width_m": 0.11824478056566669
+          },
+          "right": {
+            "mouth_width_m": 0.1247072642489889,
+            "center_height_m": 0.12559450592230184,
+            "bottom_width_m": 0.11084893562099739
+          }
+        }
+      },
+      {
+        "frame": 46,
+        "pockets": {
+          "left": {
+            "mouth_width_m": 0.13186432362109649,
+            "center_height_m": 0.12310100678968115,
+            "bottom_width_m": 0.11695315092562864
+          },
+          "right": {
+            "mouth_width_m": 0.12518337826468642,
+            "center_height_m": 0.1298671417792296,
+            "bottom_width_m": 0.11125055662102942
+          }
+        }
+      },
+      {
+        "frame": 47,
+        "pockets": {
+          "left": {
+            "mouth_width_m": 0.13174397931327597,
+            "center_height_m": 0.1207530539277875,
+            "bottom_width_m": 0.11607342844038074
+          },
+          "right": {
+            "mouth_width_m": 0.12551252468013935,
+            "center_height_m": 0.12776873476252185,
+            "bottom_width_m": 0.11247640880932157
+          }
+        }
+      },
+      {
+        "frame": 48,
+        "pockets": {
+          "left": {
+            "mouth_width_m": 0.1316846020596148,
+            "center_height_m": 0.12192434860915624,
+            "bottom_width_m": 0.11470928882743685
+          },
+          "right": {
+            "mouth_width_m": 0.12569747540671275,
+            "center_height_m": 0.12231497827455125,
+            "bottom_width_m": 0.11404412534162853
+          }
+        }
+      },
+      {
+        "frame": 49,
+        "pockets": {
+          "left": {
+            "mouth_width_m": 0.1316180791246407,
+            "center_height_m": 0.11717044388308748,
+            "bottom_width_m": 0.11581369154493668
+          },
+          "right": {
+            "mouth_width_m": 0.12573721575401747,
+            "center_height_m": 0.11471254867204354,
+            "bottom_width_m": 0.1158596398811516
+          }
+        }
+      }
+    ],
+    "candidate": [
+      {
+        "frame": 1,
+        "pockets": {
+          "left": {
+            "mouth_width_m": 0.12304120785247205,
+            "center_height_m": 0.10148240196645729,
+            "bottom_width_m": 0.10465604854679039
+          },
+          "right": {
+            "mouth_width_m": 0.11517493034473283,
+            "center_height_m": 0.10647757283614825,
+            "bottom_width_m": 0.10433277267395297
+          }
+        }
+      },
+      {
+        "frame": 2,
+        "pockets": {
+          "left": {
+            "mouth_width_m": 0.12285523570228446,
+            "center_height_m": 0.10157727957079142,
+            "bottom_width_m": 0.1046924634670791
+          },
+          "right": {
+            "mouth_width_m": 0.11523243126307851,
+            "center_height_m": 0.1062963855976293,
+            "bottom_width_m": 0.1043125282564656
+          }
+        }
+      },
+      {
+        "frame": 3,
+        "pockets": {
+          "left": {
+            "mouth_width_m": 0.12229799238081748,
+            "center_height_m": 0.10071589260800765,
+            "bottom_width_m": 0.10465283982643407
+          },
+          "right": {
+            "mouth_width_m": 0.11540451121384206,
+            "center_height_m": 0.10595401651406001,
+            "bottom_width_m": 0.10428587002433885
+          }
+        }
+      },
+      {
+        "frame": 4,
+        "pockets": {
+          "left": {
+            "mouth_width_m": 0.12147520053343111,
+            "center_height_m": 0.09984646348625786,
+            "bottom_width_m": 0.10465627792689432
+          },
+          "right": {
+            "mouth_width_m": 0.11569654458934228,
+            "center_height_m": 0.10546248805384076,
+            "bottom_width_m": 0.1042918474788372
+          }
+        }
+      },
+      {
+        "frame": 5,
+        "pockets": {
+          "left": {
+            "mouth_width_m": 0.12049480798022297,
+            "center_height_m": 0.09908726660633661,
+            "bottom_width_m": 0.10469580582188551
+          },
+          "right": {
+            "mouth_width_m": 0.11611807228507717,
+            "center_height_m": 0.10480568378278521,
+            "bottom_width_m": 0.10437011766024151
+          }
+        }
+      },
+      {
+        "frame": 6,
+        "pockets": {
+          "left": {
+            "mouth_width_m": 0.11946878312408232,
+            "center_height_m": 0.09845956615002009,
+            "bottom_width_m": 0.10479577883843583
+          },
+          "right": {
+            "mouth_width_m": 0.11666297040234704,
+            "center_height_m": 0.1039225003258805,
+            "bottom_width_m": 0.10454372326942667
+          }
+        }
+      },
+      {
+        "frame": 7,
+        "pockets": {
+          "left": {
+            "mouth_width_m": 0.11848820717683756,
+            "center_height_m": 0.09797953599051953,
+            "bottom_width_m": 0.10494614976004642
+          },
+          "right": {
+            "mouth_width_m": 0.11732023946964773,
+            "center_height_m": 0.10276000103522685,
+            "bottom_width_m": 0.10480858434839097
+          }
+        }
+      },
+      {
+        "frame": 8,
+        "pockets": {
+          "left": {
+            "mouth_width_m": 0.11762110182790184,
+            "center_height_m": 0.0976313662304553,
+            "bottom_width_m": 0.10514799535805316
+          },
+          "right": {
+            "mouth_width_m": 0.11805187620547912,
+            "center_height_m": 0.10116089255124393,
+            "bottom_width_m": 0.10512950741392366
+          }
+        }
+      },
+      {
+        "frame": 9,
+        "pockets": {
+          "left": {
+            "mouth_width_m": 0.11690694139493218,
+            "center_height_m": 0.09737843165340355,
+            "bottom_width_m": 0.10537076045786584
+          },
+          "right": {
+            "mouth_width_m": 0.1188112655179048,
+            "center_height_m": 0.09897328018102594,
+            "bottom_width_m": 0.10541240835480943
+          }
+        }
+      },
+      {
+        "frame": 10,
+        "pockets": {
+          "left": {
+            "mouth_width_m": 0.1163656748271264,
+            "center_height_m": 0.09726408692094989,
+            "bottom_width_m": 0.10563277151270223
+          },
+          "right": {
+            "mouth_width_m": 0.1195284697956917,
+            "center_height_m": 0.09730481553597485,
+            "bottom_width_m": 0.10541648095230285
+          }
+        }
+      },
+      {
+        "frame": 11,
+        "pockets": {
+          "left": {
+            "mouth_width_m": 0.11599043947067474,
+            "center_height_m": 0.09728340419239692,
+            "bottom_width_m": 0.10590257617339086
+          },
+          "right": {
+            "mouth_width_m": 0.12009942160936188,
+            "center_height_m": 0.09710039945356226,
+            "bottom_width_m": 0.10613161047854842
+          }
+        }
+      },
+      {
+        "frame": 12,
+        "pockets": {
+          "left": {
+            "mouth_width_m": 0.11577527499991931,
+            "center_height_m": 0.09744907219920759,
+            "bottom_width_m": 0.1061699259835263
+          },
+          "right": {
+            "mouth_width_m": 0.1204783375526464,
+            "center_height_m": 0.09773364382861217,
+            "bottom_width_m": 0.10670123066644975
+          }
+        }
+      },
+      {
+        "frame": 13,
+        "pockets": {
+          "left": {
+            "mouth_width_m": 0.11570894655822866,
+            "center_height_m": 0.097830449690737,
+            "bottom_width_m": 0.10641649573459923
+          },
+          "right": {
+            "mouth_width_m": 0.12061850028783633,
+            "center_height_m": 0.09771438913175962,
+            "bottom_width_m": 0.10657646650094502
+          }
+        }
+      },
+      {
+        "frame": 14,
+        "pockets": {
+          "left": {
+            "mouth_width_m": 0.11578056050191338,
+            "center_height_m": 0.0978370583204184,
+            "bottom_width_m": 0.10632653404427271
+          },
+          "right": {
+            "mouth_width_m": 0.12049024462452891,
+            "center_height_m": 0.09699716420214709,
+            "bottom_width_m": 0.10640311406092497
+          }
+        }
+      },
+      {
+        "frame": 15,
+        "pockets": {
+          "left": {
+            "mouth_width_m": 0.11600038744662894,
+            "center_height_m": 0.09791036651847548,
+            "bottom_width_m": 0.10615263496380256
+          },
+          "right": {
+            "mouth_width_m": 0.12010081994280723,
+            "center_height_m": 0.09742940728436723,
+            "bottom_width_m": 0.10627171140730157
+          }
+        }
+      },
+      {
+        "frame": 16,
+        "pockets": {
+          "left": {
+            "mouth_width_m": 0.11637983445771086,
+            "center_height_m": 0.09803898788255358,
+            "bottom_width_m": 0.10591624546274162
+          },
+          "right": {
+            "mouth_width_m": 0.11951414805911093,
+            "center_height_m": 0.09912600851558746,
+            "bottom_width_m": 0.10616501361849769
+          }
+        }
+      },
+      {
+        "frame": 17,
+        "pockets": {
+          "left": {
+            "mouth_width_m": 0.11692373384774327,
+            "center_height_m": 0.09822582772825726,
+            "bottom_width_m": 0.10563978158430204
+          },
+          "right": {
+            "mouth_width_m": 0.11879905196313627,
+            "center_height_m": 0.1017699637436608,
+            "bottom_width_m": 0.10577685458843998
+          }
+        }
+      },
+      {
+        "frame": 18,
+        "pockets": {
+          "left": {
+            "mouth_width_m": 0.1176373520063545,
+            "center_height_m": 0.09848105489654488,
+            "bottom_width_m": 0.10536113759598968
+          },
+          "right": {
+            "mouth_width_m": 0.11803945712912371,
+            "center_height_m": 0.10424880442355243,
+            "bottom_width_m": 0.10540805745773209
+          }
+        }
+      },
+      {
+        "frame": 19,
+        "pockets": {
+          "left": {
+            "mouth_width_m": 0.1185070759448052,
+            "center_height_m": 0.09882808520049233,
+            "bottom_width_m": 0.10512715694749468
+          },
+          "right": {
+            "mouth_width_m": 0.11730710049268547,
+            "center_height_m": 0.10637307407282806,
+            "bottom_width_m": 0.1050384299707762
+          }
+        }
+      },
+      {
+        "frame": 20,
+        "pockets": {
+          "left": {
+            "mouth_width_m": 0.11948954878843306,
+            "center_height_m": 0.09932083941299835,
+            "bottom_width_m": 0.10495234913951791
+          },
+          "right": {
+            "mouth_width_m": 0.11665043890936795,
+            "center_height_m": 0.10800599671155388,
+            "bottom_width_m": 0.10470740723907372
+          }
+        }
+      },
+      {
+        "frame": 21,
+        "pockets": {
+          "left": {
+            "mouth_width_m": 0.12052392916864509,
+            "center_height_m": 0.1002591474453744,
+            "bottom_width_m": 0.10490875699916362
+          },
+          "right": {
+            "mouth_width_m": 0.11610508238472697,
+            "center_height_m": 0.10930542327634778,
+            "bottom_width_m": 0.10447160902853488
+          }
+        }
+      },
+      {
+        "frame": 22,
+        "pockets": {
+          "left": {
+            "mouth_width_m": 0.12149465465101501,
+            "center_height_m": 0.10061918341798665,
+            "bottom_width_m": 0.1047751175453681
+          },
+          "right": {
+            "mouth_width_m": 0.11568631495123545,
+            "center_height_m": 0.11025628225530106,
+            "bottom_width_m": 0.10432981674545248
+          }
+        }
+      },
+      {
+        "frame": 23,
+        "pockets": {
+          "left": {
+            "mouth_width_m": 0.12230505394405623,
+            "center_height_m": 0.10094497084976008,
+            "bottom_width_m": 0.1046907917605594
+          },
+          "right": {
+            "mouth_width_m": 0.1153965042395263,
+            "center_height_m": 0.10966189070279699,
+            "bottom_width_m": 0.10426303611827098
+          }
+        }
+      },
+      {
+        "frame": 24,
+        "pockets": {
+          "left": {
+            "mouth_width_m": 0.12283724411202779,
+            "center_height_m": 0.10080482107391728,
+            "bottom_width_m": 0.10459444290585891
+          },
+          "right": {
+            "mouth_width_m": 0.1152281446688052,
+            "center_height_m": 0.10830069648684254,
+            "bottom_width_m": 0.1042791716589578
+          }
+        }
+      },
+      {
+        "frame": 25,
+        "pockets": {
+          "left": {
+            "mouth_width_m": 0.12304143562355423,
+            "center_height_m": 0.10148252901508797,
+            "bottom_width_m": 0.10465608276703013
+          },
+          "right": {
+            "mouth_width_m": 0.11517487133184834,
+            "center_height_m": 0.10647741211624483,
+            "bottom_width_m": 0.10433249481094783
+          }
+        }
+      },
+      {
+        "frame": 26,
+        "pockets": {
+          "left": {
+            "mouth_width_m": 0.12285500932372762,
+            "center_height_m": 0.1015774623546842,
+            "bottom_width_m": 0.10469244194495608
+          },
+          "right": {
+            "mouth_width_m": 0.11523248776787139,
+            "center_height_m": 0.10629638282842373,
+            "bottom_width_m": 0.10431263950402155
+          }
+        }
+      },
+      {
+        "frame": 27,
+        "pockets": {
+          "left": {
+            "mouth_width_m": 0.1222982916373652,
+            "center_height_m": 0.10071598796792806,
+            "bottom_width_m": 0.10465280078830601
+          },
+          "right": {
+            "mouth_width_m": 0.11540441663133243,
+            "center_height_m": 0.10595380405305849,
+            "bottom_width_m": 0.10428569616033047
+          }
+        }
+      },
+      {
+        "frame": 28,
+        "pockets": {
+          "left": {
+            "mouth_width_m": 0.12147486412296059,
+            "center_height_m": 0.09984650037230412,
+            "bottom_width_m": 0.10465614074766554
+          },
+          "right": {
+            "mouth_width_m": 0.11569690179623182,
+            "center_height_m": 0.10546196971598709,
+            "bottom_width_m": 0.104291773757544
+          }
+        }
+      },
+      {
+        "frame": 29,
+        "pockets": {
+          "left": {
+            "mouth_width_m": 0.12049474480911497,
+            "center_height_m": 0.0990874616356786,
+            "bottom_width_m": 0.10469550782188057
+          },
+          "right": {
+            "mouth_width_m": 0.11611788969762982,
+            "center_height_m": 0.10480542707242135,
+            "bottom_width_m": 0.10437012917378424
+          }
+        }
+      },
+      {
+        "frame": 30,
+        "pockets": {
+          "left": {
+            "mouth_width_m": 0.11946889114237925,
+            "center_height_m": 0.0984591396102743,
+            "bottom_width_m": 0.10479593249965019
+          },
+          "right": {
+            "mouth_width_m": 0.11666326178993042,
+            "center_height_m": 0.10392209412977566,
+            "bottom_width_m": 0.10454372822823195
+          }
+        }
+      },
+      {
+        "frame": 31,
+        "pockets": {
+          "left": {
+            "mouth_width_m": 0.11848807081573413,
+            "center_height_m": 0.09797960263882188,
+            "bottom_width_m": 0.10494596424042199
+          },
+          "right": {
+            "mouth_width_m": 0.11732009286693766,
+            "center_height_m": 0.10275995515335123,
+            "bottom_width_m": 0.10480849528938738
+          }
+        }
+      },
+      {
+        "frame": 32,
+        "pockets": {
+          "left": {
+            "mouth_width_m": 0.11762050585854647,
+            "center_height_m": 0.09763137168939642,
+            "bottom_width_m": 0.10514802790672917
+          },
+          "right": {
+            "mouth_width_m": 0.11805213341746093,
+            "center_height_m": 0.10116090326801006,
+            "bottom_width_m": 0.10512972552734584
+          }
+        }
+      },
+      {
+        "frame": 33,
+        "pockets": {
+          "left": {
+            "mouth_width_m": 0.11690685376495882,
+            "center_height_m": 0.09737848537589623,
+            "bottom_width_m": 0.10537047615720434
+          },
+          "right": {
+            "mouth_width_m": 0.11881153192529459,
+            "center_height_m": 0.09897327639503618,
+            "bottom_width_m": 0.10541222205959751
+          }
+        }
+      },
+      {
+        "frame": 34,
+        "pockets": {
+          "left": {
+            "mouth_width_m": 0.11636547324098254,
+            "center_height_m": 0.0972640722215287,
+            "bottom_width_m": 0.10563326780726778
+          },
+          "right": {
+            "mouth_width_m": 0.11952854953821089,
+            "center_height_m": 0.09730485982139785,
+            "bottom_width_m": 0.10541627081746593
+          }
+        }
+      },
+      {
+        "frame": 35,
+        "pockets": {
+          "left": {
+            "mouth_width_m": 0.11599049200615223,
+            "center_height_m": 0.09728324241856164,
+            "bottom_width_m": 0.10590267170661455
+          },
+          "right": {
+            "mouth_width_m": 0.12009974197070944,
+            "center_height_m": 0.0971003765242715,
+            "bottom_width_m": 0.10613155343994951
+          }
+        }
+      },
+      {
+        "frame": 36,
+        "pockets": {
+          "left": {
+            "mouth_width_m": 0.11577521466820229,
+            "center_height_m": 0.09744921818628728,
+            "bottom_width_m": 0.10617009734577566
+          },
+          "right": {
+            "mouth_width_m": 0.12047878705130814,
+            "center_height_m": 0.09773361404988527,
+            "bottom_width_m": 0.10670131072148738
+          }
+        }
+      },
+      {
+        "frame": 37,
+        "pockets": {
+          "left": {
+            "mouth_width_m": 0.11570916472555189,
+            "center_height_m": 0.09783050651179855,
+            "bottom_width_m": 0.10641699218587439
+          },
+          "right": {
+            "mouth_width_m": 0.12061881106674045,
+            "center_height_m": 0.09771421880098545,
+            "bottom_width_m": 0.10657643615499975
+          }
+        }
+      },
+      {
+        "frame": 38,
+        "pockets": {
+          "left": {
+            "mouth_width_m": 0.11578073259639134,
+            "center_height_m": 0.09783697764957229,
+            "bottom_width_m": 0.10632618179867198
+          },
+          "right": {
+            "mouth_width_m": 0.12049024106173835,
+            "center_height_m": 0.0969972689189337,
+            "bottom_width_m": 0.10640303593553645
+          }
+        }
+      },
+      {
+        "frame": 39,
+        "pockets": {
+          "left": {
+            "mouth_width_m": 0.11600052082820905,
+            "center_height_m": 0.09791024642950907,
+            "bottom_width_m": 0.1061523881422909
+          },
+          "right": {
+            "mouth_width_m": 0.12010117780062717,
+            "center_height_m": 0.0974295016602568,
+            "bottom_width_m": 0.10627168384988972
+          }
+        }
+      },
+      {
+        "frame": 40,
+        "pockets": {
+          "left": {
+            "mouth_width_m": 0.11637982123492935,
+            "center_height_m": 0.09803898996057188,
+            "bottom_width_m": 0.10591601577946164
+          },
+          "right": {
+            "mouth_width_m": 0.1195143080502427,
+            "center_height_m": 0.09912605934583305,
+            "bottom_width_m": 0.10616507900031406
+          }
+        }
+      },
+      {
+        "frame": 41,
+        "pockets": {
+          "left": {
+            "mouth_width_m": 0.116923887038001,
+            "center_height_m": 0.0982257966172679,
+            "bottom_width_m": 0.10563973819293782
+          },
+          "right": {
+            "mouth_width_m": 0.11879942891588412,
+            "center_height_m": 0.10176985669898017,
+            "bottom_width_m": 0.10577690378755347
+          }
+        }
+      },
+      {
+        "frame": 42,
+        "pockets": {
+          "left": {
+            "mouth_width_m": 0.11763746100277568,
+            "center_height_m": 0.09848102374612597,
+            "bottom_width_m": 0.10536102938311635
+          },
+          "right": {
+            "mouth_width_m": 0.11803966522573692,
+            "center_height_m": 0.10424855460378583,
+            "bottom_width_m": 0.10540800632628124
+          }
+        }
+      },
+      {
+        "frame": 43,
+        "pockets": {
+          "left": {
+            "mouth_width_m": 0.11850709264473906,
+            "center_height_m": 0.09882808520049233,
+            "bottom_width_m": 0.10512734673258774
+          },
+          "right": {
+            "mouth_width_m": 0.11730712738046338,
+            "center_height_m": 0.10637283111443671,
+            "bottom_width_m": 0.10503819645443475
+          }
+        }
+      },
+      {
+        "frame": 44,
+        "pockets": {
+          "left": {
+            "mouth_width_m": 0.11948941410286448,
+            "center_height_m": 0.09932096189881001,
+            "bottom_width_m": 0.10495224533633711
+          },
+          "right": {
+            "mouth_width_m": 0.11665039920829308,
+            "center_height_m": 0.10800566434707916,
+            "bottom_width_m": 0.10470727583194989
+          }
+        }
+      },
+      {
+        "frame": 45,
+        "pockets": {
+          "left": {
+            "mouth_width_m": 0.12052402140928402,
+            "center_height_m": 0.10025918402140822,
+            "bottom_width_m": 0.1049088855791105
+          },
+          "right": {
+            "mouth_width_m": 0.11610532119668197,
+            "center_height_m": 0.10930508960020338,
+            "bottom_width_m": 0.10447172336430745
+          }
+        }
+      },
+      {
+        "frame": 46,
+        "pockets": {
+          "left": {
+            "mouth_width_m": 0.12149483431206073,
+            "center_height_m": 0.10061908859114149,
+            "bottom_width_m": 0.10477491086809618
+          },
+          "right": {
+            "mouth_width_m": 0.11568624132610014,
+            "center_height_m": 0.1102560507286359,
+            "bottom_width_m": 0.10432969105216876
+          }
+        }
+      },
+      {
+        "frame": 47,
+        "pockets": {
+          "left": {
+            "mouth_width_m": 0.12230536218737562,
+            "center_height_m": 0.10094498917246789,
+            "bottom_width_m": 0.10469071339984455
+          },
+          "right": {
+            "mouth_width_m": 0.11539671839132722,
+            "center_height_m": 0.10966204908450221,
+            "bottom_width_m": 0.10426297155738028
+          }
+        }
+      },
+      {
+        "frame": 48,
+        "pockets": {
+          "left": {
+            "mouth_width_m": 0.12283725848354474,
+            "center_height_m": 0.10080474023457077,
+            "bottom_width_m": 0.10459446541537855
+          },
+          "right": {
+            "mouth_width_m": 0.1152281940971704,
+            "center_height_m": 0.1083003071534138,
+            "bottom_width_m": 0.10427935907457818
+          }
+        }
+      },
+      {
+        "frame": 49,
+        "pockets": {
+          "left": {
+            "mouth_width_m": 0.12304151106468753,
+            "center_height_m": 0.10148238944408486,
+            "bottom_width_m": 0.10465610689182701
+          },
+          "right": {
+            "mouth_width_m": 0.11517501339012555,
+            "center_height_m": 0.10647727544946942,
+            "bottom_width_m": 0.10433271867058479
+          }
+        }
+      }
+    ]
+  }
+}
