@@ -1,0 +1,705 @@
+{
+  "candidate_sha256": "1389c758ebc819e0a78250cf02006255ad178076896cdcd4279f4d7970ca9b4d",
+  "source_sha256": "4be22d54515ef82276331c3286147e5f77dad9ddc2491d4e29d39eaf720cd524",
+  "object_moves": [
+    {
+      "name": "Tree | mature Sundale broadleaf.007",
+      "group": "arrival tree and complete bed",
+      "old_location": [
+        2.0,
+        40.0,
+        0.3400000035762787
+      ],
+      "new_location": [
+        -4.900000095367432,
+        42.0,
+        0.3400000035762787
+      ],
+      "delta": [
+        -6.900000095367432,
+        2.0,
+        0.0
+      ]
+    },
+    {
+      "name": "Tree pit stone surround.007",
+      "group": "arrival tree and complete bed",
+      "old_location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "new_location": [
+        -6.900000095367432,
+        2.0,
+        0.0
+      ],
+      "delta": [
+        -6.900000095367432,
+        2.0,
+        0.0
+      ]
+    },
+    {
+      "name": "Tree pit soil.007",
+      "group": "arrival tree and complete bed",
+      "old_location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "new_location": [
+        -6.900000095367432,
+        2.0,
+        0.0
+      ],
+      "delta": [
+        -6.900000095367432,
+        2.0,
+        0.0
+      ]
+    },
+    {
+      "name": "Civic | tree pit groundcover.007",
+      "group": "arrival tree and complete bed",
+      "old_location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "new_location": [
+        -6.900000095367432,
+        2.0,
+        0.0
+      ],
+      "delta": [
+        -6.900000095367432,
+        2.0,
+        0.0
+      ]
+    },
+    {
+      "name": "Civic | low tree pit foliage.007",
+      "group": "arrival tree and complete bed",
+      "old_location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "new_location": [
+        -6.900000095367432,
+        2.0,
+        0.0
+      ],
+      "delta": [
+        -6.900000095367432,
+        2.0,
+        0.0
+      ]
+    },
+    {
+      "name": "Planting | Tree pit soil.007 curved grass tufts",
+      "group": "arrival tree and complete bed",
+      "old_location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "new_location": [
+        -6.900000095367432,
+        2.0,
+        0.0
+      ],
+      "delta": [
+        -6.900000095367432,
+        2.0,
+        0.0
+      ]
+    },
+    {
+      "name": "Planting | Tree pit soil.007 groundcover rosettes",
+      "group": "arrival tree and complete bed",
+      "old_location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "new_location": [
+        -6.900000095367432,
+        2.0,
+        0.0
+      ],
+      "delta": [
+        -6.900000095367432,
+        2.0,
+        0.0
+      ]
+    },
+    {
+      "name": "Planting | Tree pit soil.007 soil leaf litter",
+      "group": "arrival tree and complete bed",
+      "old_location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "new_location": [
+        -6.900000095367432,
+        2.0,
+        0.0
+      ],
+      "delta": [
+        -6.900000095367432,
+        2.0,
+        0.0
+      ]
+    },
+    {
+      "name": "Civic light | base.003",
+      "group": "court-edge lamp row",
+      "old_location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "new_location": [
+        0.5,
+        0.0,
+        0.0
+      ],
+      "delta": [
+        0.5,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "Civic light | mast.003",
+      "group": "court-edge lamp row",
+      "old_location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "new_location": [
+        0.5,
+        0.0,
+        0.0
+      ],
+      "delta": [
+        0.5,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "Civic light | signal band.003",
+      "group": "court-edge lamp row",
+      "old_location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "new_location": [
+        0.5,
+        0.0,
+        0.0
+      ],
+      "delta": [
+        0.5,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "Civic light | lantern.003",
+      "group": "court-edge lamp row",
+      "old_location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "new_location": [
+        0.5,
+        0.0,
+        0.0
+      ],
+      "delta": [
+        0.5,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "Civic light | cap.003",
+      "group": "court-edge lamp row",
+      "old_location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "new_location": [
+        0.5,
+        0.0,
+        0.0
+      ],
+      "delta": [
+        0.5,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "Civic light | lantern frame.012",
+      "group": "court-edge lamp row",
+      "old_location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "new_location": [
+        0.5,
+        0.0,
+        0.0
+      ],
+      "delta": [
+        0.5,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "Civic light | lantern frame.013",
+      "group": "court-edge lamp row",
+      "old_location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "new_location": [
+        0.5,
+        0.0,
+        0.0
+      ],
+      "delta": [
+        0.5,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "Civic light | lantern frame.014",
+      "group": "court-edge lamp row",
+      "old_location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "new_location": [
+        0.5,
+        0.0,
+        0.0
+      ],
+      "delta": [
+        0.5,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "Civic light | lantern frame.015",
+      "group": "court-edge lamp row",
+      "old_location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "new_location": [
+        0.5,
+        0.0,
+        0.0
+      ],
+      "delta": [
+        0.5,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "Civic light | base.004",
+      "group": "court-edge lamp row",
+      "old_location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "new_location": [
+        0.5,
+        0.0,
+        0.0
+      ],
+      "delta": [
+        0.5,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "Civic light | mast.004",
+      "group": "court-edge lamp row",
+      "old_location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "new_location": [
+        0.5,
+        0.0,
+        0.0
+      ],
+      "delta": [
+        0.5,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "Civic light | signal band.004",
+      "group": "court-edge lamp row",
+      "old_location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "new_location": [
+        0.5,
+        0.0,
+        0.0
+      ],
+      "delta": [
+        0.5,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "Civic light | lantern.004",
+      "group": "court-edge lamp row",
+      "old_location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "new_location": [
+        0.5,
+        0.0,
+        0.0
+      ],
+      "delta": [
+        0.5,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "Civic light | cap.004",
+      "group": "court-edge lamp row",
+      "old_location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "new_location": [
+        0.5,
+        0.0,
+        0.0
+      ],
+      "delta": [
+        0.5,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "Civic light | lantern frame.016",
+      "group": "court-edge lamp row",
+      "old_location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "new_location": [
+        0.5,
+        0.0,
+        0.0
+      ],
+      "delta": [
+        0.5,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "Civic light | lantern frame.017",
+      "group": "court-edge lamp row",
+      "old_location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "new_location": [
+        0.5,
+        0.0,
+        0.0
+      ],
+      "delta": [
+        0.5,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "Civic light | lantern frame.018",
+      "group": "court-edge lamp row",
+      "old_location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "new_location": [
+        0.5,
+        0.0,
+        0.0
+      ],
+      "delta": [
+        0.5,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "Civic light | lantern frame.019",
+      "group": "court-edge lamp row",
+      "old_location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "new_location": [
+        0.5,
+        0.0,
+        0.0
+      ],
+      "delta": [
+        0.5,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "Civic light | base.005",
+      "group": "court-edge lamp row",
+      "old_location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "new_location": [
+        0.5,
+        0.0,
+        0.0
+      ],
+      "delta": [
+        0.5,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "Civic light | mast.005",
+      "group": "court-edge lamp row",
+      "old_location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "new_location": [
+        0.5,
+        0.0,
+        0.0
+      ],
+      "delta": [
+        0.5,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "Civic light | signal band.005",
+      "group": "court-edge lamp row",
+      "old_location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "new_location": [
+        0.5,
+        0.0,
+        0.0
+      ],
+      "delta": [
+        0.5,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "Civic light | lantern.005",
+      "group": "court-edge lamp row",
+      "old_location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "new_location": [
+        0.5,
+        0.0,
+        0.0
+      ],
+      "delta": [
+        0.5,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "Civic light | cap.005",
+      "group": "court-edge lamp row",
+      "old_location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "new_location": [
+        0.5,
+        0.0,
+        0.0
+      ],
+      "delta": [
+        0.5,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "Civic light | lantern frame.020",
+      "group": "court-edge lamp row",
+      "old_location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "new_location": [
+        0.5,
+        0.0,
+        0.0
+      ],
+      "delta": [
+        0.5,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "Civic light | lantern frame.021",
+      "group": "court-edge lamp row",
+      "old_location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "new_location": [
+        0.5,
+        0.0,
+        0.0
+      ],
+      "delta": [
+        0.5,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "Civic light | lantern frame.022",
+      "group": "court-edge lamp row",
+      "old_location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "new_location": [
+        0.5,
+        0.0,
+        0.0
+      ],
+      "delta": [
+        0.5,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "Civic light | lantern frame.023",
+      "group": "court-edge lamp row",
+      "old_location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "new_location": [
+        0.5,
+        0.0,
+        0.0
+      ],
+      "delta": [
+        0.5,
+        0.0,
+        0.0
+      ]
+    }
+  ],
+  "changed_visibility": [
+    {
+      "name": "Sundale | broad warm bounce",
+      "old_hide_render": false
+    },
+    {
+      "name": "Sundale | reflected courtyard light",
+      "old_hide_render": false
+    }
+  ],
+  "added_objects": [
+    "Promenade | broad warm bounce",
+    "Promenade | reflected courtyard light"
+  ],
+  "light_copies": [
+    {
+      "source": "Sundale | broad warm bounce",
+      "new": "Promenade | broad warm bounce",
+      "source_data": "Area",
+      "new_data": "Area.001",
+      "old_energy": 250.0,
+      "new_energy": 300
+    },
+    {
+      "source": "Sundale | reflected courtyard light",
+      "new": "Promenade | reflected courtyard light",
+      "source_data": "Sundale | reflected courtyard light",
+      "new_data": "Sundale | reflected courtyard light.001",
+      "old_energy": 700.0,
+      "new_energy": 950
+    }
+  ],
+  "new_bitmap_assets": 0,
+  "scope": "Arrival tree and complete soil/stone/understory bed move together, lamp row shifts 0.5 m toward court edge outside blue play surface. Two retained bounce-light copies increase shade illumination modestly. Original control meshes/curves, materials, packed maps, rig, human, walk, court and gameplay camera unchanged."
+}
