@@ -1,0 +1,121 @@
+{
+  "source_sha256": "90af187cf9cfa558f4d06a4b7398d02a8097991309e06789dbf61b0ebc36afeb",
+  "candidate_sha256": "85fef82c3e865a76dcd11515ec8f7c4148f407d07a23a3fb6a1896036d19fbaf",
+  "files": [
+    {
+      "path": "PosedEase.blend",
+      "bytes": 731971026,
+      "sha256": "85fef82c3e865a76dcd11515ec8f7c4148f407d07a23a3fb6a1896036d19fbaf"
+    },
+    {
+      "path": "build.py",
+      "bytes": 9484,
+      "sha256": "295036497870f4173f7210529f581d133587ebb8942d763864797a2b0c49947f"
+    },
+    {
+      "path": "audit.py",
+      "bytes": 5042,
+      "sha256": "07acab22e26fb2b5f19c5607100536527bf208ea8940c36bcbbc395b1374ad73"
+    },
+    {
+      "path": "probe.py",
+      "bytes": 3334,
+      "sha256": "fea864fe405d3d5648b2dbc5463ee5db864cc91ece759152e9e325d7eb25113b"
+    },
+    {
+      "path": "followers.py",
+      "bytes": 2822,
+      "sha256": "ebaf787c167adc55f2f727a4f543f1cfa6da91ae041b6e9492747e8f7f0e6393"
+    },
+    {
+      "path": "render.py",
+      "bytes": 4715,
+      "sha256": "4565a1365463e7c931606d4eee2668cce8943525954ba113c482857b96af6f14"
+    },
+    {
+      "path": "render-walk.py",
+      "bytes": 2504,
+      "sha256": "0f03a11103895f459bb01fb2d9a98efe3e1ae806360a810a4eb73c288817b412"
+    },
+    {
+      "path": "render-game.py",
+      "bytes": 875,
+      "sha256": "eb32d40c79a7cc202830efb7660528e3bd3b927d8a3287efcdf2816aaa8e8d93"
+    },
+    {
+      "path": "build-report.json",
+      "bytes": 889662,
+      "sha256": "548f34b23e77cc88cf509a7d318daba6ce8d7744b30f1137196ab85df0426ace"
+    },
+    {
+      "path": "cold-audit.json",
+      "bytes": 637,
+      "sha256": "85cf9a6b1b2492b1698fb4765c23b0aafb5fea69d181b06ce8f36620e997227c"
+    },
+    {
+      "path": "probe-all.json",
+      "bytes": 50022,
+      "sha256": "40ecfe2b2f77bb2f25f0a10849eb20714a7a08941c146f4a00c4fbbcfeea710a"
+    },
+    {
+      "path": "followers.json",
+      "bytes": 246992,
+      "sha256": "5fe4607fc542e345201776c9081ca284d731ea16aa8ab84bad11747d279d2377"
+    },
+    {
+      "path": "render-events.json",
+      "bytes": 394,
+      "sha256": "a6166d40dcfb1e8259605b7581589fa59af133f81a76dbbcae8dd59c1a590892"
+    },
+    {
+      "path": "render-provenance.json",
+      "bytes": 1763,
+      "sha256": "c40c023e7d4e6a9462c557f20e2f0619a00015dd83e70bcbc58e0fa6226af66b"
+    },
+    {
+      "path": "game-render.json",
+      "bytes": 288,
+      "sha256": "5117fdb082c9d1f5a2d8d3346c5a7375d244c4e8819970965a25dba5dc9681e9"
+    },
+    {
+      "path": "Before_HipFront.png",
+      "bytes": 932192,
+      "sha256": "2a9686831736070534c84ff2fa94572dbe1505648d74f4415c7967ddc7c7651f"
+    },
+    {
+      "path": "Before_FullThreeQuarter.png",
+      "bytes": 709479,
+      "sha256": "9bcbcd5b2ea2659a3f838e33a563df289ab8046611ac92ef66d8966206bdf7a7"
+    },
+    {
+      "path": "After_HipFront.png",
+      "bytes": 930634,
+      "sha256": "8443c1c11bbdb50afdd7e3fd10cfa1e91316eb9e5b03574bc97330f3d1755273"
+    },
+    {
+      "path": "After_FullThreeQuarter.png",
+      "bytes": 709394,
+      "sha256": "21b88d0b45f480ae5944455c70ef7c38a709ff11a113e80c022da581c2735b7b"
+    },
+    {
+      "path": "Gameplay.png",
+      "bytes": 1637673,
+      "sha256": "bcc0c469114b82eb9d3fa0507c1f256e5c89ee34027cc32b855531bccf65b999"
+    },
+    {
+      "path": "Walking.mp4",
+      "bytes": 141161,
+      "sha256": "78dc815c4f379e34a7b0f7f990f68c13bb91ad8a479cdab1b82b3f0e36ea10df"
+    },
+    {
+      "path": "README.md",
+      "bytes": 2169,
+      "sha256": "87a9be6dda9b6500615ce4823a8a21319497ebff86df593411001dea2aa03cdc"
+    },
+    {
+      "path": "WholeFigureReview.md",
+      "bytes": 4017,
+      "sha256": "9979a718a9d09021dff50556ecfded4746f336074f92edbb05ca1699f3bf4abe"
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "source_sha256": "90af187cf9cfa558f4d06a4b7398d02a8097991309e06789dbf61b0ebc36afeb",
+  "candidate_sha256": "85fef82c3e865a76dcd11515ec8f7c4148f407d07a23a3fb6a1896036d19fbaf",
+  "original_controls_edges_old_keys_uvs_exact": true,
+  "original_weights_31_packed_maps_rig_action_materials_world_lights_lettering_exact": true,
+  "packed_maps": 31,
+  "declared_torso_keys_exact_float32_coordinates": true,
+  "cotton_mask_and_protected_boundaries_verified": true,
+  "scope": "Cold editable source custody and declared additions. Surface contacts and visual acceptance require separate review; no runtime or physical cloth certification."
+}
