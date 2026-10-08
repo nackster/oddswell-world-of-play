@@ -1,0 +1,275 @@
+{
+  "standing_source_sha256": "59ecc7ecfe8aa0818e49c077a96388a154ee00d5cfa702713acd7b037f424d52",
+  "candidate_sha256": "118a64a22401e78a25c6d76ab0e38b6a03e013ff7ad31ae0830ad4ecfe07bb92",
+  "mapping": {
+    "hip": "pelvis",
+    "spine_01": "chest",
+    "spine_02": "chest",
+    "spine_03": "chest",
+    "neck": "head",
+    "head": "head",
+    "shoulder_l": "chest",
+    "shoulder_r": "chest",
+    "upperarm_l": "neg.upperarm",
+    "lowerarm_l": "neg.forearm",
+    "hand_l": "neg.palm",
+    "upperleg_l": "neg.thigh",
+    "lowerleg_l": "neg.shin",
+    "foot_l": "neg.foot",
+    "upperarm_r": "pos.upperarm",
+    "lowerarm_r": "pos.forearm",
+    "hand_r": "pos.palm",
+    "upperleg_r": "pos.thigh",
+    "lowerleg_r": "pos.shin",
+    "foot_r": "pos.foot"
+  },
+  "frames": [
+    {
+      "frame": 1,
+      "grounding_adjustment_m": 4.657044749833972e-10,
+      "height_m": 1.799999833572699
+    },
+    {
+      "frame": 2,
+      "grounding_adjustment_m": -0.001965368865057826,
+      "height_m": 1.7972305167932063
+    },
+    {
+      "frame": 3,
+      "grounding_adjustment_m": -0.01036025956273079,
+      "height_m": 1.7866370491683483
+    },
+    {
+      "frame": 4,
+      "grounding_adjustment_m": -0.017843477427959442,
+      "height_m": 1.7761447504162788
+    },
+    {
+      "frame": 5,
+      "grounding_adjustment_m": -0.026273641735315323,
+      "height_m": 1.7646919153630733
+    },
+    {
+      "frame": 6,
+      "grounding_adjustment_m": -0.035828057676553726,
+      "height_m": 1.7529005371034145
+    },
+    {
+      "frame": 7,
+      "grounding_adjustment_m": -0.04637787863612175,
+      "height_m": 1.7414851374924183
+    },
+    {
+      "frame": 8,
+      "grounding_adjustment_m": -0.05786669999361038,
+      "height_m": 1.730720393359661
+    },
+    {
+      "frame": 9,
+      "grounding_adjustment_m": -0.07065670192241669,
+      "height_m": 1.720035508275032
+    },
+    {
+      "frame": 10,
+      "grounding_adjustment_m": -0.0867437794804573,
+      "height_m": 1.7068576142191887
+    },
+    {
+      "frame": 11,
+      "grounding_adjustment_m": -0.09166201204061508,
+      "height_m": 1.7048619166016579
+    },
+    {
+      "frame": 12,
+      "grounding_adjustment_m": -0.09822383522987366,
+      "height_m": 1.7004439532756805
+    },
+    {
+      "frame": 13,
+      "grounding_adjustment_m": -0.10257876664400101,
+      "height_m": 1.6968744918704033
+    },
+    {
+      "frame": 14,
+      "grounding_adjustment_m": -0.08747469633817673,
+      "height_m": 1.7111930921673775
+    },
+    {
+      "frame": 15,
+      "grounding_adjustment_m": -0.07283488661050797,
+      "height_m": 1.723689042031765
+    },
+    {
+      "frame": 16,
+      "grounding_adjustment_m": -0.05849437415599823,
+      "height_m": 1.7351070195436478
+    },
+    {
+      "frame": 17,
+      "grounding_adjustment_m": -0.04445549100637436,
+      "height_m": 1.7462367191910744
+    },
+    {
+      "frame": 18,
+      "grounding_adjustment_m": -0.03076029382646084,
+      "height_m": 1.7578267995268106
+    },
+    {
+      "frame": 19,
+      "grounding_adjustment_m": -0.01746903918683529,
+      "height_m": 1.7703939769417048
+    },
+    {
+      "frame": 20,
+      "grounding_adjustment_m": -0.004717943258583546,
+      "height_m": 1.7840106515213847
+    },
+    {
+      "frame": 21,
+      "grounding_adjustment_m": 0.006678291596472263,
+      "height_m": 1.7972396099939942
+    },
+    {
+      "frame": 22,
+      "grounding_adjustment_m": 0.016112564131617546,
+      "height_m": 1.800973890349269
+    },
+    {
+      "frame": 23,
+      "grounding_adjustment_m": 0.007471985649317503,
+      "height_m": 1.8006680677644908
+    },
+    {
+      "frame": 24,
+      "grounding_adjustment_m": -0.002469895873218775,
+      "height_m": 1.7967259897850454
+    },
+    {
+      "frame": 25,
+      "grounding_adjustment_m": 4.657044749833972e-10,
+      "height_m": 1.799999833572699
+    },
+    {
+      "frame": 26,
+      "grounding_adjustment_m": -0.0019654310308396816,
+      "height_m": 1.7972304546274245
+    },
+    {
+      "frame": 27,
+      "grounding_adjustment_m": -0.010360225103795528,
+      "height_m": 1.7866370836272836
+    },
+    {
+      "frame": 28,
+      "grounding_adjustment_m": -0.01784355938434601,
+      "height_m": 1.7761446684598923
+    },
+    {
+      "frame": 29,
+      "grounding_adjustment_m": -0.026273641735315323,
+      "height_m": 1.7646919153630733
+    },
+    {
+      "frame": 30,
+      "grounding_adjustment_m": -0.0358281284570694,
+      "height_m": 1.7529004663228989
+    },
+    {
+      "frame": 31,
+      "grounding_adjustment_m": -0.04637790471315384,
+      "height_m": 1.7414851114153862
+    },
+    {
+      "frame": 32,
+      "grounding_adjustment_m": -0.05786669999361038,
+      "height_m": 1.730720393359661
+    },
+    {
+      "frame": 33,
+      "grounding_adjustment_m": -0.07065674662590027,
+      "height_m": 1.7200354635715485
+    },
+    {
+      "frame": 34,
+      "grounding_adjustment_m": -0.08674384653568268,
+      "height_m": 1.7068575471639633
+    },
+    {
+      "frame": 35,
+      "grounding_adjustment_m": -0.09166209399700165,
+      "height_m": 1.7048618346452713
+    },
+    {
+      "frame": 36,
+      "grounding_adjustment_m": -0.09822382777929306,
+      "height_m": 1.7004439607262611
+    },
+    {
+      "frame": 37,
+      "grounding_adjustment_m": -0.1025787889957428,
+      "height_m": 1.6968744695186615
+    },
+    {
+      "frame": 38,
+      "grounding_adjustment_m": -0.08747473359107971,
+      "height_m": 1.7111930549144745
+    },
+    {
+      "frame": 39,
+      "grounding_adjustment_m": -0.07283488661050797,
+      "height_m": 1.723689042031765
+    },
+    {
+      "frame": 40,
+      "grounding_adjustment_m": -0.05849439650774002,
+      "height_m": 1.735106997191906
+    },
+    {
+      "frame": 41,
+      "grounding_adjustment_m": -0.04445554316043854,
+      "height_m": 1.7462366670370102
+    },
+    {
+      "frame": 42,
+      "grounding_adjustment_m": -0.030760308727622032,
+      "height_m": 1.7578267846256495
+    },
+    {
+      "frame": 43,
+      "grounding_adjustment_m": -0.01746918261051178,
+      "height_m": 1.7703938335180283
+    },
+    {
+      "frame": 44,
+      "grounding_adjustment_m": -0.004717967472970486,
+      "height_m": 1.7840106273069978
+    },
+    {
+      "frame": 45,
+      "grounding_adjustment_m": 0.006678346544504166,
+      "height_m": 1.7972396649420261
+    },
+    {
+      "frame": 46,
+      "grounding_adjustment_m": 0.016112487763166428,
+      "height_m": 1.8009739331901073
+    },
+    {
+      "frame": 47,
+      "grounding_adjustment_m": 0.0074721407145261765,
+      "height_m": 1.80066810362041
+    },
+    {
+      "frame": 48,
+      "grounding_adjustment_m": -0.0024699033237993717,
+      "height_m": 1.7967259823344648
+    },
+    {
+      "frame": 49,
+      "grounding_adjustment_m": 9.313657622911364e-10,
+      "height_m": 1.7999998340383603
+    }
+  ],
+  "method": "World rotation deltas from the retained native walk, calibrated against relaxed imported pose; vendor hierarchy/mesh/UV/weights unchanged. Per-key lowest-vertex floor correction.",
+  "scope": "49-key offline motion study. Not runtime retarget certification, foot-lock/slip proof, complete contacts, or physical clothing simulation. Source business clothing remains."
+}

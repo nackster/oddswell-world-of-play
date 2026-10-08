@@ -1,0 +1,11 @@
+# Imported human visual review
+
+The imported scan gives a substantial improvement over the previous development figure. The face now has coherent cheeks, lips, ears, eyebrows, hair and stubble. The clothed torso has a convincing chest-to-waist transition, and the hips and trouser folds follow a recognizable adult figure. Hands and footwear have complete source geometry and photographic texture detail. This is a rendered 3D mesh, not a generated image substituted for a character.
+
+The initial shader made the skin too shiny. A minimum roughness of 0.42 and a specular level of 0.3 improve the response while retaining the original texture bytes. The source A pose is relaxed through the two upper arms, and a calibrated world-rotation mapping drives the vendor skeleton from the retained native walk. Original body geometry, UVs, skin weights and bind matrices remain exact. No additional body sculpt is claimed.
+
+The full-body camera was widened after the first walking view cropped the forward shoe. Final face/full images use 40 CPU samples. Native preview frames 1 and 31 show coherent body, shirt and trouser deformation. The long stride and open, extended hands still need movement refinement. Lowest-vertex floor correction prevents a globally sinking figure at authored keys; it does not establish correct planted-foot timing, no sliding, joint feasibility or complete body/clothing contact.
+
+The street camera keeps the established promenade, planting, storefronts and court. The imported character reads clearly as a person at this distance, though its original vest, tie, trousers and formal shoes differ from the intended OddsWell starter style. That outfit is a source-asset quality baseline, not final visual acceptance of the player wardrobe. The imported character is not yet an Unreal asset and does not replace the protected starter-outfit runtime evidence.
+
+The new direction should develop this stronger human asset into OddsWell's identity, rather than return to repeated small shape adjustments on the previous body. Prioritize suitable wardrobe construction or a compatible licensed outfit, locomotion and facial expression review, then the existing storefront/canopy/ground-planting roadmap. Keep vendor data local under its license and validate the game export separately.

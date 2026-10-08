@@ -1,0 +1,19 @@
+{
+  "scene_source_sha256": "85fef82c3e865a76dcd11515ec8f7c4148f407d07a23a3fb6a1896036d19fbaf",
+  "download_url": "https://renderpeople.com/sample/free/renderpeople_free_rigged_people_FBX.zip",
+  "download_sha256": "dadbe6fb83345566ff1d2822c0fa38e05aaa09c17d7f1340719a4c8e01dbadcd",
+  "fbx_sha256": "2324fee0c1deb546eebe7a68ab84d6be9dc0180119de852630f30a545f25f740",
+  "candidate_sha256": "59ecc7ecfe8aa0818e49c077a96388a154ee00d5cfa702713acd7b037f424d52",
+  "vendor": "Renderpeople",
+  "model": "Eric Rigged 001",
+  "license_url": "https://renderpeople.com/general-terms-and-conditions/",
+  "source_mesh_vertices": 10353,
+  "source_mesh_polygons": 10558,
+  "uvs": [
+    "map1"
+  ],
+  "bones": 88,
+  "height_m": 1.8,
+  "arm_relaxation_radians": 0.48,
+  "scope": "New licensed local scanned-human quality study. Original scene retained with prior human hidden. Vendor geometry/UV/weights retained; imported skeleton not yet retargeted to original walk or runtime. Source clothing remains; OddsWell wardrobe adaptation is pending. Raw assets/native source kept in ignored local storage due vendor redistribution restrictions."
+}

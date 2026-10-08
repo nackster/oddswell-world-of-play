@@ -1,0 +1,69 @@
+{
+  "standalone_sha256": "3ed84ad823f809e19ff6c7bafc591109e90e20d96455b28bcd15431f82ae4485",
+  "full_scene_sha256": "118a64a22401e78a25c6d76ab0e38b6a03e013ff7ad31ae0830ad4ecfe07bb92",
+  "local_files": [
+    {
+      "path": "downloads/licensed-characters/RenderpeopleEric/OddsWellHuman.blend",
+      "bytes": 22210911,
+      "sha256": "3ed84ad823f809e19ff6c7bafc591109e90e20d96455b28bcd15431f82ae4485"
+    },
+    {
+      "path": "downloads/licensed-characters/RenderpeopleEric/EricImported.blend",
+      "bytes": 5568779,
+      "sha256": "8d1b43d852762f46f1cdf97eed832ff2ae49a4010d7985efc42e4010b1b4f206"
+    },
+    {
+      "path": "downloads/licensed-characters/RenderpeopleEric/rp_eric_rigged_001_FBX.zip",
+      "bytes": 45243926,
+      "sha256": "6d88a1e0e661bb7ca36158bd60a02d757181a93a58b4db5c6be203f4e5f0bd66"
+    },
+    {
+      "path": "downloads/licensed-characters/RenderpeopleEric/EricSource/rp_eric_rigged_001_zup_a.fbx",
+      "bytes": 6440448,
+      "sha256": "2324fee0c1deb546eebe7a68ab84d6be9dc0180119de852630f30a545f25f740"
+    },
+    {
+      "path": "downloads/licensed-characters/RenderpeopleEric/EricSource/tex/rp_eric_rigged_001_dif.jpg",
+      "bytes": 5494792,
+      "sha256": "586ca7aa7acdd4a66258045553d434d9cb52f45c6f49a992d897c3fd4705ac2e"
+    },
+    {
+      "path": "downloads/licensed-characters/RenderpeopleEric/EricSource/tex/rp_eric_rigged_001_gloss.jpg",
+      "bytes": 5062610,
+      "sha256": "73bf1d7c419557b4794897abbf1dbe14db81d650cd6374acae423b5b98832c27"
+    },
+    {
+      "path": "downloads/licensed-characters/RenderpeopleEric/EricSource/tex/rp_eric_rigged_001_mask01.jpg",
+      "bytes": 2315050,
+      "sha256": "a90f702c33cabba892276821fbc5049595a10e6d3ca29e0ffd955e6c34a6cc21"
+    },
+    {
+      "path": "downloads/licensed-characters/RenderpeopleEric/EricSource/tex/rp_eric_rigged_001_mask02.jpg",
+      "bytes": 2243825,
+      "sha256": "704b7a16f97bb5a833986fa790e08127b892a90eebcd9ca8ffe01cad75b5cdf6"
+    },
+    {
+      "path": "downloads/licensed-characters/RenderpeopleEric/EricSource/tex/rp_eric_rigged_001_norm.jpg",
+      "bytes": 12880171,
+      "sha256": "9ebc1c277550ead990b62f1c9ea4ba84e79a1a771ece642d2af0fb5c09e47c8f"
+    }
+  ],
+  "full_scene_local_path": "client/OddsWell/Saved/NextTen20260912/ScannedHumanStudy/ScannedHumanWalk.blend",
+  "publisher_license": "https://renderpeople.com/general-terms-and-conditions/",
+  "raw_asset_files_committed": false,
+  "walking_preview": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "width": 640,
+        "height": 704,
+        "r_frame_rate": "12/1",
+        "nb_read_frames": "24"
+      }
+    ],
+    "format": {
+      "duration": "2.000000"
+    }
+  }
+}
