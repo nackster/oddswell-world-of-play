@@ -1,0 +1,18 @@
+{
+  "candidate_sha256": "127a003d16b624457dc8a8be809edbdda9666f314e892a5395102cef053c4517",
+  "source_sha256": "15eaf6cf97f43895d2fdee1f48828b5d10740d6916776a611a9c29f057ddf0d5",
+  "renderer": "Blender 4.5.5 LTS / Cycles / OPTIX",
+  "matched_views": [
+    "SideTorso",
+    "FrontTorso",
+    "RearTorso",
+    "Full",
+    "Gameplay"
+  ],
+  "frames": [
+    1,
+    7,
+    13
+  ],
+  "native_geometry": true
+}
