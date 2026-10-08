@@ -1,0 +1,82 @@
+{
+  "source_sha256": "c1f8fac3579c2ea93bf31fcff052d68db887f1b5d74cedcdac4df4b7250e2d66",
+  "candidate_sha256": "90af187cf9cfa558f4d06a4b7398d02a8097991309e06789dbf61b0ebc36afeb",
+  "matched_close_full_render": {
+    "candidate_sha256": "90af187cf9cfa558f4d06a4b7398d02a8097991309e06789dbf61b0ebc36afeb",
+    "source_sha256": "c1f8fac3579c2ea93bf31fcff052d68db887f1b5d74cedcdac4df4b7250e2d66",
+    "renderer": "Blender 4.5.5 LTS / Cycles / CPU",
+    "samples": 40,
+    "arguments": [
+      "--skip-gameplay",
+      "--focus",
+      "--isolated",
+      "--cpu"
+    ],
+    "native_geometry": true
+  },
+  "game_camera": {
+    "candidate_sha256": "90af187cf9cfa558f4d06a4b7398d02a8097991309e06789dbf61b0ebc36afeb",
+    "frame": 7,
+    "renderer": "Blender 4.5.5 LTS / Cycles / CPU",
+    "samples": 16,
+    "resolution": [
+      1280,
+      720
+    ],
+    "native_geometry": true,
+    "scene_geometry_changed_for_render": false
+  },
+  "walking_preview": {
+    "file": "Walking.mp4",
+    "sha256": "aec0e52dcc86928fdd3e9721a628db6a9776de1ad67de50649be0d8fc2022ebc",
+    "native_frames": [
+      1,
+      3,
+      5,
+      7,
+      9,
+      11,
+      13,
+      15,
+      17,
+      19,
+      21,
+      23,
+      25,
+      27,
+      29,
+      31,
+      33,
+      35,
+      37,
+      39,
+      41,
+      43,
+      45,
+      47
+    ],
+    "renderer": "Blender 4.5.5 LTS / Cycles / CPU",
+    "samples": 8,
+    "resolution": [
+      640,
+      704
+    ],
+    "character_isolated": true,
+    "ffprobe": {
+      "programs": [],
+      "stream_groups": [],
+      "streams": [
+        {
+          "width": 640,
+          "height": 704,
+          "r_frame_rate": "12/1",
+          "nb_read_frames": "24"
+        }
+      ],
+      "format": {
+        "duration": "2.000000"
+      }
+    }
+  },
+  "scope": "Offline intermediate human review; visual acceptance and the complete goal remain open."
+}

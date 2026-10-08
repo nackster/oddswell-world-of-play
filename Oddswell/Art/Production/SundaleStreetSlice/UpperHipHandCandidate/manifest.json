@@ -1,0 +1,122 @@
+{
+  "source_sha256": "c1f8fac3579c2ea93bf31fcff052d68db887f1b5d74cedcdac4df4b7250e2d66",
+  "candidate_sha256": "90af187cf9cfa558f4d06a4b7398d02a8097991309e06789dbf61b0ebc36afeb",
+  "files": [
+    {
+      "path": "UpperDrape.blend",
+      "bytes": 731974553,
+      "sha256": "90af187cf9cfa558f4d06a4b7398d02a8097991309e06789dbf61b0ebc36afeb"
+    },
+    {
+      "path": "rebuild.py",
+      "bytes": 2236,
+      "sha256": "e99f4eefaf72480041587512375fdc18e7aa38c6ffee05900847df9c9c5a7b4c"
+    },
+    {
+      "path": "audit.py",
+      "bytes": 4456,
+      "sha256": "0b9d3486d3d8735ffc4b0ea86d79d2a8325d24b29bdac9733afe71fe158eadd0"
+    },
+    {
+      "path": "probe.py",
+      "bytes": 3331,
+      "sha256": "33ccc69493572355fa2ca620e6e0d16ea9d28a749d12531eac4df4aff8312d16"
+    },
+    {
+      "path": "render.py",
+      "bytes": 4719,
+      "sha256": "f67580fff3e15ef8394baecc96afcdc5a2c2bf594ffeddf9c59596467e68e77f"
+    },
+    {
+      "path": "render-walk.py",
+      "bytes": 2505,
+      "sha256": "a3afa070096e789961ce6afdda7d7b803c26bd06bcd2600dce48889d11f6e6b2"
+    },
+    {
+      "path": "render-game.py",
+      "bytes": 876,
+      "sha256": "cced194c5e0240e521e43bd80c2c75eb47479fa68c4b891b99f6d35f08c559bd"
+    },
+    {
+      "path": "build-report.json",
+      "bytes": 190558,
+      "sha256": "0e07d5b1f4e154cd91c2c06d2a78158c43a60d9abebd136ce34ef9009ee92081"
+    },
+    {
+      "path": "cold-audit.json",
+      "bytes": 731,
+      "sha256": "864dd309abf1f27db248d66182c9cb9f8d8991337971fdb4e5f8fa00d0397aa9"
+    },
+    {
+      "path": "probe.json",
+      "bytes": 19035,
+      "sha256": "80d2e089ae0d202a98163c0c55bfe509a0c302b8b002be3e29dbee81743bedfe"
+    },
+    {
+      "path": "render-events.json",
+      "bytes": 394,
+      "sha256": "89cbadbb7d6f3c4b899a9d7f56bc57d068348c1cb8fd17a16528bfde25c62c4a"
+    },
+    {
+      "path": "game-render.json",
+      "bytes": 288,
+      "sha256": "b5e10ed1cc402b3f8d398175b84224257465757bb0960382752d97531418620b"
+    },
+    {
+      "path": "Before_HipFront.png",
+      "bytes": 932267,
+      "sha256": "b77dfd8561f55170ac68b8dfb796e5fc1a15cae6e22bf7fdf9bdb5fe875c8ce3"
+    },
+    {
+      "path": "Before_FullThreeQuarter.png",
+      "bytes": 709500,
+      "sha256": "15de864f3d8dd068811a5925fe17307e1077a4c339ca64c404ed4d676b6b14ac"
+    },
+    {
+      "path": "After_HipFront.png",
+      "bytes": 931846,
+      "sha256": "acf7bc060237de4f1ee0bde21299c30915f11f801de56f0cb324c15142eb1af5"
+    },
+    {
+      "path": "After_FullThreeQuarter.png",
+      "bytes": 709269,
+      "sha256": "e994b4e19d2d3e2dfe9598a334bb428181a73ca880ebf45c94076298b2a6bf1b"
+    },
+    {
+      "path": "Gameplay.png",
+      "bytes": 1637443,
+      "sha256": "325feadc8c77df49b3528630abe3c2237b19e5030b37794f5c8536d75152f4b7"
+    },
+    {
+      "path": "Walking.mp4",
+      "bytes": 142252,
+      "sha256": "aec0e52dcc86928fdd3e9721a628db6a9776de1ad67de50649be0d8fc2022ebc"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1966,
+      "sha256": "34f238d69906da8376c39cbf228202a9d06e95e31128d65a45d73071dcb2ccf8"
+    },
+    {
+      "path": "WholeFigureReview.md",
+      "bytes": 4824,
+      "sha256": "7389b50ba8aab3257ff08f10ed4a95befb233ef926346802980e17a0d8933cdd"
+    },
+    {
+      "path": "physical-study.py",
+      "bytes": 9694,
+      "sha256": "93b7ef77345f04f51abb0d696f5ed7840e68445f5ab625456c9056a813799f88"
+    },
+    {
+      "path": "physical-build-report.json",
+      "bytes": 22342,
+      "sha256": "de9f4d139054d377a704eb165cf3cb8686bcf50a26dc0f33e6a06561e3d9e9d5"
+    },
+    {
+      "path": "render-provenance.json",
+      "bytes": 1874,
+      "sha256": "231b47ae987ad5e79c355a5b9d9e139366670f8a53acca05cc410e030a52ac14"
+    }
+  ],
+  "scope": "Reviewed relaxed fingers and modest upper-hip ease, not final human acceptance."
+}
