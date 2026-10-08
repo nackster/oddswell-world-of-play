@@ -1,0 +1,72 @@
+{
+  "source_sha256": "90af187cf9cfa558f4d06a4b7398d02a8097991309e06789dbf61b0ebc36afeb",
+  "rejected_gradual_candidate_sha256": "1b18aaeed4f1b2a69008cf05d72895a00baac2caacbbce73a6c61cbdab450832",
+  "rejected_trials_only": true,
+  "files": [
+    {
+      "path": "AbruptRecut.py",
+      "bytes": 11309,
+      "sha256": "42dfc5463ffa00fb1fef556ffb9e6e51c4358df5aca9d0ab3db05fd56b77236b"
+    },
+    {
+      "path": "AbruptRecutReport.json",
+      "bytes": 259812,
+      "sha256": "b71afd7025881fddd9846bf7e62a1a7a72cd5b1d71881358ecb6904073920088"
+    },
+    {
+      "path": "GradualRecut.py",
+      "bytes": 11600,
+      "sha256": "e193fba91a1479d5ae40491feacbc24a5443408739b7686b71de1ebdc49f2a11"
+    },
+    {
+      "path": "GradualRecutReport.json",
+      "bytes": 287973,
+      "sha256": "0e165a9bd1325545c4d2e102d27acfcf5a999928b8f6f637f7105694b92e99ef"
+    },
+    {
+      "path": "InspectPattern.py",
+      "bytes": 1697,
+      "sha256": "d1ea7b48d55ea52c2a286f5d62cee95ba4411540f866d8b8d4171756cbb511d3"
+    },
+    {
+      "path": "PatternInspection.json",
+      "bytes": 777,
+      "sha256": "f5a42b943f76bed7575a952005a73f8dc509af3dbc5db5b347ba86dd77c59926"
+    },
+    {
+      "path": "ProbeThreePoses.py",
+      "bytes": 3185,
+      "sha256": "27a024ae77d84094176a2b97df288a07e9220e699ce395c7436d5b8a4cc3be42"
+    },
+    {
+      "path": "README.md",
+      "bytes": 3160,
+      "sha256": "69a5e2064e50cd960d226333587ad58483bc2532a87875b26256e6829a8d1d87"
+    },
+    {
+      "path": "RejectedAbruptRecut_HipFront.png",
+      "bytes": 937393,
+      "sha256": "8f47fde8a79b3ffdb65b134590a6cec163d0b8bfd086caa28726ece197547e51"
+    },
+    {
+      "path": "RejectedGradualRecut_Full.png",
+      "bytes": 711386,
+      "sha256": "0fefafa918b2b49f8d83df09d2e355ee6a653ac6f4641613a08ef63dc39e1604"
+    },
+    {
+      "path": "RejectedGradualRecut_HipFront.png",
+      "bytes": 931499,
+      "sha256": "dce1955fb2c5d3df56cf63372643bb9203ef7f0bed022364a6fcdb845830ae74"
+    },
+    {
+      "path": "RenderTrial.py",
+      "bytes": 4723,
+      "sha256": "a0ace010eae9d628ca0ff8d5013f4c795a76947db9604d4ad72a21da6e169cd9"
+    },
+    {
+      "path": "ThreePoseSurfaceProbe.json",
+      "bytes": 4418,
+      "sha256": "aa9f3479d5f6736322c761853e6e1227384b38b3dc0dcc249390b85d88536b68"
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "rest_control_edge_min_m": 0.0004249141382521153,
+  "rest_control_edge_median_m": 0.0076213641359248645,
+  "rest_faces_below_1e_10_square_m": 0,
+  "near_non_two_hop_vertex_pairs_below_3mm": [
+    {
+      "id": 4142,
+      "other": 4221,
+      "distance_m": 0.0027694522868841887,
+      "world": [
+        -0.7131770849227905,
+        -2.3114004135131836,
+        0.5962204933166504
+      ]
+    },
+    {
+      "id": 4221,
+      "other": 4142,
+      "distance_m": 0.0027694522868841887,
+      "world": [
+        -0.7144129872322083,
+        -2.3105454444885254,
+        0.5985467433929443
+      ]
+    }
+  ],
+  "scope": "Diagnostic source-evaluated initial control sheet density; nearest-vertex and triangle-fan area sampling, not complete self-intersection certification."
+}

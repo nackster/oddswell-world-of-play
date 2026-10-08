@@ -1,0 +1,15 @@
+# Rejected cloth rest-pattern research - October 8, 2026
+
+The retained human remains `UpperHipHandCandidate/UpperDrape.blend` (source SHA-256 `90af187cf9cfa558f4d06a4b7398d02a8097991309e06789dbf61b0ebc36afeb`). Neither trial replaces that model or grants human visual acceptance. The full character/landscape goal remains active.
+
+The first trial used a graded 12% native Cloth shrink field, held waist and hem boundary controls, and 0.00004 kg per vertex (about 0.211 kg over 5,279 controls). This corrects the earlier diagnostic's excessive 0.15 kg per vertex. Mass, spring and damping values remain art assumptions, not calibrated cotton measurements. Ninety actual consecutive frames ended with a 25.757 mm maximum step. The rendered result has sharp rumpling and is rejected.
+
+The second trial ramped the reduction to 8% over frames 1-40, increased solver quality to 24 and collision quality to 10, reduced time scale to 0.25, increased damping and ran 180 consecutive frames. The waist and all pinned boundary controls remain exactly at the starting points throughout. The last maximum step is 11.479 mm, so this is not converged. The rendered result remains padded and introduces wrinkles without resolving the requested hip silhouette. It is rejected.
+
+The initial control-sheet inspection reports minimum edge 0.425 mm, median edge 7.621 mm, no faces below 1e-10 square metres, and only two sampled vertices with non-two-hop neighbours closer than 3 mm (2.769 mm apart). This diagnostic does not establish a collapsed-face explanation for the oscillation. It is a nearest-vertex/triangle-fan screen, not complete mesh certification.
+
+An actual render-triangle comparison at poses 1, 13 and 35 finds zero candidate shorts self pairs at pose 1, but 394 and 407 at poses 13 and 35, where the immediate source has zero. Shorts/actual-leg pairs are zero in these poses; upper torso/pelvic contacts remain recorded and unproven. The relaxed hands and source jacket retain their source-relative self-pair sets. These findings show that a solved rest sheet followed by the old armature weights alone is insufficient; pose-dependent cloth fitting must be developed with the rest pattern.
+
+Next build a new anatomy-fitted cotton sheet that addresses the upper-hip silhouette and walking clearance together. Review it close, full-body and in motion before expanding the screen or retaining a new human. Continue torso/collar/skin/material work and whole-human review, then the planned storefront/canopy/ground planting pass and gated engine handoff. Do not repeat either rejected trial as an accepted body improvement.
+
+The trial Blender files remain in the ignored local study folders; their hashes and solver traces are recorded here. The retained source stays unchanged. Each recipe finds the repository root and writes its own trial model/report when run from this folder. `RenderTrial.py`, `InspectPattern.py` and `ProbeThreePoses.py` expect the second recipe's `StableRecut.blend` output. The recipes preserve editable source objects and licensed assets but these experimental outputs are not final art, dynamic walking-cloth validation or runtime assets.
