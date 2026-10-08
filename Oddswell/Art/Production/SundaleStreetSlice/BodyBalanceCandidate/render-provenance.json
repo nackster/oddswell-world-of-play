@@ -1,0 +1,165 @@
+{
+  "source_sha256": "127a003d16b624457dc8a8be809edbdda9666f314e892a5395102cef053c4517",
+  "candidate_sha256": "c1f8fac3579c2ea93bf31fcff052d68db887f1b5d74cedcdac4df4b7250e2d66",
+  "renderer": "Blender 4.5.5 LTS / Cycles / OPTIX",
+  "native_geometry": true,
+  "matched_images": [
+    {
+      "file": "Before_FrontTorso.png",
+      "frame": 13,
+      "native_sha256": "127a003d16b624457dc8a8be809edbdda9666f314e892a5395102cef053c4517",
+      "png_sha256": "f58b95cdec70d92efc3b2624846dfc77372669cae7bbc30aee95853ad961fd5b",
+      "samples": 40,
+      "source_image_copied_from": "SleeveContourCandidate/After_FrontTorso.png"
+    },
+    {
+      "file": "Before_HipFront.png",
+      "frame": 13,
+      "native_sha256": "127a003d16b624457dc8a8be809edbdda9666f314e892a5395102cef053c4517",
+      "png_sha256": "a6b35da26f7c1161a2dfbc162e27fe94769e34dac69a9129c77b7f2786c25b83",
+      "samples": 40,
+      "source_image_copied_from": null
+    },
+    {
+      "file": "Before_FullThreeQuarter.png",
+      "frame": 13,
+      "native_sha256": "127a003d16b624457dc8a8be809edbdda9666f314e892a5395102cef053c4517",
+      "png_sha256": "3e422abacb26c26bd1dc3adaee3dbe63b2be854021540c726c1faa30611fa6ef",
+      "samples": 40,
+      "source_image_copied_from": null
+    },
+    {
+      "file": "Before_RearTorso.png",
+      "frame": 1,
+      "native_sha256": "127a003d16b624457dc8a8be809edbdda9666f314e892a5395102cef053c4517",
+      "png_sha256": "a9c506b077c1863ceb2a1e1db7a3a13ad823cd81f54814d60c240b0da866873d",
+      "samples": 40,
+      "source_image_copied_from": "SleeveContourCandidate/After_RearTorso.png"
+    },
+    {
+      "file": "Before_Gameplay.png",
+      "frame": 7,
+      "native_sha256": "127a003d16b624457dc8a8be809edbdda9666f314e892a5395102cef053c4517",
+      "png_sha256": "d86efaa12544e63b7cafe3e5870f8e4f2b1180c5c106c5171d55ee0400d6c060",
+      "samples": 40,
+      "source_image_copied_from": "SleeveContourCandidate/After_Gameplay.png"
+    },
+    {
+      "file": "After_FrontTorso.png",
+      "frame": 13,
+      "native_sha256": "c1f8fac3579c2ea93bf31fcff052d68db887f1b5d74cedcdac4df4b7250e2d66",
+      "png_sha256": "1aa102f3b33538a8b17aff00a42a6a11a1b9a87bcba8959999ca89662eec76e5",
+      "samples": 40,
+      "source_image_copied_from": null
+    },
+    {
+      "file": "After_HipFront.png",
+      "frame": 13,
+      "native_sha256": "c1f8fac3579c2ea93bf31fcff052d68db887f1b5d74cedcdac4df4b7250e2d66",
+      "png_sha256": "b75c04e2a36a2f35df52070e96fa0bc5f39f562a963aeb19f2b6501c6b9d60fa",
+      "samples": 40,
+      "source_image_copied_from": null
+    },
+    {
+      "file": "After_FullThreeQuarter.png",
+      "frame": 13,
+      "native_sha256": "c1f8fac3579c2ea93bf31fcff052d68db887f1b5d74cedcdac4df4b7250e2d66",
+      "png_sha256": "1112732fc9626ad6083500b48880dc2085f7b886c73abad288927ef6c6dd2258",
+      "samples": 40,
+      "source_image_copied_from": null
+    },
+    {
+      "file": "After_RearTorso.png",
+      "frame": 1,
+      "native_sha256": "c1f8fac3579c2ea93bf31fcff052d68db887f1b5d74cedcdac4df4b7250e2d66",
+      "png_sha256": "36b82d4455fc73f0613360e644b459a3eda3d42d07ef40cbbdefe9b7a3c9c283",
+      "samples": 40,
+      "source_image_copied_from": null
+    },
+    {
+      "file": "After_Gameplay.png",
+      "frame": 7,
+      "native_sha256": "c1f8fac3579c2ea93bf31fcff052d68db887f1b5d74cedcdac4df4b7250e2d66",
+      "png_sha256": "a27d6c58ab3c6e1f8083607738c7c0bc53c2544a922b9b816f0a3fc12884ec0b",
+      "samples": 40,
+      "source_image_copied_from": null
+    }
+  ],
+  "render_runs": [
+    {
+      "candidate_sha256": "c1f8fac3579c2ea93bf31fcff052d68db887f1b5d74cedcdac4df4b7250e2d66",
+      "source_sha256": "127a003d16b624457dc8a8be809edbdda9666f314e892a5395102cef053c4517",
+      "renderer": "Blender 4.5.5 LTS / Cycles / OPTIX",
+      "samples": 40,
+      "arguments": [
+        "--skip-gameplay",
+        "--reuse-source"
+      ],
+      "native_geometry": true
+    },
+    {
+      "candidate_sha256": "c1f8fac3579c2ea93bf31fcff052d68db887f1b5d74cedcdac4df4b7250e2d66",
+      "source_sha256": "127a003d16b624457dc8a8be809edbdda9666f314e892a5395102cef053c4517",
+      "renderer": "Blender 4.5.5 LTS / Cycles / OPTIX",
+      "samples": 40,
+      "arguments": [
+        "--after-only",
+        "--gameplay-only"
+      ],
+      "native_geometry": true
+    }
+  ],
+  "walking_preview": {
+    "native_sha256": "c1f8fac3579c2ea93bf31fcff052d68db887f1b5d74cedcdac4df4b7250e2d66",
+    "frames": [
+      1,
+      3,
+      5,
+      7,
+      9,
+      11,
+      13,
+      15,
+      17,
+      19,
+      21,
+      23,
+      25,
+      27,
+      29,
+      31,
+      33,
+      35,
+      37,
+      39,
+      41,
+      43,
+      45,
+      47
+    ],
+    "samples": 8,
+    "resolution": [
+      640,
+      704
+    ],
+    "encoded_fps": 12,
+    "encoded_duration_s": 2,
+    "file": "Walking.mp4",
+    "sha256": "e1a89f700ce2458fa4de4f55764aaeb13098f2512cdc6815fb90dc98852909f2",
+    "ffprobe": {
+      "programs": [],
+      "stream_groups": [],
+      "streams": [
+        {
+          "width": 640,
+          "height": 704,
+          "r_frame_rate": "12/1",
+          "nb_read_frames": "24"
+        }
+      ],
+      "format": {
+        "duration": "2.000000"
+      }
+    }
+  }
+}

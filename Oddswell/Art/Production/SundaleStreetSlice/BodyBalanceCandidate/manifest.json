@@ -1,0 +1,112 @@
+{
+  "source_sha256": "127a003d16b624457dc8a8be809edbdda9666f314e892a5395102cef053c4517",
+  "candidate_sha256": "c1f8fac3579c2ea93bf31fcff052d68db887f1b5d74cedcdac4df4b7250e2d66",
+  "files": [
+    {
+      "path": "BodyBalance.blend",
+      "bytes": 731772831,
+      "sha256": "c1f8fac3579c2ea93bf31fcff052d68db887f1b5d74cedcdac4df4b7250e2d66"
+    },
+    {
+      "path": "build.py",
+      "bytes": 15259,
+      "sha256": "61f36ea094ca5d665115a3aa958da4439fdf9d6586cae7021c876731b4805bc1"
+    },
+    {
+      "path": "build-report.json",
+      "bytes": 436959,
+      "sha256": "d00473f3206e53e64855b666894f8a22cd9986abe55b0ef2e81e2c1a9e1450f0"
+    },
+    {
+      "path": "audit.py",
+      "bytes": 16047,
+      "sha256": "3f8a735532052e3533ec72a50fd2ee39aea78be68627e1f5480c1ba4d60560fd"
+    },
+    {
+      "path": "cold-audit.json",
+      "bytes": 4094576,
+      "sha256": "dea49469e2081a3fcb44cd6ecaa5d2a8e549fabc179c6edaf95be91ea93b5930"
+    },
+    {
+      "path": "render.py",
+      "bytes": 4369,
+      "sha256": "2af4de204e6ad40d8bc5d1dcdfb1553bc2c2568336e3ad74d4280fbf95878409"
+    },
+    {
+      "path": "render-walk.py",
+      "bytes": 2349,
+      "sha256": "7f011ebd610e01812e38924b87bbfa4ee9ebb0bb6d8fb5aed355bd184fa81e1b"
+    },
+    {
+      "path": "render-provenance.json",
+      "bytes": 5187,
+      "sha256": "8ecfcb92af91e42acd4d7411895fb237b8a05e9c691614bfaffa7ac1fea0395a"
+    },
+    {
+      "path": "Walking.mp4",
+      "bytes": 373436,
+      "sha256": "e1a89f700ce2458fa4de4f55764aaeb13098f2512cdc6815fb90dc98852909f2"
+    },
+    {
+      "path": "README.md",
+      "bytes": 4111,
+      "sha256": "72a20821d14f6775018e2f287b1778f4dcf5842683c3af4b806ee794140ce3d8"
+    },
+    {
+      "path": "WholeFigureReview.md",
+      "bytes": 6975,
+      "sha256": "06fe38c33729f0c3bd15a063fca1fd2fb6904f0bfb785e4a6644e554b98d08f5"
+    },
+    {
+      "path": "Before_FrontTorso.png",
+      "bytes": 1088589,
+      "sha256": "f58b95cdec70d92efc3b2624846dfc77372669cae7bbc30aee95853ad961fd5b"
+    },
+    {
+      "path": "Before_HipFront.png",
+      "bytes": 1019977,
+      "sha256": "a6b35da26f7c1161a2dfbc162e27fe94769e34dac69a9129c77b7f2786c25b83"
+    },
+    {
+      "path": "Before_FullThreeQuarter.png",
+      "bytes": 855689,
+      "sha256": "3e422abacb26c26bd1dc3adaee3dbe63b2be854021540c726c1faa30611fa6ef"
+    },
+    {
+      "path": "Before_RearTorso.png",
+      "bytes": 1447935,
+      "sha256": "a9c506b077c1863ceb2a1e1db7a3a13ad823cd81f54814d60c240b0da866873d"
+    },
+    {
+      "path": "Before_Gameplay.png",
+      "bytes": 3543024,
+      "sha256": "d86efaa12544e63b7cafe3e5870f8e4f2b1180c5c106c5171d55ee0400d6c060"
+    },
+    {
+      "path": "After_FrontTorso.png",
+      "bytes": 1086249,
+      "sha256": "1aa102f3b33538a8b17aff00a42a6a11a1b9a87bcba8959999ca89662eec76e5"
+    },
+    {
+      "path": "After_HipFront.png",
+      "bytes": 1019595,
+      "sha256": "b75c04e2a36a2f35df52070e96fa0bc5f39f562a963aeb19f2b6501c6b9d60fa"
+    },
+    {
+      "path": "After_FullThreeQuarter.png",
+      "bytes": 855336,
+      "sha256": "1112732fc9626ad6083500b48880dc2085f7b886c73abad288927ef6c6dd2258"
+    },
+    {
+      "path": "After_RearTorso.png",
+      "bytes": 1447823,
+      "sha256": "36b82d4455fc73f0613360e644b459a3eda3d42d07ef40cbbdefe9b7a3c9c283"
+    },
+    {
+      "path": "After_Gameplay.png",
+      "bytes": 3542971,
+      "sha256": "a27d6c58ab3c6e1f8083607738c7c0bc53c2544a922b9b816f0a3fc12884ec0b"
+    }
+  ],
+  "scope": "Reviewed offline editable chest/pelvis fitting checkpoint; human acceptance and full goal remain open."
+}
