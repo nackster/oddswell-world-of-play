@@ -1,7 +1,7 @@
 ---
 tags: [development, roadmap, beta]
 status: active-completion-plan
-date: 2026-10-10
+date: 2026-10-11
 ---
 
 # OddsWell completion roadmap
@@ -36,7 +36,7 @@ Milestones 1–4 form the current visual production path. A measured gameplay de
 ## Immediate work queue
 
 1. Refine the accepted scan's exaggerated stride and outward arm posture; retain full, front and side images and a native walking preview. **First checkpoint delivered:** [[Art/Production/SundaleStreetSlice/ScannedHumanMotionCandidate/README]]. Planted-foot timing and relaxed hands still need review.
-2. Build or obtain compatible casual clothing matching the existing off-white starter outfit and slate/teal Signal Jacket. A recolored vest does not meet this gate; source trousers cannot become shorts without appropriate leg geometry.
+2. Build or obtain compatible casual clothing matching the existing off-white starter outfit and slate/teal Signal Jacket. **Active; first Signal Jacket fitting checkpoint delivered:** [[Art/Production/SundaleStreetSlice/ScannedSignalJacketCandidate/README]]. A separate skinned shell, zip, collar and pockets now fit the accepted scan. Compatible underlying body/leg geometry, off-white starter garments and casual footwear remain unfinished; source trousers cannot become shorts without appropriate leg geometry.
 3. Review the whole character against the original street concept at close and gameplay distances, then establish the production export/rig/preset contract.
 4. Integrate one character candidate into the existing Unreal path and verify movement, equipment, peer visibility and persistence before expanding the catalog.
 5. Finish one city block around that accepted character, then benchmark the actual packaged combination.

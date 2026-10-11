@@ -1,0 +1,83 @@
+{
+  "native_candidate_local_path": "downloads/licensed-characters/RenderpeopleEric/SignalJacketStudy/OddsWellSignalJacket.blend",
+  "native_candidate_sha256": "fa455707fe273b6230fd19fa7f2a934ae560d81b551fb05850d732740f3c0099",
+  "native_candidate_bytes": 22361840,
+  "raw_vendor_files_committed": false,
+  "files": [
+    {
+      "path": "Back.png",
+      "bytes": 659452,
+      "sha256": "ed78ffb0cf5d7fcd1dff1e90a2bbaacfecbbc1f6b5beb8f94e3de480fe088ead"
+    },
+    {
+      "path": "Close.png",
+      "bytes": 694987,
+      "sha256": "94ab3cf2a654dc09477b7d4d269c189dc8d9553da87138ca073a5e1b4ea4b74a"
+    },
+    {
+      "path": "Front.png",
+      "bytes": 689663,
+      "sha256": "00f3007ebafb9db0664158a34b7206a481a0139e120fa9e90bf0faa8f3fc9bcf"
+    },
+    {
+      "path": "Full.png",
+      "bytes": 665424,
+      "sha256": "8f2b6b2947fde6ecf3d1421a9e92590b11833b954fe418ac7594df98d91ea07d"
+    },
+    {
+      "path": "Gameplay.png",
+      "bytes": 1637100,
+      "sha256": "1e9a4e40c07ca6cfeb295d4c46ebc242f47e52ade3ed53ceaf15c9641acf8f25"
+    },
+    {
+      "path": "README.md",
+      "bytes": 3256,
+      "sha256": "5f349bf80eed1de7b67653b2ef45d6fbaf752f869d17c8b2a8450853b5afb357"
+    },
+    {
+      "path": "Walking.mp4",
+      "bytes": 121486,
+      "sha256": "3a01bab88f388eddf7df8f93a191c472985efab546697dd32b7d45ba530c7463"
+    },
+    {
+      "path": "build.py",
+      "bytes": 11002,
+      "sha256": "e6c4740aba1600115e2cad87cf80d47931be5614ffeb4b82172650bc657c3e47"
+    },
+    {
+      "path": "inspect.py",
+      "bytes": 1466,
+      "sha256": "117bc203f2a6a2aa8fa11a3bec85eaf5fb3a78bcee0047b162e0a4ca7b3f70f2"
+    },
+    {
+      "path": "jacket-report.json",
+      "bytes": 9101,
+      "sha256": "98696d78af278d503e63c46e890be176ae4fd964e106d8a3294076e7dfb55940"
+    },
+    {
+      "path": "select.py",
+      "bytes": 1129,
+      "sha256": "85c4696bb790da7d56a177d98b5c708a6cfcb18a63db11c0a4da7ca2a7e1bdd4"
+    },
+    {
+      "path": "selection.json",
+      "bytes": 11045,
+      "sha256": "fa6ed9e5996509114abacba69d9fece209edb9bb673fdff1fb9724c109fc77c5"
+    },
+    {
+      "path": "street-report.json",
+      "bytes": 347,
+      "sha256": "b450845f32ab085138d110f76759694c494e303210bb92af5d211cde8814385b"
+    },
+    {
+      "path": "street.py",
+      "bytes": 1927,
+      "sha256": "aac80fae2b74da681585880f5af4d2bf45162ff61bbb06e5f54f8068218f87b5"
+    },
+    {
+      "path": "video-report.json",
+      "bytes": 222,
+      "sha256": "17411660e94eadd37de860011569341ded7461c7131935b9e3491b26107d4325"
+    }
+  ]
+}
