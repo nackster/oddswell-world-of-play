@@ -1,0 +1,47 @@
+{
+  "native_candidate_local_path": "downloads/licensed-characters/RenderpeopleEric/MotionRefinement/OddsWellHumanMotion.blend",
+  "native_candidate_sha256": "1c75042928c5df6eaa198c1fe032a5b3985224c33b766bd322b7dc10b126aca4",
+  "raw_vendor_files_committed": false,
+  "files": [
+    {
+      "path": "Front.png",
+      "bytes": 683572,
+      "sha256": "2e4ba377ac0b52d1dd4b70aaf070426da8035edd2b63b70a3a9cfc98822e8b60"
+    },
+    {
+      "path": "Full.png",
+      "bytes": 672420,
+      "sha256": "68bfb25c577e895bf90ebd5f9c33052d0f2f190600a89c05130d3181658ba34d"
+    },
+    {
+      "path": "README.md",
+      "bytes": 2277,
+      "sha256": "efdea045cc8f2c95d0a65170b3e071e4ec96637bcdcd6483f0f521f153b388d7"
+    },
+    {
+      "path": "Side.png",
+      "bytes": 663561,
+      "sha256": "8266d4133a613b1a87dcb7f2ea13c94e9c0d9c5da7c8f6649bbd643682f8fd9d"
+    },
+    {
+      "path": "Walking.mp4",
+      "bytes": 124894,
+      "sha256": "9412f3dfad25dd97f381bf27f8c82e303e556b541701e0308553eaabd71635e2"
+    },
+    {
+      "path": "motion-report.json",
+      "bytes": 15800,
+      "sha256": "5deb4c74e46a96aa840490f31d2f86304bb1716fad8d005e697adc8d885dfa65"
+    },
+    {
+      "path": "refine.py",
+      "bytes": 9282,
+      "sha256": "6d9d3aa8476c7678bb8d3146ef1e33fc6025de3c010e54b21a4cd801421c74ba"
+    },
+    {
+      "path": "video-report.json",
+      "bytes": 222,
+      "sha256": "17411660e94eadd37de860011569341ded7461c7131935b9e3491b26107d4325"
+    }
+  ]
+}
