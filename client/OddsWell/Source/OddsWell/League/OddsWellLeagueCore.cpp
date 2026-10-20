@@ -10,7 +10,7 @@
 
 // Results must match the Python reference bit for bit, so never contract or reorder floating point here.
 #if defined(_MSC_VER)
-#pragma float_control(precise, on)
+#pragma float_control(precise, on, push)
 #pragma fp_contract(off)
 #endif
 
@@ -795,7 +795,7 @@ std::string CanonicalEventLine(const FGameResult& Result, const FEvent& Event)
 
 namespace
 {
-	FAthlete A(const char* Name, int Shooting, int Passing, int Defense, int Rebounding, int Stamina, EConsistencyTier Consistency, EInvolvementTier Involvement, EOffDayPreference OffDay)
+	FAthlete MakeAthlete(const char* Name, int Shooting, int Passing, int Defense, int Rebounding, int Stamina, EConsistencyTier Consistency, EInvolvementTier Involvement, EOffDayPreference OffDay)
 	{
 		FAthlete Athlete;
 		Athlete.Ratings = FPlayer{Name, Shooting, Passing, Defense, Rebounding, Stamina};
@@ -805,31 +805,31 @@ namespace
 		return Athlete;
 	}
 
-	using C = EConsistencyTier;
-	using I = EInvolvementTier;
-	using O = EOffDayPreference;
+	using CT = EConsistencyTier;
+	using IT = EInvolvementTier;
+	using OD = EOffDayPreference;
 
 	FLeagueTeam HarborCityWaves()
 	{
 		return {"Harbor City Waves", "HCW", {
-			A("Jalen Cross", 84, 78, 72, 58, 86, C::Steady, I::Featured, O::Practice),
-			A("Micah Vale", 76, 86, 75, 55, 88, C::Normal, I::Featured, O::Social),
-			A("Dorian Pike", 79, 71, 82, 70, 84, C::Steady, I::Standard, O::Practice),
-			A("Kellan Shore", 72, 69, 78, 84, 80, C::Normal, I::Low, O::Social),
-			A("Andre North", 68, 65, 80, 88, 78, C::Normal, I::Low, O::Social),
-			A("Malik Frost", 74, 72, 74, 63, 82, C::Volatile, I::Standard, O::Practice),
+			MakeAthlete("Jalen Cross", 84, 78, 72, 58, 86, CT::Steady, IT::Featured, OD::Practice),
+			MakeAthlete("Micah Vale", 76, 86, 75, 55, 88, CT::Normal, IT::Featured, OD::Social),
+			MakeAthlete("Dorian Pike", 79, 71, 82, 70, 84, CT::Steady, IT::Standard, OD::Practice),
+			MakeAthlete("Kellan Shore", 72, 69, 78, 84, 80, CT::Normal, IT::Low, OD::Social),
+			MakeAthlete("Andre North", 68, 65, 80, 88, 78, CT::Normal, IT::Low, OD::Social),
+			MakeAthlete("Malik Frost", 74, 72, 74, 63, 82, CT::Volatile, IT::Standard, OD::Practice),
 		}};
 	}
 
 	FLeagueTeam MesaVistaSol()
 	{
 		return {"Mesa Vista Sol", "MVS", {
-			A("Nico Reyes", 82, 80, 70, 56, 87, C::Steady, I::Featured, O::Practice),
-			A("Tariq Stone", 78, 75, 83, 68, 85, C::Elite, I::Standard, O::Social),
-			A("Eli Mercer", 75, 84, 74, 60, 89, C::Normal, I::Featured, O::Practice),
-			A("Roman Voss", 73, 67, 79, 86, 81, C::Steady, I::Low, O::Social),
-			A("Cal Brooks", 70, 64, 81, 89, 77, C::Normal, I::Low, O::Practice),
-			A("Mateo Cruz", 74, 73, 73, 65, 83, C::Volatile, I::Standard, O::Social),
+			MakeAthlete("Nico Reyes", 82, 80, 70, 56, 87, CT::Steady, IT::Featured, OD::Practice),
+			MakeAthlete("Tariq Stone", 78, 75, 83, 68, 85, CT::Elite, IT::Standard, OD::Social),
+			MakeAthlete("Eli Mercer", 75, 84, 74, 60, 89, CT::Normal, IT::Featured, OD::Practice),
+			MakeAthlete("Roman Voss", 73, 67, 79, 86, 81, CT::Steady, IT::Low, OD::Social),
+			MakeAthlete("Cal Brooks", 70, 64, 81, 89, 77, CT::Normal, IT::Low, OD::Practice),
+			MakeAthlete("Mateo Cruz", 74, 73, 73, 65, 83, CT::Volatile, IT::Standard, OD::Social),
 		}};
 	}
 }
@@ -850,52 +850,52 @@ const FLeagueConfig& DefaultLeague()
 			HarborCityWaves(),
 			MesaVistaSol(),
 			{"Sundale Signal", "SDL", {
-				A("Theo Marsh", 86, 80, 74, 57, 88, C::Elite, I::Featured, O::Practice),
-				A("Ade Mensah", 74, 70, 84, 72, 85, C::Steady, I::Standard, O::Practice),
-				A("Rafael Duarte", 79, 82, 71, 58, 87, C::Normal, I::Featured, O::Social),
-				A("Bram Keller", 70, 66, 80, 85, 81, C::Steady, I::Low, O::Practice),
-				A("Jonah Wilde", 67, 63, 79, 90, 79, C::Normal, I::Low, O::Social),
-				A("Silas Moreau", 75, 74, 72, 64, 83, C::Volatile, I::Standard, O::Social),
+				MakeAthlete("Theo Marsh", 86, 80, 74, 57, 88, CT::Elite, IT::Featured, OD::Practice),
+				MakeAthlete("Ade Mensah", 74, 70, 84, 72, 85, CT::Steady, IT::Standard, OD::Practice),
+				MakeAthlete("Rafael Duarte", 79, 82, 71, 58, 87, CT::Normal, IT::Featured, OD::Social),
+				MakeAthlete("Bram Keller", 70, 66, 80, 85, 81, CT::Steady, IT::Low, OD::Practice),
+				MakeAthlete("Jonah Wilde", 67, 63, 79, 90, 79, CT::Normal, IT::Low, OD::Social),
+				MakeAthlete("Silas Moreau", 75, 74, 72, 64, 83, CT::Volatile, IT::Standard, OD::Social),
 			}},
 			{"Northgate Lanterns", "NGL", {
-				A("Owen Sterling", 77, 79, 84, 62, 88, C::Steady, I::Featured, O::Practice),
-				A("Desmond Hale", 72, 68, 86, 74, 86, C::Elite, I::Standard, O::Practice),
-				A("Felix Arden", 80, 72, 76, 60, 84, C::Normal, I::Featured, O::Social),
-				A("Ivo Brandt", 69, 64, 83, 86, 82, C::Steady, I::Low, O::Practice),
-				A("Lucas Ferro", 66, 62, 81, 88, 80, C::Normal, I::Low, O::Social),
-				A("Ezra Quinn", 73, 71, 75, 66, 81, C::Volatile, I::Standard, O::Social),
+				MakeAthlete("Owen Sterling", 77, 79, 84, 62, 88, CT::Steady, IT::Featured, OD::Practice),
+				MakeAthlete("Desmond Hale", 72, 68, 86, 74, 86, CT::Elite, IT::Standard, OD::Practice),
+				MakeAthlete("Felix Arden", 80, 72, 76, 60, 84, CT::Normal, IT::Featured, OD::Social),
+				MakeAthlete("Ivo Brandt", 69, 64, 83, 86, 82, CT::Steady, IT::Low, OD::Practice),
+				MakeAthlete("Lucas Ferro", 66, 62, 81, 88, 80, CT::Normal, IT::Low, OD::Social),
+				MakeAthlete("Ezra Quinn", 73, 71, 75, 66, 81, CT::Volatile, IT::Standard, OD::Social),
 			}},
 			{"Cobalt Bay Herons", "CBH", {
-				A("Kai Navarro", 88, 76, 68, 55, 85, C::Volatile, I::Featured, O::Social),
-				A("Marcus Lind", 81, 78, 70, 57, 84, C::Normal, I::Featured, O::Social),
-				A("Tobias Grant", 79, 74, 72, 61, 83, C::Volatile, I::Standard, O::Practice),
-				A("Rhys Calder", 72, 66, 77, 82, 80, C::Normal, I::Low, O::Practice),
-				A("Ben Okoro", 70, 63, 78, 85, 78, C::Normal, I::Low, O::Social),
-				A("Leon Varga", 76, 75, 71, 62, 82, C::Volatile, I::Standard, O::Social),
+				MakeAthlete("Kai Navarro", 88, 76, 68, 55, 85, CT::Volatile, IT::Featured, OD::Social),
+				MakeAthlete("Marcus Lind", 81, 78, 70, 57, 84, CT::Normal, IT::Featured, OD::Social),
+				MakeAthlete("Tobias Grant", 79, 74, 72, 61, 83, CT::Volatile, IT::Standard, OD::Practice),
+				MakeAthlete("Rhys Calder", 72, 66, 77, 82, 80, CT::Normal, IT::Low, OD::Practice),
+				MakeAthlete("Ben Okoro", 70, 63, 78, 85, 78, CT::Normal, IT::Low, OD::Social),
+				MakeAthlete("Leon Varga", 76, 75, 71, 62, 82, CT::Volatile, IT::Standard, OD::Social),
 			}},
 			{"Ridgeway Forge", "RWF", {
-				A("Aaron Tull", 78, 74, 78, 66, 90, C::Steady, I::Featured, O::Practice),
-				A("Garrett Stroud", 74, 77, 75, 60, 89, C::Normal, I::Featured, O::Practice),
-				A("Hugo Lindqvist", 71, 67, 79, 87, 88, C::Steady, I::Low, O::Practice),
-				A("Nate Okonjo", 68, 64, 80, 91, 86, C::Normal, I::Low, O::Social),
-				A("Simon Hart", 73, 70, 77, 70, 87, C::Normal, I::Standard, O::Social),
-				A("Viktor Sand", 75, 72, 73, 65, 85, C::Volatile, I::Standard, O::Social),
+				MakeAthlete("Aaron Tull", 78, 74, 78, 66, 90, CT::Steady, IT::Featured, OD::Practice),
+				MakeAthlete("Garrett Stroud", 74, 77, 75, 60, 89, CT::Normal, IT::Featured, OD::Practice),
+				MakeAthlete("Hugo Lindqvist", 71, 67, 79, 87, 88, CT::Steady, IT::Low, OD::Practice),
+				MakeAthlete("Nate Okonjo", 68, 64, 80, 91, 86, CT::Normal, IT::Low, OD::Social),
+				MakeAthlete("Simon Hart", 73, 70, 77, 70, 87, CT::Normal, IT::Standard, OD::Social),
+				MakeAthlete("Viktor Sand", 75, 72, 73, 65, 85, CT::Volatile, IT::Standard, OD::Social),
 			}},
 			{"Pinecrest Summit", "PCS", {
-				A("Elias Ward", 80, 88, 73, 56, 86, C::Steady, I::Featured, O::Practice),
-				A("Jasper Cole", 77, 84, 72, 58, 87, C::Normal, I::Featured, O::Social),
-				A("Mateus Lima", 75, 80, 76, 63, 84, C::Normal, I::Standard, O::Practice),
-				A("Quentin Rhodes", 71, 69, 79, 83, 82, C::Steady, I::Low, O::Practice),
-				A("Dario Vance", 68, 65, 80, 87, 80, C::Normal, I::Low, O::Social),
-				A("Callum Price", 74, 76, 71, 61, 83, C::Volatile, I::Standard, O::Social),
+				MakeAthlete("Elias Ward", 80, 88, 73, 56, 86, CT::Steady, IT::Featured, OD::Practice),
+				MakeAthlete("Jasper Cole", 77, 84, 72, 58, 87, CT::Normal, IT::Featured, OD::Social),
+				MakeAthlete("Mateus Lima", 75, 80, 76, 63, 84, CT::Normal, IT::Standard, OD::Practice),
+				MakeAthlete("Quentin Rhodes", 71, 69, 79, 83, 82, CT::Steady, IT::Low, OD::Practice),
+				MakeAthlete("Dario Vance", 68, 65, 80, 87, 80, CT::Normal, IT::Low, OD::Social),
+				MakeAthlete("Callum Price", 74, 76, 71, 61, 83, CT::Volatile, IT::Standard, OD::Social),
 			}},
 			{"Dune Harbor Comets", "DHC", {
-				A("Idris Kane", 92, 81, 75, 60, 88, C::Elite, I::Featured, O::Practice),
-				A("Ryan Beck", 72, 70, 73, 59, 83, C::Normal, I::Standard, O::Social),
-				A("Tomas Ruiz", 70, 74, 72, 57, 84, C::Volatile, I::Standard, O::Social),
-				A("Cole Ashby", 68, 63, 76, 84, 80, C::Normal, I::Low, O::Practice),
-				A("Wes Holt", 66, 61, 78, 86, 79, C::Normal, I::Low, O::Social),
-				A("Arlo Finch", 71, 72, 70, 62, 82, C::Volatile, I::Standard, O::Practice),
+				MakeAthlete("Idris Kane", 92, 81, 75, 60, 88, CT::Elite, IT::Featured, OD::Practice),
+				MakeAthlete("Ryan Beck", 72, 70, 73, 59, 83, CT::Normal, IT::Standard, OD::Social),
+				MakeAthlete("Tomas Ruiz", 70, 74, 72, 57, 84, CT::Volatile, IT::Standard, OD::Social),
+				MakeAthlete("Cole Ashby", 68, 63, 76, 84, 80, CT::Normal, IT::Low, OD::Practice),
+				MakeAthlete("Wes Holt", 66, 61, 78, 86, 79, CT::Normal, IT::Low, OD::Social),
+				MakeAthlete("Arlo Finch", 71, 72, 70, 62, 82, CT::Volatile, IT::Standard, OD::Practice),
 			}},
 		};
 		return League;
@@ -1528,6 +1528,7 @@ void AdvanceDay(const FLeagueConfig& Config, FLeagueState& State)
 		if (State.FinalSeries.Winner() >= 0)
 		{
 			State.Champion = State.FinalSeries.Winner();
+			State.LastChampion = State.Champion;
 			State.CompletedSeasons += 1;
 			State.SeasonNumber += 1;
 			StartSeason(Config, State, true);
@@ -1697,6 +1698,7 @@ std::string SerializeLeague(const FLeagueState& State)
 	Out << "phase=" << static_cast<int>(State.Phase) << "\n";
 	Out << "champion=" << State.Champion << "\n";
 	Out << "completed=" << State.CompletedSeasons << "\n";
+	Out << "last_champion=" << State.LastChampion << "\n";
 	Out << "elo=" << JoinValues<double>(State.Elo, FormatDoubleValue) << "\n";
 	for (const FStanding& Row : State.Standings)
 	{
@@ -1768,6 +1770,7 @@ bool DeserializeLeague(const FLeagueConfig& Config, const std::string& Text, FLe
 		else if (Key == "phase") { bOk = ParseInt(Value, Number) && Number >= 0 && Number <= 3; State.Phase = static_cast<ESeasonPhase>(Number); }
 		else if (Key == "champion") bOk = ParseInt(Value, State.Champion);
 		else if (Key == "completed") bOk = ParseInt(Value, State.CompletedSeasons);
+		else if (Key == "last_champion") bOk = ParseInt(Value, State.LastChampion);
 		else if (Key == "elo") bOk = ParseList<double>(Value, State.Elo, ParseDouble);
 		else if (Key == "standing")
 		{
@@ -1849,3 +1852,7 @@ bool DeserializeLeague(const FLeagueConfig& Config, const std::string& Text, FLe
 	return true;
 }
 }
+
+#if defined(_MSC_VER)
+#pragma float_control(pop)
+#endif

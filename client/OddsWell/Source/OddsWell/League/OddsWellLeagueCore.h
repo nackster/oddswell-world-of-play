@@ -236,7 +236,8 @@ namespace OddsWellLeague
 		std::vector<FScheduledGame> Games;
 		FSeriesState Semifinals[2];
 		FSeriesState FinalSeries;
-		int Champion = -1;
+		int Champion = -1;     // this season, once the final is decided
+		int LastChampion = -1; // most recently completed season
 		int CompletedSeasons = 0;
 	};
 

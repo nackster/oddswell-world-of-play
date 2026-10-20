@@ -5,6 +5,8 @@
 #include "Camera/CameraComponent.h"
 #include "Camera/PlayerCameraManager.h"
 #include "CharacterAppearanceSave.h"
+#include "Career/OddsWellCareer.h"
+#include "Career/OddsWellCareerReplayActor.h"
 #include "CharacterPresetCatalog.h"
 #include "CanonicalActiveGameExecutionCommitment.h"
 #include "CanonicalMatchWinnerOffer.h"
@@ -165,6 +167,25 @@ FVector StadiumCityReturnLocation = StadiumEntranceThreshold + FVector(0.0, -100
 const FVector StadiumInteriorSpawn(-1600.0, 0.0, 220.0);
 const FVector StadiumReplayOrigin(350.0, 0.0, 0.0);
 constexpr float StadiumReplayScale = 0.15f;
+
+// In career mode the career save owns the one Odds Bucks ledger; QA lanes keep their isolated slots.
+bool LoadOddsWellActiveLedger(const UObject* Context, FOddsWellOddsBucksLedger& OutLedger, int64& OutNextJobPayoutUnixSeconds, bool& bOutFound, FString& OutError)
+{
+	if (IsOddsWellCareerMode())
+	{
+		const UOddsWellCareerSubsystem* Career = UOddsWellCareerSubsystem::Get(Context);
+		OutNextJobPayoutUnixSeconds = 0;
+		bOutFound = Career && Career->IsReady();
+		if (!bOutFound)
+		{
+			OutError = TEXT("The career is not loaded.");
+			return false;
+		}
+		OutLedger = Career->GetLedger();
+		return true;
+	}
+	return LoadOddsWellOddsBucksLedger(UseOddsWellOddsBucksQaSlot(), OutLedger, OutNextJobPayoutUnixSeconds, bOutFound, OutError);
+}
 constexpr int64 JobRecoveryQaStartUnixSeconds = 2000000000;
 int32 StudioQaProcessStage = 0;
 int32 StadiumQaProcessStage = 0;
@@ -205,6 +226,10 @@ FString BuildJobFeedbackMessage(
 	const int64 RetryHours = FMath::Max<int64>(
 		1,
 		(RetryAfterSeconds + 3599) / 3600);
+	if (bCompleted && !bCredited && RetryAfterSeconds < 0)
+	{
+		return FString::Printf(TEXT("You already worked today - sleep in your Studio to start a new day | Balance: %lld"), Balance);
+	}
 	return !bPayoutReady
 		? TEXT("Shift payout unavailable - balance unchanged")
 		: !bCompleted
@@ -1997,6 +2022,16 @@ void FOddsWellStarterOutfitState::Reset()
 	EquippedBottom = NAME_None;
 }
 
+FTransform GetOddsWellStadiumReplayTransform()
+{
+	return FTransform(FRotator::ZeroRotator, StadiumReplayOrigin, FVector(StadiumReplayScale));
+}
+
+bool IsNearOddsWellTicketBooth(const FVector& Location, const float ExtraRadius)
+{
+	return FVector::Dist2D(Location, SportsbookInteractionLocation) <= SportsbookInteractionRadius + ExtraRadius;
+}
+
 AOddsWellPlaceholderCharacter::AOddsWellPlaceholderCharacter()
 {
 	PrimaryActorTick.bCanEverTick = true;
@@ -2192,7 +2227,7 @@ void AOddsWellPlaceholderCharacter::BeginPlay()
 		FOddsWellOddsBucksLedger Ledger;
 		int64 NextJobPayoutUnixSeconds = 0;
 		bool bFound = false;
-		if (LoadOddsWellOddsBucksLedger(UseOddsWellOddsBucksQaSlot(), Ledger, NextJobPayoutUnixSeconds, bFound, Error) && bFound)
+		if (LoadOddsWellActiveLedger(this, Ledger, NextJobPayoutUnixSeconds, bFound, Error) && bFound)
 		{
 			bModularChairOwned = OwnsOddsWellModularChair(Ledger);
 			bOwnsOneBedroom = OwnsOddsWellOneBedroomUpgrade(Ledger);
@@ -2456,6 +2491,11 @@ void AOddsWellPlaceholderCharacter::SetupPlayerInputComponent(UInputComponent* P
 
 void AOddsWellPlaceholderCharacter::ToggleLeagueView()
 {
+	if (IsOddsWellCareerMode())
+	{
+		bCareerStandingsOpen = IsLocallyControlled() && !bCareerStandingsOpen;
+		return;
+	}
 	if (!IsLocallyControlled() || !PublicLeagueSnapshot)
 	{
 		return;
@@ -3240,7 +3280,14 @@ void AOddsWellPlaceholderCharacter::Tick(const float DeltaSeconds)
 	PollApartmentManagementInteraction();
 	PollStudioInteraction();
 	PollStadiumInteraction();
-	PollSportsbookInteraction();
+	if (IsOddsWellCareerMode())
+	{
+		PollCareer();
+	}
+	else
+	{
+		PollSportsbookInteraction();
+	}
 	if (bQaEnabled)
 	{
 		RunQa(DeltaSeconds);
@@ -8887,7 +8934,11 @@ void AOddsWellSportsbookHUD::DrawHUD()
 	{
 		return;
 	}
-	if (Character->IsTicketBoothMenuVisible())
+	if (IsOddsWellCareerMode())
+	{
+		DrawCareerOverlay(*Character);
+	}
+	else if (Character->IsTicketBoothMenuVisible())
 	{
 		if (const FOddsWellCanonicalSettledLossReceipt* Receipt =
 			Character->GetTicketBoothSettledLossReceipt())
@@ -9620,6 +9671,12 @@ void AOddsWellLocomotionGameMode::BeginPlay()
 		{
 			UE_LOG(LogOddsWellLocomotion, Error, TEXT("%s"), *Evidence);
 		}
+	}
+	if (IsOddsWellCareerMode())
+	{
+		SyncCareerLedger();
+		UE_LOG(LogOddsWellLocomotion, Display, TEXT("ODDSWELL_CAREER_CITY|ledger_ready=%s|balance=%lld|canonical_fixture=false"), bOddsBucksReady ? TEXT("true") : TEXT("false"), OddsBucksLedger.GetBalance());
+		return;
 	}
 	FOddsWellCanonicalScheduledGameRecord CanonicalScheduledGame;
 	FString CanonicalScheduleError;
@@ -11295,6 +11352,40 @@ void AOddsWellLocomotionGameMode::PublishOddsBucksReconciliation()
 	UE_LOG(LogOddsWellLocomotion, Display, TEXT("ODDSWELL_ODDS_BUCKS_RECONCILIATION|result=PASS|read_only=true|qa=%s|entries=%d|balance=%lld|next_job_payout_unix=%lld|path=%s|backend=false|account=false"), bOddsBucksQaSlot ? TEXT("true") : TEXT("false"), OddsBucksLedger.GetEntries().Num(), OddsBucksLedger.GetBalance(), NextJobPayoutUnixSeconds, *Path);
 }
 
+bool AOddsWellLocomotionGameMode::IsCareerJob() const
+{
+	return IsOddsWellCareerMode();
+}
+
+void AOddsWellLocomotionGameMode::SyncCareerLedger()
+{
+	if (!IsOddsWellCareerMode())
+	{
+		return;
+	}
+	const UOddsWellCareerSubsystem* Career = UOddsWellCareerSubsystem::Get(this);
+	bOddsBucksReady = Career && Career->IsReady();
+	if (bOddsBucksReady)
+	{
+		OddsBucksLedger = Career->GetLedger();
+	}
+}
+
+bool AOddsWellLocomotionGameMode::PersistOddsBucksLedger(const FOddsWellOddsBucksLedger& Candidate, FString& OutError)
+{
+	if (!IsOddsWellCareerMode())
+	{
+		return SaveOddsWellOddsBucksLedger(Candidate, NextJobPayoutUnixSeconds, bOddsBucksQaSlot, OutError);
+	}
+	UOddsWellCareerSubsystem* Career = UOddsWellCareerSubsystem::Get(this);
+	if (!Career)
+	{
+		OutError = TEXT("The career is not loaded.");
+		return false;
+	}
+	return Career->CommitLedger(Candidate, OutError);
+}
+
 int64 AOddsWellLocomotionGameMode::GetOddsBucksNowUnixSeconds() const
 {
 	return OddsBucksQaNowUnixSeconds > 0 ? OddsBucksQaNowUnixSeconds : FDateTime::UtcNow().ToUnixTimestamp();
@@ -11313,6 +11404,26 @@ bool AOddsWellLocomotionGameMode::AdvanceOddsBucksQaClock(const int64 Seconds)
 
 bool AOddsWellLocomotionGameMode::TryCreditPlaceholderJob(bool& bOutCredited, int64& OutBalance, int64& OutRetryAfterSeconds, FString& OutCommandId, FString& OutError)
 {
+	if (IsOddsWellCareerMode())
+	{
+		UOddsWellCareerSubsystem* Career = UOddsWellCareerSubsystem::Get(this);
+		OutRetryAfterSeconds = 0;
+		OutCommandId.Reset();
+		if (!Career || !Career->WorkShift(bOutCredited, OutBalance, OutError))
+		{
+			if (OutError.IsEmpty())
+			{
+				OutError = TEXT("The career is not loaded.");
+			}
+			return false;
+		}
+		if (!bOutCredited)
+		{
+			OutRetryAfterSeconds = -1;
+		}
+		SyncCareerLedger();
+		return true;
+	}
 	bOutCredited = false;
 	OutBalance = OddsBucksLedger.GetBalance();
 	OutRetryAfterSeconds = 0;
@@ -11377,6 +11488,7 @@ bool AOddsWellLocomotionGameMode::TryPurchaseSignalJacket(
 {
 	bOutPurchased = false;
 	bOutOwned = false;
+	SyncCareerLedger();
 	OutBalance = OddsBucksLedger.GetBalance();
 	if (!bOddsBucksReady)
 	{
@@ -11405,11 +11517,7 @@ bool AOddsWellLocomotionGameMode::TryPurchaseSignalJacket(
 		OutError.Reset();
 		return true;
 	}
-	if (!SaveOddsWellOddsBucksLedger(
-			Candidate,
-			NextJobPayoutUnixSeconds,
-			bOddsBucksQaSlot,
-			OutError))
+	if (!PersistOddsBucksLedger(Candidate, OutError))
 	{
 		return false;
 	}
@@ -11429,6 +11537,7 @@ bool AOddsWellLocomotionGameMode::TryPurchaseModularChair(
 {
 	bOutPurchased = false;
 	bOutOwned = false;
+	SyncCareerLedger();
 	OutBalance = OddsBucksLedger.GetBalance();
 	if (!bOddsBucksReady)
 	{
@@ -11457,11 +11566,7 @@ bool AOddsWellLocomotionGameMode::TryPurchaseModularChair(
 		OutError.Reset();
 		return true;
 	}
-	if (!SaveOddsWellOddsBucksLedger(
-			Candidate,
-			NextJobPayoutUnixSeconds,
-			bOddsBucksQaSlot,
-			OutError))
+	if (!PersistOddsBucksLedger(Candidate, OutError))
 	{
 		return false;
 	}
@@ -11481,6 +11586,7 @@ bool AOddsWellLocomotionGameMode::TryPurchaseOneBedroomUpgrade(
 {
 	bOutPurchased = false;
 	bOutOwned = false;
+	SyncCareerLedger();
 	OutBalance = OddsBucksLedger.GetBalance();
 	if (!bOddsBucksReady)
 	{
@@ -11509,11 +11615,7 @@ bool AOddsWellLocomotionGameMode::TryPurchaseOneBedroomUpgrade(
 		OutError.Reset();
 		return true;
 	}
-	if (!SaveOddsWellOddsBucksLedger(
-			Candidate,
-			NextJobPayoutUnixSeconds,
-			bOddsBucksQaSlot,
-			OutError))
+	if (!PersistOddsBucksLedger(Candidate, OutError))
 	{
 		return false;
 	}
@@ -13147,8 +13249,8 @@ void AOddsWellStudioGameMode::BeginPlay()
 	int64 NextJobPayoutUnixSeconds = 0;
 	bool bLedgerFound = false;
 	FString LedgerError;
-	const bool bLedgerLoaded = LoadOddsWellOddsBucksLedger(
-		UseOddsWellOddsBucksQaSlot(),
+	const bool bLedgerLoaded = LoadOddsWellActiveLedger(
+		this,
 		Ledger,
 		NextJobPayoutUnixSeconds,
 		bLedgerFound,
@@ -13416,6 +13518,7 @@ APawn* AOddsWellStudioGameMode::SpawnDefaultPawnAtTransform_Implementation(ACont
 AOddsWellStadiumGameMode::AOddsWellStadiumGameMode()
 {
 	DefaultPawnClass = AOddsWellPlaceholderCharacter::StaticClass();
+	HUDClass = AOddsWellSportsbookHUD::StaticClass();
 }
 
 void AOddsWellStadiumGameMode::BeginPlay()
@@ -13517,6 +13620,11 @@ void AOddsWellStadiumGameMode::BeginPlay()
 		}
 	}
 	UE_LOG(LogOddsWellLocomotion, Display, TEXT("ODDSWELL_STADIUM_CONSTRUCTED|result=PASS|surfaces=%d|zones=%d|entry=true|concourse=true|court=true|public_viewing=true|future_marker=true|exit=true|unbranded=true|team_neutral=true"), GetStadiumSurfaces().Num(), GetStadiumZones().Num());
+	if (IsOddsWellCareerMode())
+	{
+		UE_LOG(LogOddsWellLocomotion, Display, TEXT("ODDSWELL_STADIUM_REPLAY_CONSUMER|spawned=false|source=career_menu"));
+		return;
+	}
 	const FTransform ReplayTransform(FRotator::ZeroRotator, StadiumReplayOrigin, FVector(StadiumReplayScale));
 	const AReplayBenchmarkActor* Replay = GetWorld()->SpawnActor<AReplayBenchmarkActor>(AReplayBenchmarkActor::StaticClass(), ReplayTransform, Parameters);
 	if (Replay)

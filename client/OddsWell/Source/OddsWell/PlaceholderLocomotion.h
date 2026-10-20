@@ -20,6 +20,11 @@ class USkeletalMeshComponent;
 class USkeletalMesh;
 class UAnimSequence;
 class UTextRenderComponent;
+class AOddsWellCareerReplayActor;
+
+// Shared Sundale/arena locations used by the career layer.
+ODDSWELL_API FTransform GetOddsWellStadiumReplayTransform();
+ODDSWELL_API bool IsNearOddsWellTicketBooth(const FVector& Location, float ExtraRadius = 0.0f);
 
 USTRUCT()
 struct FOddsWellSharedCityAppearance
@@ -99,6 +104,19 @@ public:
 	void CloseTicketBoothMenu();
 	void RefreshTicketBoothAfterCanonicalLock();
 
+	// Single-player career UI state, read by the HUD.
+	bool IsCareerBoardOpen() const { return bCareerBoardOpen; }
+	int32 GetCareerBoardRow() const { return CareerBoardRow; }
+	int32 GetCareerBoardSelection() const { return CareerBoardSelection; }
+	int64 GetCareerBoardStake() const { return CareerBoardStake; }
+	bool IsCareerStadiumMenuOpen() const { return bCareerStadiumMenuOpen; }
+	int32 GetCareerStadiumRow() const { return CareerStadiumRow; }
+	bool IsCareerTipoffArmed() const { return bCareerTipoffArmed; }
+	bool IsCareerStandingsOpen() const { return bCareerStandingsOpen; }
+	const FString& GetCareerPrompt() const { return CareerPrompt; }
+	FString GetCareerNotice() const;
+	const AOddsWellCareerReplayActor* GetCareerReplay() const { return CareerReplay.Get(); }
+
 protected:
 	virtual void BeginPlay() override;
 
@@ -131,6 +149,13 @@ private:
 	void PollStadiumInteraction();
 	void PollSportsbookInteraction();
 	void ToggleLeagueView();
+	void PollCareer();
+	void PollCareerBoard(APlayerController& OwnerController);
+	void PollCareerStadium(APlayerController& OwnerController);
+	void PollCareerStudio(APlayerController& OwnerController);
+	bool CareerKeyPressed(const APlayerController& OwnerController, const FKey& Key);
+	void ShowCareerNotice(const FString& Message);
+	void CloseCareerReplay();
 	void PreviousLeaguePage();
 	void NextLeaguePage();
 	void ShowLeaguePage();
@@ -378,6 +403,19 @@ private:
 	bool bStadiumQaInteriorStarted = false;
 	bool bStadiumQaMarkerReached = false;
 	TUniquePtr<FOddsWellPublicLeagueSnapshot> PublicLeagueSnapshot;
+	TSet<FName> CareerHeldKeys;
+	FString CareerPrompt;
+	FString CareerNotice;
+	double CareerNoticeExpiresAt = 0.0;
+	int32 CareerBoardRow = 0;
+	int32 CareerBoardSelection = INDEX_NONE;
+	int64 CareerBoardStake = 20;
+	int32 CareerStadiumRow = 0;
+	bool bCareerBoardOpen = false;
+	bool bCareerStadiumMenuOpen = false;
+	bool bCareerTipoffArmed = false;
+	bool bCareerStandingsOpen = false;
+	TWeakObjectPtr<AOddsWellCareerReplayActor> CareerReplay;
 	TUniquePtr<FOddsWellMatchWinnerOfferPreview> SportsbookOfferPreview;
 	TUniquePtr<FOddsWellCanonicalPendingMatchWinnerReceipt> SportsbookCanonicalReceipt;
 	TUniquePtr<FOddsWellCanonicalSettledLossReceipt> SportsbookSettledLossReceipt;
@@ -493,6 +531,8 @@ private:
 	void DrawTicketBoothSettledLossReceipt(const FOddsWellCanonicalSettledLossReceipt& Receipt);
 	void DrawTicketBoothMenu(const AOddsWellPlaceholderCharacter& Character, const FOddsWellMatchWinnerOfferPreview& Offer);
 	void DrawMarketCard(const FString& Title, const FString& Subtitle, float X, float Y, float Width, float Height, bool bAvailable);
+	void DrawCareerOverlay(const AOddsWellPlaceholderCharacter& Character);
+	void DrawCareerPanel(const TArray<FString>& Lines, float X, float Y, float Width, const FLinearColor& Accent, float Scale = 1.0f, int32 HighlightLine = INDEX_NONE);
 };
 
 UCLASS()
@@ -508,6 +548,7 @@ public:
 	virtual void PostLogin(APlayerController* NewPlayer) override;
 	virtual void Logout(AController* Exiting) override;
 	virtual APawn* SpawnDefaultPawnAtTransform_Implementation(AController* NewPlayer, const FTransform&) override;
+	bool IsCareerJob() const;
 	bool TryCreditPlaceholderJob(bool& bOutCredited, int64& OutBalance, int64& OutRetryAfterSeconds, FString& OutCommandId, FString& OutError);
 	bool TryPurchaseSignalJacket(bool& bOutPurchased, bool& bOutOwned, int64& OutBalance, FString& OutError);
 	bool OwnsSignalJacket() const { return bOddsBucksReady && OwnsOddsWellSignalJacket(OddsBucksLedger); }
@@ -528,6 +569,8 @@ public:
 
 private:
 	void PublishOddsBucksReconciliation();
+	void SyncCareerLedger();
+	bool PersistOddsBucksLedger(const FOddsWellOddsBucksLedger& Candidate, FString& OutError);
 	void ResumeCanonicalMatchWinnerResultLink();
 	bool ResumeCanonicalMatchWinnerDecision(bool bRequireDuplicate);
 	bool ResumeCanonicalMatchWinnerMesaWinDecision(bool bRequireDuplicate);
