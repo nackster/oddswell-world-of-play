@@ -24,6 +24,7 @@ class AOddsWellCareerReplayActor;
 
 // Shared Sundale/arena locations used by the career layer.
 ODDSWELL_API FTransform GetOddsWellStadiumReplayTransform();
+ODDSWELL_API FVector GetOddsWellTicketBoothLocation();
 ODDSWELL_API bool IsNearOddsWellTicketBooth(const FVector& Location, float ExtraRadius = 0.0f);
 
 USTRUCT()
@@ -156,6 +157,8 @@ private:
 	bool CareerKeyPressed(const APlayerController& OwnerController, const FKey& Key);
 	void ShowCareerNotice(const FString& Message);
 	void CloseCareerReplay();
+	bool StartCareerReplay(int32 GameId, FString& OutError);
+	void RunCareerSmoke(float DeltaSeconds);
 	void PreviousLeaguePage();
 	void NextLeaguePage();
 	void ShowLeaguePage();

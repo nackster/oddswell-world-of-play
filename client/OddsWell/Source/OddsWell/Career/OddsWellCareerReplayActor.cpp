@@ -177,6 +177,10 @@ void AOddsWellCareerReplayActor::DisplayFrame(const int32 FrameIndex)
 	if (Frame.Kind == TEXT("final"))
 	{
 		bComplete = true;
+		if (UOddsWellCareerSubsystem* Career = UOddsWellCareerSubsystem::Get(this))
+		{
+			Career->RevealGame(Replay.GameId);
+		}
 		UE_LOG(LogTemp, Display, TEXT("ODDSWELL_CAREER_REPLAY_COMPLETE|game=%d|final=%d-%d|frames_shown_to=%d"), Replay.GameId, Frame.HomeScore, Frame.AwayScore, FrameIndex + 1);
 	}
 }

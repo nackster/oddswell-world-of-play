@@ -375,11 +375,11 @@ bool UOddsWellCareerSubsystem::PlaceWager(const int32 GameId, const int32 Select
 	return true;
 }
 
-void UOddsWellCareerSubsystem::SettleWagers(FString& OutReport)
+void UOddsWellCareerSubsystem::SettleWagers(const int32 OnlyGameId)
 {
 	for (FOddsWellCareerWager& Wager : Wagers)
 	{
-		if (Wager.Status != EOddsWellCareerWagerStatus::Pending || Wager.Season != League.SeasonNumber)
+		if (Wager.Status != EOddsWellCareerWagerStatus::Pending || Wager.Season != League.SeasonNumber || (OnlyGameId && Wager.GameId != OnlyGameId))
 		{
 			continue;
 		}
@@ -402,12 +402,12 @@ void UOddsWellCareerSubsystem::SettleWagers(FString& OutReport)
 			}
 			Wager.Status = EOddsWellCareerWagerStatus::Won;
 			Wager.Payout = Gross;
-			OutReport += FString::Printf(TEXT("WON  %s, %lld staked: +%lld Odds Bucks\n"), *Team, Wager.Stake, Gross);
+			UE_LOG(LogOddsWellCareer, Display, TEXT("ODDSWELL_CAREER_SETTLEMENT|wager=%d|team=%s|result=won|payout=%lld|balance=%lld"), Wager.Id, *Team, Gross, Ledger.GetBalance());
 		}
 		else
 		{
 			Wager.Status = EOddsWellCareerWagerStatus::Lost;
-			OutReport += FString::Printf(TEXT("LOST %s, %lld staked\n"), *Team, Wager.Stake);
+			UE_LOG(LogOddsWellCareer, Display, TEXT("ODDSWELL_CAREER_SETTLEMENT|wager=%d|team=%s|result=lost|balance=%lld"), Wager.Id, *Team, Ledger.GetBalance());
 		}
 	}
 }
@@ -429,8 +429,7 @@ bool UOddsWellCareerSubsystem::TipOffToday(FString& OutError)
 		OutError = ToFString(Error);
 		return false;
 	}
-	FString Unused;
-	SettleWagers(Unused);
+	RevealedGames.Reset();
 	UE_LOG(LogOddsWellCareer, Display, TEXT("ODDSWELL_CAREER_TIPOFF|season=%d|day=%d|games=%d|balance=%lld"), League.SeasonNumber, League.Day, GetTodaysGameIds().Num(), Ledger.GetBalance());
 	return Save(OutError);
 }
@@ -441,6 +440,7 @@ bool UOddsWellCareerSubsystem::SleepUntilTomorrow(FString& OutError)
 	{
 		return false;
 	}
+	SettleWagers(0);
 	const int32 Season = League.SeasonNumber;
 	const int32 Day = League.Day;
 	FString Report = FString::Printf(TEXT("Results from season %d, day %d:\n"), Season, Day);
@@ -480,6 +480,33 @@ bool UOddsWellCareerSubsystem::SleepUntilTomorrow(FString& OutError)
 	GameToWatch = 0;
 	UE_LOG(LogOddsWellCareer, Display, TEXT("ODDSWELL_CAREER_SLEEP|season=%d|day=%d|phase=%d|balance=%lld"), League.SeasonNumber, League.Day, static_cast<int32>(League.Phase), Ledger.GetBalance());
 	return Save(OutError);
+}
+
+void UOddsWellCareerSubsystem::RevealGame(const int32 GameId)
+{
+	const OddsWellLeague::FScheduledGame* Game = FindGame(GameId);
+	if (!Game || !Game->bPlayed || RevealedGames.Contains(GameId))
+	{
+		return;
+	}
+	RevealedGames.Add(GameId);
+	SettleWagers(GameId);
+	FString Error;
+	Save(Error);
+}
+
+bool UOddsWellCareerSubsystem::IsGameRevealed(const int32 GameId) const
+{
+	return RevealedGames.Contains(GameId);
+}
+
+FString UOddsWellCareerSubsystem::DescribeGameForPlayer(const OddsWellLeague::FScheduledGame& Game) const
+{
+	if (Game.bPlayed && !RevealedGames.Contains(Game.Id))
+	{
+		return FString::Printf(TEXT("%s at %s - final (watch to see the score)"), *GetTeamName(Game.Away), *GetTeamName(Game.Home));
+	}
+	return DescribeGame(Game);
 }
 
 void UOddsWellCareerSubsystem::DismissMorningReport()

@@ -2,6 +2,8 @@
 
 #include "CharacterAppearanceSave.h"
 #include "CharacterPresetCatalog.h"
+#include "Career/OddsWellCareer.h"
+#include "Kismet/GameplayStatics.h"
 #include "Components/InputComponent.h"
 #include "Engine/Canvas.h"
 #include "Engine/Engine.h"
@@ -228,6 +230,13 @@ void AOddsWellCharacterSelectionHUD::ConfirmSelection()
 	{
 		HandoffError = TEXT("No local player controller is available for the Sundale handoff.");
 		UE_LOG(LogOddsWellCharacterSelection, Error, TEXT("ODDSWELL_CHARACTER_HANDOFF|result=FAIL|reason=%s"), *HandoffError);
+		return;
+	}
+	if (IsOddsWellCareerMode())
+	{
+		// Single-player launch (DEC-037): open Sundale locally instead of joining the development listen server.
+		UE_LOG(LogOddsWellCharacterSelection, Display, TEXT("ODDSWELL_CHARACTER_HANDOFF|result=START|target=SundaleGraybox|mode=standalone_career"));
+		UGameplayStatics::OpenLevel(Controller, FName(TEXT("/Game/Maps/SundaleGraybox")), true, TEXT("game=/Script/OddsWell.OddsWellLocomotionGameMode"));
 		return;
 	}
 	UE_LOG(

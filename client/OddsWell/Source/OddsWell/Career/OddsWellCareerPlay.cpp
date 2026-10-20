@@ -7,7 +7,13 @@
 #include "Engine/Canvas.h"
 #include "Engine/World.h"
 #include "GameFramework/PlayerController.h"
+#include "HAL/PlatformMisc.h"
 #include "InputCoreTypes.h"
+#include "Kismet/GameplayStatics.h"
+#include "Misc/CommandLine.h"
+#include "Misc/Parse.h"
+#include "StudioHomeSave.h"
+#include "UnrealClient.h"
 
 namespace
 {
@@ -293,21 +299,295 @@ void AOddsWellPlaceholderCharacter::PollCareerStadium(APlayerController& OwnerCo
 			return;
 		}
 	}
+	if (!StartCareerReplay(Games[CareerStadiumRow], Error))
+	{
+		ShowCareerNotice(Error);
+	}
+}
+
+bool AOddsWellPlaceholderCharacter::StartCareerReplay(const int32 GameId, FString& OutError)
+{
 	FActorSpawnParameters Parameters;
 	Parameters.ObjectFlags |= RF_Transient;
 	AOddsWellCareerReplayActor* Replay = GetWorld()->SpawnActor<AOddsWellCareerReplayActor>(
 		AOddsWellCareerReplayActor::StaticClass(), GetOddsWellStadiumReplayTransform(), Parameters);
-	if (!Replay || !Replay->StartGame(Games[CareerStadiumRow], Error))
+	if (!Replay || !Replay->StartGame(GameId, OutError))
 	{
 		if (Replay)
 		{
 			Replay->Destroy();
 		}
-		ShowCareerNotice(Error.IsEmpty() ? FString(TEXT("The game could not be shown.")) : Error);
-		return;
+		if (OutError.IsEmpty())
+		{
+			OutError = TEXT("The game could not be shown.");
+		}
+		return false;
 	}
 	CareerReplay = Replay;
 	bCareerStadiumMenuOpen = false;
+	return true;
+}
+
+// ---- Scripted play-through (-CareerSmoke) ---------------------------------------------------
+// Drives the same career functions the controls call, across city, arena and Studio, and saves
+// a screenshot at each step so a build can be checked without hands on the keyboard.
+
+namespace
+{
+	int32 GCareerSmokeStage = 0;
+	float GCareerSmokeTimer = 0.0f;
+	int64 GCareerSmokeStartBalance = 0;
+	bool bGCareerSmokeShotTaken = false;
+	float GCareerSmokeShotAge = 0.0f;
+
+	void CareerSmokeShot(const TCHAR* Name)
+	{
+		FScreenshotRequest::RequestScreenshot(FString::Printf(TEXT("CareerSmoke_%s.png"), Name), true, false);
+		UE_LOG(LogTemp, Display, TEXT("ODDSWELL_CAREER_SMOKE|screenshot=%s"), Name);
+	}
+
+	void CareerSmokeFail(const FString& Reason)
+	{
+		UE_LOG(LogTemp, Error, TEXT("ODDSWELL_CAREER_SMOKE|result=FAIL|reason=%s"), *Reason);
+		FPlatformMisc::RequestExit(false);
+	}
+}
+
+void AOddsWellPlaceholderCharacter::RunCareerSmoke(const float DeltaSeconds)
+{
+	static const bool bSmoke = FParse::Param(FCommandLine::Get(), TEXT("CareerSmoke"));
+	if (!bSmoke || !IsLocallyControlled())
+	{
+		return;
+	}
+	UOddsWellCareerSubsystem* Career = UOddsWellCareerSubsystem::Get(this);
+	if (!Career || !Career->IsReady())
+	{
+		CareerSmokeFail(TEXT("career_not_ready"));
+		return;
+	}
+	static const bool bSeasonSoak = FParse::Param(FCommandLine::Get(), TEXT("CareerSeasonSoak"));
+	if (bSeasonSoak && GCareerSmokeStage != 100)
+	{
+		// Sleep through a whole season and its playoffs, saving every night, then exit.
+		FString SoakError;
+		int32 Nights = 0;
+		while (Career->GetLeague().CompletedSeasons == 0 && Nights < 60)
+		{
+			if (!Career->SleepUntilTomorrow(SoakError))
+			{
+				CareerSmokeFail(FString::Printf(TEXT("soak_sleep_failed:%s"), *SoakError));
+				return;
+			}
+			++Nights;
+		}
+		const bool bPass = Career->GetLeague().CompletedSeasons == 1 && Career->GetSeason() == 2 && Career->GetDay() == 1
+			&& Career->GetLeague().LastChampion >= 0 && Career->GetMorningReport().Contains(TEXT("champions"));
+		UE_LOG(LogTemp, Display, TEXT("ODDSWELL_CAREER_SOAK|result=%s|nights=%d|season=%d|day=%d|champion=%s|balance=%lld"),
+			bPass ? TEXT("PASS") : TEXT("FAIL"), Nights, Career->GetSeason(), Career->GetDay(),
+			*Career->GetTeamName(Career->GetLeague().LastChampion), Career->GetBalance());
+		CareerSmokeShot(TEXT("09_Champion"));
+		GCareerSmokeStage = 100;
+		FPlatformMisc::RequestExit(false);
+		return;
+	}
+	GCareerSmokeTimer += DeltaSeconds;
+	GCareerSmokeShotAge += DeltaSeconds;
+	auto Next = [](float) { ++GCareerSmokeStage; GCareerSmokeTimer = 0.0f; bGCareerSmokeShotTaken = false; };
+	// Screenshots render on a later frame, so act only once the requested shot has been captured.
+	auto ShotThenAct = [](const TCHAR* Name)
+	{
+		if (!bGCareerSmokeShotTaken)
+		{
+			CareerSmokeShot(Name);
+			bGCareerSmokeShotTaken = true;
+			GCareerSmokeShotAge = 0.0f;
+			return false;
+		}
+		return GCareerSmokeShotAge > 0.75f;
+	};
+	FString Error;
+	switch (GCareerSmokeStage)
+	{
+	case 0: // City arrival with the welcome report.
+		if (GCareerSmokeTimer > 4.0f)
+		{
+			CareerSmokeShot(TEXT("01_Welcome"));
+			Next(0);
+		}
+		break;
+	case 1:
+		if (GCareerSmokeTimer > 1.0f)
+		{
+			Career->DismissMorningReport();
+			GCareerSmokeStartBalance = Career->GetBalance();
+			bool bCredited = false;
+			int64 Balance = 0;
+			AOddsWellLocomotionGameMode* GameMode = GetWorld()->GetAuthGameMode<AOddsWellLocomotionGameMode>();
+			int64 Retry = 0;
+			FString Command;
+			if (!GameMode || !GameMode->TryCreditPlaceholderJob(bCredited, Balance, Retry, Command, Error) || !bCredited)
+			{
+				CareerSmokeFail(FString::Printf(TEXT("shift_failed:%s"), *Error));
+				return;
+			}
+			bool bSecond = true;
+			GameMode->TryCreditPlaceholderJob(bSecond, Balance, Retry, Command, Error);
+			UE_LOG(LogTemp, Display, TEXT("ODDSWELL_CAREER_SMOKE|step=shift|credited=true|second_shift_credited=%s|balance=%lld"), bSecond ? TEXT("true") : TEXT("false"), Career->GetBalance());
+			if (bSecond)
+			{
+				CareerSmokeFail(TEXT("second_shift_paid"));
+				return;
+			}
+			Next(0);
+		}
+		break;
+	case 2: // Walk up to the ticket booth and open the board.
+		if (GCareerSmokeTimer > 1.0f)
+		{
+			SetActorLocation(GetOddsWellTicketBoothLocation() + FVector(-150.0, 0.0, 220.0));
+			bCareerBoardOpen = true;
+			CareerBoardRow = 0;
+			CareerBoardSelection = 0;
+			CareerBoardStake = 40;
+			Next(0);
+		}
+		break;
+	case 3:
+		if (GCareerSmokeTimer > 2.0f)
+		{
+			if (!ShotThenAct(TEXT("02_Board")))
+			{
+				break;
+			}
+			const TArray<int32> Games = Career->GetTodaysGameIds();
+			if (Games.Num() != 4 || !Career->PlaceWager(Games[0], 0, 40, Error))
+			{
+				CareerSmokeFail(FString::Printf(TEXT("wager_failed:%s"), *Error));
+				return;
+			}
+			FString Duplicate;
+			if (Career->PlaceWager(Games[0], 1, 10, Duplicate))
+			{
+				CareerSmokeFail(TEXT("duplicate_wager_accepted"));
+				return;
+			}
+			UE_LOG(LogTemp, Display, TEXT("ODDSWELL_CAREER_SMOKE|step=wager|game=%d|stake=40|balance=%lld|duplicate_rejected=true"), Games[0], Career->GetBalance());
+			Next(0);
+		}
+		break;
+	case 4:
+		if (GCareerSmokeTimer > 1.5f)
+		{
+			if (!ShotThenAct(TEXT("03_BetPlaced")))
+			{
+				break;
+			}
+			bCareerBoardOpen = false;
+			UGameplayStatics::OpenLevel(this, FName(TEXT("/Game/Maps/Bootstrap")), true, TEXT("game=/Script/OddsWell.OddsWellStadiumGameMode"));
+			Next(0);
+		}
+		break;
+	case 5: // Arena: tonight's games.
+		if (GetWorld()->GetAuthGameMode<AOddsWellStadiumGameMode>() && GCareerSmokeTimer > 3.0f)
+		{
+			if (!ShotThenAct(TEXT("04_ArenaMenu")))
+			{
+				break;
+			}
+			if (!Career->TipOffToday(Error) || !StartCareerReplay(Career->GetTodaysGameIds()[0], Error))
+			{
+				CareerSmokeFail(FString::Printf(TEXT("tipoff_failed:%s"), *Error));
+				return;
+			}
+			FString Late;
+			if (Career->PlaceWager(Career->GetTodaysGameIds()[1], 0, 10, Late))
+			{
+				CareerSmokeFail(TEXT("wager_after_tipoff_accepted"));
+				return;
+			}
+			if (Career->GetBalance() != GCareerSmokeStartBalance + 60)
+			{
+				CareerSmokeFail(TEXT("bet_settled_before_the_game_was_watched"));
+				return;
+			}
+			UE_LOG(LogTemp, Display, TEXT("ODDSWELL_CAREER_SMOKE|step=tipoff|late_wager_rejected=true|balance_unchanged_until_watched=%lld"), Career->GetBalance());
+			Next(0);
+		}
+		break;
+	case 6:
+		if (GCareerSmokeTimer > 6.0f)
+		{
+			if (!ShotThenAct(TEXT("05_GameLive")))
+			{
+				break;
+			}
+			if (AOddsWellCareerReplayActor* Replay = CareerReplay.Get())
+			{
+				Replay->SkipToFinal();
+			}
+			Next(0);
+		}
+		break;
+	case 7:
+		if (GCareerSmokeTimer > 1.5f)
+		{
+			if (!ShotThenAct(TEXT("06_GameFinal")))
+			{
+				break;
+			}
+			SaveOwnedOddsWellStudio(FVector(0.0, 0.0, 220.0), UseOddsWellStudioHomeQaSlot(), Error);
+			UGameplayStatics::OpenLevel(this, FName(TEXT("/Game/Maps/Bootstrap")), true, TEXT("game=/Script/OddsWell.OddsWellStudioGameMode"));
+			Next(0);
+		}
+		break;
+	case 8: // Studio: sleep until tomorrow.
+		if (GetWorld()->GetAuthGameMode<AOddsWellStudioGameMode>() && GCareerSmokeTimer > 3.0f)
+		{
+			if (!ShotThenAct(TEXT("07_Studio")))
+			{
+				break;
+			}
+			const int32 DayBefore = Career->GetDay();
+			const FOddsWellCareerWager Wager = *Career->FindWagerForGame(Career->GetTodaysGameIds()[0]);
+			if (!Career->SleepUntilTomorrow(Error))
+			{
+				CareerSmokeFail(FString::Printf(TEXT("sleep_failed:%s"), *Error));
+				return;
+			}
+			const TArray<FOddsWellCareerWager> DayWagers = Career->GetWagersForDay(Career->GetSeason(), DayBefore);
+			const FOddsWellCareerWager* Settled = DayWagers.FindByPredicate([&Wager](const FOddsWellCareerWager& Candidate) { return Candidate.Id == Wager.Id; });
+			const int64 Expected = GCareerSmokeStartBalance + 100 - 40 + (Settled && Settled->Status == EOddsWellCareerWagerStatus::Won ? Settled->Payout : 0);
+			const bool bPass = Settled && Settled->Status != EOddsWellCareerWagerStatus::Pending && Career->GetDay() == DayBefore + 1 && Career->GetBalance() == Expected && !Career->HasWorkedToday();
+			UE_LOG(LogTemp, Display, TEXT("ODDSWELL_CAREER_SMOKE|step=sleep|day=%d|wager=%s|payout=%lld|balance=%lld|expected=%lld|result=%s"),
+				Career->GetDay(), Settled ? (Settled->Status == EOddsWellCareerWagerStatus::Won ? TEXT("won") : TEXT("lost")) : TEXT("missing"),
+				Settled ? Settled->Payout : 0, Career->GetBalance(), Expected, bPass ? TEXT("PASS") : TEXT("FAIL"));
+			if (!bPass)
+			{
+				CareerSmokeFail(TEXT("settlement_mismatch"));
+				return;
+			}
+			Next(0);
+		}
+		break;
+	case 9:
+		if (GCareerSmokeTimer > 2.0f)
+		{
+			CareerSmokeShot(TEXT("08_MorningReport"));
+			Next(0);
+		}
+		break;
+	case 10:
+		if (GCareerSmokeTimer > 2.0f)
+		{
+			UE_LOG(LogTemp, Display, TEXT("ODDSWELL_CAREER_SMOKE|result=PASS|season=%d|day=%d|balance=%lld"), Career->GetSeason(), Career->GetDay(), Career->GetBalance());
+			FPlatformMisc::RequestExit(false);
+			Next(0);
+		}
+		break;
+	default:
+		break;
+	}
 }
 
 void AOddsWellPlaceholderCharacter::PollCareerStudio(APlayerController& OwnerController)
@@ -392,7 +672,7 @@ void AOddsWellSportsbookHUD::DrawCareerOverlay(const AOddsWellPlaceholderCharact
 		TArray<FString> Lines = SplitLines(Career->GetMorningReport());
 		Lines.Add(TEXT(""));
 		Lines.Add(TEXT("Press Enter to continue"));
-		DrawCareerPanel(Lines, CenterX, CanvasHeight * 0.16f, CenterWidth, Amber, Scale);
+		DrawCareerPanel(Lines, CenterX, FMath::Max(180.0f, CanvasHeight * 0.22f), CenterWidth, Amber, Scale);
 		return;
 	}
 
@@ -420,12 +700,12 @@ void AOddsWellSportsbookHUD::DrawCareerOverlay(const AOddsWellPlaceholderCharact
 		{
 			if (const OddsWellLeague::FScheduledGame* Game = Career->FindGame(Id))
 			{
-				Lines.Add(Career->DescribeGame(*Game));
+				Lines.Add(Career->DescribeGameForPlayer(*Game));
 			}
 		}
 		Lines.Add(TEXT(""));
 		Lines.Add(TEXT("L or Esc: close"));
-		DrawCareerPanel(Lines, CenterX, CanvasHeight * 0.1f, CenterWidth, Teal, Scale * 0.9f);
+		DrawCareerPanel(Lines, CenterX, FMath::Max(180.0f, CanvasHeight * 0.22f), CenterWidth, Teal, Scale * 0.9f);
 	}
 
 	if (Character.IsCareerBoardOpen())
@@ -446,7 +726,7 @@ void AOddsWellSportsbookHUD::DrawCareerOverlay(const AOddsWellPlaceholderCharact
 			FString Line;
 			if (Game->bPlayed)
 			{
-				Line = Career->DescribeGame(*Game);
+				Line = Career->DescribeGameForPlayer(*Game);
 			}
 			else
 			{
@@ -463,7 +743,7 @@ void AOddsWellSportsbookHUD::DrawCareerOverlay(const AOddsWellPlaceholderCharact
 		Lines.Add(TEXT(""));
 		if (Career->HaveTodaysGamesTippedOff())
 		{
-			Lines.Add(TEXT("Tonight's games are final. Betting reopens tomorrow."));
+			Lines.Add(TEXT("Tonight's games have been played. Watch them at the arena, or sleep to see the results."));
 		}
 		else if (Today.IsValidIndex(Character.GetCareerBoardRow()))
 		{
@@ -487,7 +767,7 @@ void AOddsWellSportsbookHUD::DrawCareerOverlay(const AOddsWellPlaceholderCharact
 			Lines.Add(TEXT("Up/Down: game   Left: away team   Right: home team   - / =: stake   Enter: place bet"));
 		}
 		Lines.Add(TEXT("Odds are fixed from public information before tipoff. E or Esc: close"));
-		DrawCareerPanel(Lines, CenterX, CanvasHeight * 0.14f, CenterWidth, Amber, Scale * 0.95f, Highlight);
+		DrawCareerPanel(Lines, CenterX, FMath::Max(180.0f, CanvasHeight * 0.22f), CenterWidth, Amber, Scale * 0.95f, Highlight);
 	}
 
 	if (Character.IsCareerStadiumMenuOpen())
@@ -502,7 +782,7 @@ void AOddsWellSportsbookHUD::DrawCareerOverlay(const AOddsWellPlaceholderCharact
 				{
 					Highlight = Lines.Num();
 				}
-				Lines.Add(Career->DescribeGame(*Game));
+				Lines.Add(Career->DescribeGameForPlayer(*Game));
 			}
 		}
 		Lines.Add(TEXT(""));
@@ -520,7 +800,7 @@ void AOddsWellSportsbookHUD::DrawCareerOverlay(const AOddsWellPlaceholderCharact
 				? TEXT("Up/Down: game   Enter: watch the replay   E: leave the arena")
 				: TEXT("Up/Down: game   Enter: watch live (starts tonight's games)   E: leave the arena"));
 		}
-		DrawCareerPanel(Lines, CenterX, CanvasHeight * 0.2f, CenterWidth, Teal, Scale, Highlight);
+		DrawCareerPanel(Lines, CenterX, FMath::Max(300.0f, CanvasHeight * 0.36f), CenterWidth, Teal, Scale, Highlight);
 	}
 
 	const FString Prompt = Character.GetCareerPrompt();

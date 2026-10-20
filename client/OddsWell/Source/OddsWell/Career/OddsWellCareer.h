@@ -149,6 +149,10 @@ public:
 
 	// Day flow.
 	bool TipOffToday(FString& OutError);
+	// A tipped-off game's score stays hidden, and its bets unsettled, until it is watched or the day ends.
+	void RevealGame(int32 GameId);
+	bool IsGameRevealed(int32 GameId) const;
+	FString DescribeGameForPlayer(const OddsWellLeague::FScheduledGame& Game) const;
 	bool SleepUntilTomorrow(FString& OutError);
 	const FString& GetMorningReport() const { return MorningReport; }
 	void DismissMorningReport();
@@ -164,7 +168,7 @@ public:
 private:
 	bool Save(FString& OutError);
 	bool LoadOrCreate(FString& OutError);
-	void SettleWagers(FString& OutReport);
+	void SettleWagers(int32 OnlyGameId);
 
 	OddsWellLeague::FLeagueState League;
 	FOddsWellOddsBucksLedger Ledger;
@@ -172,6 +176,7 @@ private:
 	FString LastShiftKey;
 	FString MorningReport;
 	FString LoadError;
+	TSet<int32> RevealedGames;
 	int32 NextWagerId = 1;
 	int32 GameToWatch = 0;
 	bool bReady = false;

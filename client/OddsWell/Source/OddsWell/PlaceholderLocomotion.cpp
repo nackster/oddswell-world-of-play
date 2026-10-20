@@ -2027,6 +2027,11 @@ FTransform GetOddsWellStadiumReplayTransform()
 	return FTransform(FRotator::ZeroRotator, StadiumReplayOrigin, FVector(StadiumReplayScale));
 }
 
+FVector GetOddsWellTicketBoothLocation()
+{
+	return SportsbookInteractionLocation;
+}
+
 bool IsNearOddsWellTicketBooth(const FVector& Location, const float ExtraRadius)
 {
 	return FVector::Dist2D(Location, SportsbookInteractionLocation) <= SportsbookInteractionRadius + ExtraRadius;
@@ -3283,6 +3288,7 @@ void AOddsWellPlaceholderCharacter::Tick(const float DeltaSeconds)
 	if (IsOddsWellCareerMode())
 	{
 		PollCareer();
+		RunCareerSmoke(DeltaSeconds);
 	}
 	else
 	{
