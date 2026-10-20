@@ -71,8 +71,8 @@
     },
     {
       "path": "build.py",
-      "bytes": 23004,
-      "sha256": "6702cee84fc1fc09dea777f0368d69b56b56aabf427921c8f598170f0d8018a3"
+      "bytes": 22715,
+      "sha256": "f0a5b4c91ab99ba67322e06f05d17177b5ea2f90ea1989fa5cc40ed6ca8541d8"
     },
     {
       "path": "coverage-report.json",
@@ -81,8 +81,8 @@
     },
     {
       "path": "coverage.py",
-      "bytes": 4596,
-      "sha256": "f0bd246000d867b7da2116f6943d7fdbf4cb73937a80ad30857a2f5be1009c9c"
+      "bytes": 4543,
+      "sha256": "7ed690206662eb7546b6bebc86df1443001596779a35946ffdbf7f0eefe10e4d"
     },
     {
       "path": "inspect.py",
@@ -96,8 +96,8 @@
     },
     {
       "path": "select.py",
-      "bytes": 1879,
-      "sha256": "c25a6f0fd376e3b33354556dd590f7521b1e45fc3a8dada37c39c8362e0ad3d6"
+      "bytes": 1856,
+      "sha256": "8f9fde82e53d375e48e5a241d7e1c3e88a153c2adbf44cb46f9858a180f89e0e"
     },
     {
       "path": "selection.json",
