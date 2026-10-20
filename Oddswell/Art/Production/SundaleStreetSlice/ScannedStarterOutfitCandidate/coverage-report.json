@@ -1,0 +1,495 @@
+{
+  "candidate_sha256": "b18d2443a17785426df6c695b6139a2bdf0a9bdc8296cfd10d0feb35be9f451e",
+  "frames": [
+    1,
+    5,
+    9,
+    13,
+    17,
+    21,
+    25,
+    29,
+    33,
+    37,
+    41,
+    45,
+    49
+  ],
+  "views": [
+    "front",
+    "back",
+    "left",
+    "right",
+    "three_quarter"
+  ],
+  "resolution": [
+    600,
+    700
+  ],
+  "samples": [
+    {
+      "frame": 1,
+      "view": "front",
+      "original_clothing_pixels": 60,
+      "new_garment_pixels": 31248,
+      "show_through_ratio": 0.00192
+    },
+    {
+      "frame": 1,
+      "view": "back",
+      "original_clothing_pixels": 12,
+      "new_garment_pixels": 34360,
+      "show_through_ratio": 0.00035
+    },
+    {
+      "frame": 1,
+      "view": "left",
+      "original_clothing_pixels": 2,
+      "new_garment_pixels": 23983,
+      "show_through_ratio": 8e-05
+    },
+    {
+      "frame": 1,
+      "view": "right",
+      "original_clothing_pixels": 126,
+      "new_garment_pixels": 24658,
+      "show_through_ratio": 0.00508
+    },
+    {
+      "frame": 1,
+      "view": "three_quarter",
+      "original_clothing_pixels": 34,
+      "new_garment_pixels": 22100,
+      "show_through_ratio": 0.00154
+    },
+    {
+      "frame": 5,
+      "view": "front",
+      "original_clothing_pixels": 100,
+      "new_garment_pixels": 30545,
+      "show_through_ratio": 0.00326
+    },
+    {
+      "frame": 5,
+      "view": "back",
+      "original_clothing_pixels": 16,
+      "new_garment_pixels": 32815,
+      "show_through_ratio": 0.00049
+    },
+    {
+      "frame": 5,
+      "view": "left",
+      "original_clothing_pixels": 0,
+      "new_garment_pixels": 25809,
+      "show_through_ratio": 0.0
+    },
+    {
+      "frame": 5,
+      "view": "right",
+      "original_clothing_pixels": 231,
+      "new_garment_pixels": 25860,
+      "show_through_ratio": 0.00885
+    },
+    {
+      "frame": 5,
+      "view": "three_quarter",
+      "original_clothing_pixels": 39,
+      "new_garment_pixels": 20740,
+      "show_through_ratio": 0.00188
+    },
+    {
+      "frame": 9,
+      "view": "front",
+      "original_clothing_pixels": 123,
+      "new_garment_pixels": 29055,
+      "show_through_ratio": 0.00422
+    },
+    {
+      "frame": 9,
+      "view": "back",
+      "original_clothing_pixels": 22,
+      "new_garment_pixels": 32243,
+      "show_through_ratio": 0.00068
+    },
+    {
+      "frame": 9,
+      "view": "left",
+      "original_clothing_pixels": 68,
+      "new_garment_pixels": 27292,
+      "show_through_ratio": 0.00249
+    },
+    {
+      "frame": 9,
+      "view": "right",
+      "original_clothing_pixels": 311,
+      "new_garment_pixels": 26561,
+      "show_through_ratio": 0.01157
+    },
+    {
+      "frame": 9,
+      "view": "three_quarter",
+      "original_clothing_pixels": 37,
+      "new_garment_pixels": 23476,
+      "show_through_ratio": 0.00157
+    },
+    {
+      "frame": 13,
+      "view": "front",
+      "original_clothing_pixels": 101,
+      "new_garment_pixels": 29252,
+      "show_through_ratio": 0.00344
+    },
+    {
+      "frame": 13,
+      "view": "back",
+      "original_clothing_pixels": 8,
+      "new_garment_pixels": 31962,
+      "show_through_ratio": 0.00025
+    },
+    {
+      "frame": 13,
+      "view": "left",
+      "original_clothing_pixels": 42,
+      "new_garment_pixels": 28212,
+      "show_through_ratio": 0.00149
+    },
+    {
+      "frame": 13,
+      "view": "right",
+      "original_clothing_pixels": 270,
+      "new_garment_pixels": 27152,
+      "show_through_ratio": 0.00985
+    },
+    {
+      "frame": 13,
+      "view": "three_quarter",
+      "original_clothing_pixels": 43,
+      "new_garment_pixels": 24097,
+      "show_through_ratio": 0.00178
+    },
+    {
+      "frame": 17,
+      "view": "front",
+      "original_clothing_pixels": 104,
+      "new_garment_pixels": 29696,
+      "show_through_ratio": 0.00349
+    },
+    {
+      "frame": 17,
+      "view": "back",
+      "original_clothing_pixels": 15,
+      "new_garment_pixels": 31651,
+      "show_through_ratio": 0.00047
+    },
+    {
+      "frame": 17,
+      "view": "left",
+      "original_clothing_pixels": 48,
+      "new_garment_pixels": 26859,
+      "show_through_ratio": 0.00178
+    },
+    {
+      "frame": 17,
+      "view": "right",
+      "original_clothing_pixels": 269,
+      "new_garment_pixels": 26434,
+      "show_through_ratio": 0.01007
+    },
+    {
+      "frame": 17,
+      "view": "three_quarter",
+      "original_clothing_pixels": 41,
+      "new_garment_pixels": 23558,
+      "show_through_ratio": 0.00174
+    },
+    {
+      "frame": 21,
+      "view": "front",
+      "original_clothing_pixels": 62,
+      "new_garment_pixels": 30063,
+      "show_through_ratio": 0.00206
+    },
+    {
+      "frame": 21,
+      "view": "back",
+      "original_clothing_pixels": 5,
+      "new_garment_pixels": 33750,
+      "show_through_ratio": 0.00015
+    },
+    {
+      "frame": 21,
+      "view": "left",
+      "original_clothing_pixels": 3,
+      "new_garment_pixels": 24342,
+      "show_through_ratio": 0.00012
+    },
+    {
+      "frame": 21,
+      "view": "right",
+      "original_clothing_pixels": 130,
+      "new_garment_pixels": 24777,
+      "show_through_ratio": 0.00522
+    },
+    {
+      "frame": 21,
+      "view": "three_quarter",
+      "original_clothing_pixels": 40,
+      "new_garment_pixels": 21500,
+      "show_through_ratio": 0.00186
+    },
+    {
+      "frame": 25,
+      "view": "front",
+      "original_clothing_pixels": 60,
+      "new_garment_pixels": 31248,
+      "show_through_ratio": 0.00192
+    },
+    {
+      "frame": 25,
+      "view": "back",
+      "original_clothing_pixels": 12,
+      "new_garment_pixels": 34360,
+      "show_through_ratio": 0.00035
+    },
+    {
+      "frame": 25,
+      "view": "left",
+      "original_clothing_pixels": 2,
+      "new_garment_pixels": 23983,
+      "show_through_ratio": 8e-05
+    },
+    {
+      "frame": 25,
+      "view": "right",
+      "original_clothing_pixels": 126,
+      "new_garment_pixels": 24658,
+      "show_through_ratio": 0.00508
+    },
+    {
+      "frame": 25,
+      "view": "three_quarter",
+      "original_clothing_pixels": 34,
+      "new_garment_pixels": 22100,
+      "show_through_ratio": 0.00154
+    },
+    {
+      "frame": 29,
+      "view": "front",
+      "original_clothing_pixels": 100,
+      "new_garment_pixels": 30545,
+      "show_through_ratio": 0.00326
+    },
+    {
+      "frame": 29,
+      "view": "back",
+      "original_clothing_pixels": 16,
+      "new_garment_pixels": 32815,
+      "show_through_ratio": 0.00049
+    },
+    {
+      "frame": 29,
+      "view": "left",
+      "original_clothing_pixels": 0,
+      "new_garment_pixels": 25809,
+      "show_through_ratio": 0.0
+    },
+    {
+      "frame": 29,
+      "view": "right",
+      "original_clothing_pixels": 231,
+      "new_garment_pixels": 25860,
+      "show_through_ratio": 0.00885
+    },
+    {
+      "frame": 29,
+      "view": "three_quarter",
+      "original_clothing_pixels": 39,
+      "new_garment_pixels": 20740,
+      "show_through_ratio": 0.00188
+    },
+    {
+      "frame": 33,
+      "view": "front",
+      "original_clothing_pixels": 123,
+      "new_garment_pixels": 29055,
+      "show_through_ratio": 0.00422
+    },
+    {
+      "frame": 33,
+      "view": "back",
+      "original_clothing_pixels": 22,
+      "new_garment_pixels": 32243,
+      "show_through_ratio": 0.00068
+    },
+    {
+      "frame": 33,
+      "view": "left",
+      "original_clothing_pixels": 68,
+      "new_garment_pixels": 27292,
+      "show_through_ratio": 0.00249
+    },
+    {
+      "frame": 33,
+      "view": "right",
+      "original_clothing_pixels": 311,
+      "new_garment_pixels": 26561,
+      "show_through_ratio": 0.01157
+    },
+    {
+      "frame": 33,
+      "view": "three_quarter",
+      "original_clothing_pixels": 37,
+      "new_garment_pixels": 23476,
+      "show_through_ratio": 0.00157
+    },
+    {
+      "frame": 37,
+      "view": "front",
+      "original_clothing_pixels": 101,
+      "new_garment_pixels": 29252,
+      "show_through_ratio": 0.00344
+    },
+    {
+      "frame": 37,
+      "view": "back",
+      "original_clothing_pixels": 8,
+      "new_garment_pixels": 31962,
+      "show_through_ratio": 0.00025
+    },
+    {
+      "frame": 37,
+      "view": "left",
+      "original_clothing_pixels": 42,
+      "new_garment_pixels": 28212,
+      "show_through_ratio": 0.00149
+    },
+    {
+      "frame": 37,
+      "view": "right",
+      "original_clothing_pixels": 270,
+      "new_garment_pixels": 27152,
+      "show_through_ratio": 0.00985
+    },
+    {
+      "frame": 37,
+      "view": "three_quarter",
+      "original_clothing_pixels": 43,
+      "new_garment_pixels": 24097,
+      "show_through_ratio": 0.00178
+    },
+    {
+      "frame": 41,
+      "view": "front",
+      "original_clothing_pixels": 104,
+      "new_garment_pixels": 29696,
+      "show_through_ratio": 0.00349
+    },
+    {
+      "frame": 41,
+      "view": "back",
+      "original_clothing_pixels": 15,
+      "new_garment_pixels": 31651,
+      "show_through_ratio": 0.00047
+    },
+    {
+      "frame": 41,
+      "view": "left",
+      "original_clothing_pixels": 48,
+      "new_garment_pixels": 26859,
+      "show_through_ratio": 0.00178
+    },
+    {
+      "frame": 41,
+      "view": "right",
+      "original_clothing_pixels": 269,
+      "new_garment_pixels": 26434,
+      "show_through_ratio": 0.01007
+    },
+    {
+      "frame": 41,
+      "view": "three_quarter",
+      "original_clothing_pixels": 41,
+      "new_garment_pixels": 23558,
+      "show_through_ratio": 0.00174
+    },
+    {
+      "frame": 45,
+      "view": "front",
+      "original_clothing_pixels": 62,
+      "new_garment_pixels": 30063,
+      "show_through_ratio": 0.00206
+    },
+    {
+      "frame": 45,
+      "view": "back",
+      "original_clothing_pixels": 5,
+      "new_garment_pixels": 33750,
+      "show_through_ratio": 0.00015
+    },
+    {
+      "frame": 45,
+      "view": "left",
+      "original_clothing_pixels": 3,
+      "new_garment_pixels": 24342,
+      "show_through_ratio": 0.00012
+    },
+    {
+      "frame": 45,
+      "view": "right",
+      "original_clothing_pixels": 130,
+      "new_garment_pixels": 24777,
+      "show_through_ratio": 0.00522
+    },
+    {
+      "frame": 45,
+      "view": "three_quarter",
+      "original_clothing_pixels": 40,
+      "new_garment_pixels": 21500,
+      "show_through_ratio": 0.00186
+    },
+    {
+      "frame": 49,
+      "view": "front",
+      "original_clothing_pixels": 60,
+      "new_garment_pixels": 31248,
+      "show_through_ratio": 0.00192
+    },
+    {
+      "frame": 49,
+      "view": "back",
+      "original_clothing_pixels": 12,
+      "new_garment_pixels": 34360,
+      "show_through_ratio": 0.00035
+    },
+    {
+      "frame": 49,
+      "view": "left",
+      "original_clothing_pixels": 2,
+      "new_garment_pixels": 23983,
+      "show_through_ratio": 8e-05
+    },
+    {
+      "frame": 49,
+      "view": "right",
+      "original_clothing_pixels": 126,
+      "new_garment_pixels": 24658,
+      "show_through_ratio": 0.00508
+    },
+    {
+      "frame": 49,
+      "view": "three_quarter",
+      "original_clothing_pixels": 34,
+      "new_garment_pixels": 22100,
+      "show_through_ratio": 0.00154
+    }
+  ],
+  "worst": {
+    "frame": 9,
+    "view": "right",
+    "original_clothing_pixels": 311,
+    "new_garment_pixels": 26561,
+    "show_through_ratio": 0.01157
+  },
+  "mean_show_through_ratio": 0.00284,
+  "method": "Workbench flat masks without anti-aliasing: original scan clothing red, skin plus head/hand-weighted faces black, new garments white. Counts visible original-clothing pixels per camera; hidden interpenetration is not measured."
+}

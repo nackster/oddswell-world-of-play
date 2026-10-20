@@ -1,0 +1,936 @@
+{
+  "source_sha256": "1c75042928c5df6eaa198c1fe032a5b3985224c33b766bd322b7dc10b126aca4",
+  "candidate_sha256": "b18d2443a17785426df6c695b6139a2bdf0a9bdc8296cfd10d0feb35be9f451e",
+  "jacket_source_sha256": "fa455707fe273b6230fd19fa7f2a934ae560d81b551fb05850d732740f3c0099",
+  "support_faces": {
+    "top_faces": 2061,
+    "bottom_faces": 2223,
+    "shoe_faces": 603
+  },
+  "garments": {
+    "OddsWell wardrobe | starter off-white long-sleeve top": 2051,
+    "OddsWell wardrobe | starter off-white joggers": 2261,
+    "OddsWell wardrobe | starter slate sneakers": 621
+  },
+  "parts": [
+    "Starter top | mock-neck rib band",
+    "Starter top | rib cuff l",
+    "Starter top | rib cuff r",
+    "Starter top | rib hem band",
+    "Joggers | rib ankle cuff l",
+    "Joggers | rib ankle cuff r",
+    "Sneaker | flat laces l",
+    "Sneaker | teal heel tab l",
+    "Sneaker | flat laces r",
+    "Sneaker | teal heel tab r"
+  ],
+  "palette": {
+    "offwhite": [
+      0.92,
+      0.9,
+      0.82,
+      1
+    ],
+    "slate": [
+      0.12,
+      0.18,
+      0.22,
+      1
+    ],
+    "teal": [
+      0.08,
+      0.72,
+      0.68,
+      1
+    ]
+  },
+  "cold_reopen_pass": true,
+  "source_mesh_uv_weights_bind_maps_preserved": true,
+  "shared_rig": "Scan character | Eric rig",
+  "pose_checks": [
+    {
+      "frame": 1,
+      "evaluated_vertex_counts": {
+        "OddsWell wardrobe | starter off-white long-sleeve top": 16452,
+        "OddsWell wardrobe | starter off-white joggers": 17938,
+        "OddsWell wardrobe | starter slate sneakers": 4892,
+        "Starter top | mock-neck rib band": 4246,
+        "Starter top | rib cuff l": 2134,
+        "Starter top | rib cuff r": 2134,
+        "Starter top | rib hem band": 5778,
+        "Joggers | rib ankle cuff l": 2322,
+        "Joggers | rib ankle cuff r": 2322,
+        "Sneaker | flat laces l": 20,
+        "Sneaker | teal heel tab l": 4,
+        "Sneaker | flat laces r": 20,
+        "Sneaker | teal heel tab r": 4
+      }
+    },
+    {
+      "frame": 2,
+      "evaluated_vertex_counts": {
+        "OddsWell wardrobe | starter off-white long-sleeve top": 16452,
+        "OddsWell wardrobe | starter off-white joggers": 17938,
+        "OddsWell wardrobe | starter slate sneakers": 4892,
+        "Starter top | mock-neck rib band": 4246,
+        "Starter top | rib cuff l": 2134,
+        "Starter top | rib cuff r": 2134,
+        "Starter top | rib hem band": 5778,
+        "Joggers | rib ankle cuff l": 2322,
+        "Joggers | rib ankle cuff r": 2322,
+        "Sneaker | flat laces l": 20,
+        "Sneaker | teal heel tab l": 4,
+        "Sneaker | flat laces r": 20,
+        "Sneaker | teal heel tab r": 4
+      }
+    },
+    {
+      "frame": 3,
+      "evaluated_vertex_counts": {
+        "OddsWell wardrobe | starter off-white long-sleeve top": 16452,
+        "OddsWell wardrobe | starter off-white joggers": 17938,
+        "OddsWell wardrobe | starter slate sneakers": 4892,
+        "Starter top | mock-neck rib band": 4246,
+        "Starter top | rib cuff l": 2134,
+        "Starter top | rib cuff r": 2134,
+        "Starter top | rib hem band": 5778,
+        "Joggers | rib ankle cuff l": 2322,
+        "Joggers | rib ankle cuff r": 2322,
+        "Sneaker | flat laces l": 20,
+        "Sneaker | teal heel tab l": 4,
+        "Sneaker | flat laces r": 20,
+        "Sneaker | teal heel tab r": 4
+      }
+    },
+    {
+      "frame": 4,
+      "evaluated_vertex_counts": {
+        "OddsWell wardrobe | starter off-white long-sleeve top": 16452,
+        "OddsWell wardrobe | starter off-white joggers": 17938,
+        "OddsWell wardrobe | starter slate sneakers": 4892,
+        "Starter top | mock-neck rib band": 4246,
+        "Starter top | rib cuff l": 2134,
+        "Starter top | rib cuff r": 2134,
+        "Starter top | rib hem band": 5778,
+        "Joggers | rib ankle cuff l": 2322,
+        "Joggers | rib ankle cuff r": 2322,
+        "Sneaker | flat laces l": 20,
+        "Sneaker | teal heel tab l": 4,
+        "Sneaker | flat laces r": 20,
+        "Sneaker | teal heel tab r": 4
+      }
+    },
+    {
+      "frame": 5,
+      "evaluated_vertex_counts": {
+        "OddsWell wardrobe | starter off-white long-sleeve top": 16452,
+        "OddsWell wardrobe | starter off-white joggers": 17938,
+        "OddsWell wardrobe | starter slate sneakers": 4892,
+        "Starter top | mock-neck rib band": 4246,
+        "Starter top | rib cuff l": 2134,
+        "Starter top | rib cuff r": 2134,
+        "Starter top | rib hem band": 5778,
+        "Joggers | rib ankle cuff l": 2322,
+        "Joggers | rib ankle cuff r": 2322,
+        "Sneaker | flat laces l": 20,
+        "Sneaker | teal heel tab l": 4,
+        "Sneaker | flat laces r": 20,
+        "Sneaker | teal heel tab r": 4
+      }
+    },
+    {
+      "frame": 6,
+      "evaluated_vertex_counts": {
+        "OddsWell wardrobe | starter off-white long-sleeve top": 16452,
+        "OddsWell wardrobe | starter off-white joggers": 17938,
+        "OddsWell wardrobe | starter slate sneakers": 4892,
+        "Starter top | mock-neck rib band": 4246,
+        "Starter top | rib cuff l": 2134,
+        "Starter top | rib cuff r": 2134,
+        "Starter top | rib hem band": 5778,
+        "Joggers | rib ankle cuff l": 2322,
+        "Joggers | rib ankle cuff r": 2322,
+        "Sneaker | flat laces l": 20,
+        "Sneaker | teal heel tab l": 4,
+        "Sneaker | flat laces r": 20,
+        "Sneaker | teal heel tab r": 4
+      }
+    },
+    {
+      "frame": 7,
+      "evaluated_vertex_counts": {
+        "OddsWell wardrobe | starter off-white long-sleeve top": 16452,
+        "OddsWell wardrobe | starter off-white joggers": 17938,
+        "OddsWell wardrobe | starter slate sneakers": 4892,
+        "Starter top | mock-neck rib band": 4246,
+        "Starter top | rib cuff l": 2134,
+        "Starter top | rib cuff r": 2134,
+        "Starter top | rib hem band": 5778,
+        "Joggers | rib ankle cuff l": 2322,
+        "Joggers | rib ankle cuff r": 2322,
+        "Sneaker | flat laces l": 20,
+        "Sneaker | teal heel tab l": 4,
+        "Sneaker | flat laces r": 20,
+        "Sneaker | teal heel tab r": 4
+      }
+    },
+    {
+      "frame": 8,
+      "evaluated_vertex_counts": {
+        "OddsWell wardrobe | starter off-white long-sleeve top": 16452,
+        "OddsWell wardrobe | starter off-white joggers": 17938,
+        "OddsWell wardrobe | starter slate sneakers": 4892,
+        "Starter top | mock-neck rib band": 4246,
+        "Starter top | rib cuff l": 2134,
+        "Starter top | rib cuff r": 2134,
+        "Starter top | rib hem band": 5778,
+        "Joggers | rib ankle cuff l": 2322,
+        "Joggers | rib ankle cuff r": 2322,
+        "Sneaker | flat laces l": 20,
+        "Sneaker | teal heel tab l": 4,
+        "Sneaker | flat laces r": 20,
+        "Sneaker | teal heel tab r": 4
+      }
+    },
+    {
+      "frame": 9,
+      "evaluated_vertex_counts": {
+        "OddsWell wardrobe | starter off-white long-sleeve top": 16452,
+        "OddsWell wardrobe | starter off-white joggers": 17938,
+        "OddsWell wardrobe | starter slate sneakers": 4892,
+        "Starter top | mock-neck rib band": 4246,
+        "Starter top | rib cuff l": 2134,
+        "Starter top | rib cuff r": 2134,
+        "Starter top | rib hem band": 5778,
+        "Joggers | rib ankle cuff l": 2322,
+        "Joggers | rib ankle cuff r": 2322,
+        "Sneaker | flat laces l": 20,
+        "Sneaker | teal heel tab l": 4,
+        "Sneaker | flat laces r": 20,
+        "Sneaker | teal heel tab r": 4
+      }
+    },
+    {
+      "frame": 10,
+      "evaluated_vertex_counts": {
+        "OddsWell wardrobe | starter off-white long-sleeve top": 16452,
+        "OddsWell wardrobe | starter off-white joggers": 17938,
+        "OddsWell wardrobe | starter slate sneakers": 4892,
+        "Starter top | mock-neck rib band": 4246,
+        "Starter top | rib cuff l": 2134,
+        "Starter top | rib cuff r": 2134,
+        "Starter top | rib hem band": 5778,
+        "Joggers | rib ankle cuff l": 2322,
+        "Joggers | rib ankle cuff r": 2322,
+        "Sneaker | flat laces l": 20,
+        "Sneaker | teal heel tab l": 4,
+        "Sneaker | flat laces r": 20,
+        "Sneaker | teal heel tab r": 4
+      }
+    },
+    {
+      "frame": 11,
+      "evaluated_vertex_counts": {
+        "OddsWell wardrobe | starter off-white long-sleeve top": 16452,
+        "OddsWell wardrobe | starter off-white joggers": 17938,
+        "OddsWell wardrobe | starter slate sneakers": 4892,
+        "Starter top | mock-neck rib band": 4246,
+        "Starter top | rib cuff l": 2134,
+        "Starter top | rib cuff r": 2134,
+        "Starter top | rib hem band": 5778,
+        "Joggers | rib ankle cuff l": 2322,
+        "Joggers | rib ankle cuff r": 2322,
+        "Sneaker | flat laces l": 20,
+        "Sneaker | teal heel tab l": 4,
+        "Sneaker | flat laces r": 20,
+        "Sneaker | teal heel tab r": 4
+      }
+    },
+    {
+      "frame": 12,
+      "evaluated_vertex_counts": {
+        "OddsWell wardrobe | starter off-white long-sleeve top": 16452,
+        "OddsWell wardrobe | starter off-white joggers": 17938,
+        "OddsWell wardrobe | starter slate sneakers": 4892,
+        "Starter top | mock-neck rib band": 4246,
+        "Starter top | rib cuff l": 2134,
+        "Starter top | rib cuff r": 2134,
+        "Starter top | rib hem band": 5778,
+        "Joggers | rib ankle cuff l": 2322,
+        "Joggers | rib ankle cuff r": 2322,
+        "Sneaker | flat laces l": 20,
+        "Sneaker | teal heel tab l": 4,
+        "Sneaker | flat laces r": 20,
+        "Sneaker | teal heel tab r": 4
+      }
+    },
+    {
+      "frame": 13,
+      "evaluated_vertex_counts": {
+        "OddsWell wardrobe | starter off-white long-sleeve top": 16452,
+        "OddsWell wardrobe | starter off-white joggers": 17938,
+        "OddsWell wardrobe | starter slate sneakers": 4892,
+        "Starter top | mock-neck rib band": 4246,
+        "Starter top | rib cuff l": 2134,
+        "Starter top | rib cuff r": 2134,
+        "Starter top | rib hem band": 5778,
+        "Joggers | rib ankle cuff l": 2322,
+        "Joggers | rib ankle cuff r": 2322,
+        "Sneaker | flat laces l": 20,
+        "Sneaker | teal heel tab l": 4,
+        "Sneaker | flat laces r": 20,
+        "Sneaker | teal heel tab r": 4
+      }
+    },
+    {
+      "frame": 14,
+      "evaluated_vertex_counts": {
+        "OddsWell wardrobe | starter off-white long-sleeve top": 16452,
+        "OddsWell wardrobe | starter off-white joggers": 17938,
+        "OddsWell wardrobe | starter slate sneakers": 4892,
+        "Starter top | mock-neck rib band": 4246,
+        "Starter top | rib cuff l": 2134,
+        "Starter top | rib cuff r": 2134,
+        "Starter top | rib hem band": 5778,
+        "Joggers | rib ankle cuff l": 2322,
+        "Joggers | rib ankle cuff r": 2322,
+        "Sneaker | flat laces l": 20,
+        "Sneaker | teal heel tab l": 4,
+        "Sneaker | flat laces r": 20,
+        "Sneaker | teal heel tab r": 4
+      }
+    },
+    {
+      "frame": 15,
+      "evaluated_vertex_counts": {
+        "OddsWell wardrobe | starter off-white long-sleeve top": 16452,
+        "OddsWell wardrobe | starter off-white joggers": 17938,
+        "OddsWell wardrobe | starter slate sneakers": 4892,
+        "Starter top | mock-neck rib band": 4246,
+        "Starter top | rib cuff l": 2134,
+        "Starter top | rib cuff r": 2134,
+        "Starter top | rib hem band": 5778,
+        "Joggers | rib ankle cuff l": 2322,
+        "Joggers | rib ankle cuff r": 2322,
+        "Sneaker | flat laces l": 20,
+        "Sneaker | teal heel tab l": 4,
+        "Sneaker | flat laces r": 20,
+        "Sneaker | teal heel tab r": 4
+      }
+    },
+    {
+      "frame": 16,
+      "evaluated_vertex_counts": {
+        "OddsWell wardrobe | starter off-white long-sleeve top": 16452,
+        "OddsWell wardrobe | starter off-white joggers": 17938,
+        "OddsWell wardrobe | starter slate sneakers": 4892,
+        "Starter top | mock-neck rib band": 4246,
+        "Starter top | rib cuff l": 2134,
+        "Starter top | rib cuff r": 2134,
+        "Starter top | rib hem band": 5778,
+        "Joggers | rib ankle cuff l": 2322,
+        "Joggers | rib ankle cuff r": 2322,
+        "Sneaker | flat laces l": 20,
+        "Sneaker | teal heel tab l": 4,
+        "Sneaker | flat laces r": 20,
+        "Sneaker | teal heel tab r": 4
+      }
+    },
+    {
+      "frame": 17,
+      "evaluated_vertex_counts": {
+        "OddsWell wardrobe | starter off-white long-sleeve top": 16452,
+        "OddsWell wardrobe | starter off-white joggers": 17938,
+        "OddsWell wardrobe | starter slate sneakers": 4892,
+        "Starter top | mock-neck rib band": 4246,
+        "Starter top | rib cuff l": 2134,
+        "Starter top | rib cuff r": 2134,
+        "Starter top | rib hem band": 5778,
+        "Joggers | rib ankle cuff l": 2322,
+        "Joggers | rib ankle cuff r": 2322,
+        "Sneaker | flat laces l": 20,
+        "Sneaker | teal heel tab l": 4,
+        "Sneaker | flat laces r": 20,
+        "Sneaker | teal heel tab r": 4
+      }
+    },
+    {
+      "frame": 18,
+      "evaluated_vertex_counts": {
+        "OddsWell wardrobe | starter off-white long-sleeve top": 16452,
+        "OddsWell wardrobe | starter off-white joggers": 17938,
+        "OddsWell wardrobe | starter slate sneakers": 4892,
+        "Starter top | mock-neck rib band": 4246,
+        "Starter top | rib cuff l": 2134,
+        "Starter top | rib cuff r": 2134,
+        "Starter top | rib hem band": 5778,
+        "Joggers | rib ankle cuff l": 2322,
+        "Joggers | rib ankle cuff r": 2322,
+        "Sneaker | flat laces l": 20,
+        "Sneaker | teal heel tab l": 4,
+        "Sneaker | flat laces r": 20,
+        "Sneaker | teal heel tab r": 4
+      }
+    },
+    {
+      "frame": 19,
+      "evaluated_vertex_counts": {
+        "OddsWell wardrobe | starter off-white long-sleeve top": 16452,
+        "OddsWell wardrobe | starter off-white joggers": 17938,
+        "OddsWell wardrobe | starter slate sneakers": 4892,
+        "Starter top | mock-neck rib band": 4246,
+        "Starter top | rib cuff l": 2134,
+        "Starter top | rib cuff r": 2134,
+        "Starter top | rib hem band": 5778,
+        "Joggers | rib ankle cuff l": 2322,
+        "Joggers | rib ankle cuff r": 2322,
+        "Sneaker | flat laces l": 20,
+        "Sneaker | teal heel tab l": 4,
+        "Sneaker | flat laces r": 20,
+        "Sneaker | teal heel tab r": 4
+      }
+    },
+    {
+      "frame": 20,
+      "evaluated_vertex_counts": {
+        "OddsWell wardrobe | starter off-white long-sleeve top": 16452,
+        "OddsWell wardrobe | starter off-white joggers": 17938,
+        "OddsWell wardrobe | starter slate sneakers": 4892,
+        "Starter top | mock-neck rib band": 4246,
+        "Starter top | rib cuff l": 2134,
+        "Starter top | rib cuff r": 2134,
+        "Starter top | rib hem band": 5778,
+        "Joggers | rib ankle cuff l": 2322,
+        "Joggers | rib ankle cuff r": 2322,
+        "Sneaker | flat laces l": 20,
+        "Sneaker | teal heel tab l": 4,
+        "Sneaker | flat laces r": 20,
+        "Sneaker | teal heel tab r": 4
+      }
+    },
+    {
+      "frame": 21,
+      "evaluated_vertex_counts": {
+        "OddsWell wardrobe | starter off-white long-sleeve top": 16452,
+        "OddsWell wardrobe | starter off-white joggers": 17938,
+        "OddsWell wardrobe | starter slate sneakers": 4892,
+        "Starter top | mock-neck rib band": 4246,
+        "Starter top | rib cuff l": 2134,
+        "Starter top | rib cuff r": 2134,
+        "Starter top | rib hem band": 5778,
+        "Joggers | rib ankle cuff l": 2322,
+        "Joggers | rib ankle cuff r": 2322,
+        "Sneaker | flat laces l": 20,
+        "Sneaker | teal heel tab l": 4,
+        "Sneaker | flat laces r": 20,
+        "Sneaker | teal heel tab r": 4
+      }
+    },
+    {
+      "frame": 22,
+      "evaluated_vertex_counts": {
+        "OddsWell wardrobe | starter off-white long-sleeve top": 16452,
+        "OddsWell wardrobe | starter off-white joggers": 17938,
+        "OddsWell wardrobe | starter slate sneakers": 4892,
+        "Starter top | mock-neck rib band": 4246,
+        "Starter top | rib cuff l": 2134,
+        "Starter top | rib cuff r": 2134,
+        "Starter top | rib hem band": 5778,
+        "Joggers | rib ankle cuff l": 2322,
+        "Joggers | rib ankle cuff r": 2322,
+        "Sneaker | flat laces l": 20,
+        "Sneaker | teal heel tab l": 4,
+        "Sneaker | flat laces r": 20,
+        "Sneaker | teal heel tab r": 4
+      }
+    },
+    {
+      "frame": 23,
+      "evaluated_vertex_counts": {
+        "OddsWell wardrobe | starter off-white long-sleeve top": 16452,
+        "OddsWell wardrobe | starter off-white joggers": 17938,
+        "OddsWell wardrobe | starter slate sneakers": 4892,
+        "Starter top | mock-neck rib band": 4246,
+        "Starter top | rib cuff l": 2134,
+        "Starter top | rib cuff r": 2134,
+        "Starter top | rib hem band": 5778,
+        "Joggers | rib ankle cuff l": 2322,
+        "Joggers | rib ankle cuff r": 2322,
+        "Sneaker | flat laces l": 20,
+        "Sneaker | teal heel tab l": 4,
+        "Sneaker | flat laces r": 20,
+        "Sneaker | teal heel tab r": 4
+      }
+    },
+    {
+      "frame": 24,
+      "evaluated_vertex_counts": {
+        "OddsWell wardrobe | starter off-white long-sleeve top": 16452,
+        "OddsWell wardrobe | starter off-white joggers": 17938,
+        "OddsWell wardrobe | starter slate sneakers": 4892,
+        "Starter top | mock-neck rib band": 4246,
+        "Starter top | rib cuff l": 2134,
+        "Starter top | rib cuff r": 2134,
+        "Starter top | rib hem band": 5778,
+        "Joggers | rib ankle cuff l": 2322,
+        "Joggers | rib ankle cuff r": 2322,
+        "Sneaker | flat laces l": 20,
+        "Sneaker | teal heel tab l": 4,
+        "Sneaker | flat laces r": 20,
+        "Sneaker | teal heel tab r": 4
+      }
+    },
+    {
+      "frame": 25,
+      "evaluated_vertex_counts": {
+        "OddsWell wardrobe | starter off-white long-sleeve top": 16452,
+        "OddsWell wardrobe | starter off-white joggers": 17938,
+        "OddsWell wardrobe | starter slate sneakers": 4892,
+        "Starter top | mock-neck rib band": 4246,
+        "Starter top | rib cuff l": 2134,
+        "Starter top | rib cuff r": 2134,
+        "Starter top | rib hem band": 5778,
+        "Joggers | rib ankle cuff l": 2322,
+        "Joggers | rib ankle cuff r": 2322,
+        "Sneaker | flat laces l": 20,
+        "Sneaker | teal heel tab l": 4,
+        "Sneaker | flat laces r": 20,
+        "Sneaker | teal heel tab r": 4
+      }
+    },
+    {
+      "frame": 26,
+      "evaluated_vertex_counts": {
+        "OddsWell wardrobe | starter off-white long-sleeve top": 16452,
+        "OddsWell wardrobe | starter off-white joggers": 17938,
+        "OddsWell wardrobe | starter slate sneakers": 4892,
+        "Starter top | mock-neck rib band": 4246,
+        "Starter top | rib cuff l": 2134,
+        "Starter top | rib cuff r": 2134,
+        "Starter top | rib hem band": 5778,
+        "Joggers | rib ankle cuff l": 2322,
+        "Joggers | rib ankle cuff r": 2322,
+        "Sneaker | flat laces l": 20,
+        "Sneaker | teal heel tab l": 4,
+        "Sneaker | flat laces r": 20,
+        "Sneaker | teal heel tab r": 4
+      }
+    },
+    {
+      "frame": 27,
+      "evaluated_vertex_counts": {
+        "OddsWell wardrobe | starter off-white long-sleeve top": 16452,
+        "OddsWell wardrobe | starter off-white joggers": 17938,
+        "OddsWell wardrobe | starter slate sneakers": 4892,
+        "Starter top | mock-neck rib band": 4246,
+        "Starter top | rib cuff l": 2134,
+        "Starter top | rib cuff r": 2134,
+        "Starter top | rib hem band": 5778,
+        "Joggers | rib ankle cuff l": 2322,
+        "Joggers | rib ankle cuff r": 2322,
+        "Sneaker | flat laces l": 20,
+        "Sneaker | teal heel tab l": 4,
+        "Sneaker | flat laces r": 20,
+        "Sneaker | teal heel tab r": 4
+      }
+    },
+    {
+      "frame": 28,
+      "evaluated_vertex_counts": {
+        "OddsWell wardrobe | starter off-white long-sleeve top": 16452,
+        "OddsWell wardrobe | starter off-white joggers": 17938,
+        "OddsWell wardrobe | starter slate sneakers": 4892,
+        "Starter top | mock-neck rib band": 4246,
+        "Starter top | rib cuff l": 2134,
+        "Starter top | rib cuff r": 2134,
+        "Starter top | rib hem band": 5778,
+        "Joggers | rib ankle cuff l": 2322,
+        "Joggers | rib ankle cuff r": 2322,
+        "Sneaker | flat laces l": 20,
+        "Sneaker | teal heel tab l": 4,
+        "Sneaker | flat laces r": 20,
+        "Sneaker | teal heel tab r": 4
+      }
+    },
+    {
+      "frame": 29,
+      "evaluated_vertex_counts": {
+        "OddsWell wardrobe | starter off-white long-sleeve top": 16452,
+        "OddsWell wardrobe | starter off-white joggers": 17938,
+        "OddsWell wardrobe | starter slate sneakers": 4892,
+        "Starter top | mock-neck rib band": 4246,
+        "Starter top | rib cuff l": 2134,
+        "Starter top | rib cuff r": 2134,
+        "Starter top | rib hem band": 5778,
+        "Joggers | rib ankle cuff l": 2322,
+        "Joggers | rib ankle cuff r": 2322,
+        "Sneaker | flat laces l": 20,
+        "Sneaker | teal heel tab l": 4,
+        "Sneaker | flat laces r": 20,
+        "Sneaker | teal heel tab r": 4
+      }
+    },
+    {
+      "frame": 30,
+      "evaluated_vertex_counts": {
+        "OddsWell wardrobe | starter off-white long-sleeve top": 16452,
+        "OddsWell wardrobe | starter off-white joggers": 17938,
+        "OddsWell wardrobe | starter slate sneakers": 4892,
+        "Starter top | mock-neck rib band": 4246,
+        "Starter top | rib cuff l": 2134,
+        "Starter top | rib cuff r": 2134,
+        "Starter top | rib hem band": 5778,
+        "Joggers | rib ankle cuff l": 2322,
+        "Joggers | rib ankle cuff r": 2322,
+        "Sneaker | flat laces l": 20,
+        "Sneaker | teal heel tab l": 4,
+        "Sneaker | flat laces r": 20,
+        "Sneaker | teal heel tab r": 4
+      }
+    },
+    {
+      "frame": 31,
+      "evaluated_vertex_counts": {
+        "OddsWell wardrobe | starter off-white long-sleeve top": 16452,
+        "OddsWell wardrobe | starter off-white joggers": 17938,
+        "OddsWell wardrobe | starter slate sneakers": 4892,
+        "Starter top | mock-neck rib band": 4246,
+        "Starter top | rib cuff l": 2134,
+        "Starter top | rib cuff r": 2134,
+        "Starter top | rib hem band": 5778,
+        "Joggers | rib ankle cuff l": 2322,
+        "Joggers | rib ankle cuff r": 2322,
+        "Sneaker | flat laces l": 20,
+        "Sneaker | teal heel tab l": 4,
+        "Sneaker | flat laces r": 20,
+        "Sneaker | teal heel tab r": 4
+      }
+    },
+    {
+      "frame": 32,
+      "evaluated_vertex_counts": {
+        "OddsWell wardrobe | starter off-white long-sleeve top": 16452,
+        "OddsWell wardrobe | starter off-white joggers": 17938,
+        "OddsWell wardrobe | starter slate sneakers": 4892,
+        "Starter top | mock-neck rib band": 4246,
+        "Starter top | rib cuff l": 2134,
+        "Starter top | rib cuff r": 2134,
+        "Starter top | rib hem band": 5778,
+        "Joggers | rib ankle cuff l": 2322,
+        "Joggers | rib ankle cuff r": 2322,
+        "Sneaker | flat laces l": 20,
+        "Sneaker | teal heel tab l": 4,
+        "Sneaker | flat laces r": 20,
+        "Sneaker | teal heel tab r": 4
+      }
+    },
+    {
+      "frame": 33,
+      "evaluated_vertex_counts": {
+        "OddsWell wardrobe | starter off-white long-sleeve top": 16452,
+        "OddsWell wardrobe | starter off-white joggers": 17938,
+        "OddsWell wardrobe | starter slate sneakers": 4892,
+        "Starter top | mock-neck rib band": 4246,
+        "Starter top | rib cuff l": 2134,
+        "Starter top | rib cuff r": 2134,
+        "Starter top | rib hem band": 5778,
+        "Joggers | rib ankle cuff l": 2322,
+        "Joggers | rib ankle cuff r": 2322,
+        "Sneaker | flat laces l": 20,
+        "Sneaker | teal heel tab l": 4,
+        "Sneaker | flat laces r": 20,
+        "Sneaker | teal heel tab r": 4
+      }
+    },
+    {
+      "frame": 34,
+      "evaluated_vertex_counts": {
+        "OddsWell wardrobe | starter off-white long-sleeve top": 16452,
+        "OddsWell wardrobe | starter off-white joggers": 17938,
+        "OddsWell wardrobe | starter slate sneakers": 4892,
+        "Starter top | mock-neck rib band": 4246,
+        "Starter top | rib cuff l": 2134,
+        "Starter top | rib cuff r": 2134,
+        "Starter top | rib hem band": 5778,
+        "Joggers | rib ankle cuff l": 2322,
+        "Joggers | rib ankle cuff r": 2322,
+        "Sneaker | flat laces l": 20,
+        "Sneaker | teal heel tab l": 4,
+        "Sneaker | flat laces r": 20,
+        "Sneaker | teal heel tab r": 4
+      }
+    },
+    {
+      "frame": 35,
+      "evaluated_vertex_counts": {
+        "OddsWell wardrobe | starter off-white long-sleeve top": 16452,
+        "OddsWell wardrobe | starter off-white joggers": 17938,
+        "OddsWell wardrobe | starter slate sneakers": 4892,
+        "Starter top | mock-neck rib band": 4246,
+        "Starter top | rib cuff l": 2134,
+        "Starter top | rib cuff r": 2134,
+        "Starter top | rib hem band": 5778,
+        "Joggers | rib ankle cuff l": 2322,
+        "Joggers | rib ankle cuff r": 2322,
+        "Sneaker | flat laces l": 20,
+        "Sneaker | teal heel tab l": 4,
+        "Sneaker | flat laces r": 20,
+        "Sneaker | teal heel tab r": 4
+      }
+    },
+    {
+      "frame": 36,
+      "evaluated_vertex_counts": {
+        "OddsWell wardrobe | starter off-white long-sleeve top": 16452,
+        "OddsWell wardrobe | starter off-white joggers": 17938,
+        "OddsWell wardrobe | starter slate sneakers": 4892,
+        "Starter top | mock-neck rib band": 4246,
+        "Starter top | rib cuff l": 2134,
+        "Starter top | rib cuff r": 2134,
+        "Starter top | rib hem band": 5778,
+        "Joggers | rib ankle cuff l": 2322,
+        "Joggers | rib ankle cuff r": 2322,
+        "Sneaker | flat laces l": 20,
+        "Sneaker | teal heel tab l": 4,
+        "Sneaker | flat laces r": 20,
+        "Sneaker | teal heel tab r": 4
+      }
+    },
+    {
+      "frame": 37,
+      "evaluated_vertex_counts": {
+        "OddsWell wardrobe | starter off-white long-sleeve top": 16452,
+        "OddsWell wardrobe | starter off-white joggers": 17938,
+        "OddsWell wardrobe | starter slate sneakers": 4892,
+        "Starter top | mock-neck rib band": 4246,
+        "Starter top | rib cuff l": 2134,
+        "Starter top | rib cuff r": 2134,
+        "Starter top | rib hem band": 5778,
+        "Joggers | rib ankle cuff l": 2322,
+        "Joggers | rib ankle cuff r": 2322,
+        "Sneaker | flat laces l": 20,
+        "Sneaker | teal heel tab l": 4,
+        "Sneaker | flat laces r": 20,
+        "Sneaker | teal heel tab r": 4
+      }
+    },
+    {
+      "frame": 38,
+      "evaluated_vertex_counts": {
+        "OddsWell wardrobe | starter off-white long-sleeve top": 16452,
+        "OddsWell wardrobe | starter off-white joggers": 17938,
+        "OddsWell wardrobe | starter slate sneakers": 4892,
+        "Starter top | mock-neck rib band": 4246,
+        "Starter top | rib cuff l": 2134,
+        "Starter top | rib cuff r": 2134,
+        "Starter top | rib hem band": 5778,
+        "Joggers | rib ankle cuff l": 2322,
+        "Joggers | rib ankle cuff r": 2322,
+        "Sneaker | flat laces l": 20,
+        "Sneaker | teal heel tab l": 4,
+        "Sneaker | flat laces r": 20,
+        "Sneaker | teal heel tab r": 4
+      }
+    },
+    {
+      "frame": 39,
+      "evaluated_vertex_counts": {
+        "OddsWell wardrobe | starter off-white long-sleeve top": 16452,
+        "OddsWell wardrobe | starter off-white joggers": 17938,
+        "OddsWell wardrobe | starter slate sneakers": 4892,
+        "Starter top | mock-neck rib band": 4246,
+        "Starter top | rib cuff l": 2134,
+        "Starter top | rib cuff r": 2134,
+        "Starter top | rib hem band": 5778,
+        "Joggers | rib ankle cuff l": 2322,
+        "Joggers | rib ankle cuff r": 2322,
+        "Sneaker | flat laces l": 20,
+        "Sneaker | teal heel tab l": 4,
+        "Sneaker | flat laces r": 20,
+        "Sneaker | teal heel tab r": 4
+      }
+    },
+    {
+      "frame": 40,
+      "evaluated_vertex_counts": {
+        "OddsWell wardrobe | starter off-white long-sleeve top": 16452,
+        "OddsWell wardrobe | starter off-white joggers": 17938,
+        "OddsWell wardrobe | starter slate sneakers": 4892,
+        "Starter top | mock-neck rib band": 4246,
+        "Starter top | rib cuff l": 2134,
+        "Starter top | rib cuff r": 2134,
+        "Starter top | rib hem band": 5778,
+        "Joggers | rib ankle cuff l": 2322,
+        "Joggers | rib ankle cuff r": 2322,
+        "Sneaker | flat laces l": 20,
+        "Sneaker | teal heel tab l": 4,
+        "Sneaker | flat laces r": 20,
+        "Sneaker | teal heel tab r": 4
+      }
+    },
+    {
+      "frame": 41,
+      "evaluated_vertex_counts": {
+        "OddsWell wardrobe | starter off-white long-sleeve top": 16452,
+        "OddsWell wardrobe | starter off-white joggers": 17938,
+        "OddsWell wardrobe | starter slate sneakers": 4892,
+        "Starter top | mock-neck rib band": 4246,
+        "Starter top | rib cuff l": 2134,
+        "Starter top | rib cuff r": 2134,
+        "Starter top | rib hem band": 5778,
+        "Joggers | rib ankle cuff l": 2322,
+        "Joggers | rib ankle cuff r": 2322,
+        "Sneaker | flat laces l": 20,
+        "Sneaker | teal heel tab l": 4,
+        "Sneaker | flat laces r": 20,
+        "Sneaker | teal heel tab r": 4
+      }
+    },
+    {
+      "frame": 42,
+      "evaluated_vertex_counts": {
+        "OddsWell wardrobe | starter off-white long-sleeve top": 16452,
+        "OddsWell wardrobe | starter off-white joggers": 17938,
+        "OddsWell wardrobe | starter slate sneakers": 4892,
+        "Starter top | mock-neck rib band": 4246,
+        "Starter top | rib cuff l": 2134,
+        "Starter top | rib cuff r": 2134,
+        "Starter top | rib hem band": 5778,
+        "Joggers | rib ankle cuff l": 2322,
+        "Joggers | rib ankle cuff r": 2322,
+        "Sneaker | flat laces l": 20,
+        "Sneaker | teal heel tab l": 4,
+        "Sneaker | flat laces r": 20,
+        "Sneaker | teal heel tab r": 4
+      }
+    },
+    {
+      "frame": 43,
+      "evaluated_vertex_counts": {
+        "OddsWell wardrobe | starter off-white long-sleeve top": 16452,
+        "OddsWell wardrobe | starter off-white joggers": 17938,
+        "OddsWell wardrobe | starter slate sneakers": 4892,
+        "Starter top | mock-neck rib band": 4246,
+        "Starter top | rib cuff l": 2134,
+        "Starter top | rib cuff r": 2134,
+        "Starter top | rib hem band": 5778,
+        "Joggers | rib ankle cuff l": 2322,
+        "Joggers | rib ankle cuff r": 2322,
+        "Sneaker | flat laces l": 20,
+        "Sneaker | teal heel tab l": 4,
+        "Sneaker | flat laces r": 20,
+        "Sneaker | teal heel tab r": 4
+      }
+    },
+    {
+      "frame": 44,
+      "evaluated_vertex_counts": {
+        "OddsWell wardrobe | starter off-white long-sleeve top": 16452,
+        "OddsWell wardrobe | starter off-white joggers": 17938,
+        "OddsWell wardrobe | starter slate sneakers": 4892,
+        "Starter top | mock-neck rib band": 4246,
+        "Starter top | rib cuff l": 2134,
+        "Starter top | rib cuff r": 2134,
+        "Starter top | rib hem band": 5778,
+        "Joggers | rib ankle cuff l": 2322,
+        "Joggers | rib ankle cuff r": 2322,
+        "Sneaker | flat laces l": 20,
+        "Sneaker | teal heel tab l": 4,
+        "Sneaker | flat laces r": 20,
+        "Sneaker | teal heel tab r": 4
+      }
+    },
+    {
+      "frame": 45,
+      "evaluated_vertex_counts": {
+        "OddsWell wardrobe | starter off-white long-sleeve top": 16452,
+        "OddsWell wardrobe | starter off-white joggers": 17938,
+        "OddsWell wardrobe | starter slate sneakers": 4892,
+        "Starter top | mock-neck rib band": 4246,
+        "Starter top | rib cuff l": 2134,
+        "Starter top | rib cuff r": 2134,
+        "Starter top | rib hem band": 5778,
+        "Joggers | rib ankle cuff l": 2322,
+        "Joggers | rib ankle cuff r": 2322,
+        "Sneaker | flat laces l": 20,
+        "Sneaker | teal heel tab l": 4,
+        "Sneaker | flat laces r": 20,
+        "Sneaker | teal heel tab r": 4
+      }
+    },
+    {
+      "frame": 46,
+      "evaluated_vertex_counts": {
+        "OddsWell wardrobe | starter off-white long-sleeve top": 16452,
+        "OddsWell wardrobe | starter off-white joggers": 17938,
+        "OddsWell wardrobe | starter slate sneakers": 4892,
+        "Starter top | mock-neck rib band": 4246,
+        "Starter top | rib cuff l": 2134,
+        "Starter top | rib cuff r": 2134,
+        "Starter top | rib hem band": 5778,
+        "Joggers | rib ankle cuff l": 2322,
+        "Joggers | rib ankle cuff r": 2322,
+        "Sneaker | flat laces l": 20,
+        "Sneaker | teal heel tab l": 4,
+        "Sneaker | flat laces r": 20,
+        "Sneaker | teal heel tab r": 4
+      }
+    },
+    {
+      "frame": 47,
+      "evaluated_vertex_counts": {
+        "OddsWell wardrobe | starter off-white long-sleeve top": 16452,
+        "OddsWell wardrobe | starter off-white joggers": 17938,
+        "OddsWell wardrobe | starter slate sneakers": 4892,
+        "Starter top | mock-neck rib band": 4246,
+        "Starter top | rib cuff l": 2134,
+        "Starter top | rib cuff r": 2134,
+        "Starter top | rib hem band": 5778,
+        "Joggers | rib ankle cuff l": 2322,
+        "Joggers | rib ankle cuff r": 2322,
+        "Sneaker | flat laces l": 20,
+        "Sneaker | teal heel tab l": 4,
+        "Sneaker | flat laces r": 20,
+        "Sneaker | teal heel tab r": 4
+      }
+    },
+    {
+      "frame": 48,
+      "evaluated_vertex_counts": {
+        "OddsWell wardrobe | starter off-white long-sleeve top": 16452,
+        "OddsWell wardrobe | starter off-white joggers": 17938,
+        "OddsWell wardrobe | starter slate sneakers": 4892,
+        "Starter top | mock-neck rib band": 4246,
+        "Starter top | rib cuff l": 2134,
+        "Starter top | rib cuff r": 2134,
+        "Starter top | rib hem band": 5778,
+        "Joggers | rib ankle cuff l": 2322,
+        "Joggers | rib ankle cuff r": 2322,
+        "Sneaker | flat laces l": 20,
+        "Sneaker | teal heel tab l": 4,
+        "Sneaker | flat laces r": 20,
+        "Sneaker | teal heel tab r": 4
+      }
+    },
+    {
+      "frame": 49,
+      "evaluated_vertex_counts": {
+        "OddsWell wardrobe | starter off-white long-sleeve top": 16452,
+        "OddsWell wardrobe | starter off-white joggers": 17938,
+        "OddsWell wardrobe | starter slate sneakers": 4892,
+        "Starter top | mock-neck rib band": 4246,
+        "Starter top | rib cuff l": 2134,
+        "Starter top | rib cuff r": 2134,
+        "Starter top | rib hem band": 5778,
+        "Joggers | rib ankle cuff l": 2322,
+        "Joggers | rib ankle cuff r": 2322,
+        "Sneaker | flat laces l": 20,
+        "Sneaker | teal heel tab l": 4,
+        "Sneaker | flat laces r": 20,
+        "Sneaker | teal heel tab r": 4
+      }
+    }
+  ],
+  "source_outfit_remaining": "Original suit, shirt, vest, belt and dress shoes stay in the retained original mesh beneath the new garments; no underlying anatomy is invented or exposed.",
+  "scope": "Separate skinned off-white mock-neck long-sleeve top, joggers, rib trims and slate sneakers. Offline wardrobe study, not cloth simulation, runtime export or final visual acceptance."
+}

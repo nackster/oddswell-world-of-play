@@ -1,0 +1,128 @@
+{
+  "native_candidate_local_path": "downloads/licensed-characters/RenderpeopleEric/StarterOutfitStudy/OddsWellStarterOutfit.blend",
+  "native_candidate_sha256": "b18d2443a17785426df6c695b6139a2bdf0a9bdc8296cfd10d0feb35be9f451e",
+  "native_candidate_bytes": 22578058,
+  "raw_vendor_files_committed": false,
+  "files": [
+    {
+      "path": "Back.png",
+      "bytes": 666928,
+      "sha256": "9465449ab69fc5aecac3a8ae2113e8a554731395b27ce32933198cb1ccc9fe2a"
+    },
+    {
+      "path": "Close.png",
+      "bytes": 669369,
+      "sha256": "86fc24d96dcabb01f3b72487ea170b434b6820e4c2740561b18c523e47a0b87d"
+    },
+    {
+      "path": "Coverage.png",
+      "bytes": 174172,
+      "sha256": "14420324160b4c715b7463472fb9d3822e76838ed5b66082cc382325f51a88ce"
+    },
+    {
+      "path": "Feet.png",
+      "bytes": 659884,
+      "sha256": "a06518acb2594be183dc6614361167e5f28f391b2597e948a59b12f409042d46"
+    },
+    {
+      "path": "Front.png",
+      "bytes": 666430,
+      "sha256": "4a115b2f06e064b91d964dea46aba0c3e9f6a9993c9141e59e07a9f955e772b3"
+    },
+    {
+      "path": "Full.png",
+      "bytes": 659615,
+      "sha256": "aeea602a9e28584d3dfeb8ab6563e04f3d9c0807b647e1c7a32f77fc961bf8ab"
+    },
+    {
+      "path": "Gameplay.png",
+      "bytes": 1637825,
+      "sha256": "656500314f891ebfd07f91cc4d8e898a0e5aa6314e6181d94880a09fadbd37ee"
+    },
+    {
+      "path": "Jacket.png",
+      "bytes": 663963,
+      "sha256": "971c263b4ae1ebcfa305be6951c3dc1374964daa2444d7a67d89e1b71bbde284"
+    },
+    {
+      "path": "Neck.png",
+      "bytes": 723155,
+      "sha256": "90f1a480848a094ae836402241faad2b7f6a688a2409303a6d9216299f23df74"
+    },
+    {
+      "path": "NeckBack.png",
+      "bytes": 747257,
+      "sha256": "9de2d5959d4dd92d2f786ba2bc12777c8cd5aef8ad8ce5200c930edf58062b55"
+    },
+    {
+      "path": "README.md",
+      "bytes": 4558,
+      "sha256": "998ee4fbed86aa04de122da567756e8fb2dce82cf0f761fd8476cb4cd4ef5a03"
+    },
+    {
+      "path": "Side.png",
+      "bytes": 665213,
+      "sha256": "63f257d9aeba3d701ec8b6069ee8559120e4272f415ab1deaafe7513023d6558"
+    },
+    {
+      "path": "Walking.mp4",
+      "bytes": 83897,
+      "sha256": "22c0850faeed611691a3a62a6a36e11c7c937d45f56caf41d0fa25f74ea1f713"
+    },
+    {
+      "path": "build.py",
+      "bytes": 23004,
+      "sha256": "6702cee84fc1fc09dea777f0368d69b56b56aabf427921c8f598170f0d8018a3"
+    },
+    {
+      "path": "coverage-report.json",
+      "bytes": 11517,
+      "sha256": "564854e110cfff84a3345f2c3375fdf26c0afdd6f0fa200d9bd2fd2ee969c861"
+    },
+    {
+      "path": "coverage.py",
+      "bytes": 4596,
+      "sha256": "f0bd246000d867b7da2116f6943d7fdbf4cb73937a80ad30857a2f5be1009c9c"
+    },
+    {
+      "path": "inspect.py",
+      "bytes": 1468,
+      "sha256": "204ca136de4338136a01432720eb66ca539a8a49ee090e509b6fd305c21b8dd7"
+    },
+    {
+      "path": "retain.py",
+      "bytes": 3160,
+      "sha256": "9deddf99732189c8c2dbd1b1283baad8c0100f2318f76d4f7ac916bba277e58b"
+    },
+    {
+      "path": "select.py",
+      "bytes": 1879,
+      "sha256": "c25a6f0fd376e3b33354556dd590f7521b1e45fc3a8dada37c39c8362e0ad3d6"
+    },
+    {
+      "path": "selection.json",
+      "bytes": 58735,
+      "sha256": "e2ae51367e90c0886bbc2f091054409279818d0808b773aeb86b462d639ccbe3"
+    },
+    {
+      "path": "starter-report.json",
+      "bytes": 35572,
+      "sha256": "bcd1a4d3d088037179a44a13f1be9e93a1d5f5c6be1a4b55458f226cd5765144"
+    },
+    {
+      "path": "street-report.json",
+      "bytes": 347,
+      "sha256": "8d5897bd83e134296beeba5a8c76745013a785a9d0588202b44c4cc8bd3d9eca"
+    },
+    {
+      "path": "street.py",
+      "bytes": 1955,
+      "sha256": "6a14298cabe9506effb695afbc210fd1e5ab0e1ddda1929e75c9c58756b27a3c"
+    },
+    {
+      "path": "video-report.json",
+      "bytes": 222,
+      "sha256": "17411660e94eadd37de860011569341ded7461c7131935b9e3491b26107d4325"
+    }
+  ]
+}

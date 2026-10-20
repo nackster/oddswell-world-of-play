@@ -61,6 +61,7 @@ The September 12 runtime report records **75 native tests**, **105 Python tests*
 | `b4eac4d` | Downloaded/imported Renderpeople **Eric Rigged 001**; reviewed realistic face/body, source textures and rig; local editable asset. |
 | `1f9a25d` | Completion roadmap and restrained scanned-human walking study. Maximum foot-bone separation reduced from approximately 0.858 m to 0.715 m. |
 | `82ecfda` | Separate fitted Signal Jacket shell, zip tape/teeth, pocket welts, tapered rib collar, teal chest tab, four garment/figure views, walking preview and street-camera composition. |
+| Oct 20 | Off-white starter outfit (mock-neck long-sleeve top, cuffed joggers, slate sneakers) as separate skinned shells; long garments chosen by the owner in DEC-036. See `Oddswell/Art/Production/SundaleStreetSlice/ScannedStarterOutfitCandidate/README.md`. Local editable file: `downloads/licensed-characters/RenderpeopleEric/StarterOutfitStudy/OddsWellStarterOutfit.blend`. |
 
 The scan has **10,353 vertices, 10,558 polygons, an 88-bone rig and three packed source maps**. Original geometry, UVs, weights, bind matrices and packed-map bytes pass the retained comparisons. The walk has 49 authored keys; whole-mesh grounding is not foot locking. The motion report records up to approximately **1.55 mm** interpolated ground penetration at sampled half-frames.
 
@@ -108,6 +109,8 @@ The publisher is [Renderpeople](https://renderpeople.com/free-3d-people/); the r
 No reliable completion percentage or calendar ETA is currently established.
 
 ## Recommended first assignment for an additional AI
+
+**Update, October 20:** The starter-outfit half of this assignment is delivered as long garments over the scan (DEC-036; see the checkpoint table above). The body/leg source is still open and now belongs with the production rig/preset/export contract. It is needed for shorts and for preset/tone variety. The original assignment text follows for reference.
 
 **Deliver one compatible body/leg and starter-outfit candidate around the accepted human direction.** Keep the Signal Jacket checkpoint and original scan intact. Work in a new candidate folder and retain editable sources under the relevant license.
 
