@@ -1,6 +1,6 @@
 ---
 tags: [development, roadmap, launch]
-status: proposed-awaiting-owner-decisions
+status: active-d1-d4-decided
 date: 2026-10-20
 ---
 
@@ -40,6 +40,8 @@ I read the Beta and Version 1 Bibles, the completion roadmap and the handoff, th
 ## 2. Decisions you need to make
 
 My recommendation is listed first in each.
+
+> **Decided 2026-10-20:** D1–D4 as recommended. That means single-player first, the simulator ported into the game, an in-game calendar, and 8 teams with about 28 games plus playoffs. See [[Design/Decisions/DEC-037 Epic Store Launch Shape League Runtime Calendar and Size|DEC-037]]. D5–D10 remain open.
 
 **D1 — Launch shape.** *Recommended: single-player at launch; the shared online city comes later as a free update.*
 
