@@ -93,7 +93,7 @@ My recommendation is listed first in each.
 
 Each milestone ends with a build you play.
 
-**M1 — Living league (foundation).**
+**M1 — Living league (foundation).** **Delivered 2026-10-20:** see [[Development/Reports/M1 Living League/README]]. Owner hands-on play is still pending.
 
 - In-game calendar.
 - C++ simulator port checked against the Python tests.
