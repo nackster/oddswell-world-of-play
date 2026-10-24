@@ -1,0 +1,91 @@
+{
+  "source": "Native scene/garments/plant geometry, CC0 MakeHuman anatomical surfaces, six CC0 Poly Haven stone/bark texture maps and one CC0 photographed sky environment; adapted CC0 Jacaranda model with ten packed 2K maps",
+  "reference": "../../Reviews/OddsWellStreetIdentityCandidate/OddsWell_Visual_Direction_Concept.png",
+  "objects": 4749,
+  "meshes": 3230,
+  "materials": 64,
+  "packed_texture_maps": 31,
+  "mature_tree_instances": 13,
+  "seed": 218,
+  "render_engine": "Cycles",
+  "samples": 160,
+  "resolution": [
+    1920,
+    1080
+  ],
+  "runtime_integrated": false,
+  "character": "Static tailored study with grounded stance and continuous shorts; current game rig unchanged",
+  "character_ground_offset_m": -0.08427651131153108,
+  "no_generated_background": true,
+  "quality_goal": "Active; reference fidelity and final art approval remain open",
+  "independent_reopen": "PASS",
+  "additional_views": [
+    "Court_and_Arena",
+    "Architecture_Detail",
+    "Character_Detail",
+    "Landscape_Detail",
+    "Character_ThreeQuarter",
+    "Head_Front",
+    "Head_Profile",
+    "Hand_Left",
+    "Hand_Right"
+  ],
+  "additional_view_resolutions": {
+    "Court_and_Arena": [
+      1600,
+      900
+    ],
+    "Architecture_Detail": [
+      1600,
+      900
+    ],
+    "Character_Detail": [
+      1000,
+      1100
+    ],
+    "Landscape_Detail": [
+      1000,
+      1100
+    ],
+    "Character_ThreeQuarter": [
+      1000,
+      1100
+    ],
+    "Head_Front": [
+      1000,
+      1100
+    ],
+    "Head_Profile": [
+      1000,
+      1100
+    ],
+    "Hand_Left": [
+      1000,
+      1000
+    ],
+    "Hand_Right": [
+      1000,
+      1000
+    ]
+  },
+  "additional_view_samples": 96,
+  "render_device": "OPTIX",
+  "skin": "CC0 MakeHuman young_lightskinned_male_diffuse map on retained anatomical UVs; original source preserved",
+  "body_detail": "Individual anatomical finger bends, fitted rib cuffs, crossed shoe laces/eyelets, dense pocket stitches and 2600 tapered calf hair curves",
+  "face_detail": "Six pinned CC0 hm08 targets: three baseline adjustments and three editable local head forms; authored asymmetry and facial roughness zones; transported brows and fitted eyelid tissue",
+  "construction": "Shaped collar and continuous zipper; relaxed forearms; recessed shoe collars, fitted tongue/lacing/bows and broad flat sole contact",
+  "jacket": "45-frame native gravity/fabric-ease study; filtered static geometry, retained rest/raw positions, raglan seams and actual teal-panel boundary stitching",
+  "jacket_drape_frames": 60,
+  "jacket_drape_maximum_delta_m": 0.06286110753112834,
+  "cloth": "40-frame native cotton drape study blended with tailoring; retained CC0 fabric maps and articulated hip/knee/ankle pose",
+  "canopy": "Raised Jacaranda branching with adapted CC0 Island Tree 01 broad-leaf clusters; same leaf family in foreground shrubs",
+  "eye_optics": "Paired closed eyeballs with transparent corneal zones over recessed iris/pupil surfaces, adjusted pigment and lower wet eyelid margins",
+  "skin_relief": "Finer procedural relief and reduced subsurface scale over unchanged CC0 source color maps",
+  "hand_surfaces": "Retained anatomical coordinates and editable hand relief shape keys; knuckle/tendon/palm definition and ten fitted keratin nail plates",
+  "eyelash_strands": 92,
+  "head_character_targets": {
+    "caucasian-male-young.target": 0.65,
+    "head-fat-decr.target": 0.22,
+    "head-rectangular.target": 0.3
+  }
+}

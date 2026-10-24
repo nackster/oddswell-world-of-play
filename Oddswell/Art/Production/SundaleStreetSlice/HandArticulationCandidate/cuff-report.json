@@ -1,0 +1,24 @@
+{
+  "Character | sleeve cuff left": {
+    "maximum_control_delta_m": 0.03497342665096239,
+    "maximum_distal_control_delta_m": 0.025364617679402957,
+    "ray_fitted_controls": 2423,
+    "jacket_boundary_controls": 36,
+    "upper_join_weights_from": "Character | tailored slate jacket",
+    "binding": "Shared native armature; forearm at wrist blended into nearest-polygon jacket weights at sleeve join.",
+    "maximum_distal_radius_reduction_fraction": 0.25,
+    "distal_skin_offset_m": 0.0035,
+    "upper_join_offset_m": 0.0007
+  },
+  "Character | sleeve cuff right": {
+    "maximum_control_delta_m": 0.03741185965447545,
+    "maximum_distal_control_delta_m": 0.022993919311242755,
+    "ray_fitted_controls": 2641,
+    "jacket_boundary_controls": 36,
+    "upper_join_weights_from": "Character | tailored slate jacket",
+    "binding": "Shared native armature; forearm at wrist blended into nearest-polygon jacket weights at sleeve join.",
+    "maximum_distal_radius_reduction_fraction": 0.25,
+    "distal_skin_offset_m": 0.0035,
+    "upper_join_offset_m": 0.0007
+  }
+}

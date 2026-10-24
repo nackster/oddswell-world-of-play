@@ -1,0 +1,674 @@
+{
+  "source_sha256": "3ed84ad823f809e19ff6c7bafc591109e90e20d96455b28bcd15431f82ae4485",
+  "candidate_sha256": "1c75042928c5df6eaa198c1fe032a5b3985224c33b766bd322b7dc10b126aca4",
+  "unchanged_mesh_uv_weights_bind_and_maps_identity": "81e6d1f3433306db3909dd6dffd81b91546d7935c154d76d92ac034fda061b79",
+  "modified_bones": [
+    "hip",
+    "spine_01",
+    "spine_02",
+    "spine_03",
+    "neck",
+    "head",
+    "shoulder_l",
+    "shoulder_r",
+    "upperarm_l",
+    "lowerarm_l",
+    "hand_l",
+    "upperleg_l",
+    "lowerleg_l",
+    "foot_l",
+    "upperarm_r",
+    "lowerarm_r",
+    "hand_r",
+    "upperleg_r",
+    "lowerleg_r",
+    "foot_r"
+  ],
+  "keys_per_bone": 49,
+  "leg_motion_factor": 0.62,
+  "other_motion_factor": 0.72,
+  "additional_upperarm_relaxation_radians": 0.18,
+  "root_motion_factor": 0.65,
+  "source_max_foot_bone_separation_m": 0.8580981039475943,
+  "candidate_max_foot_bone_separation_m": 0.7153544221472347,
+  "cold_reopen_pass": true,
+  "frames": [
+    {
+      "frame": 1,
+      "floor_adjustment_m": 0.009828639216721058,
+      "foot_bone_separation_m": 0.246091317742988
+    },
+    {
+      "frame": 2,
+      "floor_adjustment_m": 0.01165962778031826,
+      "foot_bone_separation_m": 0.2539510705136028
+    },
+    {
+      "frame": 3,
+      "floor_adjustment_m": 0.010484687983989716,
+      "foot_bone_separation_m": 0.2735941241424566
+    },
+    {
+      "frame": 4,
+      "floor_adjustment_m": 0.0058469101786613464,
+      "foot_bone_separation_m": 0.30514627073178824
+    },
+    {
+      "frame": 5,
+      "floor_adjustment_m": 0.0003374144434928894,
+      "foot_bone_separation_m": 0.3480924126274663
+    },
+    {
+      "frame": 6,
+      "floor_adjustment_m": -0.004014909267425537,
+      "foot_bone_separation_m": 0.40092285698401076
+    },
+    {
+      "frame": 7,
+      "floor_adjustment_m": -0.0038970038294792175,
+      "foot_bone_separation_m": 0.46062973272834395
+    },
+    {
+      "frame": 8,
+      "floor_adjustment_m": -0.0030973441898822784,
+      "foot_bone_separation_m": 0.5227163452441227
+    },
+    {
+      "frame": 9,
+      "floor_adjustment_m": -0.0009924247860908508,
+      "foot_bone_separation_m": 0.5804809054503485
+    },
+    {
+      "frame": 10,
+      "floor_adjustment_m": 0.004539214074611664,
+      "foot_bone_separation_m": 0.6294518440785312
+    },
+    {
+      "frame": 11,
+      "floor_adjustment_m": 0.00281592458486557,
+      "foot_bone_separation_m": 0.6740749636886322
+    },
+    {
+      "frame": 12,
+      "floor_adjustment_m": 0.0033196955919265747,
+      "foot_bone_separation_m": 0.7028011381445505
+    },
+    {
+      "frame": 13,
+      "floor_adjustment_m": 0.015105273574590683,
+      "foot_bone_separation_m": 0.715354359655854
+    },
+    {
+      "frame": 14,
+      "floor_adjustment_m": 0.01142909750342369,
+      "foot_bone_separation_m": 0.7086316491025939
+    },
+    {
+      "frame": 15,
+      "floor_adjustment_m": 0.008762177079916,
+      "foot_bone_separation_m": 0.6880072197835495
+    },
+    {
+      "frame": 16,
+      "floor_adjustment_m": 0.006794348359107971,
+      "foot_bone_separation_m": 0.6539611524460585
+    },
+    {
+      "frame": 17,
+      "floor_adjustment_m": 0.005357455462217331,
+      "foot_bone_separation_m": 0.6078017938695763
+    },
+    {
+      "frame": 18,
+      "floor_adjustment_m": 0.0043382905423641205,
+      "foot_bone_separation_m": 0.5518965162788341
+    },
+    {
+      "frame": 19,
+      "floor_adjustment_m": 0.0037326309829950333,
+      "foot_bone_separation_m": 0.4899083089455816
+    },
+    {
+      "frame": 20,
+      "floor_adjustment_m": 0.003823447972536087,
+      "foot_bone_separation_m": 0.426942776777517
+    },
+    {
+      "frame": 21,
+      "floor_adjustment_m": 0.006607046350836754,
+      "foot_bone_separation_m": 0.3700405336507005
+    },
+    {
+      "frame": 22,
+      "floor_adjustment_m": 0.0073829395696520805,
+      "foot_bone_separation_m": 0.3171115477109361
+    },
+    {
+      "frame": 23,
+      "floor_adjustment_m": 0.00856107845902443,
+      "foot_bone_separation_m": 0.278303548345631
+    },
+    {
+      "frame": 24,
+      "floor_adjustment_m": 0.007680723909288645,
+      "foot_bone_separation_m": 0.2540958062044235
+    },
+    {
+      "frame": 25,
+      "floor_adjustment_m": 0.009828639216721058,
+      "foot_bone_separation_m": 0.2460914023019858
+    },
+    {
+      "frame": 26,
+      "floor_adjustment_m": 0.01165962964296341,
+      "foot_bone_separation_m": 0.2539512491240088
+    },
+    {
+      "frame": 27,
+      "floor_adjustment_m": 0.010484736412763596,
+      "foot_bone_separation_m": 0.2735940406373358
+    },
+    {
+      "frame": 28,
+      "floor_adjustment_m": 0.005846969783306122,
+      "foot_bone_separation_m": 0.3051460846280342
+    },
+    {
+      "frame": 29,
+      "floor_adjustment_m": 0.0003375150263309479,
+      "foot_bone_separation_m": 0.34809227541903415
+    },
+    {
+      "frame": 30,
+      "floor_adjustment_m": -0.004014860838651657,
+      "foot_bone_separation_m": 0.40092295068508316
+    },
+    {
+      "frame": 31,
+      "floor_adjustment_m": -0.0038970261812210083,
+      "foot_bone_separation_m": 0.460629959175087
+    },
+    {
+      "frame": 32,
+      "floor_adjustment_m": -0.0030973441898822784,
+      "foot_bone_separation_m": 0.5227163452441227
+    },
+    {
+      "frame": 33,
+      "floor_adjustment_m": -0.0009924471378326416,
+      "foot_bone_separation_m": 0.5804807613929119
+    },
+    {
+      "frame": 34,
+      "floor_adjustment_m": 0.004539132118225098,
+      "foot_bone_separation_m": 0.6294517229612575
+    },
+    {
+      "frame": 35,
+      "floor_adjustment_m": 0.002816013991832733,
+      "foot_bone_separation_m": 0.6740748695557249
+    },
+    {
+      "frame": 36,
+      "floor_adjustment_m": 0.003319650888442993,
+      "foot_bone_separation_m": 0.702801123567812
+    },
+    {
+      "frame": 37,
+      "floor_adjustment_m": 0.015105213969945908,
+      "foot_bone_separation_m": 0.7153544221472347
+    },
+    {
+      "frame": 38,
+      "floor_adjustment_m": 0.011429116129875183,
+      "foot_bone_separation_m": 0.7086314833421828
+    },
+    {
+      "frame": 39,
+      "floor_adjustment_m": 0.008762214332818985,
+      "foot_bone_separation_m": 0.6880072922039453
+    },
+    {
+      "frame": 40,
+      "floor_adjustment_m": 0.006794460117816925,
+      "foot_bone_separation_m": 0.653961228992785
+    },
+    {
+      "frame": 41,
+      "floor_adjustment_m": 0.005357477813959122,
+      "foot_bone_separation_m": 0.6078019425007248
+    },
+    {
+      "frame": 42,
+      "floor_adjustment_m": 0.004338253289461136,
+      "foot_bone_separation_m": 0.5518966297628567
+    },
+    {
+      "frame": 43,
+      "floor_adjustment_m": 0.003732718527317047,
+      "foot_bone_separation_m": 0.4899082980147507
+    },
+    {
+      "frame": 44,
+      "floor_adjustment_m": 0.0038234498351812363,
+      "foot_bone_separation_m": 0.426942651075727
+    },
+    {
+      "frame": 45,
+      "floor_adjustment_m": 0.0066070263274014,
+      "foot_bone_separation_m": 0.37004045311269745
+    },
+    {
+      "frame": 46,
+      "floor_adjustment_m": 0.007382913492619991,
+      "foot_bone_separation_m": 0.3171114596041443
+    },
+    {
+      "frame": 47,
+      "floor_adjustment_m": 0.008561034686863422,
+      "foot_bone_separation_m": 0.2783035154042359
+    },
+    {
+      "frame": 48,
+      "floor_adjustment_m": 0.007680736482143402,
+      "foot_bone_separation_m": 0.25409563665829815
+    },
+    {
+      "frame": 49,
+      "floor_adjustment_m": 0.00982863362878561,
+      "foot_bone_separation_m": 0.24609144393102023
+    }
+  ],
+  "cold_ground_samples": [
+    {
+      "frame": 1.0,
+      "minimum_mesh_z_m": -6.11080196860625e-14
+    },
+    {
+      "frame": 1.5,
+      "minimum_mesh_z_m": -0.00021948094945400953
+    },
+    {
+      "frame": 2.0,
+      "minimum_mesh_z_m": 3.4919128699684165e-10
+    },
+    {
+      "frame": 2.5,
+      "minimum_mesh_z_m": 0.0002985482569783926
+    },
+    {
+      "frame": 3.0,
+      "minimum_mesh_z_m": -9.313830817703206e-10
+    },
+    {
+      "frame": 3.5,
+      "minimum_mesh_z_m": -1.1725351214408875e-05
+    },
+    {
+      "frame": 4.0,
+      "minimum_mesh_z_m": -6.432354648922001e-14
+    },
+    {
+      "frame": 4.5,
+      "minimum_mesh_z_m": -3.5818666219711304e-05
+    },
+    {
+      "frame": 5.0,
+      "minimum_mesh_z_m": -6.521172490892013e-14
+    },
+    {
+      "frame": 5.5,
+      "minimum_mesh_z_m": 0.00017224997282028198
+    },
+    {
+      "frame": 6.0,
+      "minimum_mesh_z_m": 5.2513549064769904e-14
+    },
+    {
+      "frame": 6.5,
+      "minimum_mesh_z_m": -0.00025981292128562927
+    },
+    {
+      "frame": 7.0,
+      "minimum_mesh_z_m": 5.419970028341936e-14
+    },
+    {
+      "frame": 7.5,
+      "minimum_mesh_z_m": 4.030391573905945e-05
+    },
+    {
+      "frame": 8.0,
+      "minimum_mesh_z_m": 5.5865034820357096e-14
+    },
+    {
+      "frame": 8.5,
+      "minimum_mesh_z_m": 9.281188249588013e-05
+    },
+    {
+      "frame": 9.0,
+      "minimum_mesh_z_m": 5.71209746169643e-14
+    },
+    {
+      "frame": 9.5,
+      "minimum_mesh_z_m": 0.00015012919902801514
+    },
+    {
+      "frame": 10.0,
+      "minimum_mesh_z_m": 6.573908084561708e-14
+    },
+    {
+      "frame": 10.5,
+      "minimum_mesh_z_m": -0.0002564936876296997
+    },
+    {
+      "frame": 11.0,
+      "minimum_mesh_z_m": 6.927791673660977e-14
+    },
+    {
+      "frame": 11.5,
+      "minimum_mesh_z_m": -0.00013195723295211792
+    },
+    {
+      "frame": 12.0,
+      "minimum_mesh_z_m": 7.235878562994458e-14
+    },
+    {
+      "frame": 12.5,
+      "minimum_mesh_z_m": -0.0015420317649841309
+    },
+    {
+      "frame": 13.0,
+      "minimum_mesh_z_m": 7.4505321911999545e-09
+    },
+    {
+      "frame": 13.5,
+      "minimum_mesh_z_m": 0.001437656581401825
+    },
+    {
+      "frame": 14.0,
+      "minimum_mesh_z_m": -4.737182868197465e-14
+    },
+    {
+      "frame": 14.5,
+      "minimum_mesh_z_m": -0.00024999305605888367
+    },
+    {
+      "frame": 15.0,
+      "minimum_mesh_z_m": -4.707345624410664e-14
+    },
+    {
+      "frame": 15.5,
+      "minimum_mesh_z_m": 6.353482604026794e-05
+    },
+    {
+      "frame": 16.0,
+      "minimum_mesh_z_m": -4.7302439742935576e-14
+    },
+    {
+      "frame": 16.5,
+      "minimum_mesh_z_m": -3.335997462272644e-05
+    },
+    {
+      "frame": 17.0,
+      "minimum_mesh_z_m": -3.725338260096578e-09
+    },
+    {
+      "frame": 17.5,
+      "minimum_mesh_z_m": 3.6694109439849854e-05
+    },
+    {
+      "frame": 18.0,
+      "minimum_mesh_z_m": -4.901634653720066e-14
+    },
+    {
+      "frame": 18.5,
+      "minimum_mesh_z_m": -0.00012096203863620758
+    },
+    {
+      "frame": 19.0,
+      "minimum_mesh_z_m": 1.862594967150244e-09
+    },
+    {
+      "frame": 19.5,
+      "minimum_mesh_z_m": 0.0004119332879781723
+    },
+    {
+      "frame": 20.0,
+      "minimum_mesh_z_m": -5.128189539682637e-14
+    },
+    {
+      "frame": 20.5,
+      "minimum_mesh_z_m": -0.0004158737137913704
+    },
+    {
+      "frame": 21.0,
+      "minimum_mesh_z_m": 4.6560963418151857e-10
+    },
+    {
+      "frame": 21.5,
+      "minimum_mesh_z_m": 0.00017344788648188114
+    },
+    {
+      "frame": 22.0,
+      "minimum_mesh_z_m": -5.328723573505556e-14
+    },
+    {
+      "frame": 22.5,
+      "minimum_mesh_z_m": -0.00021428894251585007
+    },
+    {
+      "frame": 23.0,
+      "minimum_mesh_z_m": -1.2806236071583044e-09
+    },
+    {
+      "frame": 23.5,
+      "minimum_mesh_z_m": -7.120193913578987e-05
+    },
+    {
+      "frame": 24.0,
+      "minimum_mesh_z_m": -5.5649061747597983e-14
+    },
+    {
+      "frame": 24.5,
+      "minimum_mesh_z_m": 2.620532177388668e-05
+    },
+    {
+      "frame": 25.0,
+      "minimum_mesh_z_m": -6.11080196860625e-14
+    },
+    {
+      "frame": 25.5,
+      "minimum_mesh_z_m": -0.00031457655131816864
+    },
+    {
+      "frame": 26.0,
+      "minimum_mesh_z_m": -5.4685639697127364e-14
+    },
+    {
+      "frame": 26.5,
+      "minimum_mesh_z_m": 0.00029859202913939953
+    },
+    {
+      "frame": 27.0,
+      "minimum_mesh_z_m": -9.313830817703206e-10
+    },
+    {
+      "frame": 27.5,
+      "minimum_mesh_z_m": -1.1742115020751953e-05
+    },
+    {
+      "frame": 28.0,
+      "minimum_mesh_z_m": -1.8627095421663853e-09
+    },
+    {
+      "frame": 28.5,
+      "minimum_mesh_z_m": -3.577210009098053e-05
+    },
+    {
+      "frame": 29.0,
+      "minimum_mesh_z_m": -6.521172490892013e-14
+    },
+    {
+      "frame": 29.5,
+      "minimum_mesh_z_m": 0.00017225369811058044
+    },
+    {
+      "frame": 30.0,
+      "minimum_mesh_z_m": 5.2513549064769904e-14
+    },
+    {
+      "frame": 30.5,
+      "minimum_mesh_z_m": -0.0002602674067020416
+    },
+    {
+      "frame": 31.0,
+      "minimum_mesh_z_m": 5.419970028341936e-14
+    },
+    {
+      "frame": 31.5,
+      "minimum_mesh_z_m": 4.038959741592407e-05
+    },
+    {
+      "frame": 32.0,
+      "minimum_mesh_z_m": 5.5865034820357096e-14
+    },
+    {
+      "frame": 32.5,
+      "minimum_mesh_z_m": 9.271129965782166e-05
+    },
+    {
+      "frame": 33.0,
+      "minimum_mesh_z_m": 5.71209746169643e-14
+    },
+    {
+      "frame": 33.5,
+      "minimum_mesh_z_m": 0.00015003979206085205
+    },
+    {
+      "frame": 34.0,
+      "minimum_mesh_z_m": 6.573908084561708e-14
+    },
+    {
+      "frame": 34.5,
+      "minimum_mesh_z_m": -0.0002565234899520874
+    },
+    {
+      "frame": 35.0,
+      "minimum_mesh_z_m": 6.927791673660977e-14
+    },
+    {
+      "frame": 35.5,
+      "minimum_mesh_z_m": -0.0001319199800491333
+    },
+    {
+      "frame": 36.0,
+      "minimum_mesh_z_m": 7.235878562994458e-14
+    },
+    {
+      "frame": 36.5,
+      "minimum_mesh_z_m": -0.0015420839190483093
+    },
+    {
+      "frame": 37.0,
+      "minimum_mesh_z_m": -3.725338704185788e-09
+    },
+    {
+      "frame": 37.5,
+      "minimum_mesh_z_m": 0.001437649130821228
+    },
+    {
+      "frame": 38.0,
+      "minimum_mesh_z_m": 7.450533079378374e-09
+    },
+    {
+      "frame": 38.5,
+      "minimum_mesh_z_m": -0.00024997442960739136
+    },
+    {
+      "frame": 39.0,
+      "minimum_mesh_z_m": -4.707345624410664e-14
+    },
+    {
+      "frame": 39.5,
+      "minimum_mesh_z_m": 6.366521120071411e-05
+    },
+    {
+      "frame": 40.0,
+      "minimum_mesh_z_m": -4.7302439742935576e-14
+    },
+    {
+      "frame": 40.5,
+      "minimum_mesh_z_m": -3.3292919397354126e-05
+    },
+    {
+      "frame": 41.0,
+      "minimum_mesh_z_m": -4.798939023942239e-14
+    },
+    {
+      "frame": 41.5,
+      "minimum_mesh_z_m": 3.666803240776062e-05
+    },
+    {
+      "frame": 42.0,
+      "minimum_mesh_z_m": -4.901634653720066e-14
+    },
+    {
+      "frame": 42.5,
+      "minimum_mesh_z_m": -0.00012092664837837219
+    },
+    {
+      "frame": 43.0,
+      "minimum_mesh_z_m": 1.862594967150244e-09
+    },
+    {
+      "frame": 43.5,
+      "minimum_mesh_z_m": 0.0004119761288166046
+    },
+    {
+      "frame": 44.0,
+      "minimum_mesh_z_m": -5.128189539682637e-14
+    },
+    {
+      "frame": 44.5,
+      "minimum_mesh_z_m": -0.0004158494994044304
+    },
+    {
+      "frame": 45.0,
+      "minimum_mesh_z_m": -4.657129126783843e-10
+    },
+    {
+      "frame": 45.5,
+      "minimum_mesh_z_m": 0.00017339829355478287
+    },
+    {
+      "frame": 46.0,
+      "minimum_mesh_z_m": 4.6560799660255725e-10
+    },
+    {
+      "frame": 46.5,
+      "minimum_mesh_z_m": -0.00021425727754831314
+    },
+    {
+      "frame": 47.0,
+      "minimum_mesh_z_m": -5.502477813668083e-14
+    },
+    {
+      "frame": 47.5,
+      "minimum_mesh_z_m": -7.122033275663853e-05
+    },
+    {
+      "frame": 48.0,
+      "minimum_mesh_z_m": -5.5649061747597983e-14
+    },
+    {
+      "frame": 48.5,
+      "minimum_mesh_z_m": -0.00010872632265090942
+    },
+    {
+      "frame": 49.0,
+      "minimum_mesh_z_m": 1.163542109883231e-10
+    }
+  ],
+  "lowest_sampled_mesh_z_m": -0.0015420839190483093,
+  "scope": "Offline restrained gait and arm posture study. Original source outfit and open hands remain. No planted-foot locking, complete contact proof, runtime export, or final walk acceptance."
+}

@@ -1,0 +1,121 @@
+{
+  "boundaries": {
+    "action_changed": 0,
+    "beta_readiness_claim": false,
+    "client_changed": 0,
+    "export_changed": 0,
+    "final_art_claim": false,
+    "geometry_changed": 0,
+    "materials_changed": 0,
+    "package_inputs_changed": 0,
+    "runtime_claim": false,
+    "skeleton_changed": 0,
+    "topology_changed": 0,
+    "unreal_changed": 0,
+    "weights_changed": 0
+  },
+  "criteria": [
+    {
+      "criterion": "separation",
+      "evidence": "The retained 21-frame ledger reports zero body/top, body/bottom and top/bottom evaluated intersections.",
+      "status": "PASS"
+    },
+    {
+      "criterion": "neckline_shoulders_sleeves_hem",
+      "evidence": "The exact connected four-opening top and nonempty neckline/shoulder/sleeve/hem roles remain intact, but neutral outer width ratio is 1.481894 against the 1.400000 review ceiling.",
+      "status": "FAIL"
+    },
+    {
+      "criterion": "waistband_rise_crotch_legs",
+      "evidence": "The exact accepted connected shorts retain three openings, zero other non-manifold edges, waistband/rise/crotch evidence and two legs.",
+      "status": "PASS"
+    },
+    {
+      "criterion": "proportions",
+      "evidence": "Neutral top width is 1.000800 m versus body width 0.675352 m, ratio 1.481894; the review ceiling is 1.400000.",
+      "status": "FAIL"
+    },
+    {
+      "criterion": "no_rejected_silhouettes",
+      "evidence": "Waist inset ratio 0.132244 passes the 0.080000 floor, but the excessive measured outer span keeps neutral and opposing extremes in the broad box/poncho rejection class.",
+      "status": "FAIL"
+    },
+    {
+      "criterion": "no_exposure_or_collision",
+      "evidence": "All five exact views retain coverage and the 21-frame ledger reports zero evaluated intersections.",
+      "status": "PASS"
+    },
+    {
+      "criterion": "stable_opposing_extremes",
+      "evidence": "Exact frames 6 and 16 retain coverage; root/armature translation is zero and frame 21 equals frame 1.",
+      "status": "PASS"
+    }
+  ],
+  "files": {
+    "board": {
+      "bytes": 1066720,
+      "sha256": "803EA49B3D04211B909A3CA6F7A31C1E2CF4E05EA093AF1FF41FA7049E33FF25"
+    },
+    "builder": {
+      "bytes": 12789,
+      "sha256": "C12531A805FC709DE2F3FE7F533E192E8876E9958CCED405ED7CC4763D024AEB"
+    },
+    "provenance": {
+      "bytes": 800,
+      "sha256": "338B019136F16DB327B43B77B10E4B43FDD18A5DC2AAAC55419923AB8BDCC35C"
+    }
+  },
+  "identity_sha256": "EA35D9D160E659D8494D5C2A34ED883504EE030DA0D6F4F3881E2303ECB613BD",
+  "measurements": {
+    "maximum_top_to_body_width_ratio": 1.4,
+    "minimum_waist_inset_ratio": 0.08,
+    "neutral_body_width_m": 0.675352,
+    "neutral_top_width_m": 1.0008,
+    "shorts_contract_pass": true,
+    "top_contract_pass": true,
+    "top_to_body_width_ratio": 1.481893886,
+    "waist_inset_ratio": 0.132244272
+  },
+  "phase": "Phase 1L.5cj waist-tapered combined starter-outfit offline visual acceptance review",
+  "smallest_correction": "Reduce only the preserved outer shoulder/sleeve span, currently 1.000800 m versus 0.675352 m body width (ratio 1.481894 above the 1.400000 review ceiling), while preserving the central depth/waist taper and every non-target identity.",
+  "source_custody": {
+    "action_identity_sha256": "7DD9A4E6524BCAC604AEDC755D0464FEC8C8F40BDED1BDE17E87955ED63E1020",
+    "armature_bone_count": 12,
+    "blend": {
+      "bytes": 13905337,
+      "sha256": "5A9ED444693F30AABE68E55B29C2DA588423ED256BEDE94472FA349D48E1543B"
+    },
+    "frame_ledger_identity_sha256": "41DFFB238D49EB5675FD9F1EAFC49F5731826E14685F7CC1D8BE1DC47E06BD0E",
+    "mesh_sha256": {
+      "body": "F340C34B05FC4D0D20F5625E9B2F9174947B691F59420367E8B738BE1CBF03CD",
+      "bottom": "E626B69FA039E1E1139ACD203AB6F481CADDC49771ADA7341B8ED3A1D9C82170",
+      "top": "BB29047CAB30C3071FD6875A789E93CF275C2E2A44997957CFB85DCDD36FD3AB"
+    },
+    "opening_boundary_identity_sha256": "B93835657A71D0088459699AF655B2A329C9AA6C16B5775070A001EE121C171E",
+    "opening_geometry_identity_sha256": "94A266B45D30762DC5B000230D7F2897C01D128F7206597372A629CB96D55FD3",
+    "semantic_identity_sha256": "38F71CB35B20672E114E27B8C79206564CAE358B5A3C053509A510D7485539FD",
+    "view_files": {
+      "Front": {
+        "bytes": 475899,
+        "sha256": "101526459A07C42F0D667AF3218A824C529F2B6B15F1D970CAD6EEDD3614A90E"
+      },
+      "Profile": {
+        "bytes": 472293,
+        "sha256": "331A4B76808A77FCC342BE97C187A72D281269B27F6981ED51B3C23E2F31F4ED"
+      },
+      "Rear": {
+        "bytes": 478379,
+        "sha256": "D977D324212D412D81A5EAA0C13224CA6214B94D56FA4401341D5E6A73FF8FC8"
+      },
+      "WalkExtremeFront": {
+        "bytes": 499672,
+        "sha256": "C04573ACA61AAF3C7667ACB3C628BF18C119341D76175D5E038F0E321CF63C7A"
+      },
+      "WalkExtremeRear": {
+        "bytes": 494780,
+        "sha256": "30C5068E86E58C3D10E182160646C230C4C9563F74BB963B4EBB804361FF2942"
+      }
+    }
+  },
+  "verdict": "REJECTED_VISUAL_CORRECTION_REQUIRED"
+}

@@ -1,0 +1,661 @@
+{
+  "blender_version": "4.5.5 LTS",
+  "boundaries": {
+    "actions": 0,
+    "catalog_changes": 0,
+    "client_changes": 0,
+    "cloth_physics": 0,
+    "collision_modifiers": 0,
+    "constraints": 0,
+    "control_rigs": 0,
+    "drivers": 0,
+    "economy_changes": 0,
+    "equip_changes": 0,
+    "exports": 0,
+    "faces_hair_second_silhouette": 0,
+    "final_readiness_claim": false,
+    "ik": 0,
+    "inventory_changes": 0,
+    "map_config_package_input_changes": 0,
+    "motion_clips": 0,
+    "nla_tracks": 0,
+    "other_clothing": 0,
+    "price_changes": 0,
+    "runtime_changes": 0,
+    "shape_keys": 0,
+    "signal_jacket_materials": 2,
+    "signal_jacket_meshes": 1,
+    "sleeves_or_invented_design": 0,
+    "textures": 0,
+    "unreal_imports": 0
+  },
+  "files": {
+    "blend": {
+      "file": "SignalJacketCharacterCandidate.blend",
+      "identity": "semantic_only"
+    },
+    "builder": {
+      "bytes": 23867,
+      "file": "build_signal_jacket_candidate.py",
+      "sha256": "AEF602088661869625461D29C818B433D4EB86D88BAD19099CC6B52ADA4582DE"
+    },
+    "provenance": {
+      "bytes": 1534,
+      "file": "PROVENANCE.md",
+      "sha256": "FF3EB12355DAC84A08A00FE6B58883F64D69547DD4125027CAADF9D9FD3D515E"
+    }
+  },
+  "phase": "Phase 1L.5bm deterministic Sundale Signal Jacket refit and shared-armature deformation proof",
+  "renders": [
+    {
+      "bytes": 634556,
+      "file": "renders/Review_RestSignalJacketAlternative.png",
+      "height": 900,
+      "role": "REST_SIGNAL_JACKET_ALTERNATIVE",
+      "sha256": "E90EFB2DBCFCBC35D20D58BE682529C3A6E836F29B11EDB39A0E426308CC4B0E",
+      "width": 720
+    },
+    {
+      "bytes": 646235,
+      "file": "renders/Review_StaticTorsoDeformationSignalJacketAlternative.png",
+      "height": 900,
+      "role": "STATIC_TORSO_SIGNAL_JACKET_ALTERNATIVE",
+      "sha256": "5425F6C898A458DFFDFB2FEDB778EC95ED44DD61910AF84F9E391880F445220E",
+      "width": 720
+    }
+  ],
+  "semantic": {
+    "armature": {
+      "bones": {
+        "forearm.L": {
+          "connected": true,
+          "head_m": [
+            0.28,
+            0.0,
+            1.12
+          ],
+          "parent": "upper_arm.L",
+          "tail_m": [
+            0.265,
+            0.0,
+            0.78
+          ]
+        },
+        "forearm.R": {
+          "connected": true,
+          "head_m": [
+            -0.28,
+            0.0,
+            1.12
+          ],
+          "parent": "upper_arm.R",
+          "tail_m": [
+            -0.265,
+            0.0,
+            0.78
+          ]
+        },
+        "head": {
+          "connected": true,
+          "head_m": [
+            0.0,
+            0.0,
+            1.66
+          ],
+          "parent": "neck",
+          "tail_m": [
+            0.0,
+            0.0,
+            1.8
+          ]
+        },
+        "neck": {
+          "connected": true,
+          "head_m": [
+            0.0,
+            0.0,
+            1.45
+          ],
+          "parent": "spine",
+          "tail_m": [
+            0.0,
+            0.0,
+            1.66
+          ]
+        },
+        "root": {
+          "connected": false,
+          "head_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "parent": null,
+          "tail_m": [
+            0.0,
+            0.0,
+            0.1
+          ]
+        },
+        "shin.L": {
+          "connected": true,
+          "head_m": [
+            0.13,
+            0.0,
+            0.53
+          ],
+          "parent": "thigh.L",
+          "tail_m": [
+            0.13,
+            0.0,
+            0.1
+          ]
+        },
+        "shin.R": {
+          "connected": true,
+          "head_m": [
+            -0.13,
+            0.0,
+            0.53
+          ],
+          "parent": "thigh.R",
+          "tail_m": [
+            -0.13,
+            0.0,
+            0.1
+          ]
+        },
+        "spine": {
+          "connected": false,
+          "head_m": [
+            0.0,
+            0.0,
+            0.94
+          ],
+          "parent": "root",
+          "tail_m": [
+            0.0,
+            0.0,
+            1.45
+          ]
+        },
+        "thigh.L": {
+          "connected": false,
+          "head_m": [
+            0.155,
+            0.0,
+            0.94
+          ],
+          "parent": "root",
+          "tail_m": [
+            0.13,
+            0.0,
+            0.53
+          ]
+        },
+        "thigh.R": {
+          "connected": false,
+          "head_m": [
+            -0.155,
+            0.0,
+            0.94
+          ],
+          "parent": "root",
+          "tail_m": [
+            -0.13,
+            0.0,
+            0.53
+          ]
+        },
+        "upper_arm.L": {
+          "connected": false,
+          "head_m": [
+            0.245,
+            0.0,
+            1.45
+          ],
+          "parent": "spine",
+          "tail_m": [
+            0.28,
+            0.0,
+            1.12
+          ]
+        },
+        "upper_arm.R": {
+          "connected": false,
+          "head_m": [
+            -0.245,
+            0.0,
+            1.45
+          ],
+          "parent": "spine",
+          "tail_m": [
+            -0.28,
+            0.0,
+            1.12
+          ]
+        }
+      },
+      "name": "ARMATURE__shared_bilateral_v1"
+    },
+    "body_geometry_sha256": "3ADB62F5D9577FDE2E45D8FFA45B5AB448D088D72A239496D5170122473F8FE3",
+    "identity_sha256": "DBE2724EFA94F7969C80BEF6D6B885D2E568475BC00BA8D0270ADDF15CFB807D",
+    "object_counts": {
+      "armature": 1,
+      "camera": 1,
+      "light": 0,
+      "mesh": 4,
+      "total": 6
+    },
+    "preserved_materials": {
+      "tone_1": [
+        246,
+        218,
+        194,
+        255
+      ],
+      "tone_2": [
+        210,
+        160,
+        120,
+        255
+      ],
+      "tone_3": [
+        145,
+        96,
+        68,
+        255
+      ],
+      "tone_4": [
+        82,
+        52,
+        38,
+        255
+      ]
+    },
+    "preserved_midpoints_m": {
+      "ankle_half_width_m": 0.13,
+      "elbow_half_width_m": 0.28,
+      "hip_half_width_m": 0.155,
+      "knee_half_width_m": 0.13,
+      "pelvis_depth_m": 0.24,
+      "pelvis_width_m": 0.35,
+      "shoulder_half_width_m": 0.245,
+      "torso_depth_m": 0.25,
+      "torso_width_m": 0.455,
+      "wrist_half_width_m": 0.265
+    },
+    "preserved_presets": [
+      "masculine_tone_1",
+      "masculine_tone_2",
+      "masculine_tone_3",
+      "masculine_tone_4",
+      "feminine_tone_1",
+      "feminine_tone_2",
+      "feminine_tone_3",
+      "feminine_tone_4"
+    ],
+    "preserved_starter_outfit": {
+      "item_ids": [
+        "starter_offwhite_top",
+        "starter_offwhite_bottom"
+      ],
+      "starter_offwhite_bottom": {
+        "allowed_groups": [
+          "root",
+          "thigh.L",
+          "thigh.R"
+        ],
+        "components": [
+          {
+            "bounds_max_m": [
+              0.2025,
+              0.1375,
+              0.98
+            ],
+            "bounds_min_m": [
+              -0.2025,
+              -0.1375,
+              0.76
+            ],
+            "center_m": [
+              -0.0,
+              0.0,
+              0.87
+            ],
+            "first_vertex": 0,
+            "object": "CLOTHING__starter_offwhite_bottom",
+            "owner": "root",
+            "vertex_count": 8
+          },
+          {
+            "bounds_max_m": [
+              -0.034332,
+              0.096,
+              0.877972
+            ],
+            "bounds_min_m": [
+              -0.250668,
+              -0.096,
+              0.562028
+            ],
+            "center_m": [
+              -0.1425,
+              -0.0,
+              0.72
+            ],
+            "first_vertex": 8,
+            "object": "CLOTHING__starter_offwhite_bottom",
+            "owner": "thigh.R",
+            "vertex_count": 16
+          },
+          {
+            "bounds_max_m": [
+              0.250668,
+              0.096,
+              0.877972
+            ],
+            "bounds_min_m": [
+              0.034332,
+              -0.096,
+              0.562028
+            ],
+            "center_m": [
+              0.1425,
+              0.0,
+              0.72
+            ],
+            "first_vertex": 24,
+            "object": "CLOTHING__starter_offwhite_bottom",
+            "owner": "thigh.L",
+            "vertex_count": 16
+          }
+        ],
+        "geometry_sha256": "1D170FE2289E9D9EF4D1A1ADBEE6BA3E51CF5B9D5F7E3C8E892B6B406DDA8E2D",
+        "group_vertex_counts": {
+          "root": 8,
+          "thigh.L": 16,
+          "thigh.R": 16
+        },
+        "influence_histogram": {
+          "1": 40
+        },
+        "max_influences_per_vertex": 1,
+        "modifier": {
+          "armature": "ARMATURE__shared_bilateral_v1",
+          "name": "ARMATURE__starter_offwhite_bottom",
+          "type": "ARMATURE"
+        },
+        "non_normalized_vertices": 0,
+        "polygon_count": 26,
+        "unweighted_vertices": 0,
+        "vertex_count": 40
+      },
+      "starter_offwhite_top": {
+        "allowed_groups": [
+          "spine"
+        ],
+        "components": [
+          {
+            "bounds_max_m": [
+              0.27,
+              0.1425,
+              1.46
+            ],
+            "bounds_min_m": [
+              -0.27,
+              -0.1425,
+              0.98
+            ],
+            "center_m": [
+              -0.0,
+              0.0,
+              1.22
+            ],
+            "first_vertex": 0,
+            "object": "CLOTHING__starter_offwhite_top",
+            "owner": "spine",
+            "vertex_count": 8
+          }
+        ],
+        "geometry_sha256": "0E0E1EA3B6C010B9C58D889E3D7DA2FCDF6368855451A13C70984825791540DB",
+        "group_vertex_counts": {
+          "spine": 8
+        },
+        "influence_histogram": {
+          "1": 8
+        },
+        "max_influences_per_vertex": 1,
+        "modifier": {
+          "armature": "ARMATURE__shared_bilateral_v1",
+          "name": "ARMATURE__starter_offwhite_top",
+          "type": "ARMATURE"
+        },
+        "non_normalized_vertices": 0,
+        "polygon_count": 6,
+        "unweighted_vertices": 0,
+        "vertex_count": 8
+      }
+    },
+    "rest_pose_saved": true,
+    "review_visibility": {
+      "starter_offwhite_bottom": "visible",
+      "starter_offwhite_top": "hidden_as_alternative",
+      "sundale_signal_jacket": "visible"
+    },
+    "signal_jacket": {
+      "alternative_to": "starter_offwhite_top",
+      "component_count": 2,
+      "item_id": "sundale_signal_jacket",
+      "materials": [
+        {
+          "name": "CLOTHING__signal_jacket_slate",
+          "rgba": [
+            0.12,
+            0.18,
+            0.22,
+            1.0
+          ],
+          "slot": 0,
+          "textures": 0
+        },
+        {
+          "name": "CLOTHING__signal_jacket_teal",
+          "rgba": [
+            0.08,
+            0.72,
+            0.68,
+            1.0
+          ],
+          "slot": 1,
+          "textures": 0
+        }
+      ],
+      "mesh_count": 1,
+      "object": "CLOTHING__sundale_signal_jacket",
+      "phase1l3g_transform_signature": [
+        {
+          "dimensions_m": [
+            0.59,
+            0.018,
+            0.075
+          ],
+          "location_m": [
+            0.0,
+            -0.171,
+            1.29
+          ],
+          "role": "SIGNAL_JACKET_ACCENT_PROXY",
+          "rotation_rad": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "dimensions_m": [
+            0.58,
+            0.315,
+            0.5
+          ],
+          "location_m": [
+            0.0,
+            -0.012,
+            1.235
+          ],
+          "role": "SIGNAL_JACKET_PROXY",
+          "rotation_rad": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      ],
+      "weights": {
+        "allowed_groups": [
+          "spine"
+        ],
+        "components": [
+          {
+            "bounds_max_m": [
+              0.295,
+              -0.162,
+              1.3275
+            ],
+            "bounds_min_m": [
+              -0.295,
+              -0.18,
+              1.2525
+            ],
+            "center_m": [
+              -0.0,
+              -0.171,
+              1.29
+            ],
+            "first_vertex": 8,
+            "object": "CLOTHING__sundale_signal_jacket",
+            "owner": "spine",
+            "vertex_count": 8
+          },
+          {
+            "bounds_max_m": [
+              0.29,
+              0.1455,
+              1.485
+            ],
+            "bounds_min_m": [
+              -0.29,
+              -0.1695,
+              0.985
+            ],
+            "center_m": [
+              -0.0,
+              -0.012,
+              1.235
+            ],
+            "first_vertex": 0,
+            "object": "CLOTHING__sundale_signal_jacket",
+            "owner": "spine",
+            "vertex_count": 8
+          }
+        ],
+        "geometry_sha256": "07050BB48C19F8E1EAEB5600F88C3F49F4E7C2F24761190ED1440A6A36BC2D80",
+        "group_vertex_counts": {
+          "spine": 16
+        },
+        "influence_histogram": {
+          "1": 16
+        },
+        "max_influences_per_vertex": 1,
+        "modifier": {
+          "armature": "ARMATURE__shared_bilateral_v1",
+          "name": "ARMATURE__sundale_signal_jacket",
+          "type": "ARMATURE"
+        },
+        "non_normalized_vertices": 0,
+        "polygon_count": 12,
+        "unweighted_vertices": 0,
+        "vertex_count": 16
+      },
+      "worn_with": "starter_offwhite_bottom"
+    },
+    "source_semantic_sha256": "244E7CCCC5AECA4B118AD74CBC959B97AEBEBB2D2B5139E98F243155361345A2",
+    "static_deformation": {
+      "combined_delta_identity_sha256": "28A339F26ECDA82CCBE53550A4D3EDDC5BD3F5457467872D84707A4C372C77C7",
+      "diagnostic_only": true,
+      "joints_exercised": [
+        "spine",
+        "shoulders",
+        "elbows",
+        "hips",
+        "knees"
+      ],
+      "spine_rotation_degrees": [
+        0.0,
+        8.0,
+        0.0
+      ],
+      "starter_offwhite_bottom": {
+        "delta_identity_sha256": "5DBF62786011B4606C12C33D54B46AEEAFB1749E74FD3BE5305E23C0B71556A3",
+        "max_displacement_m": 0.080378,
+        "moved_coverage": 0.8,
+        "moved_vertex_count": 32,
+        "vertex_count": 40
+      },
+      "starter_offwhite_top": {
+        "delta_identity_sha256": "4FC2D15714D816611F5B0763C3E96A6D5E892F3C8C23B875AD61ED06616D4334",
+        "max_displacement_m": 0.042593,
+        "moved_coverage": 1.0,
+        "moved_vertex_count": 8,
+        "vertex_count": 8
+      },
+      "sundale_signal_jacket": {
+        "delta_identity_sha256": "AB71B8B390934C13F4DACCD22C9B9A3ADB0A33DB2B4654D015213BFD8851B6BE",
+        "max_displacement_m": 0.048213,
+        "moved_coverage": 1.0,
+        "moved_vertex_count": 16,
+        "vertex_count": 16
+      }
+    }
+  },
+  "source_custody": {
+    "files": [
+      {
+        "bytes": 1326,
+        "file": "../WornStarterOutfitCandidate/PROVENANCE.md",
+        "sha256": "DC590745C2DAA82CF92E6466583016B377FB2EF8D72BB0915691A3C04586AB0B"
+      },
+      {
+        "bytes": 617496,
+        "file": "../WornStarterOutfitCandidate/WornStarterOutfitCharacterCandidate.blend",
+        "sha256": "8638D6EEA3D8414EFFA4D2F8F656E1F761AB176C3D47F1DB11CE016159675D90"
+      },
+      {
+        "bytes": 25997,
+        "file": "../WornStarterOutfitCandidate/build_worn_starter_outfit_candidate.py",
+        "sha256": "2F6C89F04DAF1F906CB1094961BBC7B436A9FF6DC2CC5627BC9CF7E85F585296"
+      },
+      {
+        "bytes": 14263,
+        "file": "../WornStarterOutfitCandidate/outfit_custody.json",
+        "sha256": "CEA9E5C49AEB93587BCD88535271B6AC807BDC5D2995F1321BE97CA31C617DDF"
+      },
+      {
+        "bytes": 628563,
+        "file": "../WornStarterOutfitCandidate/renders/Review_RestWornOutfit.png",
+        "sha256": "01E120CF309E031C8297351746C1B175EFEA093D2CFF8DE4BA478B26E598C02A"
+      },
+      {
+        "bytes": 642839,
+        "file": "../WornStarterOutfitCandidate/renders/Review_StaticDeformationWornOutfit.png",
+        "sha256": "19D77BE007D613B9B5CF6FE68BA466BF285CEE9629393A6C2C9A44DAA4640CDD"
+      }
+    ],
+    "review_manifest": {
+      "file": "../../../Reviews/PlayerCharacterSilhouetteReviewSheet/manifest.json",
+      "sha256": "CCA6E44FC213D9F23547C2BE0964CAB9D85E4EE472E696183A864E44B95B811A"
+    },
+    "semantic_sha256": "244E7CCCC5AECA4B118AD74CBC959B97AEBEBB2D2B5139E98F243155361345A2"
+  },
+  "status": "signal_jacket_alternative_static_diagnostic_only_not_runtime_or_final_art"
+}

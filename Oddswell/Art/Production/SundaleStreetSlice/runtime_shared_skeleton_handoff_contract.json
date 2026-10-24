@@ -1,0 +1,249 @@
+{
+  "contract_id": "sundale_refined_human_to_shared_skeleton_handoff_v1",
+  "status": "inventory_and_handoff_contract_only",
+  "date": "2026-09-23",
+  "baseline_commit": "2c70ddbd954c7526c092da0272991e7098310087",
+  "authority": {
+    "decisions": [
+      "DEC-034",
+      "DEC-035"
+    ],
+    "production_candidate_contract": {
+      "path": "../PlayerCharacter/production_candidate_contract.json",
+      "bytes": 1717,
+      "sha256": "BE283BD9EB10789682ACC71B14A293CFD8080ADBB4F75CDB808F80CA77222FBB"
+    },
+    "unreal_import_contract": {
+      "path": "../PlayerCharacter/character_unreal_import_contract.json",
+      "bytes": 1315,
+      "sha256": "C44D4698CE7228EA257A0D1DDFE747C62AD2AE7BCF77165DD10FCC191D63822E"
+    },
+    "fbx_contract": {
+      "path": "../PlayerCharacter/character_fbx_unreal_contract.json",
+      "bytes": 7577,
+      "sha256": "3DAA1D94A19148F03D31682D15B2FA40D9D43133008A1DA099097FCC4AAD88C6"
+    },
+    "motion_axis_custody": {
+      "path": "../PlayerCharacter/CharacterMotionAxisCorrection/motion_axis_custody.json",
+      "bytes": 5934,
+      "sha256": "5591A6AFD5E8A41D601A9AE53ECDF914B9C1996008C5772A9B1F4043FB954BD4"
+    }
+  },
+  "offline_source": {
+    "blend": {
+      "path": "OddsWell_Sundale_StreetSlice.blend",
+      "bytes": 635844146,
+      "sha256": "0F3988395DBE747A66738D9D7BA1D86A14D2531FCF2A5592C471A01B3AFC6127"
+    },
+    "delivery": {
+      "path": "delivery.json",
+      "bytes": 33777,
+      "sha256": "378189DD746EC8B93C06946B8C902773D3EE2FFC3D276F7DA7F7766EF1A6386C"
+    },
+    "cold_reopen": {
+      "path": "cold-reopen.json",
+      "bytes": 3221,
+      "sha256": "8639E91B367AAAD5E942BEB0C5587564682BBDDB30C486025E7EE67DDEDB1386"
+    },
+    "rebuild_inputs": [
+      {
+        "path": "build_scene.py",
+        "bytes": 43309,
+        "sha256": "6748C3F2A956BEBDA6321331846D19617365393CEE83A1C43D7B275B35857592"
+      },
+      {
+        "path": "develop_character_landscape.py",
+        "bytes": 34777,
+        "sha256": "B41593DD4D05EC066DE289FB36556D1B150BF4F7D45D93ED81CE535117D3FE55"
+      },
+      {
+        "path": "settle_cotton.py",
+        "bytes": 3731,
+        "sha256": "6B6BA615A4ADBA5145266174BC31CF5EA23318C1857A962FA766C0C94648E68D"
+      },
+      {
+        "path": "settle_jacket.py",
+        "bytes": 17800,
+        "sha256": "B9EB0A94B8E717D56AAB9102BD7F2AB0BBA9CCC46B3E66ECE82326B2B6E460D9"
+      },
+      {
+        "path": "verify_scene.py",
+        "bytes": 28884,
+        "sha256": "E6E59B3A04C1C69BB44344EF8C89303BFAEDF5F72E5275CCA1436A74F05CDC1A"
+      }
+    ],
+    "cold_open_inventory": {
+      "blender_version": "4.5.5 LTS",
+      "character_objects": 307,
+      "character_mesh_objects": 229,
+      "character_unique_materials": 32,
+      "uv_mesh_objects": 14,
+      "mesh_objects_without_uv": 215,
+      "armature_objects": 0,
+      "armature_modifier_meshes": 0,
+      "runtime_bone_weighted_meshes": 0,
+      "actions": 0,
+      "lod_objects": 0,
+      "collision_objects": [
+        "Character | internal torso support"
+      ],
+      "visible_posed_bounds_m": {
+        "min": [-1.080862, -2.796522, 0.050999],
+        "max": [-0.424896, -2.038995, 1.771192],
+        "height": 1.720193,
+        "is_dec034_bind_stature_proof": false
+      }
+    }
+  },
+  "accepted_runtime_target": {
+    "stature_m": 1.8,
+    "geometry_shared_by_all_eight_presets": true,
+    "shared_skeleton_bones_source": [
+      "root",
+      "spine",
+      "neck",
+      "head",
+      "thigh.L",
+      "shin.L",
+      "thigh.R",
+      "shin.R",
+      "upper_arm.L",
+      "forearm.L",
+      "upper_arm.R",
+      "forearm.R"
+    ],
+    "source_to_unreal_bone_names": {
+      "root": "root",
+      "spine": "spine",
+      "neck": "neck",
+      "head": "head",
+      "thigh.L": "thigh_L",
+      "shin.L": "shin_L",
+      "thigh.R": "thigh_R",
+      "shin.R": "shin_R",
+      "upper_arm.L": "upper_arm_L",
+      "forearm.L": "forearm_L",
+      "upper_arm.R": "upper_arm_R",
+      "forearm.R": "forearm_R"
+    },
+    "mesh_partitions": [
+      "body",
+      "starter_offwhite_top",
+      "starter_offwhite_bottom",
+      "sundale_signal_jacket"
+    ],
+    "actions_reused_without_replacement": [
+      "walk_candidate_v1",
+      "run_candidate_v1",
+      "jump_candidate_v1",
+      "land_candidate_v1"
+    ],
+    "root_translation_cm": 0,
+    "runtime_authority": {
+      "visual_replacement_only": true,
+      "character_movement_unchanged": true,
+      "capsule_collision_unchanged": true,
+      "camera_unchanged": true,
+      "replication_unchanged": true,
+      "saves_and_appearance_ids_unchanged": true
+    }
+  },
+  "gap_inventory": {
+    "body_mesh": {
+      "status": "open",
+      "observed": [
+        {"name": "Character | anatomical head", "vertices": 4362, "polygons": 4337, "uv": "MakeHuman source UV"},
+        {"name": "Character | anatomical legs", "vertices": 736, "polygons": 694, "uv": "MakeHuman source UV"},
+        {"name": "Character | anatomical left hand", "vertices": 26569, "polygons": 26528, "uv": "MakeHuman source UV"},
+        {"name": "Character | anatomical right hand", "vertices": 26569, "polygons": 26528, "uv": "MakeHuman source UV"}
+      ],
+      "gap": "The offline body is distributed across anatomical and detail objects and has no single four-part export partition or DEC-034 bind-pose stature proof.",
+      "required_future_proof": "Create a derivative body partition in DEC-034 rest landmarks at exact 1.80 m; retain the accepted eight preset IDs and four tone choices; prove no source overwrite."
+    },
+    "starter_top_mesh": {
+      "status": "absent",
+      "observed": [],
+      "gap": "No separate starter_offwhite_top mesh exists in the refined offline source.",
+      "required_future_proof": "Create one derivative starter top partition compatible with the accepted shared skeleton; do not reinterpret the refined slate jacket as the starter top."
+    },
+    "starter_bottom_mesh": {
+      "status": "partial",
+      "observed": [
+        {"name": "Character | shorts leg continuous tailoring", "vertices": 7159, "polygons": 7040, "uv_layers": 0, "vertex_groups": ["Waist attachment"]}
+      ],
+      "gap": "The shorts are one static cloth mesh with a cloth attachment group, not DEC-034 skeletal weights or a runtime UV/material partition.",
+      "required_future_proof": "Derive one separately replaceable starter bottom, unwrap it, bind it to the accepted skeleton, and validate deformation without changing catalog identity."
+    },
+    "signal_jacket_mesh": {
+      "status": "partial",
+      "observed": [
+        {"name": "Character | tailored slate jacket", "vertices": 13095, "polygons": 12939, "uv_layers": 0, "vertex_groups": ["Collar zipper hem and cuff attachments"]}
+      ],
+      "gap": "The visual jacket is split across the main shell, collar, cuffs, yokes, zipper, seams, and other detail objects. The main shell has cloth pins only and no runtime UV or skeletal binding.",
+      "required_future_proof": "Select and consolidate only the intended visual surfaces into one separately replaceable Signal Jacket derivative, unwrap and bind it, and prove accepted walk/run/jump/land deformation."
+    },
+    "materials": {
+      "status": "open",
+      "observed": {"character_materials": 32, "scene_packed_texture_maps": 31, "render_target": "Cycles"},
+      "gap": "Offline Cycles materials, CC0 source maps, and procedural/box-projected garment shading have no deterministic mapping to the accepted Unreal character material and four exact tone selections.",
+      "required_future_proof": "Define a bounded baked/runtime material mapping with license custody and exact tone behavior; do not claim parity from offline renders."
+    },
+    "uvs": {
+      "status": "open",
+      "observed": {"uv_mesh_objects": 14, "mesh_objects_without_uv": 215, "anatomical_uv_name": "MakeHuman source UV", "starter_bottom_uv_layers": 0, "signal_jacket_uv_layers": 0},
+      "gap": "Only anatomical head/legs/hands and ten nail-fold meshes retain source UVs; the runtime clothing partitions are not unwrapped.",
+      "required_future_proof": "Retain or deterministically transfer body UVs and create non-overlapping runtime garment UVs before material baking."
+    },
+    "rig": {
+      "status": "absent",
+      "observed": {"armature_objects": 0, "armature_modifier_meshes": 0},
+      "gap": "The offline scene has no production armature.",
+      "required_future_proof": "Use the accepted DEC-034 twelve-bone skeleton and DEC-035 name map exactly; no added skeleton, rename, retargeting framework, or source overwrite."
+    },
+    "weights": {
+      "status": "absent",
+      "observed": {"runtime_bone_weighted_meshes": 0, "cloth_pin_groups_are_runtime_weights": false},
+      "gap": "No mesh is weighted to the accepted runtime bones.",
+      "required_future_proof": "Bind each of the four derivative partitions to the sole accepted skeleton and validate normalized influences plus clothed deformation."
+    },
+    "actions": {
+      "status": "absent_and_not_to_be_authored_here",
+      "observed": {"actions": 0},
+      "gap": "The offline scene contains no Actions and its static walking stance is not animation evidence.",
+      "required_future_proof": "Reuse the accepted walk/run/jump/land clips without replacement or root motion; validate the derivative meshes against those clips."
+    },
+    "lods": {
+      "status": "absent",
+      "observed": {"lod_objects": 0},
+      "gap": "No character LOD chain or approved triangle budgets exist.",
+      "required_future_proof": "A later performance gate must approve and measure a bounded LOD chain; this contract invents no budgets."
+    },
+    "collision": {
+      "status": "offline_cloth_aid_only",
+      "observed": {"collision_objects": ["Character | internal torso support"], "gameplay_collision": false},
+      "gap": "The only collision object is a hidden cloth-fitting aid, not a gameplay body or physics asset.",
+      "required_future_proof": "Exclude the cloth aid from export and preserve the existing authoritative ACharacter capsule; any physics asset requires a separate gate."
+    }
+  },
+  "fail_closed_acceptance": [
+    "all_offline_source_hashes_match",
+    "one_body_one_starter_top_one_starter_bottom_one_signal_jacket_partition",
+    "exact_dec034_stature_landmarks_presets_and_tones",
+    "exact_dec035_bone_mapping_and_parent_hierarchy",
+    "all_four_meshes_reuse_one_accepted_skeleton",
+    "walk_run_jump_land_reused_without_root_translation_or_replacement",
+    "runtime_material_and_uv_mapping_is_explicit",
+    "lod_and_performance_evidence_is_separately_approved",
+    "offline_cloth_collision_aids_are_not_exported",
+    "movement_capsule_camera_replication_saves_economy_and_simulation_are_unchanged"
+  ],
+  "phase_effects": {
+    "mesh_mutation": false,
+    "runtime_import": false,
+    "animation_replacement": false,
+    "runtime_or_authority_change": false,
+    "final_art_claim": false,
+    "beta_readiness_claim": false
+  },
+  "next_gate": "separately_approved_non_destructive_derivative_body_and_clothing_partition_plus_shared_skeleton_bind_proof"
+}

@@ -1,0 +1,782 @@
+{
+  "candidate_sha256": "e2559843759bcf76db05c0e97caf790e1f012d5ccfe9cb01db2f5344811a8f94",
+  "source_sha256": "6c799e05c928b6feae19a257144b6e47cdaff5539dda3a6e4a22b64599290b91",
+  "original_mesh_curve_count": 4935,
+  "packed_maps": 31,
+  "original_controls_edges_uv_keys_maps_rest_and_six_poses_exact": true,
+  "original_shader_values_links_exact": true,
+  "native_walk_keyframes_handles_interpolation_exact": true,
+  "visible_main_character_objects": 306,
+  "six_pose_visible_character_coordinates_edges_world_matrices_exact": true,
+  "original_object_transforms_parents_exact": true,
+  "documented_visibility_changes": 1379,
+  "new_collection_objects": 109,
+  "planted_beds": 23,
+  "new_plant_surface_bounds": [
+    {
+      "name": "Planting | Civic | garden end soil branching shrubs",
+      "min_z": 0.9263362288475037,
+      "max_z": 1.4231007099151611,
+      "soil_z": 0.9286999732971192,
+      "vertices": 13824
+    },
+    {
+      "name": "Planting | Civic | garden end soil curved grass tufts",
+      "min_z": 0.9286999702453613,
+      "max_z": 1.1800419092178345,
+      "soil_z": 0.9286999732971192,
+      "vertices": 1872
+    },
+    {
+      "name": "Planting | Civic | garden end soil groundcover rosettes",
+      "min_z": 0.9446922540664673,
+      "max_z": 1.0058363676071167,
+      "soil_z": 0.9286999732971192,
+      "vertices": 59724
+    },
+    {
+      "name": "Planting | Civic | garden end soil lavender florets",
+      "min_z": 1.1361052989959717,
+      "max_z": 1.2745710611343384,
+      "soil_z": 0.9286999732971192,
+      "vertices": 1680
+    },
+    {
+      "name": "Planting | Civic | garden end soil lavender stems",
+      "min_z": 0.92842036485672,
+      "max_z": 1.2371165752410889,
+      "soil_z": 0.9286999732971192,
+      "vertices": 240
+    },
+    {
+      "name": "Planting | Civic | garden end soil shrub leaves",
+      "min_z": 0.9964292049407959,
+      "max_z": 1.4494708776474,
+      "soil_z": 0.9286999732971192,
+      "vertices": 48384
+    },
+    {
+      "name": "Planting | Civic | garden end soil soil leaf litter",
+      "min_z": 0.9316999912261963,
+      "max_z": 0.9431999921798706,
+      "soil_z": 0.9286999732971192,
+      "vertices": 4410
+    },
+    {
+      "name": "Planting | Civic | garden end soil.001 branching shrubs",
+      "min_z": 0.9265519380569458,
+      "max_z": 1.3848212957382202,
+      "soil_z": 0.9286999732971192,
+      "vertices": 13824
+    },
+    {
+      "name": "Planting | Civic | garden end soil.001 curved grass tufts",
+      "min_z": 0.9286999702453613,
+      "max_z": 1.1747474670410156,
+      "soil_z": 0.9286999732971192,
+      "vertices": 1872
+    },
+    {
+      "name": "Planting | Civic | garden end soil.001 groundcover rosettes",
+      "min_z": 0.9447734355926514,
+      "max_z": 1.0051286220550537,
+      "soil_z": 0.9286999732971192,
+      "vertices": 59094
+    },
+    {
+      "name": "Planting | Civic | garden end soil.001 lavender florets",
+      "min_z": 1.1293081045150757,
+      "max_z": 1.2733601331710815,
+      "soil_z": 0.9286999732971192,
+      "vertices": 1680
+    },
+    {
+      "name": "Planting | Civic | garden end soil.001 lavender stems",
+      "min_z": 0.9284294247627258,
+      "max_z": 1.2358940839767456,
+      "soil_z": 0.9286999732971192,
+      "vertices": 240
+    },
+    {
+      "name": "Planting | Civic | garden end soil.001 shrub leaves",
+      "min_z": 1.0055159330368042,
+      "max_z": 1.4121087789535522,
+      "soil_z": 0.9286999732971192,
+      "vertices": 48384
+    },
+    {
+      "name": "Planting | Civic | garden end soil.001 soil leaf litter",
+      "min_z": 0.9316999912261963,
+      "max_z": 0.9431999921798706,
+      "soil_z": 0.9286999732971192,
+      "vertices": 4410
+    },
+    {
+      "name": "Planting | Civic | soil branching shrubs",
+      "min_z": 0.8148444294929504,
+      "max_z": 1.3155078887939453,
+      "soil_z": 0.8172000081062317,
+      "vertices": 13824
+    },
+    {
+      "name": "Planting | Civic | soil curved grass tufts",
+      "min_z": 0.8172000050544739,
+      "max_z": 1.064515233039856,
+      "soil_z": 0.8172000081062317,
+      "vertices": 1872
+    },
+    {
+      "name": "Planting | Civic | soil groundcover rosettes",
+      "min_z": 0.8330483436584473,
+      "max_z": 0.8927695751190186,
+      "soil_z": 0.8172000081062317,
+      "vertices": 58212
+    },
+    {
+      "name": "Planting | Civic | soil lavender florets",
+      "min_z": 1.0216227769851685,
+      "max_z": 1.1630809307098389,
+      "soil_z": 0.8172000081062317,
+      "vertices": 1680
+    },
+    {
+      "name": "Planting | Civic | soil lavender stems",
+      "min_z": 0.8169681429862976,
+      "max_z": 1.1256440877914429,
+      "soil_z": 0.8172000081062317,
+      "vertices": 240
+    },
+    {
+      "name": "Planting | Civic | soil shrub leaves",
+      "min_z": 0.8862662315368652,
+      "max_z": 1.3463037014007568,
+      "soil_z": 0.8172000081062317,
+      "vertices": 48384
+    },
+    {
+      "name": "Planting | Civic | soil soil leaf litter",
+      "min_z": 0.8202000260353088,
+      "max_z": 0.8317000269889832,
+      "soil_z": 0.8172000081062317,
+      "vertices": 4410
+    },
+    {
+      "name": "Planting | Civic | soil.001 branching shrubs",
+      "min_z": 0.8150873184204102,
+      "max_z": 1.3247450590133667,
+      "soil_z": 0.8172000081062317,
+      "vertices": 13824
+    },
+    {
+      "name": "Planting | Civic | soil.001 curved grass tufts",
+      "min_z": 0.8172000050544739,
+      "max_z": 1.064056158065796,
+      "soil_z": 0.8172000081062317,
+      "vertices": 1872
+    },
+    {
+      "name": "Planting | Civic | soil.001 groundcover rosettes",
+      "min_z": 0.8331238031387329,
+      "max_z": 0.8935714364051819,
+      "soil_z": 0.8172000081062317,
+      "vertices": 59598
+    },
+    {
+      "name": "Planting | Civic | soil.001 lavender florets",
+      "min_z": 1.0168675184249878,
+      "max_z": 1.1534405946731567,
+      "soil_z": 0.8172000081062317,
+      "vertices": 1680
+    },
+    {
+      "name": "Planting | Civic | soil.001 lavender stems",
+      "min_z": 0.8169351816177368,
+      "max_z": 1.1159933805465698,
+      "soil_z": 0.8172000081062317,
+      "vertices": 240
+    },
+    {
+      "name": "Planting | Civic | soil.001 shrub leaves",
+      "min_z": 0.8983614444732666,
+      "max_z": 1.3491207361221313,
+      "soil_z": 0.8172000081062317,
+      "vertices": 48384
+    },
+    {
+      "name": "Planting | Civic | soil.001 soil leaf litter",
+      "min_z": 0.8202000260353088,
+      "max_z": 0.8317000269889832,
+      "soil_z": 0.8172000081062317,
+      "vertices": 4410
+    },
+    {
+      "name": "Planting | Civic | soil.002 branching shrubs",
+      "min_z": 0.8151049017906189,
+      "max_z": 1.29537832736969,
+      "soil_z": 0.8172000081062317,
+      "vertices": 13824
+    },
+    {
+      "name": "Planting | Civic | soil.002 curved grass tufts",
+      "min_z": 0.8172000050544739,
+      "max_z": 1.0629432201385498,
+      "soil_z": 0.8172000081062317,
+      "vertices": 1872
+    },
+    {
+      "name": "Planting | Civic | soil.002 groundcover rosettes",
+      "min_z": 0.8330469131469727,
+      "max_z": 0.8938640356063843,
+      "soil_z": 0.8172000081062317,
+      "vertices": 59472
+    },
+    {
+      "name": "Planting | Civic | soil.002 lavender florets",
+      "min_z": 1.0197142362594604,
+      "max_z": 1.1605403423309326,
+      "soil_z": 0.8172000081062317,
+      "vertices": 1680
+    },
+    {
+      "name": "Planting | Civic | soil.002 lavender stems",
+      "min_z": 0.8169403076171875,
+      "max_z": 1.1230648756027222,
+      "soil_z": 0.8172000081062317,
+      "vertices": 240
+    },
+    {
+      "name": "Planting | Civic | soil.002 shrub leaves",
+      "min_z": 0.8953031897544861,
+      "max_z": 1.3257733583450317,
+      "soil_z": 0.8172000081062317,
+      "vertices": 48384
+    },
+    {
+      "name": "Planting | Civic | soil.002 soil leaf litter",
+      "min_z": 0.8202000260353088,
+      "max_z": 0.8317000269889832,
+      "soil_z": 0.8172000081062317,
+      "vertices": 4410
+    },
+    {
+      "name": "Planting | Civic | soil.003 branching shrubs",
+      "min_z": 0.8148390650749207,
+      "max_z": 1.2422606945037842,
+      "soil_z": 0.8172000081062317,
+      "vertices": 13824
+    },
+    {
+      "name": "Planting | Civic | soil.003 curved grass tufts",
+      "min_z": 0.8172000050544739,
+      "max_z": 1.0682873725891113,
+      "soil_z": 0.8172000081062317,
+      "vertices": 1872
+    },
+    {
+      "name": "Planting | Civic | soil.003 groundcover rosettes",
+      "min_z": 0.833166778087616,
+      "max_z": 0.8936069011688232,
+      "soil_z": 0.8172000081062317,
+      "vertices": 59976
+    },
+    {
+      "name": "Planting | Civic | soil.003 lavender florets",
+      "min_z": 1.0163511037826538,
+      "max_z": 1.1638773679733276,
+      "soil_z": 0.8172000081062317,
+      "vertices": 1680
+    },
+    {
+      "name": "Planting | Civic | soil.003 lavender stems",
+      "min_z": 0.8169437646865845,
+      "max_z": 1.126427412033081,
+      "soil_z": 0.8172000081062317,
+      "vertices": 240
+    },
+    {
+      "name": "Planting | Civic | soil.003 shrub leaves",
+      "min_z": 0.8891450762748718,
+      "max_z": 1.2729448080062866,
+      "soil_z": 0.8172000081062317,
+      "vertices": 48384
+    },
+    {
+      "name": "Planting | Civic | soil.003 soil leaf litter",
+      "min_z": 0.8202000260353088,
+      "max_z": 0.8317000269889832,
+      "soil_z": 0.8172000081062317,
+      "vertices": 4410
+    },
+    {
+      "name": "Planting | Civic | soil.004 branching shrubs",
+      "min_z": 0.8151071667671204,
+      "max_z": 1.2796916961669922,
+      "soil_z": 0.8172000081062317,
+      "vertices": 13824
+    },
+    {
+      "name": "Planting | Civic | soil.004 curved grass tufts",
+      "min_z": 0.8172000050544739,
+      "max_z": 1.0659337043762207,
+      "soil_z": 0.8172000081062317,
+      "vertices": 1872
+    },
+    {
+      "name": "Planting | Civic | soil.004 groundcover rosettes",
+      "min_z": 0.8330758810043335,
+      "max_z": 0.8940308094024658,
+      "soil_z": 0.8172000081062317,
+      "vertices": 59724
+    },
+    {
+      "name": "Planting | Civic | soil.004 lavender florets",
+      "min_z": 1.0476094484329224,
+      "max_z": 1.1611593961715698,
+      "soil_z": 0.8172000081062317,
+      "vertices": 1680
+    },
+    {
+      "name": "Planting | Civic | soil.004 lavender stems",
+      "min_z": 0.8169397115707397,
+      "max_z": 1.123725414276123,
+      "soil_z": 0.8172000081062317,
+      "vertices": 240
+    },
+    {
+      "name": "Planting | Civic | soil.004 shrub leaves",
+      "min_z": 0.8920517563819885,
+      "max_z": 1.3205385208129883,
+      "soil_z": 0.8172000081062317,
+      "vertices": 48384
+    },
+    {
+      "name": "Planting | Civic | soil.004 soil leaf litter",
+      "min_z": 0.8202000260353088,
+      "max_z": 0.8317000269889832,
+      "soil_z": 0.8172000081062317,
+      "vertices": 4410
+    },
+    {
+      "name": "Planting | Civic | soil.005 branching shrubs",
+      "min_z": 0.8149181604385376,
+      "max_z": 1.2543660402297974,
+      "soil_z": 0.8172000081062317,
+      "vertices": 13824
+    },
+    {
+      "name": "Planting | Civic | soil.005 curved grass tufts",
+      "min_z": 0.8172000050544739,
+      "max_z": 1.0656311511993408,
+      "soil_z": 0.8172000081062317,
+      "vertices": 1872
+    },
+    {
+      "name": "Planting | Civic | soil.005 groundcover rosettes",
+      "min_z": 0.8332977890968323,
+      "max_z": 0.8934261798858643,
+      "soil_z": 0.8172000081062317,
+      "vertices": 58086
+    },
+    {
+      "name": "Planting | Civic | soil.005 lavender florets",
+      "min_z": 1.023738980293274,
+      "max_z": 1.1537659168243408,
+      "soil_z": 0.8172000081062317,
+      "vertices": 1680
+    },
+    {
+      "name": "Planting | Civic | soil.005 lavender stems",
+      "min_z": 0.81695556640625,
+      "max_z": 1.1163197755813599,
+      "soil_z": 0.8172000081062317,
+      "vertices": 240
+    },
+    {
+      "name": "Planting | Civic | soil.005 shrub leaves",
+      "min_z": 0.8906567692756653,
+      "max_z": 1.2744771242141724,
+      "soil_z": 0.8172000081062317,
+      "vertices": 48384
+    },
+    {
+      "name": "Planting | Civic | soil.005 soil leaf litter",
+      "min_z": 0.8202000260353088,
+      "max_z": 0.8317000269889832,
+      "soil_z": 0.8172000081062317,
+      "vertices": 4410
+    },
+    {
+      "name": "Planting | Civic | soil.006 branching shrubs",
+      "min_z": 0.8150391578674316,
+      "max_z": 1.2698570489883423,
+      "soil_z": 0.8172000081062317,
+      "vertices": 13824
+    },
+    {
+      "name": "Planting | Civic | soil.006 curved grass tufts",
+      "min_z": 0.8172000050544739,
+      "max_z": 1.069103717803955,
+      "soil_z": 0.8172000081062317,
+      "vertices": 1872
+    },
+    {
+      "name": "Planting | Civic | soil.006 groundcover rosettes",
+      "min_z": 0.8332445025444031,
+      "max_z": 0.8932149410247803,
+      "soil_z": 0.8172000081062317,
+      "vertices": 59094
+    },
+    {
+      "name": "Planting | Civic | soil.006 lavender florets",
+      "min_z": 1.0193192958831787,
+      "max_z": 1.1618584394454956,
+      "soil_z": 0.8172000081062317,
+      "vertices": 1680
+    },
+    {
+      "name": "Planting | Civic | soil.006 lavender stems",
+      "min_z": 0.8169259428977966,
+      "max_z": 1.1243996620178223,
+      "soil_z": 0.8172000081062317,
+      "vertices": 240
+    },
+    {
+      "name": "Planting | Civic | soil.006 shrub leaves",
+      "min_z": 0.8938028216362,
+      "max_z": 1.2998720407485962,
+      "soil_z": 0.8172000081062317,
+      "vertices": 48384
+    },
+    {
+      "name": "Planting | Civic | soil.006 soil leaf litter",
+      "min_z": 0.8202000260353088,
+      "max_z": 0.8317000269889832,
+      "soil_z": 0.8172000081062317,
+      "vertices": 4410
+    },
+    {
+      "name": "Planting | Civic | soil.007 branching shrubs",
+      "min_z": 0.8150308728218079,
+      "max_z": 1.2622758150100708,
+      "soil_z": 0.8172000081062317,
+      "vertices": 13824
+    },
+    {
+      "name": "Planting | Civic | soil.007 curved grass tufts",
+      "min_z": 0.8172000050544739,
+      "max_z": 1.0624669790267944,
+      "soil_z": 0.8172000081062317,
+      "vertices": 1872
+    },
+    {
+      "name": "Planting | Civic | soil.007 groundcover rosettes",
+      "min_z": 0.8333976864814758,
+      "max_z": 0.8938481211662292,
+      "soil_z": 0.8172000081062317,
+      "vertices": 58464
+    },
+    {
+      "name": "Planting | Civic | soil.007 lavender florets",
+      "min_z": 1.0177972316741943,
+      "max_z": 1.1572448015213013,
+      "soil_z": 0.8172000081062317,
+      "vertices": 1680
+    },
+    {
+      "name": "Planting | Civic | soil.007 lavender stems",
+      "min_z": 0.8169590830802917,
+      "max_z": 1.1197727918624878,
+      "soil_z": 0.8172000081062317,
+      "vertices": 240
+    },
+    {
+      "name": "Planting | Civic | soil.007 shrub leaves",
+      "min_z": 0.8923421502113342,
+      "max_z": 1.2917858362197876,
+      "soil_z": 0.8172000081062317,
+      "vertices": 48384
+    },
+    {
+      "name": "Planting | Civic | soil.007 soil leaf litter",
+      "min_z": 0.8202000260353088,
+      "max_z": 0.8317000269889832,
+      "soil_z": 0.8172000081062317,
+      "vertices": 4410
+    },
+    {
+      "name": "Planting | Tree pit soil curved grass tufts",
+      "min_z": 0.33570000529289246,
+      "max_z": 0.5866486430168152,
+      "soil_z": 0.33570000834465025,
+      "vertices": 1872
+    },
+    {
+      "name": "Planting | Tree pit soil groundcover rosettes",
+      "min_z": 0.35180798172950745,
+      "max_z": 0.41210412979125977,
+      "soil_z": 0.33570000834465025,
+      "vertices": 49014
+    },
+    {
+      "name": "Planting | Tree pit soil soil leaf litter",
+      "min_z": 0.33869999647140503,
+      "max_z": 0.35019999742507935,
+      "soil_z": 0.33570000834465025,
+      "vertices": 3570
+    },
+    {
+      "name": "Planting | Tree pit soil.001 curved grass tufts",
+      "min_z": 0.33570000529289246,
+      "max_z": 0.5867975354194641,
+      "soil_z": 0.33570000834465025,
+      "vertices": 1872
+    },
+    {
+      "name": "Planting | Tree pit soil.001 groundcover rosettes",
+      "min_z": 0.3514350354671478,
+      "max_z": 0.41120409965515137,
+      "soil_z": 0.33570000834465025,
+      "vertices": 34902
+    },
+    {
+      "name": "Planting | Tree pit soil.001 soil leaf litter",
+      "min_z": 0.33869999647140503,
+      "max_z": 0.35019999742507935,
+      "soil_z": 0.33570000834465025,
+      "vertices": 3087
+    },
+    {
+      "name": "Planting | Tree pit soil.002 curved grass tufts",
+      "min_z": 0.33570000529289246,
+      "max_z": 0.5863252878189087,
+      "soil_z": 0.33570000834465025,
+      "vertices": 1872
+    },
+    {
+      "name": "Planting | Tree pit soil.002 groundcover rosettes",
+      "min_z": 0.3517405092716217,
+      "max_z": 0.4120762348175049,
+      "soil_z": 0.33570000834465025,
+      "vertices": 40698
+    },
+    {
+      "name": "Planting | Tree pit soil.002 soil leaf litter",
+      "min_z": 0.33869999647140503,
+      "max_z": 0.35019999742507935,
+      "soil_z": 0.33570000834465025,
+      "vertices": 3318
+    },
+    {
+      "name": "Planting | Tree pit soil.003 curved grass tufts",
+      "min_z": 0.33570000529289246,
+      "max_z": 0.5840645432472229,
+      "soil_z": 0.33570000834465025,
+      "vertices": 1872
+    },
+    {
+      "name": "Planting | Tree pit soil.003 groundcover rosettes",
+      "min_z": 0.35182175040245056,
+      "max_z": 0.4115065038204193,
+      "soil_z": 0.33570000834465025,
+      "vertices": 33138
+    },
+    {
+      "name": "Planting | Tree pit soil.003 soil leaf litter",
+      "min_z": 0.33869999647140503,
+      "max_z": 0.35019999742507935,
+      "soil_z": 0.33570000834465025,
+      "vertices": 2919
+    },
+    {
+      "name": "Planting | Tree pit soil.004 curved grass tufts",
+      "min_z": 0.33570000529289246,
+      "max_z": 0.5867321491241455,
+      "soil_z": 0.33570000834465025,
+      "vertices": 1872
+    },
+    {
+      "name": "Planting | Tree pit soil.004 groundcover rosettes",
+      "min_z": 0.3516348898410797,
+      "max_z": 0.4118201434612274,
+      "soil_z": 0.33570000834465025,
+      "vertices": 34902
+    },
+    {
+      "name": "Planting | Tree pit soil.004 soil leaf litter",
+      "min_z": 0.33869999647140503,
+      "max_z": 0.35019999742507935,
+      "soil_z": 0.33570000834465025,
+      "vertices": 3066
+    },
+    {
+      "name": "Planting | Tree pit soil.005 curved grass tufts",
+      "min_z": 0.33570000529289246,
+      "max_z": 0.583670437335968,
+      "soil_z": 0.33570000834465025,
+      "vertices": 1872
+    },
+    {
+      "name": "Planting | Tree pit soil.005 groundcover rosettes",
+      "min_z": 0.35187089443206787,
+      "max_z": 0.41173025965690613,
+      "soil_z": 0.33570000834465025,
+      "vertices": 41832
+    },
+    {
+      "name": "Planting | Tree pit soil.005 soil leaf litter",
+      "min_z": 0.33869999647140503,
+      "max_z": 0.35019999742507935,
+      "soil_z": 0.33570000834465025,
+      "vertices": 3192
+    },
+    {
+      "name": "Planting | Tree pit soil.006 curved grass tufts",
+      "min_z": 0.33570000529289246,
+      "max_z": 0.5867121815681458,
+      "soil_z": 0.33570000834465025,
+      "vertices": 1872
+    },
+    {
+      "name": "Planting | Tree pit soil.006 groundcover rosettes",
+      "min_z": 0.3516688048839569,
+      "max_z": 0.4115254878997803,
+      "soil_z": 0.33570000834465025,
+      "vertices": 36414
+    },
+    {
+      "name": "Planting | Tree pit soil.006 soil leaf litter",
+      "min_z": 0.33869999647140503,
+      "max_z": 0.35019999742507935,
+      "soil_z": 0.33570000834465025,
+      "vertices": 3045
+    },
+    {
+      "name": "Planting | Tree pit soil.007 curved grass tufts",
+      "min_z": 0.33570000529289246,
+      "max_z": 0.5878654718399048,
+      "soil_z": 0.33570000834465025,
+      "vertices": 1872
+    },
+    {
+      "name": "Planting | Tree pit soil.007 groundcover rosettes",
+      "min_z": 0.3518279194831848,
+      "max_z": 0.4122558832168579,
+      "soil_z": 0.33570000834465025,
+      "vertices": 30744
+    },
+    {
+      "name": "Planting | Tree pit soil.007 soil leaf litter",
+      "min_z": 0.33869999647140503,
+      "max_z": 0.35019999742507935,
+      "soil_z": 0.33570000834465025,
+      "vertices": 2709
+    },
+    {
+      "name": "Planting | Tree pit soil.008 curved grass tufts",
+      "min_z": 0.33570000529289246,
+      "max_z": 0.5851764678955078,
+      "soil_z": 0.33570000834465025,
+      "vertices": 1872
+    },
+    {
+      "name": "Planting | Tree pit soil.008 groundcover rosettes",
+      "min_z": 0.3516642153263092,
+      "max_z": 0.41150692105293274,
+      "soil_z": 0.33570000834465025,
+      "vertices": 40698
+    },
+    {
+      "name": "Planting | Tree pit soil.008 soil leaf litter",
+      "min_z": 0.33869999647140503,
+      "max_z": 0.35019999742507935,
+      "soil_z": 0.33570000834465025,
+      "vertices": 3276
+    },
+    {
+      "name": "Planting | Tree pit soil.009 curved grass tufts",
+      "min_z": 0.33570000529289246,
+      "max_z": 0.5835631489753723,
+      "soil_z": 0.33570000834465025,
+      "vertices": 1872
+    },
+    {
+      "name": "Planting | Tree pit soil.009 groundcover rosettes",
+      "min_z": 0.3515198826789856,
+      "max_z": 0.4117627441883087,
+      "soil_z": 0.33570000834465025,
+      "vertices": 29610
+    },
+    {
+      "name": "Planting | Tree pit soil.009 soil leaf litter",
+      "min_z": 0.33869999647140503,
+      "max_z": 0.35019999742507935,
+      "soil_z": 0.33570000834465025,
+      "vertices": 2688
+    },
+    {
+      "name": "Planting | Tree pit soil.010 curved grass tufts",
+      "min_z": 0.33570000529289246,
+      "max_z": 0.5796253085136414,
+      "soil_z": 0.33570000834465025,
+      "vertices": 1872
+    },
+    {
+      "name": "Planting | Tree pit soil.010 groundcover rosettes",
+      "min_z": 0.35170653462409973,
+      "max_z": 0.4119786024093628,
+      "soil_z": 0.33570000834465025,
+      "vertices": 27468
+    },
+    {
+      "name": "Planting | Tree pit soil.010 soil leaf litter",
+      "min_z": 0.33869999647140503,
+      "max_z": 0.35019999742507935,
+      "soil_z": 0.33570000834465025,
+      "vertices": 2562
+    },
+    {
+      "name": "Planting | Tree pit soil.011 curved grass tufts",
+      "min_z": 0.33570000529289246,
+      "max_z": 0.5868574976921082,
+      "soil_z": 0.33570000834465025,
+      "vertices": 1872
+    },
+    {
+      "name": "Planting | Tree pit soil.011 groundcover rosettes",
+      "min_z": 0.3514637351036072,
+      "max_z": 0.4112504720687866,
+      "soil_z": 0.33570000834465025,
+      "vertices": 28854
+    },
+    {
+      "name": "Planting | Tree pit soil.011 soil leaf litter",
+      "min_z": 0.33869999647140503,
+      "max_z": 0.35019999742507935,
+      "soil_z": 0.33570000834465025,
+      "vertices": 2646
+    },
+    {
+      "name": "Planting | Tree pit soil.012 curved grass tufts",
+      "min_z": 0.33570000529289246,
+      "max_z": 0.5848150849342346,
+      "soil_z": 0.33570000834465025,
+      "vertices": 1872
+    },
+    {
+      "name": "Planting | Tree pit soil.012 groundcover rosettes",
+      "min_z": 0.35187146067619324,
+      "max_z": 0.41240647435188293,
+      "soil_z": 0.33570000834465025,
+      "vertices": 28350
+    },
+    {
+      "name": "Planting | Tree pit soil.012 soil leaf litter",
+      "min_z": 0.33869999647140503,
+      "max_z": 0.35019999742507935,
+      "soil_z": 0.33570000834465025,
+      "vertices": 2268
+    }
+  ],
+  "inherited_human_audit": "Immediate RetailDepthCandidate preserves the ShoulderChestCandidate human; that earlier scoped 49-frame cloth proof is not broadened here.",
+  "scope": "Native static layered planting in 23 existing beds. Original controls, licensed maps, shaders, rig, visible human and object transforms preserved. Added surface vertical bounds and finite coordinates checked. Does not certify botanical accuracy, full plant/stone collision freedom, final reference fidelity, engine LOD/performance or beta readiness."
+}

@@ -1,0 +1,9 @@
+# Joint-centered walking arm pose candidate
+
+This editable Blender scene starts from the exact [hand-and-cuff candidate](../HandCuffCandidate/README.md), SHA-256 `F907E8E5F4807038DA9DADBBA38F7B67C12157D125E74F7844084C225EFF97D1`. Run `build.py` with Blender 4.5.5 to reproduce `OddsWell_Arm_Pose_Candidate.blend`, SHA-256 `E496FF44D80DA3455BD8D9F673BFD7D8E8215233867E73D20B47E59C250912EB`. The parent scene and original licensed source remain unchanged.
+
+Elbow centers are measured from the connected jacket's sleeve cross sections and wrists from source hand landmarks mapped into the current pose. The leading arm bends 0.27 radians and the trailing arm 0.12 radians about those elbow centers. Motion fades through the elbow area of the jacket and internal anatomical support; cuffs, hands, hand shape keys, nails and nail folds move rigidly with their forearms. The jacket's saved drape attributes and raglan seams follow the new pose, and the front fastening is refitted.
+
+The 64-sample native Cycles reviews are [profile](Arm_Pose_Profile.png), [full rear](Arm_Pose_Full_Rear.png), [full front](Arm_Pose_Full_Front.png), and [1600 × 900 gameplay](Arm_Pose_Gameplay.png). A cold reopen passes `verify_scene.py --draft`, including the fitted nails and folds, connected jacket and shorts, three shorts openings, 4.43 mm minimum sampled free-jacket support clearance, 0.55 mm maximum raglan stitch gap, and unchanged planted sole contact. There is no runtime integration claim.
+
+The hands now sit in a more plausible position for the weight-bearing step, especially in profile and front views. This remains an incremental static pose, not a realistic final human. The shoulders still look padded, the sleeves need more compression around the elbows, the face needs natural expression and skin variation, and the shoes need a more convincing upper and heel. These remain part of the active character goal before architecture and planting work resumes.

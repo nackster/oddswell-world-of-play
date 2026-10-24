@@ -1,0 +1,39 @@
+{
+  "result": "PASS",
+  "midsurface": {
+    "overlap_pairs": 0,
+    "checked_skin_points": 148992,
+    "minimum_skin_clearance_m": 0.004984322302334476,
+    "worst_world_point": [
+      -0.7096594572067261,
+      -2.3825345039367676,
+      1.478450894355774
+    ],
+    "fabric_volume_m3": null,
+    "closed_manifold": false,
+    "overlap_bounds": []
+  },
+  "shell": {
+    "overlap_pairs": 0,
+    "checked_skin_points": 297984,
+    "minimum_skin_clearance_m": 0.003485752149572363,
+    "worst_world_point": [
+      -0.7107105255126953,
+      -2.3811960220336914,
+      1.4786653518676758
+    ],
+    "fabric_volume_m3": 1.7471309519644526e-05,
+    "closed_manifold": true,
+    "overlap_bounds": []
+  },
+  "old_mean_height_m": 0.05347111790130543,
+  "new_mean_height_m": 0.03101325935373711,
+  "fixed_bottom_error_m": 0.06185124960584923,
+  "original_collar_restore_error_m": 0.0,
+  "original_neck_restore_error_m": 0.0,
+  "unchanged_upper_face_control_error_m": 0.0,
+  "neck_extension_m": 0.025,
+  "extended_neck_overlap_pairs": 0,
+  "shirt_neck_shell_points_checked": 11302,
+  "minimum_shirt_neck_shell_clearance_m": 0.006344180117594078
+}

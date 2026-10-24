@@ -1,0 +1,76 @@
+{
+  "source_sha256": "90af187cf9cfa558f4d06a4b7398d02a8097991309e06789dbf61b0ebc36afeb",
+  "candidate_sha256": "85fef82c3e865a76dcd11515ec8f7c4148f407d07a23a3fb6a1896036d19fbaf",
+  "matched_images": {
+    "candidate_sha256": "85fef82c3e865a76dcd11515ec8f7c4148f407d07a23a3fb6a1896036d19fbaf",
+    "source_sha256": "90af187cf9cfa558f4d06a4b7398d02a8097991309e06789dbf61b0ebc36afeb",
+    "renderer": "Blender 4.5.5 LTS / Cycles / CPU",
+    "samples": 40,
+    "arguments": [
+      "--focus",
+      "--skip-gameplay",
+      "--isolated",
+      "--cpu"
+    ],
+    "native_geometry": true
+  },
+  "game_camera": {
+    "candidate_sha256": "85fef82c3e865a76dcd11515ec8f7c4148f407d07a23a3fb6a1896036d19fbaf",
+    "frame": 7,
+    "renderer": "Blender 4.5.5 LTS / Cycles / CPU",
+    "samples": 16,
+    "resolution": [
+      1280,
+      720
+    ],
+    "native_geometry": true,
+    "scene_geometry_changed_for_render": false
+  },
+  "walking_preview": {
+    "sha256": "78dc815c4f379e34a7b0f7f990f68c13bb91ad8a479cdab1b82b3f0e36ea10df",
+    "frames": [
+      1,
+      3,
+      5,
+      7,
+      9,
+      11,
+      13,
+      15,
+      17,
+      19,
+      21,
+      23,
+      25,
+      27,
+      29,
+      31,
+      33,
+      35,
+      37,
+      39,
+      41,
+      43,
+      45,
+      47
+    ],
+    "samples": 8,
+    "renderer": "Blender 4.5.5 LTS / Cycles / CPU",
+    "ffprobe": {
+      "programs": [],
+      "stream_groups": [],
+      "streams": [
+        {
+          "width": 640,
+          "height": 704,
+          "r_frame_rate": "12/1",
+          "nb_read_frames": "24"
+        }
+      ],
+      "format": {
+        "duration": "2.000000"
+      }
+    }
+  },
+  "scope": "Offline intermediate native human study; visual acceptance and full human/landscape goal remain open."
+}

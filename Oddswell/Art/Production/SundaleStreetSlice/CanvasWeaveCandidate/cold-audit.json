@@ -1,0 +1,3185 @@
+{
+  "candidate_sha256": "a32c6cbae8fd1767da6c03559f1addd948da46259064eb0ff85e38fedad8f50a",
+  "source_sha256": "c14ec89ca354a9dbe498c6955cde745e2edcb977c9b8603d9e37080247fffeac",
+  "original_mesh_curve_count": 4767,
+  "packed_maps": 31,
+  "all_original_controls_edges_uv_keys_maps_rest_and_six_poses_exact": true,
+  "six_pose_evaluated_shoe_shorts_leg_coordinates_edges_exact": true,
+  "uvs": {
+    "Character | canvas sneaker left": {
+      "hash": "fcdfb52776c96f7a00a72186d7786fcf066a854a95516aec9689d73009403010",
+      "loop_count": 54076,
+      "triangles": 27208,
+      "nondegenerate_triangles_with_zero_uv_area": 0
+    },
+    "Character | canvas sneaker tongue left": {
+      "hash": "ad5c58c22f5fbc161774fe2d87d3cb067359fc19cd9799bf81f84adb8858ae30",
+      "loop_count": 960,
+      "triangles": 480,
+      "nondegenerate_triangles_with_zero_uv_area": 0
+    },
+    "Character | canvas sneaker right": {
+      "hash": "ea296a14d1ce35e66f70b307668b4a64ca948e16c20f53f31fccd7a926639987",
+      "loop_count": 54402,
+      "triangles": 27364,
+      "nondegenerate_triangles_with_zero_uv_area": 0
+    },
+    "Character | canvas sneaker tongue right": {
+      "hash": "b394f2671499aee11a9ea7dcc63bf8077ab9ca799233469728a83b7b36144449",
+      "loop_count": 960,
+      "triangles": 480,
+      "nondegenerate_triangles_with_zero_uv_area": 0
+    }
+  },
+  "evaluated_geometry": {
+    "1": {
+      "Character | canvas sneaker left": {
+        "co": "aace842a4c2f2cce20bc6de8e0a3c435650ed7711aeeeaa8075b1493c7dc2c40",
+        "edges": "d03b6795cddfebacb67ff50c11c0ef1beefcdddeb7625e1353dcfb27856b163a"
+      },
+      "Character | canvas sneaker tongue left": {
+        "co": "1c64859a21f22123097a2194402083d60bf629596802ca107937f0a67d1e79a6",
+        "edges": "5f445e78d094b32eaf2e9ed80fde6d6ea87c396393169927aeb49af6d2f8c6bb"
+      },
+      "Character | canvas sneaker right": {
+        "co": "d66cc2e3d975fe64da4dc29b8bf946df1842e21a6b372e61f2a3b02278129276",
+        "edges": "3b8d1e9b90149b249baa0c135b69148b8069c4c3b1ced8935054e1c3dd925b83"
+      },
+      "Character | canvas sneaker tongue right": {
+        "co": "da77209e79ca77f1bbd25e8d79b751f0215e8df4793cc98765ef20d3ee113cfb",
+        "edges": "5f445e78d094b32eaf2e9ed80fde6d6ea87c396393169927aeb49af6d2f8c6bb"
+      },
+      "Character | shorts leg continuous tailoring": {
+        "co": "2fe38f004b86d1c25f5182893dc3b44bd13eea34491de8b3928e8088bae8290d",
+        "edges": "5378e093f9a8f01436e9609a8928861630164e90516928161d718ee48f8d84ad"
+      },
+      "Character | anatomical legs": {
+        "co": "b3e182fe6446540070807bbabdff3c42e696fb9648ee26dce8efd47e798a310d",
+        "edges": "ef2a85a827268536cd3b42de733f0122f85d41ab95d86db594a5b0ec313d0ed2"
+      }
+    },
+    "7": {
+      "Character | canvas sneaker left": {
+        "co": "aace842a4c2f2cce20bc6de8e0a3c435650ed7711aeeeaa8075b1493c7dc2c40",
+        "edges": "d03b6795cddfebacb67ff50c11c0ef1beefcdddeb7625e1353dcfb27856b163a"
+      },
+      "Character | canvas sneaker tongue left": {
+        "co": "1c64859a21f22123097a2194402083d60bf629596802ca107937f0a67d1e79a6",
+        "edges": "5f445e78d094b32eaf2e9ed80fde6d6ea87c396393169927aeb49af6d2f8c6bb"
+      },
+      "Character | canvas sneaker right": {
+        "co": "d66cc2e3d975fe64da4dc29b8bf946df1842e21a6b372e61f2a3b02278129276",
+        "edges": "3b8d1e9b90149b249baa0c135b69148b8069c4c3b1ced8935054e1c3dd925b83"
+      },
+      "Character | canvas sneaker tongue right": {
+        "co": "da77209e79ca77f1bbd25e8d79b751f0215e8df4793cc98765ef20d3ee113cfb",
+        "edges": "5f445e78d094b32eaf2e9ed80fde6d6ea87c396393169927aeb49af6d2f8c6bb"
+      },
+      "Character | shorts leg continuous tailoring": {
+        "co": "778bef2d74acc9094373c221c994db04b4ca3e7a0e1a25b2e9c006e7a04f23ca",
+        "edges": "5378e093f9a8f01436e9609a8928861630164e90516928161d718ee48f8d84ad"
+      },
+      "Character | anatomical legs": {
+        "co": "25bbcf7d6ee5b3f88a4fc061e8f0378cee632cd852c380e3b838b54070ea524f",
+        "edges": "ef2a85a827268536cd3b42de733f0122f85d41ab95d86db594a5b0ec313d0ed2"
+      }
+    },
+    "13": {
+      "Character | canvas sneaker left": {
+        "co": "aace842a4c2f2cce20bc6de8e0a3c435650ed7711aeeeaa8075b1493c7dc2c40",
+        "edges": "d03b6795cddfebacb67ff50c11c0ef1beefcdddeb7625e1353dcfb27856b163a"
+      },
+      "Character | canvas sneaker tongue left": {
+        "co": "1c64859a21f22123097a2194402083d60bf629596802ca107937f0a67d1e79a6",
+        "edges": "5f445e78d094b32eaf2e9ed80fde6d6ea87c396393169927aeb49af6d2f8c6bb"
+      },
+      "Character | canvas sneaker right": {
+        "co": "d66cc2e3d975fe64da4dc29b8bf946df1842e21a6b372e61f2a3b02278129276",
+        "edges": "3b8d1e9b90149b249baa0c135b69148b8069c4c3b1ced8935054e1c3dd925b83"
+      },
+      "Character | canvas sneaker tongue right": {
+        "co": "da77209e79ca77f1bbd25e8d79b751f0215e8df4793cc98765ef20d3ee113cfb",
+        "edges": "5f445e78d094b32eaf2e9ed80fde6d6ea87c396393169927aeb49af6d2f8c6bb"
+      },
+      "Character | shorts leg continuous tailoring": {
+        "co": "3a75492170b14d7820008a836b091f267102274001f003465ef2a5ebed965703",
+        "edges": "5378e093f9a8f01436e9609a8928861630164e90516928161d718ee48f8d84ad"
+      },
+      "Character | anatomical legs": {
+        "co": "ec6633d9c6fd134f97c0ae4b6cde60d04c8715efcc9727373318da0ebe8d5b8c",
+        "edges": "ef2a85a827268536cd3b42de733f0122f85d41ab95d86db594a5b0ec313d0ed2"
+      }
+    },
+    "25": {
+      "Character | canvas sneaker left": {
+        "co": "aace842a4c2f2cce20bc6de8e0a3c435650ed7711aeeeaa8075b1493c7dc2c40",
+        "edges": "d03b6795cddfebacb67ff50c11c0ef1beefcdddeb7625e1353dcfb27856b163a"
+      },
+      "Character | canvas sneaker tongue left": {
+        "co": "1c64859a21f22123097a2194402083d60bf629596802ca107937f0a67d1e79a6",
+        "edges": "5f445e78d094b32eaf2e9ed80fde6d6ea87c396393169927aeb49af6d2f8c6bb"
+      },
+      "Character | canvas sneaker right": {
+        "co": "d66cc2e3d975fe64da4dc29b8bf946df1842e21a6b372e61f2a3b02278129276",
+        "edges": "3b8d1e9b90149b249baa0c135b69148b8069c4c3b1ced8935054e1c3dd925b83"
+      },
+      "Character | canvas sneaker tongue right": {
+        "co": "da77209e79ca77f1bbd25e8d79b751f0215e8df4793cc98765ef20d3ee113cfb",
+        "edges": "5f445e78d094b32eaf2e9ed80fde6d6ea87c396393169927aeb49af6d2f8c6bb"
+      },
+      "Character | shorts leg continuous tailoring": {
+        "co": "ce0124f983a6b1fdbc9a797c363c7ff5ede09e7f582a30626f499eeab518a50d",
+        "edges": "5378e093f9a8f01436e9609a8928861630164e90516928161d718ee48f8d84ad"
+      },
+      "Character | anatomical legs": {
+        "co": "8d35969b680db6b2ebf2268f93a15bda1ac119c987bdc7002809849ef7610b79",
+        "edges": "ef2a85a827268536cd3b42de733f0122f85d41ab95d86db594a5b0ec313d0ed2"
+      }
+    },
+    "33": {
+      "Character | canvas sneaker left": {
+        "co": "aace842a4c2f2cce20bc6de8e0a3c435650ed7711aeeeaa8075b1493c7dc2c40",
+        "edges": "d03b6795cddfebacb67ff50c11c0ef1beefcdddeb7625e1353dcfb27856b163a"
+      },
+      "Character | canvas sneaker tongue left": {
+        "co": "1c64859a21f22123097a2194402083d60bf629596802ca107937f0a67d1e79a6",
+        "edges": "5f445e78d094b32eaf2e9ed80fde6d6ea87c396393169927aeb49af6d2f8c6bb"
+      },
+      "Character | canvas sneaker right": {
+        "co": "d66cc2e3d975fe64da4dc29b8bf946df1842e21a6b372e61f2a3b02278129276",
+        "edges": "3b8d1e9b90149b249baa0c135b69148b8069c4c3b1ced8935054e1c3dd925b83"
+      },
+      "Character | canvas sneaker tongue right": {
+        "co": "da77209e79ca77f1bbd25e8d79b751f0215e8df4793cc98765ef20d3ee113cfb",
+        "edges": "5f445e78d094b32eaf2e9ed80fde6d6ea87c396393169927aeb49af6d2f8c6bb"
+      },
+      "Character | shorts leg continuous tailoring": {
+        "co": "55b867de77d9b056181b8d4d12a18a1c077747edb0d5bb3b2f1b8c5ffbd98ab0",
+        "edges": "5378e093f9a8f01436e9609a8928861630164e90516928161d718ee48f8d84ad"
+      },
+      "Character | anatomical legs": {
+        "co": "cda1f903f6e6b55d2adac91b518dadf30012fabbd87c1df38ec255fce8438cd3",
+        "edges": "ef2a85a827268536cd3b42de733f0122f85d41ab95d86db594a5b0ec313d0ed2"
+      }
+    },
+    "49": {
+      "Character | canvas sneaker left": {
+        "co": "aace842a4c2f2cce20bc6de8e0a3c435650ed7711aeeeaa8075b1493c7dc2c40",
+        "edges": "d03b6795cddfebacb67ff50c11c0ef1beefcdddeb7625e1353dcfb27856b163a"
+      },
+      "Character | canvas sneaker tongue left": {
+        "co": "1c64859a21f22123097a2194402083d60bf629596802ca107937f0a67d1e79a6",
+        "edges": "5f445e78d094b32eaf2e9ed80fde6d6ea87c396393169927aeb49af6d2f8c6bb"
+      },
+      "Character | canvas sneaker right": {
+        "co": "d66cc2e3d975fe64da4dc29b8bf946df1842e21a6b372e61f2a3b02278129276",
+        "edges": "3b8d1e9b90149b249baa0c135b69148b8069c4c3b1ced8935054e1c3dd925b83"
+      },
+      "Character | canvas sneaker tongue right": {
+        "co": "da77209e79ca77f1bbd25e8d79b751f0215e8df4793cc98765ef20d3ee113cfb",
+        "edges": "5f445e78d094b32eaf2e9ed80fde6d6ea87c396393169927aeb49af6d2f8c6bb"
+      },
+      "Character | shorts leg continuous tailoring": {
+        "co": "7f1fd87b98d1609146b2a25ea879cb495d8d06e7c5f141823cfccf2fb4109947",
+        "edges": "5378e093f9a8f01436e9609a8928861630164e90516928161d718ee48f8d84ad"
+      },
+      "Character | anatomical legs": {
+        "co": "b778832caf314ba6b99788779539aa9f1828f68459f06abefb68c5464897ab4c",
+        "edges": "ef2a85a827268536cd3b42de733f0122f85d41ab95d86db594a5b0ec313d0ed2"
+      }
+    }
+  },
+  "fitted_seam_frames": [
+    {
+      "frame": 1,
+      "fitted_seams": {
+        "Character | shoe lace toe cap seam left": {
+          "maximum_sampled_upper_distance_m": 0.0005413202452473342,
+          "maximum_edge_m": 0.00220935082406379,
+          "samples": 116
+        },
+        "Character | shoe lace quarter seam left": {
+          "maximum_sampled_upper_distance_m": 0.0005647515645250678,
+          "maximum_edge_m": 0.003103238524109946,
+          "samples": 152
+        },
+        "Character | shoe lace quarter seam left.001": {
+          "maximum_sampled_upper_distance_m": 0.0005459293024614453,
+          "maximum_edge_m": 0.003107722152092311,
+          "samples": 152
+        },
+        "Character | shoe lace toe cap seam right": {
+          "maximum_sampled_upper_distance_m": 0.0005158879212103784,
+          "maximum_edge_m": 0.002202191766412541,
+          "samples": 116
+        },
+        "Character | shoe lace quarter seam right": {
+          "maximum_sampled_upper_distance_m": 0.0005647082580253482,
+          "maximum_edge_m": 0.003091942605824189,
+          "samples": 152
+        },
+        "Character | shoe lace quarter seam right.001": {
+          "maximum_sampled_upper_distance_m": 0.0005457731313072145,
+          "maximum_edge_m": 0.003091369171705734,
+          "samples": 152
+        }
+      },
+      "foot_weighted_details": {
+        "Walk surface | Character | foxing edge left": {
+          "maximum_sampled_target_distance_m": 0.0012682760134339333,
+          "samples": 138
+        },
+        "Walk surface | Character | outsole groove left": {
+          "maximum_sampled_target_distance_m": 0.001113050035201013,
+          "samples": 138
+        },
+        "Walk surface | Character | foxing edge right": {
+          "maximum_sampled_target_distance_m": 0.001188688911497593,
+          "samples": 138
+        },
+        "Walk surface | Character | outsole groove right": {
+          "maximum_sampled_target_distance_m": 0.0010880338959395885,
+          "samples": 138
+        },
+        "Walk surface | Character | sewn heel counter left": {
+          "maximum_sampled_target_distance_m": 0.0005401187227107584,
+          "samples": 236
+        },
+        "Walk surface | Character | sewn heel counter right": {
+          "maximum_sampled_target_distance_m": 0.0005258826422505081,
+          "samples": 222
+        }
+      }
+    },
+    {
+      "frame": 2,
+      "fitted_seams": {
+        "Character | shoe lace toe cap seam left": {
+          "maximum_sampled_upper_distance_m": 0.0005412842147052288,
+          "maximum_edge_m": 0.002209358491161855,
+          "samples": 116
+        },
+        "Character | shoe lace quarter seam left": {
+          "maximum_sampled_upper_distance_m": 0.0005647532525472343,
+          "maximum_edge_m": 0.0031033414847926274,
+          "samples": 152
+        },
+        "Character | shoe lace quarter seam left.001": {
+          "maximum_sampled_upper_distance_m": 0.0005458327941596508,
+          "maximum_edge_m": 0.0031077396016797243,
+          "samples": 152
+        },
+        "Character | shoe lace toe cap seam right": {
+          "maximum_sampled_upper_distance_m": 0.0005158807034604251,
+          "maximum_edge_m": 0.002202191766412541,
+          "samples": 116
+        },
+        "Character | shoe lace quarter seam right": {
+          "maximum_sampled_upper_distance_m": 0.0005647410871461034,
+          "maximum_edge_m": 0.0030919395494210596,
+          "samples": 152
+        },
+        "Character | shoe lace quarter seam right.001": {
+          "maximum_sampled_upper_distance_m": 0.0005457731313072145,
+          "maximum_edge_m": 0.003091369171705734,
+          "samples": 152
+        }
+      },
+      "foot_weighted_details": {
+        "Walk surface | Character | foxing edge left": {
+          "maximum_sampled_target_distance_m": 0.0012684563407674432,
+          "samples": 138
+        },
+        "Walk surface | Character | outsole groove left": {
+          "maximum_sampled_target_distance_m": 0.0011127303587272763,
+          "samples": 138
+        },
+        "Walk surface | Character | foxing edge right": {
+          "maximum_sampled_target_distance_m": 0.001188977505080402,
+          "samples": 138
+        },
+        "Walk surface | Character | outsole groove right": {
+          "maximum_sampled_target_distance_m": 0.0010882600909098983,
+          "samples": 138
+        },
+        "Walk surface | Character | sewn heel counter left": {
+          "maximum_sampled_target_distance_m": 0.0005402083625085652,
+          "samples": 236
+        },
+        "Walk surface | Character | sewn heel counter right": {
+          "maximum_sampled_target_distance_m": 0.0005262946360744536,
+          "samples": 222
+        }
+      }
+    },
+    {
+      "frame": 3,
+      "fitted_seams": {
+        "Character | shoe lace toe cap seam left": {
+          "maximum_sampled_upper_distance_m": 0.0005414023180492222,
+          "maximum_edge_m": 0.002209356805946273,
+          "samples": 116
+        },
+        "Character | shoe lace quarter seam left": {
+          "maximum_sampled_upper_distance_m": 0.0005647673970088363,
+          "maximum_edge_m": 0.003103286066689209,
+          "samples": 152
+        },
+        "Character | shoe lace quarter seam left.001": {
+          "maximum_sampled_upper_distance_m": 0.0005458829109556973,
+          "maximum_edge_m": 0.003107822238961115,
+          "samples": 152
+        },
+        "Character | shoe lace toe cap seam right": {
+          "maximum_sampled_upper_distance_m": 0.0005158807034604251,
+          "maximum_edge_m": 0.002202191766412541,
+          "samples": 116
+        },
+        "Character | shoe lace quarter seam right": {
+          "maximum_sampled_upper_distance_m": 0.0005647082580253482,
+          "maximum_edge_m": 0.0030919395494210596,
+          "samples": 152
+        },
+        "Character | shoe lace quarter seam right.001": {
+          "maximum_sampled_upper_distance_m": 0.0005457731313072145,
+          "maximum_edge_m": 0.0030913663078075398,
+          "samples": 152
+        }
+      },
+      "foot_weighted_details": {
+        "Walk surface | Character | foxing edge left": {
+          "maximum_sampled_target_distance_m": 0.0012682924279943109,
+          "samples": 138
+        },
+        "Walk surface | Character | outsole groove left": {
+          "maximum_sampled_target_distance_m": 0.0011123329168185592,
+          "samples": 138
+        },
+        "Walk surface | Character | foxing edge right": {
+          "maximum_sampled_target_distance_m": 0.0011889486340805888,
+          "samples": 138
+        },
+        "Walk surface | Character | outsole groove right": {
+          "maximum_sampled_target_distance_m": 0.0010882857022807002,
+          "samples": 138
+        },
+        "Walk surface | Character | sewn heel counter left": {
+          "maximum_sampled_target_distance_m": 0.000540411623660475,
+          "samples": 236
+        },
+        "Walk surface | Character | sewn heel counter right": {
+          "maximum_sampled_target_distance_m": 0.0005260007455945015,
+          "samples": 222
+        }
+      }
+    },
+    {
+      "frame": 4,
+      "fitted_seams": {
+        "Character | shoe lace toe cap seam left": {
+          "maximum_sampled_upper_distance_m": 0.0005414242623373866,
+          "maximum_edge_m": 0.0022093697216114946,
+          "samples": 116
+        },
+        "Character | shoe lace quarter seam left": {
+          "maximum_sampled_upper_distance_m": 0.0005646696081385016,
+          "maximum_edge_m": 0.0031034263180916375,
+          "samples": 152
+        },
+        "Character | shoe lace quarter seam left.001": {
+          "maximum_sampled_upper_distance_m": 0.0005458954838104546,
+          "maximum_edge_m": 0.0031079714853223936,
+          "samples": 152
+        },
+        "Character | shoe lace toe cap seam right": {
+          "maximum_sampled_upper_distance_m": 0.0005158807034604251,
+          "maximum_edge_m": 0.002202191766412541,
+          "samples": 116
+        },
+        "Character | shoe lace quarter seam right": {
+          "maximum_sampled_upper_distance_m": 0.0005647410871461034,
+          "maximum_edge_m": 0.003091942605824189,
+          "samples": 152
+        },
+        "Character | shoe lace quarter seam right.001": {
+          "maximum_sampled_upper_distance_m": 0.0005457731313072145,
+          "maximum_edge_m": 0.003091369171705734,
+          "samples": 152
+        }
+      },
+      "foot_weighted_details": {
+        "Walk surface | Character | foxing edge left": {
+          "maximum_sampled_target_distance_m": 0.0012694571632891893,
+          "samples": 138
+        },
+        "Walk surface | Character | outsole groove left": {
+          "maximum_sampled_target_distance_m": 0.0011123687727376819,
+          "samples": 138
+        },
+        "Walk surface | Character | foxing edge right": {
+          "maximum_sampled_target_distance_m": 0.0011894905474036932,
+          "samples": 138
+        },
+        "Walk surface | Character | outsole groove right": {
+          "maximum_sampled_target_distance_m": 0.0010885422816500068,
+          "samples": 138
+        },
+        "Walk surface | Character | sewn heel counter left": {
+          "maximum_sampled_target_distance_m": 0.0005408894503489137,
+          "samples": 236
+        },
+        "Walk surface | Character | sewn heel counter right": {
+          "maximum_sampled_target_distance_m": 0.0005264070350676775,
+          "samples": 222
+        }
+      }
+    },
+    {
+      "frame": 5,
+      "fitted_seams": {
+        "Character | shoe lace toe cap seam left": {
+          "maximum_sampled_upper_distance_m": 0.0005414045881479979,
+          "maximum_edge_m": 0.0022093917578261584,
+          "samples": 116
+        },
+        "Character | shoe lace quarter seam left": {
+          "maximum_sampled_upper_distance_m": 0.000564820016734302,
+          "maximum_edge_m": 0.003103455166196739,
+          "samples": 152
+        },
+        "Character | shoe lace quarter seam left.001": {
+          "maximum_sampled_upper_distance_m": 0.0005460185348056257,
+          "maximum_edge_m": 0.00310780252181026,
+          "samples": 152
+        },
+        "Character | shoe lace toe cap seam right": {
+          "maximum_sampled_upper_distance_m": 0.0005158590502105653,
+          "maximum_edge_m": 0.002202231787868179,
+          "samples": 116
+        },
+        "Character | shoe lace quarter seam right": {
+          "maximum_sampled_upper_distance_m": 0.0005647410871461034,
+          "maximum_edge_m": 0.0030919395494210596,
+          "samples": 152
+        },
+        "Character | shoe lace quarter seam right.001": {
+          "maximum_sampled_upper_distance_m": 0.0005457947845570743,
+          "maximum_edge_m": 0.003091369171705734,
+          "samples": 152
+        }
+      },
+      "foot_weighted_details": {
+        "Walk surface | Character | foxing edge left": {
+          "maximum_sampled_target_distance_m": 0.0012696568155661225,
+          "samples": 138
+        },
+        "Walk surface | Character | outsole groove left": {
+          "maximum_sampled_target_distance_m": 0.0011125972960144281,
+          "samples": 138
+        },
+        "Walk surface | Character | foxing edge right": {
+          "maximum_sampled_target_distance_m": 0.0011895096395164728,
+          "samples": 138
+        },
+        "Walk surface | Character | outsole groove right": {
+          "maximum_sampled_target_distance_m": 0.0010888243559747934,
+          "samples": 138
+        },
+        "Walk surface | Character | sewn heel counter left": {
+          "maximum_sampled_target_distance_m": 0.0005411514430306852,
+          "samples": 236
+        },
+        "Walk surface | Character | sewn heel counter right": {
+          "maximum_sampled_target_distance_m": 0.0005264195497147739,
+          "samples": 222
+        }
+      }
+    },
+    {
+      "frame": 6,
+      "fitted_seams": {
+        "Character | shoe lace toe cap seam left": {
+          "maximum_sampled_upper_distance_m": 0.0005414112820290029,
+          "maximum_edge_m": 0.0022093861748246676,
+          "samples": 116
+        },
+        "Character | shoe lace quarter seam left": {
+          "maximum_sampled_upper_distance_m": 0.0005648264195770025,
+          "maximum_edge_m": 0.0031033699765111774,
+          "samples": 152
+        },
+        "Character | shoe lace quarter seam left.001": {
+          "maximum_sampled_upper_distance_m": 0.0005458814557641745,
+          "maximum_edge_m": 0.0031078309451957054,
+          "samples": 152
+        },
+        "Character | shoe lace toe cap seam right": {
+          "maximum_sampled_upper_distance_m": 0.0005158590502105653,
+          "maximum_edge_m": 0.002202191766412541,
+          "samples": 116
+        },
+        "Character | shoe lace quarter seam right": {
+          "maximum_sampled_upper_distance_m": 0.0005647410871461034,
+          "maximum_edge_m": 0.003091942605824189,
+          "samples": 152
+        },
+        "Character | shoe lace quarter seam right.001": {
+          "maximum_sampled_upper_distance_m": 0.0005457947845570743,
+          "maximum_edge_m": 0.0030913663078075398,
+          "samples": 152
+        }
+      },
+      "foot_weighted_details": {
+        "Walk surface | Character | foxing edge left": {
+          "maximum_sampled_target_distance_m": 0.0012695298064500093,
+          "samples": 138
+        },
+        "Walk surface | Character | outsole groove left": {
+          "maximum_sampled_target_distance_m": 0.001112028257921338,
+          "samples": 138
+        },
+        "Walk surface | Character | foxing edge right": {
+          "maximum_sampled_target_distance_m": 0.0011892308248206973,
+          "samples": 138
+        },
+        "Walk surface | Character | outsole groove right": {
+          "maximum_sampled_target_distance_m": 0.00108829524833709,
+          "samples": 138
+        },
+        "Walk surface | Character | sewn heel counter left": {
+          "maximum_sampled_target_distance_m": 0.0005416704225353897,
+          "samples": 236
+        },
+        "Walk surface | Character | sewn heel counter right": {
+          "maximum_sampled_target_distance_m": 0.0005263742059469223,
+          "samples": 222
+        }
+      }
+    },
+    {
+      "frame": 7,
+      "fitted_seams": {
+        "Character | shoe lace toe cap seam left": {
+          "maximum_sampled_upper_distance_m": 0.0005413214676082134,
+          "maximum_edge_m": 0.002209378906610344,
+          "samples": 116
+        },
+        "Character | shoe lace quarter seam left": {
+          "maximum_sampled_upper_distance_m": 0.0005648175138048828,
+          "maximum_edge_m": 0.0031033733467775233,
+          "samples": 152
+        },
+        "Character | shoe lace quarter seam left.001": {
+          "maximum_sampled_upper_distance_m": 0.0005458557861857116,
+          "maximum_edge_m": 0.003107820300174461,
+          "samples": 152
+        },
+        "Character | shoe lace toe cap seam right": {
+          "maximum_sampled_upper_distance_m": 0.0005158807034604251,
+          "maximum_edge_m": 0.002202191766412541,
+          "samples": 116
+        },
+        "Character | shoe lace quarter seam right": {
+          "maximum_sampled_upper_distance_m": 0.0005647082580253482,
+          "maximum_edge_m": 0.003091942605824189,
+          "samples": 152
+        },
+        "Character | shoe lace quarter seam right.001": {
+          "maximum_sampled_upper_distance_m": 0.0005457560182549059,
+          "maximum_edge_m": 0.003091369171705734,
+          "samples": 152
+        }
+      },
+      "foot_weighted_details": {
+        "Walk surface | Character | foxing edge left": {
+          "maximum_sampled_target_distance_m": 0.0012696466874331236,
+          "samples": 138
+        },
+        "Walk surface | Character | outsole groove left": {
+          "maximum_sampled_target_distance_m": 0.0011117870453745127,
+          "samples": 138
+        },
+        "Walk surface | Character | foxing edge right": {
+          "maximum_sampled_target_distance_m": 0.0011892755283042789,
+          "samples": 138
+        },
+        "Walk surface | Character | outsole groove right": {
+          "maximum_sampled_target_distance_m": 0.0010890599805861712,
+          "samples": 138
+        },
+        "Walk surface | Character | sewn heel counter left": {
+          "maximum_sampled_target_distance_m": 0.0005414976039901376,
+          "samples": 236
+        },
+        "Walk surface | Character | sewn heel counter right": {
+          "maximum_sampled_target_distance_m": 0.0005262353806756437,
+          "samples": 222
+        }
+      }
+    },
+    {
+      "frame": 8,
+      "fitted_seams": {
+        "Character | shoe lace toe cap seam left": {
+          "maximum_sampled_upper_distance_m": 0.0005414168117567897,
+          "maximum_edge_m": 0.0022094322791883832,
+          "samples": 116
+        },
+        "Character | shoe lace quarter seam left": {
+          "maximum_sampled_upper_distance_m": 0.0005648299702443182,
+          "maximum_edge_m": 0.0031034072690371444,
+          "samples": 152
+        },
+        "Character | shoe lace quarter seam left.001": {
+          "maximum_sampled_upper_distance_m": 0.0005458444938994944,
+          "maximum_edge_m": 0.003107826482339004,
+          "samples": 152
+        },
+        "Character | shoe lace toe cap seam right": {
+          "maximum_sampled_upper_distance_m": 0.0005158807034604251,
+          "maximum_edge_m": 0.002202191766412541,
+          "samples": 116
+        },
+        "Character | shoe lace quarter seam right": {
+          "maximum_sampled_upper_distance_m": 0.0005647410871461034,
+          "maximum_edge_m": 0.003091942605824189,
+          "samples": 152
+        },
+        "Character | shoe lace quarter seam right.001": {
+          "maximum_sampled_upper_distance_m": 0.000545745191629976,
+          "maximum_edge_m": 0.003091369171705734,
+          "samples": 152
+        }
+      },
+      "foot_weighted_details": {
+        "Walk surface | Character | foxing edge left": {
+          "maximum_sampled_target_distance_m": 0.0012699734652414918,
+          "samples": 138
+        },
+        "Walk surface | Character | outsole groove left": {
+          "maximum_sampled_target_distance_m": 0.001112742000259459,
+          "samples": 138
+        },
+        "Walk surface | Character | foxing edge right": {
+          "maximum_sampled_target_distance_m": 0.0011900451499968767,
+          "samples": 138
+        },
+        "Walk surface | Character | outsole groove right": {
+          "maximum_sampled_target_distance_m": 0.0010893038706853986,
+          "samples": 138
+        },
+        "Walk surface | Character | sewn heel counter left": {
+          "maximum_sampled_target_distance_m": 0.0005415386985987425,
+          "samples": 236
+        },
+        "Walk surface | Character | sewn heel counter right": {
+          "maximum_sampled_target_distance_m": 0.0005269598332233727,
+          "samples": 222
+        }
+      }
+    },
+    {
+      "frame": 9,
+      "fitted_seams": {
+        "Character | shoe lace toe cap seam left": {
+          "maximum_sampled_upper_distance_m": 0.0005414356710389256,
+          "maximum_edge_m": 0.0022093891110478324,
+          "samples": 116
+        },
+        "Character | shoe lace quarter seam left": {
+          "maximum_sampled_upper_distance_m": 0.0005647940561175346,
+          "maximum_edge_m": 0.0031033914435798773,
+          "samples": 152
+        },
+        "Character | shoe lace quarter seam left.001": {
+          "maximum_sampled_upper_distance_m": 0.0005459036328829825,
+          "maximum_edge_m": 0.003107941270828837,
+          "samples": 152
+        },
+        "Character | shoe lace toe cap seam right": {
+          "maximum_sampled_upper_distance_m": 0.0005158807034604251,
+          "maximum_edge_m": 0.002202191766412541,
+          "samples": 116
+        },
+        "Character | shoe lace quarter seam right": {
+          "maximum_sampled_upper_distance_m": 0.0005647082580253482,
+          "maximum_edge_m": 0.0030919395494210596,
+          "samples": 152
+        },
+        "Character | shoe lace quarter seam right.001": {
+          "maximum_sampled_upper_distance_m": 0.000545745191629976,
+          "maximum_edge_m": 0.0030913663078075398,
+          "samples": 152
+        }
+      },
+      "foot_weighted_details": {
+        "Walk surface | Character | foxing edge left": {
+          "maximum_sampled_target_distance_m": 0.0012708255089819431,
+          "samples": 138
+        },
+        "Walk surface | Character | outsole groove left": {
+          "maximum_sampled_target_distance_m": 0.0011131424689665437,
+          "samples": 138
+        },
+        "Walk surface | Character | foxing edge right": {
+          "maximum_sampled_target_distance_m": 0.0011902856640517712,
+          "samples": 138
+        },
+        "Walk surface | Character | outsole groove right": {
+          "maximum_sampled_target_distance_m": 0.001089068129658699,
+          "samples": 138
+        },
+        "Walk surface | Character | sewn heel counter left": {
+          "maximum_sampled_target_distance_m": 0.0005416894564405084,
+          "samples": 236
+        },
+        "Walk surface | Character | sewn heel counter right": {
+          "maximum_sampled_target_distance_m": 0.0005271437112241983,
+          "samples": 222
+        }
+      }
+    },
+    {
+      "frame": 10,
+      "fitted_seams": {
+        "Character | shoe lace toe cap seam left": {
+          "maximum_sampled_upper_distance_m": 0.0005413889302872121,
+          "maximum_edge_m": 0.002209367383547217,
+          "samples": 116
+        },
+        "Character | shoe lace quarter seam left": {
+          "maximum_sampled_upper_distance_m": 0.0005647885263897479,
+          "maximum_edge_m": 0.003103411078857397,
+          "samples": 152
+        },
+        "Character | shoe lace quarter seam left.001": {
+          "maximum_sampled_upper_distance_m": 0.0005459141684696078,
+          "maximum_edge_m": 0.0031078789387906044,
+          "samples": 152
+        },
+        "Character | shoe lace toe cap seam right": {
+          "maximum_sampled_upper_distance_m": 0.0005158591666258872,
+          "maximum_edge_m": 0.002202243170813003,
+          "samples": 116
+        },
+        "Character | shoe lace quarter seam right": {
+          "maximum_sampled_upper_distance_m": 0.0005647753714583814,
+          "maximum_edge_m": 0.0030919721171943208,
+          "samples": 152
+        },
+        "Character | shoe lace quarter seam right.001": {
+          "maximum_sampled_upper_distance_m": 0.0005457169027067721,
+          "maximum_edge_m": 0.0030914571835659235,
+          "samples": 152
+        }
+      },
+      "foot_weighted_details": {
+        "Walk surface | Character | foxing edge left": {
+          "maximum_sampled_target_distance_m": 0.0012707465793937445,
+          "samples": 138
+        },
+        "Walk surface | Character | outsole groove left": {
+          "maximum_sampled_target_distance_m": 0.001114184851758182,
+          "samples": 138
+        },
+        "Walk surface | Character | foxing edge right": {
+          "maximum_sampled_target_distance_m": 0.0011900905519723892,
+          "samples": 138
+        },
+        "Walk surface | Character | outsole groove right": {
+          "maximum_sampled_target_distance_m": 0.0010895943269133568,
+          "samples": 138
+        },
+        "Walk surface | Character | sewn heel counter left": {
+          "maximum_sampled_target_distance_m": 0.0005414992338046432,
+          "samples": 236
+        },
+        "Walk surface | Character | sewn heel counter right": {
+          "maximum_sampled_target_distance_m": 0.0005269504035823047,
+          "samples": 222
+        }
+      }
+    },
+    {
+      "frame": 11,
+      "fitted_seams": {
+        "Character | shoe lace toe cap seam left": {
+          "maximum_sampled_upper_distance_m": 0.0005413650069385767,
+          "maximum_edge_m": 0.0022093693389023806,
+          "samples": 116
+        },
+        "Character | shoe lace quarter seam left": {
+          "maximum_sampled_upper_distance_m": 0.000564781716093421,
+          "maximum_edge_m": 0.0031033413657331455,
+          "samples": 152
+        },
+        "Character | shoe lace quarter seam left.001": {
+          "maximum_sampled_upper_distance_m": 0.0005458327941596508,
+          "maximum_edge_m": 0.0031079170185470445,
+          "samples": 152
+        },
+        "Character | shoe lace toe cap seam right": {
+          "maximum_sampled_upper_distance_m": 0.0005159243009984493,
+          "maximum_edge_m": 0.0022022090347080187,
+          "samples": 116
+        },
+        "Character | shoe lace quarter seam right": {
+          "maximum_sampled_upper_distance_m": 0.0005645962082780898,
+          "maximum_edge_m": 0.0030918703314224034,
+          "samples": 152
+        },
+        "Character | shoe lace quarter seam right.001": {
+          "maximum_sampled_upper_distance_m": 0.0005458123632706702,
+          "maximum_edge_m": 0.0030914996164678886,
+          "samples": 152
+        }
+      },
+      "foot_weighted_details": {
+        "Walk surface | Character | foxing edge left": {
+          "maximum_sampled_target_distance_m": 0.0012698520440608263,
+          "samples": 138
+        },
+        "Walk surface | Character | outsole groove left": {
+          "maximum_sampled_target_distance_m": 0.0011136684333905578,
+          "samples": 138
+        },
+        "Walk surface | Character | foxing edge right": {
+          "maximum_sampled_target_distance_m": 0.001190222566947341,
+          "samples": 138
+        },
+        "Walk surface | Character | outsole groove right": {
+          "maximum_sampled_target_distance_m": 0.001089173718355596,
+          "samples": 138
+        },
+        "Walk surface | Character | sewn heel counter left": {
+          "maximum_sampled_target_distance_m": 0.0005412233876995742,
+          "samples": 236
+        },
+        "Walk surface | Character | sewn heel counter right": {
+          "maximum_sampled_target_distance_m": 0.0005274061113595963,
+          "samples": 222
+        }
+      }
+    },
+    {
+      "frame": 12,
+      "fitted_seams": {
+        "Character | shoe lace toe cap seam left": {
+          "maximum_sampled_upper_distance_m": 0.0005414138431660831,
+          "maximum_edge_m": 0.002209360459389113,
+          "samples": 116
+        },
+        "Character | shoe lace quarter seam left": {
+          "maximum_sampled_upper_distance_m": 0.0005648296209983528,
+          "maximum_edge_m": 0.003103314586392059,
+          "samples": 152
+        },
+        "Character | shoe lace quarter seam left.001": {
+          "maximum_sampled_upper_distance_m": 0.0005459113162942231,
+          "maximum_edge_m": 0.0031078326644912494,
+          "samples": 152
+        },
+        "Character | shoe lace toe cap seam right": {
+          "maximum_sampled_upper_distance_m": 0.0005158408312126994,
+          "maximum_edge_m": 0.0022022082087238748,
+          "samples": 116
+        },
+        "Character | shoe lace quarter seam right": {
+          "maximum_sampled_upper_distance_m": 0.0005646824138239026,
+          "maximum_edge_m": 0.0030921253818922906,
+          "samples": 152
+        },
+        "Character | shoe lace quarter seam right.001": {
+          "maximum_sampled_upper_distance_m": 0.0005457347142510116,
+          "maximum_edge_m": 0.0030915702088686165,
+          "samples": 152
+        }
+      },
+      "foot_weighted_details": {
+        "Walk surface | Character | foxing edge left": {
+          "maximum_sampled_target_distance_m": 0.0012692115269601345,
+          "samples": 138
+        },
+        "Walk surface | Character | outsole groove left": {
+          "maximum_sampled_target_distance_m": 0.0011131330393254757,
+          "samples": 138
+        },
+        "Walk surface | Character | foxing edge right": {
+          "maximum_sampled_target_distance_m": 0.0011902543483301997,
+          "samples": 138
+        },
+        "Walk surface | Character | outsole groove right": {
+          "maximum_sampled_target_distance_m": 0.0010889043333008885,
+          "samples": 138
+        },
+        "Walk surface | Character | sewn heel counter left": {
+          "maximum_sampled_target_distance_m": 0.0005408712895587087,
+          "samples": 236
+        },
+        "Walk surface | Character | sewn heel counter right": {
+          "maximum_sampled_target_distance_m": 0.0005273511633276939,
+          "samples": 222
+        }
+      }
+    },
+    {
+      "frame": 13,
+      "fitted_seams": {
+        "Character | shoe lace toe cap seam left": {
+          "maximum_sampled_upper_distance_m": 0.0005413530743680894,
+          "maximum_edge_m": 0.0022093829362914157,
+          "samples": 116
+        },
+        "Character | shoe lace quarter seam left": {
+          "maximum_sampled_upper_distance_m": 0.0005648673977702856,
+          "maximum_edge_m": 0.003103383201122256,
+          "samples": 152
+        },
+        "Character | shoe lace quarter seam left.001": {
+          "maximum_sampled_upper_distance_m": 0.0005460521788336337,
+          "maximum_edge_m": 0.0031078391758572396,
+          "samples": 152
+        },
+        "Character | shoe lace toe cap seam right": {
+          "maximum_sampled_upper_distance_m": 0.0005159122520126402,
+          "maximum_edge_m": 0.0022022273353397392,
+          "samples": 116
+        },
+        "Character | shoe lace quarter seam right": {
+          "maximum_sampled_upper_distance_m": 0.0005646437639370561,
+          "maximum_edge_m": 0.0030922725942749917,
+          "samples": 152
+        },
+        "Character | shoe lace quarter seam right.001": {
+          "maximum_sampled_upper_distance_m": 0.0005456972285173833,
+          "maximum_edge_m": 0.003091617211194704,
+          "samples": 152
+        }
+      },
+      "foot_weighted_details": {
+        "Walk surface | Character | foxing edge left": {
+          "maximum_sampled_target_distance_m": 0.001269633648917079,
+          "samples": 138
+        },
+        "Walk surface | Character | outsole groove left": {
+          "maximum_sampled_target_distance_m": 0.001113364938646555,
+          "samples": 138
+        },
+        "Walk surface | Character | foxing edge right": {
+          "maximum_sampled_target_distance_m": 0.0011903352569788694,
+          "samples": 138
+        },
+        "Walk surface | Character | outsole groove right": {
+          "maximum_sampled_target_distance_m": 0.001088813878595829,
+          "samples": 138
+        },
+        "Walk surface | Character | sewn heel counter left": {
+          "maximum_sampled_target_distance_m": 0.0005412716418504715,
+          "samples": 236
+        },
+        "Walk surface | Character | sewn heel counter right": {
+          "maximum_sampled_target_distance_m": 0.0005276364972814918,
+          "samples": 222
+        }
+      }
+    },
+    {
+      "frame": 14,
+      "fitted_seams": {
+        "Character | shoe lace toe cap seam left": {
+          "maximum_sampled_upper_distance_m": 0.000541417277418077,
+          "maximum_edge_m": 0.0022093777134631416,
+          "samples": 116
+        },
+        "Character | shoe lace quarter seam left": {
+          "maximum_sampled_upper_distance_m": 0.0005647908546961844,
+          "maximum_edge_m": 0.0031034129105000845,
+          "samples": 152
+        },
+        "Character | shoe lace quarter seam left.001": {
+          "maximum_sampled_upper_distance_m": 0.0005458837258629501,
+          "maximum_edge_m": 0.0031077367482947723,
+          "samples": 152
+        },
+        "Character | shoe lace toe cap seam right": {
+          "maximum_sampled_upper_distance_m": 0.0005159162683412433,
+          "maximum_edge_m": 0.0022022125838551125,
+          "samples": 116
+        },
+        "Character | shoe lace quarter seam right": {
+          "maximum_sampled_upper_distance_m": 0.0005647536017931998,
+          "maximum_edge_m": 0.0030922399504273146,
+          "samples": 152
+        },
+        "Character | shoe lace quarter seam right.001": {
+          "maximum_sampled_upper_distance_m": 0.000545685354154557,
+          "maximum_edge_m": 0.0030915651867052694,
+          "samples": 152
+        }
+      },
+      "foot_weighted_details": {
+        "Walk surface | Character | foxing edge left": {
+          "maximum_sampled_target_distance_m": 0.0012695196783170104,
+          "samples": 138
+        },
+        "Walk surface | Character | outsole groove left": {
+          "maximum_sampled_target_distance_m": 0.0011128551559522748,
+          "samples": 138
+        },
+        "Walk surface | Character | foxing edge right": {
+          "maximum_sampled_target_distance_m": 0.0011897142976522446,
+          "samples": 138
+        },
+        "Walk surface | Character | outsole groove right": {
+          "maximum_sampled_target_distance_m": 0.0010885953670367599,
+          "samples": 138
+        },
+        "Walk surface | Character | sewn heel counter left": {
+          "maximum_sampled_target_distance_m": 0.0005410299636423588,
+          "samples": 236
+        },
+        "Walk surface | Character | sewn heel counter right": {
+          "maximum_sampled_target_distance_m": 0.0005272583803161979,
+          "samples": 222
+        }
+      }
+    },
+    {
+      "frame": 15,
+      "fitted_seams": {
+        "Character | shoe lace toe cap seam left": {
+          "maximum_sampled_upper_distance_m": 0.0005413673352450132,
+          "maximum_edge_m": 0.0022093829362914157,
+          "samples": 116
+        },
+        "Character | shoe lace quarter seam left": {
+          "maximum_sampled_upper_distance_m": 0.0005648576770909131,
+          "maximum_edge_m": 0.003103383201122256,
+          "samples": 152
+        },
+        "Character | shoe lace quarter seam left.001": {
+          "maximum_sampled_upper_distance_m": 0.0005460368702188134,
+          "maximum_edge_m": 0.0031078240314231713,
+          "samples": 152
+        },
+        "Character | shoe lace toe cap seam right": {
+          "maximum_sampled_upper_distance_m": 0.0005157965933904052,
+          "maximum_edge_m": 0.002202215474792518,
+          "samples": 116
+        },
+        "Character | shoe lace quarter seam right": {
+          "maximum_sampled_upper_distance_m": 0.0005646977224387228,
+          "maximum_edge_m": 0.0030919381855289137,
+          "samples": 152
+        },
+        "Character | shoe lace quarter seam right.001": {
+          "maximum_sampled_upper_distance_m": 0.000545803050044924,
+          "maximum_edge_m": 0.0030916385547489775,
+          "samples": 152
+        }
+      },
+      "foot_weighted_details": {
+        "Walk surface | Character | foxing edge left": {
+          "maximum_sampled_target_distance_m": 0.001269737957045436,
+          "samples": 138
+        },
+        "Walk surface | Character | outsole groove left": {
+          "maximum_sampled_target_distance_m": 0.0011133698280900717,
+          "samples": 138
+        },
+        "Walk surface | Character | foxing edge right": {
+          "maximum_sampled_target_distance_m": 0.001189225586131215,
+          "samples": 138
+        },
+        "Walk surface | Character | outsole groove right": {
+          "maximum_sampled_target_distance_m": 0.0010885043302550912,
+          "samples": 138
+        },
+        "Walk surface | Character | sewn heel counter left": {
+          "maximum_sampled_target_distance_m": 0.0005410880548879504,
+          "samples": 236
+        },
+        "Walk surface | Character | sewn heel counter right": {
+          "maximum_sampled_target_distance_m": 0.0005269537214189768,
+          "samples": 222
+        }
+      }
+    },
+    {
+      "frame": 16,
+      "fitted_seams": {
+        "Character | shoe lace toe cap seam left": {
+          "maximum_sampled_upper_distance_m": 0.0005413959152065217,
+          "maximum_edge_m": 0.0022093829362914157,
+          "samples": 116
+        },
+        "Character | shoe lace quarter seam left": {
+          "maximum_sampled_upper_distance_m": 0.0005648673977702856,
+          "maximum_edge_m": 0.003103383201122256,
+          "samples": 152
+        },
+        "Character | shoe lace quarter seam left.001": {
+          "maximum_sampled_upper_distance_m": 0.0005459210951812565,
+          "maximum_edge_m": 0.0031077367482947723,
+          "samples": 152
+        },
+        "Character | shoe lace toe cap seam right": {
+          "maximum_sampled_upper_distance_m": 0.000515899620950222,
+          "maximum_edge_m": 0.0022022017847506794,
+          "samples": 116
+        },
+        "Character | shoe lace quarter seam right": {
+          "maximum_sampled_upper_distance_m": 0.0005647874204441905,
+          "maximum_edge_m": 0.0030921901190620483,
+          "samples": 152
+        },
+        "Character | shoe lace quarter seam right.001": {
+          "maximum_sampled_upper_distance_m": 0.0005457933293655515,
+          "maximum_edge_m": 0.0030914427156335327,
+          "samples": 152
+        }
+      },
+      "foot_weighted_details": {
+        "Walk surface | Character | foxing edge left": {
+          "maximum_sampled_target_distance_m": 0.0012698902282863855,
+          "samples": 138
+        },
+        "Walk surface | Character | outsole groove left": {
+          "maximum_sampled_target_distance_m": 0.0011131084756925702,
+          "samples": 138
+        },
+        "Walk surface | Character | foxing edge right": {
+          "maximum_sampled_target_distance_m": 0.0011892699403688312,
+          "samples": 138
+        },
+        "Walk surface | Character | outsole groove right": {
+          "maximum_sampled_target_distance_m": 0.001088736578822136,
+          "samples": 138
+        },
+        "Walk surface | Character | sewn heel counter left": {
+          "maximum_sampled_target_distance_m": 0.0005411946913227439,
+          "samples": 236
+        },
+        "Walk surface | Character | sewn heel counter right": {
+          "maximum_sampled_target_distance_m": 0.0005263419006951153,
+          "samples": 222
+        }
+      }
+    },
+    {
+      "frame": 17,
+      "fitted_seams": {
+        "Character | shoe lace toe cap seam left": {
+          "maximum_sampled_upper_distance_m": 0.0005413388716988266,
+          "maximum_edge_m": 0.0022093829362914157,
+          "samples": 116
+        },
+        "Character | shoe lace quarter seam left": {
+          "maximum_sampled_upper_distance_m": 0.0005647811340168118,
+          "maximum_edge_m": 0.003103383201122256,
+          "samples": 152
+        },
+        "Character | shoe lace quarter seam left.001": {
+          "maximum_sampled_upper_distance_m": 0.0005457859952002764,
+          "maximum_edge_m": 0.0031078391758572396,
+          "samples": 152
+        },
+        "Character | shoe lace toe cap seam right": {
+          "maximum_sampled_upper_distance_m": 0.0005159057909622788,
+          "maximum_edge_m": 0.002202236346860797,
+          "samples": 116
+        },
+        "Character | shoe lace quarter seam right": {
+          "maximum_sampled_upper_distance_m": 0.0005647456855513155,
+          "maximum_edge_m": 0.0030922088620942414,
+          "samples": 152
+        },
+        "Character | shoe lace quarter seam right.001": {
+          "maximum_sampled_upper_distance_m": 0.0005457743536680937,
+          "maximum_edge_m": 0.003091501524119067,
+          "samples": 152
+        }
+      },
+      "foot_weighted_details": {
+        "Walk surface | Character | foxing edge left": {
+          "maximum_sampled_target_distance_m": 0.0012696431949734688,
+          "samples": 138
+        },
+        "Walk surface | Character | outsole groove left": {
+          "maximum_sampled_target_distance_m": 0.0011129833292216063,
+          "samples": 138
+        },
+        "Walk surface | Character | foxing edge right": {
+          "maximum_sampled_target_distance_m": 0.0011888178996741772,
+          "samples": 138
+        },
+        "Walk surface | Character | outsole groove right": {
+          "maximum_sampled_target_distance_m": 0.0010888880351558328,
+          "samples": 138
+        },
+        "Walk surface | Character | sewn heel counter left": {
+          "maximum_sampled_target_distance_m": 0.000541066110599786,
+          "samples": 236
+        },
+        "Walk surface | Character | sewn heel counter right": {
+          "maximum_sampled_target_distance_m": 0.0005259132012724876,
+          "samples": 222
+        }
+      }
+    },
+    {
+      "frame": 18,
+      "fitted_seams": {
+        "Character | shoe lace toe cap seam left": {
+          "maximum_sampled_upper_distance_m": 0.0005413744947873056,
+          "maximum_edge_m": 0.002209380324878822,
+          "samples": 116
+        },
+        "Character | shoe lace quarter seam left": {
+          "maximum_sampled_upper_distance_m": 0.0005648625083267689,
+          "maximum_edge_m": 0.00310336836464337,
+          "samples": 152
+        },
+        "Character | shoe lace quarter seam left.001": {
+          "maximum_sampled_upper_distance_m": 0.000545984716154635,
+          "maximum_edge_m": 0.0031077367482947723,
+          "samples": 152
+        },
+        "Character | shoe lace toe cap seam right": {
+          "maximum_sampled_upper_distance_m": 0.00051592051750049,
+          "maximum_edge_m": 0.0022022172719470055,
+          "samples": 116
+        },
+        "Character | shoe lace quarter seam right": {
+          "maximum_sampled_upper_distance_m": 0.0005646825302392244,
+          "maximum_edge_m": 0.003091985418130917,
+          "samples": 152
+        },
+        "Character | shoe lace quarter seam right.001": {
+          "maximum_sampled_upper_distance_m": 0.0005457397783175111,
+          "maximum_edge_m": 0.003091459063662417,
+          "samples": 152
+        }
+      },
+      "foot_weighted_details": {
+        "Walk surface | Character | foxing edge left": {
+          "maximum_sampled_target_distance_m": 0.0012688544811680913,
+          "samples": 138
+        },
+        "Walk surface | Character | outsole groove left": {
+          "maximum_sampled_target_distance_m": 0.0011123147560283542,
+          "samples": 138
+        },
+        "Walk surface | Character | foxing edge right": {
+          "maximum_sampled_target_distance_m": 0.0011887240689247847,
+          "samples": 138
+        },
+        "Walk surface | Character | outsole groove right": {
+          "maximum_sampled_target_distance_m": 0.0010890788398683071,
+          "samples": 138
+        },
+        "Walk surface | Character | sewn heel counter left": {
+          "maximum_sampled_target_distance_m": 0.0005407429998740554,
+          "samples": 236
+        },
+        "Walk surface | Character | sewn heel counter right": {
+          "maximum_sampled_target_distance_m": 0.0005255056894384325,
+          "samples": 222
+        }
+      }
+    },
+    {
+      "frame": 19,
+      "fitted_seams": {
+        "Character | shoe lace toe cap seam left": {
+          "maximum_sampled_upper_distance_m": 0.0005413515027612448,
+          "maximum_edge_m": 0.0022093829362914157,
+          "samples": 116
+        },
+        "Character | shoe lace quarter seam left": {
+          "maximum_sampled_upper_distance_m": 0.0005647956859320402,
+          "maximum_edge_m": 0.0031034129105000845,
+          "samples": 152
+        },
+        "Character | shoe lace quarter seam left.001": {
+          "maximum_sampled_upper_distance_m": 0.0005458490340970457,
+          "maximum_edge_m": 0.0031077367482947723,
+          "samples": 152
+        },
+        "Character | shoe lace toe cap seam right": {
+          "maximum_sampled_upper_distance_m": 0.0005158696440048516,
+          "maximum_edge_m": 0.0022022294035080542,
+          "samples": 116
+        },
+        "Character | shoe lace quarter seam right": {
+          "maximum_sampled_upper_distance_m": 0.0005646402132697403,
+          "maximum_edge_m": 0.003092024079685336,
+          "samples": 152
+        },
+        "Character | shoe lace quarter seam right.001": {
+          "maximum_sampled_upper_distance_m": 0.0005457728402689099,
+          "maximum_edge_m": 0.0030914621757022667,
+          "samples": 152
+        }
+      },
+      "foot_weighted_details": {
+        "Walk surface | Character | foxing edge left": {
+          "maximum_sampled_target_distance_m": 0.0012688256101682782,
+          "samples": 138
+        },
+        "Walk surface | Character | outsole groove left": {
+          "maximum_sampled_target_distance_m": 0.0011119204573333263,
+          "samples": 138
+        },
+        "Walk surface | Character | foxing edge right": {
+          "maximum_sampled_target_distance_m": 0.001189157017506659,
+          "samples": 138
+        },
+        "Walk surface | Character | outsole groove right": {
+          "maximum_sampled_target_distance_m": 0.001089718658477068,
+          "samples": 138
+        },
+        "Walk surface | Character | sewn heel counter left": {
+          "maximum_sampled_target_distance_m": 0.0005407771677710116,
+          "samples": 236
+        },
+        "Walk surface | Character | sewn heel counter right": {
+          "maximum_sampled_target_distance_m": 0.0005257303710095584,
+          "samples": 222
+        }
+      }
+    },
+    {
+      "frame": 20,
+      "fitted_seams": {
+        "Character | shoe lace toe cap seam left": {
+          "maximum_sampled_upper_distance_m": 0.0005413800245150924,
+          "maximum_edge_m": 0.0022093829362914157,
+          "samples": 116
+        },
+        "Character | shoe lace quarter seam left": {
+          "maximum_sampled_upper_distance_m": 0.0005647908546961844,
+          "maximum_edge_m": 0.00310336836464337,
+          "samples": 152
+        },
+        "Character | shoe lace quarter seam left.001": {
+          "maximum_sampled_upper_distance_m": 0.0005458429805003107,
+          "maximum_edge_m": 0.0031077367482947723,
+          "samples": 152
+        },
+        "Character | shoe lace toe cap seam right": {
+          "maximum_sampled_upper_distance_m": 0.0005158715066500008,
+          "maximum_edge_m": 0.00220220456922755,
+          "samples": 116
+        },
+        "Character | shoe lace quarter seam right": {
+          "maximum_sampled_upper_distance_m": 0.0005647021462209523,
+          "maximum_edge_m": 0.003091904646461901,
+          "samples": 152
+        },
+        "Character | shoe lace quarter seam right.001": {
+          "maximum_sampled_upper_distance_m": 0.0005457330262288451,
+          "maximum_edge_m": 0.0030913700221404813,
+          "samples": 152
+        }
+      },
+      "foot_weighted_details": {
+        "Walk surface | Character | foxing edge left": {
+          "maximum_sampled_target_distance_m": 0.0012688160641118884,
+          "samples": 138
+        },
+        "Walk surface | Character | outsole groove left": {
+          "maximum_sampled_target_distance_m": 0.0011123133590444922,
+          "samples": 138
+        },
+        "Walk surface | Character | foxing edge right": {
+          "maximum_sampled_target_distance_m": 0.00118810567073524,
+          "samples": 138
+        },
+        "Walk surface | Character | outsole groove right": {
+          "maximum_sampled_target_distance_m": 0.0010886630043387413,
+          "samples": 138
+        },
+        "Walk surface | Character | sewn heel counter left": {
+          "maximum_sampled_target_distance_m": 0.0005406604614108801,
+          "samples": 236
+        },
+        "Walk surface | Character | sewn heel counter right": {
+          "maximum_sampled_target_distance_m": 0.0005254150019027293,
+          "samples": 222
+        }
+      }
+    },
+    {
+      "frame": 21,
+      "fitted_seams": {
+        "Character | shoe lace toe cap seam left": {
+          "maximum_sampled_upper_distance_m": 0.000541381654329598,
+          "maximum_edge_m": 0.0022093829362914157,
+          "samples": 116
+        },
+        "Character | shoe lace quarter seam left": {
+          "maximum_sampled_upper_distance_m": 0.0005647434736602008,
+          "maximum_edge_m": 0.003103383201122256,
+          "samples": 152
+        },
+        "Character | shoe lace quarter seam left.001": {
+          "maximum_sampled_upper_distance_m": 0.000545873015653342,
+          "maximum_edge_m": 0.0031078391758572396,
+          "samples": 152
+        },
+        "Character | shoe lace toe cap seam right": {
+          "maximum_sampled_upper_distance_m": 0.0005158754647709429,
+          "maximum_edge_m": 0.002202228406528563,
+          "samples": 116
+        },
+        "Character | shoe lace quarter seam right": {
+          "maximum_sampled_upper_distance_m": 0.0005646616336889565,
+          "maximum_edge_m": 0.003091771511541131,
+          "samples": 152
+        },
+        "Character | shoe lace quarter seam right.001": {
+          "maximum_sampled_upper_distance_m": 0.000545832677744329,
+          "maximum_edge_m": 0.0030912648606620415,
+          "samples": 152
+        }
+      },
+      "foot_weighted_details": {
+        "Walk surface | Character | foxing edge left": {
+          "maximum_sampled_target_distance_m": 0.0012685626279562712,
+          "samples": 138
+        },
+        "Walk surface | Character | outsole groove left": {
+          "maximum_sampled_target_distance_m": 0.0011123165022581816,
+          "samples": 138
+        },
+        "Walk surface | Character | foxing edge right": {
+          "maximum_sampled_target_distance_m": 0.0011888428125530481,
+          "samples": 138
+        },
+        "Walk surface | Character | outsole groove right": {
+          "maximum_sampled_target_distance_m": 0.0010888103861361742,
+          "samples": 138
+        },
+        "Walk surface | Character | sewn heel counter left": {
+          "maximum_sampled_target_distance_m": 0.0005404526018537581,
+          "samples": 236
+        },
+        "Walk surface | Character | sewn heel counter right": {
+          "maximum_sampled_target_distance_m": 0.0005259898607619107,
+          "samples": 222
+        }
+      }
+    },
+    {
+      "frame": 22,
+      "fitted_seams": {
+        "Character | shoe lace toe cap seam left": {
+          "maximum_sampled_upper_distance_m": 0.0005413581966422498,
+          "maximum_edge_m": 0.0022093648332211875,
+          "samples": 116
+        },
+        "Character | shoe lace quarter seam left": {
+          "maximum_sampled_upper_distance_m": 0.0005647725774906576,
+          "maximum_edge_m": 0.0031034955897252504,
+          "samples": 152
+        },
+        "Character | shoe lace quarter seam left.001": {
+          "maximum_sampled_upper_distance_m": 0.0005459201638586819,
+          "maximum_edge_m": 0.003107960987099457,
+          "samples": 152
+        },
+        "Character | shoe lace toe cap seam right": {
+          "maximum_sampled_upper_distance_m": 0.0005158418207429349,
+          "maximum_edge_m": 0.002202236988926232,
+          "samples": 116
+        },
+        "Character | shoe lace quarter seam right": {
+          "maximum_sampled_upper_distance_m": 0.000564686837606132,
+          "maximum_edge_m": 0.0030921360814836025,
+          "samples": 152
+        },
+        "Character | shoe lace quarter seam right.001": {
+          "maximum_sampled_upper_distance_m": 0.000545686692930758,
+          "maximum_edge_m": 0.003091456944531568,
+          "samples": 152
+        }
+      },
+      "foot_weighted_details": {
+        "Walk surface | Character | foxing edge left": {
+          "maximum_sampled_target_distance_m": 0.0012682524975389242,
+          "samples": 138
+        },
+        "Walk surface | Character | outsole groove left": {
+          "maximum_sampled_target_distance_m": 0.0011122722644358873,
+          "samples": 138
+        },
+        "Walk surface | Character | foxing edge right": {
+          "maximum_sampled_target_distance_m": 0.0011886022984981537,
+          "samples": 138
+        },
+        "Walk surface | Character | outsole groove right": {
+          "maximum_sampled_target_distance_m": 0.0010882599744945765,
+          "samples": 138
+        },
+        "Walk surface | Character | sewn heel counter left": {
+          "maximum_sampled_target_distance_m": 0.0005403294344432652,
+          "samples": 236
+        },
+        "Walk surface | Character | sewn heel counter right": {
+          "maximum_sampled_target_distance_m": 0.0005258612218312919,
+          "samples": 222
+        }
+      }
+    },
+    {
+      "frame": 23,
+      "fitted_seams": {
+        "Character | shoe lace toe cap seam left": {
+          "maximum_sampled_upper_distance_m": 0.0005413541221059859,
+          "maximum_edge_m": 0.0022093543874667034,
+          "samples": 116
+        },
+        "Character | shoe lace quarter seam left": {
+          "maximum_sampled_upper_distance_m": 0.0005648449878208339,
+          "maximum_edge_m": 0.0031034243399260344,
+          "samples": 152
+        },
+        "Character | shoe lace quarter seam left.001": {
+          "maximum_sampled_upper_distance_m": 0.0005459108506329358,
+          "maximum_edge_m": 0.0031077958640427592,
+          "samples": 152
+        },
+        "Character | shoe lace toe cap seam right": {
+          "maximum_sampled_upper_distance_m": 0.0005158347776159644,
+          "maximum_edge_m": 0.002202248926792183,
+          "samples": 116
+        },
+        "Character | shoe lace quarter seam right": {
+          "maximum_sampled_upper_distance_m": 0.0005646899808198214,
+          "maximum_edge_m": 0.003092098046366823,
+          "samples": 152
+        },
+        "Character | shoe lace quarter seam right.001": {
+          "maximum_sampled_upper_distance_m": 0.0005457652150653303,
+          "maximum_edge_m": 0.003091397989820951,
+          "samples": 152
+        }
+      },
+      "foot_weighted_details": {
+        "Walk surface | Character | foxing edge left": {
+          "maximum_sampled_target_distance_m": 0.001268593012355268,
+          "samples": 138
+        },
+        "Walk surface | Character | outsole groove left": {
+          "maximum_sampled_target_distance_m": 0.0011133492225781083,
+          "samples": 138
+        },
+        "Walk surface | Character | foxing edge right": {
+          "maximum_sampled_target_distance_m": 0.0011881761020049453,
+          "samples": 138
+        },
+        "Walk surface | Character | outsole groove right": {
+          "maximum_sampled_target_distance_m": 0.0010878323810175061,
+          "samples": 138
+        },
+        "Walk surface | Character | sewn heel counter left": {
+          "maximum_sampled_target_distance_m": 0.000540275068487972,
+          "samples": 236
+        },
+        "Walk surface | Character | sewn heel counter right": {
+          "maximum_sampled_target_distance_m": 0.0005259302561171353,
+          "samples": 222
+        }
+      }
+    },
+    {
+      "frame": 24,
+      "fitted_seams": {
+        "Character | shoe lace toe cap seam left": {
+          "maximum_sampled_upper_distance_m": 0.0005414184997789562,
+          "maximum_edge_m": 0.002209359189046557,
+          "samples": 116
+        },
+        "Character | shoe lace quarter seam left": {
+          "maximum_sampled_upper_distance_m": 0.0005648128571920097,
+          "maximum_edge_m": 0.003103332811755331,
+          "samples": 152
+        },
+        "Character | shoe lace quarter seam left.001": {
+          "maximum_sampled_upper_distance_m": 0.000545852817595005,
+          "maximum_edge_m": 0.0031077571974957017,
+          "samples": 152
+        },
+        "Character | shoe lace toe cap seam right": {
+          "maximum_sampled_upper_distance_m": 0.0005159130087122321,
+          "maximum_edge_m": 0.002202216352397765,
+          "samples": 116
+        },
+        "Character | shoe lace quarter seam right": {
+          "maximum_sampled_upper_distance_m": 0.0005647165235131979,
+          "maximum_edge_m": 0.003092150273297126,
+          "samples": 152
+        },
+        "Character | shoe lace quarter seam right.001": {
+          "maximum_sampled_upper_distance_m": 0.0005457704537548125,
+          "maximum_edge_m": 0.003091479142470041,
+          "samples": 152
+        }
+      },
+      "foot_weighted_details": {
+        "Walk surface | Character | foxing edge left": {
+          "maximum_sampled_target_distance_m": 0.0012691383017227054,
+          "samples": 138
+        },
+        "Walk surface | Character | outsole groove left": {
+          "maximum_sampled_target_distance_m": 0.0011133732041344047,
+          "samples": 138
+        },
+        "Walk surface | Character | foxing edge right": {
+          "maximum_sampled_target_distance_m": 0.0011888357112184167,
+          "samples": 138
+        },
+        "Walk surface | Character | outsole groove right": {
+          "maximum_sampled_target_distance_m": 0.0010884086368605494,
+          "samples": 138
+        },
+        "Walk surface | Character | sewn heel counter left": {
+          "maximum_sampled_target_distance_m": 0.0005403185496106744,
+          "samples": 236
+        },
+        "Walk surface | Character | sewn heel counter right": {
+          "maximum_sampled_target_distance_m": 0.0005262316553853452,
+          "samples": 222
+        }
+      }
+    },
+    {
+      "frame": 25,
+      "fitted_seams": {
+        "Character | shoe lace toe cap seam left": {
+          "maximum_sampled_upper_distance_m": 0.0005413783364929259,
+          "maximum_edge_m": 0.00220935082406379,
+          "samples": 116
+        },
+        "Character | shoe lace quarter seam left": {
+          "maximum_sampled_upper_distance_m": 0.0005648008664138615,
+          "maximum_edge_m": 0.003103238524109946,
+          "samples": 152
+        },
+        "Character | shoe lace quarter seam left.001": {
+          "maximum_sampled_upper_distance_m": 0.0005458707455545664,
+          "maximum_edge_m": 0.003107722152092311,
+          "samples": 152
+        },
+        "Character | shoe lace toe cap seam right": {
+          "maximum_sampled_upper_distance_m": 0.0005158362328074872,
+          "maximum_edge_m": 0.002202211774004779,
+          "samples": 116
+        },
+        "Character | shoe lace quarter seam right": {
+          "maximum_sampled_upper_distance_m": 0.0005646731005981565,
+          "maximum_edge_m": 0.0030919395494210596,
+          "samples": 152
+        },
+        "Character | shoe lace quarter seam right.001": {
+          "maximum_sampled_upper_distance_m": 0.0005457560182549059,
+          "maximum_edge_m": 0.0030913663078075398,
+          "samples": 152
+        }
+      },
+      "foot_weighted_details": {
+        "Walk surface | Character | foxing edge left": {
+          "maximum_sampled_target_distance_m": 0.00126818532589823,
+          "samples": 138
+        },
+        "Walk surface | Character | outsole groove left": {
+          "maximum_sampled_target_distance_m": 0.0011129331542178988,
+          "samples": 138
+        },
+        "Walk surface | Character | foxing edge right": {
+          "maximum_sampled_target_distance_m": 0.001188480295240879,
+          "samples": 138
+        },
+        "Walk surface | Character | outsole groove right": {
+          "maximum_sampled_target_distance_m": 0.0010881334310397506,
+          "samples": 138
+        },
+        "Walk surface | Character | sewn heel counter left": {
+          "maximum_sampled_target_distance_m": 0.0005401095259003341,
+          "samples": 236
+        },
+        "Walk surface | Character | sewn heel counter right": {
+          "maximum_sampled_target_distance_m": 0.0005259465542621911,
+          "samples": 222
+        }
+      }
+    },
+    {
+      "frame": 26,
+      "fitted_seams": {
+        "Character | shoe lace toe cap seam left": {
+          "maximum_sampled_upper_distance_m": 0.0005414087208919227,
+          "maximum_edge_m": 0.002209358491161855,
+          "samples": 116
+        },
+        "Character | shoe lace quarter seam left": {
+          "maximum_sampled_upper_distance_m": 0.0005648090154863894,
+          "maximum_edge_m": 0.0031032274786674807,
+          "samples": 152
+        },
+        "Character | shoe lace quarter seam left.001": {
+          "maximum_sampled_upper_distance_m": 0.0005458755767904222,
+          "maximum_edge_m": 0.0031077396016797243,
+          "samples": 152
+        },
+        "Character | shoe lace toe cap seam right": {
+          "maximum_sampled_upper_distance_m": 0.0005158362328074872,
+          "maximum_edge_m": 0.002202211774004779,
+          "samples": 116
+        },
+        "Character | shoe lace quarter seam right": {
+          "maximum_sampled_upper_distance_m": 0.0005646731005981565,
+          "maximum_edge_m": 0.0030918295031073777,
+          "samples": 152
+        },
+        "Character | shoe lace quarter seam right.001": {
+          "maximum_sampled_upper_distance_m": 0.0005457560182549059,
+          "maximum_edge_m": 0.0030913663078075398,
+          "samples": 152
+        }
+      },
+      "foot_weighted_details": {
+        "Walk surface | Character | foxing edge left": {
+          "maximum_sampled_target_distance_m": 0.001268484047614038,
+          "samples": 138
+        },
+        "Walk surface | Character | outsole groove left": {
+          "maximum_sampled_target_distance_m": 0.001113211503252387,
+          "samples": 138
+        },
+        "Walk surface | Character | foxing edge right": {
+          "maximum_sampled_target_distance_m": 0.0011891168542206287,
+          "samples": 138
+        },
+        "Walk surface | Character | outsole groove right": {
+          "maximum_sampled_target_distance_m": 0.001088269636966288,
+          "samples": 138
+        },
+        "Walk surface | Character | sewn heel counter left": {
+          "maximum_sampled_target_distance_m": 0.0005402513197623193,
+          "samples": 236
+        },
+        "Walk surface | Character | sewn heel counter right": {
+          "maximum_sampled_target_distance_m": 0.0005264195497147739,
+          "samples": 222
+        }
+      }
+    },
+    {
+      "frame": 27,
+      "fitted_seams": {
+        "Character | shoe lace toe cap seam left": {
+          "maximum_sampled_upper_distance_m": 0.0005413249018602073,
+          "maximum_edge_m": 0.002209356805946273,
+          "samples": 116
+        },
+        "Character | shoe lace quarter seam left": {
+          "maximum_sampled_upper_distance_m": 0.0005648119258694351,
+          "maximum_edge_m": 0.003103286066689209,
+          "samples": 152
+        },
+        "Character | shoe lace quarter seam left.001": {
+          "maximum_sampled_upper_distance_m": 0.0005459036910906434,
+          "maximum_edge_m": 0.003107822238961115,
+          "samples": 152
+        },
+        "Character | shoe lace toe cap seam right": {
+          "maximum_sampled_upper_distance_m": 0.0005158362328074872,
+          "maximum_edge_m": 0.002202211774004779,
+          "samples": 116
+        },
+        "Character | shoe lace quarter seam right": {
+          "maximum_sampled_upper_distance_m": 0.0005646731005981565,
+          "maximum_edge_m": 0.0030919395494210596,
+          "samples": 152
+        },
+        "Character | shoe lace quarter seam right.001": {
+          "maximum_sampled_upper_distance_m": 0.0005457560182549059,
+          "maximum_edge_m": 0.0030913663078075398,
+          "samples": 152
+        }
+      },
+      "foot_weighted_details": {
+        "Walk surface | Character | foxing edge left": {
+          "maximum_sampled_target_distance_m": 0.0012682892847806215,
+          "samples": 138
+        },
+        "Walk surface | Character | outsole groove left": {
+          "maximum_sampled_target_distance_m": 0.0011123409494757652,
+          "samples": 138
+        },
+        "Walk surface | Character | foxing edge right": {
+          "maximum_sampled_target_distance_m": 0.0011888635344803333,
+          "samples": 138
+        },
+        "Walk surface | Character | outsole groove right": {
+          "maximum_sampled_target_distance_m": 0.0010884107323363423,
+          "samples": 138
+        },
+        "Walk surface | Character | sewn heel counter left": {
+          "maximum_sampled_target_distance_m": 0.0005402858951129019,
+          "samples": 236
+        },
+        "Walk surface | Character | sewn heel counter right": {
+          "maximum_sampled_target_distance_m": 0.0005260256002657115,
+          "samples": 222
+        }
+      }
+    },
+    {
+      "frame": 28,
+      "fitted_seams": {
+        "Character | shoe lace toe cap seam left": {
+          "maximum_sampled_upper_distance_m": 0.0005414465558715165,
+          "maximum_edge_m": 0.0022093587484465636,
+          "samples": 116
+        },
+        "Character | shoe lace quarter seam left": {
+          "maximum_sampled_upper_distance_m": 0.0005647201905958354,
+          "maximum_edge_m": 0.0031034263180916375,
+          "samples": 152
+        },
+        "Character | shoe lace quarter seam left.001": {
+          "maximum_sampled_upper_distance_m": 0.0005458933883346617,
+          "maximum_edge_m": 0.003107872482378339,
+          "samples": 152
+        },
+        "Character | shoe lace toe cap seam right": {
+          "maximum_sampled_upper_distance_m": 0.0005158362328074872,
+          "maximum_edge_m": 0.002202211774004779,
+          "samples": 116
+        },
+        "Character | shoe lace quarter seam right": {
+          "maximum_sampled_upper_distance_m": 0.0005647107609547675,
+          "maximum_edge_m": 0.0030919395494210596,
+          "samples": 152
+        },
+        "Character | shoe lace quarter seam right.001": {
+          "maximum_sampled_upper_distance_m": 0.0005457560182549059,
+          "maximum_edge_m": 0.0030913663078075398,
+          "samples": 152
+        }
+      },
+      "foot_weighted_details": {
+        "Walk surface | Character | foxing edge left": {
+          "maximum_sampled_target_distance_m": 0.0012687556445598602,
+          "samples": 138
+        },
+        "Walk surface | Character | outsole groove left": {
+          "maximum_sampled_target_distance_m": 0.0011118643451482058,
+          "samples": 138
+        },
+        "Walk surface | Character | foxing edge right": {
+          "maximum_sampled_target_distance_m": 0.0011887304717674851,
+          "samples": 138
+        },
+        "Walk surface | Character | outsole groove right": {
+          "maximum_sampled_target_distance_m": 0.0010882809292525053,
+          "samples": 138
+        },
+        "Walk surface | Character | sewn heel counter left": {
+          "maximum_sampled_target_distance_m": 0.000540854234714061,
+          "samples": 236
+        },
+        "Walk surface | Character | sewn heel counter right": {
+          "maximum_sampled_target_distance_m": 0.0005260068573988974,
+          "samples": 222
+        }
+      }
+    },
+    {
+      "frame": 29,
+      "fitted_seams": {
+        "Character | shoe lace toe cap seam left": {
+          "maximum_sampled_upper_distance_m": 0.0005413541803136468,
+          "maximum_edge_m": 0.0022093681296697864,
+          "samples": 116
+        },
+        "Character | shoe lace quarter seam left": {
+          "maximum_sampled_upper_distance_m": 0.000564772286452353,
+          "maximum_edge_m": 0.0031033445145114665,
+          "samples": 152
+        },
+        "Character | shoe lace quarter seam left.001": {
+          "maximum_sampled_upper_distance_m": 0.0005457861116155982,
+          "maximum_edge_m": 0.00310790225800999,
+          "samples": 152
+        },
+        "Character | shoe lace toe cap seam right": {
+          "maximum_sampled_upper_distance_m": 0.0005158807034604251,
+          "maximum_edge_m": 0.002202211774004779,
+          "samples": 116
+        },
+        "Character | shoe lace quarter seam right": {
+          "maximum_sampled_upper_distance_m": 0.0005647107609547675,
+          "maximum_edge_m": 0.0030919395494210596,
+          "samples": 152
+        },
+        "Character | shoe lace quarter seam right.001": {
+          "maximum_sampled_upper_distance_m": 0.0005457560182549059,
+          "maximum_edge_m": 0.003091369171705734,
+          "samples": 152
+        }
+      },
+      "foot_weighted_details": {
+        "Walk surface | Character | foxing edge left": {
+          "maximum_sampled_target_distance_m": 0.0012696023331955075,
+          "samples": 138
+        },
+        "Walk surface | Character | outsole groove left": {
+          "maximum_sampled_target_distance_m": 0.0011121882125735283,
+          "samples": 138
+        },
+        "Walk surface | Character | foxing edge right": {
+          "maximum_sampled_target_distance_m": 0.0011893798364326358,
+          "samples": 138
+        },
+        "Walk surface | Character | outsole groove right": {
+          "maximum_sampled_target_distance_m": 0.001088917488232255,
+          "samples": 138
+        },
+        "Walk surface | Character | sewn heel counter left": {
+          "maximum_sampled_target_distance_m": 0.0005411805468611419,
+          "samples": 236
+        },
+        "Walk surface | Character | sewn heel counter right": {
+          "maximum_sampled_target_distance_m": 0.0005264195497147739,
+          "samples": 222
+        }
+      }
+    },
+    {
+      "frame": 30,
+      "fitted_seams": {
+        "Character | shoe lace toe cap seam left": {
+          "maximum_sampled_upper_distance_m": 0.0005414339830167592,
+          "maximum_edge_m": 0.00220937165445231,
+          "samples": 116
+        },
+        "Character | shoe lace quarter seam left": {
+          "maximum_sampled_upper_distance_m": 0.0005647296202369034,
+          "maximum_edge_m": 0.0031033831095392704,
+          "samples": 152
+        },
+        "Character | shoe lace quarter seam left.001": {
+          "maximum_sampled_upper_distance_m": 0.0005459278472699225,
+          "maximum_edge_m": 0.0031078577953622343,
+          "samples": 152
+        },
+        "Character | shoe lace toe cap seam right": {
+          "maximum_sampled_upper_distance_m": 0.0005158433923497796,
+          "maximum_edge_m": 0.002202211774004779,
+          "samples": 116
+        },
+        "Character | shoe lace quarter seam right": {
+          "maximum_sampled_upper_distance_m": 0.0005647107609547675,
+          "maximum_edge_m": 0.0030919395494210596,
+          "samples": 152
+        },
+        "Character | shoe lace quarter seam right.001": {
+          "maximum_sampled_upper_distance_m": 0.0005457560182549059,
+          "maximum_edge_m": 0.0030913663078075398,
+          "samples": 152
+        }
+      },
+      "foot_weighted_details": {
+        "Walk surface | Character | foxing edge left": {
+          "maximum_sampled_target_distance_m": 0.0012696294579654932,
+          "samples": 138
+        },
+        "Walk surface | Character | outsole groove left": {
+          "maximum_sampled_target_distance_m": 0.0011121694697067142,
+          "samples": 138
+        },
+        "Walk surface | Character | foxing edge right": {
+          "maximum_sampled_target_distance_m": 0.001188743277452886,
+          "samples": 138
+        },
+        "Walk surface | Character | outsole groove right": {
+          "maximum_sampled_target_distance_m": 0.0010882760398089886,
+          "samples": 138
+        },
+        "Walk surface | Character | sewn heel counter left": {
+          "maximum_sampled_target_distance_m": 0.0005415508057922125,
+          "samples": 236
+        },
+        "Walk surface | Character | sewn heel counter right": {
+          "maximum_sampled_target_distance_m": 0.0005260969628579915,
+          "samples": 222
+        }
+      }
+    },
+    {
+      "frame": 31,
+      "fitted_seams": {
+        "Character | shoe lace toe cap seam left": {
+          "maximum_sampled_upper_distance_m": 0.0005414150655269623,
+          "maximum_edge_m": 0.002209378906610344,
+          "samples": 116
+        },
+        "Character | shoe lace quarter seam left": {
+          "maximum_sampled_upper_distance_m": 0.000564765592571348,
+          "maximum_edge_m": 0.0031033452122679463,
+          "samples": 152
+        },
+        "Character | shoe lace quarter seam left.001": {
+          "maximum_sampled_upper_distance_m": 0.0005458826781250536,
+          "maximum_edge_m": 0.003107730492787826,
+          "samples": 152
+        },
+        "Character | shoe lace toe cap seam right": {
+          "maximum_sampled_upper_distance_m": 0.0005158807034604251,
+          "maximum_edge_m": 0.002202211774004779,
+          "samples": 116
+        },
+        "Character | shoe lace quarter seam right": {
+          "maximum_sampled_upper_distance_m": 0.0005647107609547675,
+          "maximum_edge_m": 0.003091942605824189,
+          "samples": 152
+        },
+        "Character | shoe lace quarter seam right.001": {
+          "maximum_sampled_upper_distance_m": 0.0005457560182549059,
+          "maximum_edge_m": 0.003091369171705734,
+          "samples": 152
+        }
+      },
+      "foot_weighted_details": {
+        "Walk surface | Character | foxing edge left": {
+          "maximum_sampled_target_distance_m": 0.001269922824576497,
+          "samples": 138
+        },
+        "Walk surface | Character | outsole groove left": {
+          "maximum_sampled_target_distance_m": 0.001112291938625276,
+          "samples": 138
+        },
+        "Walk surface | Character | foxing edge right": {
+          "maximum_sampled_target_distance_m": 0.0011895321076735854,
+          "samples": 138
+        },
+        "Walk surface | Character | outsole groove right": {
+          "maximum_sampled_target_distance_m": 0.0010891706915572286,
+          "samples": 138
+        },
+        "Walk surface | Character | sewn heel counter left": {
+          "maximum_sampled_target_distance_m": 0.0005414742045104504,
+          "samples": 236
+        },
+        "Walk surface | Character | sewn heel counter right": {
+          "maximum_sampled_target_distance_m": 0.0005265132640488446,
+          "samples": 222
+        }
+      }
+    },
+    {
+      "frame": 32,
+      "fitted_seams": {
+        "Character | shoe lace toe cap seam left": {
+          "maximum_sampled_upper_distance_m": 0.0005413726321421564,
+          "maximum_edge_m": 0.0022094322791883832,
+          "samples": 116
+        },
+        "Character | shoe lace quarter seam left": {
+          "maximum_sampled_upper_distance_m": 0.000564789748750627,
+          "maximum_edge_m": 0.0031034072690371444,
+          "samples": 152
+        },
+        "Character | shoe lace quarter seam left.001": {
+          "maximum_sampled_upper_distance_m": 0.0005458311643451452,
+          "maximum_edge_m": 0.003107723981194121,
+          "samples": 152
+        },
+        "Character | shoe lace toe cap seam right": {
+          "maximum_sampled_upper_distance_m": 0.0005158362328074872,
+          "maximum_edge_m": 0.002202211774004779,
+          "samples": 116
+        },
+        "Character | shoe lace quarter seam right": {
+          "maximum_sampled_upper_distance_m": 0.0005647107609547675,
+          "maximum_edge_m": 0.003091942605824189,
+          "samples": 152
+        },
+        "Character | shoe lace quarter seam right.001": {
+          "maximum_sampled_upper_distance_m": 0.0005457776715047657,
+          "maximum_edge_m": 0.0030913663078075398,
+          "samples": 152
+        }
+      },
+      "foot_weighted_details": {
+        "Walk surface | Character | foxing edge left": {
+          "maximum_sampled_target_distance_m": 0.0012699702056124806,
+          "samples": 138
+        },
+        "Walk surface | Character | outsole groove left": {
+          "maximum_sampled_target_distance_m": 0.0011128336191177368,
+          "samples": 138
+        },
+        "Walk surface | Character | foxing edge right": {
+          "maximum_sampled_target_distance_m": 0.0011899216333404183,
+          "samples": 138
+        },
+        "Walk surface | Character | outsole groove right": {
+          "maximum_sampled_target_distance_m": 0.0010891803540289402,
+          "samples": 138
+        },
+        "Walk surface | Character | sewn heel counter left": {
+          "maximum_sampled_target_distance_m": 0.0005414234474301338,
+          "samples": 236
+        },
+        "Walk surface | Character | sewn heel counter right": {
+          "maximum_sampled_target_distance_m": 0.0005269924295134842,
+          "samples": 222
+        }
+      }
+    },
+    {
+      "frame": 33,
+      "fitted_seams": {
+        "Character | shoe lace toe cap seam left": {
+          "maximum_sampled_upper_distance_m": 0.0005413927137851715,
+          "maximum_edge_m": 0.0022093891110478324,
+          "samples": 116
+        },
+        "Character | shoe lace quarter seam left": {
+          "maximum_sampled_upper_distance_m": 0.0005647940561175346,
+          "maximum_edge_m": 0.003103289308826629,
+          "samples": 152
+        },
+        "Character | shoe lace quarter seam left.001": {
+          "maximum_sampled_upper_distance_m": 0.0005458969972096384,
+          "maximum_edge_m": 0.003107840017212524,
+          "samples": 152
+        },
+        "Character | shoe lace toe cap seam right": {
+          "maximum_sampled_upper_distance_m": 0.0005158879212103784,
+          "maximum_edge_m": 0.002202211774004779,
+          "samples": 116
+        },
+        "Character | shoe lace quarter seam right": {
+          "maximum_sampled_upper_distance_m": 0.0005647058715112507,
+          "maximum_edge_m": 0.003091942605824189,
+          "samples": 152
+        },
+        "Character | shoe lace quarter seam right.001": {
+          "maximum_sampled_upper_distance_m": 0.0005457560182549059,
+          "maximum_edge_m": 0.003091369171705734,
+          "samples": 152
+        }
+      },
+      "foot_weighted_details": {
+        "Walk surface | Character | foxing edge left": {
+          "maximum_sampled_target_distance_m": 0.0012701819650828838,
+          "samples": 138
+        },
+        "Walk surface | Character | outsole groove left": {
+          "maximum_sampled_target_distance_m": 0.0011131159262731671,
+          "samples": 138
+        },
+        "Walk surface | Character | foxing edge right": {
+          "maximum_sampled_target_distance_m": 0.001190061098895967,
+          "samples": 138
+        },
+        "Walk surface | Character | outsole groove right": {
+          "maximum_sampled_target_distance_m": 0.0010891836136579514,
+          "samples": 138
+        },
+        "Walk surface | Character | sewn heel counter left": {
+          "maximum_sampled_target_distance_m": 0.0005415743798948824,
+          "samples": 236
+        },
+        "Walk surface | Character | sewn heel counter right": {
+          "maximum_sampled_target_distance_m": 0.000527182943187654,
+          "samples": 222
+        }
+      }
+    },
+    {
+      "frame": 34,
+      "fitted_seams": {
+        "Character | shoe lace toe cap seam left": {
+          "maximum_sampled_upper_distance_m": 0.0005413921899162233,
+          "maximum_edge_m": 0.002209367383547217,
+          "samples": 116
+        },
+        "Character | shoe lace quarter seam left": {
+          "maximum_sampled_upper_distance_m": 0.0005647885263897479,
+          "maximum_edge_m": 0.0031034266844184623,
+          "samples": 152
+        },
+        "Character | shoe lace quarter seam left.001": {
+          "maximum_sampled_upper_distance_m": 0.0005460003158077598,
+          "maximum_edge_m": 0.0031078312744225855,
+          "samples": 152
+        },
+        "Character | shoe lace toe cap seam right": {
+          "maximum_sampled_upper_distance_m": 0.0005158340791240335,
+          "maximum_edge_m": 0.002202224241149819,
+          "samples": 116
+        },
+        "Character | shoe lace quarter seam right": {
+          "maximum_sampled_upper_distance_m": 0.000564733927603811,
+          "maximum_edge_m": 0.0030919749023986345,
+          "samples": 152
+        },
+        "Character | shoe lace quarter seam right.001": {
+          "maximum_sampled_upper_distance_m": 0.0005457059014588594,
+          "maximum_edge_m": 0.0030914571835659235,
+          "samples": 152
+        }
+      },
+      "foot_weighted_details": {
+        "Walk surface | Character | foxing edge left": {
+          "maximum_sampled_target_distance_m": 0.0012710914015769958,
+          "samples": 138
+        },
+        "Walk surface | Character | outsole groove left": {
+          "maximum_sampled_target_distance_m": 0.0011144066229462624,
+          "samples": 138
+        },
+        "Walk surface | Character | foxing edge right": {
+          "maximum_sampled_target_distance_m": 0.001189897651784122,
+          "samples": 138
+        },
+        "Walk surface | Character | outsole groove right": {
+          "maximum_sampled_target_distance_m": 0.0010891066631302238,
+          "samples": 138
+        },
+        "Walk surface | Character | sewn heel counter left": {
+          "maximum_sampled_target_distance_m": 0.0005415293853729963,
+          "samples": 236
+        },
+        "Walk surface | Character | sewn heel counter right": {
+          "maximum_sampled_target_distance_m": 0.0005268066888675094,
+          "samples": 222
+        }
+      }
+    },
+    {
+      "frame": 35,
+      "fitted_seams": {
+        "Character | shoe lace toe cap seam left": {
+          "maximum_sampled_upper_distance_m": 0.0005413949838839471,
+          "maximum_edge_m": 0.002209378617167686,
+          "samples": 116
+        },
+        "Character | shoe lace quarter seam left": {
+          "maximum_sampled_upper_distance_m": 0.0005647915531881154,
+          "maximum_edge_m": 0.0031033726141112376,
+          "samples": 152
+        },
+        "Character | shoe lace quarter seam left.001": {
+          "maximum_sampled_upper_distance_m": 0.000545933551620692,
+          "maximum_edge_m": 0.0031079170185470445,
+          "samples": 152
+        },
+        "Character | shoe lace toe cap seam right": {
+          "maximum_sampled_upper_distance_m": 0.0005158819258213043,
+          "maximum_edge_m": 0.0022022090347080187,
+          "samples": 116
+        },
+        "Character | shoe lace quarter seam right": {
+          "maximum_sampled_upper_distance_m": 0.0005646865465678275,
+          "maximum_edge_m": 0.0030918703314224034,
+          "samples": 152
+        },
+        "Character | shoe lace quarter seam right.001": {
+          "maximum_sampled_upper_distance_m": 0.0005457381485030055,
+          "maximum_edge_m": 0.0030914996164678886,
+          "samples": 152
+        }
+      },
+      "foot_weighted_details": {
+        "Walk surface | Character | foxing edge left": {
+          "maximum_sampled_target_distance_m": 0.0012701089726760983,
+          "samples": 138
+        },
+        "Walk surface | Character | outsole groove left": {
+          "maximum_sampled_target_distance_m": 0.0011136684333905578,
+          "samples": 138
+        },
+        "Walk surface | Character | foxing edge right": {
+          "maximum_sampled_target_distance_m": 0.0011895947391167283,
+          "samples": 138
+        },
+        "Walk surface | Character | outsole groove right": {
+          "maximum_sampled_target_distance_m": 0.001088645658455789,
+          "samples": 138
+        },
+        "Walk surface | Character | sewn heel counter left": {
+          "maximum_sampled_target_distance_m": 0.0005411423626355827,
+          "samples": 236
+        },
+        "Walk surface | Character | sewn heel counter right": {
+          "maximum_sampled_target_distance_m": 0.000526915886439383,
+          "samples": 222
+        }
+      }
+    },
+    {
+      "frame": 36,
+      "fitted_seams": {
+        "Character | shoe lace toe cap seam left": {
+          "maximum_sampled_upper_distance_m": 0.0005413770559243858,
+          "maximum_edge_m": 0.002209360459389113,
+          "samples": 116
+        },
+        "Character | shoe lace quarter seam left": {
+          "maximum_sampled_upper_distance_m": 0.0005648296209983528,
+          "maximum_edge_m": 0.003103314586392059,
+          "samples": 152
+        },
+        "Character | shoe lace quarter seam left.001": {
+          "maximum_sampled_upper_distance_m": 0.0005459113162942231,
+          "maximum_edge_m": 0.0031078326644912494,
+          "samples": 152
+        },
+        "Character | shoe lace toe cap seam right": {
+          "maximum_sampled_upper_distance_m": 0.000515892868861556,
+          "maximum_edge_m": 0.0022022230247673983,
+          "samples": 116
+        },
+        "Character | shoe lace quarter seam right": {
+          "maximum_sampled_upper_distance_m": 0.0005647283396683633,
+          "maximum_edge_m": 0.0030920095255017876,
+          "samples": 152
+        },
+        "Character | shoe lace quarter seam right.001": {
+          "maximum_sampled_upper_distance_m": 0.0005457551451399922,
+          "maximum_edge_m": 0.003091453415073682,
+          "samples": 152
+        }
+      },
+      "foot_weighted_details": {
+        "Walk surface | Character | foxing edge left": {
+          "maximum_sampled_target_distance_m": 0.0012692115269601345,
+          "samples": 138
+        },
+        "Walk surface | Character | outsole groove left": {
+          "maximum_sampled_target_distance_m": 0.0011131330393254757,
+          "samples": 138
+        },
+        "Walk surface | Character | foxing edge right": {
+          "maximum_sampled_target_distance_m": 0.0011903177946805954,
+          "samples": 138
+        },
+        "Walk surface | Character | outsole groove right": {
+          "maximum_sampled_target_distance_m": 0.0010890181874856353,
+          "samples": 138
+        },
+        "Walk surface | Character | sewn heel counter left": {
+          "maximum_sampled_target_distance_m": 0.0005408712895587087,
+          "samples": 236
+        },
+        "Walk surface | Character | sewn heel counter right": {
+          "maximum_sampled_target_distance_m": 0.0005276256124489009,
+          "samples": 222
+        }
+      }
+    },
+    {
+      "frame": 37,
+      "fitted_seams": {
+        "Character | shoe lace toe cap seam left": {
+          "maximum_sampled_upper_distance_m": 0.0005413152393884957,
+          "maximum_edge_m": 0.002209374294819476,
+          "samples": 116
+        },
+        "Character | shoe lace quarter seam left": {
+          "maximum_sampled_upper_distance_m": 0.0005648625083267689,
+          "maximum_edge_m": 0.003103383201122256,
+          "samples": 152
+        },
+        "Character | shoe lace quarter seam left.001": {
+          "maximum_sampled_upper_distance_m": 0.0005460521788336337,
+          "maximum_edge_m": 0.0031078391758572396,
+          "samples": 152
+        },
+        "Character | shoe lace toe cap seam right": {
+          "maximum_sampled_upper_distance_m": 0.0005158795393072069,
+          "maximum_edge_m": 0.0022022073182093723,
+          "samples": 116
+        },
+        "Character | shoe lace quarter seam right": {
+          "maximum_sampled_upper_distance_m": 0.0005646437639370561,
+          "maximum_edge_m": 0.0030919229660833674,
+          "samples": 152
+        },
+        "Character | shoe lace quarter seam right.001": {
+          "maximum_sampled_upper_distance_m": 0.0005457823281176388,
+          "maximum_edge_m": 0.0030915007133674602,
+          "samples": 152
+        }
+      },
+      "foot_weighted_details": {
+        "Walk surface | Character | foxing edge left": {
+          "maximum_sampled_target_distance_m": 0.001269633648917079,
+          "samples": 138
+        },
+        "Walk surface | Character | outsole groove left": {
+          "maximum_sampled_target_distance_m": 0.001113364938646555,
+          "samples": 138
+        },
+        "Walk surface | Character | foxing edge right": {
+          "maximum_sampled_target_distance_m": 0.0011903513222932816,
+          "samples": 138
+        },
+        "Walk surface | Character | outsole groove right": {
+          "maximum_sampled_target_distance_m": 0.0010889422846958041,
+          "samples": 138
+        },
+        "Walk surface | Character | sewn heel counter left": {
+          "maximum_sampled_target_distance_m": 0.0005412716418504715,
+          "samples": 236
+        },
+        "Walk surface | Character | sewn heel counter right": {
+          "maximum_sampled_target_distance_m": 0.0005275802686810493,
+          "samples": 222
+        }
+      }
+    },
+    {
+      "frame": 38,
+      "fitted_seams": {
+        "Character | shoe lace toe cap seam left": {
+          "maximum_sampled_upper_distance_m": 0.0005414244369603693,
+          "maximum_edge_m": 0.002209374294819476,
+          "samples": 116
+        },
+        "Character | shoe lace quarter seam left": {
+          "maximum_sampled_upper_distance_m": 0.000564838235732168,
+          "maximum_edge_m": 0.0031034129105000845,
+          "samples": 152
+        },
+        "Character | shoe lace quarter seam left.001": {
+          "maximum_sampled_upper_distance_m": 0.0005458837258629501,
+          "maximum_edge_m": 0.0031077367482947723,
+          "samples": 152
+        },
+        "Character | shoe lace toe cap seam right": {
+          "maximum_sampled_upper_distance_m": 0.0005158609128557146,
+          "maximum_edge_m": 0.0022022193110864076,
+          "samples": 116
+        },
+        "Character | shoe lace quarter seam right": {
+          "maximum_sampled_upper_distance_m": 0.0005646513309329748,
+          "maximum_edge_m": 0.0030921242113939123,
+          "samples": 152
+        },
+        "Character | shoe lace quarter seam right.001": {
+          "maximum_sampled_upper_distance_m": 0.0005457728984765708,
+          "maximum_edge_m": 0.0030914485398190732,
+          "samples": 152
+        }
+      },
+      "foot_weighted_details": {
+        "Walk surface | Character | foxing edge left": {
+          "maximum_sampled_target_distance_m": 0.0012695390032604337,
+          "samples": 138
+        },
+        "Walk surface | Character | outsole groove left": {
+          "maximum_sampled_target_distance_m": 0.0011129833292216063,
+          "samples": 138
+        },
+        "Walk surface | Character | foxing edge right": {
+          "maximum_sampled_target_distance_m": 0.0011898630764335394,
+          "samples": 138
+        },
+        "Walk surface | Character | outsole groove right": {
+          "maximum_sampled_target_distance_m": 0.0010887212119996548,
+          "samples": 138
+        },
+        "Walk surface | Character | sewn heel counter left": {
+          "maximum_sampled_target_distance_m": 0.0005410407320596278,
+          "samples": 236
+        },
+        "Walk surface | Character | sewn heel counter right": {
+          "maximum_sampled_target_distance_m": 0.0005274545983411372,
+          "samples": 222
+        }
+      }
+    },
+    {
+      "frame": 39,
+      "fitted_seams": {
+        "Character | shoe lace toe cap seam left": {
+          "maximum_sampled_upper_distance_m": 0.0005413444014266133,
+          "maximum_edge_m": 0.002209374294819476,
+          "samples": 116
+        },
+        "Character | shoe lace quarter seam left": {
+          "maximum_sampled_upper_distance_m": 0.0005648576770909131,
+          "maximum_edge_m": 0.003103383201122256,
+          "samples": 152
+        },
+        "Character | shoe lace quarter seam left.001": {
+          "maximum_sampled_upper_distance_m": 0.0005460368702188134,
+          "maximum_edge_m": 0.0031078240314231713,
+          "samples": 152
+        },
+        "Character | shoe lace toe cap seam right": {
+          "maximum_sampled_upper_distance_m": 0.000515861320309341,
+          "maximum_edge_m": 0.0022022064825450733,
+          "samples": 116
+        },
+        "Character | shoe lace quarter seam right": {
+          "maximum_sampled_upper_distance_m": 0.0005647085490636528,
+          "maximum_edge_m": 0.003092053276605779,
+          "samples": 152
+        },
+        "Character | shoe lace quarter seam right.001": {
+          "maximum_sampled_upper_distance_m": 0.0005457086954265833,
+          "maximum_edge_m": 0.0030915218715948547,
+          "samples": 152
+        }
+      },
+      "foot_weighted_details": {
+        "Walk surface | Character | foxing edge left": {
+          "maximum_sampled_target_distance_m": 0.0012696111807599664,
+          "samples": 138
+        },
+        "Walk surface | Character | outsole groove left": {
+          "maximum_sampled_target_distance_m": 0.0011132461950182915,
+          "samples": 138
+        },
+        "Walk surface | Character | foxing edge right": {
+          "maximum_sampled_target_distance_m": 0.001189788687042892,
+          "samples": 138
+        },
+        "Walk surface | Character | outsole groove right": {
+          "maximum_sampled_target_distance_m": 0.0010889770928770304,
+          "samples": 138
+        },
+        "Walk surface | Character | sewn heel counter left": {
+          "maximum_sampled_target_distance_m": 0.0005410637822933495,
+          "samples": 236
+        },
+        "Walk surface | Character | sewn heel counter right": {
+          "maximum_sampled_target_distance_m": 0.0005272597773000598,
+          "samples": 222
+        }
+      }
+    },
+    {
+      "frame": 40,
+      "fitted_seams": {
+        "Character | shoe lace toe cap seam left": {
+          "maximum_sampled_upper_distance_m": 0.0005414584884420037,
+          "maximum_edge_m": 0.002209374294819476,
+          "samples": 116
+        },
+        "Character | shoe lace quarter seam left": {
+          "maximum_sampled_upper_distance_m": 0.0005647908546961844,
+          "maximum_edge_m": 0.003103398074163231,
+          "samples": 152
+        },
+        "Character | shoe lace quarter seam left.001": {
+          "maximum_sampled_upper_distance_m": 0.0005458490340970457,
+          "maximum_edge_m": 0.0031077367482947723,
+          "samples": 152
+        },
+        "Character | shoe lace toe cap seam right": {
+          "maximum_sampled_upper_distance_m": 0.000515899620950222,
+          "maximum_edge_m": 0.0022022017847506794,
+          "samples": 116
+        },
+        "Character | shoe lace quarter seam right": {
+          "maximum_sampled_upper_distance_m": 0.0005647368961945176,
+          "maximum_edge_m": 0.0030921901190620483,
+          "samples": 152
+        },
+        "Character | shoe lace quarter seam right.001": {
+          "maximum_sampled_upper_distance_m": 0.0005458051455207169,
+          "maximum_edge_m": 0.0030914434367620733,
+          "samples": 152
+        }
+      },
+      "foot_weighted_details": {
+        "Walk surface | Character | foxing edge left": {
+          "maximum_sampled_target_distance_m": 0.0012701723026111722,
+          "samples": 138
+        },
+        "Walk surface | Character | outsole groove left": {
+          "maximum_sampled_target_distance_m": 0.0011136294342577457,
+          "samples": 138
+        },
+        "Walk surface | Character | foxing edge right": {
+          "maximum_sampled_target_distance_m": 0.0011892012553289533,
+          "samples": 138
+        },
+        "Walk surface | Character | outsole groove right": {
+          "maximum_sampled_target_distance_m": 0.0010888591641560197,
+          "samples": 138
+        },
+        "Walk surface | Character | sewn heel counter left": {
+          "maximum_sampled_target_distance_m": 0.0005410254234448075,
+          "samples": 236
+        },
+        "Walk surface | Character | sewn heel counter right": {
+          "maximum_sampled_target_distance_m": 0.0005264066276140511,
+          "samples": 222
+        }
+      }
+    },
+    {
+      "frame": 41,
+      "fitted_seams": {
+        "Character | shoe lace toe cap seam left": {
+          "maximum_sampled_upper_distance_m": 0.0005413871840573847,
+          "maximum_edge_m": 0.0022093829362914157,
+          "samples": 116
+        },
+        "Character | shoe lace quarter seam left": {
+          "maximum_sampled_upper_distance_m": 0.0005647908546961844,
+          "maximum_edge_m": 0.0031034129105000845,
+          "samples": 152
+        },
+        "Character | shoe lace quarter seam left.001": {
+          "maximum_sampled_upper_distance_m": 0.0005457840161398053,
+          "maximum_edge_m": 0.0031078391758572396,
+          "samples": 152
+        },
+        "Character | shoe lace toe cap seam right": {
+          "maximum_sampled_upper_distance_m": 0.0005159057909622788,
+          "maximum_edge_m": 0.002202236346860797,
+          "samples": 116
+        },
+        "Character | shoe lace quarter seam right": {
+          "maximum_sampled_upper_distance_m": 0.0005647456855513155,
+          "maximum_edge_m": 0.0030920937101683505,
+          "samples": 152
+        },
+        "Character | shoe lace quarter seam right.001": {
+          "maximum_sampled_upper_distance_m": 0.0005457900115288794,
+          "maximum_edge_m": 0.0030913853161351652,
+          "samples": 152
+        }
+      },
+      "foot_weighted_details": {
+        "Walk surface | Character | foxing edge left": {
+          "maximum_sampled_target_distance_m": 0.0012694781180471182,
+          "samples": 138
+        },
+        "Walk surface | Character | outsole groove left": {
+          "maximum_sampled_target_distance_m": 0.0011125809978693724,
+          "samples": 138
+        },
+        "Walk surface | Character | foxing edge right": {
+          "maximum_sampled_target_distance_m": 0.001188848982565105,
+          "samples": 138
+        },
+        "Walk surface | Character | outsole groove right": {
+          "maximum_sampled_target_distance_m": 0.001089025055989623,
+          "samples": 138
+        },
+        "Walk surface | Character | sewn heel counter left": {
+          "maximum_sampled_target_distance_m": 0.0005410706507973373,
+          "samples": 236
+        },
+        "Walk surface | Character | sewn heel counter right": {
+          "maximum_sampled_target_distance_m": 0.0005259645986370742,
+          "samples": 222
+        }
+      }
+    },
+    {
+      "frame": 42,
+      "fitted_seams": {
+        "Character | shoe lace toe cap seam left": {
+          "maximum_sampled_upper_distance_m": 0.0005414733896031976,
+          "maximum_edge_m": 0.002209374294819476,
+          "samples": 116
+        },
+        "Character | shoe lace quarter seam left": {
+          "maximum_sampled_upper_distance_m": 0.0005647908546961844,
+          "maximum_edge_m": 0.003103383201122256,
+          "samples": 152
+        },
+        "Character | shoe lace quarter seam left.001": {
+          "maximum_sampled_upper_distance_m": 0.0005458456580527127,
+          "maximum_edge_m": 0.0031078391758572396,
+          "samples": 152
+        },
+        "Character | shoe lace toe cap seam right": {
+          "maximum_sampled_upper_distance_m": 0.0005159158608876169,
+          "maximum_edge_m": 0.0022022172719470055,
+          "samples": 116
+        },
+        "Character | shoe lace quarter seam right": {
+          "maximum_sampled_upper_distance_m": 0.0005646743229590356,
+          "maximum_edge_m": 0.003091985418130917,
+          "samples": 152
+        },
+        "Character | shoe lace quarter seam right.001": {
+          "maximum_sampled_upper_distance_m": 0.0005457397783175111,
+          "maximum_edge_m": 0.0030914609897258545,
+          "samples": 152
+        }
+      },
+      "foot_weighted_details": {
+        "Walk surface | Character | foxing edge left": {
+          "maximum_sampled_target_distance_m": 0.0012689778814092278,
+          "samples": 138
+        },
+        "Walk surface | Character | outsole groove left": {
+          "maximum_sampled_target_distance_m": 0.0011120758717879653,
+          "samples": 138
+        },
+        "Walk surface | Character | foxing edge right": {
+          "maximum_sampled_target_distance_m": 0.0011888891458511353,
+          "samples": 138
+        },
+        "Walk surface | Character | outsole groove right": {
+          "maximum_sampled_target_distance_m": 0.00108955183532089,
+          "samples": 138
+        },
+        "Walk surface | Character | sewn heel counter left": {
+          "maximum_sampled_target_distance_m": 0.0005408031865954399,
+          "samples": 236
+        },
+        "Walk surface | Character | sewn heel counter right": {
+          "maximum_sampled_target_distance_m": 0.0005256202421151102,
+          "samples": 222
+        }
+      }
+    },
+    {
+      "frame": 43,
+      "fitted_seams": {
+        "Character | shoe lace toe cap seam left": {
+          "maximum_sampled_upper_distance_m": 0.0005413800245150924,
+          "maximum_edge_m": 0.0022093690719707745,
+          "samples": 116
+        },
+        "Character | shoe lace quarter seam left": {
+          "maximum_sampled_upper_distance_m": 0.0005648625083267689,
+          "maximum_edge_m": 0.00310336836464337,
+          "samples": 152
+        },
+        "Character | shoe lace quarter seam left.001": {
+          "maximum_sampled_upper_distance_m": 0.0005459558451548219,
+          "maximum_edge_m": 0.0031078391758572396,
+          "samples": 152
+        },
+        "Character | shoe lace toe cap seam right": {
+          "maximum_sampled_upper_distance_m": 0.0005158577696420252,
+          "maximum_edge_m": 0.0022022294035080542,
+          "samples": 116
+        },
+        "Character | shoe lace quarter seam right": {
+          "maximum_sampled_upper_distance_m": 0.0005647867219522595,
+          "maximum_edge_m": 0.0030917990389407765,
+          "samples": 152
+        },
+        "Character | shoe lace quarter seam right.001": {
+          "maximum_sampled_upper_distance_m": 0.0005456720828078687,
+          "maximum_edge_m": 0.003091229517952656,
+          "samples": 152
+        }
+      },
+      "foot_weighted_details": {
+        "Walk surface | Character | foxing edge left": {
+          "maximum_sampled_target_distance_m": 0.001269006752409041,
+          "samples": 138
+        },
+        "Walk surface | Character | outsole groove left": {
+          "maximum_sampled_target_distance_m": 0.001112337107770145,
+          "samples": 138
+        },
+        "Walk surface | Character | foxing edge right": {
+          "maximum_sampled_target_distance_m": 0.0011888672597706318,
+          "samples": 138
+        },
+        "Walk surface | Character | outsole groove right": {
+          "maximum_sampled_target_distance_m": 0.0010892016580328345,
+          "samples": 138
+        },
+        "Walk surface | Character | sewn heel counter left": {
+          "maximum_sampled_target_distance_m": 0.0005407670978456736,
+          "samples": 236
+        },
+        "Walk surface | Character | sewn heel counter right": {
+          "maximum_sampled_target_distance_m": 0.0005256206495687366,
+          "samples": 222
+        }
+      }
+    },
+    {
+      "frame": 44,
+      "fitted_seams": {
+        "Character | shoe lace toe cap seam left": {
+          "maximum_sampled_upper_distance_m": 0.0005413444014266133,
+          "maximum_edge_m": 0.002209374294819476,
+          "samples": 116
+        },
+        "Character | shoe lace quarter seam left": {
+          "maximum_sampled_upper_distance_m": 0.0005647908546961844,
+          "maximum_edge_m": 0.003103398074163231,
+          "samples": 152
+        },
+        "Character | shoe lace quarter seam left.001": {
+          "maximum_sampled_upper_distance_m": 0.0005458837258629501,
+          "maximum_edge_m": 0.0031077367482947723,
+          "samples": 152
+        },
+        "Character | shoe lace toe cap seam right": {
+          "maximum_sampled_upper_distance_m": 0.0005158564308658242,
+          "maximum_edge_m": 0.00220220456922755,
+          "samples": 116
+        },
+        "Character | shoe lace quarter seam right": {
+          "maximum_sampled_upper_distance_m": 0.0005647294456139207,
+          "maximum_edge_m": 0.003091904646461901,
+          "samples": 152
+        },
+        "Character | shoe lace quarter seam right.001": {
+          "maximum_sampled_upper_distance_m": 0.0005457311635836959,
+          "maximum_edge_m": 0.0030913700221404813,
+          "samples": 152
+        }
+      },
+      "foot_weighted_details": {
+        "Walk surface | Character | foxing edge left": {
+          "maximum_sampled_target_distance_m": 0.0012681731022894382,
+          "samples": 138
+        },
+        "Walk surface | Character | outsole groove left": {
+          "maximum_sampled_target_distance_m": 0.001111649558879435,
+          "samples": 138
+        },
+        "Walk surface | Character | foxing edge right": {
+          "maximum_sampled_target_distance_m": 0.001188511261716485,
+          "samples": 138
+        },
+        "Walk surface | Character | outsole groove right": {
+          "maximum_sampled_target_distance_m": 0.0010889355326071382,
+          "samples": 138
+        },
+        "Walk surface | Character | sewn heel counter left": {
+          "maximum_sampled_target_distance_m": 0.0005407737335190177,
+          "samples": 236
+        },
+        "Walk surface | Character | sewn heel counter right": {
+          "maximum_sampled_target_distance_m": 0.0005253853159956634,
+          "samples": 222
+        }
+      }
+    },
+    {
+      "frame": 45,
+      "fitted_seams": {
+        "Character | shoe lace toe cap seam left": {
+          "maximum_sampled_upper_distance_m": 0.0005413444014266133,
+          "maximum_edge_m": 0.002209374294819476,
+          "samples": 116
+        },
+        "Character | shoe lace quarter seam left": {
+          "maximum_sampled_upper_distance_m": 0.0005647859652526677,
+          "maximum_edge_m": 0.003103398074163231,
+          "samples": 152
+        },
+        "Character | shoe lace quarter seam left.001": {
+          "maximum_sampled_upper_distance_m": 0.00054576137335971,
+          "maximum_edge_m": 0.0031078240314231713,
+          "samples": 152
+        },
+        "Character | shoe lace toe cap seam right": {
+          "maximum_sampled_upper_distance_m": 0.0005158898420631886,
+          "maximum_edge_m": 0.002202217855941236,
+          "samples": 116
+        },
+        "Character | shoe lace quarter seam right": {
+          "maximum_sampled_upper_distance_m": 0.0005647283396683633,
+          "maximum_edge_m": 0.0030919968346459293,
+          "samples": 152
+        },
+        "Character | shoe lace quarter seam right.001": {
+          "maximum_sampled_upper_distance_m": 0.0005457019433379173,
+          "maximum_edge_m": 0.003091435941613876,
+          "samples": 152
+        }
+      },
+      "foot_weighted_details": {
+        "Walk surface | Character | foxing edge left": {
+          "maximum_sampled_target_distance_m": 0.001268027233891189,
+          "samples": 138
+        },
+        "Walk surface | Character | outsole groove left": {
+          "maximum_sampled_target_distance_m": 0.0011118017137050629,
+          "samples": 138
+        },
+        "Walk surface | Character | foxing edge right": {
+          "maximum_sampled_target_distance_m": 0.0011886678403243423,
+          "samples": 138
+        },
+        "Walk surface | Character | outsole groove right": {
+          "maximum_sampled_target_distance_m": 0.0010886474046856165,
+          "samples": 138
+        },
+        "Walk surface | Character | sewn heel counter left": {
+          "maximum_sampled_target_distance_m": 0.0005404720432125032,
+          "samples": 236
+        },
+        "Walk surface | Character | sewn heel counter right": {
+          "maximum_sampled_target_distance_m": 0.0005258292658254504,
+          "samples": 222
+        }
+      }
+    },
+    {
+      "frame": 46,
+      "fitted_seams": {
+        "Character | shoe lace toe cap seam left": {
+          "maximum_sampled_upper_distance_m": 0.000541365472599864,
+          "maximum_edge_m": 0.0022093813025508935,
+          "samples": 116
+        },
+        "Character | shoe lace quarter seam left": {
+          "maximum_sampled_upper_distance_m": 0.0005647919024340808,
+          "maximum_edge_m": 0.0031034955897252504,
+          "samples": 152
+        },
+        "Character | shoe lace quarter seam left.001": {
+          "maximum_sampled_upper_distance_m": 0.0005459024687297642,
+          "maximum_edge_m": 0.003107946355370706,
+          "samples": 152
+        },
+        "Character | shoe lace toe cap seam right": {
+          "maximum_sampled_upper_distance_m": 0.0005158284911885858,
+          "maximum_edge_m": 0.00220223001976376,
+          "samples": 116
+        },
+        "Character | shoe lace quarter seam right": {
+          "maximum_sampled_upper_distance_m": 0.0005646490608341992,
+          "maximum_edge_m": 0.003092079901851938,
+          "samples": 152
+        },
+        "Character | shoe lace quarter seam right.001": {
+          "maximum_sampled_upper_distance_m": 0.0005457178922370076,
+          "maximum_edge_m": 0.003091510428007915,
+          "samples": 152
+        }
+      },
+      "foot_weighted_details": {
+        "Walk surface | Character | foxing edge left": {
+          "maximum_sampled_target_distance_m": 0.0012682524975389242,
+          "samples": 138
+        },
+        "Walk surface | Character | outsole groove left": {
+          "maximum_sampled_target_distance_m": 0.001112267724238336,
+          "samples": 138
+        },
+        "Walk surface | Character | foxing edge right": {
+          "maximum_sampled_target_distance_m": 0.0011887140572071075,
+          "samples": 138
+        },
+        "Walk surface | Character | outsole groove right": {
+          "maximum_sampled_target_distance_m": 0.0010882328497245908,
+          "samples": 138
+        },
+        "Walk surface | Character | sewn heel counter left": {
+          "maximum_sampled_target_distance_m": 0.0005403899122029543,
+          "samples": 236
+        },
+        "Walk surface | Character | sewn heel counter right": {
+          "maximum_sampled_target_distance_m": 0.0005260665202513337,
+          "samples": 222
+        }
+      }
+    },
+    {
+      "frame": 47,
+      "fitted_seams": {
+        "Character | shoe lace toe cap seam left": {
+          "maximum_sampled_upper_distance_m": 0.0005413888720795512,
+          "maximum_edge_m": 0.0022093661461731334,
+          "samples": 116
+        },
+        "Character | shoe lace quarter seam left": {
+          "maximum_sampled_upper_distance_m": 0.0005647739162668586,
+          "maximum_edge_m": 0.003103315172536061,
+          "samples": 152
+        },
+        "Character | shoe lace quarter seam left.001": {
+          "maximum_sampled_upper_distance_m": 0.0005460778484120965,
+          "maximum_edge_m": 0.00310768758186565,
+          "samples": 152
+        },
+        "Character | shoe lace toe cap seam right": {
+          "maximum_sampled_upper_distance_m": 0.0005158546846359968,
+          "maximum_edge_m": 0.0022022380536574453,
+          "samples": 116
+        },
+        "Character | shoe lace quarter seam right": {
+          "maximum_sampled_upper_distance_m": 0.0005647226353175938,
+          "maximum_edge_m": 0.0030921015300279632,
+          "samples": 152
+        },
+        "Character | shoe lace quarter seam right.001": {
+          "maximum_sampled_upper_distance_m": 0.0005456842482089996,
+          "maximum_edge_m": 0.0030915686221274583,
+          "samples": 152
+        }
+      },
+      "foot_weighted_details": {
+        "Walk surface | Character | foxing edge left": {
+          "maximum_sampled_target_distance_m": 0.00126786925829947,
+          "samples": 138
+        },
+        "Walk surface | Character | outsole groove left": {
+          "maximum_sampled_target_distance_m": 0.0011122210416942835,
+          "samples": 138
+        },
+        "Walk surface | Character | foxing edge right": {
+          "maximum_sampled_target_distance_m": 0.0011884240666404366,
+          "samples": 138
+        },
+        "Walk surface | Character | outsole groove right": {
+          "maximum_sampled_target_distance_m": 0.0010880011832341552,
+          "samples": 138
+        },
+        "Walk surface | Character | sewn heel counter left": {
+          "maximum_sampled_target_distance_m": 0.0005401644157245755,
+          "samples": 236
+        },
+        "Walk surface | Character | sewn heel counter right": {
+          "maximum_sampled_target_distance_m": 0.0005261275800876319,
+          "samples": 222
+        }
+      }
+    },
+    {
+      "frame": 48,
+      "fitted_seams": {
+        "Character | shoe lace toe cap seam left": {
+          "maximum_sampled_upper_distance_m": 0.000541365472599864,
+          "maximum_edge_m": 0.002209359189046557,
+          "samples": 116
+        },
+        "Character | shoe lace quarter seam left": {
+          "maximum_sampled_upper_distance_m": 0.0005647385842166841,
+          "maximum_edge_m": 0.003103332811755331,
+          "samples": 152
+        },
+        "Character | shoe lace quarter seam left.001": {
+          "maximum_sampled_upper_distance_m": 0.000545852817595005,
+          "maximum_edge_m": 0.0031077571974957017,
+          "samples": 152
+        },
+        "Character | shoe lace toe cap seam right": {
+          "maximum_sampled_upper_distance_m": 0.000515861960593611,
+          "maximum_edge_m": 0.002202216352397765,
+          "samples": 116
+        },
+        "Character | shoe lace quarter seam right": {
+          "maximum_sampled_upper_distance_m": 0.0005647361394949257,
+          "maximum_edge_m": 0.00309203761938789,
+          "samples": 152
+        },
+        "Character | shoe lace quarter seam right.001": {
+          "maximum_sampled_upper_distance_m": 0.0005458238301798701,
+          "maximum_edge_m": 0.003091251280797835,
+          "samples": 152
+        }
+      },
+      "foot_weighted_details": {
+        "Walk surface | Character | foxing edge left": {
+          "maximum_sampled_target_distance_m": 0.0012692689197137952,
+          "samples": 138
+        },
+        "Walk surface | Character | outsole groove left": {
+          "maximum_sampled_target_distance_m": 0.0011134942760691047,
+          "samples": 138
+        },
+        "Walk surface | Character | foxing edge right": {
+          "maximum_sampled_target_distance_m": 0.0011891138274222612,
+          "samples": 138
+        },
+        "Walk surface | Character | outsole groove right": {
+          "maximum_sampled_target_distance_m": 0.0010887383250519633,
+          "samples": 138
+        },
+        "Walk surface | Character | sewn heel counter left": {
+          "maximum_sampled_target_distance_m": 0.0005403372924774885,
+          "samples": 236
+        },
+        "Walk surface | Character | sewn heel counter right": {
+          "maximum_sampled_target_distance_m": 0.0005264664650894701,
+          "samples": 222
+        }
+      }
+    },
+    {
+      "frame": 49,
+      "fitted_seams": {
+        "Character | shoe lace toe cap seam left": {
+          "maximum_sampled_upper_distance_m": 0.0005413783364929259,
+          "maximum_edge_m": 0.00220935082406379,
+          "samples": 116
+        },
+        "Character | shoe lace quarter seam left": {
+          "maximum_sampled_upper_distance_m": 0.0005648008664138615,
+          "maximum_edge_m": 0.003103238524109946,
+          "samples": 152
+        },
+        "Character | shoe lace quarter seam left.001": {
+          "maximum_sampled_upper_distance_m": 0.0005458707455545664,
+          "maximum_edge_m": 0.003107722152092311,
+          "samples": 152
+        },
+        "Character | shoe lace toe cap seam right": {
+          "maximum_sampled_upper_distance_m": 0.0005158584099262953,
+          "maximum_edge_m": 0.0022022067729303868,
+          "samples": 116
+        },
+        "Character | shoe lace quarter seam right": {
+          "maximum_sampled_upper_distance_m": 0.000564725894946605,
+          "maximum_edge_m": 0.003091942605824189,
+          "samples": 152
+        },
+        "Character | shoe lace quarter seam right.001": {
+          "maximum_sampled_upper_distance_m": 0.0005457560182549059,
+          "maximum_edge_m": 0.003091369171705734,
+          "samples": 152
+        }
+      },
+      "foot_weighted_details": {
+        "Walk surface | Character | foxing edge left": {
+          "maximum_sampled_target_distance_m": 0.001268285675905645,
+          "samples": 138
+        },
+        "Walk surface | Character | outsole groove left": {
+          "maximum_sampled_target_distance_m": 0.001112810568884015,
+          "samples": 138
+        },
+        "Walk surface | Character | foxing edge right": {
+          "maximum_sampled_target_distance_m": 0.0011886575957760215,
+          "samples": 138
+        },
+        "Walk surface | Character | outsole groove right": {
+          "maximum_sampled_target_distance_m": 0.001088264980353415,
+          "samples": 138
+        },
+        "Walk surface | Character | sewn heel counter left": {
+          "maximum_sampled_target_distance_m": 0.0005401445087045431,
+          "samples": 236
+        },
+        "Walk surface | Character | sewn heel counter right": {
+          "maximum_sampled_target_distance_m": 0.0005259447498247027,
+          "samples": 222
+        }
+      }
+    }
+  ],
+  "inherited_cloth_audit": "Immediate source ThighDrapeCandidate/cold-audit.json certifies its scoped 49 integer-frame shorts/leg and self-overlap checks. This footwear study does not repeat or broaden that collision claim.",
+  "scope": "Four added native footwear UV layers, copies of three canvas materials, six added curve-fitting keys and foot-bone weights for six existing heel/sole detail meshes. Original control geometry/UVs/keys/maps and full native rig rest/six-pose custody. Evaluated six-pose shoe, shorts and leg geometry remains exact; sampled seam/detail contact and bounded stitch edge checks span all 49 authored integer frames. This does not certify full-body collision freedom, animated subframes, physical cloth, final photographic realism or runtime compatibility."
+}

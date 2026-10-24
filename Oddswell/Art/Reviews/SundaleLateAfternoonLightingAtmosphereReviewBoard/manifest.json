@@ -1,0 +1,334 @@
+{
+  "artifact": "SundaleLateAfternoonLightingAtmosphereReviewBoard",
+  "atmosphere": {
+    "directional_intensity": 5.0,
+    "directional_temperature_kelvin": 5000,
+    "expected_directional_lights": 1,
+    "expected_exponential_height_fogs": 1,
+    "expected_skylights": 1,
+    "fog_color": "#E8C9A5",
+    "fog_density": 0.003,
+    "skylight_color": "#D8E4F0",
+    "skylight_intensity": 0.8
+  },
+  "diagnostics": {
+    "clipping_failures": 0,
+    "containment_failures": 0,
+    "minimum_target_background_contrast": 3.0,
+    "minimum_text_background_contrast": 4.5,
+    "overlap_failures": 0,
+    "target_background": [
+      {
+        "background": "#315F79",
+        "contrast": 5.5106,
+        "foreground": "#EBE6D1",
+        "target_id": "STARTER_OFFWHITE_READ"
+      },
+      {
+        "background": "#1F2E38",
+        "contrast": 5.6364,
+        "foreground": "#14B8AD",
+        "target_id": "SIGNAL_JACKET_READ"
+      },
+      {
+        "background": "#D8C8A9",
+        "contrast": 4.1906,
+        "foreground": "#315F79",
+        "target_id": "COBALT_ROUTE_MARK_READ"
+      },
+      {
+        "background": "#1F2E38",
+        "contrast": 3.7166,
+        "foreground": "#C46D3B",
+        "target_id": "BURNT_ORANGE_THRESHOLD_READ"
+      },
+      {
+        "background": "#4D5051",
+        "contrast": 3.4542,
+        "foreground": "#B9A783",
+        "target_id": "LIMESTONE_TERRACOTTA_SURFACE_READ"
+      }
+    ]
+  },
+  "file_identities": [
+    {
+      "bytes": 18068,
+      "file": "build_review_board.py",
+      "sha256": "547EAEF1D75CFA7B355D1D97EBA6BA633CBF1F70CD6D9961D16D4956F2200EEA"
+    },
+    {
+      "bytes": 4720,
+      "file": "PROVENANCE.md",
+      "sha256": "6D8AA11E218CB50D70F656E0AEFE92D4374C3EB239DAA6CA11A3584C8C7B7213"
+    },
+    {
+      "bytes": 6471,
+      "file": "Unified.svg",
+      "sha256": "877F553B6DAA52BA2417B89F92E0FC5CBE04984073ACF6413750C7BE59B42FB8"
+    },
+    {
+      "bytes": 5913,
+      "file": "COMMONS_OPEN_SUN.svg",
+      "sha256": "4EB2A0CED69DCCD1D5CA059E40AA86A604F9F1F7875635A8EBEC3C1F32894CF8"
+    },
+    {
+      "bytes": 6133,
+      "file": "AWNING_PATTERNED_SHADE.svg",
+      "sha256": "5F9487B2F16CBE46B164D878497995908E4BFE100D175129593737E78B656D98"
+    },
+    {
+      "bytes": 5988,
+      "file": "ROUTE_LONG_VIEW_WARM_HAZE.svg",
+      "sha256": "49FB44EE3604E3735A3C329A3D6EE31D268B8D70133D7E7E52D01091F5289882"
+    }
+  ],
+  "flags": {
+    "accessibility_ready": false,
+    "gameplay_additions": 0,
+    "gameplay_change": false,
+    "lighting_change": false,
+    "photometric_claim": false,
+    "production_claim": false,
+    "time_of_day_system": false,
+    "weather_system": false,
+    "weather_variants": 0
+  },
+  "material_inputs": {
+    "signal_jacket_slate_rgba": [
+      0.12,
+      0.18,
+      0.22,
+      1
+    ],
+    "signal_jacket_teal_rgba": [
+      0.08,
+      0.72,
+      0.68,
+      1
+    ],
+    "starter_offwhite_rgba": [
+      0.92,
+      0.9,
+      0.82,
+      1
+    ]
+  },
+  "palette": [
+    "#D8C8A9",
+    "#A65F47",
+    "#B9A783",
+    "#6D7F62",
+    "#315F79",
+    "#C46D3B",
+    "#4D5051"
+  ],
+  "scenarios": [
+    {
+      "file": "COMMONS_OPEN_SUN.svg",
+      "id": "COMMONS_OPEN_SUN",
+      "targets": [
+        "STARTER_OFFWHITE_READ",
+        "SIGNAL_JACKET_READ",
+        "COBALT_ROUTE_MARK_READ",
+        "BURNT_ORANGE_THRESHOLD_READ",
+        "LIMESTONE_TERRACOTTA_SURFACE_READ"
+      ],
+      "viewBox": [
+        0,
+        0,
+        1280,
+        720
+      ]
+    },
+    {
+      "file": "AWNING_PATTERNED_SHADE.svg",
+      "id": "AWNING_PATTERNED_SHADE",
+      "targets": [
+        "STARTER_OFFWHITE_READ",
+        "SIGNAL_JACKET_READ",
+        "COBALT_ROUTE_MARK_READ",
+        "BURNT_ORANGE_THRESHOLD_READ",
+        "LIMESTONE_TERRACOTTA_SURFACE_READ"
+      ],
+      "viewBox": [
+        0,
+        0,
+        1280,
+        720
+      ]
+    },
+    {
+      "file": "ROUTE_LONG_VIEW_WARM_HAZE.svg",
+      "id": "ROUTE_LONG_VIEW_WARM_HAZE",
+      "targets": [
+        "STARTER_OFFWHITE_READ",
+        "SIGNAL_JACKET_READ",
+        "COBALT_ROUTE_MARK_READ",
+        "BURNT_ORANGE_THRESHOLD_READ",
+        "LIMESTONE_TERRACOTTA_SURFACE_READ"
+      ],
+      "viewBox": [
+        0,
+        0,
+        1280,
+        720
+      ]
+    }
+  ],
+  "source_authority": {
+    "bindings": [
+      {
+        "line": 80,
+        "literal": "const FLinearColor StarterOffWhite(0.92f, 0.90f, 0.82f);"
+      },
+      {
+        "line": 81,
+        "literal": "const FLinearColor SignalJacketSlate(0.12f, 0.18f, 0.22f);"
+      },
+      {
+        "line": 82,
+        "literal": "const FLinearColor SignalJacketTeal(0.08f, 0.72f, 0.68f);"
+      },
+      {
+        "line": 1030,
+        "literal": "const FLinearColor SundaleWarmLimestone = FLinearColor::FromSRGBColor(FColor(0xD8, 0xC8, 0xA9));"
+      },
+      {
+        "line": 1031,
+        "literal": "const FLinearColor SundaleMutedTerracotta = FLinearColor::FromSRGBColor(FColor(0xA6, 0x5F, 0x47));"
+      },
+      {
+        "line": 1032,
+        "literal": "const FLinearColor SundaleSandConcrete = FLinearColor::FromSRGBColor(FColor(0xB9, 0xA7, 0x83));"
+      },
+      {
+        "line": 1033,
+        "literal": "const FLinearColor SundaleSageGreen = FLinearColor::FromSRGBColor(FColor(0x6D, 0x7F, 0x62));"
+      },
+      {
+        "line": 1034,
+        "literal": "const FLinearColor SundaleRestrainedCobalt = FLinearColor::FromSRGBColor(FColor(0x31, 0x5F, 0x79));"
+      },
+      {
+        "line": 1035,
+        "literal": "const FLinearColor SundaleBurntOrange = FLinearColor::FromSRGBColor(FColor(0xC4, 0x6D, 0x3B));"
+      },
+      {
+        "line": 1036,
+        "literal": "const FLinearColor SundaleCharcoalGray = FLinearColor::FromSRGBColor(FColor(0x4D, 0x50, 0x51));"
+      },
+      {
+        "line": 1224,
+        "literal": "struct FSundaleAtmosphereSpec"
+      },
+      {
+        "line": 1225,
+        "literal": "{"
+      },
+      {
+        "line": 1226,
+        "literal": "\tfloat DirectionalIntensity;"
+      },
+      {
+        "line": 1227,
+        "literal": "\tfloat DirectionalTemperatureKelvin;"
+      },
+      {
+        "line": 1228,
+        "literal": "\tfloat SkyLightIntensity;"
+      },
+      {
+        "line": 1229,
+        "literal": "\tFLinearColor SkyLightColor;"
+      },
+      {
+        "line": 1230,
+        "literal": "\tfloat FogDensity;"
+      },
+      {
+        "line": 1231,
+        "literal": "\tFLinearColor FogInscatteringColor;"
+      },
+      {
+        "line": 1232,
+        "literal": "\tint32 ExpectedDirectionalLights;"
+      },
+      {
+        "line": 1233,
+        "literal": "\tint32 ExpectedSkyLights;"
+      },
+      {
+        "line": 1234,
+        "literal": "\tint32 ExpectedHeightFogs;"
+      },
+      {
+        "line": 1235,
+        "literal": "};"
+      },
+      {
+        "line": 1236,
+        "literal": ""
+      },
+      {
+        "line": 1237,
+        "literal": "const FSundaleAtmosphereSpec& GetSundaleAtmosphereSpec()"
+      },
+      {
+        "line": 1238,
+        "literal": "{"
+      },
+      {
+        "line": 1239,
+        "literal": "\tstatic const FSundaleAtmosphereSpec Spec = {"
+      },
+      {
+        "line": 1240,
+        "literal": "\t\t5.0f,"
+      },
+      {
+        "line": 1241,
+        "literal": "\t\t5000.0f,"
+      },
+      {
+        "line": 1242,
+        "literal": "\t\t0.8f,"
+      },
+      {
+        "line": 1243,
+        "literal": "\t\tFLinearColor::FromSRGBColor(FColor(0xD8, 0xE4, 0xF0)),"
+      },
+      {
+        "line": 1244,
+        "literal": "\t\t0.003f,"
+      },
+      {
+        "line": 1245,
+        "literal": "\t\tFLinearColor::FromSRGBColor(FColor(0xE8, 0xC9, 0xA5)),"
+      },
+      {
+        "line": 1246,
+        "literal": "\t\t1,"
+      },
+      {
+        "line": 1247,
+        "literal": "\t\t1,"
+      },
+      {
+        "line": 1248,
+        "literal": "\t\t1,"
+      }
+    ],
+    "repo_path": "client/OddsWell/Source/OddsWell/PlaceholderLocomotion.cpp",
+    "sha256": "22E7B6FEED0E14DC23A8A900FB58E280606F9F9160ED3FE6F23D1460B99FE298"
+  },
+  "unified": {
+    "file": "Unified.svg",
+    "viewBox": [
+      0,
+      0,
+      1920,
+      1080
+    ]
+  },
+  "weather_id": "SUNDALE_DRY_LATE_AFTERNOON"
+}

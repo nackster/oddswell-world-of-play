@@ -1,0 +1,99 @@
+{
+  "date": "2026-10-06",
+  "status": "offline native rounded-shoulder and sewn-surface development checkpoint; human realism goal active",
+  "source": {
+    "path": "../NativeWalkingStudy/NativeWalk.blend",
+    "sha256": "c0be82b985ca4be23f38271e4dcdff6d93960c499e871d66723149d3a6636a22",
+    "bytes": 648465324
+  },
+  "files": {
+    "RoundedShoulder.blend": {
+      "sha256": "7e04b1847acdbb58096ff57c654e388768e91726808f95caaf203e8ef18f82dd",
+      "bytes": 649034658
+    },
+    "round_shape.py": {
+      "sha256": "ab667ae56de1b1cb4f56daa8f77cb189d1f465dddf06287a342208998be964bd",
+      "bytes": 4895
+    },
+    "clearance.py": {
+      "sha256": "2e065e223b3fc6bb3f5a2d74bde28b4e64136f6858851e35b77c110515999b26",
+      "bytes": 1943
+    },
+    "sewn_edges.py": {
+      "sha256": "a5cb49d5903b644d7a7bce2230aea33fd98fb6be263002e5106499b6c1d66438",
+      "bytes": 4764
+    },
+    "audit_rounded.py": {
+      "sha256": "f09f3f0bfa8ce0757100b07aa0f3735f5e067e8095ce16ecfb67f4800a145a84",
+      "bytes": 5030
+    },
+    "render.py": {
+      "sha256": "d69e224f4d69da0d4847dc80b21cc057dc80eaffe2bac655927c1053c57270d6",
+      "bytes": 2354
+    },
+    "landmarks.json": {
+      "sha256": "b91c3542660c81007ecf8e919f5a5333a40db59e9907946ff8cf5f2c445a07f8",
+      "bytes": 7562
+    },
+    "round-report.json": {
+      "sha256": "aa7a4c5a7c1094c4756b3afece0d953c03cde47712536ae25123e9559f748b52",
+      "bytes": 404
+    },
+    "sewn-edge-report.json": {
+      "sha256": "db00734b0027566513f298e8f0abaea87c70896fb0eb6d00e18ac031e58f42b9",
+      "bytes": 534
+    },
+    "cold-motion-audit.json": {
+      "sha256": "1ffced5d3609ae86829761dfc8090f17681b47ba316ba698655da90fb4d5dae6",
+      "bytes": 55544
+    },
+    "README.md": {
+      "sha256": "30625cc3b8b630a6e5900ca32215793c33986c3e663538c489ed66973d26394e",
+      "bytes": 4079
+    },
+    "WholeFigureReview.md": {
+      "sha256": "5748fe44338b04d31fea08d2897a255a60514284662884736743d54a3bc127c4",
+      "bytes": 1934
+    },
+    "RoundedWalking.mp4": {
+      "sha256": "c0b350a7c9099e60dbd7257d8cd168df9273e57a9d88f4a069f3fd83d0ff3822",
+      "bytes": 810205
+    },
+    "preview-info.json": {
+      "sha256": "2d224c6c943b4231b1327cfc2fb0a605405f2e4cad122c1f106ead82e6eb319f",
+      "bytes": 297
+    },
+    "Contact_Profile.png": {
+      "sha256": "03e0b1681f6243c04681293d36221281a47a35a10bcedc011d9c6ca70e12602d",
+      "bytes": 960785
+    },
+    "Passing_Profile.png": {
+      "sha256": "7e4cef2dc9ef71d51d62fca2a5be2c80e93bd51fae1e37db246ac8e73247c4f3",
+      "bytes": 965749
+    },
+    "OppositeContact_Profile.png": {
+      "sha256": "c3b20a86f314caed886029899d8e836cf7195555b12764972280dee562c43439",
+      "bytes": 971598
+    },
+    "Passing_Rear.png": {
+      "sha256": "8b606da9c3bfd211ff8c05a450b33c03a2861433bf411dbe216b3fbbe77ef7e0",
+      "bytes": 1095642
+    },
+    "Passing_Front.png": {
+      "sha256": "c031493b6579589adcf2781f7e4acd19b448fd574587e579bd9fefa22290173f",
+      "bytes": 852278
+    },
+    "Torso_Front.png": {
+      "sha256": "d2c013cdd898f417f192679bd29b5b7689e081244d65f3a90c03a9f2660c8264",
+      "bytes": 867550
+    },
+    "Hips_Rear.png": {
+      "sha256": "0380a4a93d8c5b829977c01bbaaecc2d0d18f26fef7eba7a17526339fc104aff",
+      "bytes": 1066232
+    },
+    "Gameplay.png": {
+      "sha256": "6a121fb0f9ca8f8bea35fec3484fc73ab14e3ce3d6a6b784d25210bc4effda0f",
+      "bytes": 1627142
+    }
+  }
+}

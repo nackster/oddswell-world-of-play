@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" data-phase="Phase 1L.3k" data-context="ticket_booth_prompt" data-canonical="false">
+<rect id="background" x="0" y="0" width="1280" height="720" fill="#2C4250"/>
+<rect id="ticket_booth_prompt_panel" x="56" y="48" width="1168" height="624" rx="24" fill="#FAF8F0" stroke="#999EA2" stroke-width="4"/>
+<text id="ticket_booth_prompt_title" data-type-role="DISPLAY_TITLE" x="104" y="124" font-family="Arial, sans-serif" font-size="36" font-weight="600" text-anchor="start" fill="#2C4250">TICKET BOOTH</text>
+<text id="ticket_booth_prompt_instruction" data-type-role="INSTRUCTION" x="104" y="166" font-family="Arial, sans-serif" font-size="19" font-weight="500" text-anchor="start" fill="#2C4250">Current interaction prompt language - review only</text>
+<g id="mark_ticket_booth_INTERACT" data-state-id="INTERACT" data-shape-id="OPEN_CIRCLE_DOT" data-marker-color="#50B3AD" data-marker-background="#2C4250"><rect x="140" y="236" width="180" height="180" rx="18" fill="#2C4250"/><circle cx="230.0" cy="326.0" r="56.16" fill="none" stroke="#50B3AD" stroke-width="14.04"/><circle cx="230.0" cy="326.0" r="15.600000000000001" fill="#50B3AD"/></g>
+<text id="ticket_state" data-type-role="STATE_LABEL" x="360" y="306" font-family="Arial, sans-serif" font-size="28" font-weight="600" text-anchor="start" fill="#2C4250">INTERACT</text>
+<text id="ticket_value" data-type-role="PRIMARY_VALUE" x="360" y="360" font-family="Arial, sans-serif" font-size="34" font-weight="600" text-anchor="start" fill="#2C4250">Press E to open betting odds</text>
+</svg>

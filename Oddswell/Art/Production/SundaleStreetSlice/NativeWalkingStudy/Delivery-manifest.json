@@ -1,0 +1,118 @@
+{
+  "date": "2026-10-06",
+  "status": "offline native walking development checkpoint; human realism goal active",
+  "source": {
+    "path": "../CottonTensionCandidate/CottonTension.blend",
+    "sha256": "f9a29e8b87d4f3e7b550c6e0217c2dfe9b80770cd803023e444e5ab74b91046d",
+    "bytes": 640810153
+  },
+  "files": {
+    "audit.py": {
+      "sha256": "f132eb05654cd77859ea70e3c86602d16530ec866b4571c1d97a900801e5258d",
+      "bytes": 4905
+    },
+    "bind_signal.py": {
+      "sha256": "d60993d6281cbe917e65e850250c7d3685f0f96eb1506e69e59b568e2a41105f",
+      "bytes": 1386
+    },
+    "bind_surfaces.py": {
+      "sha256": "0555f2c4ae70b897a90772760a60eca76342dd744c7c75dd240f9dbb82de9115",
+      "bytes": 2181
+    },
+    "build-report.json": {
+      "sha256": "103df731eac316699a0d031af8cf73ac8395f51dfb81a8f48b83354aa9bd7753",
+      "bytes": 37425
+    },
+    "build.py": {
+      "sha256": "a947bfb65f3d90b24706ab4c9b31e9fec018fc55c76a124e177260102f65e22e",
+      "bytes": 13966
+    },
+    "cold-motion-audit.json": {
+      "sha256": "247be96f380cda785f2efb93e45b07a1bc169761e3a4aed9085205d248b17130",
+      "bytes": 55542
+    },
+    "Contact_Profile.png": {
+      "sha256": "3068fa9bdf257adc4400d148ab7254428a308fb21020e60f68dcf9292e49ff56",
+      "bytes": 961603
+    },
+    "Gameplay.png": {
+      "sha256": "0ab5736b7077e6664689b683f03abc4321d878113c8fe80a394e1c9c4512dc1b",
+      "bytes": 1628005
+    },
+    "heat-bind-report.json": {
+      "sha256": "ce58d3546aee3e2dd721157e67d6761a74f013314a4f02cc4056d14c810d2162",
+      "bytes": 7765
+    },
+    "heat_bind.py": {
+      "sha256": "9d95a78acc995a3b385dfd03e82cbfba38aada1903bd377c8756d4463352cc51",
+      "bytes": 3359
+    },
+    "Hips_Rear.png": {
+      "sha256": "3850868e9913ce3e405c9dff5b955955750bdac3443be8ada07efc805976b143",
+      "bytes": 1069805
+    },
+    "inspect.py": {
+      "sha256": "57c0803cbf3bef0172c53c02183c1390f6bda26595cd951357801330049cb421",
+      "bytes": 3403
+    },
+    "landmarks.json": {
+      "sha256": "b91c3542660c81007ecf8e919f5a5333a40db59e9907946ff8cf5f2c445a07f8",
+      "bytes": 7562
+    },
+    "NativeWalk.blend": {
+      "sha256": "c0be82b985ca4be23f38271e4dcdff6d93960c499e871d66723149d3a6636a22",
+      "bytes": 648465324
+    },
+    "NativeWalking.mp4": {
+      "sha256": "be764efc4209d06a4ae9313a5e042b063d960c3d7ffc9ebf0632ee4aa65a52db",
+      "bytes": 616833
+    },
+    "OppositeContact_Profile.png": {
+      "sha256": "3e235203e1c74bd6962ddd9b942f12d425d6ac167f567e6880bdc3b5ff090c23",
+      "bytes": 970173
+    },
+    "Passing_Front.png": {
+      "sha256": "da30745d12bc0a4b55b2868b69d4e2fa367d03f5c13ea7e768751d9289d4eaeb",
+      "bytes": 860701
+    },
+    "Passing_Profile.png": {
+      "sha256": "c966093e9d5984cf07f6d14cda89a1dac0086065927f87974c2f2c1ecb00a97b",
+      "bytes": 967453
+    },
+    "Passing_Rear.png": {
+      "sha256": "1f3ba2115fc2f1671a17f7cfbcb911e3ee6126199bebb06393fb0c11bc93d508",
+      "bytes": 1097756
+    },
+    "README.md": {
+      "sha256": "e9b628590463d33041699e974684fb791dedb4e18748dd63cfc19577a6eda17d",
+      "bytes": 4390
+    },
+    "render.py": {
+      "sha256": "1998a8e854026fc9f48554a68cc69ed508068c0297b4f26093a2895a70409252",
+      "bytes": 2349
+    },
+    "signal-bind-report.json": {
+      "sha256": "384774499776aae0aa687713e636cdaf110e7802fbfce25f5f2c9541c1f344f5",
+      "bytes": 255
+    },
+    "surface-bind-report.json": {
+      "sha256": "60be628bfde4d055f4248e60401625bcfde30732b7defc09ed9ee6fe52d0bf13",
+      "bytes": 12223
+    },
+    "Torso_Front.png": {
+      "sha256": "2894fa15bf4b8accfd9bbe676577e359580571f886f7376e1e566dfed48a3747",
+      "bytes": 870859
+    },
+    "WholeFigureReview.md": {
+      "sha256": "de58597b8cd220a2ec6163deaa1cc1dd880216085717084fc1fb62039757c35f",
+      "bytes": 1948
+    }
+  },
+  "measurement_scope": {
+    "poses_checked": 11,
+    "minimum_sampled_free_signed_clearance_m": 0.0027645626687444746,
+    "maximum_measured_flat_stance_bounds_slip_m": 4.76837158203125e-07,
+    "complete_dynamic_collision_proof": false,
+    "runtime_or_beta_acceptance": false
+  }
+}

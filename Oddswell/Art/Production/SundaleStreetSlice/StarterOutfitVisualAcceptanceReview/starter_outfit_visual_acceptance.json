@@ -1,0 +1,102 @@
+{
+  "boundaries": {
+    "action_changed": 0,
+    "beta_readiness_claim": false,
+    "client_changed": 0,
+    "final_art_claim": false,
+    "materials_changed": 0,
+    "mesh_changed": 0,
+    "package_inputs_changed": 0,
+    "runtime_claim": false,
+    "skeleton_changed": 0,
+    "unreal_changed": 0,
+    "weights_changed": 0
+  },
+  "criteria": [
+    {
+      "criterion": "separation",
+      "evidence": "21/21 integer frames report zero body/top, body/bottom and top/bottom evaluated intersections.",
+      "status": "PASS"
+    },
+    {
+      "criterion": "neckline_shoulders_sleeves_hem",
+      "evidence": "Neutral front/rear/profile show an over-wide, nearly orthogonal shoulder-to-sleeve transition and flat torso volume; the top remains a coarse shell rather than believable cloth.",
+      "status": "FAIL"
+    },
+    {
+      "criterion": "waistband_rise_crotch_legs",
+      "evidence": "Neutral front/rear/profile retain readable waistband, balanced rise/crotch split and two distinct tapered legs.",
+      "status": "PASS"
+    },
+    {
+      "criterion": "proportions",
+      "evidence": "The top span and straight side profile overpower the accepted body and fitted shorts, producing an unbalanced upper-body proportion.",
+      "status": "FAIL"
+    },
+    {
+      "criterion": "no_rejected_silhouettes",
+      "evidence": "Front/rear/profile still read as a broad box/armor-like top silhouette, which is explicitly rejected for visual acceptance.",
+      "status": "FAIL"
+    },
+    {
+      "criterion": "no_exposure_or_collision",
+      "evidence": "All five retained views show body coverage; the 21-frame ledger reports zero evaluated intersections.",
+      "status": "PASS"
+    },
+    {
+      "criterion": "stable_opposing_extremes",
+      "evidence": "Frames 6 and 16 retain garment coverage; root and armature translation are zero and frame 21 equals frame 1.",
+      "status": "PASS"
+    }
+  ],
+  "files": {
+    "board": {
+      "bytes": 1111234,
+      "sha256": "548C4F69E1CA2D68A82710F05B06A3A7E016B79362B04556CD96BA3AF141B1C1"
+    },
+    "builder": {
+      "bytes": 8375,
+      "sha256": "3671C753196BD64C8216E3F2B03F4F393B485B0A8B25BBBF229D48CDC8DF7594"
+    },
+    "provenance": {
+      "bytes": 587,
+      "sha256": "C5170347333943F3BA36FB117B97EFA28D0AE5472A08821C841E60BCB3638AA7"
+    }
+  },
+  "identity_sha256": "A770A549961A75312F5802308057928A8B3479F03A186DD9A45E2A8BBC5143C3",
+  "phase": "Phase 1L.5cd combined starter-outfit offline visual acceptance review",
+  "smallest_correction": "Replace only the top silhouette/profile with rounded, body-conforming shoulder, sleeve and side shaping; preserve the exact body, shorts, skeleton and walk action.",
+  "source_custody": {
+    "action_identity_sha256": "7DD9A4E6524BCAC604AEDC755D0464FEC8C8F40BDED1BDE17E87955ED63E1020",
+    "armature_bone_count": 12,
+    "blend_sha256": "253E2680478A30133A0DC49614D9C997FEC06B70B42C470372CD0AF0CF44D7EA",
+    "mesh_sha256": {
+      "body": "F340C34B05FC4D0D20F5625E9B2F9174947B691F59420367E8B738BE1CBF03CD",
+      "bottom": "E626B69FA039E1E1139ACD203AB6F481CADDC49771ADA7341B8ED3A1D9C82170",
+      "top": "20DEC799B15A77DC97EB4CCE521A84362AB952725ACD38C028918AABEC29C73C"
+    },
+    "review_files": {
+      "Front.png": {
+        "bytes": 478927,
+        "sha256": "9AE62AE5B2F9E7654BD6F5C0BBA3C64B777E66F7C8120CEEC2038BA5456B6BF3"
+      },
+      "Profile.png": {
+        "bytes": 473215,
+        "sha256": "47CD15E47EF295D84E46782B68B41A4160C1E72C001E21D6774EC95D868B2A79"
+      },
+      "Rear.png": {
+        "bytes": 482788,
+        "sha256": "0F6A1853B802683E606C426CD368AF79A598815E18A7D6D74225A8A2A868697B"
+      },
+      "WalkExtremeFront.png": {
+        "bytes": 510358,
+        "sha256": "E438B60BEFE727AB59E4056BE43B8B1272C948B5CF80D549EE75D98177E5F8F3"
+      },
+      "WalkExtremeRear.png": {
+        "bytes": 504583,
+        "sha256": "D0DEC9A61A140A73F55A4291315B9D2F6E2ABCED2712771B9433D94A7FFACA55"
+      }
+    }
+  },
+  "verdict": "REJECTED_VISUAL_CORRECTION_REQUIRED"
+}

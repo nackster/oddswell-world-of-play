@@ -1,0 +1,38 @@
+{
+  "source_sha256": "9775f815af14570a673dc000ea9535c05ef35f06c6b0aeea1260a3105396cb20",
+  "thickness_before": {
+    "mode": "NON_MANIFOLD",
+    "nonmanifold_thickness_mode": "CONSTRAINTS",
+    "thickness_m": 0.0012000000569969416,
+    "offset": -1.0,
+    "even_offset": false,
+    "quality_normals": false,
+    "clamp": 1.0
+  },
+  "thickness_after": {
+    "mode": "EXTRUDE",
+    "thickness_m": 0.0012000000569969416,
+    "offset": -1.0,
+    "even_offset": false,
+    "reason": "Use bounded native normal extrusion instead of the constrained non-manifold shell solver; shell displacement is checked separately."
+  },
+  "waist_fit": {
+    "key": "Continuous knitted waist fit",
+    "opening_controls": 384,
+    "opening_center": [
+      -0.7244371175765991,
+      -2.3930649757385254,
+      0.9155222773551941
+    ],
+    "shorts_waist_controls": 640,
+    "shorts_waist_center": [
+      -0.7280278205871582,
+      -2.3918721675872803,
+      0.8958126306533813
+    ],
+    "minimum_knit_height_m": 0.0106,
+    "maximum_control_delta_m": 0.03410626143092852,
+    "normal_rib_amplitude_m": 0.00025,
+    "binding": "Knitted control rings grade from the actual shorts waist into the actual jacket opening. Normalized native weights blend from pelvis at the shorts into actual jacket weights at the upper seam; normal-extruded fabric thickness."
+  }
+}

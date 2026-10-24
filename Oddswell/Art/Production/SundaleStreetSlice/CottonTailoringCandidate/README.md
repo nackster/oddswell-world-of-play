@@ -1,0 +1,17 @@
+# Cotton tailoring and pocket construction
+
+`CottonDetail.blend` continues the editable [waist/neckline checkpoint](../WaistNeckContinuityCandidate/README.md). Local outward normal relief adds restrained upper-thigh and seat folds after anatomical deformation and clearance fitting, before cloth subdivision. The garment and its registered midsurface share the same field so sewn attachments follow the new surface. Maximum authored control relief is 2.644 mm. This is an editable tailoring study, not a moving cloth simulation or a substitute for further garment-pattern work.
+
+The two original cotton pocket patches retain their original mesh controls and keys. A named seam/ease field varies their stand-off from a fine sewn edge toward a slightly fuller center; native subdivision rounds the corners, and a 0.35 mm normal shell supplies fabric thickness. Both original topstitch meshes keep their controls and UVs. Their registration now describes the inset edge and mouth paths of the actual pocket, with fine tangential and normal offsets retaining a rounded thread section. Two hidden native pocket midsurfaces support this registration. A rejected nearest-projection trial made an unwanted diagonal stitch mark; it is not the delivered registration.
+
+The licensed packed cotton maps remain the fiber source. Diffuse roughness and restrained sheen receive a small adjustment. No new downloaded or generated bitmap assets are introduced. Original scene assets and their license records remain in the retained source chain.
+
+Review the close front/rear cotton images, the matched profile/front/rear/torso/hip views, gameplay image and two-second native walking preview. See `WholeFigureReview.md` for the remaining human and landscape work. The slate/teal clothing, existing torso/hip counter-motion, hand articulation, continuous knit waist and turned leg hems remain present.
+
+Run `build.py`, `render.py` and `audit.py` with Blender 4.5.5 LTS and `--python-exit-code 1 --python`. Rendering reuses `HandArticulationCandidate/render.py`; `render.py -- --close` renders only two cotton close-ups, and `-- --preview` renders 24 frames for encoding at 12 fps. The custody/screen helpers come from `HipSeatMotionCandidate/audit.py`. The immediate source is `WaistNeckContinuityCandidate/WaistNeck.blend`, SHA-256 `2900363715a0056444b9b85509a00dcc01ab6c5e5cfee4fcac32a537af513079`.
+
+The cold audit compares original mesh/curve controls, edges, existing UVs, keys, packed map bytes, all 46 native rest matrices and six full-rig poses. It checks the validity, stretch and sampled garment distance of every visible UV-registered shorts attachment across all 49 authored integer frames. A source-compared nearest-leg screen uses the rest-registered 0.60â€“0.70 m garment band and omits artificial leg-cap faces; the leg-fitting helper and relevant subdivision modifiers use render resolution. It does not certify full garment/body or garment/self collision freedom, animated subframes, physical simulation or runtime compatibility.
+
+The attached `source-leg-screen.json` caches the completed 49-frame immediate-source comparison, pinned to the source SHA and screen version 3. Removing that cache makes `audit.py` recompute it. The final attachment selection explicitly includes the separately named continuous turned hem as well as the sewn pocket/detail registrations.
+
+The full human/landscape goal remains active. Starter-outfit acceptance, stopped export/import preparation, runtime rig, first-hour evidence, Phase 1L and beta gates retain their existing status.

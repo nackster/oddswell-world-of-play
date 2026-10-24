@@ -1,0 +1,17 @@
+{
+  "candidate_sha256": "6c799e05c928b6feae19a257144b6e47cdaff5539dda3a6e4a22b64599290b91",
+  "source_sha256": "8b2f0e5634f1198bbdbb5054c961668cb86825764ada8d24355296cbc290de7a",
+  "original_mesh_curve_count": 4767,
+  "packed_maps": 31,
+  "original_controls_edges_uv_keys_maps_rest_and_six_poses_exact": true,
+  "original_shader_values_links_exact": true,
+  "native_walk_keyframes_handles_interpolation_exact": true,
+  "visible_main_character_objects": 306,
+  "six_pose_visible_character_coordinates_edges_world_matrices_exact": true,
+  "original_object_transforms_parents_exact": true,
+  "documented_visibility_changes": 47,
+  "new_collection_objects": 172,
+  "shared_static_jacket_mesh": true,
+  "inherited_human_audit": "Immediate ShoulderChestCandidate/cold-audit.json retains its scoped 49 integer-frame human jacket/cloth proof. This static room study preserves all visible character geometry in six poses and full native keyframe data; it does not repeat or broaden that physical check.",
+  "scope": "Localized static storefront room/display refinement and documented original visibility changes. All original editable sources, licensed maps, shaders, rig and visible character preserved. Does not certify walkable retail entry, shop collision/LOD/performance, full-body collision freedom, final reference fidelity, engine integration or beta readiness."
+}

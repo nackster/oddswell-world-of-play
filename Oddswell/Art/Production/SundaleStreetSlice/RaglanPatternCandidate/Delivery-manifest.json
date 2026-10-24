@@ -1,0 +1,105 @@
+{
+  "result": "PASS",
+  "source": "Oddswell/Art/Production/SundaleStreetSlice/FourPanelCottonCandidate/FourPanelCotton.blend",
+  "source_sha256": "39078A975AB485FDBB543A57C06C32F127A5C7BC6EDE2C3E9880A2CF0A854B20",
+  "blender": "4.5.5 LTS",
+  "scene": "RaglanPattern.blend",
+  "native_review_views": 5,
+  "samples": {
+    "figure": 12,
+    "gameplay": 24
+  },
+  "files": [
+    {
+      "path": "audit.py",
+      "sha256": "E660ABAC19A94175DBE290B616AEAB92A24ACD2E61D4ED0745F06E39A5D8FDC7",
+      "bytes": 7250
+    },
+    {
+      "path": "body-sections.json",
+      "sha256": "E9739B6D427DEBDB3BAF004AE39F5B93DC95EE22CF7C34291A5E1E1BB13D5CBD",
+      "bytes": 5363
+    },
+    {
+      "path": "build.py",
+      "sha256": "66D10AA97DCAE1EA9C4A5C9003B1F17C76E5D4320D603F6C123DEA75FF71495C",
+      "bytes": 18768
+    },
+    {
+      "path": "cold-check.json",
+      "sha256": "4A0D853DEEA5F1F87D6514669D098DCA631FFF9EE4EC9827EC601186EE7EC345",
+      "bytes": 3229
+    },
+    {
+      "path": "finish.py",
+      "sha256": "384454A60507DC14968796407D15532E090DFB82061248C8C615D1AA7426C5B1",
+      "bytes": 9758
+    },
+    {
+      "path": "measure_sections.py",
+      "sha256": "80AD3A8A1AC452CC3BB7944432FB2AC97526231E51B5F6AD142E03B431B9C411",
+      "bytes": 1527
+    },
+    {
+      "path": "RaglanPattern-audit.json",
+      "sha256": "6051C015FDFCE63D2B7E3EFAE090D08AD4C7A8CFA7A827CF5C2E53C3722DD1B3",
+      "bytes": 1338
+    },
+    {
+      "path": "RaglanPattern.blend",
+      "sha256": "D646E3AAF1C312AF61EA03D9C2AD4A28C6074BA6B84245B6D1E31DDA9134E587",
+      "bytes": 639963794
+    },
+    {
+      "path": "RaglanPattern_Front.png",
+      "sha256": "39368DF1329DA04D7C9D3FD28CA3B9015C25604121AFCBE5A307A247C5E4373B",
+      "bytes": 853497
+    },
+    {
+      "path": "RaglanPattern_Gameplay.png",
+      "sha256": "4DB55A98EC2B5D466D3B4350D7685E514FBCE183E179648253BA4F2EA2500603",
+      "bytes": 1632873
+    },
+    {
+      "path": "RaglanPattern_Profile.png",
+      "sha256": "2F384404E79BE246196BA6A4AEA77AEC3806893A50DC36CAE774913CE383E5D6",
+      "bytes": 961268
+    },
+    {
+      "path": "RaglanPattern_Rear.png",
+      "sha256": "9C4B3EB469B09DF2C9ED73920901424A7337BB6ADE17832836DEAE12CF0D68D1",
+      "bytes": 1092483
+    },
+    {
+      "path": "RaglanPattern_TorsoFront.png",
+      "sha256": "E46E5497FBE1901483716B5BD5FC77BCFFE93AB9B57DB4622885C88CF0DF82EC",
+      "bytes": 871398
+    },
+    {
+      "path": "README.md",
+      "sha256": "5A9F6ED2F8E8650BD5DF0042873E9AC07F40753458416D2A69D3E31F4D9DAA0B",
+      "bytes": 5205
+    },
+    {
+      "path": "render.py",
+      "sha256": "5373A3E0ED7F68A689470F16ACFDBEA3572C58A79BF0D8A5BB25002B8BDC25DA",
+      "bytes": 1890
+    }
+  ],
+  "goal_status": "active",
+  "runtime_claim": false,
+  "final_art_approval": false,
+  "static_cloth_screen": "PASS",
+  "scene_cold_check": "PASS",
+  "source_dependencies": [
+    {
+      "path": "Oddswell/Art/Production/SundaleStreetSlice/BodyFlowCandidate/build.py",
+      "sha256": "F151FCCF82E6320F43C22403F8161E79E2B18EF8D51EC3354DB3AB82EFF441EF"
+    },
+    {
+      "path": "Oddswell/Art/Production/SundaleStreetSlice/verify_scene.py",
+      "sha256": "57CCD21B8FC6F433200008CEBC5CD83F7BC640DC309DE86577BFE5CB8D278566"
+    }
+  ],
+  "next": "Collar/shoulder presentation, cloth finish and facial individuality; whole-reference human review, then architecture/retail/planting and gated engine handoff."
+}

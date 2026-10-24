@@ -1,0 +1,94 @@
+{
+  "candidate_sha256": "a32c6cbae8fd1767da6c03559f1addd948da46259064eb0ff85e38fedad8f50a",
+  "source_sha256": "c14ec89ca354a9dbe498c6955cde745e2edcb977c9b8603d9e37080247fffeac",
+  "files": {
+    "CanvasWalking.mp4": {
+      "sha256": "c7df1a99698b0571999b004687074f4debcf1af8dd23d4723c84ff95451d5dc1",
+      "bytes": 802053
+    },
+    "Canvas_FrontClose.png": {
+      "sha256": "f84d03fe479c9191bd764dc783629d7db0f0b61d8ea33652f43500d7a732a09f",
+      "bytes": 1104835
+    },
+    "Canvas_ProfileClose.png": {
+      "sha256": "963991b7a8b78ea91121d2f5da15c984cc03763ff4390b72b5d8deda69503764",
+      "bytes": 1143862
+    },
+    "Canvas_RearClose.png": {
+      "sha256": "d5f4905d4fb2bb98fbd5ef95f40bf384be6ca02703900190649dd4f6b9569ccc",
+      "bytes": 1221014
+    },
+    "Contact_Profile.png": {
+      "sha256": "5290abaea80e79f82c929d3000ea6721017b881c14f4e697a63720f74170e716",
+      "bytes": 959161
+    },
+    "Gameplay.png": {
+      "sha256": "dae0009de651d300f324faf8fac7dfd6a0f39fc6c6f05b69fa5d204c7861ade4",
+      "bytes": 1626952
+    },
+    "Hips_Rear.png": {
+      "sha256": "1e927c6ee1cade1287ba89e16ac6ba1f834167e5c442f94bcc9d41e39d57535b",
+      "bytes": 1059687
+    },
+    "NaturalCanvas.blend": {
+      "sha256": "a32c6cbae8fd1767da6c03559f1addd948da46259064eb0ff85e38fedad8f50a",
+      "bytes": 647074647
+    },
+    "OppositeContact_Profile.png": {
+      "sha256": "b0da6a43e0445ad7eb72a6b38f335769091fe6ceea6090ac83627908ef6c7402",
+      "bytes": 965280
+    },
+    "Passing_Front.png": {
+      "sha256": "dbc5f4fa6f697f690bf33fde7bd1ddfa5844551978d08a8cd25be08c2521d827",
+      "bytes": 849432
+    },
+    "Passing_Profile.png": {
+      "sha256": "e3cf58125a8efc21406fb432bdc0d8727d21911ced211fe4fc4c007bf139f444",
+      "bytes": 960643
+    },
+    "Passing_Rear.png": {
+      "sha256": "e1f0b2352f43d7d25b1ac00e448e8b39f5decb25185e311d278235627ded42ff",
+      "bytes": 1093517
+    },
+    "README.md": {
+      "sha256": "230b8a612f30643901ce8a99f5d7fc42cbfd48414160ba63469ea9b73e3d030d",
+      "bytes": 3061
+    },
+    "Torso_Front.png": {
+      "sha256": "512f1ea2d465def17d47c6eb09d8fd3ca8848521467e2d9fb4d18564798cbc89",
+      "bytes": 863381
+    },
+    "WholeFigureReview.md": {
+      "sha256": "cf19551fec905c4eac85dd9d19e1c1a18645dcce4a6a0fd29de99587b0e73b3b",
+      "bytes": 2103
+    },
+    "audit.py": {
+      "sha256": "7c3a3d67126d6193d11f3128d84dbd1b0606d38f1f5d8085b079c6b915095f84",
+      "bytes": 6938
+    },
+    "build-report.json": {
+      "sha256": "b7ad5ac5138c43b72600fcfccb0049744065759d312eb79766be230501d844e8",
+      "bytes": 5265
+    },
+    "build.py": {
+      "sha256": "83ed66daef571eaf12317b3e9b4b99eefd2ed2e99f84b691dba85d4c625b699b",
+      "bytes": 6433
+    },
+    "cold-audit.json": {
+      "sha256": "b5695f94e530fc7bdd7b2b6dfa2e636d1ca5dd65aeea90ea51f8092e6aecde00",
+      "bytes": 126073
+    },
+    "preview-info.json": {
+      "sha256": "212ba8108946acb5bc6ea0eace298d07229385f7a47b41cac4a88270d212956a",
+      "bytes": 234
+    },
+    "render-provenance.json": {
+      "sha256": "554765e5570c5030a571442d044239123a00afd64123f166c8f7771c463ea664",
+      "bytes": 863
+    },
+    "render.py": {
+      "sha256": "004114042ef40e7a319f329aebb76189e9b2cc3f65dcd0072bd74be631d54fea",
+      "bytes": 1240
+    }
+  }
+}

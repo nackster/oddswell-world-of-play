@@ -1,0 +1,121 @@
+{
+  "source_sha256": "dc0b0884a33e515d982cccc89c315de5f693fd170220028d786b43af8ae90750",
+  "panel_leg_weight_controls_corrected": 201,
+  "hip_relaxation": {
+    "factor": 0.4,
+    "iterations": 12,
+    "group": "Hip seat fabric relaxation"
+  },
+  "bindings": {
+    "Character | folded cotton leg hem facings": {
+      "controls": 1600,
+      "target": "Character | shorts leg continuous tailoring",
+      "cloth_offset_m": 0.00045,
+      "method": "Native Geometry Nodes sample the moving garment at fixed rest-registered cloth UVs, with normal offset"
+    },
+    "Character | sewn cotton back pocket left": {
+      "controls": 325,
+      "target": "Character | shorts leg continuous tailoring",
+      "cloth_offset_m": 0.0009,
+      "method": "Native Geometry Nodes sample the moving garment at fixed rest-registered cloth UVs, with normal offset"
+    },
+    "Character | sewn cotton back pocket right": {
+      "controls": 325,
+      "target": "Character | shorts leg continuous tailoring",
+      "cloth_offset_m": 0.0009,
+      "method": "Native Geometry Nodes sample the moving garment at fixed rest-registered cloth UVs, with normal offset"
+    },
+    "Walk surface | Character | sewn folded hem left": {
+      "controls": 648,
+      "target": "Character | shorts leg continuous tailoring",
+      "cloth_offset_m": 0.00045,
+      "method": "Native Geometry Nodes sample the moving garment at fixed rest-registered cloth UVs, with normal offset"
+    },
+    "Walk surface | Character | sewn folded hem right": {
+      "controls": 648,
+      "target": "Character | shorts leg continuous tailoring",
+      "cloth_offset_m": 0.00045,
+      "method": "Native Geometry Nodes sample the moving garment at fixed rest-registered cloth UVs, with normal offset"
+    },
+    "Walk surface | Character | inset back pocket stitch left": {
+      "controls": 344,
+      "target": "Character | shorts leg continuous tailoring",
+      "cloth_offset_m": 0.00045,
+      "method": "Native Geometry Nodes sample the moving garment at fixed rest-registered cloth UVs, with normal offset"
+    },
+    "Walk surface | Character | pocket mouth topstitch left": {
+      "controls": 168,
+      "target": "Character | shorts leg continuous tailoring",
+      "cloth_offset_m": 0.00045,
+      "method": "Native Geometry Nodes sample the moving garment at fixed rest-registered cloth UVs, with normal offset"
+    },
+    "Walk surface | Character | inset back pocket stitch right": {
+      "controls": 344,
+      "target": "Character | shorts leg continuous tailoring",
+      "cloth_offset_m": 0.00045,
+      "method": "Native Geometry Nodes sample the moving garment at fixed rest-registered cloth UVs, with normal offset"
+    },
+    "Walk surface | Character | pocket mouth topstitch right": {
+      "controls": 168,
+      "target": "Character | shorts leg continuous tailoring",
+      "cloth_offset_m": 0.00045,
+      "method": "Native Geometry Nodes sample the moving garment at fixed rest-registered cloth UVs, with normal offset"
+    },
+    "Walk surface | Character | shorts sewn side seam left": {
+      "controls": 1184,
+      "target": "Character | shorts leg continuous tailoring",
+      "cloth_offset_m": 0.00045,
+      "method": "Native Geometry Nodes sample the moving garment at fixed rest-registered cloth UVs, with normal offset"
+    },
+    "Walk surface | Character | shorts sewn side seam right": {
+      "controls": 1328,
+      "target": "Character | shorts leg continuous tailoring",
+      "cloth_offset_m": 0.00045,
+      "method": "Native Geometry Nodes sample the moving garment at fixed rest-registered cloth UVs, with normal offset"
+    },
+    "Walk surface | Character | shorts sewn fly topstitch": {
+      "controls": 528,
+      "target": "Character | shorts leg continuous tailoring",
+      "cloth_offset_m": 0.00045,
+      "method": "Native Geometry Nodes sample the moving garment at fixed rest-registered cloth UVs, with normal offset"
+    },
+    "Walk surface | Character | shorts leg hem left": {
+      "controls": 648,
+      "target": "Character | shorts leg continuous tailoring",
+      "cloth_offset_m": 0.00045,
+      "method": "Native Geometry Nodes sample the moving garment at fixed rest-registered cloth UVs, with normal offset"
+    },
+    "Walk surface | Character | shorts leg hem left.001": {
+      "controls": 648,
+      "target": "Character | shorts leg continuous tailoring",
+      "cloth_offset_m": 0.00045,
+      "method": "Native Geometry Nodes sample the moving garment at fixed rest-registered cloth UVs, with normal offset"
+    },
+    "Walk surface | Character | shorts leg hem right": {
+      "controls": 648,
+      "target": "Character | shorts leg continuous tailoring",
+      "cloth_offset_m": 0.00045,
+      "method": "Native Geometry Nodes sample the moving garment at fixed rest-registered cloth UVs, with normal offset"
+    },
+    "Walk surface | Character | shorts leg hem right.001": {
+      "controls": 648,
+      "target": "Character | shorts leg continuous tailoring",
+      "cloth_offset_m": 0.00045,
+      "method": "Native Geometry Nodes sample the moving garment at fixed rest-registered cloth UVs, with normal offset"
+    },
+    "Hip study | continuous turned cotton hems": {
+      "controls": 1620,
+      "target": "Character | shorts leg continuous tailoring",
+      "cloth_offset_m": [
+        -0.00045,
+        0.0005
+      ],
+      "method": "Native UV-registered outer band, lower roll and inward turn; overlapping inherited hem render followers remain editable but hidden"
+    }
+  },
+  "leg_skin_constraint": {
+    "target": "Hip study | actual leg skin clearance",
+    "offset_m": 0.012,
+    "scope": "Native duplicate of retained anatomical leg skin with near-horizontal artificial closure faces omitted; lower garment group only"
+  }
+}

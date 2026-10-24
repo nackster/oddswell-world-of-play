@@ -1,0 +1,504 @@
+{
+  "boundaries": {
+    "ability_inferences": 0,
+    "age_inferences": 0,
+    "animations": 0,
+    "armatures": 0,
+    "athlete_outcome_inferences": 0,
+    "behavior_inferences": 0,
+    "deep_creator": 0,
+    "ethnicity_inferences": 0,
+    "external_references": 0,
+    "extra_outfits": 0,
+    "faces": 0,
+    "gameplay_changes": 0,
+    "hair": 0,
+    "intelligence_inferences": 0,
+    "package_changed": false,
+    "person_names": 0,
+    "production_character_created": false,
+    "production_client_changed": false,
+    "production_map_changed": false,
+    "pronouns": 0,
+    "rigs": 0,
+    "textures": 0,
+    "wealth_inferences": 0
+  },
+  "deterministic_builder": "build_player_character_silhouettes.py",
+  "display_instances": [
+    {
+      "base_id": "CharacterPresentationMasculine",
+      "outfit_state": "starter_offwhite",
+      "preset_id": "masculine_tone_1",
+      "skin_rgba8": [
+        246,
+        218,
+        194,
+        255
+      ],
+      "tone_id": "tone_1"
+    },
+    {
+      "base_id": "CharacterPresentationMasculine",
+      "outfit_state": "starter_offwhite",
+      "preset_id": "masculine_tone_2",
+      "skin_rgba8": [
+        210,
+        160,
+        120,
+        255
+      ],
+      "tone_id": "tone_2"
+    },
+    {
+      "base_id": "CharacterPresentationMasculine",
+      "outfit_state": "starter_offwhite",
+      "preset_id": "masculine_tone_3",
+      "skin_rgba8": [
+        145,
+        96,
+        68,
+        255
+      ],
+      "tone_id": "tone_3"
+    },
+    {
+      "base_id": "CharacterPresentationMasculine",
+      "outfit_state": "signal_jacket",
+      "preset_id": "masculine_tone_4",
+      "skin_rgba8": [
+        82,
+        52,
+        38,
+        255
+      ],
+      "tone_id": "tone_4"
+    },
+    {
+      "base_id": "CharacterPresentationFeminine",
+      "outfit_state": "starter_offwhite",
+      "preset_id": "feminine_tone_1",
+      "skin_rgba8": [
+        246,
+        218,
+        194,
+        255
+      ],
+      "tone_id": "tone_1"
+    },
+    {
+      "base_id": "CharacterPresentationFeminine",
+      "outfit_state": "starter_offwhite",
+      "preset_id": "feminine_tone_2",
+      "skin_rgba8": [
+        210,
+        160,
+        120,
+        255
+      ],
+      "tone_id": "tone_2"
+    },
+    {
+      "base_id": "CharacterPresentationFeminine",
+      "outfit_state": "starter_offwhite",
+      "preset_id": "feminine_tone_3",
+      "skin_rgba8": [
+        145,
+        96,
+        68,
+        255
+      ],
+      "tone_id": "tone_3"
+    },
+    {
+      "base_id": "CharacterPresentationFeminine",
+      "outfit_state": "signal_jacket",
+      "preset_id": "feminine_tone_4",
+      "skin_rgba8": [
+        82,
+        52,
+        38,
+        255
+      ],
+      "tone_id": "tone_4"
+    }
+  ],
+  "engine": "BLENDER_EEVEE_NEXT",
+  "files": {
+    "blend": {
+      "bytes": 3121166,
+      "file": "PlayerCharacterSilhouetteReviewSheet.blend",
+      "sha256": "F909E54EBDC9B73B3044F8412D16BFB5229A741B981D827A9ED5642A1470A190"
+    },
+    "provenance": {
+      "bytes": 1117,
+      "file": "PROVENANCE.md",
+      "sha256": "D0D194EA54BBD91585D49DF0DE4BBCF7C725916FAC5A4C6A6EC0C49127645616"
+    },
+    "script": {
+      "bytes": 42208,
+      "file": "build_player_character_silhouettes.py",
+      "sha256": "9F877E2D764D32C9A4A63AC34104FE8C70D6AD982069D1830D72CAD3A085EA9A"
+    }
+  },
+  "label_contract": {
+    "base_label_bodies": [
+      "CharacterPresentationMasculine",
+      "CharacterPresentationFeminine"
+    ],
+    "dedicated_plate_count": 10,
+    "high_contrast": true,
+    "preset_tone_label_bodies": [
+      "masculine_tone_1 | tone_1",
+      "masculine_tone_2 | tone_2",
+      "masculine_tone_3 | tone_3",
+      "masculine_tone_4 | tone_4",
+      "feminine_tone_1 | tone_1",
+      "feminine_tone_2 | tone_2",
+      "feminine_tone_3 | tone_3",
+      "feminine_tone_4 | tone_4"
+    ],
+    "projected_frame_safe_all_views": true,
+    "projected_plate_overlap_count_all_views": 0,
+    "projected_plate_silhouette_overlap_count_all_views": 0,
+    "projected_silhouette_overlap_count_all_views": 0
+  },
+  "limitations": [
+    "review-only faceless primitive mannequins; not production people, skeletal meshes, rigging, animation, or final character art",
+    "shared landmarks are a visual compatibility target, not a completed skeleton or deformation proof",
+    "owner approval and a separate production-promotion gate are required before character modeling or rigging"
+  ],
+  "outfit_fit": {
+    "fit_offsets_shared_between_bases": true,
+    "signal_jacket_fit_base_ids": [
+      "CharacterPresentationMasculine",
+      "CharacterPresentationFeminine"
+    ],
+    "signal_jacket_fit_display_count": 2,
+    "signal_jacket_item_id": "sundale_signal_jacket",
+    "signal_jacket_proxy_design_count": 1,
+    "signal_jacket_slate_rgba": [
+      0.12,
+      0.18,
+      0.22,
+      1.0
+    ],
+    "signal_jacket_teal_rgba": [
+      0.08,
+      0.72,
+      0.68,
+      1.0
+    ],
+    "signal_jacket_transform_signature": [
+      {
+        "dimensions_m": [
+          0.59,
+          0.018,
+          0.075
+        ],
+        "location_m": [
+          0.0,
+          -0.171,
+          1.29
+        ],
+        "role": "SIGNAL_JACKET_ACCENT_PROXY",
+        "rotation_rad": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "dimensions_m": [
+          0.58,
+          0.315,
+          0.5
+        ],
+        "location_m": [
+          0.0,
+          -0.012,
+          1.235
+        ],
+        "role": "SIGNAL_JACKET_PROXY",
+        "rotation_rad": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      }
+    ],
+    "starter_fit_display_count": 8,
+    "starter_item_ids": [
+      "starter_offwhite_top",
+      "starter_offwhite_bottom"
+    ],
+    "starter_proxy_design_count": 1,
+    "starter_rgba": [
+      0.92,
+      0.9,
+      0.82,
+      1.0
+    ],
+    "starter_transform_signature": [
+      {
+        "dimensions_m": [
+          0.192,
+          0.192,
+          0.30104
+        ],
+        "location_m": [
+          -0.1425,
+          0.0,
+          0.72
+        ],
+        "role": "STARTER_OFFWHITE_BOTTOM_PROXY",
+        "rotation_rad": [
+          3.058451,
+          -0.0,
+          1.570796
+        ]
+      },
+      {
+        "dimensions_m": [
+          0.405,
+          0.275,
+          0.22
+        ],
+        "location_m": [
+          0.0,
+          0.0,
+          0.87
+        ],
+        "role": "STARTER_OFFWHITE_BOTTOM_PROXY",
+        "rotation_rad": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "dimensions_m": [
+          0.192,
+          0.192,
+          0.30104
+        ],
+        "location_m": [
+          0.1425,
+          0.0,
+          0.72
+        ],
+        "role": "STARTER_OFFWHITE_BOTTOM_PROXY",
+        "rotation_rad": [
+          3.058451,
+          0.0,
+          -1.570796
+        ]
+      },
+      {
+        "dimensions_m": [
+          0.54,
+          0.285,
+          0.48
+        ],
+        "location_m": [
+          0.0,
+          0.0,
+          1.22
+        ],
+        "role": "STARTER_OFFWHITE_TOP_PROXY",
+        "rotation_rad": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      }
+    ]
+  },
+  "phase": "Phase 1L.3g Player-character silhouette, proportion, and outfit-fit review sheet",
+  "renders": [
+    {
+      "bytes": 1612657,
+      "complete_display_count": 8,
+      "display_rotation_deg": 18.0,
+      "file": "renders/Unified_EightPresetLineup.png",
+      "height": 1080,
+      "role": "UNIFIED_EIGHT_PRESET_LINEUP",
+      "sha256": "0CC5BC228B5CAE307F058C6F0C60A87764AAEA871657FBC8CB8F071A45BA8881",
+      "width": 1920
+    },
+    {
+      "bytes": 1125065,
+      "complete_display_count": 8,
+      "display_rotation_deg": 0.0,
+      "file": "renders/Review_Front.png",
+      "height": 900,
+      "role": "FRONT",
+      "sha256": "C273F37734B6E3C7DB6E19DB1AFD1183C974C083978DD344DE67FDE829EE3FB8",
+      "width": 1600
+    },
+    {
+      "bytes": 1108952,
+      "complete_display_count": 8,
+      "display_rotation_deg": 90.0,
+      "file": "renders/Review_Side.png",
+      "height": 900,
+      "role": "SIDE",
+      "sha256": "6242D7E3A8032BD4C9028C249DDE5EF87B048D6A4B3D2E29C8505A319434E507",
+      "width": 1600
+    },
+    {
+      "bytes": 1124124,
+      "complete_display_count": 8,
+      "display_rotation_deg": 180.0,
+      "file": "renders/Review_Back.png",
+      "height": 900,
+      "role": "BACK",
+      "sha256": "EA2806FD5497D159BDEFD36EA901C7453CFA2BAC96ED9E5ED553D304185D8C9D",
+      "width": 1600
+    },
+    {
+      "bytes": 1134062,
+      "complete_display_count": 8,
+      "display_rotation_deg": -45.0,
+      "file": "renders/Review_ThreeQuarter.png",
+      "height": 900,
+      "role": "THREEQUARTER",
+      "sha256": "497C45FB1293FA4A7F9290A9299653DFAB78DB9B16ADFAEF5385232105E36468",
+      "width": 1600
+    }
+  ],
+  "review_contract": {
+    "base_count": 2,
+    "base_ids": [
+      "CharacterPresentationMasculine",
+      "CharacterPresentationFeminine"
+    ],
+    "bounds_m": {
+      "x": [
+        -7.45,
+        7.45
+      ],
+      "y": [
+        -3.05,
+        3.05
+      ],
+      "z": [
+        -0.16,
+        4.32
+      ]
+    },
+    "display_count": 8,
+    "gameplay_identical": true,
+    "preset_ids": [
+      "masculine_tone_1",
+      "masculine_tone_2",
+      "masculine_tone_3",
+      "masculine_tone_4",
+      "feminine_tone_1",
+      "feminine_tone_2",
+      "feminine_tone_3",
+      "feminine_tone_4"
+    ],
+    "primitive_mannequin_geometry_only": true,
+    "shared_joint_landmarks_m": {
+      "ankle": 0.1,
+      "crown": 1.8,
+      "elbow": 1.12,
+      "head_center": 1.66,
+      "hip": 0.94,
+      "knee": 0.53,
+      "shoulder": 1.45,
+      "wrist": 0.78
+    },
+    "shared_skeleton_target": true,
+    "shared_stature_m": 1.8,
+    "tone_rgba8": {
+      "tone_1": [
+        246,
+        218,
+        194,
+        255
+      ],
+      "tone_2": [
+        210,
+        160,
+        120,
+        255
+      ],
+      "tone_3": [
+        145,
+        96,
+        68,
+        255
+      ],
+      "tone_4": [
+        82,
+        52,
+        38,
+        255
+      ]
+    },
+    "tone_rgba_normalized": {
+      "tone_1": [
+        0.964705882,
+        0.854901961,
+        0.760784314,
+        1.0
+      ],
+      "tone_2": [
+        0.823529412,
+        0.62745098,
+        0.470588235,
+        1.0
+      ],
+      "tone_3": [
+        0.568627451,
+        0.376470588,
+        0.266666667,
+        1.0
+      ],
+      "tone_4": [
+        0.321568627,
+        0.203921569,
+        0.149019608,
+        1.0
+      ]
+    },
+    "triangle_ceiling_per_display": 1500,
+    "triangle_counts": {
+      "feminine_tone_1": 620,
+      "feminine_tone_2": 620,
+      "feminine_tone_3": 620,
+      "feminine_tone_4": 644,
+      "masculine_tone_1": 620,
+      "masculine_tone_2": 620,
+      "masculine_tone_3": 620,
+      "masculine_tone_4": 644
+    }
+  },
+  "source_contract": {
+    "appearance_color_source": "client/OddsWell/Source/OddsWell/PlaceholderLocomotion.cpp",
+    "appearance_color_source_lines": [
+      80,
+      81,
+      82
+    ],
+    "appearance_color_source_sha256": "22E7B6FEED0E14DC23A8A900FB58E280606F9F9160ED3FE6F23D1460B99FE298",
+    "pre_phase_head": "bf8ccbbf0a185aa61f73a806fb672953f56f2991",
+    "preset_source": "client/OddsWell/Source/OddsWell/CharacterPresetCatalog.cpp",
+    "preset_source_lines": [
+      9,
+      10,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23
+    ],
+    "preset_source_sha256": "C78132F21C303838BA7F0C0ED75E5A8B81260747F688760DF7E0A7C1E281AB1F"
+  },
+  "status": "noncanonical_owner_review_sheet"
+}

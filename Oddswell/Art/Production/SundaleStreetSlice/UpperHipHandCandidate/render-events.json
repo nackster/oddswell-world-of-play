@@ -1,0 +1,15 @@
+[
+  {
+    "candidate_sha256": "90af187cf9cfa558f4d06a4b7398d02a8097991309e06789dbf61b0ebc36afeb",
+    "source_sha256": "c1f8fac3579c2ea93bf31fcff052d68db887f1b5d74cedcdac4df4b7250e2d66",
+    "renderer": "Blender 4.5.5 LTS / Cycles / CPU",
+    "samples": 40,
+    "arguments": [
+      "--skip-gameplay",
+      "--focus",
+      "--isolated",
+      "--cpu"
+    ],
+    "native_geometry": true
+  }
+]

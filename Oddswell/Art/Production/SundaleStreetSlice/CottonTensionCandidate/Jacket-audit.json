@@ -1,0 +1,56 @@
+{
+  "result": "PASS",
+  "controls": 6274,
+  "faces": 6144,
+  "openings": 4,
+  "midsurface_nonadjacent_overlap_pairs": 0,
+  "thick_shell_nonadjacent_overlap_pairs": 0,
+  "fabric_volume_m3": 0.000977755153594206,
+  "free_evaluated_points_checked": 96716,
+  "minimum_free_evaluated_clearance_m": 0.003669736732263118,
+  "worst_free_point_world_m": [
+    -0.5956929326057434,
+    -2.3443524837493896,
+    1.4711384773254395
+  ],
+  "gravity_frames": 60,
+  "maximum_gravity_motion_m": 0.06355836816908667,
+  "mean_cloth_body_normal_alignment": 0.907052280492313,
+  "fully_pinned_motion_m": 0.0,
+  "stance_driver_parts": 244,
+  "packed_maps": 31,
+  "cloth_and_support_checked_subdivision_levels": [
+    2,
+    2
+  ],
+  "visible_character_evaluated_viewport_triangles": 3349156,
+  "largest_character_parts": [
+    {
+      "name": "Character | cropped scalp fibers",
+      "triangles": 1728000
+    },
+    {
+      "name": "Character | shorts leg continuous tailoring",
+      "triangles": 330240
+    },
+    {
+      "name": "Character | standing collar",
+      "triangles": 150528
+    },
+    {
+      "name": "Character | anatomical head",
+      "triangles": 139152
+    },
+    {
+      "name": "Character | tailored slate jacket",
+      "triangles": 99360
+    },
+    {
+      "name": "Character | fine calf hair",
+      "triangles": 93600
+    }
+  ],
+  "post_neckline_frames": 80,
+  "post_neckline_raw_maximum_motion_m": 0.02087011097139228,
+  "post_neckline_fitted_maximum_motion_m": 0.020341265803078615
+}

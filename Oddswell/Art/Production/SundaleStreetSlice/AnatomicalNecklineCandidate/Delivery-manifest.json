@@ -1,0 +1,148 @@
+{
+  "result": "PASS",
+  "source": "Oddswell/Art/Production/SundaleStreetSlice/NeckSkinUVCandidate/NeckSkinUV.blend",
+  "source_sha256": "D8F4CA3DCAEFE622247EB24191ACFAE68F9F3E5EAC1642EE5404D51ECBE6000B",
+  "scene": "AnatomicalNeckline.blend",
+  "blender": "4.5.5 LTS",
+  "native_review_views": 7,
+  "samples": {
+    "figure": 12,
+    "gameplay": 24
+  },
+  "files": [
+    {
+      "path": "AnatomicalNeckline-audit.json",
+      "sha256": "B17D23C8C1300F00D3A905B27161DE59C1E5550EBAA1942C9FBAC6F4187039F4",
+      "bytes": 8354
+    },
+    {
+      "path": "AnatomicalNeckline.blend",
+      "sha256": "C72E84C4033D6A8F86C89BECD7A1BB2736460728A32132ADEEE57C1F17932CA3",
+      "bytes": 640559675
+    },
+    {
+      "path": "AnatomicalNeckline_Front.png",
+      "sha256": "324979C0E011C133668F7868B95A6458B0AF17F31DE46AE4C6BD2412550EE3BD",
+      "bytes": 852477
+    },
+    {
+      "path": "AnatomicalNeckline_Gameplay.png",
+      "sha256": "35E1B56AA6E1E341323556BF9C22B4D6340B7C5674A245D8EDFFABE1180C262B",
+      "bytes": 1632243
+    },
+    {
+      "path": "AnatomicalNeckline_NeckFront.png",
+      "sha256": "FB4BC04801A73BD363644B28167B32BF5BD735E2E83E1EAE06D62920AF719238",
+      "bytes": 954177
+    },
+    {
+      "path": "AnatomicalNeckline_NeckRear.png",
+      "sha256": "E5A22A6966C8ED80C25530B96801A1C0E6A1ABC8819B073D31DA1D0A0B4922F2",
+      "bytes": 1207813
+    },
+    {
+      "path": "AnatomicalNeckline_Profile.png",
+      "sha256": "C8B7B05BE111A4D2142DAF4FE61B380049BA71F920D375A46DA160C59DFBEA51",
+      "bytes": 960027
+    },
+    {
+      "path": "AnatomicalNeckline_Rear.png",
+      "sha256": "C09337097BFA5AE9154550A7D6449A52AB0A5F94FD06E5AA1C1E915E9A650BD9",
+      "bytes": 1091557
+    },
+    {
+      "path": "AnatomicalNeckline_TorsoFront.png",
+      "sha256": "DDA5CEEDE038CEFC2BCCCB668A82B2961479DE66FD3F5B93FA93EDE18D0628B7",
+      "bytes": 869745
+    },
+    {
+      "path": "audit.py",
+      "sha256": "90FBB94034127C667C56461C83409981DCA144E4E2DAF74624E709A924867F9D",
+      "bytes": 7368
+    },
+    {
+      "path": "audit_collar.py",
+      "sha256": "B6DABB0CF3A26378CDBF39365E5F1E47195A37CF9448CD473F143B35F8FD07D7",
+      "bytes": 6494
+    },
+    {
+      "path": "audit_jacket.py",
+      "sha256": "5D38076321CB677C6AC621B49FE595620C6108A896D59558AB52C0E9106F974B",
+      "bytes": 7508
+    },
+    {
+      "path": "build.py",
+      "sha256": "10CF2FF3927B33F5792FA064BFD9B0EB4B22F955D59666D5A18EFF233F6F8E09",
+      "bytes": 5488
+    },
+    {
+      "path": "cold-check.json",
+      "sha256": "163EEA982AF93CBF81632CA0C6F918A872AB9F9C2F924C1470C55A701922F74C",
+      "bytes": 3228
+    },
+    {
+      "path": "Collar-audit.json",
+      "sha256": "F6D656990B22307C9172CEA74DF0EE9205F149F971D78215DA88475F6FB50698",
+      "bytes": 1139
+    },
+    {
+      "path": "Fit-history-audit.json",
+      "sha256": "BF0F1024A9909D7C5E57D86B65899B80BAD7C43115694D8F41D31A305068B656",
+      "bytes": 294
+    },
+    {
+      "path": "fit_neckline.py",
+      "sha256": "29BDD6E11B87CF3296FCF7BAF3DC69D40ACE057BECB1C23C8E115A1D9ED323C6",
+      "bytes": 7681
+    },
+    {
+      "path": "Jacket-audit.json",
+      "sha256": "5C68D73914DF6EA4594A3B422D84FFCF1441F56713FE5F4FFE782E0148F8B992",
+      "bytes": 1335
+    },
+    {
+      "path": "README.md",
+      "sha256": "D04D75E54D0A2B8050690842CABD121E7A7D6BD14E9F6027BDDC4FBB3773E357",
+      "bytes": 5956
+    },
+    {
+      "path": "render.py",
+      "sha256": "95337527D02C5588CE15732B85AAE3699B796778ECED895459A74E47FFA824C0",
+      "bytes": 2038
+    },
+    {
+      "path": "WholeFigureReview.md",
+      "sha256": "41808B08DEA3C879AA40908F604E5D95A06026C9AFB33566CD88ACDE0001E493",
+      "bytes": 2673
+    }
+  ],
+  "dependencies": [
+    {
+      "path": "Oddswell/Art/Production/SundaleStreetSlice/BodyFlowCandidate/build.py",
+      "sha256": "F151FCCF82E6320F43C22403F8161E79E2B18EF8D51EC3354DB3AB82EFF441EF",
+      "bytes": 7835
+    },
+    {
+      "path": "Oddswell/Art/Production/SundaleStreetSlice/RaglanPatternCandidate/build.py",
+      "sha256": "66D10AA97DCAE1EA9C4A5C9003B1F17C76E5D4320D603F6C123DEA75FF71495C",
+      "bytes": 18768
+    },
+    {
+      "path": "Oddswell/Art/Production/SundaleStreetSlice/RaglanPatternCandidate/finish.py",
+      "sha256": "384454A60507DC14968796407D15532E090DFB82061248C8C615D1AA7426C5B1",
+      "bytes": 9758
+    },
+    {
+      "path": "Oddswell/Art/Production/SundaleStreetSlice/NeckSkinUVCandidate/audit.py",
+      "sha256": "366BA8CCEA37B3C43C11CBC3451451ADF4A34F9094EF69B0344D23BBF402E9A4",
+      "bytes": 5835
+    },
+    {
+      "path": "Oddswell/Art/Production/SundaleStreetSlice/verify_scene.py",
+      "sha256": "31B92E046D8C17256CA6305092D66A1E606DDF546BEAA33C85801C91DCCE28A2",
+      "bytes": 30323
+    }
+  ],
+  "runtime_claim": false,
+  "goal_complete": false
+}

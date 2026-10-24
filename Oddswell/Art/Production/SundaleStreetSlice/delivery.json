@@ -1,0 +1,758 @@
+{
+  "request": "Complete the new very realistic human goal, then continue the scene roadmap",
+  "goal_status": "active",
+  "delivery": "Editable native Blender scene and ten native renders; offline art study",
+  "starting_checkpoint": "76ccb76",
+  "previous_checkpoint": "51106fa",
+  "evidence": {
+    "source": "Native scene/garments/plant geometry, CC0 MakeHuman anatomical surfaces, six CC0 Poly Haven stone/bark texture maps and one CC0 photographed sky environment; adapted CC0 Jacaranda model with ten packed 2K maps",
+    "reference": "../../Reviews/OddsWellStreetIdentityCandidate/OddsWell_Visual_Direction_Concept.png",
+    "objects": 4749,
+    "meshes": 3230,
+    "materials": 64,
+    "packed_texture_maps": 31,
+    "mature_tree_instances": 13,
+    "seed": 218,
+    "render_engine": "Cycles",
+    "samples": 160,
+    "resolution": [
+      1920,
+      1080
+    ],
+    "runtime_integrated": false,
+    "character": "Static tailored study with grounded stance and continuous shorts; current game rig unchanged",
+    "character_ground_offset_m": -0.08427651131153108,
+    "no_generated_background": true,
+    "quality_goal": "Active; reference fidelity and final art approval remain open",
+    "independent_reopen": "PASS",
+    "additional_views": [
+      "Court_and_Arena",
+      "Architecture_Detail",
+      "Character_Detail",
+      "Landscape_Detail",
+      "Character_ThreeQuarter",
+      "Head_Front",
+      "Head_Profile",
+      "Hand_Left",
+      "Hand_Right"
+    ],
+    "additional_view_resolutions": {
+      "Court_and_Arena": [
+        1600,
+        900
+      ],
+      "Architecture_Detail": [
+        1600,
+        900
+      ],
+      "Character_Detail": [
+        1000,
+        1100
+      ],
+      "Landscape_Detail": [
+        1000,
+        1100
+      ],
+      "Character_ThreeQuarter": [
+        1000,
+        1100
+      ],
+      "Head_Front": [
+        1000,
+        1100
+      ],
+      "Head_Profile": [
+        1000,
+        1100
+      ],
+      "Hand_Left": [
+        1000,
+        1000
+      ],
+      "Hand_Right": [
+        1000,
+        1000
+      ]
+    },
+    "additional_view_samples": 96,
+    "render_device": "OPTIX",
+    "skin": "CC0 MakeHuman young_lightskinned_male_diffuse map on retained anatomical UVs; original source preserved",
+    "body_detail": "Individual anatomical finger bends, fitted rib cuffs, crossed shoe laces/eyelets, dense pocket stitches and 2600 tapered calf hair curves",
+    "face_detail": "Six pinned CC0 hm08 targets: three baseline adjustments and three editable local head forms; authored asymmetry and facial roughness zones; transported brows and fitted eyelid tissue",
+    "construction": "Shaped collar and continuous zipper; relaxed forearms; recessed shoe collars, fitted tongue/lacing/bows and broad flat sole contact",
+    "jacket": "45-frame native gravity/fabric-ease study; filtered static geometry, retained rest/raw positions, raglan seams and actual teal-panel boundary stitching",
+    "jacket_drape_frames": 60,
+    "jacket_drape_maximum_delta_m": 0.06286110753112834,
+    "cloth": "40-frame native cotton drape study blended with tailoring; retained CC0 fabric maps and articulated hip/knee/ankle pose",
+    "canopy": "Raised Jacaranda branching with adapted CC0 Island Tree 01 broad-leaf clusters; same leaf family in foreground shrubs",
+    "eye_optics": "Paired closed eyeballs with transparent corneal zones over recessed iris/pupil surfaces, adjusted pigment and lower wet eyelid margins",
+    "skin_relief": "Finer procedural relief and reduced subsurface scale over unchanged CC0 source color maps",
+    "hand_surfaces": "Retained anatomical coordinates and editable hand relief shape keys; knuckle/tendon/palm definition and ten fitted keratin nail plates",
+    "eyelash_strands": 92,
+    "head_character_targets": {
+      "caucasian-male-young.target": 0.65,
+      "head-fat-decr.target": 0.22,
+      "head-rectangular.target": 0.3
+    }
+  },
+  "cold_reopen": {
+    "result": "PASS",
+    "packed_texture_maps": 31,
+    "cameras": 10,
+    "court_paint_max_thickness_m": 0.00048000007518567145,
+    "collar_stray_faces": 0,
+    "head_boundary_edges": 0,
+    "stance_sole_min_z_m": 0.050999999046325684,
+    "shorts_surface_components": 1,
+    "jacket_surface_components": 1,
+    "mature_tree_instances": 13,
+    "shared_tree_meshes": 3,
+    "mesh_objects": 4071,
+    "native_scene_objects": 4749,
+    "runtime_claim": false,
+    "shorts_boundary_edges": 240,
+    "shorts_openings": 3,
+    "anatomical_head": "Closed source-derived head and fitted neck; paired closed eyes, irises, pupils and brows",
+    "skin_source_uvs": true,
+    "reference_upper_body_fit": true,
+    "hand_boundary_edges_under_sleeves": {
+      "left hand": 80,
+      "right hand": 80
+    },
+    "maximum_lace_surface_distance_m": 0.0066000609658658504,
+    "foot_contact": {
+      "left": {
+        "min_z": 0.0518721342086792,
+        "heel_min_z": 0.12338298559188843,
+        "toe_min_z": 0.0518721342086792
+      },
+      "right": {
+        "min_z": 0.050999999046325684,
+        "heel_min_z": 0.050999999046325684,
+        "toe_min_z": 0.05100007355213165
+      }
+    },
+    "stance_contact_width_m": 0.12801814079284668,
+    "stance_contact_length_m": 0.3115217685699463,
+    "maximum_lace_eyelet_gap_m": 0.0005397453314036824,
+    "scalp_hair_strands": 72000,
+    "molded_sole_details": 4,
+    "minimum_tongue_surface_clearance_m": 0.0014140395214781165,
+    "facial_targets": {
+      "head-age-incr.target": 0.55,
+      "l-eye-height2-decr.target": 0.45,
+      "r-eye-height2-decr.target": 0.45
+    },
+    "eyelash_strands": 92,
+    "individual_brow_strands": 1300,
+    "maximum_resting_eyelid_lift_m": 0.0006480216979980469,
+    "cotton_drape_frames": 40,
+    "jacket_drape_frames": 60,
+    "jacket_drape_controls": 13095,
+    "jacket_open_boundaries": 4,
+    "jacket_fabric_volume_m3": 0.000994387176467307,
+    "jacket_drape_maximum_delta_m": 0.06286110753112834,
+    "jacket_fabric_ease": 0,
+    "anatomical_jacket_support_vertices": 19826,
+    "maximum_fixed_jacket_attachment_motion_m": 0.0,
+    "minimum_free_jacket_control_clearance_m": 0.00597727025160566,
+    "maximum_raglan_surface_distance_m": 0.0005503051215782762,
+    "minimum_fastening_surface_clearance_m": 0.0006825407639325931,
+    "stitched_yoke_panels": 3,
+    "cotton_drape_maximum_delta_m": 0.0529472243832398,
+    "calf_hair_strands": 2600,
+    "anatomical_finger_articulation": true,
+    "minimum_cloth_thigh_clearance_m": 0.003505186425172724,
+    "anatomical_short_leg_max_shift_m": 0.012000024465392238,
+    "short_leg_contact_corrections": 636,
+    "minimum_pigment_cornea_clearance_m": 0.0003012996166944504,
+    "optical_cornea_surfaces": 2,
+    "lower_wet_eyelid_margins": 2,
+    "fitted_nail_plates": 10,
+    "fitted_nail_folds": 10,
+    "maximum_vascular_relief_m": 0.0001924806288392281,
+    "nail_fold_surface_range_m": [
+      -9.50558751959818e-05,
+      0.0001852299083111575
+    ],
+    "epidermal_detail": true,
+    "minimum_nail_surface_clearance_m": 0.0001403681770852927,
+    "maximum_hand_relief_m": 0.0007995802431273227,
+    "head_character_targets": {
+      "caucasian-male-young.target": 0.65,
+      "head-fat-decr.target": 0.22,
+      "head-rectangular.target": 0.3
+    },
+    "maximum_weighted_head_target_displacement_m": 0.03299465895345445,
+    "retained_head_shape_keys": 6
+  },
+  "renders": {
+    "StreetSlice_Gameplay.png": {
+      "width": 1920,
+      "height": 1080,
+      "sha256": "37515d654efeb2de2028c3d17375ba74d888ba158e939357648a2e434367537b"
+    },
+    "StreetSlice_Court_and_Arena.png": {
+      "width": 1600,
+      "height": 900,
+      "sha256": "778dac39215d7379571f2f20cd1eccd63d6e7fa22e14c27bf14ad1156966688b"
+    },
+    "StreetSlice_Architecture_Detail.png": {
+      "width": 1600,
+      "height": 900,
+      "sha256": "959e45eb78a232714aa14d9f21b62142d4375522cc008bc4461a173bd4037190"
+    },
+    "StreetSlice_Character_Detail.png": {
+      "width": 1000,
+      "height": 1100,
+      "sha256": "6f00315afd05e56eb46b98bbf2b9899d2f660295c7aaf89b315ad071fe1b63df"
+    },
+    "StreetSlice_Landscape_Detail.png": {
+      "width": 1000,
+      "height": 1100,
+      "sha256": "feb42edf13c29660224558eebcc405227149bb697a632920f92ebdf0e166666e"
+    },
+    "StreetSlice_Character_ThreeQuarter.png": {
+      "width": 1000,
+      "height": 1100,
+      "sha256": "3374a2122a2d1f53f4317c157e2ff15a28d59710de8f084ab92dafa6a56e74a1"
+    },
+    "StreetSlice_Head_Front.png": {
+      "width": 1000,
+      "height": 1100,
+      "sha256": "9489e2abaccdc128fc7bb4fb8d1b3134ec2fee744cdc92027296e3d4acc753dc"
+    },
+    "StreetSlice_Head_Profile.png": {
+      "width": 1000,
+      "height": 1100,
+      "sha256": "a545f6b25aaf3113990a4e04631794ee7183fa68c59a157dfde7b7e9eb9da15a"
+    },
+    "StreetSlice_Hand_Left.png": {
+      "width": 1000,
+      "height": 1000,
+      "sha256": "f771f8eb9a8c9dec9ec937c034672d3360652c558e23c2f710c0521776268cc4"
+    },
+    "StreetSlice_Hand_Right.png": {
+      "width": 1000,
+      "height": 1000,
+      "sha256": "1bf043bc295de22d9e131a6642032ddcd2eca2cf10e1785051cdfbb862d72a03"
+    }
+  },
+  "files_sha256": {
+    "broadleaf_canopy.py": "f737b396c7c2e02415d6c6d7b9b21727a3ac450038e265a362c1a0263d3e9b3b",
+    "build_scene.py": "6748c3f2a956bebda6321331846d19617365393cee83a1c43d7b275b35857592",
+    "develop_character_landscape.py": "b41593dd4d05ec066de289fb36556d1b150bf4f7d45d93ed81ce535117d3fe55",
+    "DevelopmentGoal.md": "ea5d1a537287c7119924861dd553d7e5a982b0db998b412805440b3da13f145c",
+    "fetch_broadleaf.py": "2b42dbc1c9b7a041008006ffb0f9a025927b3d3a8fbafbaf9508de9f5aabf399",
+    "fetch_fabrics.py": "1108de70f7d2e1b2c271c476a4c46813b34f99911ed73a400cca163b0283de34",
+    "fetch_face_targets.py": "fe55ed6049f8541ab199c862e14c7d3df41e1b96e569a91a48a15f64a303a634",
+    "fetch_skin.py": "8109647b4862cd00c50efa765599079a78b2647b27505cc1661e02f5a7e22652",
+    "fetch_sky.py": "8d382e47d5baf5ac8d7a551c0e7d3fa82400956d1dbf785b8754682a25effed3",
+    "fetch_stone_material.py": "aa616e57aeca46b79df656608f9f204c146e94b7bc34118b48329a6e77dae0e0",
+    "fetch_tree.py": "543452c80b83a56aad4062620b1adfc2677d6c0a2bdef8c7f87b74333fb409da",
+    "inspect_details.py": "4389f327017cf2c03acc55831e1d1c7dd9ca17d2b02f0217747785dee12d77f1",
+    "mature_trees.py": "9300020af31be8cbb731c4378668fd3a18c89cdbb026cae0a263ce2741a63f7a",
+    "OddsWell_Sundale_StreetSlice.blend": "0f3988395dbe747a66738d9d7ba1d86a14d2531fcf2a5592c471a01b3afc6127",
+    "README.md": "52007b4149aedd93348d95d9d42c1455881a22271e97f7ba47898dfb781aee0f",
+    "record_delivery.py": "33df265bc9492aee969c2448294bbc0c687cad756bf39b9e5e27c828ef434dcd",
+    "refine_brow_groom.py": "500a1bda0122829acaa6ed068a2d060d28362b378abdf59871529e91fd5dc127",
+    "refine_character_head.py": "998376234895963b794b29a302866683b2cdc1c19623c15ea7194e04619accb5",
+    "refine_eye_margins.py": "b37cdd86008d69a107163a6cdf45aa80ee8069b4a49cb453da54d9d4ab149718",
+    "refine_eye_optics.py": "719ac140980abcc4461ef5cb4384eb5c94b5248d9cda8149f57a86eaae7e22f5",
+    "refine_fabrics.py": "be6d2403f31f1736235d2e1d97921d045260b41f4507d1395ed9b5585c8f57fa",
+    "refine_face_character.py": "6669ca21a222770fdbde4d781e1c9bbfb6f6252ee04b5098330e901148e763ac",
+    "refine_footwear.py": "1306fa7c4135b26710563c63078f3234c08ce9c53c8e049c75025b18448d54ef",
+    "refine_hands.py": "188759473b197cfc9b7a835f43990cd97c1b7713c1f1bdc132d89b93e0344734",
+    "refine_minerals.py": "a3bc6d0647e83058d89afdaecf5d23c508b2b17ec12731438efdb74e515cc932",
+    "refine_scalp.py": "a47c8b41d94df6d2e84a7e3e71176616b349932408116e860911a53752dd204a",
+    "refine_short_fit.py": "03afa695c7c59a1a9065cf466d2e18140b9cdc5fc785b2828c875ff1328c61b2",
+    "refine_skin_surface.py": "6055d5cbcfb953e6b7653cce7e86a00aa77ddfcc7ec0e116002fca6975262b4a",
+    "refine_sole.py": "43f41d90b026440c0741d0c353670c33c32426d969c758f8fa7c02e64bc64771",
+    "render_views.py": "36f76adc43ec9aacaa536f8b327b5dd024effc76e3b0557c7aa266128fa2e1f7",
+    "ResumeTomorrow.md": "d6751ce0594f580b901bedb75a4bb8bd143ce93cb20f8e483e1d454b00174ead",
+    "settle_cotton.py": "6b6ba615a4adba5145266174bc31cf5ea23318c1857a962fa766c0c94648e68d",
+    "settle_jacket.py": "b9eb0a94b8e717d56aab9102bd7f2ab0bba9ccc46b3e66ece82326b2b6e460d9",
+    "source-assets/facial-targets/caucasian-male-young.target": "70e228ba7164737dae664454394536fc5935fa48d333c1a97d77e2dc6eacc5f5",
+    "source-assets/facial-targets/head-age-incr.target": "ff677345bd81e3f439bdf75496bbee620ca3c3f029955a546837afd283abf73a",
+    "source-assets/facial-targets/head-fat-decr.target": "00473b6069f9cf6c05a2f1fd0c0bae20bb4ec45e9552bb5695f1d1533f3cc119",
+    "source-assets/facial-targets/head-rectangular.target": "bbfcbd4d6334df18515e73abb707b8a948adb74e0aba88a728c8e146dd5f4e4b",
+    "source-assets/facial-targets/l-eye-height2-decr.target": "11f97a658461ab341b75165acc280dd5541a0ebf57d84dab24819a3af8ee5d25",
+    "source-assets/facial-targets/r-eye-height2-decr.target": "8fbe66bf11786f68697b5ba720f6f76e1a99f0db066249d369e4476e016f3f64",
+    "source-assets/island_tree_01_2k.blend": "77de2c504a7aa9b6ae8acb5877dbcd155d4bda6eb156f761c492c48c843bdcd2",
+    "source-assets/jacaranda_tree_4k.blend": "e28b4897a9cc9fbee38b1675860649c79284f2ba31de2f551ce5946236e977f5",
+    "source-assets/makehuman-base.obj": "8e761e6624b8f54536409135d1636da63b32486a90d4897f84e121d144f6fb4c",
+    "source-assets/MAKEHUMAN-LICENSE.ASSETS.md": "f6089cba01cb570a24712b41ab8a586ccd3cc5ef53dc266ca50b95c288956d2c",
+    "source-assets/README.md": "c68406af981bdc3c3147858bdbf7db45188e265e882070f314c2bdb09936fbb1",
+    "textures/bark_brown_01_diff_4k.jpg": "545d3c48d3ad237d9fbb7eeaf7e5251cbf9520840e37e28e4e325d833c34bc0b",
+    "textures/bark_brown_01_disp_4k.jpg": "fed4f06ddb560636a77c24f50e2100d879a21f65a135ca98e3f423bb14cd6067",
+    "textures/bark_brown_01_rough_4k.jpg": "c6f9832b5053f055113d559fcb988ae02c5eb20b1786b0237bdbed4494f9f4a3",
+    "textures/fabrics/denim_fabric_04_diff_2k.jpg": "6926a6f3e2e494e9890f27bf30e53af50452b2e2eb46e7dbeb049f3723806be9",
+    "textures/fabrics/denim_fabric_04_rough_2k.jpg": "69af47a013cc42273e7dcaef4f44c1704b07c73a5d4e1a61bf2f1c535b2ae5f8",
+    "textures/fabrics/terlenka_diff_2k.jpg": "9528ce33df474c01f938b3afafe895b79a7b66f5706e4c735e8362e61b5bfb84",
+    "textures/fabrics/terlenka_rough_2k.jpg": "1184d1715c1d57dc3eb2550cbf6e42bac67ee6b7a271eb7b83874b011392c036",
+    "textures/jacaranda/jacaranda_tree_branches_diff_2k.jpg": "0c558fe09ce7e74e211ed181607be323f299724caf131af8605cc91b11335b66",
+    "textures/jacaranda/jacaranda_tree_branches_nor_gl_2k.jpg": "e4cac77b4f35ad47ba4fcdb9061f91acf3318d9889dd259cb5e6e132b0ab60c7",
+    "textures/jacaranda/jacaranda_tree_branches_rough_2k.jpg": "8d7ae974958449b110be53118d64f62ea8a03cb028bb322442180a4969b48c1f",
+    "textures/jacaranda/jacaranda_tree_leaves_diff_2k.jpg": "8915643cdd8b4eb8abb3020bc3a3c2c239daccee0d4adbe3194935439f693d8e",
+    "textures/jacaranda/jacaranda_tree_leaves_nor_gl_2k.jpg": "b5515c611ae7faa6245a0f1a056d50905118366e7ebf1aacb9e220160c7b989f",
+    "textures/jacaranda/jacaranda_tree_leaves_rough_2k.jpg": "f48815a0da5e798337372d8f3488c231587e1b5eb6a2033ed5fcdcbeca8e8368",
+    "textures/jacaranda/jacaranda_tree_trunk_diff_2k.jpg": "d3ab4fd9f3d6237a4e7c3d2b7ac0fde9f34a8d09c3aee443c0a3e1a033ce7d96",
+    "textures/jacaranda/jacaranda_tree_trunk_nor_gl_2k.jpg": "bb7b2c4914c139bc61c9ac5e0e1fd1c4b38f781351ead433a1e93dd886c732d6",
+    "textures/jacaranda/jacaranda_tree_trunk_rough_2k.jpg": "f930543bb87a1a9d9ea369c6d16fa8c8981a65518790ae98030af24daeb4a1d5",
+    "textures/kloppenheim_06_puresky_4k.exr": "0afc1fb008d04094d6a4f65906ea89c5743f4168faab73aee71dd2fbd4a9eb3b",
+    "textures/makehuman-skin/young_caucasian_male.mhmat": "6eda60b07ff2afbde078a2535ef3913593d84e9de92b2eb76c30f396a181fe2e",
+    "textures/sandstone_blocks_08_diff_4k.jpg": "d1a39585a84abe779ca252fe269b880837e6dd3805298d5b470f75c90afe5293",
+    "textures/sandstone_blocks_08_disp_4k.jpg": "3db51669487d6312bfa52621783ab308ebca3ddbd23b061e220cee69847a768c",
+    "textures/sandstone_blocks_08_rough_4k.jpg": "e395bdfea1536ddf3a8c97e51b0861270dc75dea722b22633b1cebd4c31ec63a",
+    "verify_scene.py": "e6e59b3a04c1c69bb44344ef8c89303bfaedf5f72e5275cca1436a74f05cdc1a",
+    "VisualReview.md": "c0b6880b915946feeb6885c4641339d9f10f146ceb462152c8a852fe9ed4ed84",
+    "textures/broadleaf/island_tree_01_branches_diff_2k.png": "fcfaaa1262cb8f31327ca084e6f8d69cda0b6af0d1f065a68c5a47b906ec02ff",
+    "textures/broadleaf/island_tree_01_branches_nor_gl_2k.png": "2ee3ff83fdf8f01cd9d26d5c4665b866bf69f2557e02582577f23d6d007f9c78",
+    "textures/broadleaf/island_tree_01_branches_rough_2k.png": "e6d3c688b07dea15344672516433d7ba681727f5149c8be446dc1a5bbed9afdc",
+    "textures/broadleaf/island_tree_01_leaves_alpha_2k.png": "30c36ae0d9023400035f0af9d336ed5f73a84bf8a88c8e2bec8faa07d725992b",
+    "textures/broadleaf/island_tree_01_leaves_diff_2k.png": "fca98db31845a92e6374fccd032d40d6134e2c80fdca8038b063897c8e8f0035",
+    "textures/broadleaf/island_tree_01_leaves_nor_gl_2k.png": "2d152d8530e707056fce44303de71cf63503f5d95b80d0820dc7625c99d8d2d9",
+    "textures/broadleaf/island_tree_01_leaves_rough_2k.png": "eccee8f209c8dd869b478a209ec0b44a3de6bae11c9594700f7e201771a9eac2",
+    "textures/fabrics/denim_fabric_04_disp_2k.png": "e07e609f39744cf60eaa4c3eec321332c13940f59c32bf9529c766f00ffe8dbe",
+    "textures/fabrics/terlenka_disp_2k.png": "1823e83f84769ead3b821a0f6dabc3720d6229fe905366f0b5c3f36f2a205769",
+    "textures/jacaranda/jacaranda_tree_leaves_alpha_2k.png": "48b37ef95590d96c39d43af51b4d7683ad1ab7db8dae474f29d3b8c3e726f352",
+    "textures/makehuman-skin/young_lightskinned_male_diffuse.png": "862a26e335e958b70534cb5f0d7c47ef30ab148a56c42b3e9da969cf76f12963",
+    "source-assets/skin-source.json": "1369419920d721277045e12f3a003845dce125155658eed97f89943c0de76667",
+    "source-assets/fabric-sources.json": "9b7e77ab19bc73d02791563162cdd7f5f8606f572ffd4e46b8eb5483a1f88c8d",
+    "source-assets/facial-targets.json": "c42ca3a63a816d7e1b4b49cb3161ccb0ce31eb18fc76d0167971627e9cb926a9"
+  },
+  "render_log": {
+    "path": "C:\\Users\\reali\\Documents\\SaaS\\Oddswell\\client\\OddsWell\\Saved\\NextTen20260912\\anatomical-short-final-views.log",
+    "sha256": "e3f34edc4f673aa43107ed537806339ae951e013c1ab9fd62bbaef355423ed6e"
+  },
+  "preview_iterations": [
+    {
+      "log": "character-landscape-preview1.log",
+      "sha256": "6b2dd3b44851fabea1d0fb1d0736c0f11881d1db35dfce93dde89504f4ac63e0",
+      "native_render": "PASS"
+    },
+    {
+      "log": "character-landscape-preview2.log",
+      "sha256": "dc7a1e456d10b71d927796ab848b79e6f2961a1c226ee72c2e968856a226b691",
+      "native_render": "PASS"
+    },
+    {
+      "log": "character-landscape-preview3.log",
+      "sha256": "c220f6551e531c25b9fe574455dd7b26db7ba683dd11c20cb1bc166329e99b7e",
+      "native_render": "PASS"
+    },
+    {
+      "log": "character-landscape-preview4.log",
+      "sha256": "9ec693f75bbb669e7c5b2031aa8ef958ffcbd6f20e8eefd9bcc1f2ab2ac71065",
+      "native_render": "PASS"
+    },
+    {
+      "log": "character-landscape-preview5.log",
+      "sha256": "6daf5b8a1fce3d07ffadf1f5a0d6536f55ea71cc9725ed57f06b6536f3d7f432",
+      "native_render": "PASS"
+    },
+    {
+      "log": "character-landscape-preview6.log",
+      "sha256": "59557cf59695164442365e100427b5e6f1cd2ad8bc97d2fec2dfe63c072efee4",
+      "native_render": "PASS"
+    },
+    {
+      "log": "character-landscape-preview7.log",
+      "sha256": "d89571c042ba75f5cc19dba1b9065d456d60ef1afa8e82987c543c277dc4f885",
+      "native_render": "PASS"
+    },
+    {
+      "log": "character-landscape-preview8.log",
+      "sha256": "6b196bb4cedcf324d052712af263f0e0307482d9f16d48d5e9c358b3bcf4ba4f",
+      "native_render": "PASS"
+    },
+    {
+      "log": "character-landscape-preview9.log",
+      "sha256": "363c855ec58e3644ad7fd5ecd727f145801cfb1421af01a9f82e16e7b6105a2a",
+      "native_render": "PASS"
+    },
+    {
+      "log": "character-landscape-preview10.log",
+      "sha256": "3265bb3518083fb6731cfabd680f48f213c18f7bbd5250bafa1bd9f82cc31bca",
+      "native_render": "PASS"
+    },
+    {
+      "log": "character-landscape-preview11.log",
+      "sha256": "17e0481c0f4fd0a3e874484b215f910723053458fe210b5dc786797d5d49ef64",
+      "native_render": "PASS"
+    },
+    {
+      "log": "character-landscape-preview12.log",
+      "sha256": "0d915a69ae07f6c9d6d101bb7b2ae036077c912fdd38fd81b1fb556771f96af9",
+      "native_render": "PASS"
+    },
+    {
+      "log": "character-landscape-preview13.log",
+      "sha256": "fe31fd4bd2d6a0870969697a8fb4abb118539a5ed1d100809f52feb0df12fc9e",
+      "native_render": "PASS"
+    },
+    {
+      "log": "character-landscape-preview14.log",
+      "sha256": "8eb2bb70835a89ce8406f3bd986d5f20889b962a3c3c9348d68ce988bd6256dd",
+      "native_render": "PASS"
+    },
+    {
+      "log": "character-landscape-preview15.log",
+      "sha256": "99027df3151f6913df229c286deb29c860161bad28d1109d3684901805e62156",
+      "native_render": "PASS"
+    },
+    {
+      "log": "character-landscape-preview16.log",
+      "sha256": "8caf39e59ca8fa2e45e47e781c399f0dedc4679f1e0a6fab74a75d45f3e93ef4",
+      "native_render": "PASS"
+    },
+    {
+      "log": "character-landscape-preview17.log",
+      "sha256": "6d049e910c59a237b16a2a9c33cb79079505ed2c2ad3867f1d8af39c4544f2ba",
+      "native_render": "PASS"
+    },
+    {
+      "log": "character-landscape-preview18.log",
+      "sha256": "c2e42fa510ae10f612cf1073c70cbfeb7b8a32e72bb450336542074e5b6670f4",
+      "native_render": "PASS"
+    },
+    {
+      "log": "character-landscape-preview19.log",
+      "sha256": "417c348e0f1c9a373180580b4898ba2ba4f8acfaebb974912e25e9e9afae278f",
+      "native_render": "PASS"
+    },
+    {
+      "log": "character-landscape-preview20.log",
+      "sha256": "de42ac18a66298bb8e2b9e32071ec6ba49279748869bff717713098985b09343",
+      "native_render": "PASS"
+    },
+    {
+      "log": "character-landscape-preview21.log",
+      "sha256": "17fb9b167467d3bfb3e75c82ed3e3f2c453a2da6d54e76c5d9057c9ad8d59130",
+      "native_render": "PASS"
+    },
+    {
+      "log": "character-landscape-preview22.log",
+      "sha256": "e1e47b1c3b021b019828e84f94da0d0324ee7559913ba658ec13e102b92c0aba",
+      "native_render": "PASS"
+    },
+    {
+      "log": "character-landscape-preview23.log",
+      "sha256": "bf2ccb4f1d850c79a415b3e32d1f6324d71d70b6786e57038afe094bee47614d",
+      "native_render": "PASS"
+    },
+    {
+      "log": "character-landscape-preview24.log",
+      "sha256": "d098c73bf3522a7d25a73e05cff2a0c3d1a77580627cdca48349da1a110b402e",
+      "native_render": "PASS"
+    },
+    {
+      "log": "character-landscape-tailoring-preview1.log",
+      "sha256": "f8a6721550e59cba4ac5ebe45b97c8ecc29b7be41a17fc5c0b2bbdff0f1bc390",
+      "native_render": "PASS"
+    },
+    {
+      "log": "character-landscape-tailoring-preview2.log",
+      "sha256": "cdad83294387145eb6dc178d50544e31111c94f7fbe2976ce3634f18ed16ed93",
+      "native_render": "PASS"
+    },
+    {
+      "log": "character-landscape-tailoring-preview3.log",
+      "sha256": "02e01acca9785a525d04416041a2b45de9d2b5ac1c282771f987cd3f285a8cfe",
+      "native_render": "PASS"
+    },
+    {
+      "log": "character-human-preview1.log",
+      "sha256": "dedfd95230658b1067f6aa0e86c45bcde7ae9701e5eb9a0aff6167ffce2bdcc7",
+      "native_render": "PASS"
+    },
+    {
+      "log": "character-human-preview2.log",
+      "sha256": "4b545fa7e3de0cfc2952d6b5c4e878aa9852f417a434ecd51a47d0bdccc90e97",
+      "native_render": "PASS"
+    },
+    {
+      "log": "character-human-preview3.log",
+      "sha256": "ee1504bfcc548073c3256660f82d41b0a1ca5c9003231c82d07aab0b0f1466aa",
+      "native_render": "PASS"
+    },
+    {
+      "log": "character-reference-preview1.log",
+      "sha256": "2b7cebe955c5aa8f3d77e6d21384460206e3f04d563ebfb8b17525ba18e6815e",
+      "native_render": "PASS"
+    },
+    {
+      "log": "character-reference-preview2.log",
+      "sha256": "f67aa685275afda991535af786e0e51fe7c6f707f66b1203a1b2a93364198c06",
+      "native_render": "PASS"
+    },
+    {
+      "log": "character-reference-preview3.log",
+      "sha256": "c1a1486d9ee8ef1da554b8bf1274ce854d8bbd0edd652e54ddf2f7ffc28488f1",
+      "native_render": "PASS"
+    },
+    {
+      "log": "character-body-preview1.log",
+      "sha256": "d5469df0968fc51c8f4e3df672a88ee4a26c0b1589748d9a8fa82db7630ff58b",
+      "native_render": "PASS"
+    },
+    {
+      "log": "character-body-preview2.log",
+      "sha256": "7ef0c437bfb60fc0cf3865d69f5758afa8527e07da3a8523d8a6187e0b2325d9",
+      "native_render": "PASS"
+    },
+    {
+      "log": "character-body-preview3.log",
+      "sha256": "366d047268aa5f17236fceca1f292368b47d5a99edcabbc605ccdf6fba9edbdc",
+      "native_render": "PASS"
+    },
+    {
+      "log": "character-body-preview4.log",
+      "sha256": "874083065fab46523ab07d0c8b5ed661b0a23db12838bf78c1dd02b9d669e43a",
+      "native_render": "PASS"
+    },
+    {
+      "log": "character-realism-preview1.log",
+      "sha256": "6aaaec75686e97562bbe2674f30f9ab5fd5295d4db5b80cadbc89dbbd05772de",
+      "native_render": "PASS"
+    },
+    {
+      "log": "character-realism-preview2.log",
+      "sha256": "09539f445b72d86e13079f74e5dffebe895af1af7a129ee10836ddd9c3faaf57",
+      "native_render": "PASS"
+    },
+    {
+      "log": "character-realism-preview3.log",
+      "sha256": "ff0fd302be65580e90e079d517074d8f7002b818a876623a03abc6a73fb89d7f",
+      "native_render": "PASS"
+    },
+    {
+      "log": "character-realism-preview4.log",
+      "sha256": "9a4c1189c461521839330ca046833d052ce36aa19e9b5098e59cd6c1bd278e4f",
+      "native_render": "PASS"
+    },
+    {
+      "log": "character-realism-preview5.log",
+      "sha256": "e4249ae3b0da0d1ee066ddb834a8d8f96dcc03f96ca2b2c7ab59e9f46d23ae42",
+      "native_render": "PASS"
+    },
+    {
+      "log": "character-realism-preview6.log",
+      "sha256": "b01117847ebb050c92db78b751f2fd5c9fed2745f114a14ef86fbade3352165a",
+      "native_render": "PASS"
+    },
+    {
+      "log": "character-realism-preview7.log",
+      "sha256": "3294fdfc808381e8519938e2d063fb7ad5c5c164242f05ddba92b928a0378331",
+      "native_render": "PASS"
+    },
+    {
+      "log": "character-realism-preview8.log",
+      "sha256": "ae0e207976564fdc8776387f6ca7fa8659f6231a7223678025e6176c8b75256e",
+      "native_render": "PASS"
+    },
+    {
+      "log": "character-realism-preview9.log",
+      "sha256": "cfc80134298ac30ad801774df981f5abecc350be2b5032c07f28fb9fbfff0c18",
+      "native_render": "PASS"
+    },
+    {
+      "log": "character-realism-preview10.log",
+      "sha256": "885ca709852a00d2d3b4fe8f3b3bd97478f7e97c3f21f293f6a765cb67a9ede3",
+      "native_render": "PASS"
+    },
+    {
+      "log": "character-presence-preview1.log",
+      "sha256": "f258d850c41dd43cbe3e852e1e31e6b657ffbecdef35e56ccfb355a21d4f57bc",
+      "native_render": "PASS"
+    },
+    {
+      "log": "character-presence-preview2.log",
+      "sha256": "b60b5f34188e9d0de99d3e961d813e666d2240bd70395365cb012b0d851ce441",
+      "native_render": "PASS"
+    },
+    {
+      "log": "character-presence-preview3.log",
+      "sha256": "1cbbc13507c7e23b4957283641e098410e9947b857475d84f02eee3315978483",
+      "native_render": "PASS"
+    },
+    {
+      "log": "character-presence-preview4.log",
+      "sha256": "5e89c8ebd927b5b8b9f1f80c75e7a320cca54cef4b27d521096ec9944cb37198",
+      "native_render": "PASS"
+    },
+    {
+      "log": "character-presence-preview5.log",
+      "sha256": "aa115f2d79665ff81cf8516c50c70a6c3b1e090feab1439af54c4702ba1bd782",
+      "native_render": "PASS"
+    },
+    {
+      "log": "character-presence-preview6.log",
+      "sha256": "6750631c48ca2a3eab8b29a9c3e6bca509afac05e21e4a23d44b888bbe624c8d",
+      "native_render": "PASS"
+    },
+    {
+      "log": "character-drape-preview1.log",
+      "sha256": "cc03ed01d8bbe4a8b9eb4dc947a03abea42e80acec2cadc8e1bf7a5b5de08dd2",
+      "native_render": "PASS"
+    }
+  ],
+  "optical_studies": [
+    {
+      "log": "optical-study.log",
+      "sha256": "dc8b80fc621bd5e8566610a5b10f3919dc501141b4fc0ec772b503d9c5c41791"
+    },
+    {
+      "log": "optical-study2.log",
+      "sha256": "889edfe5d59f9afca905596f51b3938a3ced21c343f410fd46d139eb6a1d935a"
+    },
+    {
+      "log": "optical-study3.log",
+      "sha256": "7e00412a98bdb32152b274181a9efa8315307e18e529db0a1fcd908fe6ada9ec"
+    }
+  ],
+  "hand_studies": [
+    {
+      "log": "hand-surface-study1.log",
+      "sha256": "0ec7a4d57d2778a2c89e027b821f406c3c386fbf025b3c2ecc1f8e80d5bada9d"
+    },
+    {
+      "log": "hand-surface-study2.log",
+      "sha256": "7e4456fbd77120be1df54a0336bad9a51b142be805890499d46e66ce159e2c09"
+    },
+    {
+      "log": "hand-surface-study3.log",
+      "sha256": "632964d6d24dff552089bfe1e4fcff61619a72b7658ee9f35783de946705658c"
+    }
+  ],
+  "facial_form_studies": [
+    {
+      "log": "facial-form-study1.log",
+      "sha256": "e4e332a4b6a31412314383c82bb58b94eceaf7c99e026a7b28e0b876bfc96a40"
+    },
+    {
+      "log": "facial-form-study2.log",
+      "sha256": "3f2eaaff0142499f210e52c222e712afe985c589de267ce91a6742937fc5a894"
+    },
+    {
+      "log": "facial-form-study3.log",
+      "sha256": "83be5b1d9b796a0706dd7052709e0b36c02b78d363bfc135b2cddc416c16c1b0"
+    },
+    {
+      "log": "facial-form-study4.log",
+      "sha256": "99dc7f9edb98ec0d5d7336ffb8bd6990b7d9b2b0c9b30602a88ae55a05ce86a1"
+    }
+  ],
+  "original_source_bytes_preserved": true,
+  "runtime_map_modified": false,
+  "runtime_character_modified": false,
+  "visual_review": "Native front and rear views show a modest reduction in shorts leg volume while the retained jacket, scalp and footwear details remain. The revised cotton is fitted to the posed thigh instead of narrowed blindly.",
+  "body_detail_review": "A first 9 mm shorts taper was rejected because it crossed the exposed thigh. The retained 12 mm maximum outer proposal uses the anatomical leg surface to correct 636 controls. The evaluated shorts retain three garment openings and a minimum exposed-thigh clearance above 2 mm; pocket and hem seams remain seated. This verifies contact at this static pose, not final cloth realism or motion readiness.",
+  "remaining": "The human-realism goal remains unfinished. Shorts seat/crotch folds and the walking weight still need substantial visual work; the face and expression remain generic. Whole-body reference acceptance is unproven. Architectural, retail and planting realism follow human acceptance. This remains editable offline Blender art, not a runtime character or animation rig.",
+  "sole_studies": [
+    {
+      "log": "sole-finish-study.log",
+      "sha256": "2c4937ffa39fd8afccf0bdc023aa513894b4bbd11cd39fa97b987dbc36126b06"
+    },
+    {
+      "log": "sole-finish-study2.log",
+      "sha256": "01c4ecbff335750e99aad4facca60bb70a3e111c5eba58910e4ba381d4b9f430"
+    }
+  ],
+  "scalp_studies": [
+    {
+      "log": "scalp-study-check.log",
+      "sha256": "765bb82188bdcc6f8a4a1fdde6bc57262ed609addb703cc415f7cfc4dbc0e8d4"
+    },
+    {
+      "log": "scalp-study.log",
+      "sha256": "dd195c39492784e391ea220294e3a6b34aad3998588173ce80cf4a7121036650"
+    },
+    {
+      "log": "scalp-study2.log",
+      "sha256": "06351f2f64b009ea9c016a14281d8d7f1db251679ea113014ddd09a09e6b5f40"
+    }
+  ],
+  "anatomical_short_fit_study": {
+    "log": "short-fit-study2.log",
+    "sha256": "5f727d0a4bdf3a2386da88ef8c1c3219a620cc160230adf5352056948ff2b7f4"
+  },
+  "short_fit_rejected_study": {
+    "log": "short-fit-study.log",
+    "sha256": "0d04a8bbc1026e4904eb10c8d6e84ea04714f02c4c8eb7405e4ed45aff442bed"
+  },
+  "open_cloth_studies": [
+    {
+      "log": "open-cloth-study.log",
+      "sha256": "dcf5983425534160385dfd35bbe76a36b4a9dc0ab03a42cd771e499bc6ad19e1"
+    },
+    {
+      "log": "open-cloth-study2.log",
+      "sha256": "05e8364adc793eaffe8d06d2f76cdc74402c9465614ff6bdedbc843ea5a4641d"
+    }
+  ],
+  "footwear_studies": [
+    {
+      "log": "footwear-stitch-study.log",
+      "sha256": "4ce0aa027dc9f3de78f6a569e5a5b470866cf668295fa86964734bf68a32fe8b"
+    },
+    {
+      "log": "footwear-stitch-study2.log",
+      "sha256": "076eb6148619125366926bc59ca318fea11f50c034d88e253c17fc1caa288033"
+    }
+  ],
+  "brow_groom_studies": [
+    {
+      "log": "brow-groom-study.log",
+      "sha256": "906de0540846304fcc3b7a1a1d1347e0aacf8dee2a1fe2d344e9367a972962f8"
+    },
+    {
+      "log": "brow-groom-study2.log",
+      "sha256": "0041a9502d684f5fafebc7d4c244a9a016f4d7a12f557b2233135508f0753c59"
+    },
+    {
+      "log": "brow-groom-study3.log",
+      "sha256": "b5042c7778dff2826f05b1c4af53f3773eb0722727229d4ad396d933762b4ff7"
+    }
+  ],
+  "epidermal_studies": [
+    {
+      "log": "epidermal-study.log",
+      "sha256": "6d860a104af0b3a2891770a243b973e30998d6d64a6925cb8f0027782aa7b066"
+    },
+    {
+      "log": "epidermal-study2.log",
+      "sha256": "25f13472fbff6989abcc7b6445f0d9c710919200fab933759571052301481df0"
+    }
+  ],
+  "anatomical_jacket_studies": [
+    {
+      "log": "anatomical-jacket-study.log",
+      "sha256": "8d82701d7a23d63b45d5f92904706aeb1a937945b3f9c67d70acfdfb293cbef3"
+    },
+    {
+      "log": "anatomical-jacket-study2.log",
+      "sha256": "4b8d2cf5199ac6cb4a4922adeeb623666707038cfa5ec439e6a6078a6a336738"
+    },
+    {
+      "log": "anatomical-jacket-study3.log",
+      "sha256": "c38b78118235055f0b029e165b390850a8e2460570a9aeb8810718f6f199063d"
+    },
+    {
+      "log": "anatomical-jacket-study4.log",
+      "sha256": "155b1e0a52ca16d24e9e8ced63584a6eb15f4be07e155544424f1861d835f8c4"
+    }
+  ],
+  "authored_drape_reproduction": {
+    "log": "open-cloth-reproduction.log",
+    "sha256": "de4143668daee5de5de829f2cd3b6f541b464c4fe5f661b73fd4e2dd46587f06",
+    "maximum_allowed_control_difference_m": 1e-05
+  },
+  "hand_basis_check": {
+    "log": "hand-surface-basis-check.log",
+    "sha256": "42cbd3507b85b75a84601ad4f441d217508f79b4edc9589c372ac8902dd8fe9b",
+    "compared_checkpoint": "0fb8d78",
+    "vertices_per_hand": 26569,
+    "maximum_world_position_difference_m": 0.0
+  }
+}

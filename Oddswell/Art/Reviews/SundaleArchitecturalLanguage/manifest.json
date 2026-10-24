@@ -1,0 +1,247 @@
+{
+  "brands": [],
+  "catalogs": [],
+  "deterministic_builder": "build_sundale_architectural_language.py",
+  "district_ids": [
+    "FINANCIAL_DOWNTOWN",
+    "ARENA_ENTERTAINMENT",
+    "SHOPPING_RETAIL",
+    "DINING_NIGHTLIFE",
+    "HOME_DESIGN_FURNITURE",
+    "RESIDENTIAL_NEIGHBORHOOD_SERVICES"
+  ],
+  "engine": "BLENDER_EEVEE_NEXT",
+  "external_references": [],
+  "files": {
+    "blend": {
+      "bytes": 1115150,
+      "file": "SundaleArchitecturalLanguage.blend",
+      "sha256": "AA82D170128AB0180286DB090EA45C1CB6C7F08F063AC22DC3D1D909530E2D17"
+    },
+    "provenance": {
+      "bytes": 893,
+      "file": "PROVENANCE.md",
+      "sha256": "6CAFA2600FEE838F86BB98C68DA535C0E5F80F72BF4D0C896153B6FED5C18827"
+    },
+    "script": {
+      "bytes": 25275,
+      "file": "build_sundale_architectural_language.py",
+      "sha256": "68081C7435CFF01814DCCCDDC1DF8AD2F931989FA3926CFBD8B1338558010DB1"
+    }
+  },
+  "frameworks": [],
+  "gameplay_changes": [],
+  "interiors": [],
+  "limitations": [
+    "review-only low-poly exterior language samples, not production assets or approved city expansion",
+    "no placement, interior, collision, performance, accessibility, branding, catalog, business, or gameplay claim",
+    "promotion or expansion remains owner-gated"
+  ],
+  "palette": {
+    "burnt_orange": "#C46D3B",
+    "charcoal_gray": "#4D5051",
+    "muted_terracotta": "#A65F47",
+    "restrained_cobalt": "#315F79",
+    "sage_green": "#6D7F62",
+    "sand_concrete": "#B9A783",
+    "warm_limestone": "#D8C8A9"
+  },
+  "phase": "Phase 1L.3b Sundale architectural-language samples",
+  "production_authority_preserved": {
+    "accepted_city_counts_changed": false,
+    "business_behavior_changed": false,
+    "canonical_route_changed": false,
+    "client_or_runtime_changed": false,
+    "test_or_config_changed": false,
+    "unreal_map_changed": false
+  },
+  "renders": [
+    {
+      "bytes": 1955863,
+      "camera_location_m": [
+        0.0,
+        -45.0,
+        38.0
+      ],
+      "camera_target_m": [
+        0.0,
+        0.0,
+        5.5
+      ],
+      "district_id": null,
+      "file": "renders/Unified_SundaleArchitecturalLanguage.png",
+      "height": 1080,
+      "role": "UNIFIED_BOARD",
+      "sha256": "FB9548173BF74E127171002038BB8A65445D795FE44743163A121A92166DBDDC",
+      "width": 1920
+    },
+    {
+      "bytes": 628731,
+      "camera_location_m": [
+        -12.0,
+        -22.0,
+        7.5
+      ],
+      "camera_target_m": [
+        -12.0,
+        6.0,
+        7.5
+      ],
+      "district_id": "FINANCIAL_DOWNTOWN",
+      "file": "renders/Closeup_FinancialDowntown.png",
+      "height": 720,
+      "role": "DISTRICT_CLOSEUP",
+      "sha256": "DBDE89E37CCDDD1999FFC0462937F97E0C82C199F0FE09845C9C49A39EB96FE3",
+      "width": 1280
+    },
+    {
+      "bytes": 645302,
+      "camera_location_m": [
+        0.0,
+        -22.0,
+        7.5
+      ],
+      "camera_target_m": [
+        0.0,
+        6.0,
+        7.5
+      ],
+      "district_id": "ARENA_ENTERTAINMENT",
+      "file": "renders/Closeup_ArenaEntertainment.png",
+      "height": 720,
+      "role": "DISTRICT_CLOSEUP",
+      "sha256": "64BFB8EF5C5FDEF627D26B09519B9637A968A0E9FAABF091FA76A3FDF04CA090",
+      "width": 1280
+    },
+    {
+      "bytes": 629007,
+      "camera_location_m": [
+        12.0,
+        -22.0,
+        7.5
+      ],
+      "camera_target_m": [
+        12.0,
+        6.0,
+        7.5
+      ],
+      "district_id": "SHOPPING_RETAIL",
+      "file": "renders/Closeup_ShoppingRetail.png",
+      "height": 720,
+      "role": "DISTRICT_CLOSEUP",
+      "sha256": "90AACB1E58E5D98EC9BE13C8291C7E1CC21DE97FB6615F6B4EBF3340EA424B4B",
+      "width": 1280
+    },
+    {
+      "bytes": 572866,
+      "camera_location_m": [
+        -12.0,
+        -34.0,
+        7.5
+      ],
+      "camera_target_m": [
+        -12.0,
+        -6.0,
+        7.5
+      ],
+      "district_id": "DINING_NIGHTLIFE",
+      "file": "renders/Closeup_DiningNightlife.png",
+      "height": 720,
+      "role": "DISTRICT_CLOSEUP",
+      "sha256": "B57F14B778369B5B3C821C5C467BDD283A7565FD4B00B8AF9F3B05BD096D237F",
+      "width": 1280
+    },
+    {
+      "bytes": 572088,
+      "camera_location_m": [
+        0.0,
+        -34.0,
+        7.5
+      ],
+      "camera_target_m": [
+        0.0,
+        -6.0,
+        7.5
+      ],
+      "district_id": "HOME_DESIGN_FURNITURE",
+      "file": "renders/Closeup_HomeDesignFurniture.png",
+      "height": 720,
+      "role": "DISTRICT_CLOSEUP",
+      "sha256": "09DE80D00832981D0BCA8DEC73BD0B4FF01087D630141DD68538E02EEB8D0DD2",
+      "width": 1280
+    },
+    {
+      "bytes": 571593,
+      "camera_location_m": [
+        12.0,
+        -34.0,
+        7.5
+      ],
+      "camera_target_m": [
+        12.0,
+        -6.0,
+        7.5
+      ],
+      "district_id": "RESIDENTIAL_NEIGHBORHOOD_SERVICES",
+      "file": "renders/Closeup_ResidentialNeighborhoodServices.png",
+      "height": 720,
+      "role": "DISTRICT_CLOSEUP",
+      "sha256": "444FA6AC1F45DE0D327E06FDCF60A7400D2B52398D7E03F502B798DA2DF6D3F8",
+      "width": 1280
+    }
+  ],
+  "sample_contract": {
+    "bounds_m": {
+      "x": [
+        -19.01,
+        19.01
+      ],
+      "y": [
+        -13.01,
+        13.01
+      ],
+      "z": [
+        -0.51,
+        18.0
+      ]
+    },
+    "facade_count": 6,
+    "facade_ids": [
+      "FACADE_SAMPLE__FINANCIAL_DOWNTOWN",
+      "FACADE_SAMPLE__ARENA_ENTERTAINMENT",
+      "FACADE_SAMPLE__SHOPPING_RETAIL",
+      "FACADE_SAMPLE__DINING_NIGHTLIFE",
+      "FACADE_SAMPLE__HOME_DESIGN_FURNITURE",
+      "FACADE_SAMPLE__RESIDENTIAL_NEIGHBORHOOD_SERVICES"
+    ],
+    "facade_triangle_ceiling": 240,
+    "native_geometry_only": true,
+    "one_pair_per_district": true,
+    "opaque_exterior_samples_only": true,
+    "tower_count": 6,
+    "tower_ids": [
+      "TOWER_SILHOUETTE__FINANCIAL_DOWNTOWN",
+      "TOWER_SILHOUETTE__ARENA_ENTERTAINMENT",
+      "TOWER_SILHOUETTE__SHOPPING_RETAIL",
+      "TOWER_SILHOUETTE__DINING_NIGHTLIFE",
+      "TOWER_SILHOUETTE__HOME_DESIGN_FURNITURE",
+      "TOWER_SILHOUETTE__RESIDENTIAL_NEIGHBORHOOD_SERVICES"
+    ],
+    "tower_triangle_ceiling": 96,
+    "triangle_counts": {
+      "FACADE_SAMPLE__ARENA_ENTERTAINMENT": 96,
+      "FACADE_SAMPLE__DINING_NIGHTLIFE": 96,
+      "FACADE_SAMPLE__FINANCIAL_DOWNTOWN": 120,
+      "FACADE_SAMPLE__HOME_DESIGN_FURNITURE": 84,
+      "FACADE_SAMPLE__RESIDENTIAL_NEIGHBORHOOD_SERVICES": 96,
+      "FACADE_SAMPLE__SHOPPING_RETAIL": 132,
+      "TOWER_SILHOUETTE__ARENA_ENTERTAINMENT": 24,
+      "TOWER_SILHOUETTE__DINING_NIGHTLIFE": 24,
+      "TOWER_SILHOUETTE__FINANCIAL_DOWNTOWN": 24,
+      "TOWER_SILHOUETTE__HOME_DESIGN_FURNITURE": 24,
+      "TOWER_SILHOUETTE__RESIDENTIAL_NEIGHBORHOOD_SERVICES": 60,
+      "TOWER_SILHOUETTE__SHOPPING_RETAIL": 24
+    }
+  },
+  "status": "noncanonical_owner_review_board"
+}

@@ -1,0 +1,144 @@
+{
+  "result": "PASS",
+  "source": "Oddswell/Art/Production/SundaleStreetSlice/AnatomicalNecklineCandidate/AnatomicalNeckline.blend",
+  "source_sha256": "C72E84C4033D6A8F86C89BECD7A1BB2736460728A32132ADEEE57C1F17932CA3",
+  "scene": "CottonTension.blend",
+  "blender": "4.5.5 LTS",
+  "native_cloth_frames": 80,
+  "native_review_views": 7,
+  "samples": {
+    "figure": 12,
+    "gameplay": 24
+  },
+  "files": [
+    {
+      "path": "audit.py",
+      "sha256": "5D547926CFB31A7A28ED7F9BAE9C4BB7FF6AFF4590C461538FBE6988D9E6AABA",
+      "bytes": 6327
+    },
+    {
+      "path": "audit_jacket.py",
+      "sha256": "4644DE12E5F5C28DD83A135B2CF530A44B201238ED5156A7FB564E3E248F47BF",
+      "bytes": 7740
+    },
+    {
+      "path": "build.py",
+      "sha256": "C2FDDDC56382BBCD0B4EEE8A69EB67DDE7C4788513AEE00EF27258B63844DF53",
+      "bytes": 9511
+    },
+    {
+      "path": "cold-check.json",
+      "sha256": "64D180A0137112A6AA282DE568AD42AA08542E9BDAC872BA4A9F0CCE898FF210",
+      "bytes": 3229
+    },
+    {
+      "path": "CottonTension-audit.json",
+      "sha256": "B584E8545F6A8FF04E7574C89513EEA946CCBC7C2A5A76BDBC2611E27D9F5D5F",
+      "bytes": 7979
+    },
+    {
+      "path": "CottonTension.blend",
+      "sha256": "F9A29E8B87D4F3E7B550C6E0217C2DFE9B80770CD803023E444E5AB74B91046D",
+      "bytes": 640810153
+    },
+    {
+      "path": "CottonTension_Front.png",
+      "sha256": "836006C1700B7022A8440EB3D58F9208A0BB6A1775F4D584F813FE7D708F2615",
+      "bytes": 853553
+    },
+    {
+      "path": "CottonTension_Gameplay.png",
+      "sha256": "F45878EE9E9364D8E0FCC5A2AAE5A3C63E1B086DE715FE9356AAAF37FEA79E10",
+      "bytes": 1632196
+    },
+    {
+      "path": "CottonTension_NeckFront.png",
+      "sha256": "523A2E171A476AD6800C7F7DAA926D25EC27C4DB9AF63D2AD0EBC10074F7069B",
+      "bytes": 949131
+    },
+    {
+      "path": "CottonTension_NeckRear.png",
+      "sha256": "2384F28EDFDE055FBB17EB1D93F2701ED58A018077CF470AD8D2A1C3E7A167DA",
+      "bytes": 1224008
+    },
+    {
+      "path": "CottonTension_Profile.png",
+      "sha256": "CD9C2F5303F47467FFB7DF6F7E0CFF2E23F3C3C412DD331F4BAE0083BE72EE61",
+      "bytes": 961765
+    },
+    {
+      "path": "CottonTension_Rear.png",
+      "sha256": "9A6E3BC54A99496060C70A32644EF417F9C31DACDEEF7CD60A24CA3EE82E4F2D",
+      "bytes": 1092637
+    },
+    {
+      "path": "CottonTension_TorsoFront.png",
+      "sha256": "37118CEAFC40F284F3E3F2004608CCD6D08A8E1B1521367694AA02BCB1D98952",
+      "bytes": 872928
+    },
+    {
+      "path": "drape-bake.json",
+      "sha256": "1BE95FA68ABE50B5A047016923AA6A13342F445B353FB8F8BC79EAB9C3E7EF5C",
+      "bytes": 397037
+    },
+    {
+      "path": "Jacket-audit.json",
+      "sha256": "392BB53A1FE9D8C82B21391D03FA9FB8795343E7D0127E40B3C960174AAEACF9",
+      "bytes": 1492
+    },
+    {
+      "path": "README.md",
+      "sha256": "BF2E76E90093A1159EDAD141CA00C83C3727482858791B73E5FDCE94F3EEAC9F",
+      "bytes": 5630
+    },
+    {
+      "path": "render.py",
+      "sha256": "C239CF0F57520FFA82B4006208293C79A762C1D3AD0F44946BB8D071CB3A1892",
+      "bytes": 2023
+    },
+    {
+      "path": "WholeFigureReview.md",
+      "sha256": "031F6D2C3AFCA55F202BEC97371B424AD6C466C8D788875E56662E48F9DD99BF",
+      "bytes": 1938
+    }
+  ],
+  "dependencies": [
+    {
+      "path": "Oddswell/Art/Production/SundaleStreetSlice/BodyFlowCandidate/build.py",
+      "sha256": "F151FCCF82E6320F43C22403F8161E79E2B18EF8D51EC3354DB3AB82EFF441EF",
+      "bytes": 7835
+    },
+    {
+      "path": "Oddswell/Art/Production/SundaleStreetSlice/RaglanPatternCandidate/build.py",
+      "sha256": "66D10AA97DCAE1EA9C4A5C9003B1F17C76E5D4320D603F6C123DEA75FF71495C",
+      "bytes": 18768
+    },
+    {
+      "path": "Oddswell/Art/Production/SundaleStreetSlice/RaglanPatternCandidate/finish.py",
+      "sha256": "384454A60507DC14968796407D15532E090DFB82061248C8C615D1AA7426C5B1",
+      "bytes": 9758
+    },
+    {
+      "path": "Oddswell/Art/Production/SundaleStreetSlice/AnatomicalNecklineCandidate/build.py",
+      "sha256": "10CF2FF3927B33F5792FA064BFD9B0EB4B22F955D59666D5A18EFF233F6F8E09",
+      "bytes": 5488
+    },
+    {
+      "path": "Oddswell/Art/Production/SundaleStreetSlice/AnatomicalNecklineCandidate/fit_neckline.py",
+      "sha256": "29BDD6E11B87CF3296FCF7BAF3DC69D40ACE057BECB1C23C8E115A1D9ED323C6",
+      "bytes": 7681
+    },
+    {
+      "path": "Oddswell/Art/Production/SundaleStreetSlice/NeckSkinUVCandidate/audit.py",
+      "sha256": "366BA8CCEA37B3C43C11CBC3451451ADF4A34F9094EF69B0344D23BBF402E9A4",
+      "bytes": 5835
+    },
+    {
+      "path": "Oddswell/Art/Production/SundaleStreetSlice/verify_scene.py",
+      "sha256": "31B92E046D8C17256CA6305092D66A1E606DDF546BEAA33C85801C91DCCE28A2",
+      "bytes": 30323
+    }
+  ],
+  "runtime_claim": false,
+  "goal_complete": false
+}

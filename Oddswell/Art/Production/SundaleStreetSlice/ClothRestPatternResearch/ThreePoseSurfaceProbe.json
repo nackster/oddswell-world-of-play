@@ -1,0 +1,102 @@
+{
+  "SOURCE": [
+    {
+      "frame": 1,
+      "Character | anatomical right hand self": 0,
+      "Character | anatomical left hand self": 108,
+      "Character | tailored slate jacket self": 0,
+      "Character | tailored slate jacket / Character | internal torso support": 1701,
+      "SHORTS self": 0,
+      "SHORTS / Character | internal torso support": 899,
+      "SHORTS / Character | anatomical legs": 0
+    },
+    {
+      "frame": 13,
+      "Character | anatomical right hand self": 30,
+      "Character | anatomical left hand self": 3,
+      "Character | tailored slate jacket self": 0,
+      "Character | tailored slate jacket / Character | internal torso support": 1699,
+      "SHORTS self": 0,
+      "SHORTS / Character | internal torso support": 676,
+      "SHORTS / Character | anatomical legs": 0
+    },
+    {
+      "frame": 35,
+      "Character | anatomical right hand self": 0,
+      "Character | anatomical left hand self": 32,
+      "Character | tailored slate jacket self": 0,
+      "Character | tailored slate jacket / Character | internal torso support": 1698,
+      "SHORTS self": 0,
+      "SHORTS / Character | internal torso support": 670,
+      "SHORTS / Character | anatomical legs": 0
+    }
+  ],
+  "CANDIDATE": [
+    {
+      "frame": 1,
+      "Character | anatomical right hand self": 0,
+      "Character | anatomical left hand self": 108,
+      "Character | tailored slate jacket self": 0,
+      "Character | tailored slate jacket / Character | internal torso support": 1701,
+      "SHORTS self": 0,
+      "SHORTS / Character | internal torso support": 919,
+      "SHORTS / Character | anatomical legs": 0,
+      "SHORTS / Character | continuous pelvis and upper thigh fitting": 494,
+      "continuous_skin_self": 0,
+      "new_pairs": {
+        "Character | anatomical right hand self": 0,
+        "Character | anatomical left hand self": 0,
+        "Character | tailored slate jacket self": 0,
+        "Character | tailored slate jacket / Character | internal torso support": 0,
+        "SHORTS self": 0,
+        "SHORTS / Character | internal torso support": 711,
+        "SHORTS / Character | anatomical legs": 0
+      }
+    },
+    {
+      "frame": 13,
+      "Character | anatomical right hand self": 30,
+      "Character | anatomical left hand self": 3,
+      "Character | tailored slate jacket self": 0,
+      "Character | tailored slate jacket / Character | internal torso support": 1699,
+      "SHORTS self": 394,
+      "SHORTS / Character | internal torso support": 695,
+      "SHORTS / Character | anatomical legs": 0,
+      "SHORTS / Character | continuous pelvis and upper thigh fitting": 2321,
+      "continuous_skin_self": 0,
+      "new_pairs": {
+        "Character | anatomical right hand self": 0,
+        "Character | anatomical left hand self": 0,
+        "Character | tailored slate jacket self": 0,
+        "Character | tailored slate jacket / Character | internal torso support": 0,
+        "SHORTS self": 394,
+        "SHORTS / Character | internal torso support": 621,
+        "SHORTS / Character | anatomical legs": 0
+      }
+    },
+    {
+      "frame": 35,
+      "Character | anatomical right hand self": 0,
+      "Character | anatomical left hand self": 32,
+      "Character | tailored slate jacket self": 0,
+      "Character | tailored slate jacket / Character | internal torso support": 1698,
+      "SHORTS self": 407,
+      "SHORTS / Character | internal torso support": 682,
+      "SHORTS / Character | anatomical legs": 0,
+      "SHORTS / Character | continuous pelvis and upper thigh fitting": 2585,
+      "continuous_skin_self": 0,
+      "new_pairs": {
+        "Character | anatomical right hand self": 0,
+        "Character | anatomical left hand self": 0,
+        "Character | tailored slate jacket self": 0,
+        "Character | tailored slate jacket / Character | internal torso support": 0,
+        "SHORTS self": 407,
+        "SHORTS / Character | internal torso support": 609,
+        "SHORTS / Character | anatomical legs": 0
+      }
+    }
+  ],
+  "scope": "Three selected authored integer poses, actual evaluated render triangles: jacket/shorts/hand self pairs and recorded support contacts. Not all 49 poses, subframes, full body contacts, nail attachment or runtime.",
+  "source_sha256": "90af187cf9cfa558f4d06a4b7398d02a8097991309e06789dbf61b0ebc36afeb",
+  "candidate_sha256": "1b18aaeed4f1b2a69008cf05d72895a00baac2caacbbce73a6c61cbdab450832"
+}

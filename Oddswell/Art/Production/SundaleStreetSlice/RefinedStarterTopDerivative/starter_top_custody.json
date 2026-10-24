@@ -1,0 +1,269 @@
+{
+  "blender_version": "4.5.5 LTS",
+  "boundaries": {
+    "actions": 0,
+    "authority_change": 0,
+    "bottom": 0,
+    "fbx": 0,
+    "final_art_claim": false,
+    "jacket": 0,
+    "readiness_claim": false,
+    "runtime_or_package_input_change": 0,
+    "top_partitions": 1,
+    "unreal_import": 0
+  },
+  "files": {
+    "blend": {
+      "bytes": 16768158,
+      "file": "RefinedSundaleStarterTopNeutralBind.blend",
+      "sha256": "B06360F355AFFCA4E18802467186B3F8CFD4D5512C2BCE1B3A9AF66165F9C935"
+    },
+    "builder": {
+      "bytes": 13765,
+      "file": "build_refined_starter_top.py",
+      "sha256": "017537DD9F3F871816120BBA70057ED5EB7052BA192BD8B10B238E818139886F"
+    },
+    "provenance": {
+      "bytes": 421,
+      "file": "PROVENANCE.md",
+      "sha256": "0D46BCC6AA73716758918172E8D80B1C7B3FF39E7BFA5F2B48711E38A582CC5C"
+    }
+  },
+  "phase": "Phase 1L.5bw starter off-white top derivative neutral-bind proof",
+  "semantic": {
+    "actions": 0,
+    "armature": {
+      "bones": {
+        "forearm.L": {
+          "connected": true,
+          "head_m": [
+            0.28,
+            0.0,
+            1.12
+          ],
+          "parent": "upper_arm.L",
+          "tail_m": [
+            0.265,
+            0.0,
+            0.78
+          ]
+        },
+        "forearm.R": {
+          "connected": true,
+          "head_m": [
+            -0.28,
+            0.0,
+            1.12
+          ],
+          "parent": "upper_arm.R",
+          "tail_m": [
+            -0.265,
+            0.0,
+            0.78
+          ]
+        },
+        "head": {
+          "connected": true,
+          "head_m": [
+            0.0,
+            0.0,
+            1.66
+          ],
+          "parent": "neck",
+          "tail_m": [
+            0.0,
+            0.0,
+            1.8
+          ]
+        },
+        "neck": {
+          "connected": true,
+          "head_m": [
+            0.0,
+            0.0,
+            1.45
+          ],
+          "parent": "spine",
+          "tail_m": [
+            0.0,
+            0.0,
+            1.66
+          ]
+        },
+        "root": {
+          "connected": false,
+          "head_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "parent": null,
+          "tail_m": [
+            0.0,
+            0.0,
+            0.1
+          ]
+        },
+        "shin.L": {
+          "connected": true,
+          "head_m": [
+            0.13,
+            0.0,
+            0.53
+          ],
+          "parent": "thigh.L",
+          "tail_m": [
+            0.13,
+            0.0,
+            0.1
+          ]
+        },
+        "shin.R": {
+          "connected": true,
+          "head_m": [
+            -0.13,
+            0.0,
+            0.53
+          ],
+          "parent": "thigh.R",
+          "tail_m": [
+            -0.13,
+            0.0,
+            0.1
+          ]
+        },
+        "spine": {
+          "connected": false,
+          "head_m": [
+            0.0,
+            0.0,
+            0.94
+          ],
+          "parent": "root",
+          "tail_m": [
+            0.0,
+            0.0,
+            1.45
+          ]
+        },
+        "thigh.L": {
+          "connected": false,
+          "head_m": [
+            0.155,
+            0.0,
+            0.94
+          ],
+          "parent": "root",
+          "tail_m": [
+            0.13,
+            0.0,
+            0.53
+          ]
+        },
+        "thigh.R": {
+          "connected": false,
+          "head_m": [
+            -0.155,
+            0.0,
+            0.94
+          ],
+          "parent": "root",
+          "tail_m": [
+            -0.13,
+            0.0,
+            0.53
+          ]
+        },
+        "upper_arm.L": {
+          "connected": false,
+          "head_m": [
+            0.245,
+            0.0,
+            1.45
+          ],
+          "parent": "spine",
+          "tail_m": [
+            0.28,
+            0.0,
+            1.12
+          ]
+        },
+        "upper_arm.R": {
+          "connected": false,
+          "head_m": [
+            -0.245,
+            0.0,
+            1.45
+          ],
+          "parent": "spine",
+          "tail_m": [
+            -0.28,
+            0.0,
+            1.12
+          ]
+        }
+      },
+      "dec035_mapping": {
+        "forearm.L": "forearm_L",
+        "forearm.R": "forearm_R",
+        "head": "head",
+        "neck": "neck",
+        "root": "root",
+        "shin.L": "shin_L",
+        "shin.R": "shin_R",
+        "spine": "spine",
+        "thigh.L": "thigh_L",
+        "thigh.R": "thigh_R",
+        "upper_arm.L": "upper_arm_L",
+        "upper_arm.R": "upper_arm_R"
+      }
+    },
+    "body_mesh_sha256": "F340C34B05FC4D0D20F5625E9B2F9174947B691F59420367E8B738BE1CBF03CD",
+    "body_semantic_sha256": "91AAB962825784679391C85FD06239A2F8EB118FEABA906EF9C5FB373FB8CF08",
+    "identity_sha256": "1AE3EDFC7C215A0508B2044D655FAFB2EF6D44996A0E26C3FB2CF572D248DD49",
+    "partitions": [
+      "BODY__refined_sundale_derivative_v1",
+      "starter_offwhite_top"
+    ],
+    "root_translation_m": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "top": {
+      "item_id": "starter_offwhite_top",
+      "material_slots": [
+        "MAT__starter_offwhite_top_proof"
+      ],
+      "mesh_sha256": "9996AF8A1271D6E236A45B8EDF93DF36A342FF0743D3276E1676AB3FE96D30C3",
+      "polygon_count": 4,
+      "vertex_count": 8
+    },
+    "weights": {
+      "accepted_clearance_bounds_m": [
+        0.009,
+        0.25
+      ],
+      "bidirectional_vertex_sampled_clearance_min_m": 0.0423235,
+      "body_intersection_pairs": 0,
+      "body_vertex_to_top_surface_min_m": 0.0423235,
+      "clearance_method": "bidirectional_mesh_vertex_to_opposite_surface_bvh",
+      "maximum_neutral_bind_drift_m": 0.0,
+      "non_normalized_vertices": 0,
+      "top_vertex_to_body_surface_min_m": 0.184177205,
+      "torso_coverage_m": [
+        0.9,
+        1.5
+      ],
+      "unweighted_vertices": 0,
+      "vertices_by_bone": {
+        "spine": 8
+      }
+    }
+  },
+  "source_custody": {
+    "body_blend": "83D9AFEDA8F0B81EA356E3173751534FE579DB39E6F343EEF952B5715CD3BCAB",
+    "body_custody": "2299550AA590235BC2D71753BAFE3CE59A2573F8F5900EE817B91E2DB59958A0"
+  },
+  "status": "starter_top_only_neutral_bind_proof_not_runtime_or_final_art"
+}

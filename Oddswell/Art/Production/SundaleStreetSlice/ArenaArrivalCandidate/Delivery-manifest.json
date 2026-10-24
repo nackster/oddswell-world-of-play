@@ -1,0 +1,66 @@
+{
+  "candidate_sha256": "4be22d54515ef82276331c3286147e5f77dad9ddc2491d4e29d39eaf720cd524",
+  "source_sha256": "e2559843759bcf76db05c0e97caf790e1f012d5ccfe9cb01db2f5344811a8f94",
+  "files": {
+    "After_Arena.png": {
+      "sha256": "9d57115e93bad28bce90d45f97083b58b4c724f75bc61e922f2cebf74baad9a9",
+      "bytes": 2176279
+    },
+    "After_Entrance.png": {
+      "sha256": "0d67c813235b6dfd6b6a9088831c40a8f82b86aa90c095ccaf33923d5b040448",
+      "bytes": 1361546
+    },
+    "After_Gameplay.png": {
+      "sha256": "bee11f4f24a5eec5de97f874aa3b316b46918109784f897d11f6408ed2bc2c8f",
+      "bytes": 3546723
+    },
+    "ArenaArrival.blend": {
+      "sha256": "4be22d54515ef82276331c3286147e5f77dad9ddc2491d4e29d39eaf720cd524",
+      "bytes": 731325914
+    },
+    "audit.py": {
+      "sha256": "24bc32c335b38d57c7342122b91b2c8d0998088381c5c46561a10070958050ac",
+      "bytes": 8097
+    },
+    "Before_Arena.png": {
+      "sha256": "9fa6000dc4784bb5a560b457927979d551023ae54abd4be6c33f8c33e1f85ba9",
+      "bytes": 2051518
+    },
+    "Before_Entrance.png": {
+      "sha256": "317a4eae7094eef540dcaafd1cce4f6306638c7e0487409ce0782725ffefae46",
+      "bytes": 1225386
+    },
+    "Before_Gameplay.png": {
+      "sha256": "692d8bc71da36dabaa23e7793e2fe66d9d1c91a64fe58c539f718bdc0480414c",
+      "bytes": 3545107
+    },
+    "build-report.json": {
+      "sha256": "e378e4e2666bb075ecf9ee76bc4bd971fdfd3eab1b2037511a10086c2c65eb03",
+      "bytes": 24809
+    },
+    "build.py": {
+      "sha256": "f7ea3da778cc13f25d5abe911e880bb3c575842d4ab86c39d5b961268be4ba35",
+      "bytes": 9889
+    },
+    "cold-audit.json": {
+      "sha256": "ae614947398ca8f497272ec98ce6803be93d8db44b68226969308965dd06a9d9",
+      "bytes": 2309
+    },
+    "README.md": {
+      "sha256": "f6a65ff0acfa9aac022b6287c8ca21da99705ee41d4a9591508c81f07cf5b6b4",
+      "bytes": 2117
+    },
+    "render-provenance.json": {
+      "sha256": "52d12258d799c826c902c8fd474ce7d3a0bcfd0c74c7d3cd6a13caacec5b75fd",
+      "bytes": 343
+    },
+    "render.py": {
+      "sha256": "3f47a7765759feea6959ab3b9f904a714fe8990e935db0382f38d9cd77cad99c",
+      "bytes": 2086
+    },
+    "WholeSceneReview.md": {
+      "sha256": "ba5b00978ba583645725442ba49c2147548d3a572db46049ab3abd5d35c38da1",
+      "bytes": 2770
+    }
+  }
+}

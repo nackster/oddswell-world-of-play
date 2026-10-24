@@ -1,0 +1,13 @@
+# Adult forearm and fitted sleeve checkpoint
+
+`SleeveContour.blend` continues the retained `WaistJoinCandidate/WaistJoin.blend`. A new editable support shape adds a tapered, slightly elliptical forearm profile across 945 controls, with elbow/wrist fades and maximum displacement about 7.069 mm. The hidden arm-only fitting helper shares that support mesh. Original body controls, old keys, UVs, bone weights and licensed maps are preserved. The new shape is authored fitting anatomy, not a measured scan or replacement visible skin mesh.
+
+Both jacket and sewing cage retain the existing raglan/cuff/shoulder protections. Their fitted-sleeve peak influence increases from 0.85 to 0.98 across 1,968 declared controls, and their anatomical stand-off decreases from 12 to 7 mm. The original whole-support clearance remains unchanged.
+
+Rebuild offline with Blender 4.5.5 using `build.py`, then run `audit.py` in a fresh process. The audit checks cold source custody, declared shape/group/offset changes, unedited human geometry in six poses and source/candidate jacket contact through all 49 authored integer frames using actual render triangles. Six visible sewing details retain bounded surface distance and edge length. Existing support contacts are recorded; this does not establish complete body collision freedom, physical cloth simulation, subframe correctness or runtime readiness.
+
+`render.py` produces matched side/front/rear/full/gameplay views. Use separate processes for close/full views (`--skip-gameplay`) and the game camera (`--gameplay-only`) to avoid accumulated render caches. `render-walk.py -- --preview` renders the actual candidate's 24-frame walking preview. Original full-figure/game-camera source views are copied from the retained native WaistJoin comparison; new close views render that same source directly. Scripts locate the repository through `.git` and require preserved source/audit helpers.
+
+The full human and landscape goal remains active. Further torso/sleeve/collar definition, relaxed hands, skin/face and surface finish remain subject to visual review; storefront and canopy/material individuality follows human acceptance. Separate protected starter-outfit and later gameplay/beta gates retain their status.
+
+The source has four opposite-shell triangle overlaps in authored frames 8, 18, 32 and 42. Thickness, even-offset, clamp and smoothing experiments were rejected because they introduce contacts elsewhere. Original thickness settings are retained. Source/candidate self-pair sets are compared exactly over all 49 frames: the final pass must add no self pairs. Existing self contacts remain open cloth work, alongside inherited jacket/support contacts.

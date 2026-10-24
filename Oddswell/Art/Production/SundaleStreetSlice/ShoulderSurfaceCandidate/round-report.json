@@ -1,0 +1,12 @@
+{
+  "native_smooth_factor": 0.6000000238418579,
+  "iterations": 18,
+  "bound_followers": 189,
+  "regenerated_raglan_followers": [
+    "Walk surface | Character | raglan topstitch -1 -1",
+    "Walk surface | Character | raglan topstitch -1 1",
+    "Walk surface | Character | raglan topstitch 1 -1",
+    "Walk surface | Character | raglan topstitch 1 1"
+  ],
+  "source_controls_uv_keys_unchanged": true
+}

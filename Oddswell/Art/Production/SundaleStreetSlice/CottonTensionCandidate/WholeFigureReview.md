@@ -1,0 +1,9 @@
+# Whole-figure continuation
+
+The current candidate improves the jacket's tension modestly and preserves the defined waist/hip stance, fitted collar, four-panel shorts and original slate/teal identity. Front, rear, profile, torso, neck and gameplay views remain the review set. Compare with [the original OddsWell concept](../../../Reviews/OddsWellStreetIdentityCandidate/OddsWell_Visual_Direction_Concept.png); successful static checks are not photographic-realism acceptance.
+
+The next substantial human deliverable is coordinated native walking development. Use the existing foot contact as the starting point: the right sole is planted and flat, and the left heel is already raised. Develop pelvis weight transfer, knee motion, shoulder counter-rotation and relaxed arm/hand gesture together. Review contact, passing and toe-off poses plus a short native movement preview; check affected garment/body and shoe/ankle contact instead of inferring motion from one profile image. Keep the current source and editable restoration controls. This art study is separate from accepted runtime animation assets and their movement authority.
+
+Follow that whole-body work with facial individuality, skin/material response and broad cloth finish under the actual scene lighting. The chest, hands, face and footwear still look synthetic in close views. Judge the whole figure against the reference before claiming the very-real human target.
+
+The subsequent Sundale scene work remains architectural/retail variety, storefront depth, an open arena sightline, selective layered planting and warm canopy shadows. Baking hair/detail, a compatible rigged derivative, LOD/collision budgets and controlled engine review follow the existing visual gates. The earlier ten-step technical batch stays complete; manual art, starter-outfit walk, physical first-hour and beta acceptance remain separate. Export/import preparation stays stopped under those gates.

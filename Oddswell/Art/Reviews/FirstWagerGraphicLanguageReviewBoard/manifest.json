@@ -1,0 +1,262 @@
+{
+  "artifacts": [
+    {
+      "bytes": 7111,
+      "file": "Unified_FirstWagerGraphicLanguage.svg",
+      "sha256": "05DFDCA42EACD504F87163BD9599A13B639B7A572095C61C63E31C33079AD363"
+    },
+    {
+      "bytes": 1662,
+      "file": "Context_TicketBoothPrompt.svg",
+      "sha256": "3816C42CB227908FE9A28A5E08E7C50F716A567F570026D852E3ADBC829789F2"
+    },
+    {
+      "bytes": 3138,
+      "file": "Context_MatchWinnerSelection.svg",
+      "sha256": "7300DEF444D195CF16D5304D958460244635FDA1AEFE829076BE18441DDCEDA5"
+    },
+    {
+      "bytes": 2797,
+      "file": "Context_PrecommitConfirmation.svg",
+      "sha256": "8022FDBD2D3C765208AC246D811A2CF30BC4335036284EA9A6EFD64C453B190B"
+    },
+    {
+      "bytes": 2145,
+      "file": "Context_SettledReceipt.svg",
+      "sha256": "0D8962ABD2AB417120C42728603DE6B7AF59CF37D17B0FE0D3602D6E6D9F17A5"
+    },
+    {
+      "bytes": 27373,
+      "file": "build_first_wager_graphic_language.py",
+      "sha256": "0A55E0C2719E7348863EA499AADCD58A75C75BBDE1ABB9836439CE3BFE42AD56"
+    },
+    {
+      "bytes": 1111,
+      "file": "PROVENANCE.md",
+      "sha256": "6209F079D3C629221965E37B13CBE8AEEF43F232DF36D01471D12AB0AFC88F8C"
+    }
+  ],
+  "boundaries": {
+    "brands": 0,
+    "external_references": 0,
+    "fonts": 0,
+    "gameplay_changes": 0,
+    "images": 0,
+    "new_states": 0,
+    "phase_1l3j_sun_symbol_occurrences": 0,
+    "phase_1l3j_symbols_reused": 0,
+    "phase_1l3j_wave_symbol_occurrences": 0,
+    "production_ui_changes": 0,
+    "scripts": 0,
+    "settlement_changes": 0,
+    "textures": 0,
+    "wagering_changes": 0
+  },
+  "contrast_contract": {
+    "marker_minimum": 3.0,
+    "measured_marker_minimum": 3.8792,
+    "measured_text_minimum": 9.8641,
+    "text_minimum": 4.5
+  },
+  "current_copy": {
+    "balance": "154 Odds Bucks",
+    "match": "Harbor City Waves vs Mesa Vista Sol",
+    "payout": "94 Odds Bucks",
+    "stake": "40 Odds Bucks",
+    "teams": [
+      "Harbor City Waves",
+      "Mesa Vista Sol"
+    ],
+    "ticket_prompt": "Press E to open betting odds"
+  },
+  "format": "SVG_1_1",
+  "manual_input": false,
+  "outputs": [
+    {
+      "context": "UNIFIED",
+      "file": "Unified_FirstWagerGraphicLanguage.svg",
+      "height": 1080,
+      "sha256": "05DFDCA42EACD504F87163BD9599A13B639B7A572095C61C63E31C33079AD363",
+      "width": 1920
+    },
+    {
+      "context": "ticket_booth_prompt",
+      "file": "Context_TicketBoothPrompt.svg",
+      "height": 720,
+      "sha256": "3816C42CB227908FE9A28A5E08E7C50F716A567F570026D852E3ADBC829789F2",
+      "width": 1280
+    },
+    {
+      "context": "match_winner_selection",
+      "file": "Context_MatchWinnerSelection.svg",
+      "height": 720,
+      "sha256": "7300DEF444D195CF16D5304D958460244635FDA1AEFE829076BE18441DDCEDA5",
+      "width": 1280
+    },
+    {
+      "context": "precommit_confirmation",
+      "file": "Context_PrecommitConfirmation.svg",
+      "height": 720,
+      "sha256": "8022FDBD2D3C765208AC246D811A2CF30BC4335036284EA9A6EFD64C453B190B",
+      "width": 1280
+    },
+    {
+      "context": "settled_receipt",
+      "file": "Context_SettledReceipt.svg",
+      "height": 720,
+      "sha256": "0D8962ABD2AB417120C42728603DE6B7AF59CF37D17B0FE0D3602D6E6D9F17A5",
+      "width": 1280
+    }
+  ],
+  "palette": {
+    "dark_navy": "#2C4250",
+    "muted": "#999EA2",
+    "teal": "#50B3AD",
+    "warm_gold": "#FAE595",
+    "white": "#FAF8F0"
+  },
+  "palette_conversion": {
+    "anchors": {
+      "dark_navy": {
+        "linear_rgba": [
+          0.025,
+          0.055,
+          0.08,
+          1.0
+        ],
+        "source_expression": "FLinearColor(0.025f, 0.055f, 0.08f)",
+        "source_line": 9133,
+        "srgb_hex": "#2C4250"
+      },
+      "muted": {
+        "linear_rgba": [
+          0.32,
+          0.34,
+          0.36,
+          1.0
+        ],
+        "source_expression": "FLinearColor(0.32f, 0.34f, 0.36f)",
+        "source_line": 9136,
+        "srgb_hex": "#999EA2"
+      },
+      "teal": {
+        "linear_rgba": [
+          0.08,
+          0.45,
+          0.42,
+          1.0
+        ],
+        "source_expression": "FLinearColor(0.08f, 0.45f, 0.42f)",
+        "source_line": 9134,
+        "srgb_hex": "#50B3AD"
+      },
+      "warm_gold": {
+        "linear_rgba": [
+          0.96,
+          0.78,
+          0.3,
+          1.0
+        ],
+        "source_expression": "FLinearColor(0.96f, 0.78f, 0.30f)",
+        "source_line": 8932,
+        "srgb_hex": "#FAE595"
+      },
+      "white": {
+        "linear_rgba": [
+          0.96,
+          0.94,
+          0.87,
+          1.0
+        ],
+        "source_expression": "FLinearColor(0.96f, 0.94f, 0.87f, 1.0f)",
+        "source_line": 9126,
+        "srgb_hex": "#FAF8F0"
+      }
+    },
+    "method": "IEC_61966_2_1_linear_to_sRGB_then_nearest_8_bit",
+    "source_path": "client/OddsWell/Source/OddsWell/PlaceholderLocomotion.cpp",
+    "source_sha256": "22E7B6FEED0E14DC23A8A900FB58E280606F9F9160ED3FE6F23D1460B99FE298"
+  },
+  "phase": "Phase 1L.3k",
+  "renderer": "stdlib_deterministic_svg",
+  "state_contract": {
+    "color_only": false,
+    "expected_counts_by_output": {
+      "Context_MatchWinnerSelection.svg": {
+        "ACTIVE": 1,
+        "LOCKED": 1,
+        "SELECTED": 1
+      },
+      "Context_PrecommitConfirmation.svg": {
+        "CONFIRM": 1,
+        "SELECTED": 1
+      },
+      "Context_SettledReceipt.svg": {
+        "SETTLED": 1
+      },
+      "Context_TicketBoothPrompt.svg": {
+        "INTERACT": 1
+      },
+      "Unified_FirstWagerGraphicLanguage.svg": {
+        "ACTIVE": 1,
+        "CONFIRM": 1,
+        "INTERACT": 1,
+        "LOCKED": 1,
+        "SELECTED": 1,
+        "SETTLED": 1
+      }
+    },
+    "shape_distinct": true,
+    "state_count": 6,
+    "states": {
+      "ACTIVE": "TRIANGLE",
+      "CONFIRM": "DOUBLE_CHEVRON",
+      "INTERACT": "OPEN_CIRCLE_DOT",
+      "LOCKED": "BARRED_SQUARE",
+      "SELECTED": "DIAMOND",
+      "SETTLED": "RING_CHECK"
+    }
+  },
+  "status": "noncanonical_owner_review_board",
+  "typography_contract": {
+    "expected_counts_by_output": {
+      "Context_MatchWinnerSelection.svg": {
+        "DISPLAY_TITLE": 1,
+        "INSTRUCTION": 1,
+        "PRIMARY_VALUE": 2,
+        "STATE_LABEL": 3
+      },
+      "Context_PrecommitConfirmation.svg": {
+        "DISPLAY_TITLE": 1,
+        "INSTRUCTION": 1,
+        "PRIMARY_VALUE": 3,
+        "STATE_LABEL": 2
+      },
+      "Context_SettledReceipt.svg": {
+        "DISPLAY_TITLE": 1,
+        "INSTRUCTION": 1,
+        "PRIMARY_VALUE": 3,
+        "STATE_LABEL": 1
+      },
+      "Context_TicketBoothPrompt.svg": {
+        "DISPLAY_TITLE": 1,
+        "INSTRUCTION": 1,
+        "PRIMARY_VALUE": 1,
+        "STATE_LABEL": 1
+      },
+      "Unified_FirstWagerGraphicLanguage.svg": {
+        "DISPLAY_TITLE": 1,
+        "INSTRUCTION": 1,
+        "PRIMARY_VALUE": 4,
+        "STATE_LABEL": 6
+      }
+    },
+    "role_count": 4,
+    "roles": [
+      "DISPLAY_TITLE",
+      "STATE_LABEL",
+      "PRIMARY_VALUE",
+      "INSTRUCTION"
+    ]
+  }
+}

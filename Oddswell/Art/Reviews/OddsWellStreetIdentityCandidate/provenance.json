@@ -1,0 +1,12 @@
+{
+  "status": "OWNER_REVIEW_CANDIDATE",
+  "cost_usd": 0,
+  "scope": "Native Blender study only; generated concept has separate generation-brief.md",
+  "source_character": "Art\\Production\\PlayerCharacter\\CharacterMotionAxisCorrection\\MotionAxisCharacterCandidate.blend",
+  "source_character_sha256": "ac27a075ad8ae7981b4735797d2c83d37bf56a1d24baff881659db23e7194506",
+  "source_facade": "Art\\Production\\SundaleArchitecture\\ResidentialNeighborhoodServices\\SM_Sundale_ResidentialFacade_A.blend",
+  "source_facade_sha256": "f2ca073fa370bc345c91a83f76d15473086bc7fe6a3b85173e5076bf31bb8e58",
+  "engine_map_changed": false,
+  "final_art_approved": false,
+  "logos_or_identifying_text": false
+}

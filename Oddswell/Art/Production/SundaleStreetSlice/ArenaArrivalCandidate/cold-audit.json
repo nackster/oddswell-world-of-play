@@ -1,0 +1,54 @@
+{
+  "candidate_sha256": "4be22d54515ef82276331c3286147e5f77dad9ddc2491d4e29d39eaf720cd524",
+  "source_sha256": "e2559843759bcf76db05c0e97caf790e1f012d5ccfe9cb01db2f5344811a8f94",
+  "original_mesh_curve_count": 5044,
+  "packed_maps": 31,
+  "original_controls_edges_uv_keys_maps_rest_and_six_poses_exact": true,
+  "original_shader_values_links_exact": true,
+  "native_walk_keyframes_handles_interpolation_exact": true,
+  "visible_main_character_objects": 306,
+  "six_pose_visible_character_coordinates_edges_world_matrices_exact": true,
+  "original_object_transforms_parents_exact": true,
+  "documented_visibility_changes": 60,
+  "new_collection_objects": 295,
+  "front_glazed_bays": 48,
+  "entry_cut_bays": 8,
+  "door_bounds": [
+    {
+      "name": "Arrival | inset glass door",
+      "min_z": 1.6519999504089355,
+      "max_z": 4.441999912261963
+    },
+    {
+      "name": "Arrival | inset glass door.001",
+      "min_z": 1.6519999504089355,
+      "max_z": 4.441999912261963
+    },
+    {
+      "name": "Arrival | inset glass door.002",
+      "min_z": 1.6519999504089355,
+      "max_z": 4.441999912261963
+    },
+    {
+      "name": "Arrival | inset glass door.003",
+      "min_z": 1.6519999504089355,
+      "max_z": 4.441999912261963
+    },
+    {
+      "name": "Arrival | inset glass door.004",
+      "min_z": 1.6519999504089355,
+      "max_z": 4.441999912261963
+    },
+    {
+      "name": "Arrival | inset glass door.005",
+      "min_z": 1.6519999504089355,
+      "max_z": 4.441999912261963
+    }
+  ],
+  "native_concourse_levels": 3,
+  "central_back_wall_ray_open": true,
+  "central_corridor_ray_depth_m": 9.390000343322754,
+  "physical_lettering_exact": true,
+  "inherited_human_audit": "Immediate LayeredPlantingCandidate preserves the ShoulderChestCandidate human; its scoped 49-frame cloth proof is not broadened here.",
+  "scope": "Native static arena arrival glazing, inset doors/canopy and front concourse surfaces. Original controls, licensed maps, shaders, rig, visible human and original transforms preserved. Added bay count/thickness, entry-cut height, door vertical bounds and one central back-wall/corridor ray checked. Does not certify full architectural collision freedom, structural engineering, walkable route, production rig, LOD/performance, final reference fidelity or beta readiness."
+}

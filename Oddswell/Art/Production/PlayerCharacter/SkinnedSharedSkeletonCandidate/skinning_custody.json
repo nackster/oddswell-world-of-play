@@ -1,0 +1,738 @@
+{
+  "blender_version": "4.5.5 LTS",
+  "boundaries": {
+    "actions": 0,
+    "armature_modifiers": 1,
+    "clothing_refits": 0,
+    "constraints": 0,
+    "control_rigs": 0,
+    "drivers": 0,
+    "exports": 0,
+    "final_art_claim": false,
+    "ik": 0,
+    "motion_clips": 0,
+    "nla_tracks": 0,
+    "non_normalized_vertices": 0,
+    "runtime_changes": 0,
+    "shape_keys": 0,
+    "skin_weights": "explicit_one_influence_normalized",
+    "unreal_imports": 0,
+    "unweighted_vertices": 0
+  },
+  "files": {
+    "blend": {
+      "file": "SkinnedSharedSkeletonCharacterCandidate.blend",
+      "identity": "semantic_only"
+    },
+    "builder": {
+      "bytes": 21064,
+      "file": "build_skinned_shared_skeleton_candidate.py",
+      "sha256": "985FE86049B28108E0A56573CA4328755062644EB4AAA4EB5C518D3BF5248FFD"
+    },
+    "provenance": {
+      "bytes": 1095,
+      "file": "PROVENANCE.md",
+      "sha256": "BCAC8DC543F8FD04E97CAECB3913217FC92D6C17A60E7B2ABA5489D0E5E02186"
+    }
+  },
+  "phase": "Phase 1L.5bk deterministic mannequin skin binding and static deformation proof",
+  "renders": [
+    {
+      "bytes": 636775,
+      "file": "renders/Review_Rest.png",
+      "height": 900,
+      "role": "REST",
+      "sha256": "21735DCBC14B42D43659CD3D0679DA814BDEA12F2D4ECC6BEFF9611599D58E61",
+      "width": 720
+    },
+    {
+      "bytes": 651083,
+      "file": "renders/Review_StaticDeformation.png",
+      "height": 900,
+      "role": "STATIC_DIAGNOSTIC",
+      "sha256": "CDCAE381CC14D33776CBDF264ABB810520B53D1E377CEC8427381FA85E973E59",
+      "width": 720
+    }
+  ],
+  "semantic": {
+    "armature": {
+      "bone_count": 12,
+      "bones": {
+        "forearm.L": {
+          "connected": true,
+          "head_m": [
+            0.28,
+            0.0,
+            1.12
+          ],
+          "parent": "upper_arm.L",
+          "tail_m": [
+            0.265,
+            0.0,
+            0.78
+          ]
+        },
+        "forearm.R": {
+          "connected": true,
+          "head_m": [
+            -0.28,
+            0.0,
+            1.12
+          ],
+          "parent": "upper_arm.R",
+          "tail_m": [
+            -0.265,
+            0.0,
+            0.78
+          ]
+        },
+        "head": {
+          "connected": true,
+          "head_m": [
+            0.0,
+            0.0,
+            1.66
+          ],
+          "parent": "neck",
+          "tail_m": [
+            0.0,
+            0.0,
+            1.8
+          ]
+        },
+        "neck": {
+          "connected": true,
+          "head_m": [
+            0.0,
+            0.0,
+            1.45
+          ],
+          "parent": "spine",
+          "tail_m": [
+            0.0,
+            0.0,
+            1.66
+          ]
+        },
+        "root": {
+          "connected": false,
+          "head_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "parent": null,
+          "tail_m": [
+            0.0,
+            0.0,
+            0.1
+          ]
+        },
+        "shin.L": {
+          "connected": true,
+          "head_m": [
+            0.13,
+            0.0,
+            0.53
+          ],
+          "parent": "thigh.L",
+          "tail_m": [
+            0.13,
+            0.0,
+            0.1
+          ]
+        },
+        "shin.R": {
+          "connected": true,
+          "head_m": [
+            -0.13,
+            0.0,
+            0.53
+          ],
+          "parent": "thigh.R",
+          "tail_m": [
+            -0.13,
+            0.0,
+            0.1
+          ]
+        },
+        "spine": {
+          "connected": false,
+          "head_m": [
+            0.0,
+            0.0,
+            0.94
+          ],
+          "parent": "root",
+          "tail_m": [
+            0.0,
+            0.0,
+            1.45
+          ]
+        },
+        "thigh.L": {
+          "connected": false,
+          "head_m": [
+            0.155,
+            0.0,
+            0.94
+          ],
+          "parent": "root",
+          "tail_m": [
+            0.13,
+            0.0,
+            0.53
+          ]
+        },
+        "thigh.R": {
+          "connected": false,
+          "head_m": [
+            -0.155,
+            0.0,
+            0.94
+          ],
+          "parent": "root",
+          "tail_m": [
+            -0.13,
+            0.0,
+            0.53
+          ]
+        },
+        "upper_arm.L": {
+          "connected": false,
+          "head_m": [
+            0.245,
+            0.0,
+            1.45
+          ],
+          "parent": "spine",
+          "tail_m": [
+            0.28,
+            0.0,
+            1.12
+          ]
+        },
+        "upper_arm.R": {
+          "connected": false,
+          "head_m": [
+            -0.245,
+            0.0,
+            1.45
+          ],
+          "parent": "spine",
+          "tail_m": [
+            -0.28,
+            0.0,
+            1.12
+          ]
+        }
+      },
+      "name": "ARMATURE__shared_bilateral_v1"
+    },
+    "geometry_sha256": "3ADB62F5D9577FDE2E45D8FFA45B5AB448D088D72A239496D5170122473F8FE3",
+    "identity_sha256": "8F86A1FE89E9975C75B31D6700FA3FD64A98F87139C2C7DF0B721197ED25F146",
+    "mannequin": {
+      "active_tone": "tone_2",
+      "bounds_max_m": [
+        0.343643,
+        0.14,
+        1.8
+      ],
+      "bounds_min_m": [
+        -0.343643,
+        -0.195,
+        0.0
+      ],
+      "material_slots": [
+        "SKIN__tone_1",
+        "SKIN__tone_2",
+        "SKIN__tone_3",
+        "SKIN__tone_4"
+      ],
+      "name": "MANNEQUIN__neutral_beta",
+      "polygons": 354,
+      "triangles": 540,
+      "vertices": 302
+    },
+    "materials": {
+      "tone_1": [
+        246,
+        218,
+        194,
+        255
+      ],
+      "tone_2": [
+        210,
+        160,
+        120,
+        255
+      ],
+      "tone_3": [
+        145,
+        96,
+        68,
+        255
+      ],
+      "tone_4": [
+        82,
+        52,
+        38,
+        255
+      ]
+    },
+    "neutral_horizontal_midpoints_m": {
+      "ankle_half_width_m": 0.13,
+      "elbow_half_width_m": 0.28,
+      "hip_half_width_m": 0.155,
+      "knee_half_width_m": 0.13,
+      "pelvis_depth_m": 0.24,
+      "pelvis_width_m": 0.35,
+      "shoulder_half_width_m": 0.245,
+      "torso_depth_m": 0.25,
+      "torso_width_m": 0.455,
+      "wrist_half_width_m": 0.265
+    },
+    "object_counts": {
+      "armature": 1,
+      "camera": 1,
+      "light": 0,
+      "mesh": 1,
+      "total": 3
+    },
+    "preset_ids": [
+      "masculine_tone_1",
+      "masculine_tone_2",
+      "masculine_tone_3",
+      "masculine_tone_4",
+      "feminine_tone_1",
+      "feminine_tone_2",
+      "feminine_tone_3",
+      "feminine_tone_4"
+    ],
+    "rest_pose_saved": true,
+    "skinning": {
+      "component_count": 16,
+      "components": [
+        {
+          "bounds_max_m": [
+            0.133148,
+            0.14,
+            1.8
+          ],
+          "bounds_min_m": [
+            -0.133148,
+            -0.14,
+            1.52
+          ],
+          "center_m": [
+            -0.0,
+            -0.0,
+            1.66
+          ],
+          "first_vertex": 0,
+          "owner": "head",
+          "vertex_count": 42
+        },
+        {
+          "bounds_max_m": [
+            0.075,
+            0.075,
+            1.55
+          ],
+          "bounds_min_m": [
+            -0.075,
+            -0.075,
+            1.47
+          ],
+          "center_m": [
+            0.0,
+            0.0,
+            1.51
+          ],
+          "first_vertex": 42,
+          "owner": "neck",
+          "vertex_count": 16
+        },
+        {
+          "bounds_max_m": [
+            0.2275,
+            0.125,
+            1.46
+          ],
+          "bounds_min_m": [
+            -0.2275,
+            -0.125,
+            0.97
+          ],
+          "center_m": [
+            0.0,
+            0.0,
+            1.215
+          ],
+          "first_vertex": 58,
+          "owner": "spine",
+          "vertex_count": 8
+        },
+        {
+          "bounds_max_m": [
+            0.175,
+            0.12,
+            1.0
+          ],
+          "bounds_min_m": [
+            -0.175,
+            -0.12,
+            0.82
+          ],
+          "center_m": [
+            0.0,
+            0.0,
+            0.91
+          ],
+          "first_vertex": 66,
+          "owner": "root",
+          "vertex_count": 8
+        },
+        {
+          "bounds_max_m": [
+            0.343643,
+            0.064,
+            1.45675
+          ],
+          "bounds_min_m": [
+            0.181357,
+            -0.064,
+            1.11325
+          ],
+          "center_m": [
+            0.2625,
+            -0.0,
+            1.285
+          ],
+          "first_vertex": 74,
+          "owner": "upper_arm.L",
+          "vertex_count": 16
+        },
+        {
+          "bounds_max_m": [
+            0.334947,
+            0.055,
+            1.122424
+          ],
+          "bounds_min_m": [
+            0.210053,
+            -0.055,
+            0.777576
+          ],
+          "center_m": [
+            0.2725,
+            0.0,
+            0.95
+          ],
+          "first_vertex": 90,
+          "owner": "forearm.L",
+          "vertex_count": 16
+        },
+        {
+          "bounds_max_m": [
+            0.322063,
+            0.06,
+            0.785
+          ],
+          "bounds_min_m": [
+            0.207937,
+            -0.06,
+            0.665
+          ],
+          "center_m": [
+            0.265,
+            -0.0,
+            0.725
+          ],
+          "first_vertex": 106,
+          "owner": "forearm.L",
+          "vertex_count": 42
+        },
+        {
+          "bounds_max_m": [
+            0.239842,
+            0.085,
+            0.945173
+          ],
+          "bounds_min_m": [
+            0.045158,
+            -0.085,
+            0.524827
+          ],
+          "center_m": [
+            0.1425,
+            -0.0,
+            0.735
+          ],
+          "first_vertex": 148,
+          "owner": "thigh.L",
+          "vertex_count": 16
+        },
+        {
+          "bounds_max_m": [
+            0.2,
+            0.07,
+            0.53
+          ],
+          "bounds_min_m": [
+            0.06,
+            -0.07,
+            0.1
+          ],
+          "center_m": [
+            0.13,
+            0.0,
+            0.315
+          ],
+          "first_vertex": 164,
+          "owner": "shin.L",
+          "vertex_count": 16
+        },
+        {
+          "bounds_max_m": [
+            0.21,
+            0.085,
+            0.11
+          ],
+          "bounds_min_m": [
+            0.05,
+            -0.195,
+            0.0
+          ],
+          "center_m": [
+            0.13,
+            -0.055,
+            0.055
+          ],
+          "first_vertex": 180,
+          "owner": "shin.L",
+          "vertex_count": 8
+        },
+        {
+          "bounds_max_m": [
+            -0.181357,
+            0.064,
+            1.45675
+          ],
+          "bounds_min_m": [
+            -0.343643,
+            -0.064,
+            1.11325
+          ],
+          "center_m": [
+            -0.2625,
+            0.0,
+            1.285
+          ],
+          "first_vertex": 188,
+          "owner": "upper_arm.R",
+          "vertex_count": 16
+        },
+        {
+          "bounds_max_m": [
+            -0.210053,
+            0.055,
+            1.122424
+          ],
+          "bounds_min_m": [
+            -0.334947,
+            -0.055,
+            0.777576
+          ],
+          "center_m": [
+            -0.2725,
+            -0.0,
+            0.95
+          ],
+          "first_vertex": 204,
+          "owner": "forearm.R",
+          "vertex_count": 16
+        },
+        {
+          "bounds_max_m": [
+            -0.207937,
+            0.06,
+            0.785
+          ],
+          "bounds_min_m": [
+            -0.322063,
+            -0.06,
+            0.665
+          ],
+          "center_m": [
+            -0.265,
+            -0.0,
+            0.725
+          ],
+          "first_vertex": 220,
+          "owner": "forearm.R",
+          "vertex_count": 42
+        },
+        {
+          "bounds_max_m": [
+            -0.045158,
+            0.085,
+            0.945173
+          ],
+          "bounds_min_m": [
+            -0.239842,
+            -0.085,
+            0.524827
+          ],
+          "center_m": [
+            -0.1425,
+            0.0,
+            0.735
+          ],
+          "first_vertex": 262,
+          "owner": "thigh.R",
+          "vertex_count": 16
+        },
+        {
+          "bounds_max_m": [
+            -0.06,
+            0.07,
+            0.53
+          ],
+          "bounds_min_m": [
+            -0.2,
+            -0.07,
+            0.1
+          ],
+          "center_m": [
+            -0.13,
+            0.0,
+            0.315
+          ],
+          "first_vertex": 278,
+          "owner": "shin.R",
+          "vertex_count": 16
+        },
+        {
+          "bounds_max_m": [
+            -0.05,
+            0.085,
+            0.11
+          ],
+          "bounds_min_m": [
+            -0.21,
+            -0.195,
+            0.0
+          ],
+          "center_m": [
+            -0.13,
+            -0.055,
+            0.055
+          ],
+          "first_vertex": 294,
+          "owner": "shin.R",
+          "vertex_count": 8
+        }
+      ],
+      "groups": {
+        "forearm.L": {
+          "vertex_count": 58,
+          "weight_sum": 58.0
+        },
+        "forearm.R": {
+          "vertex_count": 58,
+          "weight_sum": 58.0
+        },
+        "head": {
+          "vertex_count": 42,
+          "weight_sum": 42.0
+        },
+        "neck": {
+          "vertex_count": 16,
+          "weight_sum": 16.0
+        },
+        "root": {
+          "vertex_count": 8,
+          "weight_sum": 8.0
+        },
+        "shin.L": {
+          "vertex_count": 24,
+          "weight_sum": 24.0
+        },
+        "shin.R": {
+          "vertex_count": 24,
+          "weight_sum": 24.0
+        },
+        "spine": {
+          "vertex_count": 8,
+          "weight_sum": 8.0
+        },
+        "thigh.L": {
+          "vertex_count": 16,
+          "weight_sum": 16.0
+        },
+        "thigh.R": {
+          "vertex_count": 16,
+          "weight_sum": 16.0
+        },
+        "upper_arm.L": {
+          "vertex_count": 16,
+          "weight_sum": 16.0
+        },
+        "upper_arm.R": {
+          "vertex_count": 16,
+          "weight_sum": 16.0
+        }
+      },
+      "influence_histogram": {
+        "1": 302
+      },
+      "max_influences_per_vertex": 1,
+      "modifier": {
+        "armature": "ARMATURE__shared_bilateral_v1",
+        "bone_envelopes": false,
+        "name": "ARMATURE__static_deformation_proof",
+        "preserve_volume": false,
+        "type": "ARMATURE",
+        "vertex_groups": true
+      },
+      "non_normalized_vertices": 0,
+      "unweighted_vertices": 0
+    },
+    "source_semantic_sha256": "C34CD757A694EC897350350BA1B977A67EFCE6B8E959799992559DB9A0A54860",
+    "static_deformation": {
+      "delta_identity_sha256": "61819BDCAAC79CC8F86AEE354AE9B74B2FF0F4F5D3045BA1AA47A4EB9352C005",
+      "diagnostic_only": true,
+      "joints_exercised": [
+        "shoulders",
+        "elbows",
+        "hips",
+        "knees"
+      ],
+      "max_displacement_m": 0.151338,
+      "moved_vertex_count": 228,
+      "pose_degrees_local_z": {
+        "forearm.L": 48.0,
+        "forearm.R": -48.0,
+        "shin.L": -28.0,
+        "shin.R": 28.0,
+        "thigh.L": 12.0,
+        "thigh.R": -12.0,
+        "upper_arm.L": -24.0,
+        "upper_arm.R": 24.0
+      }
+    }
+  },
+  "source_custody": {
+    "blend": {
+      "file": "../SharedSkeletonCandidate/SharedSkeletonCharacterCandidate.blend",
+      "sha256": "27D4F7D5585B7AACD90AEF9A03D0426E5415EF2C17F002F79C832F080F9D9F80"
+    },
+    "manifest": {
+      "file": "../SharedSkeletonCandidate/manifest.json",
+      "sha256": "63A839B581E8DB21F4F98861D734372A79581126F542174022ACA950B6060A95"
+    },
+    "semantic_sha256": "C34CD757A694EC897350350BA1B977A67EFCE6B8E959799992559DB9A0A54860"
+  },
+  "status": "skinned_source_static_diagnostic_only_not_animated_or_runtime"
+}

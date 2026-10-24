@@ -1,0 +1,9 @@
+{
+  "scene_source_sha256": "118a64a22401e78a25c6d76ab0e38b6a03e013ff7ad31ae0830ad4ecfe07bb92",
+  "candidate_sha256": "b18d2443a17785426df6c695b6139a2bdf0a9bdc8296cfd10d0feb35be9f451e",
+  "appended_actor_objects": 16,
+  "frame": 13,
+  "samples": 16,
+  "render": "Native Sundale Blender gameplay-camera composition",
+  "runtime_integrated": false
+}

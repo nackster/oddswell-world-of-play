@@ -1,0 +1,72 @@
+{
+  "terlenka": {
+    "source": "https://polyhaven.com/a/terlenka",
+    "license": "CC0",
+    "authors": {
+      "colormass": "Photography",
+      "Rico Cilliers": "Processing"
+    },
+    "dimensions_mm": [
+      265.70814767607123,
+      266.2999927997589
+    ],
+    "maps": {
+      "Diffuse": {
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/terlenka/terlenka_diff_2k.jpg",
+        "md5": "e700ed70868589a6e48d7044eb480b67",
+        "size": 3431365,
+        "file": "terlenka_diff_2k.jpg",
+        "sha256": "9528ce33df474c01f938b3afafe895b79a7b66f5706e4c735e8362e61b5bfb84"
+      },
+      "Displacement": {
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/2k/terlenka/terlenka_disp_2k.png",
+        "md5": "8c4ccdc7675d945896c0f975ce559532",
+        "size": 7983035,
+        "file": "terlenka_disp_2k.png",
+        "sha256": "1823e83f84769ead3b821a0f6dabc3720d6229fe905366f0b5c3f36f2a205769"
+      },
+      "Rough": {
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/terlenka/terlenka_rough_2k.jpg",
+        "md5": "ed2a0c2bbf67a99134a7e8d91165afd2",
+        "size": 4073321,
+        "file": "terlenka_rough_2k.jpg",
+        "sha256": "1184d1715c1d57dc3eb2550cbf6e42bac67ee6b7a271eb7b83874b011392c036"
+      }
+    }
+  },
+  "denim_fabric_04": {
+    "source": "https://polyhaven.com/a/denim_fabric_04",
+    "license": "CC0",
+    "authors": {
+      "colormass": "Photography",
+      "Rico Cilliers": "Processing"
+    },
+    "dimensions_mm": [
+      272.8973422962554,
+      269.3000137805939
+    ],
+    "maps": {
+      "Diffuse": {
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/denim_fabric_04/denim_fabric_04_diff_2k.jpg",
+        "md5": "fdfe5ac872f78a15402ceb739b5b5478",
+        "size": 4042147,
+        "file": "denim_fabric_04_diff_2k.jpg",
+        "sha256": "6926a6f3e2e494e9890f27bf30e53af50452b2e2eb46e7dbeb049f3723806be9"
+      },
+      "Displacement": {
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/2k/denim_fabric_04/denim_fabric_04_disp_2k.png",
+        "md5": "221ce6cc45ce4ad76b0cd438b4e7b629",
+        "size": 7641104,
+        "file": "denim_fabric_04_disp_2k.png",
+        "sha256": "e07e609f39744cf60eaa4c3eec321332c13940f59c32bf9529c766f00ffe8dbe"
+      },
+      "Rough": {
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/denim_fabric_04/denim_fabric_04_rough_2k.jpg",
+        "md5": "a3d22ffef77234249f81edfbb31ecd31",
+        "size": 4227558,
+        "file": "denim_fabric_04_rough_2k.jpg",
+        "sha256": "69af47a013cc42273e7dcaef4f44c1704b07c73a5d4e1a61bf2f1c535b2ae5f8"
+      }
+    }
+  }
+}

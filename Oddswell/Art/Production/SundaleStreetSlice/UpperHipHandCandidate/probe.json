@@ -1,0 +1,350 @@
+{
+  "SOURCE": [
+    {
+      "frame": 1,
+      "Character | anatomical right hand self": 1,
+      "Character | anatomical left hand self": 108,
+      "Character | tailored slate jacket self": 0,
+      "Character | tailored slate jacket / Character | internal torso support": 1701,
+      "Character | shorts leg continuous tailoring self": 0,
+      "Character | shorts leg continuous tailoring / Character | internal torso support": 899,
+      "Character | shorts leg continuous tailoring / Character | anatomical legs": 0
+    },
+    {
+      "frame": 7,
+      "Character | anatomical right hand self": 0,
+      "Character | anatomical left hand self": 53,
+      "Character | tailored slate jacket self": 0,
+      "Character | tailored slate jacket / Character | internal torso support": 1701,
+      "Character | shorts leg continuous tailoring self": 0,
+      "Character | shorts leg continuous tailoring / Character | internal torso support": 599,
+      "Character | shorts leg continuous tailoring / Character | anatomical legs": 0
+    },
+    {
+      "frame": 13,
+      "Character | anatomical right hand self": 30,
+      "Character | anatomical left hand self": 3,
+      "Character | tailored slate jacket self": 0,
+      "Character | tailored slate jacket / Character | internal torso support": 1699,
+      "Character | shorts leg continuous tailoring self": 0,
+      "Character | shorts leg continuous tailoring / Character | internal torso support": 676,
+      "Character | shorts leg continuous tailoring / Character | anatomical legs": 0
+    },
+    {
+      "frame": 17,
+      "Character | anatomical right hand self": 0,
+      "Character | anatomical left hand self": 50,
+      "Character | tailored slate jacket self": 0,
+      "Character | tailored slate jacket / Character | internal torso support": 1699,
+      "Character | shorts leg continuous tailoring self": 0,
+      "Character | shorts leg continuous tailoring / Character | internal torso support": 631,
+      "Character | shorts leg continuous tailoring / Character | anatomical legs": 0
+    },
+    {
+      "frame": 18,
+      "Character | anatomical right hand self": 0,
+      "Character | anatomical left hand self": 58,
+      "Character | tailored slate jacket self": 4,
+      "Character | tailored slate jacket / Character | internal torso support": 1699,
+      "Character | shorts leg continuous tailoring self": 0,
+      "Character | shorts leg continuous tailoring / Character | internal torso support": 617,
+      "Character | shorts leg continuous tailoring / Character | anatomical legs": 0
+    },
+    {
+      "frame": 32,
+      "Character | anatomical right hand self": 0,
+      "Character | anatomical left hand self": 59,
+      "Character | tailored slate jacket self": 4,
+      "Character | tailored slate jacket / Character | internal torso support": 1699,
+      "Character | shorts leg continuous tailoring self": 0,
+      "Character | shorts leg continuous tailoring / Character | internal torso support": 617,
+      "Character | shorts leg continuous tailoring / Character | anatomical legs": 0
+    },
+    {
+      "frame": 34,
+      "Character | anatomical right hand self": 0,
+      "Character | anatomical left hand self": 32,
+      "Character | tailored slate jacket self": 0,
+      "Character | tailored slate jacket / Character | internal torso support": 1699,
+      "Character | shorts leg continuous tailoring self": 13,
+      "Character | shorts leg continuous tailoring / Character | internal torso support": 652,
+      "Character | shorts leg continuous tailoring / Character | anatomical legs": 0
+    },
+    {
+      "frame": 35,
+      "Character | anatomical right hand self": 0,
+      "Character | anatomical left hand self": 32,
+      "Character | tailored slate jacket self": 0,
+      "Character | tailored slate jacket / Character | internal torso support": 1698,
+      "Character | shorts leg continuous tailoring self": 0,
+      "Character | shorts leg continuous tailoring / Character | internal torso support": 670,
+      "Character | shorts leg continuous tailoring / Character | anatomical legs": 0
+    },
+    {
+      "frame": 37,
+      "Character | anatomical right hand self": 30,
+      "Character | anatomical left hand self": 3,
+      "Character | tailored slate jacket self": 0,
+      "Character | tailored slate jacket / Character | internal torso support": 1701,
+      "Character | shorts leg continuous tailoring self": 0,
+      "Character | shorts leg continuous tailoring / Character | internal torso support": 676,
+      "Character | shorts leg continuous tailoring / Character | anatomical legs": 0
+    },
+    {
+      "frame": 41,
+      "Character | anatomical right hand self": 0,
+      "Character | anatomical left hand self": 50,
+      "Character | tailored slate jacket self": 0,
+      "Character | tailored slate jacket / Character | internal torso support": 1699,
+      "Character | shorts leg continuous tailoring self": 0,
+      "Character | shorts leg continuous tailoring / Character | internal torso support": 632,
+      "Character | shorts leg continuous tailoring / Character | anatomical legs": 0
+    },
+    {
+      "frame": 42,
+      "Character | anatomical right hand self": 0,
+      "Character | anatomical left hand self": 58,
+      "Character | tailored slate jacket self": 4,
+      "Character | tailored slate jacket / Character | internal torso support": 1699,
+      "Character | shorts leg continuous tailoring self": 0,
+      "Character | shorts leg continuous tailoring / Character | internal torso support": 617,
+      "Character | shorts leg continuous tailoring / Character | anatomical legs": 0
+    }
+  ],
+  "CANDIDATE": [
+    {
+      "frame": 1,
+      "Character | anatomical right hand self": 0,
+      "Character | anatomical left hand self": 108,
+      "Character | tailored slate jacket self": 0,
+      "Character | tailored slate jacket / Character | internal torso support": 1701,
+      "Character | shorts leg continuous tailoring self": 0,
+      "Character | shorts leg continuous tailoring / Character | internal torso support": 899,
+      "Character | shorts leg continuous tailoring / Character | anatomical legs": 0,
+      "Character | shorts leg continuous tailoring / Character | continuous pelvis and upper thigh fitting": 1253,
+      "continuous_skin_self": 0,
+      "new_pairs": {
+        "Character | anatomical right hand self": 0,
+        "Character | anatomical left hand self": 0,
+        "Character | tailored slate jacket self": 0,
+        "Character | tailored slate jacket / Character | internal torso support": 0,
+        "Character | shorts leg continuous tailoring self": 0,
+        "Character | shorts leg continuous tailoring / Character | internal torso support": 1,
+        "Character | shorts leg continuous tailoring / Character | anatomical legs": 0
+      }
+    },
+    {
+      "frame": 7,
+      "Character | anatomical right hand self": 0,
+      "Character | anatomical left hand self": 53,
+      "Character | tailored slate jacket self": 0,
+      "Character | tailored slate jacket / Character | internal torso support": 1701,
+      "Character | shorts leg continuous tailoring self": 0,
+      "Character | shorts leg continuous tailoring / Character | internal torso support": 599,
+      "Character | shorts leg continuous tailoring / Character | anatomical legs": 0,
+      "Character | shorts leg continuous tailoring / Character | continuous pelvis and upper thigh fitting": 1835,
+      "continuous_skin_self": 0,
+      "new_pairs": {
+        "Character | anatomical right hand self": 0,
+        "Character | anatomical left hand self": 0,
+        "Character | tailored slate jacket self": 0,
+        "Character | tailored slate jacket / Character | internal torso support": 0,
+        "Character | shorts leg continuous tailoring self": 0,
+        "Character | shorts leg continuous tailoring / Character | internal torso support": 0,
+        "Character | shorts leg continuous tailoring / Character | anatomical legs": 0
+      }
+    },
+    {
+      "frame": 13,
+      "Character | anatomical right hand self": 30,
+      "Character | anatomical left hand self": 3,
+      "Character | tailored slate jacket self": 0,
+      "Character | tailored slate jacket / Character | internal torso support": 1699,
+      "Character | shorts leg continuous tailoring self": 0,
+      "Character | shorts leg continuous tailoring / Character | internal torso support": 676,
+      "Character | shorts leg continuous tailoring / Character | anatomical legs": 0,
+      "Character | shorts leg continuous tailoring / Character | continuous pelvis and upper thigh fitting": 2124,
+      "continuous_skin_self": 0,
+      "new_pairs": {
+        "Character | anatomical right hand self": 0,
+        "Character | anatomical left hand self": 0,
+        "Character | tailored slate jacket self": 0,
+        "Character | tailored slate jacket / Character | internal torso support": 0,
+        "Character | shorts leg continuous tailoring self": 0,
+        "Character | shorts leg continuous tailoring / Character | internal torso support": 1,
+        "Character | shorts leg continuous tailoring / Character | anatomical legs": 0
+      }
+    },
+    {
+      "frame": 17,
+      "Character | anatomical right hand self": 0,
+      "Character | anatomical left hand self": 50,
+      "Character | tailored slate jacket self": 0,
+      "Character | tailored slate jacket / Character | internal torso support": 1699,
+      "Character | shorts leg continuous tailoring self": 0,
+      "Character | shorts leg continuous tailoring / Character | internal torso support": 631,
+      "Character | shorts leg continuous tailoring / Character | anatomical legs": 0,
+      "Character | shorts leg continuous tailoring / Character | continuous pelvis and upper thigh fitting": 1646,
+      "continuous_skin_self": 0,
+      "new_pairs": {
+        "Character | anatomical right hand self": 0,
+        "Character | anatomical left hand self": 0,
+        "Character | tailored slate jacket self": 0,
+        "Character | tailored slate jacket / Character | internal torso support": 0,
+        "Character | shorts leg continuous tailoring self": 0,
+        "Character | shorts leg continuous tailoring / Character | internal torso support": 1,
+        "Character | shorts leg continuous tailoring / Character | anatomical legs": 0
+      }
+    },
+    {
+      "frame": 18,
+      "Character | anatomical right hand self": 0,
+      "Character | anatomical left hand self": 58,
+      "Character | tailored slate jacket self": 4,
+      "Character | tailored slate jacket / Character | internal torso support": 1699,
+      "Character | shorts leg continuous tailoring self": 0,
+      "Character | shorts leg continuous tailoring / Character | internal torso support": 617,
+      "Character | shorts leg continuous tailoring / Character | anatomical legs": 0,
+      "Character | shorts leg continuous tailoring / Character | continuous pelvis and upper thigh fitting": 1358,
+      "continuous_skin_self": 0,
+      "new_pairs": {
+        "Character | anatomical right hand self": 0,
+        "Character | anatomical left hand self": 0,
+        "Character | tailored slate jacket self": 0,
+        "Character | tailored slate jacket / Character | internal torso support": 0,
+        "Character | shorts leg continuous tailoring self": 0,
+        "Character | shorts leg continuous tailoring / Character | internal torso support": 0,
+        "Character | shorts leg continuous tailoring / Character | anatomical legs": 0
+      }
+    },
+    {
+      "frame": 32,
+      "Character | anatomical right hand self": 0,
+      "Character | anatomical left hand self": 59,
+      "Character | tailored slate jacket self": 4,
+      "Character | tailored slate jacket / Character | internal torso support": 1699,
+      "Character | shorts leg continuous tailoring self": 0,
+      "Character | shorts leg continuous tailoring / Character | internal torso support": 617,
+      "Character | shorts leg continuous tailoring / Character | anatomical legs": 0,
+      "Character | shorts leg continuous tailoring / Character | continuous pelvis and upper thigh fitting": 2226,
+      "continuous_skin_self": 0,
+      "new_pairs": {
+        "Character | anatomical right hand self": 0,
+        "Character | anatomical left hand self": 0,
+        "Character | tailored slate jacket self": 0,
+        "Character | tailored slate jacket / Character | internal torso support": 0,
+        "Character | shorts leg continuous tailoring self": 0,
+        "Character | shorts leg continuous tailoring / Character | internal torso support": 0,
+        "Character | shorts leg continuous tailoring / Character | anatomical legs": 0
+      }
+    },
+    {
+      "frame": 34,
+      "Character | anatomical right hand self": 0,
+      "Character | anatomical left hand self": 32,
+      "Character | tailored slate jacket self": 0,
+      "Character | tailored slate jacket / Character | internal torso support": 1699,
+      "Character | shorts leg continuous tailoring self": 0,
+      "Character | shorts leg continuous tailoring / Character | internal torso support": 652,
+      "Character | shorts leg continuous tailoring / Character | anatomical legs": 0,
+      "Character | shorts leg continuous tailoring / Character | continuous pelvis and upper thigh fitting": 2708,
+      "continuous_skin_self": 0,
+      "new_pairs": {
+        "Character | anatomical right hand self": 0,
+        "Character | anatomical left hand self": 0,
+        "Character | tailored slate jacket self": 0,
+        "Character | tailored slate jacket / Character | internal torso support": 0,
+        "Character | shorts leg continuous tailoring self": 0,
+        "Character | shorts leg continuous tailoring / Character | internal torso support": 0,
+        "Character | shorts leg continuous tailoring / Character | anatomical legs": 0
+      }
+    },
+    {
+      "frame": 35,
+      "Character | anatomical right hand self": 0,
+      "Character | anatomical left hand self": 32,
+      "Character | tailored slate jacket self": 0,
+      "Character | tailored slate jacket / Character | internal torso support": 1698,
+      "Character | shorts leg continuous tailoring self": 0,
+      "Character | shorts leg continuous tailoring / Character | internal torso support": 670,
+      "Character | shorts leg continuous tailoring / Character | anatomical legs": 0,
+      "Character | shorts leg continuous tailoring / Character | continuous pelvis and upper thigh fitting": 2594,
+      "continuous_skin_self": 0,
+      "new_pairs": {
+        "Character | anatomical right hand self": 0,
+        "Character | anatomical left hand self": 0,
+        "Character | tailored slate jacket self": 0,
+        "Character | tailored slate jacket / Character | internal torso support": 0,
+        "Character | shorts leg continuous tailoring self": 0,
+        "Character | shorts leg continuous tailoring / Character | internal torso support": 2,
+        "Character | shorts leg continuous tailoring / Character | anatomical legs": 0
+      }
+    },
+    {
+      "frame": 37,
+      "Character | anatomical right hand self": 30,
+      "Character | anatomical left hand self": 3,
+      "Character | tailored slate jacket self": 0,
+      "Character | tailored slate jacket / Character | internal torso support": 1701,
+      "Character | shorts leg continuous tailoring self": 0,
+      "Character | shorts leg continuous tailoring / Character | internal torso support": 676,
+      "Character | shorts leg continuous tailoring / Character | anatomical legs": 0,
+      "Character | shorts leg continuous tailoring / Character | continuous pelvis and upper thigh fitting": 2124,
+      "continuous_skin_self": 0,
+      "new_pairs": {
+        "Character | anatomical right hand self": 0,
+        "Character | anatomical left hand self": 0,
+        "Character | tailored slate jacket self": 0,
+        "Character | tailored slate jacket / Character | internal torso support": 0,
+        "Character | shorts leg continuous tailoring self": 0,
+        "Character | shorts leg continuous tailoring / Character | internal torso support": 1,
+        "Character | shorts leg continuous tailoring / Character | anatomical legs": 0
+      }
+    },
+    {
+      "frame": 41,
+      "Character | anatomical right hand self": 0,
+      "Character | anatomical left hand self": 50,
+      "Character | tailored slate jacket self": 0,
+      "Character | tailored slate jacket / Character | internal torso support": 1699,
+      "Character | shorts leg continuous tailoring self": 0,
+      "Character | shorts leg continuous tailoring / Character | internal torso support": 632,
+      "Character | shorts leg continuous tailoring / Character | anatomical legs": 0,
+      "Character | shorts leg continuous tailoring / Character | continuous pelvis and upper thigh fitting": 1646,
+      "continuous_skin_self": 0,
+      "new_pairs": {
+        "Character | anatomical right hand self": 0,
+        "Character | anatomical left hand self": 0,
+        "Character | tailored slate jacket self": 0,
+        "Character | tailored slate jacket / Character | internal torso support": 0,
+        "Character | shorts leg continuous tailoring self": 0,
+        "Character | shorts leg continuous tailoring / Character | internal torso support": 1,
+        "Character | shorts leg continuous tailoring / Character | anatomical legs": 0
+      }
+    },
+    {
+      "frame": 42,
+      "Character | anatomical right hand self": 0,
+      "Character | anatomical left hand self": 58,
+      "Character | tailored slate jacket self": 4,
+      "Character | tailored slate jacket / Character | internal torso support": 1699,
+      "Character | shorts leg continuous tailoring self": 0,
+      "Character | shorts leg continuous tailoring / Character | internal torso support": 617,
+      "Character | shorts leg continuous tailoring / Character | anatomical legs": 0,
+      "Character | shorts leg continuous tailoring / Character | continuous pelvis and upper thigh fitting": 1358,
+      "continuous_skin_self": 0,
+      "new_pairs": {
+        "Character | anatomical right hand self": 0,
+        "Character | anatomical left hand self": 0,
+        "Character | tailored slate jacket self": 0,
+        "Character | tailored slate jacket / Character | internal torso support": 0,
+        "Character | shorts leg continuous tailoring self": 0,
+        "Character | shorts leg continuous tailoring / Character | internal torso support": 1,
+        "Character | shorts leg continuous tailoring / Character | anatomical legs": 0
+      }
+    }
+  ],
+  "scope": "Eleven selected authored integer poses, actual evaluated render triangles: jacket/shorts/hand self pairs and recorded support contacts. Not all 49 poses, subframes, full body contacts, nail attachment or runtime.",
+  "source_sha256": "c1f8fac3579c2ea93bf31fcff052d68db887f1b5d74cedcdac4df4b7250e2d66",
+  "candidate_sha256": "90af187cf9cfa558f4d06a4b7398d02a8097991309e06789dbf61b0ebc36afeb"
+}

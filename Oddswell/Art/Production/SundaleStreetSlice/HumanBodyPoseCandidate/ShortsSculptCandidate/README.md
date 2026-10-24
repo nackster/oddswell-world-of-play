@@ -1,0 +1,9 @@
+# Shorts shape development candidate
+
+This separate editable Blender candidate starts from the exact [gusset scene](../ShortsGussetCandidate/README.md), SHA-256 `DC8F2911249FA07AD128BE2C692CD5934AAAAF435C90B171B606147581F8AFAB`. `build_sculpt_candidate.py` relaxes the concentrated left inseam wrinkle in the shorts control mesh, adds modest upper-thigh volume and a shallow front fly depression, and refits the existing hem and rear-pocket curves. It leaves the face, hands, jacket, shoes, landscape and parent scenes unchanged. The saved Blend is `OddsWell_Shorts_Sculpt_Candidate.blend`, SHA-256 `7280891086D7F947D33305C640D97A2B464F7602B2E585AB1BDF01248BE697C7`.
+
+Four native Cycles renders show close and full front/rear views. The rear left fold is quieter and the front thigh is slightly less pinched, but the upper shorts remain broad and smooth. At whole-body scale the character still reads as a digital model. A separate experiment with projected pocket slits and fly stitches looked like floating lines and was rejected; it is not in this file.
+
+The [gameplay-scale review](JacketGameplayReview.md) adds a native rear street-camera render and records why direct jacket folds and a softer cloth resimulation were rejected. It identifies the jacket panel shape, raglan join and sleeve ease as the next structural human work.
+
+The fresh cold reopen reports 31 packed maps, ten cameras, one connected shorts surface, three openings, 2.48 mm minimum sampled shorts-to-thigh clearance, and the planted right sole at 51 mm. The mesh sculpt's maximum control displacement is 6.91 mm. These static checks do not prove walking clearance or visual realism. The next garment pass needs a cut-and-sewn front/seat pattern and drape solution with more thigh margin, followed by front/rear/gameplay renders against the first concept. The human-realism goal remains active; this is neither final art nor an Unreal asset.

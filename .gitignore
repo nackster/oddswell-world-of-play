@@ -66,3 +66,9 @@ phase0a/*.jsonl
 
 # Legacy duplicate of the canonical Obsidian vault
 docs/brain/
+
+# Disposable draft render; final Sundale scene views are retained.
+Oddswell/Art/Production/SundaleStreetSlice/StreetSlice_Preview.png
+
+# Generated MetaHumans (~450 MB each) are rebuilt with client/tools/metahuman (DEC-038), not stored in git.
+client/OddsWell/Content/OddsWell/Characters/MetaHumans/

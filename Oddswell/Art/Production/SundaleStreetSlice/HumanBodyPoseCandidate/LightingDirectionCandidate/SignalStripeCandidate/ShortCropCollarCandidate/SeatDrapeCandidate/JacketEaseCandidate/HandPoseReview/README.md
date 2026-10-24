@@ -1,0 +1,7 @@
+# Hand and cuff close review
+
+These 32-sample native Cycles views come from the exact [jacket-ease scene](../README.md), SHA-256 `D9AF666965C9F7AAF78A27F9C119D285CD9747559F7635F58CF1DFC37B9D7E20`. `render_hand_pose_review.py` reproduces [near rear](Rear_Near.png), [far outer](Outer_Far.png), and [near front](Front_Near.png) views without changing the saved scene.
+
+The anatomical hand meshes contain individual fingers, nails and subtle dorsal relief, but the overall gesture still reads stiff. In the rear view the thumb splays away from the palm and the digits form a repeated hook. The outer view shows a large flared rib cuff and little sleeve compression at the wrist. The front view shows an abrupt straight cuff edge above the hand. These issues are visible at full-body scale as rigid hands and tube-like sleeves.
+
+The object labels are spatially crossed in this scene: `anatomical left hand` is near world x = -0.494 while `sleeve cuff left` is near x = -1.014; the other hand and cuff occupy the opposite pair. A joint-aware deformation should associate each hand with its nearest cuff in space rather than relying on matching side names. Next establish shoulder, elbow and wrist landmarks, rotate the hand's shape-key basis and attached nail details coherently, cut the sleeve and cuff for the resulting pose, and inspect profile, rear, front and gameplay renders together. This review does not accept the current hand pose as realistic.

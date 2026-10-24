@@ -1,0 +1,88 @@
+{
+  "result": "PASS",
+  "source": "Oddswell/Art/Production/SundaleStreetSlice/ShoulderEaseCandidate/ShoulderEase.blend",
+  "source_sha256": "9A6BB3CA8D257CD7E130D0CDDC460264D7B645D4669E4D68416F7CA35E80730F",
+  "scene": "NeckSkinUV.blend",
+  "blender": "4.5.5 LTS",
+  "native_review_views": 4,
+  "samples": {
+    "figure": 12,
+    "gameplay": 24
+  },
+  "files": [
+    {
+      "path": "audit.py",
+      "sha256": "366BA8CCEA37B3C43C11CBC3451451ADF4A34F9094EF69B0344D23BBF402E9A4",
+      "bytes": 5835
+    },
+    {
+      "path": "build.py",
+      "sha256": "53D155E266C101E149E40F71EDF66FD02A4A2F150158F34F13BE44B80405C012",
+      "bytes": 4234
+    },
+    {
+      "path": "cold-check.json",
+      "sha256": "7D4366EF004FDAFBEC97D9180C5546344542AC8908AC18ADF7DC739BA905DC72",
+      "bytes": 3229
+    },
+    {
+      "path": "NeckSkinUV-audit.json",
+      "sha256": "6F83CFEB10DD222FE9432009963E05447A9F2B7C4F22ECC4DA9E73ECA87614C7",
+      "bytes": 637
+    },
+    {
+      "path": "NeckSkinUV.blend",
+      "sha256": "D8F4CA3DCAEFE622247EB24191ACFAE68F9F3E5EAC1642EE5404D51ECBE6000B",
+      "bytes": 640334907
+    },
+    {
+      "path": "NeckSkinUV_Front.png",
+      "sha256": "0746E3C972DC5540A14AC73C375C3B0C434A4403E2716C5EDC519717A4384BD1",
+      "bytes": 852709
+    },
+    {
+      "path": "NeckSkinUV_Gameplay.png",
+      "sha256": "6FE6C6E2AAA88733A0706D74881F9A651C042C9833EC9DAEF38EF0737EE218D0",
+      "bytes": 1632460
+    },
+    {
+      "path": "NeckSkinUV_NeckFront.png",
+      "sha256": "AC8E3898E7C4301294FBA79E98B5B4DA4CD3F8FE16725690EF1447CB0A52D28A",
+      "bytes": 964607
+    },
+    {
+      "path": "NeckSkinUV_NeckRear.png",
+      "sha256": "B0745CFB9863C1A54D03F13088726456F7EB8518BB0BA0EA0DF2E0691F20F200",
+      "bytes": 1224194
+    },
+    {
+      "path": "README.md",
+      "sha256": "77D8BE19B4AB4D147679B61746CDDF28BD7BD66C957CF91AE57C72A9421B9A42",
+      "bytes": 3875
+    },
+    {
+      "path": "render.py",
+      "sha256": "C7925461F7BC1A81B3C2687C9E2E2EF1DCEAAF3C92895A24FDB90908B9E01CA0",
+      "bytes": 1800
+    },
+    {
+      "path": "uv-slope.json",
+      "sha256": "E8EC2D045775D77385B39D9048F039943B3A0F3D838F69A68F8CF67D608D204F",
+      "bytes": 29149
+    }
+  ],
+  "source_dependencies": [
+    {
+      "path": "Oddswell/Art/Production/SundaleStreetSlice/verify_scene.py",
+      "sha256": "05FC57D6B261B50330A1EA3DD983C57D7F6B5E50BCF013947B17438FA75B4BE2"
+    }
+  ],
+  "geometry_source_comparison": "EXACT",
+  "source_map_comparison": "EXACT",
+  "neck_uv_screen": "PASS",
+  "scene_cold_check": "PASS",
+  "goal_status": "active",
+  "runtime_claim": false,
+  "final_art_approval": false,
+  "next": "Chest/underarm drape, collar attachment and facial/form refinement; whole-reference review, then architecture/retail/planting and gated engine handoff."
+}

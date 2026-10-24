@@ -1,0 +1,66 @@
+{
+  "status": "PASS",
+  "correction": "motion_axes",
+  "before": [
+    {
+      "path": "client/OddsWell/Content/OddsWell/Characters/Player/Animations/AN_OddsWell_Jump_v1.uasset",
+      "sha256": "d2e88481d167e358d57d4b5dcb1a5e58332e7eb1c97d94cb4c1ba88663a301f1"
+    },
+    {
+      "path": "client/OddsWell/Content/OddsWell/Characters/Player/Animations/AN_OddsWell_Land_v1.uasset",
+      "sha256": "bcdde594d511b0e026e9b359011d55eb4f4e608aad31ad7a812d78b4b982ceae"
+    },
+    {
+      "path": "client/OddsWell/Content/OddsWell/Characters/Player/Animations/AN_OddsWell_Run_v1.uasset",
+      "sha256": "98dd5b4023be9ac078f5a3aeacec33e03e14d8196325a01434f28514c3bde7b0"
+    },
+    {
+      "path": "client/OddsWell/Content/OddsWell/Characters/Player/Animations/AN_OddsWell_Walk_v1.uasset",
+      "sha256": "d942389bf91feb9dc6889095da045e5cd2c26f4fa9715d40210267bda1c43378"
+    }
+  ],
+  "clips": [
+    {
+      "asset": "/Game/OddsWell/Characters/Player/Animations/AN_OddsWell_Walk_v1",
+      "frames": 20,
+      "seconds": 0.7142857313156128,
+      "root_scale": 100
+    },
+    {
+      "asset": "/Game/OddsWell/Characters/Player/Animations/AN_OddsWell_Run_v1",
+      "frames": 20,
+      "seconds": 0.4545454680919647,
+      "root_scale": 100
+    },
+    {
+      "asset": "/Game/OddsWell/Characters/Player/Animations/AN_OddsWell_Jump_v1",
+      "frames": 10,
+      "seconds": 0.3333333432674408,
+      "root_scale": 100
+    },
+    {
+      "asset": "/Game/OddsWell/Characters/Player/Animations/AN_OddsWell_Land_v1",
+      "frames": 10,
+      "seconds": 0.3333333432674408,
+      "root_scale": 100
+    }
+  ],
+  "after": [
+    {
+      "path": "client/OddsWell/Content/OddsWell/Characters/Player/Animations/AN_OddsWell_Jump_v1.uasset",
+      "sha256": "c1277d5ac312ee0ed5b8f098ca6ea1655afefba94386922e92b2250fdbd519d9"
+    },
+    {
+      "path": "client/OddsWell/Content/OddsWell/Characters/Player/Animations/AN_OddsWell_Land_v1.uasset",
+      "sha256": "6ed4ed5fe8c98ad8aa955634a9ac64e80bb859227a9315ee2e61cdb055e1bdf5"
+    },
+    {
+      "path": "client/OddsWell/Content/OddsWell/Characters/Player/Animations/AN_OddsWell_Run_v1.uasset",
+      "sha256": "b813144fd211ff64f0d88397f00ad2db0e55daf6874bd4d1ec254ed67bda32e5"
+    },
+    {
+      "path": "client/OddsWell/Content/OddsWell/Characters/Player/Animations/AN_OddsWell_Walk_v1.uasset",
+      "sha256": "2f85013330e72140c028c2656f523654d6d832adf814191ec531e68f408feea5"
+    }
+  ]
+}

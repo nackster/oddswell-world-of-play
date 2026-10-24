@@ -1,0 +1,1660 @@
+{
+  "blender_version": "4.5.5 LTS",
+  "boundaries": {
+    "actions_or_clips": 0,
+    "authority_change": 0,
+    "bottom_mutated": 0,
+    "fbx": 0,
+    "final_art_claim": false,
+    "jacket_partitions": 1,
+    "performance_claim": false,
+    "readiness_claim": false,
+    "runtime_or_package_input_change": 0,
+    "starter_top_layered": 0,
+    "unreal_import": 0,
+    "uv_material_bake": 0
+  },
+  "files": {
+    "blend": {
+      "bytes": 40359987,
+      "file": "RefinedSundaleSignalJacketNeutralBind.blend",
+      "sha256": "28A0C089874528E408E58670FDE64D633F8ACB46E6431F58CD84B6F219E38FDD"
+    },
+    "builder": {
+      "bytes": 19419,
+      "file": "build_refined_signal_jacket.py",
+      "sha256": "AD8E04D6931231F724F9A387E633C756EC984D96E6B5878841F1EA4BD7C4DE71"
+    },
+    "provenance": {
+      "bytes": 699,
+      "file": "PROVENANCE.md",
+      "sha256": "BB2850272C8D8F91C67121193A1D2E7890FF05CA74AB3FE6A30B878015B9C59E"
+    }
+  },
+  "phase": "Phase 1L.5by Sundale Signal Jacket consolidated neutral-bind proof",
+  "semantic": {
+    "actions": 0,
+    "armature": {
+      "bones": {
+        "forearm.L": {
+          "connected": true,
+          "head_m": [
+            0.28,
+            0.0,
+            1.12
+          ],
+          "parent": "upper_arm.L",
+          "tail_m": [
+            0.265,
+            0.0,
+            0.78
+          ]
+        },
+        "forearm.R": {
+          "connected": true,
+          "head_m": [
+            -0.28,
+            0.0,
+            1.12
+          ],
+          "parent": "upper_arm.R",
+          "tail_m": [
+            -0.265,
+            0.0,
+            0.78
+          ]
+        },
+        "head": {
+          "connected": true,
+          "head_m": [
+            0.0,
+            0.0,
+            1.66
+          ],
+          "parent": "neck",
+          "tail_m": [
+            0.0,
+            0.0,
+            1.8
+          ]
+        },
+        "neck": {
+          "connected": true,
+          "head_m": [
+            0.0,
+            0.0,
+            1.45
+          ],
+          "parent": "spine",
+          "tail_m": [
+            0.0,
+            0.0,
+            1.66
+          ]
+        },
+        "root": {
+          "connected": false,
+          "head_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "parent": null,
+          "tail_m": [
+            0.0,
+            0.0,
+            0.1
+          ]
+        },
+        "shin.L": {
+          "connected": true,
+          "head_m": [
+            0.13,
+            0.0,
+            0.53
+          ],
+          "parent": "thigh.L",
+          "tail_m": [
+            0.13,
+            0.0,
+            0.1
+          ]
+        },
+        "shin.R": {
+          "connected": true,
+          "head_m": [
+            -0.13,
+            0.0,
+            0.53
+          ],
+          "parent": "thigh.R",
+          "tail_m": [
+            -0.13,
+            0.0,
+            0.1
+          ]
+        },
+        "spine": {
+          "connected": false,
+          "head_m": [
+            0.0,
+            0.0,
+            0.94
+          ],
+          "parent": "root",
+          "tail_m": [
+            0.0,
+            0.0,
+            1.45
+          ]
+        },
+        "thigh.L": {
+          "connected": false,
+          "head_m": [
+            0.155,
+            0.0,
+            0.94
+          ],
+          "parent": "root",
+          "tail_m": [
+            0.13,
+            0.0,
+            0.53
+          ]
+        },
+        "thigh.R": {
+          "connected": false,
+          "head_m": [
+            -0.155,
+            0.0,
+            0.94
+          ],
+          "parent": "root",
+          "tail_m": [
+            -0.13,
+            0.0,
+            0.53
+          ]
+        },
+        "upper_arm.L": {
+          "connected": false,
+          "head_m": [
+            0.245,
+            0.0,
+            1.45
+          ],
+          "parent": "spine",
+          "tail_m": [
+            0.28,
+            0.0,
+            1.12
+          ]
+        },
+        "upper_arm.R": {
+          "connected": false,
+          "head_m": [
+            -0.245,
+            0.0,
+            1.45
+          ],
+          "parent": "spine",
+          "tail_m": [
+            -0.28,
+            0.0,
+            1.12
+          ]
+        }
+      },
+      "dec035_mapping": {
+        "forearm.L": "forearm_L",
+        "forearm.R": "forearm_R",
+        "head": "head",
+        "neck": "neck",
+        "root": "root",
+        "shin.L": "shin_L",
+        "shin.R": "shin_R",
+        "spine": "spine",
+        "thigh.L": "thigh_L",
+        "thigh.R": "thigh_R",
+        "upper_arm.L": "upper_arm_L",
+        "upper_arm.R": "upper_arm_R"
+      }
+    },
+    "body_mesh_sha256": "F340C34B05FC4D0D20F5625E9B2F9174947B691F59420367E8B738BE1CBF03CD",
+    "body_semantic_sha256": "91AAB962825784679391C85FD06239A2F8EB118FEABA906EF9C5FB373FB8CF08",
+    "exclusion_ledger": [
+      "starter_offwhite_top layering",
+      "starter_offwhite_bottom mutation",
+      "cloth pin groups",
+      "offline collision/fitting/support aids",
+      "hidden anatomy",
+      "Actions/clips"
+    ],
+    "identity_sha256": "7C1AE452E77C5DBBA92443620603DFFA809E630E94D3AA14DAB2F799BEFB9740",
+    "inclusion_ledger": [
+      {
+        "name": "Character | front zipper tape",
+        "polygons": 800,
+        "removed_polygons": 0,
+        "retained_polygons": 800,
+        "vertices": 808
+      },
+      {
+        "name": "Character | front zipper tape.001",
+        "polygons": 800,
+        "removed_polygons": 0,
+        "retained_polygons": 800,
+        "vertices": 808
+      },
+      {
+        "name": "Character | sewn teal rear yoke",
+        "polygons": 840,
+        "removed_polygons": 19,
+        "retained_polygons": 821,
+        "vertices": 955
+      },
+      {
+        "name": "Character | sleeve cuff left",
+        "polygons": 4608,
+        "removed_polygons": 0,
+        "retained_polygons": 4608,
+        "vertices": 4992
+      },
+      {
+        "name": "Character | sleeve cuff right",
+        "polygons": 4608,
+        "removed_polygons": 147,
+        "retained_polygons": 4461,
+        "vertices": 4992
+      },
+      {
+        "name": "Character | sleeve signal yoke left",
+        "polygons": 472,
+        "removed_polygons": 25,
+        "retained_polygons": 447,
+        "vertices": 543
+      },
+      {
+        "name": "Character | sleeve signal yoke right",
+        "polygons": 504,
+        "removed_polygons": 16,
+        "retained_polygons": 488,
+        "vertices": 579
+      },
+      {
+        "name": "Character | standing collar",
+        "polygons": 9216,
+        "removed_polygons": 590,
+        "retained_polygons": 8626,
+        "vertices": 9600
+      },
+      {
+        "name": "Character | tailored slate jacket",
+        "polygons": 12939,
+        "removed_polygons": 907,
+        "retained_polygons": 12032,
+        "vertices": 13095
+      },
+      {
+        "name": "Character | yoke topstitch Character | sewn teal rear yoke",
+        "polygons": 1824,
+        "removed_polygons": 35,
+        "retained_polygons": 1789,
+        "vertices": 3648
+      },
+      {
+        "name": "Character | yoke topstitch Character | sleeve signal yoke left",
+        "polygons": 1080,
+        "removed_polygons": 64,
+        "retained_polygons": 1016,
+        "vertices": 2168
+      },
+      {
+        "name": "Character | yoke topstitch Character | sleeve signal yoke right",
+        "polygons": 1184,
+        "removed_polygons": 32,
+        "retained_polygons": 1152,
+        "vertices": 2368
+      },
+      {
+        "name": "Character | zipper pull loop",
+        "polygons": 48,
+        "removed_polygons": 0,
+        "retained_polygons": 48,
+        "vertices": 48
+      },
+      {
+        "name": "Character | zipper slider",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.001",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.002",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.003",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.004",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.005",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.006",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.007",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.008",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.009",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.010",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.011",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.012",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.013",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.014",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.015",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.016",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.017",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.018",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.019",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.020",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.021",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.022",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.023",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.024",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.025",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.026",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.027",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.028",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.029",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.030",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.031",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.032",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.033",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.034",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.035",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.036",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.037",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.038",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.039",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.040",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.041",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.042",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.043",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.044",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.045",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.046",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.047",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.048",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.049",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.050",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.051",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.052",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.053",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.054",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.055",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.056",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.057",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.058",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.059",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.060",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.061",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.062",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.063",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.064",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.065",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.066",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.067",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.068",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.069",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.070",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.071",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.072",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.073",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.074",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.075",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.076",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.077",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.078",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.079",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.080",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.081",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.082",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.083",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.084",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.085",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.086",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.087",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.088",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.089",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.090",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.091",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.092",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.093",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.094",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.095",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.096",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.097",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.098",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.099",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.100",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.101",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.102",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.103",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.104",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.105",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.106",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.107",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.108",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.109",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.110",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.111",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.112",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.113",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.114",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.115",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.116",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.117",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.118",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.119",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.120",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.121",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.122",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.123",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.124",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.125",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.126",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.127",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.128",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.129",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.130",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.131",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.132",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.133",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.134",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.135",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.136",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.137",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.138",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.139",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.140",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.141",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.142",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.143",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.144",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.145",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.146",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.147",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.148",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.149",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.150",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.151",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.152",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.153",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.154",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.155",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.156",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.157",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.158",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.159",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.160",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.161",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.162",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.163",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.164",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.165",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.166",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.167",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.168",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.169",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.170",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.171",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.172",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.173",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.174",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.175",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.176",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.177",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.178",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      },
+      {
+        "name": "Character | zipper teeth.179",
+        "polygons": 6,
+        "removed_polygons": 0,
+        "retained_polygons": 6,
+        "vertices": 8
+      }
+    ],
+    "jacket": {
+      "item_id": "sundale_signal_jacket",
+      "material_slots": [
+        "MAT__signal_jacket_slate_proof"
+      ],
+      "mesh_sha256": "C7E297D7F9B62531E34DBD2115CACCD0D9CC36BC61A0A6BB1DCCD477D4C95089",
+      "penetrating_source_faces_removed": 1835,
+      "polygon_count": 38174,
+      "replaces_starter_top": true,
+      "vertex_count": 45232
+    },
+    "partitions": [
+      "BODY__refined_sundale_derivative_v1",
+      "sundale_signal_jacket"
+    ],
+    "root_translation_m": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "weights": {
+      "accepted_clearance_bounds_m": [
+        5e-05,
+        0.2
+      ],
+      "bidirectional_vertex_sampled_clearance_min_m": 8.5141e-05,
+      "body_intersection_pairs": 0,
+      "body_vertex_to_jacket_surface_min_m": 0.000441466,
+      "boundary_edges": 13298,
+      "clearance_is_continuous_triangle_distance": false,
+      "clearance_method": "bidirectional_mesh_vertex_to_opposite_surface_bvh",
+      "coverage_bounds_m": {
+        "x": [
+          -0.368366,
+          0.382267
+        ],
+        "z": [
+          0.813445,
+          1.507401
+        ]
+      },
+      "isolated_vertices": 0,
+      "jacket_vertex_to_body_surface_min_m": 8.5141e-05,
+      "maximum_neutral_bind_drift_m": 2.41e-07,
+      "non_manifold_edges": 13298,
+      "non_normalized_vertices": 0,
+      "unweighted_vertices": 0,
+      "vertices_by_bone": {
+        "forearm.L": 7236,
+        "forearm.R": 7378,
+        "neck": 8796,
+        "spine": 9869,
+        "upper_arm.L": 6186,
+        "upper_arm.R": 5767
+      },
+      "wire_edges": 0
+    }
+  },
+  "source_custody": {
+    "body": "83D9AFEDA8F0B81EA356E3173751534FE579DB39E6F343EEF952B5715CD3BCAB",
+    "body_custody": "2299550AA590235BC2D71753BAFE3CE59A2573F8F5900EE817B91E2DB59958A0",
+    "source": "0F3988395DBE747A66738D9D7BA1D86A14D2531FCF2A5592C471A01B3AFC6127",
+    "starter_bottom_unchanged": "18103E29F0D22B14A16457F3A61D49F9EFE48E388D8BF3AFD2AB67FE4F5798CA",
+    "starter_top_unchanged": "B06360F355AFFCA4E18802467186B3F8CFD4D5512C2BCE1B3A9AF66165F9C935"
+  },
+  "status": "signal_jacket_only_neutral_bind_proof_not_runtime_or_final_art"
+}

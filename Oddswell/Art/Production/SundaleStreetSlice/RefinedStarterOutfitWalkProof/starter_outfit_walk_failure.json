@@ -1,0 +1,472 @@
+{
+  "action": {
+    "action_count": 1,
+    "curves": [
+      {
+        "axis": 0,
+        "bone": "root",
+        "channel": "location",
+        "keys": [
+          {
+            "frame": 1.0,
+            "interpolation": "LINEAR",
+            "value": 0.0
+          },
+          {
+            "frame": 6.0,
+            "interpolation": "LINEAR",
+            "value": 0.0
+          },
+          {
+            "frame": 11.0,
+            "interpolation": "LINEAR",
+            "value": 0.0
+          },
+          {
+            "frame": 16.0,
+            "interpolation": "LINEAR",
+            "value": 0.0
+          },
+          {
+            "frame": 21.0,
+            "interpolation": "LINEAR",
+            "value": 0.0
+          }
+        ]
+      },
+      {
+        "axis": 1,
+        "bone": "root",
+        "channel": "location",
+        "keys": [
+          {
+            "frame": 1.0,
+            "interpolation": "LINEAR",
+            "value": 0.0
+          },
+          {
+            "frame": 6.0,
+            "interpolation": "LINEAR",
+            "value": 0.0
+          },
+          {
+            "frame": 11.0,
+            "interpolation": "LINEAR",
+            "value": 0.0
+          },
+          {
+            "frame": 16.0,
+            "interpolation": "LINEAR",
+            "value": 0.0
+          },
+          {
+            "frame": 21.0,
+            "interpolation": "LINEAR",
+            "value": 0.0
+          }
+        ]
+      },
+      {
+        "axis": 2,
+        "bone": "root",
+        "channel": "location",
+        "keys": [
+          {
+            "frame": 1.0,
+            "interpolation": "LINEAR",
+            "value": 0.0
+          },
+          {
+            "frame": 6.0,
+            "interpolation": "LINEAR",
+            "value": 0.0
+          },
+          {
+            "frame": 11.0,
+            "interpolation": "LINEAR",
+            "value": 0.0
+          },
+          {
+            "frame": 16.0,
+            "interpolation": "LINEAR",
+            "value": 0.0
+          },
+          {
+            "frame": 21.0,
+            "interpolation": "LINEAR",
+            "value": 0.0
+          }
+        ]
+      },
+      {
+        "axis": 0,
+        "bone": "spine",
+        "channel": "rotation_euler",
+        "keys": [
+          {
+            "frame": 1.0,
+            "interpolation": "LINEAR",
+            "value": 0.0
+          },
+          {
+            "frame": 6.0,
+            "interpolation": "LINEAR",
+            "value": 0.052359879
+          },
+          {
+            "frame": 11.0,
+            "interpolation": "LINEAR",
+            "value": 0.0
+          },
+          {
+            "frame": 16.0,
+            "interpolation": "LINEAR",
+            "value": -0.052359879
+          },
+          {
+            "frame": 21.0,
+            "interpolation": "LINEAR",
+            "value": 0.0
+          }
+        ]
+      },
+      {
+        "axis": 0,
+        "bone": "thigh.L",
+        "channel": "rotation_euler",
+        "keys": [
+          {
+            "frame": 1.0,
+            "interpolation": "LINEAR",
+            "value": -0.0
+          },
+          {
+            "frame": 6.0,
+            "interpolation": "LINEAR",
+            "value": -0.314159274
+          },
+          {
+            "frame": 11.0,
+            "interpolation": "LINEAR",
+            "value": -0.0
+          },
+          {
+            "frame": 16.0,
+            "interpolation": "LINEAR",
+            "value": 0.314159274
+          },
+          {
+            "frame": 21.0,
+            "interpolation": "LINEAR",
+            "value": -0.0
+          }
+        ]
+      },
+      {
+        "axis": 0,
+        "bone": "thigh.R",
+        "channel": "rotation_euler",
+        "keys": [
+          {
+            "frame": 1.0,
+            "interpolation": "LINEAR",
+            "value": 0.0
+          },
+          {
+            "frame": 6.0,
+            "interpolation": "LINEAR",
+            "value": 0.314159274
+          },
+          {
+            "frame": 11.0,
+            "interpolation": "LINEAR",
+            "value": 0.0
+          },
+          {
+            "frame": 16.0,
+            "interpolation": "LINEAR",
+            "value": -0.314159274
+          },
+          {
+            "frame": 21.0,
+            "interpolation": "LINEAR",
+            "value": 0.0
+          }
+        ]
+      },
+      {
+        "axis": 0,
+        "bone": "upper_arm.L",
+        "channel": "rotation_euler",
+        "keys": [
+          {
+            "frame": 1.0,
+            "interpolation": "LINEAR",
+            "value": 0.0
+          },
+          {
+            "frame": 6.0,
+            "interpolation": "LINEAR",
+            "value": 0.314159274
+          },
+          {
+            "frame": 11.0,
+            "interpolation": "LINEAR",
+            "value": 0.0
+          },
+          {
+            "frame": 16.0,
+            "interpolation": "LINEAR",
+            "value": -0.314159274
+          },
+          {
+            "frame": 21.0,
+            "interpolation": "LINEAR",
+            "value": 0.0
+          }
+        ]
+      },
+      {
+        "axis": 0,
+        "bone": "upper_arm.R",
+        "channel": "rotation_euler",
+        "keys": [
+          {
+            "frame": 1.0,
+            "interpolation": "LINEAR",
+            "value": -0.0
+          },
+          {
+            "frame": 6.0,
+            "interpolation": "LINEAR",
+            "value": -0.314159274
+          },
+          {
+            "frame": 11.0,
+            "interpolation": "LINEAR",
+            "value": -0.0
+          },
+          {
+            "frame": 16.0,
+            "interpolation": "LINEAR",
+            "value": 0.314159274
+          },
+          {
+            "frame": 21.0,
+            "interpolation": "LINEAR",
+            "value": -0.0
+          }
+        ]
+      }
+    ],
+    "cycle_duration_seconds": 0.714285714,
+    "cycles_per_second": 1.4,
+    "fps": 28,
+    "frame_end": 21,
+    "frame_start": 1,
+    "identity_sha256": "7DD9A4E6524BCAC604AEDC755D0464FEC8C8F40BDED1BDE17E87955ED63E1020",
+    "limb_pitch_degrees": 18.0,
+    "loop_end_equality": true,
+    "name": "walk_candidate_v1",
+    "root_translation_m": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sample_frames": [
+      1,
+      6,
+      11,
+      16,
+      21
+    ],
+    "spine_sway_degrees": 3.0
+  },
+  "boundaries": {
+    "accepted_inputs_mutated": 0,
+    "derived_blend_written": 0,
+    "fbx": 0,
+    "hidden_repair": 0,
+    "jacket": 0,
+    "jump": 0,
+    "land": 0,
+    "phase_credit": 0,
+    "readiness_claim": false,
+    "run": 0,
+    "runtime_change": 0,
+    "unreal_import": 0
+  },
+  "dec035_mapping": {
+    "forearm.L": "forearm_L",
+    "forearm.R": "forearm_R",
+    "head": "head",
+    "neck": "neck",
+    "root": "root",
+    "shin.L": "shin_L",
+    "shin.R": "shin_R",
+    "spine": "spine",
+    "thigh.L": "thigh_L",
+    "thigh.R": "thigh_R",
+    "upper_arm.L": "upper_arm_L",
+    "upper_arm.R": "upper_arm_R"
+  },
+  "diagnostic": {
+    "armature_translation_m": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_m": {
+      "BODY__refined_sundale_derivative_v1": {
+        "max": [
+          0.339751,
+          0.260432,
+          1.8
+        ],
+        "min": [
+          -0.335461,
+          -0.240132,
+          -0.008645
+        ]
+      },
+      "starter_offwhite_bottom": {
+        "max": [
+          0.263355,
+          0.276065,
+          0.96
+        ],
+        "min": [
+          -0.256779,
+          -0.159815,
+          0.562408
+        ]
+      },
+      "starter_offwhite_top": {
+        "max": [
+          0.38,
+          0.34,
+          1.5
+        ],
+        "min": [
+          -0.38,
+          -0.34,
+          0.9
+        ]
+      }
+    },
+    "failing_frame": 2,
+    "intersections": {
+      "body_bottom": 587,
+      "body_top": 0,
+      "top_bottom": 0
+    },
+    "passed_frames": [
+      {
+        "armature_translation_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "bounds_m": {
+          "BODY__refined_sundale_derivative_v1": {
+            "max": [
+              0.337676,
+              0.294926,
+              1.8
+            ],
+            "min": [
+              -0.337676,
+              -0.294926,
+              0.0
+            ]
+          },
+          "starter_offwhite_bottom": {
+            "max": [
+              0.262854,
+              0.254167,
+              0.96
+            ],
+            "min": [
+              -0.25802,
+              -0.138191,
+              0.567481
+            ]
+          },
+          "starter_offwhite_top": {
+            "max": [
+              0.38,
+              0.34,
+              1.5
+            ],
+            "min": [
+              -0.38,
+              -0.34,
+              0.9
+            ]
+          }
+        },
+        "frame": 1,
+        "intersections": {
+          "body_bottom": 0,
+          "body_top": 0,
+          "top_bottom": 0
+        },
+        "root_bone_translation_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "time_seconds": 0.0,
+        "vertex_sampled_clearance": {
+          "starter_offwhite_bottom": {
+            "body_to_garment_m": 0.004072851,
+            "garment_to_body_m": 0.004069991,
+            "vertex_sampled_min_m": 0.004069991
+          },
+          "starter_offwhite_top": {
+            "body_to_garment_m": 0.04232353,
+            "garment_to_body_m": 0.184177205,
+            "vertex_sampled_min_m": 0.04232353
+          }
+        }
+      }
+    ],
+    "root_bone_translation_m": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "time_seconds": 0.035714286
+  },
+  "mesh_sha256": {
+    "BODY__refined_sundale_derivative_v1": "F340C34B05FC4D0D20F5625E9B2F9174947B691F59420367E8B738BE1CBF03CD",
+    "starter_offwhite_bottom": "ED49AEDD3C65D9E9F5B13E2C9B9B0CF6614ABE19BCD7E666D396D1234E8BDF96",
+    "starter_offwhite_top": "9996AF8A1271D6E236A45B8EDF93DF36A342FF0743D3276E1676AB3FE96D30C3"
+  },
+  "phase": "Phase 1L.5bz accepted starter-outfit walk-cycle deformation proof",
+  "source_custody": {
+    "body_blend": "83D9AFEDA8F0B81EA356E3173751534FE579DB39E6F343EEF952B5715CD3BCAB",
+    "body_manifest": "2299550AA590235BC2D71753BAFE3CE59A2573F8F5900EE817B91E2DB59958A0",
+    "bottom_blend": "18103E29F0D22B14A16457F3A61D49F9EFE48E388D8BF3AFD2AB67FE4F5798CA",
+    "motion_blend": "AC27A075AD8AE7981B4735797D2C83D37BF56A1D24BAFF881659DB23E7194506",
+    "top_blend": "B06360F355AFFCA4E18802467186B3F8CFD4D5512C2BCE1B3A9AF66165F9C935"
+  },
+  "status": "BLOCKED_UNCOUNTED_FAIL_CLOSED_AT_FRAME_2",
+  "weights": {
+    "BODY__refined_sundale_derivative_v1": {
+      "invalid_or_non_normalized": 0,
+      "unweighted": 0,
+      "vertices": 58324
+    },
+    "starter_offwhite_bottom": {
+      "invalid_or_non_normalized": 0,
+      "unweighted": 0,
+      "vertices": 7159
+    },
+    "starter_offwhite_top": {
+      "invalid_or_non_normalized": 0,
+      "unweighted": 0,
+      "vertices": 8
+    }
+  }
+}

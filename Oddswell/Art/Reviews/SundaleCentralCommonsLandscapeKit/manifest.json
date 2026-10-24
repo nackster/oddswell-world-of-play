@@ -1,0 +1,150 @@
+{
+  "artifacts": [
+    {
+      "bytes": 1536482,
+      "file": "SundaleCentralCommonsLandscapeKit.blend",
+      "sha256": "70C4345782CA9BCFA46190228D2B2F360BF90CF726AE47ABF5BA94EABC9CB115"
+    },
+    {
+      "bytes": 29439,
+      "file": "build_sundale_central_commons.py",
+      "sha256": "F328F393418913BDA265CE27D53F6ED0A0B6405ED64F659E26DF78834C780CF7"
+    },
+    {
+      "bytes": 931,
+      "file": "PROVENANCE.md",
+      "sha256": "183D38816F6B31638E2D51FFD052E560F85F896459F4D07F4C87B581A70F25EC"
+    },
+    {
+      "bytes": 1842790,
+      "file": "renders/Unified_TopDown_CentralCommons.png",
+      "sha256": "44E3CBB70F54714EEA10029850846CB618E7BFD0568CDEBD43F2254E76CA3270"
+    },
+    {
+      "bytes": 1092308,
+      "file": "renders/Cardinal_North_CentralCommons.png",
+      "sha256": "4090D175D59B135FBCCF78192132C9EB08A2E8C1E3ABB6B9DD9EFF480EA3EBC1"
+    },
+    {
+      "bytes": 1102018,
+      "file": "renders/Cardinal_East_CentralCommons.png",
+      "sha256": "84DDA96DC71EC2A591578DF28C2C5DC21144A04E0EAB4E35985E2C757D18F6C0"
+    },
+    {
+      "bytes": 1084582,
+      "file": "renders/Cardinal_South_CentralCommons.png",
+      "sha256": "F6A2FF7DD600C35361BFEF4E365638C0D6C372CA03CE1673207B68F426E43EB0"
+    },
+    {
+      "bytes": 1113006,
+      "file": "renders/Cardinal_West_CentralCommons.png",
+      "sha256": "6431A99F66C8D3D99F261875C6C70582C5312827161AFFD8BE75A0B6A8411D7C"
+    }
+  ],
+  "boundaries": {
+    "external_references": 0,
+    "gameplay_changes": 0,
+    "interiors": 0,
+    "production_catalog_changed": false,
+    "production_map_changed": false,
+    "production_route_changed": false
+  },
+  "manual_input": false,
+  "phase": "Phase 1L.3c",
+  "planning_contract": {
+    "broad_step_free_cross_paths": 2,
+    "common_top_elevation_m": 0.3,
+    "footprint_m": [
+      600,
+      420
+    ],
+    "lawn_quadrants": 4,
+    "path_width_m": 48.0
+  },
+  "renderer": "BLENDER_EEVEE_NEXT",
+  "sample_contract": {
+    "bollard_demo_nonblocking": true,
+    "ceilings": {
+      "benches": 8,
+      "bins": 6,
+      "lamps": 12,
+      "planters": 10,
+      "trees": 12
+    },
+    "instance_counts": {
+      "CommonsBench": 8,
+      "CommonsBollardEdge": 8,
+      "CommonsLitterBin": 4,
+      "CommonsLowPlanter": 8,
+      "CommonsPaverBrick": 2,
+      "CommonsPedestrianLamp": 12,
+      "CommonsShadeTreeColumnar": 4,
+      "CommonsShadeTreeRound": 4,
+      "CommonsShadeTreeWide": 4
+    },
+    "native_geometry_only": true,
+    "noncanonical_review_ids_only": true,
+    "sample_count": 9,
+    "sample_ids": [
+      "CommonsPaverBrick",
+      "CommonsShadeTreeRound",
+      "CommonsShadeTreeWide",
+      "CommonsShadeTreeColumnar",
+      "CommonsLowPlanter",
+      "CommonsBench",
+      "CommonsPedestrianLamp",
+      "CommonsLitterBin",
+      "CommonsBollardEdge"
+    ],
+    "triangle_ceiling_per_sample": 8000,
+    "triangle_counts": {
+      "CommonsBench": 192,
+      "CommonsBollardEdge": 288,
+      "CommonsLitterBin": 352,
+      "CommonsLowPlanter": 192,
+      "CommonsPaverBrick": 24,
+      "CommonsPedestrianLamp": 1392,
+      "CommonsShadeTreeColumnar": 624,
+      "CommonsShadeTreeRound": 624,
+      "CommonsShadeTreeWide": 1104
+    }
+  },
+  "status": "noncanonical_owner_review_board",
+  "views": [
+    {
+      "direction": "TOP",
+      "file": "renders/Unified_TopDown_CentralCommons.png",
+      "height": 1080,
+      "role": "UNIFIED_TOP",
+      "width": 1920
+    },
+    {
+      "direction": "NORTH",
+      "file": "renders/Cardinal_North_CentralCommons.png",
+      "height": 900,
+      "role": "CARDINAL",
+      "width": 1600
+    },
+    {
+      "direction": "EAST",
+      "file": "renders/Cardinal_East_CentralCommons.png",
+      "height": 900,
+      "role": "CARDINAL",
+      "width": 1600
+    },
+    {
+      "direction": "SOUTH",
+      "file": "renders/Cardinal_South_CentralCommons.png",
+      "height": 900,
+      "role": "CARDINAL",
+      "width": 1600
+    },
+    {
+      "direction": "WEST",
+      "file": "renders/Cardinal_West_CentralCommons.png",
+      "height": 900,
+      "role": "CARDINAL",
+      "width": 1600
+    }
+  ]
+}

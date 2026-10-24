@@ -1,0 +1,163 @@
+{
+  "source_blend_sha256": "B837C11190DE64F5848F4880FA0098473DFAA3C8BA4E5D8564566587E11721FE",
+  "source_contract_sha256": "3DAA1D94A19148F03D31682D15B2FA40D9D43133008A1DA099097FCC4AAD88C6",
+  "historical_exports_preserved": true,
+  "repeat_hashes_equal": true,
+  "correction": "rotation_euler local Y twist to local X pitch; original curve values/times preserved",
+  "joint_motion": [
+    {
+      "action": "jump_candidate_v1",
+      "original_knee_travel_m": 0.0,
+      "corrected_knee_travel_m": 0.15675396549252893,
+      "curve_values_and_times_unchanged": true
+    },
+    {
+      "action": "land_candidate_v1",
+      "original_knee_travel_m": 0.0,
+      "corrected_knee_travel_m": 0.30774791144321895,
+      "curve_values_and_times_unchanged": true
+    },
+    {
+      "action": "run_candidate_v1",
+      "original_knee_travel_m": 0.0,
+      "corrected_knee_travel_m": 0.21262579535594983,
+      "curve_values_and_times_unchanged": true
+    },
+    {
+      "action": "walk_candidate_v1",
+      "original_knee_travel_m": 0.0,
+      "corrected_knee_travel_m": 0.1285145032660357,
+      "curve_values_and_times_unchanged": true
+    }
+  ],
+  "exports": [
+    {
+      "file": "SK_OddsWell_PlayerBody_v1.fbx",
+      "sha256_record": "SK_OddsWell_PlayerBody_v1.fbx.sha256",
+      "contents": [
+        "ARMATURE__shared_bilateral_v1",
+        "MANNEQUIN__neutral_beta"
+      ],
+      "unreal_asset": "/Game/OddsWell/Characters/Player/Meshes/SK_OddsWell_PlayerBody_v1",
+      "import_role": "create_shared_skeleton_and_body_mesh",
+      "bytes": 55660,
+      "sha256": "E212A536D386BBA57136847DEB700DA23771C323B96A350CE6F53270A2FB6839",
+      "timing": null
+    },
+    {
+      "file": "SK_OddsWell_StarterTop_v1.fbx",
+      "sha256_record": "SK_OddsWell_StarterTop_v1.fbx.sha256",
+      "contents": [
+        "ARMATURE__shared_bilateral_v1",
+        "CLOTHING__starter_offwhite_top"
+      ],
+      "unreal_asset": "/Game/OddsWell/Characters/Player/Clothing/SK_OddsWell_StarterTop_v1",
+      "import_role": "reuse_shared_skeleton_separate_replaceable_mesh",
+      "bytes": 38940,
+      "sha256": "5AF82593FEDDC36393D4D92CC96E6F98E6DA51AC9521BC36CBFC31C84978AB0F",
+      "timing": null
+    },
+    {
+      "file": "SK_OddsWell_StarterBottom_v1.fbx",
+      "sha256_record": "SK_OddsWell_StarterBottom_v1.fbx.sha256",
+      "contents": [
+        "ARMATURE__shared_bilateral_v1",
+        "CLOTHING__starter_offwhite_bottom"
+      ],
+      "unreal_asset": "/Game/OddsWell/Characters/Player/Clothing/SK_OddsWell_StarterBottom_v1",
+      "import_role": "reuse_shared_skeleton_separate_replaceable_mesh",
+      "bytes": 40412,
+      "sha256": "79504ABBC0144E928C7923E399423562F48A35E84E194B1BAB6676E87630C67B",
+      "timing": null
+    },
+    {
+      "file": "SK_OddsWell_SignalJacket_v1.fbx",
+      "sha256_record": "SK_OddsWell_SignalJacket_v1.fbx.sha256",
+      "contents": [
+        "ARMATURE__shared_bilateral_v1",
+        "CLOTHING__sundale_signal_jacket"
+      ],
+      "unreal_asset": "/Game/OddsWell/Characters/Player/Clothing/SK_OddsWell_SignalJacket_v1",
+      "import_role": "reuse_shared_skeleton_separate_alternative_mesh",
+      "bytes": 40252,
+      "sha256": "98F8BC40ED233822283CF265F92AE538588CD88ADB07C5DDF9FA0D3FEDA32E97",
+      "timing": null
+    },
+    {
+      "file": "AN_OddsWell_Walk_v1.fbx",
+      "sha256_record": "AN_OddsWell_Walk_v1.fbx.sha256",
+      "contents": [
+        "ARMATURE__shared_bilateral_v1",
+        "walk_candidate_v1"
+      ],
+      "unreal_asset": "/Game/OddsWell/Characters/Player/Animations/AN_OddsWell_Walk_v1",
+      "import_role": "reuse_shared_skeleton_animation_only",
+      "bytes": 109580,
+      "sha256": "08773B5FDDCF888A12166C9EB576629387C9D15BE0BAD2CE8EFF7CDA17F0D38D",
+      "timing": {
+        "fps": 28,
+        "frames": 20,
+        "seconds": 0.7142857313223585,
+        "authored_seconds": 0.7142857142857143,
+        "historical_seconds": 0.6666666666450152
+      }
+    },
+    {
+      "file": "AN_OddsWell_Run_v1.fbx",
+      "sha256_record": "AN_OddsWell_Run_v1.fbx.sha256",
+      "contents": [
+        "ARMATURE__shared_bilateral_v1",
+        "run_candidate_v1"
+      ],
+      "unreal_asset": "/Game/OddsWell/Characters/Player/Animations/AN_OddsWell_Run_v1",
+      "import_role": "reuse_shared_skeleton_animation_only",
+      "bytes": 109340,
+      "sha256": "AD9886834E1C348BDDC823B5CA05E72DB07B45BB8C2B5C7BBBF336CB0E3C9B77",
+      "timing": {
+        "fps": 44,
+        "frames": 20,
+        "seconds": 0.4545454681032356,
+        "authored_seconds": 0.45454545454545453,
+        "historical_seconds": 0.6666666666450152
+      }
+    },
+    {
+      "file": "AN_OddsWell_Jump_v1.fbx",
+      "sha256_record": "AN_OddsWell_Jump_v1.fbx.sha256",
+      "contents": [
+        "ARMATURE__shared_bilateral_v1",
+        "jump_candidate_v1"
+      ],
+      "unreal_asset": "/Game/OddsWell/Characters/Player/Animations/AN_OddsWell_Jump_v1",
+      "import_role": "reuse_shared_skeleton_animation_only",
+      "bytes": 98924,
+      "sha256": "0B6FDA8D3D5AC477AB3FC959F81EFC89F0780F6D4985DE96FE98F8A07E930694",
+      "timing": {
+        "fps": 30,
+        "frames": 10,
+        "seconds": 0.3333333432713758,
+        "authored_seconds": 0.3333333333333333,
+        "historical_seconds": 0.3333333333116818
+      }
+    },
+    {
+      "file": "AN_OddsWell_Land_v1.fbx",
+      "sha256_record": "AN_OddsWell_Land_v1.fbx.sha256",
+      "contents": [
+        "ARMATURE__shared_bilateral_v1",
+        "land_candidate_v1"
+      ],
+      "unreal_asset": "/Game/OddsWell/Characters/Player/Animations/AN_OddsWell_Land_v1",
+      "import_role": "reuse_shared_skeleton_animation_only",
+      "bytes": 98924,
+      "sha256": "19BDBB9B81E798BB6AE7EAD8163504E33AD55C23B856D0AF48689380C903D4D3",
+      "timing": {
+        "fps": 30,
+        "frames": 10,
+        "seconds": 0.3333333432713758,
+        "authored_seconds": 0.3333333333333333,
+        "historical_seconds": 0.3333333333116818
+      }
+    }
+  ]
+}

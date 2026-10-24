@@ -1,0 +1,307 @@
+{
+  "blender_version": "4.5.5 LTS",
+  "boundaries": {
+    "actions": 0,
+    "authority_change": 0,
+    "clothing": 0,
+    "fbx": 0,
+    "final_art_claim": false,
+    "readiness_claim": false,
+    "runtime_or_package_input_change": 0,
+    "source_mesh_mutation": 0,
+    "unreal_import": 0
+  },
+  "files": {
+    "blend": {
+      "bytes": 17486411,
+      "file": "RefinedSundaleHumanBodyNeutralBind.blend",
+      "sha256": "83D9AFEDA8F0B81EA356E3173751534FE579DB39E6F343EEF952B5715CD3BCAB"
+    },
+    "builder": {
+      "bytes": 16805,
+      "file": "build_refined_body_derivative.py",
+      "sha256": "1F26F1D7F3C0AB776745B757210E74B4C19E729BD14124315D7819C39E0F5A86"
+    },
+    "provenance": {
+      "bytes": 505,
+      "file": "PROVENANCE.md",
+      "sha256": "D74EF71DF89A3AD2F4FBD4896AB747B24F5D7A6C54FBFB1788458C84DADC9724"
+    }
+  },
+  "phase": "Phase 1L.5bv refined Sundale body derivative neutral-bind proof",
+  "semantic": {
+    "actions": 0,
+    "armature": {
+      "bones": {
+        "forearm.L": {
+          "connected": true,
+          "head_m": [
+            0.28,
+            0.0,
+            1.12
+          ],
+          "parent": "upper_arm.L",
+          "tail_m": [
+            0.265,
+            0.0,
+            0.78
+          ]
+        },
+        "forearm.R": {
+          "connected": true,
+          "head_m": [
+            -0.28,
+            0.0,
+            1.12
+          ],
+          "parent": "upper_arm.R",
+          "tail_m": [
+            -0.265,
+            0.0,
+            0.78
+          ]
+        },
+        "head": {
+          "connected": true,
+          "head_m": [
+            0.0,
+            0.0,
+            1.66
+          ],
+          "parent": "neck",
+          "tail_m": [
+            0.0,
+            0.0,
+            1.8
+          ]
+        },
+        "neck": {
+          "connected": true,
+          "head_m": [
+            0.0,
+            0.0,
+            1.45
+          ],
+          "parent": "spine",
+          "tail_m": [
+            0.0,
+            0.0,
+            1.66
+          ]
+        },
+        "root": {
+          "connected": false,
+          "head_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "parent": null,
+          "tail_m": [
+            0.0,
+            0.0,
+            0.1
+          ]
+        },
+        "shin.L": {
+          "connected": true,
+          "head_m": [
+            0.13,
+            0.0,
+            0.53
+          ],
+          "parent": "thigh.L",
+          "tail_m": [
+            0.13,
+            0.0,
+            0.1
+          ]
+        },
+        "shin.R": {
+          "connected": true,
+          "head_m": [
+            -0.13,
+            0.0,
+            0.53
+          ],
+          "parent": "thigh.R",
+          "tail_m": [
+            -0.13,
+            0.0,
+            0.1
+          ]
+        },
+        "spine": {
+          "connected": false,
+          "head_m": [
+            0.0,
+            0.0,
+            0.94
+          ],
+          "parent": "root",
+          "tail_m": [
+            0.0,
+            0.0,
+            1.45
+          ]
+        },
+        "thigh.L": {
+          "connected": false,
+          "head_m": [
+            0.155,
+            0.0,
+            0.94
+          ],
+          "parent": "root",
+          "tail_m": [
+            0.13,
+            0.0,
+            0.53
+          ]
+        },
+        "thigh.R": {
+          "connected": false,
+          "head_m": [
+            -0.155,
+            0.0,
+            0.94
+          ],
+          "parent": "root",
+          "tail_m": [
+            -0.13,
+            0.0,
+            0.53
+          ]
+        },
+        "upper_arm.L": {
+          "connected": false,
+          "head_m": [
+            0.245,
+            0.0,
+            1.45
+          ],
+          "parent": "spine",
+          "tail_m": [
+            0.28,
+            0.0,
+            1.12
+          ]
+        },
+        "upper_arm.R": {
+          "connected": false,
+          "head_m": [
+            -0.245,
+            0.0,
+            1.45
+          ],
+          "parent": "spine",
+          "tail_m": [
+            -0.28,
+            0.0,
+            1.12
+          ]
+        }
+      },
+      "dec035_mapping": {
+        "forearm.L": "forearm_L",
+        "forearm.R": "forearm_R",
+        "head": "head",
+        "neck": "neck",
+        "root": "root",
+        "shin.L": "shin_L",
+        "shin.R": "shin_R",
+        "spine": "spine",
+        "thigh.L": "thigh_L",
+        "thigh.R": "thigh_R",
+        "upper_arm.L": "upper_arm_L",
+        "upper_arm.R": "upper_arm_R"
+      },
+      "name": "ARMATURE__shared_bilateral_v1"
+    },
+    "body": {
+      "bounds_max_m": [
+        0.337676,
+        0.294926,
+        1.8
+      ],
+      "bounds_min_m": [
+        -0.337676,
+        -0.294926,
+        0.0
+      ],
+      "mesh_sha256": "F340C34B05FC4D0D20F5625E9B2F9174947B691F59420367E8B738BE1CBF03CD",
+      "name": "BODY__refined_sundale_derivative_v1",
+      "polygon_count": 58143,
+      "vertex_count": 58324
+    },
+    "excluded": [
+      "offline fitting/collision aids",
+      "clothing",
+      "footwear",
+      "actions",
+      "FBX",
+      "UAsset",
+      "runtime import"
+    ],
+    "identity_sha256": "91AAB962825784679391C85FD06239A2F8EB118FEABA906EF9C5FB373FB8CF08",
+    "landmarks_m": {
+      "ankle": 0.1,
+      "crown": 1.8,
+      "elbow": 1.12,
+      "head_center": 1.66,
+      "hip": 0.94,
+      "knee": 0.53,
+      "shoulder": 1.45,
+      "wrist": 0.78
+    },
+    "root_translation_m": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "source_extraction": {
+      "objects": [
+        "Character | anatomical head",
+        "Character | anatomical left hand",
+        "Character | anatomical legs",
+        "Character | anatomical right hand"
+      ],
+      "source_bounds_max_m": [
+        -0.462358,
+        -2.178353,
+        1.775723
+      ],
+      "source_bounds_min_m": [
+        -1.037642,
+        -2.718755,
+        0.126625
+      ],
+      "uniform_scale": 1.091505745
+    },
+    "weights": {
+      "max_neutral_bind_drift_m": 2.41e-07,
+      "non_normalized_vertices": 0,
+      "unweighted_vertices": 0,
+      "vertices_by_bone": {
+        "forearm.L": 26589,
+        "forearm.R": 26590,
+        "head": 929,
+        "neck": 3449,
+        "root": 1,
+        "shin.L": 329,
+        "shin.R": 328,
+        "spine": 1,
+        "thigh.L": 38,
+        "thigh.R": 40,
+        "upper_arm.L": 15,
+        "upper_arm.R": 15
+      }
+    }
+  },
+  "source_custody": {
+    "accepted_bind": "9CBD196FDB42FA76788673467D16954733796AE6820073075005444B0942A443",
+    "handoff": "9DFE96E72883BBC3BB9AFB7FAD799644C54DE817142CE625862F9BA06764926A",
+    "source": "0F3988395DBE747A66738D9D7BA1D86A14D2531FCF2A5592C471A01B3AFC6127"
+  },
+  "status": "body_only_derivative_neutral_bind_proof_not_runtime_or_final_art"
+}

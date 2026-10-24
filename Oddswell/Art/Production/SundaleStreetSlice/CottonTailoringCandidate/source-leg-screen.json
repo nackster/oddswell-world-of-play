@@ -1,0 +1,252 @@
+{
+  "source_sha256": "2900363715a0056444b9b85509a00dcc01ab6c5e5cfee4fcac32a537af513079",
+  "screen_version": 3,
+  "scope": "Pinned source lower-leg band with actual leg skin clearance helper at render resolution; reused from completed same-source comparison",
+  "frames": {
+    "1": {
+      "minimum_signed_m": -0.00015926487685646862,
+      "negative_samples": 1,
+      "samples": 2654
+    },
+    "2": {
+      "minimum_signed_m": -0.00016487791435793042,
+      "negative_samples": 1,
+      "samples": 2654
+    },
+    "3": {
+      "minimum_signed_m": -0.00012936520215589553,
+      "negative_samples": 1,
+      "samples": 2654
+    },
+    "4": {
+      "minimum_signed_m": -9.436717664357275e-05,
+      "negative_samples": 1,
+      "samples": 2654
+    },
+    "5": {
+      "minimum_signed_m": -6.196762842591852e-05,
+      "negative_samples": 1,
+      "samples": 2654
+    },
+    "6": {
+      "minimum_signed_m": -3.4665659768506885e-05,
+      "negative_samples": 1,
+      "samples": 2654
+    },
+    "7": {
+      "minimum_signed_m": -3.43627471011132e-05,
+      "negative_samples": 1,
+      "samples": 2654
+    },
+    "8": {
+      "minimum_signed_m": -1.2145668733865023e-05,
+      "negative_samples": 1,
+      "samples": 2654
+    },
+    "9": {
+      "minimum_signed_m": 6.669084541499615e-06,
+      "negative_samples": 0,
+      "samples": 2654
+    },
+    "10": {
+      "minimum_signed_m": -1.2631644494831562e-06,
+      "negative_samples": 1,
+      "samples": 2654
+    },
+    "11": {
+      "minimum_signed_m": -3.793265204876661e-05,
+      "negative_samples": 1,
+      "samples": 2654
+    },
+    "12": {
+      "minimum_signed_m": -9.976635919883847e-05,
+      "negative_samples": 1,
+      "samples": 2654
+    },
+    "13": {
+      "minimum_signed_m": -0.00019345380133017898,
+      "negative_samples": 1,
+      "samples": 2654
+    },
+    "14": {
+      "minimum_signed_m": -0.00016815285198390484,
+      "negative_samples": 1,
+      "samples": 2654
+    },
+    "15": {
+      "minimum_signed_m": -0.00014471204485744238,
+      "negative_samples": 1,
+      "samples": 2654
+    },
+    "16": {
+      "minimum_signed_m": -0.00012195503222756088,
+      "negative_samples": 1,
+      "samples": 2654
+    },
+    "17": {
+      "minimum_signed_m": -0.0001008273393381387,
+      "negative_samples": 1,
+      "samples": 2654
+    },
+    "18": {
+      "minimum_signed_m": -8.666623034514487e-05,
+      "negative_samples": 1,
+      "samples": 2654
+    },
+    "19": {
+      "minimum_signed_m": -8.778893970884383e-05,
+      "negative_samples": 1,
+      "samples": 2654
+    },
+    "20": {
+      "minimum_signed_m": -0.00010387103247921914,
+      "negative_samples": 1,
+      "samples": 2654
+    },
+    "21": {
+      "minimum_signed_m": -0.00015085891755006742,
+      "negative_samples": 1,
+      "samples": 2654
+    },
+    "22": {
+      "minimum_signed_m": -0.00014771636779187247,
+      "negative_samples": 1,
+      "samples": 2654
+    },
+    "23": {
+      "minimum_signed_m": -0.0001484995664213784,
+      "negative_samples": 1,
+      "samples": 2654
+    },
+    "24": {
+      "minimum_signed_m": -0.00012614816660061479,
+      "negative_samples": 1,
+      "samples": 2654
+    },
+    "25": {
+      "minimum_signed_m": -0.00015925982734188437,
+      "negative_samples": 1,
+      "samples": 2654
+    },
+    "26": {
+      "minimum_signed_m": -0.00016484575462527573,
+      "negative_samples": 1,
+      "samples": 2654
+    },
+    "27": {
+      "minimum_signed_m": -0.00012922147288918495,
+      "negative_samples": 1,
+      "samples": 2654
+    },
+    "28": {
+      "minimum_signed_m": -9.432197111891583e-05,
+      "negative_samples": 1,
+      "samples": 2654
+    },
+    "29": {
+      "minimum_signed_m": -6.184261292219162e-05,
+      "negative_samples": 1,
+      "samples": 2654
+    },
+    "30": {
+      "minimum_signed_m": -3.469342482276261e-05,
+      "negative_samples": 1,
+      "samples": 2654
+    },
+    "31": {
+      "minimum_signed_m": -3.4337223041802645e-05,
+      "negative_samples": 1,
+      "samples": 2654
+    },
+    "32": {
+      "minimum_signed_m": -1.2271048035472631e-05,
+      "negative_samples": 1,
+      "samples": 2654
+    },
+    "33": {
+      "minimum_signed_m": 6.609421689063311e-06,
+      "negative_samples": 0,
+      "samples": 2654
+    },
+    "34": {
+      "minimum_signed_m": -1.3282406143844128e-06,
+      "negative_samples": 1,
+      "samples": 2654
+    },
+    "35": {
+      "minimum_signed_m": -3.8115016650408506e-05,
+      "negative_samples": 1,
+      "samples": 2654
+    },
+    "36": {
+      "minimum_signed_m": -9.978265734389424e-05,
+      "negative_samples": 1,
+      "samples": 2654
+    },
+    "37": {
+      "minimum_signed_m": -0.00019344649626873434,
+      "negative_samples": 1,
+      "samples": 2654
+    },
+    "38": {
+      "minimum_signed_m": -0.00016812750254757702,
+      "negative_samples": 1,
+      "samples": 2654
+    },
+    "39": {
+      "minimum_signed_m": -0.00014481510152108967,
+      "negative_samples": 1,
+      "samples": 2654
+    },
+    "40": {
+      "minimum_signed_m": -0.00012207304826006293,
+      "negative_samples": 1,
+      "samples": 2654
+    },
+    "41": {
+      "minimum_signed_m": -0.00010080213542096317,
+      "negative_samples": 1,
+      "samples": 2654
+    },
+    "42": {
+      "minimum_signed_m": -8.657030411995947e-05,
+      "negative_samples": 1,
+      "samples": 2654
+    },
+    "43": {
+      "minimum_signed_m": -8.777750190347433e-05,
+      "negative_samples": 1,
+      "samples": 2654
+    },
+    "44": {
+      "minimum_signed_m": -0.0001038045302266255,
+      "negative_samples": 1,
+      "samples": 2654
+    },
+    "45": {
+      "minimum_signed_m": -0.0001508920959167881,
+      "negative_samples": 1,
+      "samples": 2654
+    },
+    "46": {
+      "minimum_signed_m": -0.00014778591139474884,
+      "negative_samples": 1,
+      "samples": 2654
+    },
+    "47": {
+      "minimum_signed_m": -0.00014850190927973017,
+      "negative_samples": 1,
+      "samples": 2654
+    },
+    "48": {
+      "minimum_signed_m": -0.0001260242934222333,
+      "negative_samples": 1,
+      "samples": 2654
+    },
+    "49": {
+      "minimum_signed_m": -0.00015922104648780078,
+      "negative_samples": 1,
+      "samples": 2654
+    }
+  }
+}

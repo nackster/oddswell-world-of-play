@@ -1,0 +1,7 @@
+# Coordinated waist and jacket-hem contour
+
+`WaistPattern.blend` follows `../PocketPanelCandidate/PocketPanel.blend` (SHA-256 `F4C098DFC315FF9AF49AC3F8ABE15E60D32AF28A062F7E01F5714A24B11A9052`). The saved editable candidate has SHA-256 `B569AECCD66394C9AAE4FB3F086A9A70D7A02FD2B92849579C77E9945C569CDA`.
+
+The prior upper shorts ring measured 1.011 m around while the lower hip measured 1.070 m, leaving an almost cylindrical rise. This candidate grades the upper shorts toward a narrower waist and carries the same radial change through the ribbed band, jacket lower torso, jacket details, and hidden cloth support. The back-pocket panels and stitches are refitted to the resulting shorts surface. The saved waist ring measures 0.910 m; the lower hip remains 1.066 m. Rear, front, profile, full-rear, and native gameplay renders are retained here.
+
+The candidate passes a cold `verify_scene.py --draft` reopen and the focused `verify_waist.py` circumference/pocket-contact check. In visual review it improves the torso-to-hip taper without opening the waistband or moving the leg hems. It is still a graded version of the original annular shorts topology, **not** the completed sewn front/back panel and saddle rebuild. The crotch fold, upper cloth drape, jacket sleeve/waist compression, face/skin, and shoe/ankle finish remain below the very-real target. Source licenses and original slate/teal identity are unchanged. This is static editable Blender art, not a runtime character.

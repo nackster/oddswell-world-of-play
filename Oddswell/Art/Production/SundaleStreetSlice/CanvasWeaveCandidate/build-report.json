@@ -1,0 +1,126 @@
+{
+  "source_sha256": "c14ec89ca354a9dbe498c6955cde745e2edcb977c9b8603d9e37080247fffeac",
+  "method": "Native smart-projected rest-panel UV islands scaled by measured cloth area to a 266 mm licensed texture tile. Existing original UVs, mesh controls and modifiers remain intact. UVs follow native foot deformation. Shader changes only the existing uppers and tongues.",
+  "objects": {
+    "Character | canvas sneaker left": {
+      "added_uv": "Rest sewn canvas panels",
+      "triangles": 27208,
+      "nondegenerate_triangles_with_zero_uv_area": 0,
+      "surface_area_m2": 0.11124449727866029,
+      "uv_scale": 1.6318624332947933,
+      "licensed_tile_size_m": 0.266
+    },
+    "Character | canvas sneaker tongue left": {
+      "added_uv": "Rest sewn canvas panels",
+      "triangles": 480,
+      "nondegenerate_triangles_with_zero_uv_area": 0,
+      "surface_area_m2": 0.005987973363517085,
+      "uv_scale": 0.38541085938170466,
+      "licensed_tile_size_m": 0.266
+    },
+    "Character | canvas sneaker right": {
+      "added_uv": "Rest sewn canvas panels",
+      "triangles": 27364,
+      "nondegenerate_triangles_with_zero_uv_area": 0,
+      "surface_area_m2": 0.10991761192623468,
+      "uv_scale": 1.5721360419240629,
+      "licensed_tile_size_m": 0.266
+    },
+    "Character | canvas sneaker tongue right": {
+      "added_uv": "Rest sewn canvas panels",
+      "triangles": 480,
+      "nondegenerate_triangles_with_zero_uv_area": 0,
+      "surface_area_m2": 0.00598825364431832,
+      "uv_scale": 0.3854101630068111,
+      "licensed_tile_size_m": 0.266
+    }
+  },
+  "materials": {
+    "Character | oat canvas": "Canvas study | oat canvas",
+    "Character | warmer canvas toe panels": "Canvas study | warmer canvas toe panels",
+    "Character | reinforced canvas heel": "Canvas study | reinforced canvas heel"
+  },
+  "fitted_panel_seams": {
+    "Character | shoe lace toe cap seam left": {
+      "added_key": "Fitted canvas panel seam",
+      "points": 58,
+      "source_maximum_upper_gap_m": 0.0014980050036683679,
+      "maximum_fit_change_m": 0.0011979928167427623,
+      "centerline_stand_off_m": 0.0003,
+      "parent_bone": "neg.foot"
+    },
+    "Character | shoe lace quarter seam left": {
+      "added_key": "Fitted canvas panel seam",
+      "points": 76,
+      "source_maximum_upper_gap_m": 0.012382447719573975,
+      "maximum_fit_change_m": 0.012087253974797518,
+      "centerline_stand_off_m": 0.0003,
+      "parent_bone": "neg.foot"
+    },
+    "Character | shoe lace quarter seam left.001": {
+      "added_key": "Fitted canvas panel seam",
+      "points": 76,
+      "source_maximum_upper_gap_m": 0.01238225307315588,
+      "maximum_fit_change_m": 0.012086940879989039,
+      "centerline_stand_off_m": 0.0003,
+      "parent_bone": "neg.foot"
+    },
+    "Character | shoe lace toe cap seam right": {
+      "added_key": "Fitted canvas panel seam",
+      "points": 58,
+      "source_maximum_upper_gap_m": 0.0014980703126639128,
+      "maximum_fit_change_m": 0.0011980744023159496,
+      "centerline_stand_off_m": 0.0003,
+      "parent_bone": "pos.foot"
+    },
+    "Character | shoe lace quarter seam right": {
+      "added_key": "Fitted canvas panel seam",
+      "points": 76,
+      "source_maximum_upper_gap_m": 0.013948740437626839,
+      "maximum_fit_change_m": 0.013656009878385549,
+      "centerline_stand_off_m": 0.0003,
+      "parent_bone": "pos.foot"
+    },
+    "Character | shoe lace quarter seam right.001": {
+      "added_key": "Fitted canvas panel seam",
+      "points": 76,
+      "source_maximum_upper_gap_m": 0.013948499225080013,
+      "maximum_fit_change_m": 0.013650813564863692,
+      "centerline_stand_off_m": 0.0003,
+      "parent_bone": "pos.foot"
+    }
+  },
+  "foot_detail_weights": {
+    "Walk surface | Character | foxing edge left": {
+      "foot_bone": "neg.foot",
+      "controls": 1104,
+      "method": "Replace generic shin-dominated native weights with the actual foot bone, retaining original controls and modifier."
+    },
+    "Walk surface | Character | outsole groove left": {
+      "foot_bone": "neg.foot",
+      "controls": 1104,
+      "method": "Replace generic shin-dominated native weights with the actual foot bone, retaining original controls and modifier."
+    },
+    "Walk surface | Character | foxing edge right": {
+      "foot_bone": "pos.foot",
+      "controls": 1104,
+      "method": "Replace generic shin-dominated native weights with the actual foot bone, retaining original controls and modifier."
+    },
+    "Walk surface | Character | outsole groove right": {
+      "foot_bone": "pos.foot",
+      "controls": 1104,
+      "method": "Replace generic shin-dominated native weights with the actual foot bone, retaining original controls and modifier."
+    },
+    "Walk surface | Character | sewn heel counter left": {
+      "foot_bone": "neg.foot",
+      "controls": 1888,
+      "method": "Replace generic shin-dominated native weights with the actual foot bone, retaining original controls and modifier."
+    },
+    "Walk surface | Character | sewn heel counter right": {
+      "foot_bone": "pos.foot",
+      "controls": 1776,
+      "method": "Replace generic shin-dominated native weights with the actual foot bone, retaining original controls and modifier."
+    }
+  },
+  "new_bitmap_assets": 0
+}

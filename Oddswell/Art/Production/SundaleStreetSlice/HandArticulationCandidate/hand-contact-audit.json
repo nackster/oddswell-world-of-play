@@ -1,0 +1,1812 @@
+{
+  "candidate_sha256": "dc0b0884a33e515d982cccc89c315de5f693fd170220028d786b43af8ae90750",
+  "source_sha256": "7e04b1847acdbb58096ff57c654e388768e91726808f95caaf203e8ef18f82dd",
+  "original_body_bones": 14,
+  "native_bones": 46,
+  "existing_rest_and_eleven_body_poses_unchanged": true,
+  "source_detail_baselines": {
+    "1": {
+      "Character | nail left 1": {
+        "maximum_nearest_m": 0.00013396822032518685,
+        "minimum_signed_m": -4.002021535143285e-05,
+        "maximum_signed_m": 0.0001339575774181867,
+        "samples": 385
+      },
+      "Character | nail left 2": {
+        "maximum_nearest_m": 0.00020791642600670457,
+        "minimum_signed_m": -2.0784967546205735e-05,
+        "maximum_signed_m": 0.0002077212484437041,
+        "samples": 385
+      },
+      "Character | nail left 3": {
+        "maximum_nearest_m": 0.0001839870965341106,
+        "minimum_signed_m": 7.450816440268682e-06,
+        "maximum_signed_m": 0.00018393883033240854,
+        "samples": 385
+      },
+      "Character | nail left 4": {
+        "maximum_nearest_m": 0.00018605298828333616,
+        "minimum_signed_m": 3.25305658854802e-07,
+        "maximum_signed_m": 0.0001859717708612152,
+        "samples": 385
+      },
+      "Character | nail left 5": {
+        "maximum_nearest_m": 0.00017486322030890733,
+        "minimum_signed_m": -1.3368094018417764e-06,
+        "maximum_signed_m": 0.0001748410468280781,
+        "samples": 385
+      },
+      "Character | nail fold left 1": {
+        "maximum_nearest_m": 0.00013703729200642556,
+        "minimum_signed_m": -6.818304411471132e-05,
+        "maximum_signed_m": 0.00013700096224056324,
+        "samples": 32
+      },
+      "Character | nail fold left 2": {
+        "maximum_nearest_m": 0.000182801260962151,
+        "minimum_signed_m": -8.28351321615628e-05,
+        "maximum_signed_m": 0.00018273013483849354,
+        "samples": 32
+      },
+      "Character | nail fold left 3": {
+        "maximum_nearest_m": 0.00019295519450679421,
+        "minimum_signed_m": -8.83292466369312e-05,
+        "maximum_signed_m": 0.00019292919432700728,
+        "samples": 32
+      },
+      "Character | nail fold left 4": {
+        "maximum_nearest_m": 0.00018372698104940355,
+        "minimum_signed_m": -9.218488175122275e-05,
+        "maximum_signed_m": 0.00018369497416870217,
+        "samples": 32
+      },
+      "Character | nail fold left 5": {
+        "maximum_nearest_m": 0.00018293055472895503,
+        "minimum_signed_m": -9.49651872410584e-05,
+        "maximum_signed_m": 0.0001829185126922539,
+        "samples": 32
+      },
+      "Character | nail right 1": {
+        "maximum_nearest_m": 0.00027144612977281213,
+        "minimum_signed_m": 2.7205463482005143e-07,
+        "maximum_signed_m": 0.0002712151856112399,
+        "samples": 385
+      },
+      "Character | nail right 2": {
+        "maximum_nearest_m": 0.00020331976702436805,
+        "minimum_signed_m": -2.3826280539651634e-05,
+        "maximum_signed_m": 0.00020326749472587835,
+        "samples": 385
+      },
+      "Character | nail right 3": {
+        "maximum_nearest_m": 0.00021339303930290043,
+        "minimum_signed_m": -1.4107579772826284e-05,
+        "maximum_signed_m": 0.00021338176975405077,
+        "samples": 385
+      },
+      "Character | nail right 4": {
+        "maximum_nearest_m": 0.00019536436593625695,
+        "minimum_signed_m": -6.2548307795395885e-06,
+        "maximum_signed_m": 0.00019536198182623643,
+        "samples": 385
+      },
+      "Character | nail right 5": {
+        "maximum_nearest_m": 0.0001720583823043853,
+        "minimum_signed_m": -2.8359137331790407e-06,
+        "maximum_signed_m": 0.00017205791888841304,
+        "samples": 385
+      },
+      "Character | nail fold right 1": {
+        "maximum_nearest_m": 0.0002691027184482664,
+        "minimum_signed_m": -0.00012162551055627802,
+        "maximum_signed_m": 0.0002689887612987718,
+        "samples": 32
+      },
+      "Character | nail fold right 2": {
+        "maximum_nearest_m": 0.00023278511071112007,
+        "minimum_signed_m": -0.00011067619925597683,
+        "maximum_signed_m": 0.00023274133218365023,
+        "samples": 32
+      },
+      "Character | nail fold right 3": {
+        "maximum_nearest_m": 0.00021914612443652004,
+        "minimum_signed_m": -0.00010482334135986093,
+        "maximum_signed_m": 0.00021911754720349563,
+        "samples": 32
+      },
+      "Character | nail fold right 4": {
+        "maximum_nearest_m": 0.00020472751930356026,
+        "minimum_signed_m": -0.00010529015708016232,
+        "maximum_signed_m": 0.00020471598440963135,
+        "samples": 32
+      },
+      "Character | nail fold right 5": {
+        "maximum_nearest_m": 0.00018116769206244498,
+        "minimum_signed_m": -9.423318556400773e-05,
+        "maximum_signed_m": 0.0001811630049814994,
+        "samples": 32
+      }
+    },
+    "13": {
+      "Character | nail left 1": {
+        "maximum_nearest_m": 0.13791492581367493,
+        "minimum_signed_m": 0.1296820305287838,
+        "maximum_signed_m": 0.13786590099334717,
+        "samples": 385
+      },
+      "Character | nail left 2": {
+        "maximum_nearest_m": 0.19253014028072357,
+        "minimum_signed_m": 0.18288077041506767,
+        "maximum_signed_m": 0.19211586192250252,
+        "samples": 385
+      },
+      "Character | nail left 3": {
+        "maximum_nearest_m": 0.21711251139640808,
+        "minimum_signed_m": 0.2076796181499958,
+        "maximum_signed_m": 0.21694481559097767,
+        "samples": 385
+      },
+      "Character | nail left 4": {
+        "maximum_nearest_m": 0.00018607031961437315,
+        "minimum_signed_m": 1.691464905917428e-07,
+        "maximum_signed_m": 0.00018598998792640486,
+        "samples": 385
+      },
+      "Character | nail left 5": {
+        "maximum_nearest_m": 0.00017499843670520931,
+        "minimum_signed_m": -1.4285670877356438e-06,
+        "maximum_signed_m": 0.00017497627339935207,
+        "samples": 385
+      },
+      "Character | nail fold left 1": {
+        "maximum_nearest_m": 0.13537771999835968,
+        "minimum_signed_m": 0.12949293479323387,
+        "maximum_signed_m": 0.13524042069911957,
+        "samples": 32
+      },
+      "Character | nail fold left 2": {
+        "maximum_nearest_m": 0.19003774225711823,
+        "minimum_signed_m": 0.18277175724506378,
+        "maximum_signed_m": 0.18922964110970497,
+        "samples": 32
+      },
+      "Character | nail fold left 3": {
+        "maximum_nearest_m": 0.21287916600704193,
+        "minimum_signed_m": 0.20709717273712158,
+        "maximum_signed_m": 0.21215230599045753,
+        "samples": 32
+      },
+      "Character | nail fold left 4": {
+        "maximum_nearest_m": 0.00018374001956544816,
+        "minimum_signed_m": -9.217562819685554e-05,
+        "maximum_signed_m": 0.00018370513498666696,
+        "samples": 32
+      },
+      "Character | nail fold left 5": {
+        "maximum_nearest_m": 0.00018293765606358647,
+        "minimum_signed_m": -9.49313518958661e-05,
+        "maximum_signed_m": 0.0001829272041504737,
+        "samples": 32
+      },
+      "Character | nail right 1": {
+        "maximum_nearest_m": 0.21767841279506683,
+        "minimum_signed_m": 0.21425329137127846,
+        "maximum_signed_m": 0.21765381851582788,
+        "samples": 385
+      },
+      "Character | nail right 2": {
+        "maximum_nearest_m": 0.24439260363578796,
+        "minimum_signed_m": 0.23455083609178473,
+        "maximum_signed_m": 0.2443538587540388,
+        "samples": 385
+      },
+      "Character | nail right 3": {
+        "maximum_nearest_m": 0.23615306615829468,
+        "minimum_signed_m": 0.22764243811252527,
+        "maximum_signed_m": 0.23463376917061396,
+        "samples": 385
+      },
+      "Character | nail right 4": {
+        "maximum_nearest_m": 0.21538761258125305,
+        "minimum_signed_m": 0.20556432129524183,
+        "maximum_signed_m": 0.2153394452179782,
+        "samples": 385
+      },
+      "Character | nail right 5": {
+        "maximum_nearest_m": 0.00017195659165736288,
+        "minimum_signed_m": -2.8874265396439114e-06,
+        "maximum_signed_m": 0.00017195604209518933,
+        "samples": 385
+      },
+      "Character | nail fold right 1": {
+        "maximum_nearest_m": 0.21741460263729095,
+        "minimum_signed_m": 0.21406676073092967,
+        "maximum_signed_m": 0.2172391997592058,
+        "samples": 32
+      },
+      "Character | nail fold right 2": {
+        "maximum_nearest_m": 0.2444945126771927,
+        "minimum_signed_m": 0.23669013963080943,
+        "maximum_signed_m": 0.24445715663023293,
+        "samples": 32
+      },
+      "Character | nail fold right 3": {
+        "maximum_nearest_m": 0.23637203872203827,
+        "minimum_signed_m": 0.2295317030948354,
+        "maximum_signed_m": 0.23488824555533938,
+        "samples": 32
+      },
+      "Character | nail fold right 4": {
+        "maximum_nearest_m": 0.21567456424236298,
+        "minimum_signed_m": 0.20786035049241036,
+        "maximum_signed_m": 0.2156338890781626,
+        "samples": 32
+      },
+      "Character | nail fold right 5": {
+        "maximum_nearest_m": 0.00018111892859451473,
+        "minimum_signed_m": -9.420754849998048e-05,
+        "maximum_signed_m": 0.00018111443023371976,
+        "samples": 32
+      }
+    }
+  },
+  "fingertip_motion_relative_to_forearm_m": {
+    "neg": [
+      0.0033083465467324573,
+      0.008268521623505262,
+      0.010337421945008599,
+      0.011068588037545969,
+      0.008324517804737683
+    ],
+    "pos": [
+      0.005117777718072634,
+      0.008040661741132249,
+      0.010700729599651881,
+      0.010292682609019655,
+      0.006607463970793835
+    ]
+  },
+  "frames": [
+    {
+      "frame": 1,
+      "existing_body_pose_maximum_error": 0.0,
+      "digit_details": {
+        "Character | nail left 1": {
+          "maximum_nearest_m": 0.00013277024845592678,
+          "minimum_signed_m": -4.0458201567616925e-05,
+          "maximum_signed_m": 0.00013275934179546311,
+          "samples": 385
+        },
+        "Character | nail left 2": {
+          "maximum_nearest_m": 0.00020213512470945716,
+          "minimum_signed_m": -2.6042730723929708e-05,
+          "maximum_signed_m": 0.0002019445710175205,
+          "samples": 385
+        },
+        "Character | nail left 3": {
+          "maximum_nearest_m": 0.0001782225153874606,
+          "minimum_signed_m": 7.974370888064186e-07,
+          "maximum_signed_m": 0.00017817980938161782,
+          "samples": 385
+        },
+        "Character | nail left 4": {
+          "maximum_nearest_m": 0.00018606481899041682,
+          "minimum_signed_m": 5.361532728898055e-08,
+          "maximum_signed_m": 0.00018598809037939645,
+          "samples": 385
+        },
+        "Character | nail left 5": {
+          "maximum_nearest_m": 0.00017487462901044637,
+          "minimum_signed_m": -1.4407708498476168e-06,
+          "maximum_signed_m": 0.00017485521493654232,
+          "samples": 385
+        },
+        "Character | nail fold left 1": {
+          "maximum_nearest_m": 0.00013534040772356093,
+          "minimum_signed_m": -6.932792142499977e-05,
+          "maximum_signed_m": 0.00013532107004721183,
+          "samples": 32
+        },
+        "Character | nail fold left 2": {
+          "maximum_nearest_m": 0.00017884487169794738,
+          "minimum_signed_m": -8.74143897817703e-05,
+          "maximum_signed_m": 0.00017877729806059506,
+          "samples": 32
+        },
+        "Character | nail fold left 3": {
+          "maximum_nearest_m": 0.0001875760790426284,
+          "minimum_signed_m": -9.355184010928497e-05,
+          "maximum_signed_m": 0.00018754873644866166,
+          "samples": 32
+        },
+        "Character | nail fold left 4": {
+          "maximum_nearest_m": 0.0001837254239944741,
+          "minimum_signed_m": -9.226871313927631e-05,
+          "maximum_signed_m": 0.0001836910454358076,
+          "samples": 32
+        },
+        "Character | nail fold left 5": {
+          "maximum_nearest_m": 0.00018282182281836867,
+          "minimum_signed_m": -9.503155467882607e-05,
+          "maximum_signed_m": 0.0001828121424409801,
+          "samples": 32
+        },
+        "Character | nail right 1": {
+          "maximum_nearest_m": 0.000272257108008489,
+          "minimum_signed_m": 3.163237067838054e-06,
+          "maximum_signed_m": 0.00027208677738599363,
+          "samples": 385
+        },
+        "Character | nail right 2": {
+          "maximum_nearest_m": 0.00020645538461394608,
+          "minimum_signed_m": -1.944220116456563e-05,
+          "maximum_signed_m": 0.0002064013260678621,
+          "samples": 385
+        },
+        "Character | nail right 3": {
+          "maximum_nearest_m": 0.0002151162043446675,
+          "minimum_signed_m": -1.0301314432581421e-05,
+          "maximum_signed_m": 0.0002151042828018035,
+          "samples": 385
+        },
+        "Character | nail right 4": {
+          "maximum_nearest_m": 0.00019762793090194464,
+          "minimum_signed_m": -3.987634897839598e-06,
+          "maximum_signed_m": 0.00019762596275541,
+          "samples": 385
+        },
+        "Character | nail right 5": {
+          "maximum_nearest_m": 0.00017206068150699139,
+          "minimum_signed_m": -2.842652946810631e-06,
+          "maximum_signed_m": 0.00017206014399562264,
+          "samples": 385
+        },
+        "Character | nail fold right 1": {
+          "maximum_nearest_m": 0.00027056544786319137,
+          "minimum_signed_m": -0.00011985526711555394,
+          "maximum_signed_m": 0.0002704684623608955,
+          "samples": 32
+        },
+        "Character | nail fold right 2": {
+          "maximum_nearest_m": 0.00023572934151161462,
+          "minimum_signed_m": -0.00010737538286775816,
+          "maximum_signed_m": 0.0002356820787099423,
+          "samples": 32
+        },
+        "Character | nail fold right 3": {
+          "maximum_nearest_m": 0.00022070160775911063,
+          "minimum_signed_m": -0.00010232984277536161,
+          "maximum_signed_m": 0.00022067187785523856,
+          "samples": 32
+        },
+        "Character | nail fold right 4": {
+          "maximum_nearest_m": 0.00020628176571335644,
+          "minimum_signed_m": -0.00010308218134014169,
+          "maximum_signed_m": 0.0002062705987100344,
+          "samples": 32
+        },
+        "Character | nail fold right 5": {
+          "maximum_nearest_m": 0.00018123463087249547,
+          "minimum_signed_m": -9.411165615347272e-05,
+          "maximum_signed_m": 0.00018122985738955322,
+          "samples": 32
+        }
+      },
+      "cuff_surface": {
+        "left": {
+          "minimum_triangle_area_m2": 6.427640286534898e-10,
+          "triangles": 76800,
+          "maximum_edge_length_m": 0.004493369475281409,
+          "frame1_maximum_edge_length_m": 0.004493369475281409
+        },
+        "right": {
+          "minimum_triangle_area_m2": 2.1104973156070044e-09,
+          "triangles": 76800,
+          "maximum_edge_length_m": 0.003827419286281159,
+          "frame1_maximum_edge_length_m": 0.003827419286281159
+        }
+      }
+    },
+    {
+      "frame": 4,
+      "existing_body_pose_maximum_error": 0.0,
+      "digit_details": {
+        "Character | nail left 1": {
+          "maximum_nearest_m": 0.00013271546049509197,
+          "minimum_signed_m": -4.043492685923411e-05,
+          "maximum_signed_m": 0.00013270472118165344,
+          "samples": 385
+        },
+        "Character | nail left 2": {
+          "maximum_nearest_m": 0.0002019294333877042,
+          "minimum_signed_m": -2.6108570864380454e-05,
+          "maximum_signed_m": 0.0002017398837779183,
+          "samples": 385
+        },
+        "Character | nail left 3": {
+          "maximum_nearest_m": 0.0001782372419256717,
+          "minimum_signed_m": 6.814102935237543e-07,
+          "maximum_signed_m": 0.0001781961518645403,
+          "samples": 385
+        },
+        "Character | nail left 4": {
+          "maximum_nearest_m": 0.00018605447257868946,
+          "minimum_signed_m": 3.2813418560095897e-07,
+          "maximum_signed_m": 0.00018597530788611039,
+          "samples": 385
+        },
+        "Character | nail left 5": {
+          "maximum_nearest_m": 0.00017488744924776256,
+          "minimum_signed_m": -1.395167225803906e-06,
+          "maximum_signed_m": 0.0001748667491483502,
+          "samples": 385
+        },
+        "Character | nail fold left 1": {
+          "maximum_nearest_m": 0.00013477200991474092,
+          "minimum_signed_m": -6.911793957442569e-05,
+          "maximum_signed_m": 0.0001347579213870631,
+          "samples": 32
+        },
+        "Character | nail fold left 2": {
+          "maximum_nearest_m": 0.0001788866356946528,
+          "minimum_signed_m": -8.733586128073512e-05,
+          "maximum_signed_m": 0.00017881862549984362,
+          "samples": 32
+        },
+        "Character | nail fold left 3": {
+          "maximum_nearest_m": 0.00018741399981081486,
+          "minimum_signed_m": -9.35162820496771e-05,
+          "maximum_signed_m": 0.00018738908556770184,
+          "samples": 32
+        },
+        "Character | nail fold left 4": {
+          "maximum_nearest_m": 0.00018367644224781543,
+          "minimum_signed_m": -9.225900510045904e-05,
+          "maximum_signed_m": 0.0001836453402574989,
+          "samples": 32
+        },
+        "Character | nail fold left 5": {
+          "maximum_nearest_m": 0.00018299618386663496,
+          "minimum_signed_m": -9.485648465101804e-05,
+          "maximum_signed_m": 0.00018298606836708586,
+          "samples": 32
+        },
+        "Character | nail right 1": {
+          "maximum_nearest_m": 0.00027262038202024996,
+          "minimum_signed_m": 3.1621368918877124e-06,
+          "maximum_signed_m": 0.0002724369633142487,
+          "samples": 385
+        },
+        "Character | nail right 2": {
+          "maximum_nearest_m": 0.00020618170674424618,
+          "minimum_signed_m": -1.9492721094138687e-05,
+          "maximum_signed_m": 0.00020612792650354095,
+          "samples": 385
+        },
+        "Character | nail right 3": {
+          "maximum_nearest_m": 0.0002151642256649211,
+          "minimum_signed_m": -1.0317383839719696e-05,
+          "maximum_signed_m": 0.0002151531220988545,
+          "samples": 385
+        },
+        "Character | nail right 4": {
+          "maximum_nearest_m": 0.00019758920825552195,
+          "minimum_signed_m": -3.9581336750416085e-06,
+          "maximum_signed_m": 0.00019758706639549928,
+          "samples": 385
+        },
+        "Character | nail right 5": {
+          "maximum_nearest_m": 0.00017202369053848088,
+          "minimum_signed_m": -2.8403278236055485e-06,
+          "maximum_signed_m": 0.0001720231218769186,
+          "samples": 385
+        },
+        "Character | nail fold right 1": {
+          "maximum_nearest_m": 0.0002706559607759118,
+          "minimum_signed_m": -0.00011994176141527646,
+          "maximum_signed_m": 0.0002705594561112079,
+          "samples": 32
+        },
+        "Character | nail fold right 2": {
+          "maximum_nearest_m": 0.00023576368403155357,
+          "minimum_signed_m": -0.0001076165608537849,
+          "maximum_signed_m": 0.0002357191751798382,
+          "samples": 32
+        },
+        "Character | nail fold right 3": {
+          "maximum_nearest_m": 0.00022068843827582896,
+          "minimum_signed_m": -0.00010245048542856239,
+          "maximum_signed_m": 0.0002206574440606346,
+          "samples": 32
+        },
+        "Character | nail fold right 4": {
+          "maximum_nearest_m": 0.0002062607672996819,
+          "minimum_signed_m": -0.000103089754247776,
+          "maximum_signed_m": 0.00020624967714866216,
+          "samples": 32
+        },
+        "Character | nail fold right 5": {
+          "maximum_nearest_m": 0.0001811640104278922,
+          "minimum_signed_m": -9.414428518539353e-05,
+          "maximum_signed_m": 0.000181159652356655,
+          "samples": 32
+        }
+      },
+      "cuff_surface": {
+        "left": {
+          "minimum_triangle_area_m2": 1.5168216505640626e-09,
+          "triangles": 76800,
+          "maximum_edge_length_m": 0.004494053512234513,
+          "frame1_maximum_edge_length_m": 0.004493369475281409
+        },
+        "right": {
+          "minimum_triangle_area_m2": 2.5629347481824652e-09,
+          "triangles": 76800,
+          "maximum_edge_length_m": 0.0038273277100289676,
+          "frame1_maximum_edge_length_m": 0.003827419286281159
+        }
+      }
+    },
+    {
+      "frame": 7,
+      "existing_body_pose_maximum_error": 0.0,
+      "digit_details": {
+        "Character | nail left 1": {
+          "maximum_nearest_m": 0.0001327640056842938,
+          "minimum_signed_m": -4.0410246128885774e-05,
+          "maximum_signed_m": 0.0001327540521742776,
+          "samples": 385
+        },
+        "Character | nail left 2": {
+          "maximum_nearest_m": 0.00020229254732839763,
+          "minimum_signed_m": -2.61037783957363e-05,
+          "maximum_signed_m": 0.00020210153525113128,
+          "samples": 385
+        },
+        "Character | nail left 3": {
+          "maximum_nearest_m": 0.00017825565009843558,
+          "minimum_signed_m": 7.33756362336635e-07,
+          "maximum_signed_m": 0.0001782139988790732,
+          "samples": 385
+        },
+        "Character | nail left 4": {
+          "maximum_nearest_m": 0.00018598117458168417,
+          "minimum_signed_m": 1.929585913273968e-07,
+          "maximum_signed_m": 0.00018589962130022286,
+          "samples": 385
+        },
+        "Character | nail left 5": {
+          "maximum_nearest_m": 0.00017480454698670655,
+          "minimum_signed_m": -1.386580509799007e-06,
+          "maximum_signed_m": 0.00017478392874181736,
+          "samples": 385
+        },
+        "Character | nail fold left 1": {
+          "maximum_nearest_m": 0.00013452938583213836,
+          "minimum_signed_m": -6.936464819773391e-05,
+          "maximum_signed_m": 0.00013451599261316005,
+          "samples": 32
+        },
+        "Character | nail fold left 2": {
+          "maximum_nearest_m": 0.00017867767019197345,
+          "minimum_signed_m": -8.737638745515142e-05,
+          "maximum_signed_m": 0.00017860754633147735,
+          "samples": 32
+        },
+        "Character | nail fold left 3": {
+          "maximum_nearest_m": 0.0001875596062745899,
+          "minimum_signed_m": -9.342560917957599e-05,
+          "maximum_signed_m": 0.00018753520453174133,
+          "samples": 32
+        },
+        "Character | nail fold left 4": {
+          "maximum_nearest_m": 0.00018377519154455513,
+          "minimum_signed_m": -9.226480415236438e-05,
+          "maximum_signed_m": 0.00018374003911958425,
+          "samples": 32
+        },
+        "Character | nail fold left 5": {
+          "maximum_nearest_m": 0.00018293969333171844,
+          "minimum_signed_m": -9.500215318780647e-05,
+          "maximum_signed_m": 0.00018292793538421392,
+          "samples": 32
+        },
+        "Character | nail right 1": {
+          "maximum_nearest_m": 0.00027294590836390853,
+          "minimum_signed_m": 3.253728387164756e-06,
+          "maximum_signed_m": 0.00027274136618871125,
+          "samples": 385
+        },
+        "Character | nail right 2": {
+          "maximum_nearest_m": 0.00020630579092539847,
+          "minimum_signed_m": -1.9750450064748293e-05,
+          "maximum_signed_m": 0.00020625270008167718,
+          "samples": 385
+        },
+        "Character | nail right 3": {
+          "maximum_nearest_m": 0.00021495022519957274,
+          "minimum_signed_m": -1.0450810577822267e-05,
+          "maximum_signed_m": 0.00021493977260433894,
+          "samples": 385
+        },
+        "Character | nail right 4": {
+          "maximum_nearest_m": 0.00019766877812799066,
+          "minimum_signed_m": -4.084410729632282e-06,
+          "maximum_signed_m": 0.00019766620971495286,
+          "samples": 385
+        },
+        "Character | nail right 5": {
+          "maximum_nearest_m": 0.00017212510283570737,
+          "minimum_signed_m": -2.9778659040857747e-06,
+          "maximum_signed_m": 0.0001721246513142205,
+          "samples": 385
+        },
+        "Character | nail fold right 1": {
+          "maximum_nearest_m": 0.0002707756939344108,
+          "minimum_signed_m": -0.00011929054505799286,
+          "maximum_signed_m": 0.00027066732332059473,
+          "samples": 32
+        },
+        "Character | nail fold right 2": {
+          "maximum_nearest_m": 0.00023585841699969023,
+          "minimum_signed_m": -0.00010737790944403969,
+          "maximum_signed_m": 0.00023581296773045324,
+          "samples": 32
+        },
+        "Character | nail fold right 3": {
+          "maximum_nearest_m": 0.0002205763739766553,
+          "minimum_signed_m": -0.00010228114842902869,
+          "maximum_signed_m": 0.0002205454754857783,
+          "samples": 32
+        },
+        "Character | nail fold right 4": {
+          "maximum_nearest_m": 0.00020616584515664726,
+          "minimum_signed_m": -0.0001031561753279675,
+          "maximum_signed_m": 0.0002061553453245324,
+          "samples": 32
+        },
+        "Character | nail fold right 5": {
+          "maximum_nearest_m": 0.00018118244770448655,
+          "minimum_signed_m": -9.423652270079685e-05,
+          "maximum_signed_m": 0.00018117851954357889,
+          "samples": 32
+        }
+      },
+      "cuff_surface": {
+        "left": {
+          "minimum_triangle_area_m2": 8.271181711072527e-10,
+          "triangles": 76800,
+          "maximum_edge_length_m": 0.004493870458180994,
+          "frame1_maximum_edge_length_m": 0.004493369475281409
+        },
+        "right": {
+          "minimum_triangle_area_m2": 2.0534339523381406e-09,
+          "triangles": 76800,
+          "maximum_edge_length_m": 0.003827438719590966,
+          "frame1_maximum_edge_length_m": 0.003827419286281159
+        }
+      }
+    },
+    {
+      "frame": 10,
+      "existing_body_pose_maximum_error": 0.0,
+      "digit_details": {
+        "Character | nail left 1": {
+          "maximum_nearest_m": 0.0001328803482465446,
+          "minimum_signed_m": -4.0503097352484474e-05,
+          "maximum_signed_m": 0.0001328691660091863,
+          "samples": 385
+        },
+        "Character | nail left 2": {
+          "maximum_nearest_m": 0.0002020915417233482,
+          "minimum_signed_m": -2.581271075996483e-05,
+          "maximum_signed_m": 0.00020190484792692587,
+          "samples": 385
+        },
+        "Character | nail left 3": {
+          "maximum_nearest_m": 0.00017827733245212585,
+          "minimum_signed_m": 6.407365376048801e-07,
+          "maximum_signed_m": 0.00017823058806243353,
+          "samples": 385
+        },
+        "Character | nail left 4": {
+          "maximum_nearest_m": 0.00018603281932882965,
+          "minimum_signed_m": 2.932876697059328e-07,
+          "maximum_signed_m": 0.0001859536275787832,
+          "samples": 385
+        },
+        "Character | nail left 5": {
+          "maximum_nearest_m": 0.00017484686395619065,
+          "minimum_signed_m": -1.391590227689532e-06,
+          "maximum_signed_m": 0.00017482593648310285,
+          "samples": 385
+        },
+        "Character | nail fold left 1": {
+          "maximum_nearest_m": 0.00013464505900628865,
+          "minimum_signed_m": -6.928191214683466e-05,
+          "maximum_signed_m": 0.00013463185769069241,
+          "samples": 32
+        },
+        "Character | nail fold left 2": {
+          "maximum_nearest_m": 0.00017873603792395443,
+          "minimum_signed_m": -8.747994934310555e-05,
+          "maximum_signed_m": 0.0001786690845619887,
+          "samples": 32
+        },
+        "Character | nail fold left 3": {
+          "maximum_nearest_m": 0.00018760749662760645,
+          "minimum_signed_m": -9.340668657387141e-05,
+          "maximum_signed_m": 0.00018758281112241093,
+          "samples": 32
+        },
+        "Character | nail fold left 4": {
+          "maximum_nearest_m": 0.00018373446073383093,
+          "minimum_signed_m": -9.222145365583856e-05,
+          "maximum_signed_m": 0.00018370065527051338,
+          "samples": 32
+        },
+        "Character | nail fold left 5": {
+          "maximum_nearest_m": 0.00018291996093466878,
+          "minimum_signed_m": -9.485899795436126e-05,
+          "maximum_signed_m": 0.00018290945013177407,
+          "samples": 32
+        },
+        "Character | nail right 1": {
+          "maximum_nearest_m": 0.00027302876696921885,
+          "minimum_signed_m": 3.2257192081885933e-06,
+          "maximum_signed_m": 0.000272812733783212,
+          "samples": 385
+        },
+        "Character | nail right 2": {
+          "maximum_nearest_m": 0.00020635321561712772,
+          "minimum_signed_m": -1.967635671462631e-05,
+          "maximum_signed_m": 0.00020629989558074158,
+          "samples": 385
+        },
+        "Character | nail right 3": {
+          "maximum_nearest_m": 0.0002150455111404881,
+          "minimum_signed_m": -1.0475299575318786e-05,
+          "maximum_signed_m": 0.00021503493732666357,
+          "samples": 385
+        },
+        "Character | nail right 4": {
+          "maximum_nearest_m": 0.0001976400235434994,
+          "minimum_signed_m": -3.932073255441537e-06,
+          "maximum_signed_m": 0.00019763836689890013,
+          "samples": 385
+        },
+        "Character | nail right 5": {
+          "maximum_nearest_m": 0.00017209979705512524,
+          "minimum_signed_m": -2.9228340636677785e-06,
+          "maximum_signed_m": 0.00017209954580721387,
+          "samples": 385
+        },
+        "Character | nail fold right 1": {
+          "maximum_nearest_m": 0.00027102266903966665,
+          "minimum_signed_m": -0.00011950893838275078,
+          "maximum_signed_m": 0.00027091401352663524,
+          "samples": 32
+        },
+        "Character | nail fold right 2": {
+          "maximum_nearest_m": 0.00023570380290038884,
+          "minimum_signed_m": -0.00010733602721302304,
+          "maximum_signed_m": 0.000235657822486246,
+          "samples": 32
+        },
+        "Character | nail fold right 3": {
+          "maximum_nearest_m": 0.00022073608124628663,
+          "minimum_signed_m": -0.00010243525287023658,
+          "maximum_signed_m": 0.0002207057729255446,
+          "samples": 32
+        },
+        "Character | nail fold right 4": {
+          "maximum_nearest_m": 0.0002062097191810608,
+          "minimum_signed_m": -0.00010309270879815813,
+          "maximum_signed_m": 0.00020619762119622465,
+          "samples": 32
+        },
+        "Character | nail fold right 5": {
+          "maximum_nearest_m": 0.00018112643738277256,
+          "minimum_signed_m": -9.410571078660723e-05,
+          "maximum_signed_m": 0.00018112238763023925,
+          "samples": 32
+        }
+      },
+      "cuff_surface": {
+        "left": {
+          "minimum_triangle_area_m2": 1.891256829169895e-09,
+          "triangles": 76800,
+          "maximum_edge_length_m": 0.004493523226958596,
+          "frame1_maximum_edge_length_m": 0.004493369475281409
+        },
+        "right": {
+          "minimum_triangle_area_m2": 2.08815095084369e-09,
+          "triangles": 76800,
+          "maximum_edge_length_m": 0.0038274627122038005,
+          "frame1_maximum_edge_length_m": 0.003827419286281159
+        }
+      }
+    },
+    {
+      "frame": 13,
+      "existing_body_pose_maximum_error": 0.0,
+      "digit_details": {
+        "Character | nail left 1": {
+          "maximum_nearest_m": 0.0001328865037066862,
+          "minimum_signed_m": -4.044287925353274e-05,
+          "maximum_signed_m": 0.00013287535739436862,
+          "samples": 385
+        },
+        "Character | nail left 2": {
+          "maximum_nearest_m": 0.0002021443215198815,
+          "minimum_signed_m": -2.616432107060973e-05,
+          "maximum_signed_m": 0.00020195582692394964,
+          "samples": 385
+        },
+        "Character | nail left 3": {
+          "maximum_nearest_m": 0.0001781949249561876,
+          "minimum_signed_m": 8.777336333309904e-07,
+          "maximum_signed_m": 0.00017815000046539353,
+          "samples": 385
+        },
+        "Character | nail left 4": {
+          "maximum_nearest_m": 0.00018610777624417096,
+          "minimum_signed_m": 3.3833630008750504e-07,
+          "maximum_signed_m": 0.00018602953315394188,
+          "samples": 385
+        },
+        "Character | nail left 5": {
+          "maximum_nearest_m": 0.000174846631125547,
+          "minimum_signed_m": -1.4512120931620132e-06,
+          "maximum_signed_m": 0.0001748255638176488,
+          "samples": 385
+        },
+        "Character | nail fold left 1": {
+          "maximum_nearest_m": 0.0001345857308479026,
+          "minimum_signed_m": -6.915897938597482e-05,
+          "maximum_signed_m": 0.00013457256409310503,
+          "samples": 32
+        },
+        "Character | nail fold left 2": {
+          "maximum_nearest_m": 0.00017872190801426768,
+          "minimum_signed_m": -8.731144316698192e-05,
+          "maximum_signed_m": 0.00017865618428913876,
+          "samples": 32
+        },
+        "Character | nail fold left 3": {
+          "maximum_nearest_m": 0.00018746420391835272,
+          "minimum_signed_m": -9.358483680443896e-05,
+          "maximum_signed_m": 0.00018743886039374047,
+          "samples": 32
+        },
+        "Character | nail fold left 4": {
+          "maximum_nearest_m": 0.00018376519437879324,
+          "minimum_signed_m": -9.228652174897434e-05,
+          "maximum_signed_m": 0.00018373208649791195,
+          "samples": 32
+        },
+        "Character | nail fold left 5": {
+          "maximum_nearest_m": 0.00018289887520950288,
+          "minimum_signed_m": -9.493714316022306e-05,
+          "maximum_signed_m": 0.00018288782575837104,
+          "samples": 32
+        },
+        "Character | nail right 1": {
+          "maximum_nearest_m": 0.00027319754008203745,
+          "minimum_signed_m": 3.2004591918877168e-06,
+          "maximum_signed_m": 0.00027298094755678903,
+          "samples": 385
+        },
+        "Character | nail right 2": {
+          "maximum_nearest_m": 0.00020620768191292882,
+          "minimum_signed_m": -1.971827941815718e-05,
+          "maximum_signed_m": 0.0002061544200842036,
+          "samples": 385
+        },
+        "Character | nail right 3": {
+          "maximum_nearest_m": 0.00021514731633942574,
+          "minimum_signed_m": -1.039020230564347e-05,
+          "maximum_signed_m": 0.0002151364031419689,
+          "samples": 385
+        },
+        "Character | nail right 4": {
+          "maximum_nearest_m": 0.00019751231593545526,
+          "minimum_signed_m": -4.115676574656391e-06,
+          "maximum_signed_m": 0.00019750981016386504,
+          "samples": 385
+        },
+        "Character | nail right 5": {
+          "maximum_nearest_m": 0.00017221937014255673,
+          "minimum_signed_m": -2.8342240139256347e-06,
+          "maximum_signed_m": 0.00017221902726305416,
+          "samples": 385
+        },
+        "Character | nail fold right 1": {
+          "maximum_nearest_m": 0.00027118113939650357,
+          "minimum_signed_m": -0.00011958759682784148,
+          "maximum_signed_m": 0.0002710703874981846,
+          "samples": 32
+        },
+        "Character | nail fold right 2": {
+          "maximum_nearest_m": 0.00023578267428092659,
+          "minimum_signed_m": -0.00010732658847700804,
+          "maximum_signed_m": 0.0002357365156058222,
+          "samples": 32
+        },
+        "Character | nail fold right 3": {
+          "maximum_nearest_m": 0.00022071095008868724,
+          "minimum_signed_m": -0.00010245260038743709,
+          "maximum_signed_m": 0.00022068053738166782,
+          "samples": 32
+        },
+        "Character | nail fold right 4": {
+          "maximum_nearest_m": 0.00020629925711546093,
+          "minimum_signed_m": -0.00010315762321511102,
+          "maximum_signed_m": 0.00020628748461604118,
+          "samples": 32
+        },
+        "Character | nail fold right 5": {
+          "maximum_nearest_m": 0.00018117102445103228,
+          "minimum_signed_m": -9.413082239007053e-05,
+          "maximum_signed_m": 0.0001811657189136895,
+          "samples": 32
+        }
+      },
+      "cuff_surface": {
+        "left": {
+          "minimum_triangle_area_m2": 9.193585985026076e-10,
+          "triangles": 76800,
+          "maximum_edge_length_m": 0.004494205419175719,
+          "frame1_maximum_edge_length_m": 0.004493369475281409
+        },
+        "right": {
+          "minimum_triangle_area_m2": 1.7708352611176859e-09,
+          "triangles": 76800,
+          "maximum_edge_length_m": 0.0038274750686006376,
+          "frame1_maximum_edge_length_m": 0.003827419286281159
+        }
+      }
+    },
+    {
+      "frame": 16,
+      "existing_body_pose_maximum_error": 0.0,
+      "digit_details": {
+        "Character | nail left 1": {
+          "maximum_nearest_m": 0.00013287959154695272,
+          "minimum_signed_m": -4.0410072415397735e-05,
+          "maximum_signed_m": 0.0001328682456005481,
+          "samples": 385
+        },
+        "Character | nail left 2": {
+          "maximum_nearest_m": 0.00020206396584399045,
+          "minimum_signed_m": -2.5940764317056164e-05,
+          "maximum_signed_m": 0.00020187381232972257,
+          "samples": 385
+        },
+        "Character | nail left 3": {
+          "maximum_nearest_m": 0.0001782095932867378,
+          "minimum_signed_m": 9.117718562379196e-07,
+          "maximum_signed_m": 0.00017816820309235482,
+          "samples": 385
+        },
+        "Character | nail left 4": {
+          "maximum_nearest_m": 0.0001860477204900235,
+          "minimum_signed_m": 2.1474612088567824e-07,
+          "maximum_signed_m": 0.0001859658769696182,
+          "samples": 385
+        },
+        "Character | nail left 5": {
+          "maximum_nearest_m": 0.00017488861340098083,
+          "minimum_signed_m": -1.3317438316562402e-06,
+          "maximum_signed_m": 0.00017486675324107637,
+          "samples": 385
+        },
+        "Character | nail fold left 1": {
+          "maximum_nearest_m": 0.00013488200784195215,
+          "minimum_signed_m": -6.922156717337202e-05,
+          "maximum_signed_m": 0.00013486968782672193,
+          "samples": 32
+        },
+        "Character | nail fold left 2": {
+          "maximum_nearest_m": 0.0001787216606317088,
+          "minimum_signed_m": -8.747708579903701e-05,
+          "maximum_signed_m": 0.00017865110567072406,
+          "samples": 32
+        },
+        "Character | nail fold left 3": {
+          "maximum_nearest_m": 0.0001874552690424025,
+          "minimum_signed_m": -9.33316805458162e-05,
+          "maximum_signed_m": 0.00018742889005807228,
+          "samples": 32
+        },
+        "Character | nail fold left 4": {
+          "maximum_nearest_m": 0.00018366266158409417,
+          "minimum_signed_m": -9.214305441673787e-05,
+          "maximum_signed_m": 0.00018362988839726313,
+          "samples": 32
+        },
+        "Character | nail fold left 5": {
+          "maximum_nearest_m": 0.00018281459051650017,
+          "minimum_signed_m": -9.495418032656744e-05,
+          "maximum_signed_m": 0.00018280338372278493,
+          "samples": 32
+        },
+        "Character | nail right 1": {
+          "maximum_nearest_m": 0.0002730737905949354,
+          "minimum_signed_m": 3.22465723456844e-06,
+          "maximum_signed_m": 0.00027287533271191933,
+          "samples": 385
+        },
+        "Character | nail right 2": {
+          "maximum_nearest_m": 0.00020632229279726744,
+          "minimum_signed_m": -1.9716412680281792e-05,
+          "maximum_signed_m": 0.0002062690819002455,
+          "samples": 385
+        },
+        "Character | nail right 3": {
+          "maximum_nearest_m": 0.0002150285872630775,
+          "minimum_signed_m": -1.0256186101287312e-05,
+          "maximum_signed_m": 0.0002150186968395973,
+          "samples": 385
+        },
+        "Character | nail right 4": {
+          "maximum_nearest_m": 0.00019771596998907626,
+          "minimum_signed_m": -4.030335730931256e-06,
+          "maximum_signed_m": 0.00019771360325648857,
+          "samples": 385
+        },
+        "Character | nail right 5": {
+          "maximum_nearest_m": 0.00017197144916281104,
+          "minimum_signed_m": -2.834182990518741e-06,
+          "maximum_signed_m": 0.00017197070064867148,
+          "samples": 385
+        },
+        "Character | nail fold right 1": {
+          "maximum_nearest_m": 0.00027133015100844204,
+          "minimum_signed_m": -0.00011935591476230911,
+          "maximum_signed_m": 0.0002712301418341667,
+          "samples": 32
+        },
+        "Character | nail fold right 2": {
+          "maximum_nearest_m": 0.00023568620963487774,
+          "minimum_signed_m": -0.00010742830636445433,
+          "maximum_signed_m": 0.00023563969625683967,
+          "samples": 32
+        },
+        "Character | nail fold right 3": {
+          "maximum_nearest_m": 0.0002208186633652076,
+          "minimum_signed_m": -0.00010223981689705397,
+          "maximum_signed_m": 0.00022079018754084245,
+          "samples": 32
+        },
+        "Character | nail fold right 4": {
+          "maximum_nearest_m": 0.000206152573809959,
+          "minimum_signed_m": -0.00010309392956475705,
+          "maximum_signed_m": 0.00020614131631191412,
+          "samples": 32
+        },
+        "Character | nail fold right 5": {
+          "maximum_nearest_m": 0.00018115098646376282,
+          "minimum_signed_m": -9.432786350771494e-05,
+          "maximum_signed_m": 0.00018114624117515632,
+          "samples": 32
+        }
+      },
+      "cuff_surface": {
+        "left": {
+          "minimum_triangle_area_m2": 1.4285367045339882e-09,
+          "triangles": 76800,
+          "maximum_edge_length_m": 0.004493638239994956,
+          "frame1_maximum_edge_length_m": 0.004493369475281409
+        },
+        "right": {
+          "minimum_triangle_area_m2": 2.1580736499934736e-09,
+          "triangles": 76800,
+          "maximum_edge_length_m": 0.0038272949018505298,
+          "frame1_maximum_edge_length_m": 0.003827419286281159
+        }
+      }
+    },
+    {
+      "frame": 19,
+      "existing_body_pose_maximum_error": 0.0,
+      "digit_details": {
+        "Character | nail left 1": {
+          "maximum_nearest_m": 0.00013282477448228747,
+          "minimum_signed_m": -4.0587233797850786e-05,
+          "maximum_signed_m": 0.00013281418250699062,
+          "samples": 385
+        },
+        "Character | nail left 2": {
+          "maximum_nearest_m": 0.00020224273612257093,
+          "minimum_signed_m": -2.5844131641861168e-05,
+          "maximum_signed_m": 0.00020205551845720038,
+          "samples": 385
+        },
+        "Character | nail left 3": {
+          "maximum_nearest_m": 0.00017820629000198096,
+          "minimum_signed_m": 6.972498738377908e-07,
+          "maximum_signed_m": 0.00017816062791098375,
+          "samples": 385
+        },
+        "Character | nail left 4": {
+          "maximum_nearest_m": 0.00018595156143419445,
+          "minimum_signed_m": 2.1401010030785983e-07,
+          "maximum_signed_m": 0.00018586929900266114,
+          "samples": 385
+        },
+        "Character | nail left 5": {
+          "maximum_nearest_m": 0.00017493691120762378,
+          "minimum_signed_m": -1.4137956583226696e-06,
+          "maximum_signed_m": 0.00017491553717263741,
+          "samples": 385
+        },
+        "Character | nail fold left 1": {
+          "maximum_nearest_m": 0.00013455872249323875,
+          "minimum_signed_m": -6.927576032467186e-05,
+          "maximum_signed_m": 0.0001345474514664602,
+          "samples": 32
+        },
+        "Character | nail fold left 2": {
+          "maximum_nearest_m": 0.00017872483294922858,
+          "minimum_signed_m": -8.731950310902903e-05,
+          "maximum_signed_m": 0.00017865689005702734,
+          "samples": 32
+        },
+        "Character | nail fold left 3": {
+          "maximum_nearest_m": 0.0001875357993412763,
+          "minimum_signed_m": -9.353853647553478e-05,
+          "maximum_signed_m": 0.00018751031984720612,
+          "samples": 32
+        },
+        "Character | nail fold left 4": {
+          "maximum_nearest_m": 0.0001837632298702374,
+          "minimum_signed_m": -9.222504877470783e-05,
+          "maximum_signed_m": 0.00018373070167854166,
+          "samples": 32
+        },
+        "Character | nail fold left 5": {
+          "maximum_nearest_m": 0.00018291546439286321,
+          "minimum_signed_m": -9.501180755466798e-05,
+          "maximum_signed_m": 0.0001829051147979044,
+          "samples": 32
+        },
+        "Character | nail right 1": {
+          "maximum_nearest_m": 0.0002726030652411282,
+          "minimum_signed_m": 3.245190946188359e-06,
+          "maximum_signed_m": 0.0002724236189806106,
+          "samples": 385
+        },
+        "Character | nail right 2": {
+          "maximum_nearest_m": 0.00020621107250917703,
+          "minimum_signed_m": -1.9469383914838545e-05,
+          "maximum_signed_m": 0.00020616044093912933,
+          "samples": 385
+        },
+        "Character | nail right 3": {
+          "maximum_nearest_m": 0.0002150093059753999,
+          "minimum_signed_m": -1.0252376910102612e-05,
+          "maximum_signed_m": 0.00021499865363239223,
+          "samples": 385
+        },
+        "Character | nail right 4": {
+          "maximum_nearest_m": 0.00019766658078879118,
+          "minimum_signed_m": -4.2768252868086165e-06,
+          "maximum_signed_m": 0.0001976641742658103,
+          "samples": 385
+        },
+        "Character | nail right 5": {
+          "maximum_nearest_m": 0.00017215905245393515,
+          "minimum_signed_m": -2.8708851473879804e-06,
+          "maximum_signed_m": 0.00017215852775365192,
+          "samples": 385
+        },
+        "Character | nail fold right 1": {
+          "maximum_nearest_m": 0.0002708237152546644,
+          "minimum_signed_m": -0.00011980155807123083,
+          "maximum_signed_m": 0.0002707265716708207,
+          "samples": 32
+        },
+        "Character | nail fold right 2": {
+          "maximum_nearest_m": 0.00023592558864038438,
+          "minimum_signed_m": -0.00010728201050369535,
+          "maximum_signed_m": 0.00023587991745444015,
+          "samples": 32
+        },
+        "Character | nail fold right 3": {
+          "maximum_nearest_m": 0.00022070272825658321,
+          "minimum_signed_m": -0.00010243845144941588,
+          "maximum_signed_m": 0.0002206727438078815,
+          "samples": 32
+        },
+        "Character | nail fold right 4": {
+          "maximum_nearest_m": 0.00020626428886316717,
+          "minimum_signed_m": -0.00010307896445738152,
+          "maximum_signed_m": 0.00020625340210900234,
+          "samples": 32
+        },
+        "Character | nail fold right 5": {
+          "maximum_nearest_m": 0.00018112063116859645,
+          "minimum_signed_m": -9.42185962600206e-05,
+          "maximum_signed_m": 0.00018111616370219963,
+          "samples": 32
+        }
+      },
+      "cuff_surface": {
+        "left": {
+          "minimum_triangle_area_m2": 1.2884101180640084e-09,
+          "triangles": 76800,
+          "maximum_edge_length_m": 0.004493730658148233,
+          "frame1_maximum_edge_length_m": 0.004493369475281409
+        },
+        "right": {
+          "minimum_triangle_area_m2": 2.0635838031436304e-09,
+          "triangles": 76800,
+          "maximum_edge_length_m": 0.0038273512206511303,
+          "frame1_maximum_edge_length_m": 0.003827419286281159
+        }
+      }
+    },
+    {
+      "frame": 22,
+      "existing_body_pose_maximum_error": 0.0,
+      "digit_details": {
+        "Character | nail left 1": {
+          "maximum_nearest_m": 0.00013282579311635345,
+          "minimum_signed_m": -4.019071268901442e-05,
+          "maximum_signed_m": 0.00013281451902003027,
+          "samples": 385
+        },
+        "Character | nail left 2": {
+          "maximum_nearest_m": 0.00020218142890371382,
+          "minimum_signed_m": -2.5820445216595544e-05,
+          "maximum_signed_m": 0.00020198799757054076,
+          "samples": 385
+        },
+        "Character | nail left 3": {
+          "maximum_nearest_m": 0.00017826003022491932,
+          "minimum_signed_m": 7.837865396709276e-07,
+          "maximum_signed_m": 0.00017821514165916597,
+          "samples": 385
+        },
+        "Character | nail left 4": {
+          "maximum_nearest_m": 0.00018607458332553506,
+          "minimum_signed_m": 3.7326844193330544e-07,
+          "maximum_signed_m": 0.00018599465511215385,
+          "samples": 385
+        },
+        "Character | nail left 5": {
+          "maximum_nearest_m": 0.00017493675113655627,
+          "minimum_signed_m": -1.3470893183153976e-06,
+          "maximum_signed_m": 0.00017491563994553871,
+          "samples": 385
+        },
+        "Character | nail fold left 1": {
+          "maximum_nearest_m": 0.00013476279855240136,
+          "minimum_signed_m": -6.931911799767931e-05,
+          "maximum_signed_m": 0.00013475094510795316,
+          "samples": 32
+        },
+        "Character | nail fold left 2": {
+          "maximum_nearest_m": 0.00017878548533190042,
+          "minimum_signed_m": -8.746561070438474e-05,
+          "maximum_signed_m": 0.00017871757881948724,
+          "samples": 32
+        },
+        "Character | nail fold left 3": {
+          "maximum_nearest_m": 0.00018753566837403923,
+          "minimum_signed_m": -9.344544309897174e-05,
+          "maximum_signed_m": 0.00018751033985608956,
+          "samples": 32
+        },
+        "Character | nail fold left 4": {
+          "maximum_nearest_m": 0.0001837697927840054,
+          "minimum_signed_m": -9.218133283184216e-05,
+          "maximum_signed_m": 0.00018373629329460073,
+          "samples": 32
+        },
+        "Character | nail fold left 5": {
+          "maximum_nearest_m": 0.00018283992540091276,
+          "minimum_signed_m": -9.48921252756918e-05,
+          "maximum_signed_m": 0.00018282784357559478,
+          "samples": 32
+        },
+        "Character | nail right 1": {
+          "maximum_nearest_m": 0.0002720491320360452,
+          "minimum_signed_m": 3.113093740125805e-06,
+          "maximum_signed_m": 0.0002718868329285584,
+          "samples": 385
+        },
+        "Character | nail right 2": {
+          "maximum_nearest_m": 0.00020632911764550954,
+          "minimum_signed_m": -1.9417622297623893e-05,
+          "maximum_signed_m": 0.00020627637059078552,
+          "samples": 385
+        },
+        "Character | nail right 3": {
+          "maximum_nearest_m": 0.00021510932128876448,
+          "minimum_signed_m": -1.0344169822928961e-05,
+          "maximum_signed_m": 0.00021509777707251487,
+          "samples": 385
+        },
+        "Character | nail right 4": {
+          "maximum_nearest_m": 0.00019762747979257256,
+          "minimum_signed_m": -4.051231654506049e-06,
+          "maximum_signed_m": 0.00019762538795475848,
+          "samples": 385
+        },
+        "Character | nail right 5": {
+          "maximum_nearest_m": 0.00017205136828124523,
+          "minimum_signed_m": -2.901483597383958e-06,
+          "maximum_signed_m": 0.00017205075130277692,
+          "samples": 385
+        },
+        "Character | nail fold right 1": {
+          "maximum_nearest_m": 0.00027094403048977256,
+          "minimum_signed_m": -0.00011990779642445659,
+          "maximum_signed_m": 0.0002708486233586882,
+          "samples": 32
+        },
+        "Character | nail fold right 2": {
+          "maximum_nearest_m": 0.0002357884804951027,
+          "minimum_signed_m": -0.00010727955123002175,
+          "maximum_signed_m": 0.00023574185797770042,
+          "samples": 32
+        },
+        "Character | nail fold right 3": {
+          "maximum_nearest_m": 0.00022080088092479855,
+          "minimum_signed_m": -0.00010244075474474812,
+          "maximum_signed_m": 0.00022077247331253602,
+          "samples": 32
+        },
+        "Character | nail fold right 4": {
+          "maximum_nearest_m": 0.00020627664343919605,
+          "minimum_signed_m": -0.00010317385340385954,
+          "maximum_signed_m": 0.0002062664375444001,
+          "samples": 32
+        },
+        "Character | nail fold right 5": {
+          "maximum_nearest_m": 0.00018120245658792555,
+          "minimum_signed_m": -9.413345662778738e-05,
+          "maximum_signed_m": 0.00018119813285011332,
+          "samples": 32
+        }
+      },
+      "cuff_surface": {
+        "left": {
+          "minimum_triangle_area_m2": 1.0227256705660254e-09,
+          "triangles": 76800,
+          "maximum_edge_length_m": 0.004493766772308399,
+          "frame1_maximum_edge_length_m": 0.004493369475281409
+        },
+        "right": {
+          "minimum_triangle_area_m2": 1.6855733318526624e-09,
+          "triangles": 76800,
+          "maximum_edge_length_m": 0.0038273370816208734,
+          "frame1_maximum_edge_length_m": 0.003827419286281159
+        }
+      }
+    },
+    {
+      "frame": 25,
+      "existing_body_pose_maximum_error": 0.0,
+      "digit_details": {
+        "Character | nail left 1": {
+          "maximum_nearest_m": 0.0001328988146269694,
+          "minimum_signed_m": -4.0770353052721475e-05,
+          "maximum_signed_m": 0.00013288774607644882,
+          "samples": 385
+        },
+        "Character | nail left 2": {
+          "maximum_nearest_m": 0.00020210936781950295,
+          "minimum_signed_m": -2.58221289186622e-05,
+          "maximum_signed_m": 0.0002019166604441125,
+          "samples": 385
+        },
+        "Character | nail left 3": {
+          "maximum_nearest_m": 0.0001782856706995517,
+          "minimum_signed_m": 8.294722242396801e-07,
+          "maximum_signed_m": 0.00017824150313572318,
+          "samples": 385
+        },
+        "Character | nail left 4": {
+          "maximum_nearest_m": 0.0001860750635387376,
+          "minimum_signed_m": 1.6090198440288361e-07,
+          "maximum_signed_m": 0.0001859973417595029,
+          "samples": 385
+        },
+        "Character | nail left 5": {
+          "maximum_nearest_m": 0.00017492742335889488,
+          "minimum_signed_m": -1.3863197029229113e-06,
+          "maximum_signed_m": 0.00017490570462541655,
+          "samples": 385
+        },
+        "Character | nail fold left 1": {
+          "maximum_nearest_m": 0.00013539838255383074,
+          "minimum_signed_m": -6.92965814259594e-05,
+          "maximum_signed_m": 0.00013537828544940567,
+          "samples": 32
+        },
+        "Character | nail fold left 2": {
+          "maximum_nearest_m": 0.00017867042333818972,
+          "minimum_signed_m": -8.739298118598526e-05,
+          "maximum_signed_m": 0.00017859937361208722,
+          "samples": 32
+        },
+        "Character | nail fold left 3": {
+          "maximum_nearest_m": 0.0001875553571153432,
+          "minimum_signed_m": -9.349357105747913e-05,
+          "maximum_signed_m": 0.00018753001450022566,
+          "samples": 32
+        },
+        "Character | nail fold left 4": {
+          "maximum_nearest_m": 0.00018378393724560738,
+          "minimum_signed_m": -9.226962303898745e-05,
+          "maximum_signed_m": 0.00018374971557477693,
+          "samples": 32
+        },
+        "Character | nail fold left 5": {
+          "maximum_nearest_m": 0.00018288414867129177,
+          "minimum_signed_m": -9.489306825116728e-05,
+          "maximum_signed_m": 0.00018287349672618802,
+          "samples": 32
+        },
+        "Character | nail right 1": {
+          "maximum_nearest_m": 0.0002724990772549063,
+          "minimum_signed_m": 3.308237751298293e-06,
+          "maximum_signed_m": 0.0002723302106915071,
+          "samples": 385
+        },
+        "Character | nail right 2": {
+          "maximum_nearest_m": 0.00020643204334191978,
+          "minimum_signed_m": -1.9463820308374125e-05,
+          "maximum_signed_m": 0.00020637935631384607,
+          "samples": 385
+        },
+        "Character | nail right 3": {
+          "maximum_nearest_m": 0.0002152322995243594,
+          "minimum_signed_m": -1.026773907142342e-05,
+          "maximum_signed_m": 0.0002152210362282858,
+          "samples": 385
+        },
+        "Character | nail right 4": {
+          "maximum_nearest_m": 0.00019777020497713238,
+          "minimum_signed_m": -3.987639900060458e-06,
+          "maximum_signed_m": 0.00019776737008214695,
+          "samples": 385
+        },
+        "Character | nail right 5": {
+          "maximum_nearest_m": 0.00017207316705025733,
+          "minimum_signed_m": -2.8907442697345687e-06,
+          "maximum_signed_m": 0.00017207264363605645,
+          "samples": 385
+        },
+        "Character | nail fold right 1": {
+          "maximum_nearest_m": 0.00027104283799417317,
+          "minimum_signed_m": -0.00011961320672071452,
+          "maximum_signed_m": 0.00027094721491494056,
+          "samples": 32
+        },
+        "Character | nail fold right 2": {
+          "maximum_nearest_m": 0.0002358005294809118,
+          "minimum_signed_m": -0.0001074117199095781,
+          "maximum_signed_m": 0.0002357532339374302,
+          "samples": 32
+        },
+        "Character | nail fold right 3": {
+          "maximum_nearest_m": 0.00022075856395531446,
+          "minimum_signed_m": -0.00010243481210636673,
+          "maximum_signed_m": 0.00022072850515542086,
+          "samples": 32
+        },
+        "Character | nail fold right 4": {
+          "maximum_nearest_m": 0.00020628850325010717,
+          "minimum_signed_m": -0.00010300766916770954,
+          "maximum_signed_m": 0.00020627756316571322,
+          "samples": 32
+        },
+        "Character | nail fold right 5": {
+          "maximum_nearest_m": 0.0001811795518733561,
+          "minimum_signed_m": -9.412934014108032e-05,
+          "maximum_signed_m": 0.0001811748011277814,
+          "samples": 32
+        }
+      },
+      "cuff_surface": {
+        "left": {
+          "minimum_triangle_area_m2": 2.261530163470467e-09,
+          "triangles": 76800,
+          "maximum_edge_length_m": 0.004493673361900027,
+          "frame1_maximum_edge_length_m": 0.004493369475281409
+        },
+        "right": {
+          "minimum_triangle_area_m2": 1.5914463338206644e-09,
+          "triangles": 76800,
+          "maximum_edge_length_m": 0.0038272711235427083,
+          "frame1_maximum_edge_length_m": 0.003827419286281159
+        }
+      }
+    },
+    {
+      "frame": 37,
+      "existing_body_pose_maximum_error": 0.0,
+      "digit_details": {
+        "Character | nail left 1": {
+          "maximum_nearest_m": 0.00013296859106048942,
+          "minimum_signed_m": -4.0279008317156695e-05,
+          "maximum_signed_m": 0.00013295738699525828,
+          "samples": 385
+        },
+        "Character | nail left 2": {
+          "maximum_nearest_m": 0.00020210965885780752,
+          "minimum_signed_m": -2.604914044468387e-05,
+          "maximum_signed_m": 0.0002019202547671739,
+          "samples": 385
+        },
+        "Character | nail left 3": {
+          "maximum_nearest_m": 0.00017819936329033226,
+          "minimum_signed_m": 8.777342692667389e-07,
+          "maximum_signed_m": 0.00017815553383115912,
+          "samples": 385
+        },
+        "Character | nail left 4": {
+          "maximum_nearest_m": 0.0001861049677245319,
+          "minimum_signed_m": 2.942093857427608e-07,
+          "maximum_signed_m": 0.00018602515626753302,
+          "samples": 385
+        },
+        "Character | nail left 5": {
+          "maximum_nearest_m": 0.000174846631125547,
+          "minimum_signed_m": -1.4504691092653843e-06,
+          "maximum_signed_m": 0.00017482561179349432,
+          "samples": 385
+        },
+        "Character | nail fold left 1": {
+          "maximum_nearest_m": 0.0001347539946436882,
+          "minimum_signed_m": -6.9113932113396e-05,
+          "maximum_signed_m": 0.00013474109437083825,
+          "samples": 32
+        },
+        "Character | nail fold left 2": {
+          "maximum_nearest_m": 0.0001786581560736522,
+          "minimum_signed_m": -8.735922574487631e-05,
+          "maximum_signed_m": 0.00017858984938357025,
+          "samples": 32
+        },
+        "Character | nail fold left 3": {
+          "maximum_nearest_m": 0.0001874042791314423,
+          "minimum_signed_m": -9.366549602418672e-05,
+          "maximum_signed_m": 0.00018737866821538773,
+          "samples": 32
+        },
+        "Character | nail fold left 4": {
+          "maximum_nearest_m": 0.00018376519437879324,
+          "minimum_signed_m": -9.228651629200613e-05,
+          "maximum_signed_m": 0.00018373216062173015,
+          "samples": 32
+        },
+        "Character | nail fold left 5": {
+          "maximum_nearest_m": 0.00018289887520950288,
+          "minimum_signed_m": -9.493711024788354e-05,
+          "maximum_signed_m": 0.00018288782734998676,
+          "samples": 32
+        },
+        "Character | nail right 1": {
+          "maximum_nearest_m": 0.0002731215499807149,
+          "minimum_signed_m": 3.067298715020428e-06,
+          "maximum_signed_m": 0.0002729074888065952,
+          "samples": 385
+        },
+        "Character | nail right 2": {
+          "maximum_nearest_m": 0.00020626219338737428,
+          "minimum_signed_m": -1.9813443714156165e-05,
+          "maximum_signed_m": 0.00020620930354198208,
+          "samples": 385
+        },
+        "Character | nail right 3": {
+          "maximum_nearest_m": 0.00021502432355191559,
+          "minimum_signed_m": -1.0364663296513754e-05,
+          "maximum_signed_m": 0.00021501272885871003,
+          "samples": 385
+        },
+        "Character | nail right 4": {
+          "maximum_nearest_m": 0.00019745470490306616,
+          "minimum_signed_m": -4.040009059735894e-06,
+          "maximum_signed_m": 0.00019745209499433258,
+          "samples": 385
+        },
+        "Character | nail right 5": {
+          "maximum_nearest_m": 0.00017202076560351998,
+          "minimum_signed_m": -2.884172394468365e-06,
+          "maximum_signed_m": 0.00017202007757077808,
+          "samples": 385
+        },
+        "Character | nail fold right 1": {
+          "maximum_nearest_m": 0.0002712535497266799,
+          "minimum_signed_m": -0.00011945784217459732,
+          "maximum_signed_m": 0.0002711448851187015,
+          "samples": 32
+        },
+        "Character | nail fold right 2": {
+          "maximum_nearest_m": 0.00023578267428092659,
+          "minimum_signed_m": -0.0001075937807399896,
+          "maximum_signed_m": 0.00023573700309498236,
+          "samples": 32
+        },
+        "Character | nail fold right 3": {
+          "maximum_nearest_m": 0.00022078306938055903,
+          "minimum_signed_m": -0.00010239165388270521,
+          "maximum_signed_m": 0.00022075198535276286,
+          "samples": 32
+        },
+        "Character | nail fold right 4": {
+          "maximum_nearest_m": 0.00020625113393180072,
+          "minimum_signed_m": -0.00010322442867050086,
+          "maximum_signed_m": 0.00020624044373107608,
+          "samples": 32
+        },
+        "Character | nail fold right 5": {
+          "maximum_nearest_m": 0.00018108401854988188,
+          "minimum_signed_m": -9.413079146725067e-05,
+          "maximum_signed_m": 0.00018107966798197594,
+          "samples": 32
+        }
+      },
+      "cuff_surface": {
+        "left": {
+          "minimum_triangle_area_m2": 2.0699082430884227e-09,
+          "triangles": 76800,
+          "maximum_edge_length_m": 0.004493581720538086,
+          "frame1_maximum_edge_length_m": 0.004493369475281409
+        },
+        "right": {
+          "minimum_triangle_area_m2": 2.187592795120474e-09,
+          "triangles": 76800,
+          "maximum_edge_length_m": 0.0038273276376255337,
+          "frame1_maximum_edge_length_m": 0.003827419286281159
+        }
+      }
+    },
+    {
+      "frame": 49,
+      "existing_body_pose_maximum_error": 0.0,
+      "digit_details": {
+        "Character | nail left 1": {
+          "maximum_nearest_m": 0.0001328988146269694,
+          "minimum_signed_m": -4.0593514000875075e-05,
+          "maximum_signed_m": 0.00013288775517139584,
+          "samples": 385
+        },
+        "Character | nail left 2": {
+          "maximum_nearest_m": 0.0002021828986471519,
+          "minimum_signed_m": -2.586967889328662e-05,
+          "maximum_signed_m": 0.00020198752827127464,
+          "samples": 385
+        },
+        "Character | nail left 3": {
+          "maximum_nearest_m": 0.00017822926747612655,
+          "minimum_signed_m": 8.29471883179167e-07,
+          "maximum_signed_m": 0.0001781848816335696,
+          "samples": 385
+        },
+        "Character | nail left 4": {
+          "maximum_nearest_m": 0.00018608797108754516,
+          "minimum_signed_m": 7.886808361945441e-08,
+          "maximum_signed_m": 0.00018600809653435135,
+          "samples": 385
+        },
+        "Character | nail left 5": {
+          "maximum_nearest_m": 0.00017490691971033812,
+          "minimum_signed_m": -1.3863222808607745e-06,
+          "maximum_signed_m": 0.0001748858721839497,
+          "samples": 385
+        },
+        "Character | nail fold left 1": {
+          "maximum_nearest_m": 0.000135301350383088,
+          "minimum_signed_m": -6.919556561513218e-05,
+          "maximum_signed_m": 0.0001352817580482224,
+          "samples": 32
+        },
+        "Character | nail fold left 2": {
+          "maximum_nearest_m": 0.00017869628209155053,
+          "minimum_signed_m": -8.731563229957828e-05,
+          "maximum_signed_m": 0.000178626043634722,
+          "samples": 32
+        },
+        "Character | nail fold left 3": {
+          "maximum_nearest_m": 0.000187565092346631,
+          "minimum_signed_m": -9.350324330625881e-05,
+          "maximum_signed_m": 0.00018753894846668118,
+          "samples": 32
+        },
+        "Character | nail fold left 4": {
+          "maximum_nearest_m": 0.00018377236847300082,
+          "minimum_signed_m": -9.226973689280271e-05,
+          "maximum_signed_m": 0.00018374003752796852,
+          "samples": 32
+        },
+        "Character | nail fold left 5": {
+          "maximum_nearest_m": 0.00018288777209818363,
+          "minimum_signed_m": -9.489311327115502e-05,
+          "maximum_signed_m": 0.0001828765762184048,
+          "samples": 32
+        },
+        "Character | nail right 1": {
+          "maximum_nearest_m": 0.00027251947904005647,
+          "minimum_signed_m": 3.1383611940327683e-06,
+          "maximum_signed_m": 0.00027234798221797973,
+          "samples": 385
+        },
+        "Character | nail right 2": {
+          "maximum_nearest_m": 0.00020640366710722446,
+          "minimum_signed_m": -1.9481876279314747e-05,
+          "maximum_signed_m": 0.0002063502251985483,
+          "samples": 385
+        },
+        "Character | nail right 3": {
+          "maximum_nearest_m": 0.00021507673955056816,
+          "minimum_signed_m": -1.0288016937920474e-05,
+          "maximum_signed_m": 0.00021506521193259687,
+          "samples": 385
+        },
+        "Character | nail right 4": {
+          "maximum_nearest_m": 0.00019767944468185306,
+          "minimum_signed_m": -3.930502234572586e-06,
+          "maximum_signed_m": 0.00019767699723161059,
+          "samples": 385
+        },
+        "Character | nail right 5": {
+          "maximum_nearest_m": 0.00017204572213813663,
+          "minimum_signed_m": -2.9000515553434525e-06,
+          "maximum_signed_m": 0.00017204523965119733,
+          "samples": 385
+        },
+        "Character | nail fold right 1": {
+          "maximum_nearest_m": 0.00027086713816970587,
+          "minimum_signed_m": -0.00011985877486608842,
+          "maximum_signed_m": 0.0002707698407107273,
+          "samples": 32
+        },
+        "Character | nail fold right 2": {
+          "maximum_nearest_m": 0.00023574664373882115,
+          "minimum_signed_m": -0.00010756817664514529,
+          "maximum_signed_m": 0.0002356994791625766,
+          "samples": 32
+        },
+        "Character | nail fold right 3": {
+          "maximum_nearest_m": 0.0002207715588156134,
+          "minimum_signed_m": -0.00010234803903585998,
+          "maximum_signed_m": 0.00022074103958402702,
+          "samples": 32
+        },
+        "Character | nail fold right 4": {
+          "maximum_nearest_m": 0.00020633362873923033,
+          "minimum_signed_m": -0.00010310913876310224,
+          "maximum_signed_m": 0.0002063227423150238,
+          "samples": 32
+        },
+        "Character | nail fold right 5": {
+          "maximum_nearest_m": 0.0001811752445064485,
+          "minimum_signed_m": -9.416682735263748e-05,
+          "maximum_signed_m": 0.00018117068293577177,
+          "samples": 32
+        }
+      },
+      "cuff_surface": {
+        "left": {
+          "minimum_triangle_area_m2": 1.7125091960068247e-09,
+          "triangles": 76800,
+          "maximum_edge_length_m": 0.004493711354978977,
+          "frame1_maximum_edge_length_m": 0.004493369475281409
+        },
+        "right": {
+          "minimum_triangle_area_m2": 1.6048113785050879e-09,
+          "triangles": 76800,
+          "maximum_edge_length_m": 0.003827405088095603,
+          "frame1_maximum_edge_length_m": 0.003827419286281159
+        }
+      }
+    }
+  ],
+  "scope": "Eleven keyed poses, sampled nearest skin/detail contact, positive cuff triangle areas and bounded cuff edge lengths; not a complete hand/cloth self-intersection or every-subframe certificate."
+}

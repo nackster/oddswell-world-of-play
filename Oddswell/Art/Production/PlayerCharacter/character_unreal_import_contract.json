@@ -1,0 +1,42 @@
+{
+  "contract_id": "oddswell_character_unreal_import_v1",
+  "decision": "DEC-035",
+  "mesh_import_uniform_scale": 1.0,
+  "animation_import_uniform_scale": 100.0,
+  "animation_root_bind_scale": 100.0,
+  "source_contract": "character_fbx_unreal_contract.json",
+  "source_contract_sha256": "3DAA1D94A19148F03D31682D15B2FA40D9D43133008A1DA099097FCC4AAD88C6",
+  "export_manifest": "CharacterMotionAxisCorrection/motion_axis_custody.json",
+  "export_manifest_sha256": "5591A6AFD5E8A41D601A9AE53ECDF914B9C1996008C5772A9B1F4043FB954BD4",
+  "source_to_unreal_bone_names": {
+    "root": "root",
+    "spine": "spine",
+    "neck": "neck",
+    "head": "head",
+    "thigh.L": "thigh_L",
+    "shin.L": "shin_L",
+    "thigh.R": "thigh_R",
+    "shin.R": "shin_R",
+    "upper_arm.L": "upper_arm_L",
+    "forearm.L": "forearm_L",
+    "upper_arm.R": "upper_arm_R",
+    "forearm.R": "forearm_R"
+  },
+  "source_bone_parents": {
+    "root": null,
+    "spine": "root",
+    "neck": "spine",
+    "head": "neck",
+    "thigh.L": "root",
+    "shin.L": "thigh.L",
+    "thigh.R": "root",
+    "shin.R": "thigh.R",
+    "upper_arm.L": "spine",
+    "forearm.L": "upper_arm.L",
+    "upper_arm.R": "spine",
+    "forearm.R": "upper_arm.R"
+  },
+  "preserve_source_and_fbx_bytes": true,
+  "allow_destination_overwrite": false,
+  "runtime_wiring": false
+}

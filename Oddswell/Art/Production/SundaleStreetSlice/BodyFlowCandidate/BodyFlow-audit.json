@@ -1,0 +1,88 @@
+{
+  "result": "PASS",
+  "native_control": "Body flow | stance blend",
+  "driven_objects": 244,
+  "maximum_source_restore_error_m": 0,
+  "visible_character_objects": 313,
+  "visible_character_evaluated_triangles": 3587204,
+  "visible_character_materials": 35,
+  "largest_character_parts": [
+    {
+      "name": "Character | cropped scalp fibers",
+      "type": "CURVE",
+      "vertices": 1296000,
+      "triangles": 1728000
+    },
+    {
+      "name": "Character | shorts leg continuous tailoring",
+      "type": "MESH",
+      "vertices": 227502,
+      "triangles": 455008
+    },
+    {
+      "name": "Character | tailored slate jacket",
+      "type": "MESH",
+      "vertices": 104140,
+      "triangles": 208288
+    },
+    {
+      "name": "Character | standing collar",
+      "type": "MESH",
+      "vertices": 75264,
+      "triangles": 150528
+    },
+    {
+      "name": "Character | anatomical head",
+      "type": "MESH",
+      "vertices": 69578,
+      "triangles": 139152
+    },
+    {
+      "name": "Character | fine calf hair",
+      "type": "CURVE",
+      "vertices": 62400,
+      "triangles": 93600
+    },
+    {
+      "name": "Character | ribbed waistband",
+      "type": "MESH",
+      "vertices": 38400,
+      "triangles": 76800
+    },
+    {
+      "name": "Character | sleeve cuff left",
+      "type": "MESH",
+      "vertices": 38400,
+      "triangles": 76800
+    },
+    {
+      "name": "Character | sleeve cuff right",
+      "type": "MESH",
+      "vertices": 38400,
+      "triangles": 76800
+    },
+    {
+      "name": "Character | anatomical left hand",
+      "type": "MESH",
+      "vertices": 26569,
+      "triangles": 53056
+    },
+    {
+      "name": "Character | anatomical right hand",
+      "type": "MESH",
+      "vertices": 26569,
+      "triangles": 53056
+    },
+    {
+      "name": "Character | eyebrow -1",
+      "type": "CURVE",
+      "vertices": 31200,
+      "triangles": 52000
+    }
+  ],
+  "scene_packed_maps": 31,
+  "local_crotch_overlap_pairs": 740,
+  "garment_intersection_free": false,
+  "runtime_import_ready": false,
+  "next_preparation": "Bake hair/cloth detail, create a rigged derivative and measured LODs; compare walk deformation and engine appearance before runtime replacement."
+}

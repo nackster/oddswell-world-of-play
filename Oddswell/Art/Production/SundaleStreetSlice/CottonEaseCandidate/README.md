@@ -1,0 +1,7 @@
+# Cotton ease and rear pocket study
+
+`CottonEase.blend` continues the editable `PromenadeLightCandidate` scene. Local outward upper shorts folds add up to 3.536 mm of control relief. Two rear pockets use matching nominal 125 by 105 mm patterns anchored at the existing mouths and projected to their own rear panels in the established first contact pose. Direct evaluated triangle bindings and a final 1.2 mm surface fit hold them against the moving cloth; existing threads use a separate rectangular pocket atlas. Original controls, UVs and registration data remain intact. The registered cloth target uses matching viewport/render subdivision levels because these offline triangle bindings require stable topology.
+
+Run `build.py` in Blender 4.5.5 from this repository to reproduce the derivative, `audit.py` for cold custody and scoped 49-frame checks, and `render.py` for matched source/candidate views. `render-walk.py --preview` renders the 24 native odd-frame motion images used for `CottonWalking.mp4` (12 fps, two seconds). These are actual native scene renders.
+
+Read [WholeFigureReview.md](WholeFigureReview.md), [cold-audit.json](cold-audit.json) and [Delivery-manifest.json](Delivery-manifest.json) for the reviewed result, bounded checks and file hashes. This offline art checkpoint leaves the broader human/landscape goal active and does not advance the separate starter-outfit or engine handoff gates.

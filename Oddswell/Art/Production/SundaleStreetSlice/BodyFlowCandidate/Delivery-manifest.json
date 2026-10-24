@@ -1,0 +1,38 @@
+{
+  "date": "2026-09-29",
+  "source": "PelvicCottonCandidate/PelvicCotton.blend",
+  "source_sha256": "CF4ECCDDA1AEA696C61D588B132157727FA3CF6EEB3E1152B681B061BD0FBB87",
+  "native_control": "Body flow | stance blend",
+  "files": [
+    {
+      "name": "BodyFlow_Front.png",
+      "bytes": 854227,
+      "sha256": "892061BFCF437972AB1A7E2A093882782A43592CF463A8948509E34DBA2C72F4"
+    },
+    {
+      "name": "BodyFlow_Gameplay.png",
+      "bytes": 1631975,
+      "sha256": "A0B48117F97AB51FC4C2C344E6280BB50163E0250052164ED2BE6B6EB4B3F320"
+    },
+    {
+      "name": "BodyFlow_Profile.png",
+      "bytes": 965884,
+      "sha256": "2424ABAB85CB70A9BE390F897625E7CAAB497D1D2532E3583D60BB5102113E3B"
+    },
+    {
+      "name": "BodyFlow_Rear.png",
+      "bytes": 1097497,
+      "sha256": "49A23E4C22559FB7B637CF0ED960C05A3323E9D628091619D350997F9C9F8854"
+    },
+    {
+      "name": "BodyFlow_TorsoRear.png",
+      "bytes": 965078,
+      "sha256": "9B6F5B27E6D7A9CD6342E8376F65D3CA891EF6C1FD90DE0884823F2828359315"
+    },
+    {
+      "name": "BodyFlow.blend",
+      "bytes": 641060375,
+      "sha256": "13B5DE6E9BA2471F2A19F538B806FB05C052B35E0CC50D56CD65E5178E82B18A"
+    }
+  ]
+}

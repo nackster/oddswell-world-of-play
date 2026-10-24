@@ -1,0 +1,172 @@
+{
+  "boundaries": {
+    "action_changes": 0,
+    "asset_changes": 0,
+    "client_changes": 0,
+    "export_changes": 0,
+    "export_import_preparation_eligible": false,
+    "geometry_changes": 0,
+    "material_changes": 0,
+    "package_input_changes": 0,
+    "readiness_claim": false,
+    "runtime_input_changes": 0,
+    "skeleton_changes": 0,
+    "topology_changes": 0,
+    "unreal_changes": 0,
+    "weight_changes": 0
+  },
+  "criteria": [
+    {
+      "criterion": "separation",
+      "evidence": "The exact retained 21-frame ledger reports zero body/top, body/bottom and top/bottom evaluated intersections.",
+      "status": "PASS"
+    },
+    {
+      "criterion": "neckline_shoulders_sleeves_hem",
+      "evidence": "The topology/opening contract passes, but the unchanged qualitative criterion fails: The outer caps are rounded, but the neutral shoulder remains a raised planar shelf and the frame-16 right shoulder-to-cap transition ends in a sharp triangular fold instead of one continuous garment arc.",
+      "status": "FAIL"
+    },
+    {
+      "criterion": "waistband_rise_crotch_legs",
+      "evidence": "The exact accepted shorts retain one component, three openings, zero other non-manifold edges and two readable legs.",
+      "status": "PASS"
+    },
+    {
+      "criterion": "proportions",
+      "evidence": "Neutral top width is 0.930000 m versus body width 0.675352 m, ratio 1.377060; the unchanged ceiling is 1.400000. This numeric pass does not override qualitative failures.",
+      "status": "PASS"
+    },
+    {
+      "criterion": "no_rejected_silhouettes",
+      "evidence": "Width ratio 1.377060 and waist inset 0.132244 pass their numeric gates, but the unchanged qualitative criterion fails: The numeric width and waist gates pass, but the exact front/rear views remain broad and box/poncho-like, while the profile remains slab-like with a detached horizontal mid-torso bulge.",
+      "status": "FAIL"
+    },
+    {
+      "criterion": "no_exposure_or_collision",
+      "evidence": "All five exact views retain body coverage without visible interpenetration. The retained ledger also reports zero evaluated intersections.",
+      "status": "PASS"
+    },
+    {
+      "criterion": "stable_opposing_extremes",
+      "evidence": "Mechanical loop and translation checks pass, but the rounded cap changes from a bulbous fold at frame 6 to a sharp outward spike at frame 16, so the exact views do not support qualitative garment stability. Root/armature translation remains zero and frame 21 equals frame 1.",
+      "status": "FAIL"
+    }
+  ],
+  "files": {
+    "board": {
+      "bytes": 1040751,
+      "sha256": "047174A634F6352C8133BCADF077926C7AA4148F066F4D0DCA4BB9C4964D07AF"
+    },
+    "builder": {
+      "bytes": 14947,
+      "sha256": "F5078C4C4252ACEFC4A6F026C434754CD345311A46D688B1F0E28ACC9C3E91F2"
+    },
+    "provenance": {
+      "bytes": 466,
+      "sha256": "60EB8F7896075141C7C22CE66F1AE132A869F68F335AB5E901CCC5C861E15F0C"
+    }
+  },
+  "identity_sha256": "6149951BF5B4DFF12A794C9B68DA96049828099D0CC7729F3FF6139EA9390ED0",
+  "measurements": {
+    "maximum_top_to_body_width_ratio": 1.4,
+    "minimum_waist_inset_ratio": 0.08,
+    "neutral_body_width_m": 0.675352,
+    "neutral_top_width_m": 0.930000007,
+    "next_shoulder_transition_absolute_x_range_m": [
+      0.24,
+      0.389245
+    ],
+    "next_shoulder_transition_z_range_m": [
+      1.38,
+      1.56
+    ],
+    "top_to_body_width_ratio": 1.377059677,
+    "waist_inset_ratio": 0.132244272
+  },
+  "phase": "Phase 1L.5cp rounded-cap combined starter-outfit offline visual acceptance review",
+  "smallest_correction": "Correct only the top upper shoulder-yoke-to-cap transition within 0.24 m <= |X| < 0.389245 m and 1.38 m <= Z <= 1.56 m, including its normalized spine/upper-arm blend, into one continuous shoulder-to-cap arc; preserve the central torso, waist, neckline, accepted outer cap/openings and all non-target assets.",
+  "source_custody": {
+    "action_identity_sha256": "7DD9A4E6524BCAC604AEDC755D0464FEC8C8F40BDED1BDE17E87955ED63E1020",
+    "armature_bone_count": 12,
+    "blend": {
+      "bytes": 13907177,
+      "sha256": "7EF2728BF1F091FF5A4DEF57815CCF7159DCE21A19528AA5595E848B07139363"
+    },
+    "frame_ledger_identity_sha256": "4DE37C1F83A7E0EAB04E3943DBE3CBB9CDE52FA0AFA242105D54D18D3CC6927C",
+    "mesh_sha256": {
+      "body": "F340C34B05FC4D0D20F5625E9B2F9174947B691F59420367E8B738BE1CBF03CD",
+      "bottom": "E626B69FA039E1E1139ACD203AB6F481CADDC49771ADA7341B8ED3A1D9C82170",
+      "top": "519C4F12ADB179FDA71E1E11B043798018FF344369CCB1AE5799A7040DEF4C47"
+    },
+    "opening_identity_sha256": "EB01DC302C225D73C0D44245D773DBDE975488734A6FBE2E7FFC60BB31F28309",
+    "semantic_identity_sha256": "2384397B3BAB50C3CC01222F8EE9EDE598A430444FC7FEC3C233CA46272CD07A",
+    "topology_identity_sha256": "64BD03BA4EAB3A529B303860427453B47C2807C8AF25F520329CC2E5078C8FE3",
+    "view_files": {
+      "Front": {
+        "bytes": 475424,
+        "sha256": "9B5DB761457F598E8C4E2BC57C210A38D50E1836384528C14F0860BC69AC0BD5"
+      },
+      "Profile": {
+        "bytes": 474331,
+        "sha256": "DF3C3CF0634AC997E13DC24670F164D92EE76DFBD855A8D6151272CAEDA9CA14"
+      },
+      "Rear": {
+        "bytes": 478349,
+        "sha256": "78CD9CEC3E6D8257380FFCEBCD2792FBD38BE3013A3F8A4DBEFDD1D82E7DA9E6"
+      },
+      "WalkExtremeFront": {
+        "bytes": 486215,
+        "sha256": "3182394B2DF865502D688B33F51098CB9DF773FBD961C926DC61BA945B22816F"
+      },
+      "WalkExtremeRear": {
+        "bytes": 482425,
+        "sha256": "763CF6EC0E838EE703E5ECD7BDF848290EA47194AEA9D8AC66DA4644C30693EE"
+      }
+    }
+  },
+  "verdict": "REJECTED_VISUAL_CORRECTION_REQUIRED",
+  "visual_observations": {
+    "coverage": {
+      "evidence": "All five exact views retain body coverage without visible interpenetration.",
+      "pass": true,
+      "views": [
+        "Front",
+        "Rear",
+        "Profile",
+        "WalkExtremeFront",
+        "WalkExtremeRear"
+      ]
+    },
+    "neckline_shoulders_sleeves_hem": {
+      "evidence": "The outer caps are rounded, but the neutral shoulder remains a raised planar shelf and the frame-16 right shoulder-to-cap transition ends in a sharp triangular fold instead of one continuous garment arc.",
+      "pass": false,
+      "views": [
+        "Front",
+        "Rear",
+        "Profile",
+        "WalkExtremeFront",
+        "WalkExtremeRear"
+      ]
+    },
+    "no_rejected_silhouettes": {
+      "evidence": "The numeric width and waist gates pass, but the exact front/rear views remain broad and box/poncho-like, while the profile remains slab-like with a detached horizontal mid-torso bulge.",
+      "pass": false,
+      "views": [
+        "Front",
+        "Rear",
+        "Profile",
+        "WalkExtremeFront",
+        "WalkExtremeRear"
+      ]
+    },
+    "stable_opposing_extremes": {
+      "evidence": "Mechanical loop and translation checks pass, but the rounded cap changes from a bulbous fold at frame 6 to a sharp outward spike at frame 16, so the exact views do not support qualitative garment stability.",
+      "pass": false,
+      "views": [
+        "WalkExtremeFront",
+        "WalkExtremeRear"
+      ]
+    },
+    "view_identity_sha256": "A3E85B935855F009F01D8C755BD8C98335131A034456573A7BEC754AB0647C33"
+  }
+}

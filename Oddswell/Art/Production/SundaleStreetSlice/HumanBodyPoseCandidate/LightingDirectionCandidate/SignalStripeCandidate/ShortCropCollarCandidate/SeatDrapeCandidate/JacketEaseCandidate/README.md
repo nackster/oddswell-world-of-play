@@ -1,0 +1,13 @@
+# Local jacket-ease human candidate
+
+This separate editable Blender scene starts from the exact [seat-drape candidate](../README.md), SHA-256 `333A90FA9F860B636477A5D0BBEA41C332A9524D3A34FE27879B22BF1A1FE9C1`. Run `build_jacket_ease_candidate.py` with Blender 4.5.5 to reproduce `OddsWell_Jacket_Ease_Candidate.blend`, SHA-256 `D9AF666965C9F7AAF78A27F9C119D285CD9747559F7635F58CF1DFC37B9D7E20`. The parent scene and original source assets remain unchanged.
+
+A local cloth rest-length expansion of 6% is weighted over the connected jacket's lower back and elbows. The existing neck, zipper, waist and cuff attachments stay pinned while a 60-frame native cloth solve settles against the anatomical support. Filtered motion is at most 32.8 mm from the parent jacket controls. The yoke and raglan stitches and front fastening are refitted to the new surface; superseded decorative yoke boundary curves stay hidden so they do not cross the material-based OddsWell signal band. The scene records the new `jacket_local_pattern_ease` property separately from the earlier zero-ease drape history.
+
+The 64-sample native Cycles views are [close rear](Jacket_Ease_Back_Close.png), [full rear](Jacket_Ease_Full_Rear.png), [full front](Jacket_Ease_Full_Front.png), and [1600 × 900 gameplay](Jacket_Ease_Gameplay.png). A cold reopen passes `verify_scene.py --draft`: the jacket remains one connected surface with four open boundaries, sampled free-cloth support clearance is 5.96 mm, maximum raglan stitch gap is 0.55 mm, and the three-opening shorts retain 2.48 mm sampled thigh clearance. This remains an offline scene study; there is no runtime integration claim.
+
+The back, waist and sleeves now read less like a smooth shell in close and full-body views. This is an incremental realism checkpoint, not acceptance of the requested human: shoulder volume still appears padded, the hands and walking gesture need joint-aware work, the front face needs more natural expression, and the shoes remain simplified at full-body scale. The material stripe is readable but still has a small shoulder transition. Next prioritize the arm/hand pose and shoulder pattern together, then review the character in profile, front, rear and gameplay views.
+
+The [close hand and cuff review](HandPoseReview/README.md) records the remaining finger-gesture and flared-wrist defects for that next pose pass.
+
+The next retained [hand and cuff candidate](../HandCuffCandidate/README.md) narrows the rib cuffs and uses source hand landmarks to relax the thumb spread while keeping the nail details fitted.

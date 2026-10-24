@@ -1,0 +1,11 @@
+{
+  "source_sha256": "c1f8fac3579c2ea93bf31fcff052d68db887f1b5d74cedcdac4df4b7250e2d66",
+  "candidate_sha256": "90af187cf9cfa558f4d06a4b7398d02a8097991309e06789dbf61b0ebc36afeb",
+  "original_controls_edges_old_keys_uv_maps_rest_and_retained_six_poses_exact": true,
+  "packed_maps": 31,
+  "original_weights_shader_world_lights_lettering_exact": true,
+  "original_action_retained_exact": true,
+  "declared_24_finger_x_channels_only_offset_all_49_keys_handles_verified": true,
+  "upper_hip_key_exact_and_160_waist_boundary_controls_fixed": true,
+  "scope": "Cold source custody and exact declared finger keyframe shifts; surface and visual review separate. Does not certify dynamic cloth, full body contacts, subframes or runtime."
+}

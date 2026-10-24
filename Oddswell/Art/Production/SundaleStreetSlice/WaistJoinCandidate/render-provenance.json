@@ -1,0 +1,18 @@
+{
+  "candidate_sha256": "15eaf6cf97f43895d2fdee1f48828b5d10740d6916776a611a9c29f057ddf0d5",
+  "source_sha256": "ec5b658a9f7724687c6589587436979411f00e1e91b52fcf1de44a6b8daa4a7a",
+  "renderer": "Blender 4.5.5 LTS / Cycles / OPTIX",
+  "matched_views": [
+    "RearContact",
+    "RearWalking",
+    "FrontWalking",
+    "Full",
+    "Gameplay"
+  ],
+  "frames": [
+    1,
+    7,
+    13
+  ],
+  "native_geometry": true
+}

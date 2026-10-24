@@ -1,0 +1,91 @@
+{
+  "result": "PASS",
+  "packed_texture_maps": 31,
+  "cameras": 10,
+  "court_paint_max_thickness_m": 0.00048000007518567145,
+  "collar_stray_faces": 0,
+  "head_boundary_edges": 0,
+  "stance_sole_min_z_m": 0.050999999046325684,
+  "shorts_surface_components": 1,
+  "jacket_surface_components": 1,
+  "mature_tree_instances": 13,
+  "shared_tree_meshes": 3,
+  "mesh_objects": 4076,
+  "native_scene_objects": 4764,
+  "runtime_claim": false,
+  "shorts_boundary_edges": 240,
+  "shorts_openings": 3,
+  "anatomical_head": "Closed source-derived head and fitted neck; paired closed eyes, irises, pupils and brows",
+  "skin_source_uvs": true,
+  "reference_upper_body_fit": true,
+  "hand_boundary_edges_under_sleeves": {
+    "left hand": 80,
+    "right hand": 80
+  },
+  "maximum_lace_surface_distance_m": 0.0066000609658658504,
+  "foot_contact": {
+    "left": {
+      "min_z": 0.0518721342086792,
+      "heel_min_z": 0.12338298559188843,
+      "toe_min_z": 0.0518721342086792
+    },
+    "right": {
+      "min_z": 0.050999999046325684,
+      "heel_min_z": 0.050999999046325684,
+      "toe_min_z": 0.05100007355213165
+    }
+  },
+  "stance_contact_width_m": 0.12801820039749146,
+  "stance_contact_length_m": 0.3115217685699463,
+  "maximum_lace_eyelet_gap_m": 0.0005397453314036824,
+  "scalp_hair_strands": 72000,
+  "molded_sole_details": 4,
+  "minimum_tongue_surface_clearance_m": 0.0014140395214781165,
+  "facial_targets": {
+    "head-age-incr.target": 0.55,
+    "l-eye-height2-decr.target": 0.45,
+    "r-eye-height2-decr.target": 0.45
+  },
+  "eyelash_strands": 92,
+  "individual_brow_strands": 1300,
+  "maximum_resting_eyelid_lift_m": 0.0006480216979980469,
+  "cotton_drape_frames": 40,
+  "jacket_drape_frames": 60,
+  "jacket_drape_controls": 13095,
+  "jacket_open_boundaries": 4,
+  "jacket_fabric_volume_m3": 0.0009129291486375516,
+  "jacket_drape_maximum_delta_m": 0.05082288769306129,
+  "jacket_fabric_ease": 0,
+  "anatomical_jacket_support_vertices": 19826,
+  "maximum_fixed_jacket_attachment_motion_m": 0.0,
+  "minimum_free_jacket_control_clearance_m": 0.00431928105535917,
+  "maximum_raglan_surface_distance_m": 0.0006652260199189186,
+  "minimum_fastening_surface_clearance_m": 0.0004290522701921873,
+  "stitched_yoke_panels": 3,
+  "cotton_drape_maximum_delta_m": 0.059712160484732595,
+  "calf_hair_strands": 2600,
+  "anatomical_finger_articulation": true,
+  "minimum_cloth_thigh_clearance_m": 0.005372831825297908,
+  "anatomical_short_leg_max_shift_m": 0.012000024465392238,
+  "short_leg_contact_corrections": 668,
+  "minimum_pigment_cornea_clearance_m": 0.0003010238870047033,
+  "optical_cornea_surfaces": 2,
+  "lower_wet_eyelid_margins": 2,
+  "fitted_nail_plates": 10,
+  "fitted_nail_folds": 10,
+  "maximum_vascular_relief_m": 0.0002481152862130418,
+  "nail_fold_surface_range_m": [
+    -0.00012871582234197376,
+    0.00026888700861604775
+  ],
+  "epidermal_detail": true,
+  "minimum_nail_surface_clearance_m": 0.00010132062209322612,
+  "maximum_hand_relief_m": 0.0011398294215585738,
+  "head_character_targets": {
+    "caucasian-male-young.target": 0.65,
+    "head-fat-decr.target": 0.22,
+    "head-rectangular.target": 0.3
+  },
+  "maximum_weighted_head_target_displacement_m": 0.03299465459778572,
+  "retained_head_shape_keys": 10
+}

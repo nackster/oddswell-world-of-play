@@ -1,0 +1,143 @@
+{
+  "date": "2026-10-06",
+  "status": "offline native hand articulation and cuff-fit development checkpoint; human realism goal active",
+  "source": {
+    "path": "../ShoulderSurfaceCandidate/RoundedShoulder.blend",
+    "sha256": "7e04b1847acdbb58096ff57c654e388768e91726808f95caaf203e8ef18f82dd",
+    "bytes": 649034658
+  },
+  "files": {
+    "HandMotion.blend": {
+      "sha256": "dc0b0884a33e515d982cccc89c315de5f693fd170220028d786b43af8ae90750",
+      "bytes": 648454756
+    },
+    "build.py": {
+      "sha256": "cb1ef29a53ef91748a009031b57c2a7e48fd26fe0ebc7d37809b74a8b2f18f4d",
+      "bytes": 10226
+    },
+    "fit_cuffs.py": {
+      "sha256": "e608c94250a6a2034995e5dc2b957127b1c6e63367e9319bda787091c8885db7",
+      "bytes": 7751
+    },
+    "render_hands.py": {
+      "sha256": "1627bb555bcd2ac9da8a7b95701938d03b5a91180cb410a41e171d33ce4e23ec",
+      "bytes": 1751
+    },
+    "render.py": {
+      "sha256": "2fdf5a903b9861cadf60c648144996d3a4608ec3c8875fd3cbd9b0132216688b",
+      "bytes": 2349
+    },
+    "audit.py": {
+      "sha256": "59795b115e51d0eaa5185d352decda1aac365753cf27833e93877b0d28b31b3f",
+      "bytes": 5318
+    },
+    "contact_audit.py": {
+      "sha256": "d4cf549cd0fb8232b44a24dbc72581cead06d83e66f90b0f57f340751c112791",
+      "bytes": 5688
+    },
+    "landmarks.json": {
+      "sha256": "b91c3542660c81007ecf8e919f5a5333a40db59e9907946ff8cf5f2c445a07f8",
+      "bytes": 7562
+    },
+    "build-report.json": {
+      "sha256": "ca449df5352957966486ce5b72dc2aba0e832e479cc798bc40defcdb065d32d6",
+      "bytes": 7973
+    },
+    "cuff-report.json": {
+      "sha256": "8c311eb5b9702355e591ef635935816121f01f0271fa7aecfc160e82413bcbf6",
+      "bytes": 1070
+    },
+    "cold-motion-audit.json": {
+      "sha256": "6fbcb78ee3de45bfe13324a65032f0c9494103b933a43f95204c4793693aba49",
+      "bytes": 83970
+    },
+    "hand-contact-audit.json": {
+      "sha256": "cf3d86d4cb9efdb2b2d706e849b900d90b0e7ded6389946abbaec97242d5797a",
+      "bytes": 69124
+    },
+    "README.md": {
+      "sha256": "cd25ba7fb093bd1055c76ec9b0c5f6eb80fc5e03d43b56023a1d47a822467162",
+      "bytes": 5630
+    },
+    "WholeFigureReview.md": {
+      "sha256": "041bbdf2ec28c1197bffe2b8aac401b77204a25451316ca4944439cd11411051",
+      "bytes": 2715
+    },
+    "HandsWalking.mp4": {
+      "sha256": "8209d8be82512a7b2b4eac319168befafebec623331713ebbaf3c03a1f4245fb",
+      "bytes": 808868
+    },
+    "preview-info.json": {
+      "sha256": "805aa774a943cb706eb675963b6d78168d8719d32e874af096bbb847570f6caf",
+      "bytes": 127
+    },
+    "stabilize_stitches.py": {
+      "sha256": "566ab7e2efd6e372f8c645944b6b003b51a5cc2a886ac61e2ec4e98edaeedb55",
+      "bytes": 2539
+    },
+    "stitch_audit.py": {
+      "sha256": "abdfcf2d2ea4d0be768d934f267352bff93fc783f4caaccfebacbaa93116b953",
+      "bytes": 2194
+    },
+    "stitch-bind-report.json": {
+      "sha256": "f6792fec3bb8a43fb8de54f71eb7ee3d1789ff84fecacfe0ef6a6512d7008df9",
+      "bytes": 1004
+    },
+    "stitch-motion-audit.json": {
+      "sha256": "f232eecffa3da11a1326f5914b59dc711c3f1ebed7fcb051585e030a417b931c",
+      "bytes": 48768
+    },
+    "Left_Rear_Contact.png": {
+      "sha256": "d67575117b69aed628183f1ab3c0197d60a08c59f3c7a0aa37c911a804bdac08",
+      "bytes": 891598
+    },
+    "Left_Rear_Opposite.png": {
+      "sha256": "83fee5a81cdc1d8e9d05303970650cc87df7f4eb93942b39a2b87fc948cd9c89",
+      "bytes": 902485
+    },
+    "Left_Front_Opposite.png": {
+      "sha256": "51311d8fbb05a5c59c4076c2d5138e4fa8db09d60e1cd3c70399d1f604fee32d",
+      "bytes": 740351
+    },
+    "Right_Outer_Contact.png": {
+      "sha256": "b91de74ca70599cbe551de8ed74c36421275962a4c8ae46140b7256315c699b5",
+      "bytes": 838564
+    },
+    "Right_Outer_Opposite.png": {
+      "sha256": "30464f6d7a20ad3647024855213249003b6570c26ee3de27f00f03f3e784b6d4",
+      "bytes": 822663
+    },
+    "Contact_Profile.png": {
+      "sha256": "e7498cde5e1205f84bce42dfc021ccfb40b3817eb40f65664c9dabbf6b51f4a8",
+      "bytes": 960287
+    },
+    "Passing_Profile.png": {
+      "sha256": "1fa76551cfdd307f2a8a64844781af4fa7adade5307898ec215cd9331f47c606",
+      "bytes": 965120
+    },
+    "OppositeContact_Profile.png": {
+      "sha256": "8d206d996d0a8db2e9608fab04b27b7f7c1c771e6773eb5052a915006697d60a",
+      "bytes": 971230
+    },
+    "Passing_Rear.png": {
+      "sha256": "f96377ba87fc26ad29f0297ec307e336c5a4efe9a00e3cc066255051082e03a6",
+      "bytes": 1095775
+    },
+    "Passing_Front.png": {
+      "sha256": "30f92a38cc37ee087d58e570fece0af09cb36513b7eb6a4b29a9c503867991ff",
+      "bytes": 852045
+    },
+    "Torso_Front.png": {
+      "sha256": "bbbc3d00ddfca522b1ff22789cc8d091049321d78c81085c7299d9d4acec924d",
+      "bytes": 866506
+    },
+    "Hips_Rear.png": {
+      "sha256": "4ec5e1607ab595c40d6e7d13c79272a0d7176685e2ebeda3d1c61a0da5f4f302",
+      "bytes": 1065225
+    },
+    "Gameplay.png": {
+      "sha256": "5cfd2ed1e170a64979c254ee5b28e0014cdb24df1f1b373ec09e714770c0f4f1",
+      "bytes": 1627708
+    }
+  }
+}

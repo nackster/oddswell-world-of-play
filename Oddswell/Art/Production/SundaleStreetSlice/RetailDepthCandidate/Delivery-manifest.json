@@ -1,0 +1,62 @@
+{
+  "candidate_sha256": "6c799e05c928b6feae19a257144b6e47cdaff5539dda3a6e4a22b64599290b91",
+  "source_sha256": "8b2f0e5634f1198bbdbb5054c961668cb86825764ada8d24355296cbc290de7a",
+  "files": {
+    "After_Interior.png": {
+      "sha256": "a8e8aa639283c3575c2863f2aec748f3da86d7ac531e9c42c8b0aaefd6a49e50",
+      "bytes": 1467549
+    },
+    "After_Storefront.png": {
+      "sha256": "f2b6ed6ffde71a64b019995423537547a1ffa1d250244f8dc9da0dfa3458d1d9",
+      "bytes": 1531058
+    },
+    "audit.py": {
+      "sha256": "c286f40564907bbac82d8a6c05ac710705601d1db768518ef5afe9ab6054ae0f",
+      "bytes": 6402
+    },
+    "Before_Interior.png": {
+      "sha256": "590f0c36e294a39cc0a91575a8af6b22c323c40e8d1d81af0b6b12b1c5c4bd2c",
+      "bytes": 1264327
+    },
+    "Before_Storefront.png": {
+      "sha256": "0e4891fd481f072758c732b0ba5618d207325fd74566e2f745662b7b6346c34d",
+      "bytes": 1426275
+    },
+    "build-report.json": {
+      "sha256": "d7081b4421f25bb0bcc795c4a8b95642589a22f63d58a1cc25d1d05c7a74fb87",
+      "bytes": 19007
+    },
+    "build.py": {
+      "sha256": "531ad910b8c8bb9e4027425a14f2ac7af9dd74fd3f2e15172f12c4f78e54f9f0",
+      "bytes": 10034
+    },
+    "cold-audit.json": {
+      "sha256": "cf7358915ef1a0f2e92eeaa5e4caf22b0b5ad92203085886385a73183ab06e05",
+      "bytes": 1364
+    },
+    "Gameplay.png": {
+      "sha256": "ee1884fd106a86840cecae7ae02dc6469c596afff6213650e23fb3508a181565",
+      "bytes": 3546404
+    },
+    "README.md": {
+      "sha256": "83a52429b56b58a9f6d8c518efb71c287b9181db8539897234d29a60c3d340d4",
+      "bytes": 2091
+    },
+    "render-provenance.json": {
+      "sha256": "7f7195e41803cc87b8dbe7de30bcf0a1c29a0f958fb10f25609e773b344e6126",
+      "bytes": 500
+    },
+    "render.py": {
+      "sha256": "03519dc0b112bffb7281b99ef23d55772a83a3c9e4e36589404ae900a065132b",
+      "bytes": 2273
+    },
+    "RetailDepth.blend": {
+      "sha256": "6c799e05c928b6feae19a257144b6e47cdaff5539dda3a6e4a22b64599290b91",
+      "bytes": 693436843
+    },
+    "WholeSceneReview.md": {
+      "sha256": "f1477fa624f8e4f471c3d16dad9f4d58562cd3b12826c1e806641425b30eb401",
+      "bytes": 2999
+    }
+  }
+}

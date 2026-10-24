@@ -1,0 +1,565 @@
+{
+  "candidate_sha256": "1389c758ebc819e0a78250cf02006255ad178076896cdcd4279f4d7970ca9b4d",
+  "source_sha256": "4be22d54515ef82276331c3286147e5f77dad9ddc2491d4e29d39eaf720cd524",
+  "original_mesh_curve_count": 5322,
+  "packed_maps": 31,
+  "original_controls_edges_uv_keys_maps_rest_and_six_poses_exact": true,
+  "original_shader_world_light_data_lettering_exact": true,
+  "native_walk_keyframes_handles_interpolation_exact": true,
+  "visible_main_character_objects": 306,
+  "six_pose_visible_character_coordinates_edges_world_matrices_exact": true,
+  "original_object_transforms_exact_except_declared_moves": true,
+  "documented_object_moves": 35,
+  "documented_visibility_changes": 2,
+  "new_collection_objects": 2,
+  "lamps_outside_blue_court_edge": true,
+  "tree_and_soil_center_aligned": true,
+  "source_sightline_rays": [
+    {
+      "kind": "Canopy",
+      "target": [
+        -0.5,
+        64.94000244140625,
+        4.5
+      ],
+      "blocker": null
+    },
+    {
+      "kind": "Canopy",
+      "target": [
+        -0.5,
+        64.94000244140625,
+        4.71999979019165
+      ],
+      "blocker": "Tree | mature Sundale broadleaf.010"
+    },
+    {
+      "kind": "Canopy",
+      "target": [
+        -0.5,
+        64.94000244140625,
+        4.940000057220459
+      ],
+      "blocker": "Tree | mature Sundale broadleaf.003"
+    },
+    {
+      "kind": "Canopy",
+      "target": [
+        1.25,
+        64.94000244140625,
+        4.5
+      ],
+      "blocker": null
+    },
+    {
+      "kind": "Canopy",
+      "target": [
+        1.25,
+        64.94000244140625,
+        4.71999979019165
+      ],
+      "blocker": null
+    },
+    {
+      "kind": "Canopy",
+      "target": [
+        1.25,
+        64.94000244140625,
+        4.940000057220459
+      ],
+      "blocker": "Tree | mature Sundale broadleaf.007"
+    },
+    {
+      "kind": "Canopy",
+      "target": [
+        3.0,
+        64.94000244140625,
+        4.5
+      ],
+      "blocker": "Civic light | mast.005"
+    },
+    {
+      "kind": "Canopy",
+      "target": [
+        3.0,
+        64.94000244140625,
+        4.71999979019165
+      ],
+      "blocker": "Civic light | mast.005"
+    },
+    {
+      "kind": "Canopy",
+      "target": [
+        3.0,
+        64.94000244140625,
+        4.940000057220459
+      ],
+      "blocker": "Civic light | mast.005"
+    },
+    {
+      "kind": "Canopy",
+      "target": [
+        4.75,
+        64.94000244140625,
+        4.5
+      ],
+      "blocker": "Tree | mature Sundale broadleaf.007"
+    },
+    {
+      "kind": "Canopy",
+      "target": [
+        4.75,
+        64.94000244140625,
+        4.71999979019165
+      ],
+      "blocker": "Tree | mature Sundale broadleaf.007"
+    },
+    {
+      "kind": "Canopy",
+      "target": [
+        4.75,
+        64.94000244140625,
+        4.940000057220459
+      ],
+      "blocker": "Tree | mature Sundale broadleaf.007"
+    },
+    {
+      "kind": "Canopy",
+      "target": [
+        6.5,
+        64.94000244140625,
+        4.5
+      ],
+      "blocker": null
+    },
+    {
+      "kind": "Canopy",
+      "target": [
+        6.5,
+        64.94000244140625,
+        4.71999979019165
+      ],
+      "blocker": null
+    },
+    {
+      "kind": "Canopy",
+      "target": [
+        6.5,
+        64.94000244140625,
+        4.940000057220459
+      ],
+      "blocker": null
+    },
+    {
+      "kind": "Doors",
+      "target": [
+        0.0,
+        66.5999984741211,
+        1.850000023841858
+      ],
+      "blocker": null
+    },
+    {
+      "kind": "Doors",
+      "target": [
+        0.0,
+        66.5999984741211,
+        2.8499999046325684
+      ],
+      "blocker": null
+    },
+    {
+      "kind": "Doors",
+      "target": [
+        0.0,
+        66.5999984741211,
+        4.199999809265137
+      ],
+      "blocker": null
+    },
+    {
+      "kind": "Doors",
+      "target": [
+        1.5,
+        66.5999984741211,
+        1.850000023841858
+      ],
+      "blocker": null
+    },
+    {
+      "kind": "Doors",
+      "target": [
+        1.5,
+        66.5999984741211,
+        2.8499999046325684
+      ],
+      "blocker": "Tree | mature Sundale broadleaf.007"
+    },
+    {
+      "kind": "Doors",
+      "target": [
+        1.5,
+        66.5999984741211,
+        4.199999809265137
+      ],
+      "blocker": "Tree | mature Sundale broadleaf.007"
+    },
+    {
+      "kind": "Doors",
+      "target": [
+        3.0,
+        66.5999984741211,
+        1.850000023841858
+      ],
+      "blocker": "Civic light | mast.005"
+    },
+    {
+      "kind": "Doors",
+      "target": [
+        3.0,
+        66.5999984741211,
+        2.8499999046325684
+      ],
+      "blocker": "Civic light | mast.005"
+    },
+    {
+      "kind": "Doors",
+      "target": [
+        3.0,
+        66.5999984741211,
+        4.199999809265137
+      ],
+      "blocker": "Civic light | mast.005"
+    },
+    {
+      "kind": "Doors",
+      "target": [
+        4.5,
+        66.5999984741211,
+        1.850000023841858
+      ],
+      "blocker": "Civic light | mast.004"
+    },
+    {
+      "kind": "Doors",
+      "target": [
+        4.5,
+        66.5999984741211,
+        2.8499999046325684
+      ],
+      "blocker": "Civic light | mast.004"
+    },
+    {
+      "kind": "Doors",
+      "target": [
+        4.5,
+        66.5999984741211,
+        4.199999809265137
+      ],
+      "blocker": "Civic light | mast.004"
+    },
+    {
+      "kind": "Doors",
+      "target": [
+        6.0,
+        66.5999984741211,
+        1.850000023841858
+      ],
+      "blocker": null
+    },
+    {
+      "kind": "Doors",
+      "target": [
+        6.0,
+        66.5999984741211,
+        2.8499999046325684
+      ],
+      "blocker": null
+    },
+    {
+      "kind": "Doors",
+      "target": [
+        6.0,
+        66.5999984741211,
+        4.199999809265137
+      ],
+      "blocker": "Tree | mature Sundale broadleaf.007"
+    }
+  ],
+  "candidate_sightline_rays": [
+    {
+      "kind": "Canopy",
+      "target": [
+        -0.5,
+        64.94000244140625,
+        4.5
+      ],
+      "blocker": null
+    },
+    {
+      "kind": "Canopy",
+      "target": [
+        -0.5,
+        64.94000244140625,
+        4.71999979019165
+      ],
+      "blocker": "Tree | mature Sundale broadleaf.010"
+    },
+    {
+      "kind": "Canopy",
+      "target": [
+        -0.5,
+        64.94000244140625,
+        4.940000057220459
+      ],
+      "blocker": "Tree | mature Sundale broadleaf.003"
+    },
+    {
+      "kind": "Canopy",
+      "target": [
+        1.25,
+        64.94000244140625,
+        4.5
+      ],
+      "blocker": null
+    },
+    {
+      "kind": "Canopy",
+      "target": [
+        1.25,
+        64.94000244140625,
+        4.71999979019165
+      ],
+      "blocker": null
+    },
+    {
+      "kind": "Canopy",
+      "target": [
+        1.25,
+        64.94000244140625,
+        4.940000057220459
+      ],
+      "blocker": null
+    },
+    {
+      "kind": "Canopy",
+      "target": [
+        3.0,
+        64.94000244140625,
+        4.5
+      ],
+      "blocker": null
+    },
+    {
+      "kind": "Canopy",
+      "target": [
+        3.0,
+        64.94000244140625,
+        4.71999979019165
+      ],
+      "blocker": null
+    },
+    {
+      "kind": "Canopy",
+      "target": [
+        3.0,
+        64.94000244140625,
+        4.940000057220459
+      ],
+      "blocker": null
+    },
+    {
+      "kind": "Canopy",
+      "target": [
+        4.75,
+        64.94000244140625,
+        4.5
+      ],
+      "blocker": null
+    },
+    {
+      "kind": "Canopy",
+      "target": [
+        4.75,
+        64.94000244140625,
+        4.71999979019165
+      ],
+      "blocker": null
+    },
+    {
+      "kind": "Canopy",
+      "target": [
+        4.75,
+        64.94000244140625,
+        4.940000057220459
+      ],
+      "blocker": null
+    },
+    {
+      "kind": "Canopy",
+      "target": [
+        6.5,
+        64.94000244140625,
+        4.5
+      ],
+      "blocker": null
+    },
+    {
+      "kind": "Canopy",
+      "target": [
+        6.5,
+        64.94000244140625,
+        4.71999979019165
+      ],
+      "blocker": null
+    },
+    {
+      "kind": "Canopy",
+      "target": [
+        6.5,
+        64.94000244140625,
+        4.940000057220459
+      ],
+      "blocker": null
+    },
+    {
+      "kind": "Doors",
+      "target": [
+        0.0,
+        66.5999984741211,
+        1.850000023841858
+      ],
+      "blocker": null
+    },
+    {
+      "kind": "Doors",
+      "target": [
+        0.0,
+        66.5999984741211,
+        2.8499999046325684
+      ],
+      "blocker": null
+    },
+    {
+      "kind": "Doors",
+      "target": [
+        0.0,
+        66.5999984741211,
+        4.199999809265137
+      ],
+      "blocker": null
+    },
+    {
+      "kind": "Doors",
+      "target": [
+        1.5,
+        66.5999984741211,
+        1.850000023841858
+      ],
+      "blocker": null
+    },
+    {
+      "kind": "Doors",
+      "target": [
+        1.5,
+        66.5999984741211,
+        2.8499999046325684
+      ],
+      "blocker": null
+    },
+    {
+      "kind": "Doors",
+      "target": [
+        1.5,
+        66.5999984741211,
+        4.199999809265137
+      ],
+      "blocker": null
+    },
+    {
+      "kind": "Doors",
+      "target": [
+        3.0,
+        66.5999984741211,
+        1.850000023841858
+      ],
+      "blocker": "Arrival | graphite door stile.005"
+    },
+    {
+      "kind": "Doors",
+      "target": [
+        3.0,
+        66.5999984741211,
+        2.8499999046325684
+      ],
+      "blocker": "Arrival | graphite door stile.005"
+    },
+    {
+      "kind": "Doors",
+      "target": [
+        3.0,
+        66.5999984741211,
+        4.199999809265137
+      ],
+      "blocker": "Arrival | graphite door stile.005"
+    },
+    {
+      "kind": "Doors",
+      "target": [
+        4.5,
+        66.5999984741211,
+        1.850000023841858
+      ],
+      "blocker": null
+    },
+    {
+      "kind": "Doors",
+      "target": [
+        4.5,
+        66.5999984741211,
+        2.8499999046325684
+      ],
+      "blocker": null
+    },
+    {
+      "kind": "Doors",
+      "target": [
+        4.5,
+        66.5999984741211,
+        4.199999809265137
+      ],
+      "blocker": null
+    },
+    {
+      "kind": "Doors",
+      "target": [
+        6.0,
+        66.5999984741211,
+        1.850000023841858
+      ],
+      "blocker": "Civic light | mast.004"
+    },
+    {
+      "kind": "Doors",
+      "target": [
+        6.0,
+        66.5999984741211,
+        2.8499999046325684
+      ],
+      "blocker": "Civic light | mast.004"
+    },
+    {
+      "kind": "Doors",
+      "target": [
+        6.0,
+        66.5999984741211,
+        4.199999809265137
+      ],
+      "blocker": "Civic light | mast.004"
+    }
+  ],
+  "source_blocked_rays": 18,
+  "candidate_blocked_rays": 8,
+  "inherited_human_audit": "Immediate ArenaArrivalCandidate preserves the ShoulderChestCandidate human; its scoped 49-frame cloth proof is not broadened here.",
+  "scope": "Native scene composition and two copied bounce lights. Original control geometry/maps/shaders/rig/walk retained; 35 declared group translations and two original light visibility changes. Six-pose visible human exact. Thirty camera-to-arrival geometric rays are conservative, ignoring leaf alpha transparency, and do not establish full optical visibility, route clearance, runtime collision/performance or final reference fidelity."
+}

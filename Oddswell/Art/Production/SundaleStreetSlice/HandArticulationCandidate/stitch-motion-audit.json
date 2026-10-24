@@ -1,0 +1,1233 @@
+{
+  "candidate_sha256": "dc0b0884a33e515d982cccc89c315de5f693fd170220028d786b43af8ae90750",
+  "authored_frames_checked": 49,
+  "render_subdivision_levels_used": true,
+  "frames": [
+    {
+      "frame": 1,
+      "seams": {
+        "Walk surface | Character | raglan topstitch -1 -1": {
+          "maximum_edge_length_m": 0.0039367879534609245,
+          "maximum_sampled_cloth_distance_m": 0.0007784328190609813,
+          "distance_samples": 115
+        },
+        "Walk surface | Character | raglan topstitch -1 1": {
+          "maximum_edge_length_m": 0.004086193865979824,
+          "maximum_sampled_cloth_distance_m": 0.0005866620340384543,
+          "distance_samples": 106
+        },
+        "Walk surface | Character | raglan topstitch 1 -1": {
+          "maximum_edge_length_m": 0.004363128736155131,
+          "maximum_sampled_cloth_distance_m": 0.0006911689415574074,
+          "distance_samples": 108
+        },
+        "Walk surface | Character | raglan topstitch 1 1": {
+          "maximum_edge_length_m": 0.004000264705993462,
+          "maximum_sampled_cloth_distance_m": 0.0007881755591370165,
+          "distance_samples": 125
+        }
+      }
+    },
+    {
+      "frame": 2,
+      "seams": {
+        "Walk surface | Character | raglan topstitch -1 -1": {
+          "maximum_edge_length_m": 0.00403681712055033,
+          "maximum_sampled_cloth_distance_m": 0.0007784270565025508,
+          "distance_samples": 115
+        },
+        "Walk surface | Character | raglan topstitch -1 1": {
+          "maximum_edge_length_m": 0.004022478942494065,
+          "maximum_sampled_cloth_distance_m": 0.0005870157037861645,
+          "distance_samples": 106
+        },
+        "Walk surface | Character | raglan topstitch 1 -1": {
+          "maximum_edge_length_m": 0.004363367874000069,
+          "maximum_sampled_cloth_distance_m": 0.0006914848927408457,
+          "distance_samples": 108
+        },
+        "Walk surface | Character | raglan topstitch 1 1": {
+          "maximum_edge_length_m": 0.003997453224304824,
+          "maximum_sampled_cloth_distance_m": 0.0007871861453168094,
+          "distance_samples": 125
+        }
+      }
+    },
+    {
+      "frame": 3,
+      "seams": {
+        "Walk surface | Character | raglan topstitch -1 -1": {
+          "maximum_edge_length_m": 0.0043297608051601245,
+          "maximum_sampled_cloth_distance_m": 0.000778648944105953,
+          "distance_samples": 115
+        },
+        "Walk surface | Character | raglan topstitch -1 1": {
+          "maximum_edge_length_m": 0.004113987907056119,
+          "maximum_sampled_cloth_distance_m": 0.0005875889328308403,
+          "distance_samples": 106
+        },
+        "Walk surface | Character | raglan topstitch 1 -1": {
+          "maximum_edge_length_m": 0.003968790389460646,
+          "maximum_sampled_cloth_distance_m": 0.0006935198325663805,
+          "distance_samples": 108
+        },
+        "Walk surface | Character | raglan topstitch 1 1": {
+          "maximum_edge_length_m": 0.0039901539654379915,
+          "maximum_sampled_cloth_distance_m": 0.0007840091129764915,
+          "distance_samples": 125
+        }
+      }
+    },
+    {
+      "frame": 4,
+      "seams": {
+        "Walk surface | Character | raglan topstitch -1 -1": {
+          "maximum_edge_length_m": 0.00479765206810505,
+          "maximum_sampled_cloth_distance_m": 0.0007789830560795963,
+          "distance_samples": 115
+        },
+        "Walk surface | Character | raglan topstitch -1 1": {
+          "maximum_edge_length_m": 0.004077558138618733,
+          "maximum_sampled_cloth_distance_m": 0.0005926210433244705,
+          "distance_samples": 106
+        },
+        "Walk surface | Character | raglan topstitch 1 -1": {
+          "maximum_edge_length_m": 0.003975669068538671,
+          "maximum_sampled_cloth_distance_m": 0.0006953441770747304,
+          "distance_samples": 108
+        },
+        "Walk surface | Character | raglan topstitch 1 1": {
+          "maximum_edge_length_m": 0.0039815991795605805,
+          "maximum_sampled_cloth_distance_m": 0.0007794972625561059,
+          "distance_samples": 125
+        }
+      }
+    },
+    {
+      "frame": 5,
+      "seams": {
+        "Walk surface | Character | raglan topstitch -1 -1": {
+          "maximum_edge_length_m": 0.005424844469967296,
+          "maximum_sampled_cloth_distance_m": 0.0007794361445121467,
+          "distance_samples": 115
+        },
+        "Walk surface | Character | raglan topstitch -1 1": {
+          "maximum_edge_length_m": 0.004100090675295817,
+          "maximum_sampled_cloth_distance_m": 0.0006096663419157267,
+          "distance_samples": 106
+        },
+        "Walk surface | Character | raglan topstitch 1 -1": {
+          "maximum_edge_length_m": 0.004369579056020055,
+          "maximum_sampled_cloth_distance_m": 0.0006989624234847724,
+          "distance_samples": 108
+        },
+        "Walk surface | Character | raglan topstitch 1 1": {
+          "maximum_edge_length_m": 0.0039530769032574,
+          "maximum_sampled_cloth_distance_m": 0.0007705771713517606,
+          "distance_samples": 125
+        }
+      }
+    },
+    {
+      "frame": 6,
+      "seams": {
+        "Walk surface | Character | raglan topstitch -1 -1": {
+          "maximum_edge_length_m": 0.006304363665866272,
+          "maximum_sampled_cloth_distance_m": 0.0007798984297551215,
+          "distance_samples": 115
+        },
+        "Walk surface | Character | raglan topstitch -1 1": {
+          "maximum_edge_length_m": 0.004104070384791218,
+          "maximum_sampled_cloth_distance_m": 0.0006297031650319695,
+          "distance_samples": 106
+        },
+        "Walk surface | Character | raglan topstitch 1 -1": {
+          "maximum_edge_length_m": 0.004376791233890795,
+          "maximum_sampled_cloth_distance_m": 0.000703265774063766,
+          "distance_samples": 108
+        },
+        "Walk surface | Character | raglan topstitch 1 1": {
+          "maximum_edge_length_m": 0.003932035738252319,
+          "maximum_sampled_cloth_distance_m": 0.0007591094472445548,
+          "distance_samples": 125
+        }
+      }
+    },
+    {
+      "frame": 7,
+      "seams": {
+        "Walk surface | Character | raglan topstitch -1 -1": {
+          "maximum_edge_length_m": 0.007082487046695466,
+          "maximum_sampled_cloth_distance_m": 0.0007804842316545546,
+          "distance_samples": 115
+        },
+        "Walk surface | Character | raglan topstitch -1 1": {
+          "maximum_edge_length_m": 0.004150813122634119,
+          "maximum_sampled_cloth_distance_m": 0.0005958759575150907,
+          "distance_samples": 106
+        },
+        "Walk surface | Character | raglan topstitch 1 -1": {
+          "maximum_edge_length_m": 0.004377238864535125,
+          "maximum_sampled_cloth_distance_m": 0.0007080214563757181,
+          "distance_samples": 108
+        },
+        "Walk surface | Character | raglan topstitch 1 1": {
+          "maximum_edge_length_m": 0.0039050183136114373,
+          "maximum_sampled_cloth_distance_m": 0.0007469578413292766,
+          "distance_samples": 125
+        }
+      }
+    },
+    {
+      "frame": 8,
+      "seams": {
+        "Walk surface | Character | raglan topstitch -1 -1": {
+          "maximum_edge_length_m": 0.007739480178581851,
+          "maximum_sampled_cloth_distance_m": 0.0007809667731635273,
+          "distance_samples": 115
+        },
+        "Walk surface | Character | raglan topstitch -1 1": {
+          "maximum_edge_length_m": 0.004250529209860991,
+          "maximum_sampled_cloth_distance_m": 0.0005984855815768242,
+          "distance_samples": 106
+        },
+        "Walk surface | Character | raglan topstitch 1 -1": {
+          "maximum_edge_length_m": 0.004165499608303275,
+          "maximum_sampled_cloth_distance_m": 0.000712530396413058,
+          "distance_samples": 108
+        },
+        "Walk surface | Character | raglan topstitch 1 1": {
+          "maximum_edge_length_m": 0.003885380364369014,
+          "maximum_sampled_cloth_distance_m": 0.000734672648832202,
+          "distance_samples": 125
+        }
+      }
+    },
+    {
+      "frame": 9,
+      "seams": {
+        "Walk surface | Character | raglan topstitch -1 -1": {
+          "maximum_edge_length_m": 0.008333272288674224,
+          "maximum_sampled_cloth_distance_m": 0.0007789466180838645,
+          "distance_samples": 115
+        },
+        "Walk surface | Character | raglan topstitch -1 1": {
+          "maximum_edge_length_m": 0.004180458547282538,
+          "maximum_sampled_cloth_distance_m": 0.0006027576746419072,
+          "distance_samples": 106
+        },
+        "Walk surface | Character | raglan topstitch 1 -1": {
+          "maximum_edge_length_m": 0.004386805994603556,
+          "maximum_sampled_cloth_distance_m": 0.0007220676052384079,
+          "distance_samples": 108
+        },
+        "Walk surface | Character | raglan topstitch 1 1": {
+          "maximum_edge_length_m": 0.003883135105015164,
+          "maximum_sampled_cloth_distance_m": 0.0007230444462038577,
+          "distance_samples": 125
+        }
+      }
+    },
+    {
+      "frame": 10,
+      "seams": {
+        "Walk surface | Character | raglan topstitch -1 -1": {
+          "maximum_edge_length_m": 0.008839993036831117,
+          "maximum_sampled_cloth_distance_m": 0.0007780034211464226,
+          "distance_samples": 115
+        },
+        "Walk surface | Character | raglan topstitch -1 1": {
+          "maximum_edge_length_m": 0.004279124011468872,
+          "maximum_sampled_cloth_distance_m": 0.0006070006638765335,
+          "distance_samples": 106
+        },
+        "Walk surface | Character | raglan topstitch 1 -1": {
+          "maximum_edge_length_m": 0.00455902902266464,
+          "maximum_sampled_cloth_distance_m": 0.0007350358064286411,
+          "distance_samples": 108
+        },
+        "Walk surface | Character | raglan topstitch 1 1": {
+          "maximum_edge_length_m": 0.0038527627383950665,
+          "maximum_sampled_cloth_distance_m": 0.0007131810416467488,
+          "distance_samples": 125
+        }
+      }
+    },
+    {
+      "frame": 11,
+      "seams": {
+        "Walk surface | Character | raglan topstitch -1 -1": {
+          "maximum_edge_length_m": 0.00917038864370057,
+          "maximum_sampled_cloth_distance_m": 0.000777058070525527,
+          "distance_samples": 115
+        },
+        "Walk surface | Character | raglan topstitch -1 1": {
+          "maximum_edge_length_m": 0.004341549495960061,
+          "maximum_sampled_cloth_distance_m": 0.0006414646049961448,
+          "distance_samples": 106
+        },
+        "Walk surface | Character | raglan topstitch 1 -1": {
+          "maximum_edge_length_m": 0.0047162510511372276,
+          "maximum_sampled_cloth_distance_m": 0.0007457297760993242,
+          "distance_samples": 108
+        },
+        "Walk surface | Character | raglan topstitch 1 1": {
+          "maximum_edge_length_m": 0.003840959364232263,
+          "maximum_sampled_cloth_distance_m": 0.0007061000214889646,
+          "distance_samples": 125
+        }
+      }
+    },
+    {
+      "frame": 12,
+      "seams": {
+        "Walk surface | Character | raglan topstitch -1 -1": {
+          "maximum_edge_length_m": 0.00949150849372648,
+          "maximum_sampled_cloth_distance_m": 0.0007764713373035192,
+          "distance_samples": 115
+        },
+        "Walk surface | Character | raglan topstitch -1 1": {
+          "maximum_edge_length_m": 0.004386373882035027,
+          "maximum_sampled_cloth_distance_m": 0.000613378535490483,
+          "distance_samples": 106
+        },
+        "Walk surface | Character | raglan topstitch 1 -1": {
+          "maximum_edge_length_m": 0.004818827095843927,
+          "maximum_sampled_cloth_distance_m": 0.0007529050344601274,
+          "distance_samples": 108
+        },
+        "Walk surface | Character | raglan topstitch 1 1": {
+          "maximum_edge_length_m": 0.0038340221618838833,
+          "maximum_sampled_cloth_distance_m": 0.0007013623835518956,
+          "distance_samples": 125
+        }
+      }
+    },
+    {
+      "frame": 13,
+      "seams": {
+        "Walk surface | Character | raglan topstitch -1 -1": {
+          "maximum_edge_length_m": 0.009589068595945133,
+          "maximum_sampled_cloth_distance_m": 0.0007762361783534288,
+          "distance_samples": 115
+        },
+        "Walk surface | Character | raglan topstitch -1 1": {
+          "maximum_edge_length_m": 0.0044017371031979365,
+          "maximum_sampled_cloth_distance_m": 0.0006145827355794609,
+          "distance_samples": 106
+        },
+        "Walk surface | Character | raglan topstitch 1 -1": {
+          "maximum_edge_length_m": 0.004854158942773056,
+          "maximum_sampled_cloth_distance_m": 0.0007546445121988654,
+          "distance_samples": 108
+        },
+        "Walk surface | Character | raglan topstitch 1 1": {
+          "maximum_edge_length_m": 0.0038318758493670405,
+          "maximum_sampled_cloth_distance_m": 0.0006998655153438449,
+          "distance_samples": 125
+        }
+      }
+    },
+    {
+      "frame": 14,
+      "seams": {
+        "Walk surface | Character | raglan topstitch -1 -1": {
+          "maximum_edge_length_m": 0.00949169184722648,
+          "maximum_sampled_cloth_distance_m": 0.0007763521280139685,
+          "distance_samples": 115
+        },
+        "Walk surface | Character | raglan topstitch -1 1": {
+          "maximum_edge_length_m": 0.004386248202968775,
+          "maximum_sampled_cloth_distance_m": 0.0006133796414360404,
+          "distance_samples": 106
+        },
+        "Walk surface | Character | raglan topstitch 1 -1": {
+          "maximum_edge_length_m": 0.00481901328206161,
+          "maximum_sampled_cloth_distance_m": 0.0007528903661295772,
+          "distance_samples": 108
+        },
+        "Walk surface | Character | raglan topstitch 1 1": {
+          "maximum_edge_length_m": 0.003834151554085073,
+          "maximum_sampled_cloth_distance_m": 0.0007014719303697348,
+          "distance_samples": 125
+        }
+      }
+    },
+    {
+      "frame": 15,
+      "seams": {
+        "Walk surface | Character | raglan topstitch -1 -1": {
+          "maximum_edge_length_m": 0.009170190757988896,
+          "maximum_sampled_cloth_distance_m": 0.0007770566153340042,
+          "distance_samples": 115
+        },
+        "Walk surface | Character | raglan topstitch -1 1": {
+          "maximum_edge_length_m": 0.00434162823587109,
+          "maximum_sampled_cloth_distance_m": 0.0006411317153833807,
+          "distance_samples": 106
+        },
+        "Walk surface | Character | raglan topstitch 1 -1": {
+          "maximum_edge_length_m": 0.004716430005790343,
+          "maximum_sampled_cloth_distance_m": 0.0007457381580024958,
+          "distance_samples": 108
+        },
+        "Walk surface | Character | raglan topstitch 1 1": {
+          "maximum_edge_length_m": 0.00384085122809801,
+          "maximum_sampled_cloth_distance_m": 0.0007060700445435941,
+          "distance_samples": 125
+        }
+      }
+    },
+    {
+      "frame": 16,
+      "seams": {
+        "Walk surface | Character | raglan topstitch -1 -1": {
+          "maximum_edge_length_m": 0.008840160119025785,
+          "maximum_sampled_cloth_distance_m": 0.0007782424800097942,
+          "distance_samples": 115
+        },
+        "Walk surface | Character | raglan topstitch -1 1": {
+          "maximum_edge_length_m": 0.004279023265250164,
+          "maximum_sampled_cloth_distance_m": 0.0006070005474612117,
+          "distance_samples": 106
+        },
+        "Walk surface | Character | raglan topstitch 1 -1": {
+          "maximum_edge_length_m": 0.004558943015403011,
+          "maximum_sampled_cloth_distance_m": 0.0007351286476477981,
+          "distance_samples": 108
+        },
+        "Walk surface | Character | raglan topstitch 1 1": {
+          "maximum_edge_length_m": 0.003852779026707124,
+          "maximum_sampled_cloth_distance_m": 0.0007132951868698001,
+          "distance_samples": 125
+        }
+      }
+    },
+    {
+      "frame": 17,
+      "seams": {
+        "Walk surface | Character | raglan topstitch -1 -1": {
+          "maximum_edge_length_m": 0.008333535748864699,
+          "maximum_sampled_cloth_distance_m": 0.0007815677672624588,
+          "distance_samples": 115
+        },
+        "Walk surface | Character | raglan topstitch -1 1": {
+          "maximum_edge_length_m": 0.004180511930382751,
+          "maximum_sampled_cloth_distance_m": 0.0006027597701177001,
+          "distance_samples": 106
+        },
+        "Walk surface | Character | raglan topstitch 1 -1": {
+          "maximum_edge_length_m": 0.004386950322847485,
+          "maximum_sampled_cloth_distance_m": 0.0007220167899504304,
+          "distance_samples": 108
+        },
+        "Walk surface | Character | raglan topstitch 1 1": {
+          "maximum_edge_length_m": 0.003883064779014362,
+          "maximum_sampled_cloth_distance_m": 0.000723025412298739,
+          "distance_samples": 125
+        }
+      }
+    },
+    {
+      "frame": 18,
+      "seams": {
+        "Walk surface | Character | raglan topstitch -1 -1": {
+          "maximum_edge_length_m": 0.007739535909238098,
+          "maximum_sampled_cloth_distance_m": 0.0007802501204423606,
+          "distance_samples": 115
+        },
+        "Walk surface | Character | raglan topstitch -1 1": {
+          "maximum_edge_length_m": 0.004251115880898334,
+          "maximum_sampled_cloth_distance_m": 0.0005984788294881582,
+          "distance_samples": 106
+        },
+        "Walk surface | Character | raglan topstitch 1 -1": {
+          "maximum_edge_length_m": 0.004165686639507652,
+          "maximum_sampled_cloth_distance_m": 0.0007125073461793363,
+          "distance_samples": 108
+        },
+        "Walk surface | Character | raglan topstitch 1 1": {
+          "maximum_edge_length_m": 0.0038857241870847293,
+          "maximum_sampled_cloth_distance_m": 0.0007345554768107831,
+          "distance_samples": 125
+        }
+      }
+    },
+    {
+      "frame": 19,
+      "seams": {
+        "Walk surface | Character | raglan topstitch -1 -1": {
+          "maximum_edge_length_m": 0.007082646407414313,
+          "maximum_sampled_cloth_distance_m": 0.0007804863271303475,
+          "distance_samples": 115
+        },
+        "Walk surface | Character | raglan topstitch -1 1": {
+          "maximum_edge_length_m": 0.004151001144219731,
+          "maximum_sampled_cloth_distance_m": 0.0005958532565273345,
+          "distance_samples": 106
+        },
+        "Walk surface | Character | raglan topstitch 1 -1": {
+          "maximum_edge_length_m": 0.004377131584751632,
+          "maximum_sampled_cloth_distance_m": 0.0007078011985868216,
+          "distance_samples": 108
+        },
+        "Walk surface | Character | raglan topstitch 1 1": {
+          "maximum_edge_length_m": 0.0039047472875557905,
+          "maximum_sampled_cloth_distance_m": 0.00074694340582937,
+          "distance_samples": 125
+        }
+      }
+    },
+    {
+      "frame": 20,
+      "seams": {
+        "Walk surface | Character | raglan topstitch -1 -1": {
+          "maximum_edge_length_m": 0.006304149032978971,
+          "maximum_sampled_cloth_distance_m": 0.0007798984297551215,
+          "distance_samples": 115
+        },
+        "Walk surface | Character | raglan topstitch -1 1": {
+          "maximum_edge_length_m": 0.004126783377085692,
+          "maximum_sampled_cloth_distance_m": 0.00062981789233163,
+          "distance_samples": 106
+        },
+        "Walk surface | Character | raglan topstitch 1 -1": {
+          "maximum_edge_length_m": 0.004376882262079813,
+          "maximum_sampled_cloth_distance_m": 0.0007032763096503913,
+          "distance_samples": 108
+        },
+        "Walk surface | Character | raglan topstitch 1 1": {
+          "maximum_edge_length_m": 0.003932122967720144,
+          "maximum_sampled_cloth_distance_m": 0.0007593517657369375,
+          "distance_samples": 125
+        }
+      }
+    },
+    {
+      "frame": 21,
+      "seams": {
+        "Walk surface | Character | raglan topstitch -1 -1": {
+          "maximum_edge_length_m": 0.0054246644070131515,
+          "maximum_sampled_cloth_distance_m": 0.0007795558194629848,
+          "distance_samples": 115
+        },
+        "Walk surface | Character | raglan topstitch -1 1": {
+          "maximum_edge_length_m": 0.0041003001263800205,
+          "maximum_sampled_cloth_distance_m": 0.0006094808341003954,
+          "distance_samples": 106
+        },
+        "Walk surface | Character | raglan topstitch 1 -1": {
+          "maximum_edge_length_m": 0.004369352661139268,
+          "maximum_sampled_cloth_distance_m": 0.000699091237038374,
+          "distance_samples": 108
+        },
+        "Walk surface | Character | raglan topstitch 1 1": {
+          "maximum_edge_length_m": 0.003953207726127822,
+          "maximum_sampled_cloth_distance_m": 0.0007704490562900901,
+          "distance_samples": 125
+        }
+      }
+    },
+    {
+      "frame": 22,
+      "seams": {
+        "Walk surface | Character | raglan topstitch -1 -1": {
+          "maximum_edge_length_m": 0.004797922610579534,
+          "maximum_sampled_cloth_distance_m": 0.0007789802621118724,
+          "distance_samples": 115
+        },
+        "Walk surface | Character | raglan topstitch -1 1": {
+          "maximum_edge_length_m": 0.004145894311516919,
+          "maximum_sampled_cloth_distance_m": 0.0005926752928644419,
+          "distance_samples": 106
+        },
+        "Walk surface | Character | raglan topstitch 1 -1": {
+          "maximum_edge_length_m": 0.003975913039131267,
+          "maximum_sampled_cloth_distance_m": 0.000695244874805212,
+          "distance_samples": 108
+        },
+        "Walk surface | Character | raglan topstitch 1 1": {
+          "maximum_edge_length_m": 0.0039815991795605805,
+          "maximum_sampled_cloth_distance_m": 0.0007794972625561059,
+          "distance_samples": 125
+        }
+      }
+    },
+    {
+      "frame": 23,
+      "seams": {
+        "Walk surface | Character | raglan topstitch -1 -1": {
+          "maximum_edge_length_m": 0.00432988440199442,
+          "maximum_sampled_cloth_distance_m": 0.0007787667564116418,
+          "distance_samples": 115
+        },
+        "Walk surface | Character | raglan topstitch -1 1": {
+          "maximum_edge_length_m": 0.0041136878990491454,
+          "maximum_sampled_cloth_distance_m": 0.0005878028459846973,
+          "distance_samples": 106
+        },
+        "Walk surface | Character | raglan topstitch 1 -1": {
+          "maximum_edge_length_m": 0.0039809981940247255,
+          "maximum_sampled_cloth_distance_m": 0.0006934074917808175,
+          "distance_samples": 108
+        },
+        "Walk surface | Character | raglan topstitch 1 1": {
+          "maximum_edge_length_m": 0.003989994806832397,
+          "maximum_sampled_cloth_distance_m": 0.0007841262849979103,
+          "distance_samples": 125
+        }
+      }
+    },
+    {
+      "frame": 24,
+      "seams": {
+        "Walk surface | Character | raglan topstitch -1 -1": {
+          "maximum_edge_length_m": 0.004036662491415803,
+          "maximum_sampled_cloth_distance_m": 0.0007784258341416717,
+          "distance_samples": 115
+        },
+        "Walk surface | Character | raglan topstitch -1 1": {
+          "maximum_edge_length_m": 0.004022325924353884,
+          "maximum_sampled_cloth_distance_m": 0.0005871341563761234,
+          "distance_samples": 106
+        },
+        "Walk surface | Character | raglan topstitch 1 -1": {
+          "maximum_edge_length_m": 0.0039633812589699976,
+          "maximum_sampled_cloth_distance_m": 0.0006918087601661682,
+          "distance_samples": 108
+        },
+        "Walk surface | Character | raglan topstitch 1 1": {
+          "maximum_edge_length_m": 0.003997540647345983,
+          "maximum_sampled_cloth_distance_m": 0.0007873149588704109,
+          "distance_samples": 125
+        }
+      }
+    },
+    {
+      "frame": 25,
+      "seams": {
+        "Walk surface | Character | raglan topstitch -1 -1": {
+          "maximum_edge_length_m": 0.003936882432347559,
+          "maximum_sampled_cloth_distance_m": 0.0007785541238263249,
+          "distance_samples": 115
+        },
+        "Walk surface | Character | raglan topstitch -1 1": {
+          "maximum_edge_length_m": 0.0040861497954026655,
+          "maximum_sampled_cloth_distance_m": 0.0005865435814484954,
+          "distance_samples": 106
+        },
+        "Walk surface | Character | raglan topstitch 1 -1": {
+          "maximum_edge_length_m": 0.004360418994220135,
+          "maximum_sampled_cloth_distance_m": 0.0006912967073731124,
+          "distance_samples": 108
+        },
+        "Walk surface | Character | raglan topstitch 1 1": {
+          "maximum_edge_length_m": 0.004000362667943522,
+          "maximum_sampled_cloth_distance_m": 0.0007882947684265673,
+          "distance_samples": 125
+        }
+      }
+    },
+    {
+      "frame": 26,
+      "seams": {
+        "Walk surface | Character | raglan topstitch -1 -1": {
+          "maximum_edge_length_m": 0.004030443517677637,
+          "maximum_sampled_cloth_distance_m": 0.0007784272311255336,
+          "distance_samples": 115
+        },
+        "Walk surface | Character | raglan topstitch -1 1": {
+          "maximum_edge_length_m": 0.00402229681237519,
+          "maximum_sampled_cloth_distance_m": 0.0005870157037861645,
+          "distance_samples": 106
+        },
+        "Walk surface | Character | raglan topstitch 1 -1": {
+          "maximum_edge_length_m": 0.00396339361471521,
+          "maximum_sampled_cloth_distance_m": 0.000691565393935889,
+          "distance_samples": 108
+        },
+        "Walk surface | Character | raglan topstitch 1 1": {
+          "maximum_edge_length_m": 0.003997507913698597,
+          "maximum_sampled_cloth_distance_m": 0.0007870689732953906,
+          "distance_samples": 125
+        }
+      }
+    },
+    {
+      "frame": 27,
+      "seams": {
+        "Walk surface | Character | raglan topstitch -1 -1": {
+          "maximum_edge_length_m": 0.004329383402391976,
+          "maximum_sampled_cloth_distance_m": 0.000778648944105953,
+          "distance_samples": 115
+        },
+        "Walk surface | Character | raglan topstitch -1 1": {
+          "maximum_edge_length_m": 0.004113604989514312,
+          "maximum_sampled_cloth_distance_m": 0.0005876817740499973,
+          "distance_samples": 106
+        },
+        "Walk surface | Character | raglan topstitch 1 -1": {
+          "maximum_edge_length_m": 0.003980911798119324,
+          "maximum_sampled_cloth_distance_m": 0.0006931948591955006,
+          "distance_samples": 108
+        },
+        "Walk surface | Character | raglan topstitch 1 1": {
+          "maximum_edge_length_m": 0.003989807119166208,
+          "maximum_sampled_cloth_distance_m": 0.0007840091129764915,
+          "distance_samples": 125
+        }
+      }
+    },
+    {
+      "frame": 28,
+      "seams": {
+        "Walk surface | Character | raglan topstitch -1 -1": {
+          "maximum_edge_length_m": 0.004797957065966319,
+          "maximum_sampled_cloth_distance_m": 0.0007788638467900455,
+          "distance_samples": 115
+        },
+        "Walk surface | Character | raglan topstitch -1 1": {
+          "maximum_edge_length_m": 0.004145634593905766,
+          "maximum_sampled_cloth_distance_m": 0.000592719588894397,
+          "distance_samples": 106
+        },
+        "Walk surface | Character | raglan topstitch 1 -1": {
+          "maximum_edge_length_m": 0.003975810408958191,
+          "maximum_sampled_cloth_distance_m": 0.0006954590207897127,
+          "distance_samples": 108
+        },
+        "Walk surface | Character | raglan topstitch 1 1": {
+          "maximum_edge_length_m": 0.003981069742087055,
+          "maximum_sampled_cloth_distance_m": 0.0007796144345775247,
+          "distance_samples": 125
+        }
+      }
+    },
+    {
+      "frame": 29,
+      "seams": {
+        "Walk surface | Character | raglan topstitch -1 -1": {
+          "maximum_edge_length_m": 0.005424812280380702,
+          "maximum_sampled_cloth_distance_m": 0.0007794361445121467,
+          "distance_samples": 115
+        },
+        "Walk surface | Character | raglan topstitch -1 1": {
+          "maximum_edge_length_m": 0.004100340440465413,
+          "maximum_sampled_cloth_distance_m": 0.0006095328135415912,
+          "distance_samples": 106
+        },
+        "Walk surface | Character | raglan topstitch 1 -1": {
+          "maximum_edge_length_m": 0.004374259584256517,
+          "maximum_sampled_cloth_distance_m": 0.000698832212947309,
+          "distance_samples": 108
+        },
+        "Walk surface | Character | raglan topstitch 1 1": {
+          "maximum_edge_length_m": 0.00395335188797452,
+          "maximum_sampled_cloth_distance_m": 0.0007705682655796409,
+          "distance_samples": 125
+        }
+      }
+    },
+    {
+      "frame": 30,
+      "seams": {
+        "Walk surface | Character | raglan topstitch -1 -1": {
+          "maximum_edge_length_m": 0.006304314219078611,
+          "maximum_sampled_cloth_distance_m": 0.0007798984297551215,
+          "distance_samples": 115
+        },
+        "Walk surface | Character | raglan topstitch -1 1": {
+          "maximum_edge_length_m": 0.004126922660129921,
+          "maximum_sampled_cloth_distance_m": 0.0006299186497926712,
+          "distance_samples": 106
+        },
+        "Walk surface | Character | raglan topstitch 1 -1": {
+          "maximum_edge_length_m": 0.004376940848543046,
+          "maximum_sampled_cloth_distance_m": 0.0007032763096503913,
+          "distance_samples": 108
+        },
+        "Walk surface | Character | raglan topstitch 1 1": {
+          "maximum_edge_length_m": 0.003924841135229503,
+          "maximum_sampled_cloth_distance_m": 0.0007592237670905888,
+          "distance_samples": 125
+        }
+      }
+    },
+    {
+      "frame": 31,
+      "seams": {
+        "Walk surface | Character | raglan topstitch -1 -1": {
+          "maximum_edge_length_m": 0.007085823659742399,
+          "maximum_sampled_cloth_distance_m": 0.000780485337600112,
+          "distance_samples": 115
+        },
+        "Walk surface | Character | raglan topstitch -1 1": {
+          "maximum_edge_length_m": 0.0041994793779491285,
+          "maximum_sampled_cloth_distance_m": 0.0005958675174042583,
+          "distance_samples": 106
+        },
+        "Walk surface | Character | raglan topstitch 1 -1": {
+          "maximum_edge_length_m": 0.0043798880786769445,
+          "maximum_sampled_cloth_distance_m": 0.0007080214563757181,
+          "distance_samples": 108
+        },
+        "Walk surface | Character | raglan topstitch 1 1": {
+          "maximum_edge_length_m": 0.0039047472875557905,
+          "maximum_sampled_cloth_distance_m": 0.0007470606360584497,
+          "distance_samples": 125
+        }
+      }
+    },
+    {
+      "frame": 32,
+      "seams": {
+        "Walk surface | Character | raglan topstitch -1 -1": {
+          "maximum_edge_length_m": 0.0077396755425886395,
+          "maximum_sampled_cloth_distance_m": 0.0007802501204423606,
+          "distance_samples": 115
+        },
+        "Walk surface | Character | raglan topstitch -1 1": {
+          "maximum_edge_length_m": 0.004250947237314135,
+          "maximum_sampled_cloth_distance_m": 0.0005984788294881582,
+          "distance_samples": 106
+        },
+        "Walk surface | Character | raglan topstitch 1 -1": {
+          "maximum_edge_length_m": 0.004381992298379744,
+          "maximum_sampled_cloth_distance_m": 0.0007126458222046494,
+          "distance_samples": 108
+        },
+        "Walk surface | Character | raglan topstitch 1 1": {
+          "maximum_edge_length_m": 0.0038858575316464803,
+          "maximum_sampled_cloth_distance_m": 0.0007344337063841522,
+          "distance_samples": 125
+        }
+      }
+    },
+    {
+      "frame": 33,
+      "seams": {
+        "Walk surface | Character | raglan topstitch -1 -1": {
+          "maximum_edge_length_m": 0.00833332393909663,
+          "maximum_sampled_cloth_distance_m": 0.0007815695134922862,
+          "distance_samples": 115
+        },
+        "Walk surface | Character | raglan topstitch -1 1": {
+          "maximum_edge_length_m": 0.0041804578266196185,
+          "maximum_sampled_cloth_distance_m": 0.0006027533672749996,
+          "distance_samples": 106
+        },
+        "Walk surface | Character | raglan topstitch 1 -1": {
+          "maximum_edge_length_m": 0.004387121402388304,
+          "maximum_sampled_cloth_distance_m": 0.0007220313418656588,
+          "distance_samples": 108
+        },
+        "Walk surface | Character | raglan topstitch 1 1": {
+          "maximum_edge_length_m": 0.0038833380227798007,
+          "maximum_sampled_cloth_distance_m": 0.0007229084149003029,
+          "distance_samples": 125
+        }
+      }
+    },
+    {
+      "frame": 34,
+      "seams": {
+        "Walk surface | Character | raglan topstitch -1 -1": {
+          "maximum_edge_length_m": 0.008839972048450398,
+          "maximum_sampled_cloth_distance_m": 0.0007780041196383536,
+          "distance_samples": 115
+        },
+        "Walk surface | Character | raglan topstitch -1 1": {
+          "maximum_edge_length_m": 0.004279081715349469,
+          "maximum_sampled_cloth_distance_m": 0.0006071176030673087,
+          "distance_samples": 106
+        },
+        "Walk surface | Character | raglan topstitch 1 -1": {
+          "maximum_edge_length_m": 0.004558981218886812,
+          "maximum_sampled_cloth_distance_m": 0.0007352663669735193,
+          "distance_samples": 108
+        },
+        "Walk surface | Character | raglan topstitch 1 1": {
+          "maximum_edge_length_m": 0.0038526421083173866,
+          "maximum_sampled_cloth_distance_m": 0.0007130641606636345,
+          "distance_samples": 125
+        }
+      }
+    },
+    {
+      "frame": 35,
+      "seams": {
+        "Walk surface | Character | raglan topstitch -1 -1": {
+          "maximum_edge_length_m": 0.009170077593510073,
+          "maximum_sampled_cloth_distance_m": 0.0007771821692585945,
+          "distance_samples": 115
+        },
+        "Walk surface | Character | raglan topstitch -1 1": {
+          "maximum_edge_length_m": 0.004341671375938466,
+          "maximum_sampled_cloth_distance_m": 0.0006410809000954032,
+          "distance_samples": 106
+        },
+        "Walk surface | Character | raglan topstitch 1 -1": {
+          "maximum_edge_length_m": 0.00471615125397147,
+          "maximum_sampled_cloth_distance_m": 0.0007460462511517107,
+          "distance_samples": 108
+        },
+        "Walk surface | Character | raglan topstitch 1 1": {
+          "maximum_edge_length_m": 0.003841142693291829,
+          "maximum_sampled_cloth_distance_m": 0.0007058367482386529,
+          "distance_samples": 125
+        }
+      }
+    },
+    {
+      "frame": 36,
+      "seams": {
+        "Walk surface | Character | raglan topstitch -1 -1": {
+          "maximum_edge_length_m": 0.009491193114546112,
+          "maximum_sampled_cloth_distance_m": 0.000776347704231739,
+          "distance_samples": 115
+        },
+        "Walk surface | Character | raglan topstitch -1 1": {
+          "maximum_edge_length_m": 0.004386059107376189,
+          "maximum_sampled_cloth_distance_m": 0.0006133813294582069,
+          "distance_samples": 106
+        },
+        "Walk surface | Character | raglan topstitch 1 -1": {
+          "maximum_edge_length_m": 0.004818856916320028,
+          "maximum_sampled_cloth_distance_m": 0.0007526989793404937,
+          "distance_samples": 108
+        },
+        "Walk surface | Character | raglan topstitch 1 1": {
+          "maximum_edge_length_m": 0.0038343722816907215,
+          "maximum_sampled_cloth_distance_m": 0.0007013623835518956,
+          "distance_samples": 125
+        }
+      }
+    },
+    {
+      "frame": 37,
+      "seams": {
+        "Walk surface | Character | raglan topstitch -1 -1": {
+          "maximum_edge_length_m": 0.009588739897920017,
+          "maximum_sampled_cloth_distance_m": 0.0007764700567349792,
+          "distance_samples": 115
+        },
+        "Walk surface | Character | raglan topstitch -1 1": {
+          "maximum_edge_length_m": 0.004402037198172134,
+          "maximum_sampled_cloth_distance_m": 0.0006144618964754045,
+          "distance_samples": 106
+        },
+        "Walk surface | Character | raglan topstitch 1 -1": {
+          "maximum_edge_length_m": 0.004854184564734284,
+          "maximum_sampled_cloth_distance_m": 0.0007547450950369239,
+          "distance_samples": 108
+        },
+        "Walk surface | Character | raglan topstitch 1 1": {
+          "maximum_edge_length_m": 0.003831615078437185,
+          "maximum_sampled_cloth_distance_m": 0.0006997736636549234,
+          "distance_samples": 125
+        }
+      }
+    },
+    {
+      "frame": 38,
+      "seams": {
+        "Walk surface | Character | raglan topstitch -1 -1": {
+          "maximum_edge_length_m": 0.009491199259329825,
+          "maximum_sampled_cloth_distance_m": 0.0007764669135212898,
+          "distance_samples": 115
+        },
+        "Walk surface | Character | raglan topstitch -1 1": {
+          "maximum_edge_length_m": 0.004386247308765775,
+          "maximum_sampled_cloth_distance_m": 0.0006133824354037642,
+          "distance_samples": 106
+        },
+        "Walk surface | Character | raglan topstitch 1 -1": {
+          "maximum_edge_length_m": 0.004818946848473862,
+          "maximum_sampled_cloth_distance_m": 0.0007527605048380792,
+          "distance_samples": 108
+        },
+        "Walk surface | Character | raglan topstitch 1 1": {
+          "maximum_edge_length_m": 0.0038339513149312048,
+          "maximum_sampled_cloth_distance_m": 0.0007014719303697348,
+          "distance_samples": 125
+        }
+      }
+    },
+    {
+      "frame": 39,
+      "seams": {
+        "Walk surface | Character | raglan topstitch -1 -1": {
+          "maximum_edge_length_m": 0.009170249075334555,
+          "maximum_sampled_cloth_distance_m": 0.0007770559168420732,
+          "distance_samples": 115
+        },
+        "Walk surface | Character | raglan topstitch -1 1": {
+          "maximum_edge_length_m": 0.00434162487105874,
+          "maximum_sampled_cloth_distance_m": 0.0006419611163437366,
+          "distance_samples": 106
+        },
+        "Walk surface | Character | raglan topstitch 1 -1": {
+          "maximum_edge_length_m": 0.004716314544176854,
+          "maximum_sampled_cloth_distance_m": 0.0007459748885594308,
+          "distance_samples": 108
+        },
+        "Walk surface | Character | raglan topstitch 1 1": {
+          "maximum_edge_length_m": 0.003841250754629273,
+          "maximum_sampled_cloth_distance_m": 0.0007059683557599783,
+          "distance_samples": 125
+        }
+      }
+    },
+    {
+      "frame": 40,
+      "seams": {
+        "Walk surface | Character | raglan topstitch -1 -1": {
+          "maximum_edge_length_m": 0.008840140468512812,
+          "maximum_sampled_cloth_distance_m": 0.0007778832805342972,
+          "distance_samples": 115
+        },
+        "Walk surface | Character | raglan topstitch -1 1": {
+          "maximum_edge_length_m": 0.004278980968134921,
+          "maximum_sampled_cloth_distance_m": 0.0006071176612749696,
+          "distance_samples": 106
+        },
+        "Walk surface | Character | raglan topstitch 1 -1": {
+          "maximum_edge_length_m": 0.004559270353020255,
+          "maximum_sampled_cloth_distance_m": 0.0007353366236202419,
+          "distance_samples": 108
+        },
+        "Walk surface | Character | raglan topstitch 1 1": {
+          "maximum_edge_length_m": 0.0038528119055765177,
+          "maximum_sampled_cloth_distance_m": 0.0007130515296012163,
+          "distance_samples": 125
+        }
+      }
+    },
+    {
+      "frame": 41,
+      "seams": {
+        "Walk surface | Character | raglan topstitch -1 -1": {
+          "maximum_edge_length_m": 0.008333339600598334,
+          "maximum_sampled_cloth_distance_m": 0.000778944871854037,
+          "distance_samples": 115
+        },
+        "Walk surface | Character | raglan topstitch -1 1": {
+          "maximum_edge_length_m": 0.004180429380731208,
+          "maximum_sampled_cloth_distance_m": 0.0006026439950801432,
+          "distance_samples": 106
+        },
+        "Walk surface | Character | raglan topstitch 1 -1": {
+          "maximum_edge_length_m": 0.0043986754470278795,
+          "maximum_sampled_cloth_distance_m": 0.0007221617852337658,
+          "distance_samples": 108
+        },
+        "Walk surface | Character | raglan topstitch 1 1": {
+          "maximum_edge_length_m": 0.003880025263835672,
+          "maximum_sampled_cloth_distance_m": 0.0007230349001474679,
+          "distance_samples": 125
+        }
+      }
+    },
+    {
+      "frame": 42,
+      "seams": {
+        "Walk surface | Character | raglan topstitch -1 -1": {
+          "maximum_edge_length_m": 0.007739519398669067,
+          "maximum_sampled_cloth_distance_m": 0.0007801318424753845,
+          "distance_samples": 115
+        },
+        "Walk surface | Character | raglan topstitch -1 1": {
+          "maximum_edge_length_m": 0.004250984678586162,
+          "maximum_sampled_cloth_distance_m": 0.0005984745221212506,
+          "distance_samples": 106
+        },
+        "Walk surface | Character | raglan topstitch 1 -1": {
+          "maximum_edge_length_m": 0.004165603263873562,
+          "maximum_sampled_cloth_distance_m": 0.0007125128176994622,
+          "distance_samples": 108
+        },
+        "Walk surface | Character | raglan topstitch 1 1": {
+          "maximum_edge_length_m": 0.0038856948964920614,
+          "maximum_sampled_cloth_distance_m": 0.0007345525082200766,
+          "distance_samples": 125
+        }
+      }
+    },
+    {
+      "frame": 43,
+      "seams": {
+        "Walk surface | Character | raglan topstitch -1 -1": {
+          "maximum_edge_length_m": 0.007082289285459018,
+          "maximum_sampled_cloth_distance_m": 0.000780485337600112,
+          "distance_samples": 115
+        },
+        "Walk surface | Character | raglan topstitch -1 1": {
+          "maximum_edge_length_m": 0.004199414567917889,
+          "maximum_sampled_cloth_distance_m": 0.0005958646070212126,
+          "distance_samples": 106
+        },
+        "Walk surface | Character | raglan topstitch 1 -1": {
+          "maximum_edge_length_m": 0.004377258954041297,
+          "maximum_sampled_cloth_distance_m": 0.0007078939815983176,
+          "distance_samples": 108
+        },
+        "Walk surface | Character | raglan topstitch 1 1": {
+          "maximum_edge_length_m": 0.003904721742672045,
+          "maximum_sampled_cloth_distance_m": 0.0007470694836229086,
+          "distance_samples": 125
+        }
+      }
+    },
+    {
+      "frame": 44,
+      "seams": {
+        "Walk surface | Character | raglan topstitch -1 -1": {
+          "maximum_edge_length_m": 0.006304285365923409,
+          "maximum_sampled_cloth_distance_m": 0.0007798984297551215,
+          "distance_samples": 115
+        },
+        "Walk surface | Character | raglan topstitch -1 1": {
+          "maximum_edge_length_m": 0.004126931392711653,
+          "maximum_sampled_cloth_distance_m": 0.00062981789233163,
+          "distance_samples": 106
+        },
+        "Walk surface | Character | raglan topstitch 1 -1": {
+          "maximum_edge_length_m": 0.00437300058416672,
+          "maximum_sampled_cloth_distance_m": 0.000703051860909909,
+          "distance_samples": 108
+        },
+        "Walk surface | Character | raglan topstitch 1 1": {
+          "maximum_edge_length_m": 0.003932247968193009,
+          "maximum_sampled_cloth_distance_m": 0.0007592302863486111,
+          "distance_samples": 125
+        }
+      }
+    },
+    {
+      "frame": 45,
+      "seams": {
+        "Walk surface | Character | raglan topstitch -1 -1": {
+          "maximum_edge_length_m": 0.005424889484771981,
+          "maximum_sampled_cloth_distance_m": 0.0007795560522936285,
+          "distance_samples": 115
+        },
+        "Walk surface | Character | raglan topstitch -1 1": {
+          "maximum_edge_length_m": 0.004187642183726042,
+          "maximum_sampled_cloth_distance_m": 0.0006096427678130567,
+          "distance_samples": 106
+        },
+        "Walk surface | Character | raglan topstitch 1 -1": {
+          "maximum_edge_length_m": 0.004369416298635595,
+          "maximum_sampled_cloth_distance_m": 0.0006989624234847724,
+          "distance_samples": 108
+        },
+        "Walk surface | Character | raglan topstitch 1 1": {
+          "maximum_edge_length_m": 0.003953108020454785,
+          "maximum_sampled_cloth_distance_m": 0.0007702068542130291,
+          "distance_samples": 125
+        }
+      }
+    },
+    {
+      "frame": 46,
+      "seams": {
+        "Walk surface | Character | raglan topstitch -1 -1": {
+          "maximum_edge_length_m": 0.004797586357679313,
+          "maximum_sampled_cloth_distance_m": 0.0007789802621118724,
+          "distance_samples": 115
+        },
+        "Walk surface | Character | raglan topstitch -1 1": {
+          "maximum_edge_length_m": 0.004077632218049038,
+          "maximum_sampled_cloth_distance_m": 0.0005926974699832499,
+          "distance_samples": 106
+        },
+        "Walk surface | Character | raglan topstitch 1 -1": {
+          "maximum_edge_length_m": 0.003975610200384657,
+          "maximum_sampled_cloth_distance_m": 0.0006955742137506604,
+          "distance_samples": 108
+        },
+        "Walk surface | Character | raglan topstitch 1 1": {
+          "maximum_edge_length_m": 0.003981720613870233,
+          "maximum_sampled_cloth_distance_m": 0.000779381429310888,
+          "distance_samples": 125
+        }
+      }
+    },
+    {
+      "frame": 47,
+      "seams": {
+        "Walk surface | Character | raglan topstitch -1 -1": {
+          "maximum_edge_length_m": 0.0043295347324393526,
+          "maximum_sampled_cloth_distance_m": 0.000778648944105953,
+          "distance_samples": 115
+        },
+        "Walk surface | Character | raglan topstitch -1 1": {
+          "maximum_edge_length_m": 0.004113532000104071,
+          "maximum_sampled_cloth_distance_m": 0.0005876760114915669,
+          "distance_samples": 106
+        },
+        "Walk surface | Character | raglan topstitch 1 -1": {
+          "maximum_edge_length_m": 0.00397209226350684,
+          "maximum_sampled_cloth_distance_m": 0.0006932936958037317,
+          "distance_samples": 108
+        },
+        "Walk surface | Character | raglan topstitch 1 1": {
+          "maximum_edge_length_m": 0.003989991330687461,
+          "maximum_sampled_cloth_distance_m": 0.0007837642915546894,
+          "distance_samples": 125
+        }
+      }
+    },
+    {
+      "frame": 48,
+      "seams": {
+        "Walk surface | Character | raglan topstitch -1 -1": {
+          "maximum_edge_length_m": 0.004036792084015572,
+          "maximum_sampled_cloth_distance_m": 0.0007784258341416717,
+          "distance_samples": 115
+        },
+        "Walk surface | Character | raglan topstitch -1 1": {
+          "maximum_edge_length_m": 0.004022371089899921,
+          "maximum_sampled_cloth_distance_m": 0.0005870217573828995,
+          "distance_samples": 106
+        },
+        "Walk surface | Character | raglan topstitch 1 -1": {
+          "maximum_edge_length_m": 0.003963429774589794,
+          "maximum_sampled_cloth_distance_m": 0.0006918075960129499,
+          "distance_samples": 108
+        },
+        "Walk surface | Character | raglan topstitch 1 1": {
+          "maximum_edge_length_m": 0.003997777823195848,
+          "maximum_sampled_cloth_distance_m": 0.0007871880079619586,
+          "distance_samples": 125
+        }
+      }
+    },
+    {
+      "frame": 49,
+      "seams": {
+        "Walk surface | Character | raglan topstitch -1 -1": {
+          "maximum_edge_length_m": 0.003936909201584914,
+          "maximum_sampled_cloth_distance_m": 0.0007785527850501239,
+          "distance_samples": 115
+        },
+        "Walk surface | Character | raglan topstitch -1 1": {
+          "maximum_edge_length_m": 0.004086288682882923,
+          "maximum_sampled_cloth_distance_m": 0.000586668262258172,
+          "distance_samples": 106
+        },
+        "Walk surface | Character | raglan topstitch 1 -1": {
+          "maximum_edge_length_m": 0.004363010769707045,
+          "maximum_sampled_cloth_distance_m": 0.0006912803510203958,
+          "distance_samples": 108
+        },
+        "Walk surface | Character | raglan topstitch 1 1": {
+          "maximum_edge_length_m": 0.004000362667943522,
+          "maximum_sampled_cloth_distance_m": 0.000788177247159183,
+          "distance_samples": 125
+        }
+      }
+    }
+  ],
+  "scope": "All authored integer frames at render subdivision levels; edge-length and sampled nearest-jacket distance checks, not a complete seam/self-intersection or animated-subframe proof."
+}

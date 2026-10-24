@@ -1,0 +1,94 @@
+{
+  "candidate_sha256": "c14ec89ca354a9dbe498c6955cde745e2edcb977c9b8603d9e37080247fffeac",
+  "source_sha256": "9ebfbc9007d4752a568c094d988f36ee9c1fbe342f27f683d7d29d5aa24b8d6f",
+  "files": {
+    "Contact_Profile.png": {
+      "sha256": "6573c87d343be29de46fc0ede1231acfec8acc8438f00cc0eab6489d0e70e89d",
+      "bytes": 959199
+    },
+    "Cotton_RearClose.png": {
+      "sha256": "da32ba75a31c24142c4fcb482a7b9f18a4267fd12e7ff778eb351b7695479c8a",
+      "bytes": 1179225
+    },
+    "Gameplay.png": {
+      "sha256": "9e43a857bbdcdeeb3b9f78f66e2eac7b9b90ea58eef40eb6062510811e7b1823",
+      "bytes": 1626733
+    },
+    "Hips_Rear.png": {
+      "sha256": "4e8281bb3388c3c77751136bad56e301c8e60438a3224d0b711de27fc60a6eb1",
+      "bytes": 1059652
+    },
+    "OppositeContact_Profile.png": {
+      "sha256": "088cf22359f1379aa9d53660ee770083f91ade23b209c39ee6f23383ba2572ac",
+      "bytes": 965836
+    },
+    "Passing_Front.png": {
+      "sha256": "95a7e7804b88330a364b357bc6a07a9738605d3470614056209793a18c8fced1",
+      "bytes": 850196
+    },
+    "Passing_Profile.png": {
+      "sha256": "b5263a3a453f013363a725db0e549d72176b0cf74319259cedf0356a6da3dc71",
+      "bytes": 961087
+    },
+    "Passing_Rear.png": {
+      "sha256": "a89994447361d91063e2a9611d33ce7f4f7abc167b6e77d09985361393ff2021",
+      "bytes": 1093323
+    },
+    "README.md": {
+      "sha256": "e006315a0c2a9b480c37b3ba51fdb92aa9b8e31e79a24b335bd0b2b79ee1e67d",
+      "bytes": 2990
+    },
+    "ThighDrape.blend": {
+      "sha256": "c14ec89ca354a9dbe498c6955cde745e2edcb977c9b8603d9e37080247fffeac",
+      "bytes": 646711049
+    },
+    "ThighDrapeWalking.mp4": {
+      "sha256": "0cabbace96e615c53492ce67ab181c2abe7eb155fb66e3c445d9bd1fff3bb0b5",
+      "bytes": 801591
+    },
+    "Thigh_OppositeClose.png": {
+      "sha256": "1f0445d56854f06ae28fd29a5cd2f364c674581509e6c58930788becc0ac8dc8",
+      "bytes": 1253035
+    },
+    "Thigh_ProfileClose.png": {
+      "sha256": "dc1eb99064ee0a288c7b9044d8c43c29115f6e2890d8eb2e53afba7722077ea6",
+      "bytes": 1209679
+    },
+    "Torso_Front.png": {
+      "sha256": "8b54d829827625e214e5fb29bece4d6dc1926044b11d81a431cb51a3b1a0d635",
+      "bytes": 863711
+    },
+    "WholeFigureReview.md": {
+      "sha256": "0cea7534a354f592b7fcde116147677888e92bf50cb712b40ffdf42de552e7af",
+      "bytes": 2921
+    },
+    "audit.py": {
+      "sha256": "a34e657de86a179a143c79a2d3923c5627a8896298194ffe6db85d9b989ccb66",
+      "bytes": 6275
+    },
+    "build-report.json": {
+      "sha256": "836c07d8f4f76919952dda120f98127cec57c3e4a29d0055de95333754493ab2",
+      "bytes": 1281
+    },
+    "build.py": {
+      "sha256": "fe21dbaeff03c2409402022ef54c7cdb80112b54804de776d84381908054e8f7",
+      "bytes": 7800
+    },
+    "cold-audit.json": {
+      "sha256": "b82f56fc67cff762f4014fd592bda96eebf0ef5864c475b57a7f8899d15bbd4c",
+      "bytes": 120603
+    },
+    "preview-info.json": {
+      "sha256": "212ba8108946acb5bc6ea0eace298d07229385f7a47b41cac4a88270d212956a",
+      "bytes": 234
+    },
+    "render-provenance.json": {
+      "sha256": "b89552a38dc939f064c3e1776d78549d02d7fa8e3b2bf3c2abc2a9be68aba191",
+      "bytes": 650
+    },
+    "render.py": {
+      "sha256": "3368f05c0a8f74d64dda1148f950109a22d869dc152befa5e26a0a725e08a759",
+      "bytes": 1278
+    }
+  }
+}

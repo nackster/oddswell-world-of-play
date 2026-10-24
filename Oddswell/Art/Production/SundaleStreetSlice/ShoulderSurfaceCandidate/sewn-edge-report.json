@@ -1,0 +1,18 @@
+{
+  "Walk surface | Character | raglan topstitch -1 1": {
+    "edge_points": 106,
+    "maximum_edge_step_m": 0.003962486831606916
+  },
+  "Walk surface | Character | raglan topstitch -1 -1": {
+    "edge_points": 115,
+    "maximum_edge_step_m": 0.00392708922433539
+  },
+  "Walk surface | Character | raglan topstitch 1 1": {
+    "edge_points": 125,
+    "maximum_edge_step_m": 0.003992386474507999
+  },
+  "Walk surface | Character | raglan topstitch 1 -1": {
+    "edge_points": 108,
+    "maximum_edge_step_m": 0.003961579711803056
+  }
+}

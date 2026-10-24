@@ -1,0 +1,9 @@
+# Whole-figure movement review — October 6, 2026
+
+The character now transfers weight across the pelvis while the chest counters the hip rotation, the knees pass through the step, and the arms move with measured limb lengths. The body has an editable native walking action rather than only a static pose. The slate jacket, narrow teal signal, cotton shorts, warm brick/mineral street and blue court retain the intended OddsWell family.
+
+Close views remain below the owner's very-real human target. Shoulder and underarm folds can still form angular shapes; small sewn details need closer deformation review. Hands retain the existing finger pose through the walk and need a more relaxed changing gesture. The face remains generic, footwear too smooth, and shorts/seat folds too uniform. Positive sampled body clearance does not remove those visible issues or prove every cloth surface free of self-intersection. Treat this as progress, not character acceptance.
+
+The next human pass should refine shoulder/underarm garment motion and cuff/ankle transitions, introduce restrained finger articulation, and improve skin, facial individuality and footwear finish. Review matched front/rear/profile, close hands/feet/face and gameplay views against [the original reference](../../../Reviews/OddsWellStreetIdentityCandidate/OddsWell_Visual_Direction_Concept.png). Follow that whole-human review with retail/storefront depth and variety, an open arena sightline, layered planting and warm canopy shadows.
+
+This advances the offline art work supporting the Beta Game Bible's **Avatar and clothing** section and **Art/Visual Consistency**. It does not complete a beta roadmap phase. The accepted runtime skeleton/animations, separate starter-outfit walk review, physical first-hour evidence and stopped export/import preparation retain their existing status. Prepare compatible assets, detail baking and LOD/collision budgets only under those later gates.

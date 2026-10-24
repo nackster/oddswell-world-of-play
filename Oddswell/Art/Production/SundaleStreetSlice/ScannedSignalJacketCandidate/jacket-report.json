@@ -1,0 +1,624 @@
+{
+  "source_sha256": "1c75042928c5df6eaa198c1fe032a5b3985224c33b766bd322b7dc10b126aca4",
+  "candidate_sha256": "fa455707fe273b6230fd19fa7f2a934ae560d81b551fb05850d732740f3c0099",
+  "source_support_faces": 1816,
+  "jacket_vertices": 1826,
+  "parts": [
+    "Signal Jacket | center zip tape",
+    "Signal Jacket | individual zipper teeth",
+    "Signal Jacket | raised rib collar",
+    "Signal Jacket | pocket welt -1",
+    "Signal Jacket | pocket welt 1",
+    "Signal Jacket | teal chest tab"
+  ],
+  "shell_offset_m": 0.008,
+  "cold_reopen_pass": true,
+  "source_mesh_uv_weights_bind_maps_preserved": true,
+  "pose_checks": [
+    {
+      "frame": 1,
+      "evaluated_vertex_counts": [
+        14572,
+        98,
+        184,
+        960,
+        28,
+        28,
+        4
+      ]
+    },
+    {
+      "frame": 2,
+      "evaluated_vertex_counts": [
+        14572,
+        98,
+        184,
+        960,
+        28,
+        28,
+        4
+      ]
+    },
+    {
+      "frame": 3,
+      "evaluated_vertex_counts": [
+        14572,
+        98,
+        184,
+        960,
+        28,
+        28,
+        4
+      ]
+    },
+    {
+      "frame": 4,
+      "evaluated_vertex_counts": [
+        14572,
+        98,
+        184,
+        960,
+        28,
+        28,
+        4
+      ]
+    },
+    {
+      "frame": 5,
+      "evaluated_vertex_counts": [
+        14572,
+        98,
+        184,
+        960,
+        28,
+        28,
+        4
+      ]
+    },
+    {
+      "frame": 6,
+      "evaluated_vertex_counts": [
+        14572,
+        98,
+        184,
+        960,
+        28,
+        28,
+        4
+      ]
+    },
+    {
+      "frame": 7,
+      "evaluated_vertex_counts": [
+        14572,
+        98,
+        184,
+        960,
+        28,
+        28,
+        4
+      ]
+    },
+    {
+      "frame": 8,
+      "evaluated_vertex_counts": [
+        14572,
+        98,
+        184,
+        960,
+        28,
+        28,
+        4
+      ]
+    },
+    {
+      "frame": 9,
+      "evaluated_vertex_counts": [
+        14572,
+        98,
+        184,
+        960,
+        28,
+        28,
+        4
+      ]
+    },
+    {
+      "frame": 10,
+      "evaluated_vertex_counts": [
+        14572,
+        98,
+        184,
+        960,
+        28,
+        28,
+        4
+      ]
+    },
+    {
+      "frame": 11,
+      "evaluated_vertex_counts": [
+        14572,
+        98,
+        184,
+        960,
+        28,
+        28,
+        4
+      ]
+    },
+    {
+      "frame": 12,
+      "evaluated_vertex_counts": [
+        14572,
+        98,
+        184,
+        960,
+        28,
+        28,
+        4
+      ]
+    },
+    {
+      "frame": 13,
+      "evaluated_vertex_counts": [
+        14572,
+        98,
+        184,
+        960,
+        28,
+        28,
+        4
+      ]
+    },
+    {
+      "frame": 14,
+      "evaluated_vertex_counts": [
+        14572,
+        98,
+        184,
+        960,
+        28,
+        28,
+        4
+      ]
+    },
+    {
+      "frame": 15,
+      "evaluated_vertex_counts": [
+        14572,
+        98,
+        184,
+        960,
+        28,
+        28,
+        4
+      ]
+    },
+    {
+      "frame": 16,
+      "evaluated_vertex_counts": [
+        14572,
+        98,
+        184,
+        960,
+        28,
+        28,
+        4
+      ]
+    },
+    {
+      "frame": 17,
+      "evaluated_vertex_counts": [
+        14572,
+        98,
+        184,
+        960,
+        28,
+        28,
+        4
+      ]
+    },
+    {
+      "frame": 18,
+      "evaluated_vertex_counts": [
+        14572,
+        98,
+        184,
+        960,
+        28,
+        28,
+        4
+      ]
+    },
+    {
+      "frame": 19,
+      "evaluated_vertex_counts": [
+        14572,
+        98,
+        184,
+        960,
+        28,
+        28,
+        4
+      ]
+    },
+    {
+      "frame": 20,
+      "evaluated_vertex_counts": [
+        14572,
+        98,
+        184,
+        960,
+        28,
+        28,
+        4
+      ]
+    },
+    {
+      "frame": 21,
+      "evaluated_vertex_counts": [
+        14572,
+        98,
+        184,
+        960,
+        28,
+        28,
+        4
+      ]
+    },
+    {
+      "frame": 22,
+      "evaluated_vertex_counts": [
+        14572,
+        98,
+        184,
+        960,
+        28,
+        28,
+        4
+      ]
+    },
+    {
+      "frame": 23,
+      "evaluated_vertex_counts": [
+        14572,
+        98,
+        184,
+        960,
+        28,
+        28,
+        4
+      ]
+    },
+    {
+      "frame": 24,
+      "evaluated_vertex_counts": [
+        14572,
+        98,
+        184,
+        960,
+        28,
+        28,
+        4
+      ]
+    },
+    {
+      "frame": 25,
+      "evaluated_vertex_counts": [
+        14572,
+        98,
+        184,
+        960,
+        28,
+        28,
+        4
+      ]
+    },
+    {
+      "frame": 26,
+      "evaluated_vertex_counts": [
+        14572,
+        98,
+        184,
+        960,
+        28,
+        28,
+        4
+      ]
+    },
+    {
+      "frame": 27,
+      "evaluated_vertex_counts": [
+        14572,
+        98,
+        184,
+        960,
+        28,
+        28,
+        4
+      ]
+    },
+    {
+      "frame": 28,
+      "evaluated_vertex_counts": [
+        14572,
+        98,
+        184,
+        960,
+        28,
+        28,
+        4
+      ]
+    },
+    {
+      "frame": 29,
+      "evaluated_vertex_counts": [
+        14572,
+        98,
+        184,
+        960,
+        28,
+        28,
+        4
+      ]
+    },
+    {
+      "frame": 30,
+      "evaluated_vertex_counts": [
+        14572,
+        98,
+        184,
+        960,
+        28,
+        28,
+        4
+      ]
+    },
+    {
+      "frame": 31,
+      "evaluated_vertex_counts": [
+        14572,
+        98,
+        184,
+        960,
+        28,
+        28,
+        4
+      ]
+    },
+    {
+      "frame": 32,
+      "evaluated_vertex_counts": [
+        14572,
+        98,
+        184,
+        960,
+        28,
+        28,
+        4
+      ]
+    },
+    {
+      "frame": 33,
+      "evaluated_vertex_counts": [
+        14572,
+        98,
+        184,
+        960,
+        28,
+        28,
+        4
+      ]
+    },
+    {
+      "frame": 34,
+      "evaluated_vertex_counts": [
+        14572,
+        98,
+        184,
+        960,
+        28,
+        28,
+        4
+      ]
+    },
+    {
+      "frame": 35,
+      "evaluated_vertex_counts": [
+        14572,
+        98,
+        184,
+        960,
+        28,
+        28,
+        4
+      ]
+    },
+    {
+      "frame": 36,
+      "evaluated_vertex_counts": [
+        14572,
+        98,
+        184,
+        960,
+        28,
+        28,
+        4
+      ]
+    },
+    {
+      "frame": 37,
+      "evaluated_vertex_counts": [
+        14572,
+        98,
+        184,
+        960,
+        28,
+        28,
+        4
+      ]
+    },
+    {
+      "frame": 38,
+      "evaluated_vertex_counts": [
+        14572,
+        98,
+        184,
+        960,
+        28,
+        28,
+        4
+      ]
+    },
+    {
+      "frame": 39,
+      "evaluated_vertex_counts": [
+        14572,
+        98,
+        184,
+        960,
+        28,
+        28,
+        4
+      ]
+    },
+    {
+      "frame": 40,
+      "evaluated_vertex_counts": [
+        14572,
+        98,
+        184,
+        960,
+        28,
+        28,
+        4
+      ]
+    },
+    {
+      "frame": 41,
+      "evaluated_vertex_counts": [
+        14572,
+        98,
+        184,
+        960,
+        28,
+        28,
+        4
+      ]
+    },
+    {
+      "frame": 42,
+      "evaluated_vertex_counts": [
+        14572,
+        98,
+        184,
+        960,
+        28,
+        28,
+        4
+      ]
+    },
+    {
+      "frame": 43,
+      "evaluated_vertex_counts": [
+        14572,
+        98,
+        184,
+        960,
+        28,
+        28,
+        4
+      ]
+    },
+    {
+      "frame": 44,
+      "evaluated_vertex_counts": [
+        14572,
+        98,
+        184,
+        960,
+        28,
+        28,
+        4
+      ]
+    },
+    {
+      "frame": 45,
+      "evaluated_vertex_counts": [
+        14572,
+        98,
+        184,
+        960,
+        28,
+        28,
+        4
+      ]
+    },
+    {
+      "frame": 46,
+      "evaluated_vertex_counts": [
+        14572,
+        98,
+        184,
+        960,
+        28,
+        28,
+        4
+      ]
+    },
+    {
+      "frame": 47,
+      "evaluated_vertex_counts": [
+        14572,
+        98,
+        184,
+        960,
+        28,
+        28,
+        4
+      ]
+    },
+    {
+      "frame": 48,
+      "evaluated_vertex_counts": [
+        14572,
+        98,
+        184,
+        960,
+        28,
+        28,
+        4
+      ]
+    },
+    {
+      "frame": 49,
+      "evaluated_vertex_counts": [
+        14572,
+        98,
+        184,
+        960,
+        28,
+        28,
+        4
+      ]
+    }
+  ],
+  "shared_rig": "Scan character | Eric rig",
+  "palette": {
+    "slate": [
+      0.12,
+      0.18,
+      0.22,
+      1
+    ],
+    "teal": [
+      0.08,
+      0.72,
+      0.68,
+      1
+    ]
+  },
+  "source_outfit_remaining": "Original trousers, shoes and white shirt cuffs/neck edge; underlying shirt/vest remain in retained original mesh.",
+  "scope": "Separate long-sleeve fitted Signal Jacket shell, zip, collar, pocket welts and accent geometry. Offline wardrobe study, not complete starter outfit, cloth simulation or runtime acceptance."
+}

@@ -1,0 +1,9 @@
+{
+  "result": "PASS",
+  "unchanged_mesh_curve_objects": 4720,
+  "unchanged_uv_layers": 894,
+  "unchanged_packed_maps": 31,
+  "preserved_original_simulation_maximum_motion_m": 0.06355836816908667,
+  "authored_attachment_attribute": "Anatomical attachment targets",
+  "geometry_changed": false
+}

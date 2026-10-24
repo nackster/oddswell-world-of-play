@@ -1,0 +1,95 @@
+{
+  "candidate_sha256": "3d4b732f51a6d2b79a0ed18a9b4f94b67c843cefd1b14a968bc62bf4591f4dc3",
+  "source_sha256": "a32c6cbae8fd1767da6c03559f1addd948da46259064eb0ff85e38fedad8f50a",
+  "files": {
+    "TorsoFlow.blend": {
+      "sha256": "3d4b732f51a6d2b79a0ed18a9b4f94b67c843cefd1b14a968bc62bf4591f4dc3",
+      "bytes": 648031069
+    },
+    "build.py": {
+      "sha256": "6c06ba27e79f247c46e389bafc5145a823fad118e2733a5ab2bb54f9f44eadf5",
+      "bytes": 7709
+    },
+    "audit.py": {
+      "sha256": "e9096b9dfd7cc3971f34a4daee43593e9ad2eba135e1d61bce242304f7537ba6",
+      "bytes": 4495
+    },
+    "render.py": {
+      "sha256": "27544b8d422499fd29167cad374a16f7b950a9df434894b6af0a03cf7e9643df",
+      "bytes": 1242
+    },
+    "build-report.json": {
+      "sha256": "6faff1d44cd4d5aa34645f2bf0f066a759615ae8d46292abb4a09f0ff722442b",
+      "bytes": 1562459
+    },
+    "cold-audit.json": {
+      "sha256": "f6cd06a50976d75be00e571cf9dd957812c017aed0e77814452563daf6fcd246",
+      "bytes": 198302
+    },
+    "render-provenance.json": {
+      "sha256": "832dba0ea9b183360730a6846a3e5988530b1a2a76cd6a66831080c4ccbb74c9",
+      "bytes": 650
+    },
+    "preview-info.json": {
+      "sha256": "30a0fa97d210eec4a6a276dd164702d5ccb637b8343edd1f2134a72f85a071d2",
+      "bytes": 2700
+    },
+    "TorsoWalking.mp4": {
+      "sha256": "77bdde9cb5837ddbb73860237d32d5f5cb7b828a1f39e8efefd380e0ba77492b",
+      "bytes": 802285
+    },
+    "Contact_Profile.png": {
+      "sha256": "305cee3fe5e0ca679d03d2534a53258aa874cf47ea5911f21f2ed416c811cdf3",
+      "bytes": 959405
+    },
+    "Passing_Profile.png": {
+      "sha256": "5b9ae81bd6b98629d7ebeac2a29da342785fa0eff87b9a4b5c34a67b93f70762",
+      "bytes": 960672
+    },
+    "OppositeContact_Profile.png": {
+      "sha256": "5957aa765f501bbf719751a54f4bb747ddd54986ff5bacaa25568e50c6baa591",
+      "bytes": 965435
+    },
+    "Passing_Rear.png": {
+      "sha256": "efe0c40fa9448349d1e5dee9f1df0f9f4033fc6b90caed932bfe05404c2a0583",
+      "bytes": 1092965
+    },
+    "Passing_Front.png": {
+      "sha256": "e3688822bb5427236f269740ce94adaf08e200ef5c363e00c75a5f99f528663c",
+      "bytes": 848968
+    },
+    "Torso_Front.png": {
+      "sha256": "57dd93451e483a5d46795773c4d179b9c56bdca01316afad087a59e50a05a4ce",
+      "bytes": 861856
+    },
+    "Hips_Rear.png": {
+      "sha256": "9a8a151580b4ad1b3e7c0dfa200634c297116293c354fc4eec05cb77c7f48bd3",
+      "bytes": 1058977
+    },
+    "Gameplay.png": {
+      "sha256": "0f5c56b1146c0a3fb2b5c56f3db9ae479a40443799fa1c5f501d2978214e7e70",
+      "bytes": 1627037
+    },
+    "Underarm_FrontClose.png": {
+      "sha256": "84856ecb22876ea2858f60294cbab98c546dcb32a7c38046654fbc34470e5853",
+      "bytes": 862079
+    },
+    "Underarm_OppositeClose.png": {
+      "sha256": "0579ed67d758188f944ea6d12a49f3be5e483ae1384e3dbf7a3b6a7d4c317c90",
+      "bytes": 864997
+    },
+    "Shoulders_RearClose.png": {
+      "sha256": "71f165c70c9f9cda5a1049cc62f37a0dbbb8cb29c3aa0fc7110834b9917d27b2",
+      "bytes": 1175404
+    },
+    "README.md": {
+      "sha256": "430d7b067059988c7f6877e794fc6dd10a14490ed59d7e1e91e4d633fc6da8d7",
+      "bytes": 2433
+    },
+    "WholeFigureReview.md": {
+      "sha256": "115332e1094e096ff4b2ae94756b555837b653a6ee7cfe9afa02b283ebf467f8",
+      "bytes": 2613
+    }
+  },
+  "scope": "Editable offline torso/underarm and collar-zipper checkpoint. Original reference/human/landscape goal remains active. No engine/runtime/beta credit."
+}

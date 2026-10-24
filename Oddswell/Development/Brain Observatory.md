@@ -1,0 +1,129 @@
+---
+tags:
+  - development
+  - ai
+  - admin
+  - visualization
+status: active
+---
+
+# Admin Console and Brain Observatory
+
+The local Admin Console is the first operational shell for OddsWell. The cinematic Brain Observatory remains its primary module for inspecting cooperating brains and authoritative systems.
+
+## Open it
+
+Double-click `Start Brain Observatory.cmd` in the project root. The launcher starts a local-only server and opens `http://127.0.0.1:8765`. Close the terminal window or press `Ctrl+C` there to stop it.
+
+The server now requires exclusive ownership of its port. If an older console is still running, close it before starting the current build; duplicate local instances are rejected so stale and current interfaces cannot answer on the same address.
+
+## Current capabilities
+
+- Shows the Project, Athlete Life, World and League, Basketball, Rules and Outcome, and Learning components.
+- Reads the current engine, league, basketball brain, and LLM policy versions directly from the executable project.
+- Shows the Phase 0D.4 public prediction-evaluation version as read-only World / League evidence.
+- Runs a real seeded basketball simulation and animates a cinematic sample of its recorded decisions and outcomes.
+- Provides a dedicated Game Theater with a symbolic court, all twelve roster athletes, real recorded plays, lineup changes, clock and score progression, replay speed, and replay-last-game control.
+- Provides a read-only League Viewer with standings, the complete archived schedule, public rosters and ratings, availability, per-game minutes, prediction probabilities, pregame commitments, and replay hashes.
+- Opens every League Viewer result in the Game Theater as a full archived playback and verifies the reconstructed score and player minutes before display.
+- Provides thirteen stable Athlete Career Profiles across four verified seasons, with explicit ages, bounded development and decline, preserved retired history, stable incoming roster identity, cumulative totals, selectable season splits, and direct cross-roster replay links.
+- Shows the final score, decision count, activity tape, training state, and approved $5 experiment ceiling.
+- Includes a clearly marked training-visual preview so the intended presentation can be reviewed before actual model training exists.
+- Provides navigation for Overview, Brains, Athletes, Simulation, Content, World / League, Operations, and Audit.
+- Exposes real seeded-simulation and status-refresh controls with strict server-side input validation.
+- Persists successful admin actions as JSON lines in the ignored local file `brain_admin/admin-audit.log`.
+- Shows clothing, items, economy, moderation, release controls, and other absent systems as locked or read-only boundaries rather than fake controls.
+
+## Security boundary
+
+The server is hard-bound to `127.0.0.1`. There is intentionally no login screen because no real authentication exists yet. Authentication, secure sessions, least-privilege role-based access control, and deployment hardening are mandatory before any network exposure. The local audit actor is labeled `local-admin`; that label is not an authenticated identity.
+
+## Phase 0D integration validation
+
+The 2026-07-15 integration pass confirmed the committed D.2 rotation/minutes, D.3 availability/recovery, and D.4 public-prediction gates through all 38 regression tests, the Admin Console self-check, and fresh deterministic runs. The D.2-D.4 reports remain historical evidence for their named engine/state versions; current reruns use engine `phase05h-v1` and league `phase06f-v1` and must not overwrite those earlier measurements.
+
+Live localhost checks confirmed server-side seed guards, an audit entry surviving a server restart, read-only minutes/availability/prediction evidence, executable brain/engine/league/policy versions, and locked clothing/items/economy/moderation controls. Browser checks confirmed the Observatory animation at desktop and 390-pixel mobile widths with no console errors or horizontal page overflow. External cost remained `$0.00`; no paid API, credits, wagering, monetization, deployment, or retraining was used.
+
+## Truth rule
+
+Animation must never imply that model weights are changing when no training job is active. The current Basketball Brain is deterministic `baseline-v2`; Phase 0C proved the guarded LLM contract, not a trained neural network.
+
+The Game Theater follows the same truth rule: event labels, lineups, clock, and scores are authoritative, while marker coordinates are illustrative because physical player locations are not yet simulated.
+
+Phase 0.5I evaluates Athlete Life Brain v1 outside the interface. It reconstructs all 80 archived games and measures 912 choices, policy compliance, readiness exposure, and a fixed-seed zero-readiness comparison. These are simulator diagnostics, not neural-network training, learned behavior, or real-world performance claims; Admin Console behavior is intentionally unchanged.
+
+Phase 0.5J defines a future fictional practice/social off-day preference and a version-safe history contract. It is not active in the Observatory or simulator. The displayed Athlete Life Brain remains v1 until a fresh v2 archive passes its own evaluation; archived v1 decisions must never be reinterpreted under later rules.
+
+Phase 0.5K adds v2 only as an explicit local pilot path and produces a separate fixed-seed archive. The Admin Console deliberately remains on default v1; showing or promoting v2 waits for multi-seed evidence. Preference-group animation must not imply learning, personality inference, or neural-network training.
+
+Phase 0.5L evaluates v1 and v2 across 800 paired games per policy. The stability guardrails pass, but v2 remains unpromoted and invisible in the Admin Console. Winner differences and animated comparisons are path-sensitive simulator telemetry, not accuracy, intelligence, or real-world realism.
+
+Phase 0.5M approved v2 for a controlled promotion without changing runtime behavior at that gate. Approval was an engineering release decision, not evidence of learning or a neural-network training event.
+
+Phase 0.5N makes v2 the default for newly generated Admin and league decisions. Frozen Phase 0.5I, Phase 0.5L, and Phase 0D.4 paths remain explicitly v1, while every saved decision and replay manifest retains its stored version. The interface derives each season label from those stored decisions and reports the current v2 default as `ACTIVE DEFAULT`. Changing the default requires an Admin process restart because payloads are cached.
+
+Phase 0.5O defines one possible short-term routine streak for a future opt-in v3 but changes no runtime or Observatory behavior. The state is reconstructible from same-season decisions, expires at rest/recovery and season boundaries, and may only vary the existing train/socialize choice after two identical elective decisions. It is a mechanical pilot design—not learned memory, personality, discipline, partying, or model training. V2 remains displayed as the active default.
+
+Phase 0.5P implements that rule only through an explicit v3 policy path and evaluates it outside the interface across 800 fresh paired games per policy. Its integrity and provisional stability alarms pass, making v3 eligible for a later review only. The Observatory remains on v2 and must not animate this result as neural-network training, learning, personality growth, or a promotion.
+
+Phase 0.5Q approves v3 for a separate controlled rollout but changes nothing in the Observatory. Before v3 can become the displayed default, the Admin prediction study must carry the same season-local routine mapping as its league archive, all historical evidence must stay explicitly version-pinned, and rollback must remain a single default change plus process restart. Until that gate passes, v2 remains `ACTIVE DEFAULT`.
+
+Phase 0.5R satisfies that gate. The Observatory now displays v3 as `ACTIVE DEFAULT`; Admin league and prediction paths share its season-local routine transitions and agree on winners and replay hashes. V1/v2 archives remain version-pinned, rollback remains one constant plus restart, and the animation still represents observable deterministic decisions—not learned memory or changing neural weights.
+
+Phase 0.5S rechecks that rollout without changing runtime behavior. The four-season archive contains 119 bounded routine variations across 507 eligible decisions with zero rule violations; the first triggering archive, Season 1 Game 4, completes its exact 108-93 replay at frame 452/452 with `ARCHIVE VERIFIED`. Prediction, persistence, historical digest, full regression, and Admin self-check evidence remain clean. These visuals show auditable recorded transitions, not neurons, training, personality inference, or real-world learning.
+
+Phase 0.5T defines one possible chronology-safe `recent_scoring_form` input for a future opt-in v4 but changes no runtime or Observatory behavior. It reads only the immediately previous game's points and the athlete's earlier same-season appearance average, expires after one decision, and keeps recovery, fatigue rest, and v3 routine variation above it. The current retrospective five-game form display is not a policy input because its completed-season baseline would leak future games during simulation. V3 remains `ACTIVE DEFAULT`; this proposal is deterministic scoring telemetry, not overall performance, confidence, personality, learning, or neural training.
+
+Phase 0.5U implements that input only through an explicit v4 league policy and evaluates it across 800 fresh games per policy. All 2,089 reached response states, chronological reconstruction checks, replay checks, routine bounds, and provisional stability alarms pass. The Observatory remains on v3 `ACTIVE DEFAULT`; it does not display the opt-in evaluation as live training or changing neural weights. V4 is eligible for a later review only, not promoted.
+
+Phase 0.5V approves v4 for a separate controlled rollout without changing the Observatory or default. The review keeps the material 2,529 action and 130/800 winner differences visible as path sensitivity, not better outcomes. Before v4 can become `ACTIVE DEFAULT`, the Admin prediction path must reconstruct the league's season-local routine and chronological scoring history, all v1-v4 evidence must remain pinned, and replay, persistence, truthful labels, and one-constant rollback must pass. Until then, v3 remains `ACTIVE DEFAULT`.
+
+Phase 0.5W satisfies that contract. The Observatory now displays v4 as `ACTIVE DEFAULT`; Admin league and prediction paths share season-local routine state and chronological completed-game scoring history and agree on all 20 first-season winners and replay hashes. V1-v4 evidence remains version-pinned, rollback remains one constant plus restart, and the animation still represents observable deterministic decisions—not learning, confidence, personality, or changing neural weights.
+
+Phase 0.5X rechecks that rollout without changing the Admin Console or simulator. The four-season archive contains 912 v4 decisions, 204/204 reached scoring responses, zero chronology/precedence/replay violations, and 20/20 first-season prediction/replay agreement. Its first response is Jalen Cross before Season 1 Game 5 after a chronology-safe above-typical scoring classification; the 104-101 archive reconstructs 423 frames with a verified replay seal. These remain auditable deterministic transitions, not learning, confidence, personality, intelligence, or neural-network training.
+
+Phase 0.5Y selects no additional Life Brain input. Phase 0.6A instead adds an opt-in Athlete Profile and Basketball Brain consistency pilot: one elite, four steady, five normal, and two volatile active-athlete tiers generate bounded zero-centered game form only on the explicit pilot path. Athlete profiles label the value `OPT-IN PILOT`; the authoritative v4 league and historical replays remain unchanged. The animation must not present consistency as confidence, personality, learning, intelligence, or neural-network training.
+
+Phase 0.6B blocks that pilot from rollout. Holding Tariq Stone's ratings and role constant across 1,000 healthy games per tier shows virtually unchanged bad-night rates and the same 14-point performance floor; the small form modifier does not overcome possession and outcome variance. The Admin tier remains labeled `OPT-IN PILOT`, and no visual may imply that elite consistency already produces superstar reliability.
+
+Phase 0.6C freezes a replacement design without changing the Admin Console or simulator. A future opt-in v2 path may use a bounded, game-local shooting ledger to move actual shot points toward unmodified rating-based expectation. It must record every correction, reset each game, preserve bad and exceptional nights, and remain invisible as active behavior until Phase 0.6D passes. The Observatory must not portray the ledger as learning, confidence, mentality, or neural training.
+
+Phase 0.6D implements that ledger only on an explicit v2 path. Across 8,000 frozen games and 8,000 exact replays, both evaluated athletes pass every reliability, mean-talent, attempts, exceptional-game, balance, and replay gate. Athlete profiles now label the tier as `OPT-IN CANDIDATE (shooting only)`; the authoritative league still does not use it. The Observatory must not extend this result to passing, defense, rebounding, confidence, personality, learning, or real-world players.
+
+Phase 0.6E approves v2 for a later controlled rollout but leaves the Observatory and league default unchanged. Paired elite-versus-volatile runs change roughly 23% of winners, and about 80% of covered shots reach the correction cap. Before any `ACTIVE DEFAULT` label appears, the league, prediction study, state history, replay manifest, archived Game Theater, and rollback switch must share one stored consistency version and exact tier snapshot. Historical v2 seasons must still replay after a rollback.
+
+Phase 0.6F satisfies that contract. The Observatory now labels shooting-only Consistency v2 as `ACTIVE DEFAULT`; current league and prediction paths share it, v5 history stores the exact roster settings, replay evidence binds them, and archived Game Theater reconstructs from each stored snapshot. Historical studies remain explicitly disabled, v4 files migrate safely, and rollback remains one constant plus restart without reinterpreting stored v2 seasons. The visualization still represents deterministic audit telemetry, not training, confidence, personality, intelligence, or changing neural weights.
+
+Phase 0.6G rechecks that rollout without changing the Admin Console or simulator. The fresh four-season archive stores v2 and a complete 12-athlete snapshot in all 80 games, first-season predictions and replay hashes agree 20/20, and archived Season 1 Game 1 reconstructs all 428 frames with a verified replay seal. V4 migration, historical disabled paths, digest locks, and one-switch rollback remain clean. These visuals still show deterministic shooting audit telemetry, not learning, confidence, personality, intelligence, or neural-network training.
+
+Phase 0.6H selects one future opt-in `offensive_involvement` tier after a design-only review of the authoritative 80-game archive. Its only permitted scope is initial-ballhandler and pass-target opportunity; it cannot alter ratings, shot probabilities, minutes, Consistency v2, life choices, or career progression. The Observatory remains unchanged until a separate pilot exists, and any future display must say `OPT-IN PILOT` and `OPPORTUNITY ONLY`, never active training, confidence, personality, intelligence, or real-world realism.
+
+Phase 0.6I implements that input only as an explicit local pilot. The Athlete Profile and Basketball Brain status now say `OPT-IN PILOT` and `OPPORTUNITY ONLY`; the current league still supplies no involvement snapshot. Across 600 paired games, Jalen's selection opportunity is strictly ordered from low through standard to featured, every replay and manifest verifies, and the existing shooting formula has zero involvement fields. The display must not present the pilot as a production role, rating, intelligence, coaching, learning, personality, or neural-network training.
+
+Phase 0.6J rechecks the frozen pilot across high-passing Micah Vale, lower-rated scorer Cal Brooks, and the original Jalen Cross control. All three pass preregistered opportunity, shooting-efficiency, team-possession, talent, replay, manifest, and formula gates across 1,800 pilot games, but the Observatory remains unchanged: `OPT-IN PILOT`, `OPPORTUNITY ONLY`, and no authoritative league snapshot. This evidence is eligible only for a separate promotion review and must not be animated as learning, confidence, personality, intelligence, coaching, or real-world realism.
+
+Phase 0.6K approves that pilot only for a separate controlled rollout. The Observatory remains unchanged at `OPT-IN PILOT` and `OPPORTUNITY ONLY` until one explicit v1/disabled switch, a full roster snapshot, versioned history, league/prediction agreement, archived replay reconstruction, historical isolation, and one-switch rollback all pass. Winner changes of 19.0%-25.5% across the reviewed multi-role comparisons stay visible as path sensitivity, not performance quality or real-world realism. No animation may imply coaching intelligence, confidence, personality, learning, neural-network training, or correct real-world usage.
+
+Phase 0.6L satisfies that contract. The Observatory and Athlete Profiles now label Offensive Involvement v1 as `ACTIVE DEFAULT`, `OPPORTUNITY ONLY`, and baseline-policy only. New v6 league history stores the exact 12-athlete tier/weight snapshot, including the Roman Voss to Soren Lake transition; current predictions and archived playback use the same stored version. Historical studies remain disabled, and one-switch rollback changes only new games. The visualization must still not portray opportunity weighting as coaching intelligence, confidence, personality, learning, neural-network training, player quality, or correct real-world usage. See [[Development/Reports/Phase 06L Controlled Offensive Involvement Rollout]].
+
+Phase 0.6M rechecks that rollout without changing the Admin Console or simulator. The fresh four-season archive stores v1 and a complete 12-athlete snapshot in all 80 games, Soren appears in all 20 Season 4 snapshots, first-season predictions and replay hashes agree 20/20, and archived Season 1 Game 1 reconstructs all 421 frames with a verified replay seal. V5 migration, historical disabled paths, digest locks, and one-switch rollback remain clean. These visuals still show deterministic opportunity telemetry, not coaching intelligence, learning, confidence, personality, player quality, or real-world usage.
+
+Phase 0.6N selects no additional Athlete Performance input and freezes the Phase 0 stack except for demonstrated defects. The Observatory keeps Athlete Life Brain v4, shooting-only Consistency v2, opportunity-only Offensive Involvement v1, v6 history, authoritative event-log replay, truth labels, migration, and rollback boundaries unchanged. Deferred brain ideas require a named first-playable failure, a preregistered controlled miss of at least 10% across at least 1,000 paired seeds, or a verified contract defect before they return to review. Phase 1A may render an existing recorded replay in a one-block 3D benchmark, but its client must never resimulate the game or portray this frozen deterministic telemetry as learning or neural-network training.
+
+The League Viewer follows the Phase 0D.4 public-information boundary. Hidden fatigue, recovery timers, injury-risk internals, seeds, RNG state, economy data, and admin mutations stay outside its payload.
+
+Archived games reuse hidden authoritative league state only on the server. The browser receives the complete recorded play-frame stream and verified archive metadata, never the hidden reconstruction inputs.
+
+Athlete profiles keep durable specialty identity separate from temporary form. Lifecycle v1 applies fictional age, bounded development/decline, and age-35 retirement; roster continuity v1 preserves Roman's retired record and introduces Soren Lake in Season 4. Athlete Life Brain v4 now drives new train, rest, recover, or socialize choices with bounded routine variation and a one-decision recent-scoring response, and shows each athlete's bounded next-game effect. Historical seasons continue to display their stored policy version. Hidden readiness, fatigue, recovery timers, scoring history, and seeds remain private; contracts, draft/free agency, stories, legal events, and permanent life-driven rating changes remain inactive.
+
+When genuine training is approved, connect provider progress, dataset version, candidate version, validation metrics, estimated and actual cost, and promotion-gate results to the existing interface. Hosted LLM internals remain opaque, so the Observatory will display observable telemetry rather than fabricated neuron activations.
+
+## Expansion direction
+
+The Observatory is now the primary module inside the first general [[Design/Decisions/DEC-005 Game Admin Console|OddsWell Game Admin Console]] shell. New controls will be added only when their underlying game systems exist. Clothing and item activation, world operations, releases, support, economy administration, and protected AI-version controls are planned categories rather than implemented permissions.
+
+## Source
+
+- Server: `brain_admin/server.py`
+- Interface: `brain_admin/index.html`
+- Launcher: `Start Brain Observatory.cmd`

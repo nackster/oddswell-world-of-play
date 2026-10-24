@@ -1,0 +1,1619 @@
+{
+  "blender_version": "4.5.5 LTS",
+  "boundaries": {
+    "actions": 3,
+    "beta_readiness_claim": false,
+    "brain_or_simulator_changes": 0,
+    "client_changes": 0,
+    "constraints": 0,
+    "control_rigs": 0,
+    "drivers": 0,
+    "exports": 0,
+    "extra_animations": 0,
+    "fbx": 0,
+    "final_art_claim": false,
+    "gameplay_authority_changes": 0,
+    "ik": 0,
+    "jump_actions": 1,
+    "land_actions": 0,
+    "nla_tracks": 0,
+    "package_input_changes": 0,
+    "root_motion": 0,
+    "run_actions": 1,
+    "runtime_changes": 0,
+    "unreal_imports": 0,
+    "unreal_integration": 0,
+    "version_1_claim": false,
+    "walk_actions": 1
+  },
+  "files": {
+    "blend": {
+      "file": "JumpActionCharacterCandidate.blend",
+      "identity": "semantic_only"
+    },
+    "builder": {
+      "bytes": 26496,
+      "file": "build_jump_action_candidate.py",
+      "sha256": "75DEABE42D0581700C0436315159EC5703F5E10509A017D8C1016544704E5256"
+    },
+    "provenance": {
+      "bytes": 1317,
+      "file": "PROVENANCE.md",
+      "sha256": "ED26256F3A753E50E39278ECA04D7E1D0A057F72FC579B0852C6B29995139A2A"
+    }
+  },
+  "phase": "Phase 1L.5bp deterministic in-place jump Action and clothed takeoff/airborne deformation proof",
+  "renders": [
+    {
+      "bytes": 625700,
+      "file": "renders/Review_StarterJump_Takeoff.png",
+      "frame": 6,
+      "height": 900,
+      "presentation": "Starter",
+      "sha256": "51D3C07E79A8E2D2AD4B24F859A62CD51116DBF0E66FD9D84017493CB5869579",
+      "width": 720
+    },
+    {
+      "bytes": 633584,
+      "file": "renders/Review_StarterJump_Airborne.png",
+      "frame": 11,
+      "height": 900,
+      "presentation": "Starter",
+      "sha256": "925F1526AF4FDDC8AC0896BA7D8437C4D891B5BA54B0B692A4795EBE5F708806",
+      "width": 720
+    },
+    {
+      "bytes": 632279,
+      "file": "renders/Review_SignalJacketJump_Takeoff.png",
+      "frame": 6,
+      "height": 900,
+      "presentation": "SignalJacket",
+      "sha256": "59D208BF6FEA5BB177378793282B70688C5BE33823C1D4536B0EB78C7F7C3A78",
+      "width": 720
+    },
+    {
+      "bytes": 635694,
+      "file": "renders/Review_SignalJacketJump_Airborne.png",
+      "frame": 11,
+      "height": 900,
+      "presentation": "SignalJacket",
+      "sha256": "D91FCF84708EC4FBCF4F6ED9ADA7DFCF8DA6CCCA6D48890557C623F77550E466",
+      "width": 720
+    }
+  ],
+  "semantic": {
+    "identity_sha256": "D582C924E160C4086BCFAEF4781D3902B47254E55410C4089797D1BD178C4BA8",
+    "jump_action": {
+      "action_count": 3,
+      "curves": [
+        {
+          "axis": 1,
+          "bone": "forearm.L",
+          "channel": "rotation_euler",
+          "keys": [
+            {
+              "frame": 1.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            },
+            {
+              "frame": 6.0,
+              "interpolation": "LINEAR",
+              "value": 0.209439516
+            },
+            {
+              "frame": 11.0,
+              "interpolation": "LINEAR",
+              "value": 0.314159274
+            }
+          ]
+        },
+        {
+          "axis": 1,
+          "bone": "forearm.R",
+          "channel": "rotation_euler",
+          "keys": [
+            {
+              "frame": 1.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            },
+            {
+              "frame": 6.0,
+              "interpolation": "LINEAR",
+              "value": 0.209439516
+            },
+            {
+              "frame": 11.0,
+              "interpolation": "LINEAR",
+              "value": 0.314159274
+            }
+          ]
+        },
+        {
+          "axis": 0,
+          "bone": "root",
+          "channel": "location",
+          "keys": [
+            {
+              "frame": 1.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            },
+            {
+              "frame": 6.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            },
+            {
+              "frame": 11.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            }
+          ]
+        },
+        {
+          "axis": 1,
+          "bone": "root",
+          "channel": "location",
+          "keys": [
+            {
+              "frame": 1.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            },
+            {
+              "frame": 6.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            },
+            {
+              "frame": 11.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            }
+          ]
+        },
+        {
+          "axis": 2,
+          "bone": "root",
+          "channel": "location",
+          "keys": [
+            {
+              "frame": 1.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            },
+            {
+              "frame": 6.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            },
+            {
+              "frame": 11.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            }
+          ]
+        },
+        {
+          "axis": 1,
+          "bone": "shin.L",
+          "channel": "rotation_euler",
+          "keys": [
+            {
+              "frame": 1.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            },
+            {
+              "frame": 6.0,
+              "interpolation": "LINEAR",
+              "value": 0.52359879
+            },
+            {
+              "frame": 11.0,
+              "interpolation": "LINEAR",
+              "value": -0.488692194
+            }
+          ]
+        },
+        {
+          "axis": 1,
+          "bone": "shin.R",
+          "channel": "rotation_euler",
+          "keys": [
+            {
+              "frame": 1.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            },
+            {
+              "frame": 6.0,
+              "interpolation": "LINEAR",
+              "value": 0.52359879
+            },
+            {
+              "frame": 11.0,
+              "interpolation": "LINEAR",
+              "value": -0.488692194
+            }
+          ]
+        },
+        {
+          "axis": 1,
+          "bone": "spine",
+          "channel": "rotation_euler",
+          "keys": [
+            {
+              "frame": 1.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            },
+            {
+              "frame": 6.0,
+              "interpolation": "LINEAR",
+              "value": -0.104719758
+            },
+            {
+              "frame": 11.0,
+              "interpolation": "LINEAR",
+              "value": 0.06981317
+            }
+          ]
+        },
+        {
+          "axis": 1,
+          "bone": "thigh.L",
+          "channel": "rotation_euler",
+          "keys": [
+            {
+              "frame": 1.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            },
+            {
+              "frame": 6.0,
+              "interpolation": "LINEAR",
+              "value": -0.314159274
+            },
+            {
+              "frame": 11.0,
+              "interpolation": "LINEAR",
+              "value": 0.383972436
+            }
+          ]
+        },
+        {
+          "axis": 1,
+          "bone": "thigh.R",
+          "channel": "rotation_euler",
+          "keys": [
+            {
+              "frame": 1.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            },
+            {
+              "frame": 6.0,
+              "interpolation": "LINEAR",
+              "value": -0.314159274
+            },
+            {
+              "frame": 11.0,
+              "interpolation": "LINEAR",
+              "value": 0.383972436
+            }
+          ]
+        },
+        {
+          "axis": 1,
+          "bone": "upper_arm.L",
+          "channel": "rotation_euler",
+          "keys": [
+            {
+              "frame": 1.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            },
+            {
+              "frame": 6.0,
+              "interpolation": "LINEAR",
+              "value": -0.34906584
+            },
+            {
+              "frame": 11.0,
+              "interpolation": "LINEAR",
+              "value": 0.52359879
+            }
+          ]
+        },
+        {
+          "axis": 1,
+          "bone": "upper_arm.R",
+          "channel": "rotation_euler",
+          "keys": [
+            {
+              "frame": 1.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            },
+            {
+              "frame": 6.0,
+              "interpolation": "LINEAR",
+              "value": -0.34906584
+            },
+            {
+              "frame": 11.0,
+              "interpolation": "LINEAR",
+              "value": 0.52359879
+            }
+          ]
+        }
+      ],
+      "duration_seconds": 0.333333333,
+      "fps": 30,
+      "frame_end": 11,
+      "frame_start": 1,
+      "identity_sha256": "B3F55824631C4C558253002A4B10FF9F52C4FB9C861CD77595F52C0F7934D506",
+      "name": "jump_candidate_v1",
+      "pose_degrees": {
+        "1": {
+          "forearm.L": 0.0,
+          "forearm.R": 0.0,
+          "shin.L": 0.0,
+          "shin.R": 0.0,
+          "spine": 0.0,
+          "thigh.L": 0.0,
+          "thigh.R": 0.0,
+          "upper_arm.L": 0.0,
+          "upper_arm.R": 0.0
+        },
+        "11": {
+          "forearm.L": 18.0,
+          "forearm.R": 18.0,
+          "shin.L": -28.0,
+          "shin.R": -28.0,
+          "spine": 4.0,
+          "thigh.L": 22.0,
+          "thigh.R": 22.0,
+          "upper_arm.L": 30.0,
+          "upper_arm.R": 30.0
+        },
+        "6": {
+          "forearm.L": 12.0,
+          "forearm.R": 12.0,
+          "shin.L": 30.0,
+          "shin.R": 30.0,
+          "spine": -6.0,
+          "thigh.L": -18.0,
+          "thigh.R": -18.0,
+          "upper_arm.L": -20.0,
+          "upper_arm.R": -20.0
+        }
+      },
+      "pose_labels": [
+        "neutral",
+        "takeoff",
+        "airborne"
+      ],
+      "root_translation_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "sample_frames": [
+        1,
+        6,
+        11
+      ],
+      "trajectory_authority": "ACharacter_only_not_authored_here"
+    },
+    "object_counts": {
+      "action": 3,
+      "armature": 1,
+      "camera": 1,
+      "light": 0,
+      "mesh": 4,
+      "total": 6
+    },
+    "preserved_materials": {
+      "tone_1": [
+        246,
+        218,
+        194,
+        255
+      ],
+      "tone_2": [
+        210,
+        160,
+        120,
+        255
+      ],
+      "tone_3": [
+        145,
+        96,
+        68,
+        255
+      ],
+      "tone_4": [
+        82,
+        52,
+        38,
+        255
+      ]
+    },
+    "preserved_midpoints_m": {
+      "ankle_half_width_m": 0.13,
+      "elbow_half_width_m": 0.28,
+      "hip_half_width_m": 0.155,
+      "knee_half_width_m": 0.13,
+      "pelvis_depth_m": 0.24,
+      "pelvis_width_m": 0.35,
+      "shoulder_half_width_m": 0.245,
+      "torso_depth_m": 0.25,
+      "torso_width_m": 0.455,
+      "wrist_half_width_m": 0.265
+    },
+    "preserved_presets": [
+      "masculine_tone_1",
+      "masculine_tone_2",
+      "masculine_tone_3",
+      "masculine_tone_4",
+      "feminine_tone_1",
+      "feminine_tone_2",
+      "feminine_tone_3",
+      "feminine_tone_4"
+    ],
+    "preserved_run_action": {
+      "action_count": 2,
+      "curves": [
+        {
+          "axis": 0,
+          "bone": "root",
+          "channel": "location",
+          "keys": [
+            {
+              "frame": 1.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            },
+            {
+              "frame": 6.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            },
+            {
+              "frame": 11.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            },
+            {
+              "frame": 16.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            },
+            {
+              "frame": 21.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            }
+          ]
+        },
+        {
+          "axis": 1,
+          "bone": "root",
+          "channel": "location",
+          "keys": [
+            {
+              "frame": 1.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            },
+            {
+              "frame": 6.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            },
+            {
+              "frame": 11.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            },
+            {
+              "frame": 16.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            },
+            {
+              "frame": 21.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            }
+          ]
+        },
+        {
+          "axis": 2,
+          "bone": "root",
+          "channel": "location",
+          "keys": [
+            {
+              "frame": 1.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            },
+            {
+              "frame": 6.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            },
+            {
+              "frame": 11.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            },
+            {
+              "frame": 16.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            },
+            {
+              "frame": 21.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            }
+          ]
+        },
+        {
+          "axis": 1,
+          "bone": "spine",
+          "channel": "rotation_euler",
+          "keys": [
+            {
+              "frame": 1.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            },
+            {
+              "frame": 6.0,
+              "interpolation": "LINEAR",
+              "value": 0.08726646
+            },
+            {
+              "frame": 11.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            },
+            {
+              "frame": 16.0,
+              "interpolation": "LINEAR",
+              "value": -0.08726646
+            },
+            {
+              "frame": 21.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            }
+          ]
+        },
+        {
+          "axis": 1,
+          "bone": "thigh.L",
+          "channel": "rotation_euler",
+          "keys": [
+            {
+              "frame": 1.0,
+              "interpolation": "LINEAR",
+              "value": -0.0
+            },
+            {
+              "frame": 6.0,
+              "interpolation": "LINEAR",
+              "value": -0.52359879
+            },
+            {
+              "frame": 11.0,
+              "interpolation": "LINEAR",
+              "value": -0.0
+            },
+            {
+              "frame": 16.0,
+              "interpolation": "LINEAR",
+              "value": 0.52359879
+            },
+            {
+              "frame": 21.0,
+              "interpolation": "LINEAR",
+              "value": -0.0
+            }
+          ]
+        },
+        {
+          "axis": 1,
+          "bone": "thigh.R",
+          "channel": "rotation_euler",
+          "keys": [
+            {
+              "frame": 1.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            },
+            {
+              "frame": 6.0,
+              "interpolation": "LINEAR",
+              "value": 0.52359879
+            },
+            {
+              "frame": 11.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            },
+            {
+              "frame": 16.0,
+              "interpolation": "LINEAR",
+              "value": -0.52359879
+            },
+            {
+              "frame": 21.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            }
+          ]
+        },
+        {
+          "axis": 1,
+          "bone": "upper_arm.L",
+          "channel": "rotation_euler",
+          "keys": [
+            {
+              "frame": 1.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            },
+            {
+              "frame": 6.0,
+              "interpolation": "LINEAR",
+              "value": 0.52359879
+            },
+            {
+              "frame": 11.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            },
+            {
+              "frame": 16.0,
+              "interpolation": "LINEAR",
+              "value": -0.52359879
+            },
+            {
+              "frame": 21.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            }
+          ]
+        },
+        {
+          "axis": 1,
+          "bone": "upper_arm.R",
+          "channel": "rotation_euler",
+          "keys": [
+            {
+              "frame": 1.0,
+              "interpolation": "LINEAR",
+              "value": -0.0
+            },
+            {
+              "frame": 6.0,
+              "interpolation": "LINEAR",
+              "value": -0.52359879
+            },
+            {
+              "frame": 11.0,
+              "interpolation": "LINEAR",
+              "value": -0.0
+            },
+            {
+              "frame": 16.0,
+              "interpolation": "LINEAR",
+              "value": 0.52359879
+            },
+            {
+              "frame": 21.0,
+              "interpolation": "LINEAR",
+              "value": -0.0
+            }
+          ]
+        }
+      ],
+      "cycle_duration_seconds": 0.454545455,
+      "cycles_per_second": 2.2,
+      "fps": 44,
+      "frame_end": 21,
+      "frame_start": 1,
+      "identity_sha256": "AA1707665B79313DABFD33142F99391CA9A144B37A7E217597633EA7E5E4E115",
+      "limb_pitch_degrees": 30.0,
+      "loop_end_equality": true,
+      "name": "run_candidate_v1",
+      "root_translation_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "sample_frames": [
+        1,
+        6,
+        11,
+        16,
+        21
+      ],
+      "spine_sway_degrees": 5.0
+    },
+    "preserved_scene": {
+      "armature": {
+        "bones": {
+          "forearm.L": {
+            "connected": true,
+            "head_m": [
+              0.28,
+              0.0,
+              1.12
+            ],
+            "parent": "upper_arm.L",
+            "tail_m": [
+              0.265,
+              0.0,
+              0.78
+            ]
+          },
+          "forearm.R": {
+            "connected": true,
+            "head_m": [
+              -0.28,
+              0.0,
+              1.12
+            ],
+            "parent": "upper_arm.R",
+            "tail_m": [
+              -0.265,
+              0.0,
+              0.78
+            ]
+          },
+          "head": {
+            "connected": true,
+            "head_m": [
+              0.0,
+              0.0,
+              1.66
+            ],
+            "parent": "neck",
+            "tail_m": [
+              0.0,
+              0.0,
+              1.8
+            ]
+          },
+          "neck": {
+            "connected": true,
+            "head_m": [
+              0.0,
+              0.0,
+              1.45
+            ],
+            "parent": "spine",
+            "tail_m": [
+              0.0,
+              0.0,
+              1.66
+            ]
+          },
+          "root": {
+            "connected": false,
+            "head_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "parent": null,
+            "tail_m": [
+              0.0,
+              0.0,
+              0.1
+            ]
+          },
+          "shin.L": {
+            "connected": true,
+            "head_m": [
+              0.13,
+              0.0,
+              0.53
+            ],
+            "parent": "thigh.L",
+            "tail_m": [
+              0.13,
+              0.0,
+              0.1
+            ]
+          },
+          "shin.R": {
+            "connected": true,
+            "head_m": [
+              -0.13,
+              0.0,
+              0.53
+            ],
+            "parent": "thigh.R",
+            "tail_m": [
+              -0.13,
+              0.0,
+              0.1
+            ]
+          },
+          "spine": {
+            "connected": false,
+            "head_m": [
+              0.0,
+              0.0,
+              0.94
+            ],
+            "parent": "root",
+            "tail_m": [
+              0.0,
+              0.0,
+              1.45
+            ]
+          },
+          "thigh.L": {
+            "connected": false,
+            "head_m": [
+              0.155,
+              0.0,
+              0.94
+            ],
+            "parent": "root",
+            "tail_m": [
+              0.13,
+              0.0,
+              0.53
+            ]
+          },
+          "thigh.R": {
+            "connected": false,
+            "head_m": [
+              -0.155,
+              0.0,
+              0.94
+            ],
+            "parent": "root",
+            "tail_m": [
+              -0.13,
+              0.0,
+              0.53
+            ]
+          },
+          "upper_arm.L": {
+            "connected": false,
+            "head_m": [
+              0.245,
+              0.0,
+              1.45
+            ],
+            "parent": "spine",
+            "tail_m": [
+              0.28,
+              0.0,
+              1.12
+            ]
+          },
+          "upper_arm.R": {
+            "connected": false,
+            "head_m": [
+              -0.245,
+              0.0,
+              1.45
+            ],
+            "parent": "spine",
+            "tail_m": [
+              -0.28,
+              0.0,
+              1.12
+            ]
+          }
+        },
+        "name": "ARMATURE__shared_bilateral_v1"
+      },
+      "body_geometry_sha256": "3ADB62F5D9577FDE2E45D8FFA45B5AB448D088D72A239496D5170122473F8FE3",
+      "mesh_geometry_sha256": {
+        "mannequin": "3ADB62F5D9577FDE2E45D8FFA45B5AB448D088D72A239496D5170122473F8FE3",
+        "starter_offwhite_bottom": "1D170FE2289E9D9EF4D1A1ADBEE6BA3E51CF5B9D5F7E3C8E892B6B406DDA8E2D",
+        "starter_offwhite_top": "0E0E1EA3B6C010B9C58D889E3D7DA2FCDF6368855451A13C70984825791540DB",
+        "sundale_signal_jacket": "07050BB48C19F8E1EAEB5600F88C3F49F4E7C2F24761190ED1440A6A36BC2D80"
+      },
+      "signal_jacket": {
+        "allowed_groups": [
+          "spine"
+        ],
+        "components": [
+          {
+            "bounds_max_m": [
+              0.295,
+              -0.162,
+              1.3275
+            ],
+            "bounds_min_m": [
+              -0.295,
+              -0.18,
+              1.2525
+            ],
+            "center_m": [
+              -0.0,
+              -0.171,
+              1.29
+            ],
+            "first_vertex": 8,
+            "object": "CLOTHING__sundale_signal_jacket",
+            "owner": "spine",
+            "vertex_count": 8
+          },
+          {
+            "bounds_max_m": [
+              0.29,
+              0.1455,
+              1.485
+            ],
+            "bounds_min_m": [
+              -0.29,
+              -0.1695,
+              0.985
+            ],
+            "center_m": [
+              -0.0,
+              -0.012,
+              1.235
+            ],
+            "first_vertex": 0,
+            "object": "CLOTHING__sundale_signal_jacket",
+            "owner": "spine",
+            "vertex_count": 8
+          }
+        ],
+        "geometry_sha256": "07050BB48C19F8E1EAEB5600F88C3F49F4E7C2F24761190ED1440A6A36BC2D80",
+        "group_vertex_counts": {
+          "spine": 16
+        },
+        "influence_histogram": {
+          "1": 16
+        },
+        "max_influences_per_vertex": 1,
+        "modifier": {
+          "armature": "ARMATURE__shared_bilateral_v1",
+          "name": "ARMATURE__sundale_signal_jacket",
+          "type": "ARMATURE"
+        },
+        "non_normalized_vertices": 0,
+        "polygon_count": 12,
+        "unweighted_vertices": 0,
+        "vertex_count": 16
+      },
+      "starter_bottom": {
+        "allowed_groups": [
+          "root",
+          "thigh.L",
+          "thigh.R"
+        ],
+        "components": [
+          {
+            "bounds_max_m": [
+              0.2025,
+              0.1375,
+              0.98
+            ],
+            "bounds_min_m": [
+              -0.2025,
+              -0.1375,
+              0.76
+            ],
+            "center_m": [
+              -0.0,
+              0.0,
+              0.87
+            ],
+            "first_vertex": 0,
+            "object": "CLOTHING__starter_offwhite_bottom",
+            "owner": "root",
+            "vertex_count": 8
+          },
+          {
+            "bounds_max_m": [
+              -0.034332,
+              0.096,
+              0.877972
+            ],
+            "bounds_min_m": [
+              -0.250668,
+              -0.096,
+              0.562028
+            ],
+            "center_m": [
+              -0.1425,
+              -0.0,
+              0.72
+            ],
+            "first_vertex": 8,
+            "object": "CLOTHING__starter_offwhite_bottom",
+            "owner": "thigh.R",
+            "vertex_count": 16
+          },
+          {
+            "bounds_max_m": [
+              0.250668,
+              0.096,
+              0.877972
+            ],
+            "bounds_min_m": [
+              0.034332,
+              -0.096,
+              0.562028
+            ],
+            "center_m": [
+              0.1425,
+              0.0,
+              0.72
+            ],
+            "first_vertex": 24,
+            "object": "CLOTHING__starter_offwhite_bottom",
+            "owner": "thigh.L",
+            "vertex_count": 16
+          }
+        ],
+        "geometry_sha256": "1D170FE2289E9D9EF4D1A1ADBEE6BA3E51CF5B9D5F7E3C8E892B6B406DDA8E2D",
+        "group_vertex_counts": {
+          "root": 8,
+          "thigh.L": 16,
+          "thigh.R": 16
+        },
+        "influence_histogram": {
+          "1": 40
+        },
+        "max_influences_per_vertex": 1,
+        "modifier": {
+          "armature": "ARMATURE__shared_bilateral_v1",
+          "name": "ARMATURE__starter_offwhite_bottom",
+          "type": "ARMATURE"
+        },
+        "non_normalized_vertices": 0,
+        "polygon_count": 26,
+        "unweighted_vertices": 0,
+        "vertex_count": 40
+      },
+      "starter_top": {
+        "allowed_groups": [
+          "spine"
+        ],
+        "components": [
+          {
+            "bounds_max_m": [
+              0.27,
+              0.1425,
+              1.46
+            ],
+            "bounds_min_m": [
+              -0.27,
+              -0.1425,
+              0.98
+            ],
+            "center_m": [
+              -0.0,
+              0.0,
+              1.22
+            ],
+            "first_vertex": 0,
+            "object": "CLOTHING__starter_offwhite_top",
+            "owner": "spine",
+            "vertex_count": 8
+          }
+        ],
+        "geometry_sha256": "0E0E1EA3B6C010B9C58D889E3D7DA2FCDF6368855451A13C70984825791540DB",
+        "group_vertex_counts": {
+          "spine": 8
+        },
+        "influence_histogram": {
+          "1": 8
+        },
+        "max_influences_per_vertex": 1,
+        "modifier": {
+          "armature": "ARMATURE__shared_bilateral_v1",
+          "name": "ARMATURE__starter_offwhite_top",
+          "type": "ARMATURE"
+        },
+        "non_normalized_vertices": 0,
+        "polygon_count": 6,
+        "unweighted_vertices": 0,
+        "vertex_count": 8
+      }
+    },
+    "preserved_signal_jacket_item": "sundale_signal_jacket",
+    "preserved_starter_items": [
+      "starter_offwhite_top",
+      "starter_offwhite_bottom"
+    ],
+    "preserved_walk_action": {
+      "action_count": 1,
+      "curves": [
+        {
+          "axis": 0,
+          "bone": "root",
+          "channel": "location",
+          "keys": [
+            {
+              "frame": 1.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            },
+            {
+              "frame": 6.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            },
+            {
+              "frame": 11.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            },
+            {
+              "frame": 16.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            },
+            {
+              "frame": 21.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            }
+          ]
+        },
+        {
+          "axis": 1,
+          "bone": "root",
+          "channel": "location",
+          "keys": [
+            {
+              "frame": 1.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            },
+            {
+              "frame": 6.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            },
+            {
+              "frame": 11.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            },
+            {
+              "frame": 16.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            },
+            {
+              "frame": 21.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            }
+          ]
+        },
+        {
+          "axis": 2,
+          "bone": "root",
+          "channel": "location",
+          "keys": [
+            {
+              "frame": 1.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            },
+            {
+              "frame": 6.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            },
+            {
+              "frame": 11.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            },
+            {
+              "frame": 16.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            },
+            {
+              "frame": 21.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            }
+          ]
+        },
+        {
+          "axis": 1,
+          "bone": "spine",
+          "channel": "rotation_euler",
+          "keys": [
+            {
+              "frame": 1.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            },
+            {
+              "frame": 6.0,
+              "interpolation": "LINEAR",
+              "value": 0.052359879
+            },
+            {
+              "frame": 11.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            },
+            {
+              "frame": 16.0,
+              "interpolation": "LINEAR",
+              "value": -0.052359879
+            },
+            {
+              "frame": 21.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            }
+          ]
+        },
+        {
+          "axis": 1,
+          "bone": "thigh.L",
+          "channel": "rotation_euler",
+          "keys": [
+            {
+              "frame": 1.0,
+              "interpolation": "LINEAR",
+              "value": -0.0
+            },
+            {
+              "frame": 6.0,
+              "interpolation": "LINEAR",
+              "value": -0.314159274
+            },
+            {
+              "frame": 11.0,
+              "interpolation": "LINEAR",
+              "value": -0.0
+            },
+            {
+              "frame": 16.0,
+              "interpolation": "LINEAR",
+              "value": 0.314159274
+            },
+            {
+              "frame": 21.0,
+              "interpolation": "LINEAR",
+              "value": -0.0
+            }
+          ]
+        },
+        {
+          "axis": 1,
+          "bone": "thigh.R",
+          "channel": "rotation_euler",
+          "keys": [
+            {
+              "frame": 1.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            },
+            {
+              "frame": 6.0,
+              "interpolation": "LINEAR",
+              "value": 0.314159274
+            },
+            {
+              "frame": 11.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            },
+            {
+              "frame": 16.0,
+              "interpolation": "LINEAR",
+              "value": -0.314159274
+            },
+            {
+              "frame": 21.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            }
+          ]
+        },
+        {
+          "axis": 1,
+          "bone": "upper_arm.L",
+          "channel": "rotation_euler",
+          "keys": [
+            {
+              "frame": 1.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            },
+            {
+              "frame": 6.0,
+              "interpolation": "LINEAR",
+              "value": 0.314159274
+            },
+            {
+              "frame": 11.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            },
+            {
+              "frame": 16.0,
+              "interpolation": "LINEAR",
+              "value": -0.314159274
+            },
+            {
+              "frame": 21.0,
+              "interpolation": "LINEAR",
+              "value": 0.0
+            }
+          ]
+        },
+        {
+          "axis": 1,
+          "bone": "upper_arm.R",
+          "channel": "rotation_euler",
+          "keys": [
+            {
+              "frame": 1.0,
+              "interpolation": "LINEAR",
+              "value": -0.0
+            },
+            {
+              "frame": 6.0,
+              "interpolation": "LINEAR",
+              "value": -0.314159274
+            },
+            {
+              "frame": 11.0,
+              "interpolation": "LINEAR",
+              "value": -0.0
+            },
+            {
+              "frame": 16.0,
+              "interpolation": "LINEAR",
+              "value": 0.314159274
+            },
+            {
+              "frame": 21.0,
+              "interpolation": "LINEAR",
+              "value": -0.0
+            }
+          ]
+        }
+      ],
+      "cycle_duration_seconds": 0.714285714,
+      "cycles_per_second": 1.4,
+      "fps": 28,
+      "frame_end": 21,
+      "frame_start": 1,
+      "identity_sha256": "5CC1C4A368F9CEC7FD1AED67004D3C40E5D920FC353B8141422C54DDE2E97C58",
+      "limb_pitch_degrees": 18.0,
+      "loop_end_equality": true,
+      "name": "walk_candidate_v1",
+      "root_translation_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "sample_frames": [
+        1,
+        6,
+        11,
+        16,
+        21
+      ],
+      "spine_sway_degrees": 3.0
+    },
+    "saved_frame": 1,
+    "saved_pose_clear": true,
+    "saved_review_visibility": {
+      "starter_offwhite_bottom": "visible",
+      "starter_offwhite_top": "hidden",
+      "sundale_signal_jacket": "visible"
+    },
+    "source_semantic_sha256": "1B8E652909D8A316A604689B90816A2276AC3831C4F8DC85073DD1F5F8BA9350",
+    "time_sampled_deformation": {
+      "combined_delta_identity_sha256": "D9DFF0A8E17F0E71BB7159092C5FA8407F0D58233A5C22782A867EFA8750368A",
+      "objects": {
+        "CLOTHING__starter_offwhite_bottom": {
+          "max_displacement_m": 0.038252,
+          "max_moved_vertex_count": 32,
+          "vertex_count": 40
+        },
+        "CLOTHING__starter_offwhite_top": {
+          "max_displacement_m": 0.031956,
+          "max_moved_vertex_count": 8,
+          "vertex_count": 8
+        },
+        "CLOTHING__sundale_signal_jacket": {
+          "max_displacement_m": 0.036172,
+          "max_moved_vertex_count": 16,
+          "vertex_count": 16
+        },
+        "MANNEQUIN__neutral_beta": {
+          "max_displacement_m": 0.09158,
+          "max_moved_vertex_count": 292,
+          "vertex_count": 302
+        }
+      },
+      "pose_labels": [
+        "neutral",
+        "takeoff",
+        "airborne"
+      ],
+      "presentations": {
+        "signal_jacket": {
+          "deforming_items": [
+            "sundale_signal_jacket",
+            "starter_offwhite_bottom"
+          ],
+          "visible_items": [
+            "sundale_signal_jacket",
+            "starter_offwhite_bottom"
+          ]
+        },
+        "starter": {
+          "deforming_items": [
+            "starter_offwhite_top",
+            "starter_offwhite_bottom"
+          ],
+          "visible_items": [
+            "starter_offwhite_top",
+            "starter_offwhite_bottom"
+          ]
+        }
+      },
+      "root_translation_zero_all_samples": true,
+      "sample_frames": [
+        1,
+        6,
+        11
+      ],
+      "samples": [
+        {
+          "frame": 1,
+          "objects": {
+            "CLOTHING__starter_offwhite_bottom": {
+              "delta_identity_sha256": "583CA57181A27963E411A2472809BD61E90F8BF5AB5D7B5E6CF57E0E6FC4924A",
+              "max_displacement_m": 0.0,
+              "moved_vertex_count": 0
+            },
+            "CLOTHING__starter_offwhite_top": {
+              "delta_identity_sha256": "4C2FAF3B16CC326A35DB1218EDDB055A83DD18CDC042A55BCD1958C04E11C439",
+              "max_displacement_m": 0.0,
+              "moved_vertex_count": 0
+            },
+            "CLOTHING__sundale_signal_jacket": {
+              "delta_identity_sha256": "B7306C6E9CF156EFEF7D4725D1A2BE5AA9E25088527866D05FEC7F0D66BC0F56",
+              "max_displacement_m": 0.0,
+              "moved_vertex_count": 0
+            },
+            "MANNEQUIN__neutral_beta": {
+              "delta_identity_sha256": "BC471A26EF4DB62CC9928ACD0397378942ECD5F4829D42B156DB8FCD14A4788E",
+              "max_displacement_m": 0.0,
+              "moved_vertex_count": 0
+            }
+          },
+          "pose": "neutral",
+          "time_seconds": 0.0
+        },
+        {
+          "frame": 6,
+          "objects": {
+            "CLOTHING__starter_offwhite_bottom": {
+              "delta_identity_sha256": "E3F293CDD0DB893677B98B38447FA60FD0D8AF97100FFF2DFB9E5C2ACB044E74",
+              "max_displacement_m": 0.031361,
+              "moved_vertex_count": 32
+            },
+            "CLOTHING__starter_offwhite_top": {
+              "delta_identity_sha256": "3311088950B194200EB21913F793BD818E141442114B10294127BEFB41AF6086",
+              "max_displacement_m": 0.031956,
+              "moved_vertex_count": 8
+            },
+            "CLOTHING__sundale_signal_jacket": {
+              "delta_identity_sha256": "37B79B7BC364A519483B7DA9F36E0DE1ADD5D93ECFB43FBAD39DDDFFA97FAFC7",
+              "max_displacement_m": 0.036172,
+              "moved_vertex_count": 16
+            },
+            "MANNEQUIN__neutral_beta": {
+              "delta_identity_sha256": "D8047D15CF321FFEFB25F4A9CA4E8B2F12A7BE7CA9F4983558C20D360B1C7ACE",
+              "max_displacement_m": 0.051181,
+              "moved_vertex_count": 292
+            }
+          },
+          "pose": "takeoff",
+          "time_seconds": 0.166666667
+        },
+        {
+          "frame": 11,
+          "objects": {
+            "CLOTHING__starter_offwhite_bottom": {
+              "delta_identity_sha256": "25DD0C09159A3218F254DC2FF883A2A7239515D66AFE2CF2D7448EE47BE96658",
+              "max_displacement_m": 0.038252,
+              "moved_vertex_count": 32
+            },
+            "CLOTHING__starter_offwhite_top": {
+              "delta_identity_sha256": "7E6B71B6C643F87E14894D4C1CFB20E241B623D3E18E55D14D8B1A773AEEF258",
+              "max_displacement_m": 0.021309,
+              "moved_vertex_count": 8
+            },
+            "CLOTHING__sundale_signal_jacket": {
+              "delta_identity_sha256": "8026C42727CAAE9DABB587260B71FE34C9A444FB2DF09DCED3A3298476295E0C",
+              "max_displacement_m": 0.024121,
+              "moved_vertex_count": 16
+            },
+            "MANNEQUIN__neutral_beta": {
+              "delta_identity_sha256": "9ABA8D9AE22B802FCCC9D8025DF88FFB0DACD6AB1B0883EA7E373C7003AB2687",
+              "max_displacement_m": 0.09158,
+              "moved_vertex_count": 292
+            }
+          },
+          "pose": "airborne",
+          "time_seconds": 0.333333333
+        }
+      ]
+    }
+  },
+  "source_custody": {
+    "files": [
+      {
+        "bytes": 1413,
+        "file": "../RunCycleCandidate/PROVENANCE.md",
+        "sha256": "4E57B2172C0A61AA2A65154417BA87AA578DD661DD6D38825267D560FC8F0E84"
+      },
+      {
+        "bytes": 690413,
+        "file": "../RunCycleCandidate/RunCycleCharacterCandidate.blend",
+        "sha256": "E830E204C13F5F268C71D26EA5C45B4264E72C8C4E799857CE80F39AB5F8AE78"
+      },
+      {
+        "bytes": 26068,
+        "file": "../RunCycleCandidate/build_run_cycle_candidate.py",
+        "sha256": "17CEBD817AF7EE672ADB918FC70B8997F60FA6941FFFB4E1FD4B200062F77411"
+      },
+      {
+        "bytes": 633950,
+        "file": "../RunCycleCandidate/renders/Review_SignalJacketRun_Frame06.png",
+        "sha256": "79ACAA4353CAB23D04C26FC66FA93D7909226212ADE88AC3ADA4A380295016DC"
+      },
+      {
+        "bytes": 635129,
+        "file": "../RunCycleCandidate/renders/Review_SignalJacketRun_Frame16.png",
+        "sha256": "0D3608083214FE99BC479A70EBC3FE3BF860E9F0C2586BCDF1232750AE98EFC1"
+      },
+      {
+        "bytes": 631094,
+        "file": "../RunCycleCandidate/renders/Review_StarterRun_Frame06.png",
+        "sha256": "C0A757CB3E8D100FCE47ABA39D04B0B23E5238A80D118559E462D922DDC0A40A"
+      },
+      {
+        "bytes": 635467,
+        "file": "../RunCycleCandidate/renders/Review_StarterRun_Frame16.png",
+        "sha256": "5708DC36B2C0E88F7B2A00EA6F2624E747E2E4E06BB0BCDF79D7D0A5BE2202F0"
+      },
+      {
+        "bytes": 37363,
+        "file": "../RunCycleCandidate/run_cycle_custody.json",
+        "sha256": "258BBA1F1FE2EBE14184E931DE5BB697816D3BD615933BABB1EFDCC38B95A50F"
+      }
+    ],
+    "semantic_sha256": "1B8E652909D8A316A604689B90816A2276AC3831C4F8DC85073DD1F5F8BA9350"
+  },
+  "status": "retained_walk_run_plus_in_place_jump_pose_action_source_only_not_runtime_or_final_animation"
+}

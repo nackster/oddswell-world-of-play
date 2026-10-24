@@ -1,0 +1,111 @@
+{
+  "date": "2026-10-06",
+  "status": "reviewed offline knitted-waist and jacket-shell continuity checkpoint; human/landscape goal active",
+  "source": {
+    "path": "../HipSeatMotionCandidate/HipSeat.blend",
+    "sha256": "9775f815af14570a673dc000ea9535c05ef35f06c6b0aeea1260a3105396cb20",
+    "bytes": 646349072
+  },
+  "files": {
+    "WaistNeck.blend": {
+      "sha256": "2900363715a0056444b9b85509a00dcc01ab6c5e5cfee4fcac32a537af513079",
+      "bytes": 646373933
+    },
+    "build.py": {
+      "sha256": "b5f7812d893b2d402a50d49247ef7a72678fd515dbfcec24274b9da909d00888",
+      "bytes": 8282
+    },
+    "audit.py": {
+      "sha256": "5fc9f079340fed1df40ee53d2220658df8d5d9d346abb813ad473e9b94306ff2",
+      "bytes": 4282
+    },
+    "render.py": {
+      "sha256": "d28a6529ae6eb3563920a6c5ef4d0a4a2210845b84a5ef5c4310d052de5993cb",
+      "bytes": 753
+    },
+    "build-report.json": {
+      "sha256": "cd28b1d2594ec535bf68e92a3c8f454f43af5e5b8ef6ddeafe0ae66d91014d4c",
+      "bytes": 1343
+    },
+    "cold-audit.json": {
+      "sha256": "36e3673bc8106914f78244d31e33ff98a2d496de895963c1c902bf67a19d1b95",
+      "bytes": 12655
+    },
+    "README.md": {
+      "sha256": "ffb8dad61da71fee2f332f1b9afae8ecf330700d0060005665787f8a0af9f62f",
+      "bytes": 3416
+    },
+    "WholeFigureReview.md": {
+      "sha256": "54299b4a23b1b5192c98a95917dd9387533155a9b173a3c9d04f4ee7002f0077",
+      "bytes": 2689
+    },
+    "WaistNeckWalking.mp4": {
+      "sha256": "7f04f8c17102ccd99fef82265edea23b5147e30bd2bcd1186f75824e2e26383b",
+      "bytes": 804185
+    },
+    "preview-info.json": {
+      "sha256": "805aa774a943cb706eb675963b6d78168d8719d32e874af096bbb847570f6caf",
+      "bytes": 127
+    },
+    "coat_diagnostic.py": {
+      "sha256": "f4ae1b6f234547e0b743b52a84673db635880d78dbd44162c2d7cb3aa8c5293c",
+      "bytes": 1266
+    },
+    "coat-deformation.json": {
+      "sha256": "402432794785f2ae601c21429223bc19caede4bc9ff3011b7ac72dd4a0900893",
+      "bytes": 19684
+    },
+    "Contact_Profile.png": {
+      "sha256": "29e150da6695fd4668b81524a38601150f84b19b416bf8e6b4183f1b66887a80",
+      "bytes": 959388
+    },
+    "Passing_Profile.png": {
+      "sha256": "893c87269ae6d5f1917c6ea95e100068e8d87c7116907e72002390b9487069ff",
+      "bytes": 962454
+    },
+    "OppositeContact_Profile.png": {
+      "sha256": "4ec032692ad70f6baa574fa1fa45ef65d2d3ff1b0e6d122a935f5a31f217402d",
+      "bytes": 966631
+    },
+    "Passing_Rear.png": {
+      "sha256": "a87c0e6d8b6ef80d419bccd8310b6214fd82f6329c3f65abd6ab220250e7795c",
+      "bytes": 1094919
+    },
+    "Passing_Front.png": {
+      "sha256": "11e224ffd73f7e75a07ee2d1c1e97aba2ebec764932bd293493218d23e5c6630",
+      "bytes": 850120
+    },
+    "Torso_Front.png": {
+      "sha256": "c3c23806f0787d76a8037e3a21ba4ec1792c1e6f59ec987a4ad544128dae6123",
+      "bytes": 864408
+    },
+    "Hips_Rear.png": {
+      "sha256": "638b50b9dbdfc6997f3f4dde3af99118157afa78f7a1d2e13b74639af3db100c",
+      "bytes": 1060654
+    },
+    "Gameplay.png": {
+      "sha256": "4540b9bbc5fa0a1e0cc3f9e21d4e3ce0c3f3ee9734bac69f8e8d4debe258fee6",
+      "bytes": 1627106
+    },
+    "Waist_Rear.png": {
+      "sha256": "c6bf2f5c6ca475d50fa2095c68920fe7c2884d4dbc539e0be0bc1ad04b6ed7cb",
+      "bytes": 943881
+    },
+    "Waist_Front.png": {
+      "sha256": "6bea4be231c756606df5678ce96a43aac895c9ba3a8e2c13b0663d8fd3df3964",
+      "bytes": 843461
+    },
+    "Neck_Rear_07.png": {
+      "sha256": "f6d7056c1ceba9f9c3e511323eb1294a7762673b0aa712b7d31505450af70b22",
+      "bytes": 769771
+    },
+    "Neck_Rear_33.png": {
+      "sha256": "ba82ff9dd2bcdfd9cddd5733c03469c44b7265fabc08b82a3c8fe3119ee8d5c3",
+      "bytes": 768323
+    },
+    "Neck_Defect_Before.png": {
+      "sha256": "d8958a10dbc28cb5527bb086236fde0f76f4a8444a83b7fbc157380db6747ae6",
+      "bytes": 738336
+    }
+  }
+}

@@ -1,0 +1,708 @@
+{
+  "source_sha256": "8b2f0e5634f1198bbdbb5054c961668cb86825764ada8d24355296cbc290de7a",
+  "changed_visibility": [
+    {
+      "name": "Building | retail rear volume.001",
+      "center": [
+        -11.049999237060547,
+        7.0,
+        1.7000000476837158
+      ],
+      "old_hide_render": false
+    },
+    {
+      "name": "Shop | recessed interior.002",
+      "center": [
+        -8.679999351501465,
+        5.037499904632568,
+        1.6500000953674316
+      ],
+      "old_hide_render": false
+    },
+    {
+      "name": "Shop | display goods.036",
+      "center": [
+        -8.000000953674316,
+        3.93850040435791,
+        0.6700000166893005
+      ],
+      "old_hide_render": false
+    },
+    {
+      "name": "Shop | display goods.037",
+      "center": [
+        -8.000000953674316,
+        4.393799781799316,
+        0.6700000762939453
+      ],
+      "old_hide_render": false
+    },
+    {
+      "name": "Shop | display goods.038",
+      "center": [
+        -8.000000953674316,
+        4.849100112915039,
+        0.6700000166893005
+      ],
+      "old_hide_render": false
+    },
+    {
+      "name": "Shop | display goods.039",
+      "center": [
+        -8.000000953674316,
+        5.3043999671936035,
+        0.6700000762939453
+      ],
+      "old_hide_render": false
+    },
+    {
+      "name": "Shop | display goods.040",
+      "center": [
+        -8.000000953674316,
+        5.759699821472168,
+        0.6700000166893005
+      ],
+      "old_hide_render": false
+    },
+    {
+      "name": "Shop | display goods.041",
+      "center": [
+        -8.000000953674316,
+        6.214999675750732,
+        0.6700000166893005
+      ],
+      "old_hide_render": false
+    },
+    {
+      "name": "Shop | display goods.042",
+      "center": [
+        -8.000000953674316,
+        3.93850040435791,
+        1.1699999570846558
+      ],
+      "old_hide_render": false
+    },
+    {
+      "name": "Shop | display goods.043",
+      "center": [
+        -8.000000953674316,
+        4.393799781799316,
+        1.1700000762939453
+      ],
+      "old_hide_render": false
+    },
+    {
+      "name": "Shop | display goods.044",
+      "center": [
+        -8.000000953674316,
+        4.849100112915039,
+        1.1699999570846558
+      ],
+      "old_hide_render": false
+    },
+    {
+      "name": "Shop | display goods.045",
+      "center": [
+        -8.000000953674316,
+        5.3043999671936035,
+        1.1699999570846558
+      ],
+      "old_hide_render": false
+    },
+    {
+      "name": "Shop | display goods.046",
+      "center": [
+        -8.000000953674316,
+        5.759699821472168,
+        1.1700000762939453
+      ],
+      "old_hide_render": false
+    },
+    {
+      "name": "Shop | display goods.047",
+      "center": [
+        -8.000000953674316,
+        6.214999675750732,
+        1.1700000762939453
+      ],
+      "old_hide_render": false
+    },
+    {
+      "name": "Shop | display goods.048",
+      "center": [
+        -8.000000953674316,
+        3.93850040435791,
+        1.6700000762939453
+      ],
+      "old_hide_render": false
+    },
+    {
+      "name": "Shop | display goods.049",
+      "center": [
+        -8.000000953674316,
+        4.393799781799316,
+        1.6699998378753662
+      ],
+      "old_hide_render": false
+    },
+    {
+      "name": "Shop | display goods.050",
+      "center": [
+        -8.000000953674316,
+        4.849100112915039,
+        1.6700000762939453
+      ],
+      "old_hide_render": false
+    },
+    {
+      "name": "Shop | display goods.051",
+      "center": [
+        -8.000000953674316,
+        5.3043999671936035,
+        1.6700000762939453
+      ],
+      "old_hide_render": false
+    },
+    {
+      "name": "Shop | display goods.052",
+      "center": [
+        -8.000000953674316,
+        5.759699821472168,
+        1.6700000762939453
+      ],
+      "old_hide_render": false
+    },
+    {
+      "name": "Shop | display goods.053",
+      "center": [
+        -8.000000953674316,
+        6.214999675750732,
+        1.6700000762939453
+      ],
+      "old_hide_render": false
+    },
+    {
+      "name": "Shop | hanging garment.004",
+      "center": [
+        -7.604999542236328,
+        4.417500019073486,
+        2.0771000385284424
+      ],
+      "old_hide_render": false
+    },
+    {
+      "name": "Shop | brass hanger.004",
+      "center": [
+        -7.569999694824219,
+        4.417500019073486,
+        2.4656624794006348
+      ],
+      "old_hide_render": false
+    },
+    {
+      "name": "Shop | hanging garment.005",
+      "center": [
+        -7.604999542236328,
+        5.387500286102295,
+        2.0771000385284424
+      ],
+      "old_hide_render": false
+    },
+    {
+      "name": "Shop | brass hanger.005",
+      "center": [
+        -7.569999694824219,
+        5.387499809265137,
+        2.4656624794006348
+      ],
+      "old_hide_render": false
+    },
+    {
+      "name": "Shop | recessed interior.003",
+      "center": [
+        -8.679999351501465,
+        8.962499618530273,
+        1.6500000953674316
+      ],
+      "old_hide_render": false
+    },
+    {
+      "name": "Shop | display goods.054",
+      "center": [
+        -8.000000953674316,
+        7.863500595092773,
+        0.6700000166893005
+      ],
+      "old_hide_render": false
+    },
+    {
+      "name": "Shop | display goods.055",
+      "center": [
+        -8.000000953674316,
+        8.31879997253418,
+        0.6700000166893005
+      ],
+      "old_hide_render": false
+    },
+    {
+      "name": "Shop | display goods.056",
+      "center": [
+        -8.000000953674316,
+        8.774099349975586,
+        0.6700000166893005
+      ],
+      "old_hide_render": false
+    },
+    {
+      "name": "Shop | display goods.057",
+      "center": [
+        -8.000000953674316,
+        9.229400634765625,
+        0.6700000762939453
+      ],
+      "old_hide_render": false
+    },
+    {
+      "name": "Shop | display goods.058",
+      "center": [
+        -8.000000953674316,
+        9.684700965881348,
+        0.6700000762939453
+      ],
+      "old_hide_render": false
+    },
+    {
+      "name": "Shop | display goods.059",
+      "center": [
+        -8.000000953674316,
+        10.140000343322754,
+        0.6699999570846558
+      ],
+      "old_hide_render": false
+    },
+    {
+      "name": "Shop | display goods.060",
+      "center": [
+        -8.000000953674316,
+        7.863500595092773,
+        1.1700000762939453
+      ],
+      "old_hide_render": false
+    },
+    {
+      "name": "Shop | display goods.061",
+      "center": [
+        -8.000000953674316,
+        8.31879997253418,
+        1.1699999570846558
+      ],
+      "old_hide_render": false
+    },
+    {
+      "name": "Shop | display goods.062",
+      "center": [
+        -8.000000953674316,
+        8.774099349975586,
+        1.1699999570846558
+      ],
+      "old_hide_render": false
+    },
+    {
+      "name": "Shop | display goods.063",
+      "center": [
+        -8.000000953674316,
+        9.229400634765625,
+        1.1699999570846558
+      ],
+      "old_hide_render": false
+    },
+    {
+      "name": "Shop | display goods.064",
+      "center": [
+        -8.000000953674316,
+        9.684700965881348,
+        1.1699999570846558
+      ],
+      "old_hide_render": false
+    },
+    {
+      "name": "Shop | display goods.065",
+      "center": [
+        -8.000000953674316,
+        10.140000343322754,
+        1.1700000762939453
+      ],
+      "old_hide_render": false
+    },
+    {
+      "name": "Shop | display goods.066",
+      "center": [
+        -8.000000953674316,
+        7.863500595092773,
+        1.6700000762939453
+      ],
+      "old_hide_render": false
+    },
+    {
+      "name": "Shop | display goods.067",
+      "center": [
+        -8.000000953674316,
+        8.31879997253418,
+        1.6700000762939453
+      ],
+      "old_hide_render": false
+    },
+    {
+      "name": "Shop | display goods.068",
+      "center": [
+        -8.000000953674316,
+        8.774099349975586,
+        1.6699999570846558
+      ],
+      "old_hide_render": false
+    },
+    {
+      "name": "Shop | display goods.069",
+      "center": [
+        -8.000000953674316,
+        9.229400634765625,
+        1.6699998378753662
+      ],
+      "old_hide_render": false
+    },
+    {
+      "name": "Shop | display goods.070",
+      "center": [
+        -8.000000953674316,
+        9.684700965881348,
+        1.6700000762939453
+      ],
+      "old_hide_render": false
+    },
+    {
+      "name": "Shop | display goods.071",
+      "center": [
+        -8.000000953674316,
+        10.140000343322754,
+        1.6699999570846558
+      ],
+      "old_hide_render": false
+    },
+    {
+      "name": "Shop | hanging garment.006",
+      "center": [
+        -7.604999542236328,
+        8.342499732971191,
+        2.0771000385284424
+      ],
+      "old_hide_render": false
+    },
+    {
+      "name": "Shop | brass hanger.006",
+      "center": [
+        -7.569999694824219,
+        8.342500686645508,
+        2.4656624794006348
+      ],
+      "old_hide_render": false
+    },
+    {
+      "name": "Shop | hanging garment.007",
+      "center": [
+        -7.604999542236328,
+        9.3125,
+        2.0771000385284424
+      ],
+      "old_hide_render": false
+    },
+    {
+      "name": "Shop | brass hanger.007",
+      "center": [
+        -7.569999694824219,
+        9.3125,
+        2.4656624794006348
+      ],
+      "old_hide_render": false
+    }
+  ],
+  "added_objects": [
+    "Retail | cabinet drawer front",
+    "Retail | cabinet drawer front.001",
+    "Retail | deep oak floor",
+    "Retail | deep plaster ceiling",
+    "Retail | descriptor",
+    "Retail | folded cotton apparel",
+    "Retail | folded cotton apparel.001",
+    "Retail | folded cotton apparel.002",
+    "Retail | folded cotton apparel.003",
+    "Retail | folded cotton apparel.004",
+    "Retail | folded cotton apparel.005",
+    "Retail | folded cotton apparel.006",
+    "Retail | folded cotton apparel.007",
+    "Retail | folded cotton apparel.008",
+    "Retail | folded cotton apparel.009",
+    "Retail | folded cotton apparel.010",
+    "Retail | folded cotton apparel.011",
+    "Retail | folded cotton apparel.012",
+    "Retail | folded cotton apparel.013",
+    "Retail | folded cotton apparel.014",
+    "Retail | folded cotton apparel.015",
+    "Retail | folded cotton apparel.016",
+    "Retail | folded cotton apparel.017",
+    "Retail | folded cotton apparel.018",
+    "Retail | folded cotton apparel.019",
+    "Retail | folded cotton apparel.020",
+    "Retail | folded cotton apparel.021",
+    "Retail | folded cotton apparel.022",
+    "Retail | folded cotton apparel.023",
+    "Retail | folded cotton apparel.024",
+    "Retail | folded cotton apparel.025",
+    "Retail | folded cotton apparel.026",
+    "Retail | folded cotton apparel.027",
+    "Retail | folded cotton apparel.028",
+    "Retail | folded cotton apparel.029",
+    "Retail | folded cotton apparel.030",
+    "Retail | folded cotton apparel.031",
+    "Retail | folded cotton apparel.032",
+    "Retail | folded cotton apparel.033",
+    "Retail | folded cotton apparel.034",
+    "Retail | folded cotton apparel.035",
+    "Retail | graphite apparel rail",
+    "Retail | graphite apparel rail.001",
+    "Retail | graphite drawer pull",
+    "Retail | graphite drawer pull.001",
+    "Retail | hanger hook",
+    "Retail | hanger hook.001",
+    "Retail | hanging OddsWell jacket A",
+    "Retail | hanging OddsWell jacket B",
+    "Retail | ivory back wall",
+    "Retail | oak island cabinet",
+    "Retail | oak island top",
+    "Retail | OddsWell shop plaque",
+    "Retail | sewn teal size tab",
+    "Retail | sewn teal size tab.001",
+    "Retail | sewn teal size tab.002",
+    "Retail | sewn teal size tab.003",
+    "Retail | sewn teal size tab.004",
+    "Retail | sewn teal size tab.005",
+    "Retail | sewn teal size tab.006",
+    "Retail | sewn teal size tab.007",
+    "Retail | sewn teal size tab.008",
+    "Retail | sewn teal size tab.009",
+    "Retail | sewn teal size tab.010",
+    "Retail | sewn teal size tab.011",
+    "Retail | sewn teal size tab.012",
+    "Retail | sewn teal size tab.013",
+    "Retail | sewn teal size tab.014",
+    "Retail | sewn teal size tab.015",
+    "Retail | sewn teal size tab.016",
+    "Retail | sewn teal size tab.017",
+    "Retail | sewn teal size tab.018",
+    "Retail | sewn teal size tab.019",
+    "Retail | sewn teal size tab.020",
+    "Retail | sewn teal size tab.021",
+    "Retail | sewn teal size tab.022",
+    "Retail | sewn teal size tab.023",
+    "Retail | sewn teal size tab.024",
+    "Retail | sewn teal size tab.025",
+    "Retail | sewn teal size tab.026",
+    "Retail | sewn teal size tab.027",
+    "Retail | sewn teal size tab.028",
+    "Retail | sewn teal size tab.029",
+    "Retail | sewn teal size tab.030",
+    "Retail | sewn teal size tab.031",
+    "Retail | sewn teal size tab.032",
+    "Retail | sewn teal size tab.033",
+    "Retail | sewn teal size tab.034",
+    "Retail | sewn teal size tab.035",
+    "Retail | shop side return",
+    "Retail | shop side return.001",
+    "Retail | soft folded edge",
+    "Retail | soft folded edge.001",
+    "Retail | soft folded edge.002",
+    "Retail | soft folded edge.003",
+    "Retail | soft folded edge.004",
+    "Retail | soft folded edge.005",
+    "Retail | soft folded edge.006",
+    "Retail | soft folded edge.007",
+    "Retail | soft folded edge.008",
+    "Retail | soft folded edge.009",
+    "Retail | soft folded edge.010",
+    "Retail | soft folded edge.011",
+    "Retail | soft folded edge.012",
+    "Retail | soft folded edge.013",
+    "Retail | soft folded edge.014",
+    "Retail | soft folded edge.015",
+    "Retail | soft folded edge.016",
+    "Retail | soft folded edge.017",
+    "Retail | soft folded edge.018",
+    "Retail | soft folded edge.019",
+    "Retail | soft folded edge.020",
+    "Retail | soft folded edge.021",
+    "Retail | soft folded edge.022",
+    "Retail | soft folded edge.023",
+    "Retail | soft folded edge.024",
+    "Retail | soft folded edge.025",
+    "Retail | soft folded edge.026",
+    "Retail | soft folded edge.027",
+    "Retail | soft folded edge.028",
+    "Retail | soft folded edge.029",
+    "Retail | soft folded edge.030",
+    "Retail | soft folded edge.031",
+    "Retail | soft folded edge.032",
+    "Retail | soft folded edge.033",
+    "Retail | soft folded edge.034",
+    "Retail | soft folded edge.035",
+    "Retail | warm interior soft light",
+    "Retail | warm interior soft light.001",
+    "Retail | wooden apparel hanger",
+    "Retail | wooden apparel hanger.001",
+    "Retail | wordmark",
+    "Retail | folded cotton collar.027",
+    "Retail | folded cotton collar.034",
+    "Retail | folded cotton collar.016",
+    "Retail | folded cotton collar.007",
+    "Retail | folded cotton collar.026",
+    "Retail | folded cotton collar.019",
+    "Retail | ceiling rail dropper.001",
+    "Retail | ceiling rail dropper",
+    "Retail | folded cotton collar.029",
+    "Retail | folded cotton collar.001",
+    "Retail | folded cotton collar.018",
+    "Retail | folded cotton collar.011",
+    "Retail | folded cotton collar.009",
+    "Retail | folded cotton collar.003",
+    "Retail | folded cotton collar.021",
+    "Retail | ceiling rail dropper.003",
+    "Retail | folded cotton collar.028",
+    "Retail | folded cotton collar",
+    "Retail | folded cotton collar.010",
+    "Retail | folded cotton collar.020",
+    "Retail | folded cotton collar.005",
+    "Retail | ceiling rail dropper.002",
+    "Retail | folded cotton collar.031",
+    "Retail | folded cotton collar.013",
+    "Retail | folded cotton collar.023",
+    "Retail | folded cotton collar.030",
+    "Retail | folded cotton collar.012",
+    "Retail | folded cotton collar.006",
+    "Retail | folded cotton collar.022",
+    "Retail | folded cotton collar.004",
+    "Retail | folded cotton collar.033",
+    "Retail | folded cotton collar.015",
+    "Retail | folded cotton collar.025",
+    "Retail | folded cotton collar.002",
+    "Retail | folded cotton collar.032",
+    "Retail | folded cotton collar.014",
+    "Retail | folded cotton collar.024",
+    "Retail | folded cotton collar.035",
+    "Retail | folded cotton collar.017",
+    "Retail | folded cotton collar.008"
+  ],
+  "native_room_depth_m": 3.65,
+  "former_back_panel_depth_m": 1.48,
+  "display_jackets_reuse": "Static evaluated coat/collar/waist/cuff/tape copies from the reviewed native outfit. Original rig and character remain unchanged. Two instances share the baked product mesh; licensed maps retained.",
+  "licensed_packed_maps_unchanged": true,
+  "new_bitmap_assets": 0,
+  "scope": "First apparel shop visible along the gameplay approach, facade x=-7.2, y=7. Deeper native retail room, modeled apparel, oak island, supported display rails and physical OddsWell plaque. Original sources retained with documented visibility changes; the moving human, other architecture, court and planting remain unchanged. No runtime/entry/collision/beta credit.",
+  "candidate_sha256": "6c799e05c928b6feae19a257144b6e47cdaff5539dda3a6e4a22b64599290b91",
+  "layout_offset_m": [
+    -1.2000000476837158,
+    8.0,
+    0.0
+  ],
+  "gameplay_camera": {
+    "position": [
+      -0.20000000298023224,
+      -6.900000095367432,
+      1.600000023841858
+    ],
+    "lens_mm": 28.0,
+    "jacket_projections": {
+      "Retail | hanging OddsWell jacket A": [
+        [
+          0.024522369727492332,
+          0.5396847128868103,
+          12.92019271850586
+        ],
+        [
+          0.02417735755443573,
+          0.608197033405304,
+          12.910825729370117
+        ],
+        [
+          0.0471157506108284,
+          0.6080619692802429,
+          12.930683135986328
+        ],
+        [
+          0.04744357615709305,
+          0.5396548509597778,
+          12.94005012512207
+        ],
+        [
+          0.0019300206331536174,
+          0.5406969785690308,
+          12.280388832092285
+        ],
+        [
+          0.0015498012071475387,
+          0.6127822995185852,
+          12.271021842956543
+        ],
+        [
+          0.025718843564391136,
+          0.6126328110694885,
+          12.290879249572754
+        ],
+        [
+          0.026080014184117317,
+          0.5406639575958252,
+          12.300246238708496
+        ]
+      ],
+      "Retail | hanging OddsWell jacket B": [
+        [
+          0.08766445517539978,
+          0.5365680456161499,
+          16.236387252807617
+        ],
+        [
+          0.08742643892765045,
+          0.5910772681236267,
+          16.227020263671875
+        ],
+        [
+          0.10560553520917892,
+          0.5909906625747681,
+          16.246877670288086
+        ],
+        [
+          0.1058327779173851,
+          0.5365481376647949,
+          16.256244659423828
+        ],
+        [
+          0.07246598601341248,
+          0.5372372269630432,
+          15.596582412719727
+        ],
+        [
+          0.07220911234617233,
+          0.5939842462539673,
+          15.587215423583984
+        ],
+        [
+          0.09115272015333176,
+          0.5938904881477356,
+          15.607072830200195
+        ],
+        [
+          0.09139794856309891,
+          0.5372156500816345,
+          15.616439819335938
+        ]
+      ]
+    }
+  }
+}

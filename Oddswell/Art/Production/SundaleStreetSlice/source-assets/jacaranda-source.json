@@ -1,0 +1,78 @@
+{
+  "asset": "https://polyhaven.com/a/jacaranda_tree",
+  "authors": [
+    "Rico Cilliers (model and textures)",
+    "Rob Tuytel (guidance)"
+  ],
+  "license": "CC0",
+  "license_url": "https://polyhaven.com/license",
+  "adaptation": "Original source file unmodified. Current Sundale derivative raises woody geometry, combines original branch growth masks, and uses one emission pass with retained Island Tree 01 leaf clusters. Three shared crown variants use different seeds and proportions. 2K maps replace original 4K paths. See mature_trees.py and broadleaf_canopy.py for reproducible parameters.",
+  "files": [
+    {
+      "file": "textures/jacaranda/jacaranda_tree_branches_diff_2k.jpg",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/2k/jacaranda_tree/jacaranda_tree_branches_diff_2k.jpg",
+      "bytes": 1483476,
+      "sha256": "0c558fe09ce7e74e211ed181607be323f299724caf131af8605cc91b11335b66"
+    },
+    {
+      "file": "textures/jacaranda/jacaranda_tree_branches_nor_gl_2k.jpg",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/2k/jacaranda_tree/jacaranda_tree_branches_nor_gl_2k.jpg",
+      "bytes": 2437750,
+      "sha256": "e4cac77b4f35ad47ba4fcdb9061f91acf3318d9889dd259cb5e6e132b0ab60c7"
+    },
+    {
+      "file": "textures/jacaranda/jacaranda_tree_branches_rough_2k.jpg",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/2k/jacaranda_tree/jacaranda_tree_branches_rough_2k.jpg",
+      "bytes": 869431,
+      "sha256": "8d7ae974958449b110be53118d64f62ea8a03cb028bb322442180a4969b48c1f"
+    },
+    {
+      "file": "textures/jacaranda/jacaranda_tree_leaves_diff_2k.jpg",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/2k/jacaranda_tree/jacaranda_tree_leaves_diff_2k.jpg",
+      "bytes": 1608661,
+      "sha256": "8915643cdd8b4eb8abb3020bc3a3c2c239daccee0d4adbe3194935439f693d8e"
+    },
+    {
+      "file": "textures/jacaranda/jacaranda_tree_leaves_nor_gl_2k.jpg",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/2k/jacaranda_tree/jacaranda_tree_leaves_nor_gl_2k.jpg",
+      "bytes": 2162002,
+      "sha256": "b5515c611ae7faa6245a0f1a056d50905118366e7ebf1aacb9e220160c7b989f"
+    },
+    {
+      "file": "textures/jacaranda/jacaranda_tree_leaves_rough_2k.jpg",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/2k/jacaranda_tree/jacaranda_tree_leaves_rough_2k.jpg",
+      "bytes": 930899,
+      "sha256": "f48815a0da5e798337372d8f3488c231587e1b5eb6a2033ed5fcdcbeca8e8368"
+    },
+    {
+      "file": "textures/jacaranda/jacaranda_tree_leaves_alpha_2k.png",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/2k/jacaranda_tree/jacaranda_tree_leaves_alpha_2k.png",
+      "bytes": 1252539,
+      "sha256": "48b37ef95590d96c39d43af51b4d7683ad1ab7db8dae474f29d3b8c3e726f352"
+    },
+    {
+      "file": "textures/jacaranda/jacaranda_tree_trunk_diff_2k.jpg",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/2k/jacaranda_tree/jacaranda_tree_trunk_diff_2k.jpg",
+      "bytes": 3397103,
+      "sha256": "d3ab4fd9f3d6237a4e7c3d2b7ac0fde9f34a8d09c3aee443c0a3e1a033ce7d96"
+    },
+    {
+      "file": "textures/jacaranda/jacaranda_tree_trunk_nor_gl_2k.jpg",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/2k/jacaranda_tree/jacaranda_tree_trunk_nor_gl_2k.jpg",
+      "bytes": 4050519,
+      "sha256": "bb7b2c4914c139bc61c9ac5e0e1fd1c4b38f781351ead433a1e93dd886c732d6"
+    },
+    {
+      "file": "textures/jacaranda/jacaranda_tree_trunk_rough_2k.jpg",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/2k/jacaranda_tree/jacaranda_tree_trunk_rough_2k.jpg",
+      "bytes": 2127908,
+      "sha256": "f930543bb87a1a9d9ea369c6d16fa8c8981a65518790ae98030af24daeb4a1d5"
+    },
+    {
+      "file": "source-assets/jacaranda_tree_4k.blend",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Models/blend/4k/jacaranda_tree/jacaranda_tree_4k.blend",
+      "bytes": 180227890,
+      "sha256": "e28b4897a9cc9fbee38b1675860649c79284f2ba31de2f551ce5946236e977f5"
+    }
+  ]
+}

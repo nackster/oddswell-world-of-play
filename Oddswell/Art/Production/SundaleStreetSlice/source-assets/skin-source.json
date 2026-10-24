@@ -1,0 +1,18 @@
+{
+  "source": "https://files2.makehumancommunity.org/asset_packs/makehuman_system_assets/makehuman_system_assets_cc0.zip",
+  "catalog": "https://static.makehumancommunity.org/assets/assetpacks/makehuman_system_assets.html",
+  "archive_sha256": "b542127a8e25547c7c29c19f2d1d2adb9a664c80396ecd694095dbc8028a0107",
+  "asset": "young_caucasian_male",
+  "license": "CC0; explicit declaration in original .mhmat",
+  "source_metadata_note": "The original material name says old_caucasian_male_detailed; its tags and archive path identify young_caucasian_male. Original bytes are retained.",
+  "copyright_at_release": [
+    "Data Collection AB",
+    "Joel Palmius",
+    "Jonas Hauquier"
+  ],
+  "maps": {
+    "young_lightskinned_male_diffuse.png": "862a26e335e958b70534cb5f0d7c47ef30ab148a56c42b3e9da969cf76f12963",
+    "young_caucasian_male.mhmat": "6eda60b07ff2afbde078a2535ef3913593d84e9de92b2eb76c30f396a181fe2e"
+  },
+  "adaptation": "Original body UVs retained on exposed anatomical meshes; color adjusted only in native shader, original texture unchanged."
+}

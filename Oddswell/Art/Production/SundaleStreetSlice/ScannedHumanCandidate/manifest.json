@@ -1,0 +1,103 @@
+{
+  "vendor_model": "Renderpeople Eric Rigged 001",
+  "download_sha256": "dadbe6fb83345566ff1d2822c0fa38e05aaa09c17d7f1340719a4c8e01dbadcd",
+  "native_character_sha256": "3ed84ad823f809e19ff6c7bafc591109e90e20d96455b28bcd15431f82ae4485",
+  "files": [
+    {
+      "path": "fetch.py",
+      "bytes": 1478,
+      "sha256": "4e20f5bada5fa53ef3217cbb8ae3d6eabb446e49621d29badc5bce64d69a7a02"
+    },
+    {
+      "path": "inspect.py",
+      "bytes": 1351,
+      "sha256": "8363802748ae7f41cc93590ee556c77fc35d1e7eabf7d548709df734bbc727ef"
+    },
+    {
+      "path": "build.py",
+      "bytes": 4603,
+      "sha256": "79987597b386a8e1f8d08db0c921a735cd5794b1f3b458ac83d665f328e8f3f6"
+    },
+    {
+      "path": "retarget.py",
+      "bytes": 5155,
+      "sha256": "867c73eb6007a57e3499eb4a701af71e2d183d4eb64845365897d1aa7fa2e0c1"
+    },
+    {
+      "path": "audit.py",
+      "bytes": 3041,
+      "sha256": "397dfbed89d8618e91f8d966f3019f10dfd8e6b3b2841d0b837c950dc8ad261d"
+    },
+    {
+      "path": "render.py",
+      "bytes": 3103,
+      "sha256": "8b0b138b39e1e7998139678c8d71f290fb3f68401460718aec53b0a8515b3365"
+    },
+    {
+      "path": "export.py",
+      "bytes": 3253,
+      "sha256": "ec12abdc2fa414f7d2167d3aa26fd47cbd13810a6779da95003e02f45530d368"
+    },
+    {
+      "path": "build-report.json",
+      "bytes": 1126,
+      "sha256": "352da164434cad531cc6dc559c8cfeacff64a7300a291eb67e5e1354d4d68077"
+    },
+    {
+      "path": "walk-report.json",
+      "bytes": 7179,
+      "sha256": "0fdc3f732d07dcd55db1d525d2f6381a3bf06670b15e7e09a40d437063568fdf"
+    },
+    {
+      "path": "cold-audit.json",
+      "bytes": 744,
+      "sha256": "f9667d6b9515c4c5e9c90238bd304d8c486e30b9faec1fb2ac7e8d3ad8e397b8"
+    },
+    {
+      "path": "render-report.json",
+      "bytes": 348,
+      "sha256": "a99a0d4edd6585d1e97e96c064ea4772e61b64906a6b2705f03059b6f5adc3fd"
+    },
+    {
+      "path": "standalone-report.json",
+      "bytes": 365,
+      "sha256": "14082b1f9e546333c74ef112f67ea4e2fed1429783f48ed82bb96f15c6788856"
+    },
+    {
+      "path": "local-assets.json",
+      "bytes": 2692,
+      "sha256": "1b5aa3b8a82ec0a54b5785e7e89cf9d53ac3275cc597260c832b9cc4068ec8d8"
+    },
+    {
+      "path": "Full.png",
+      "bytes": 729616,
+      "sha256": "ac408eb04626ad018b24cb91a8b9301bce0bd7e9e9e5410da3f17851c1c2f971"
+    },
+    {
+      "path": "Face.png",
+      "bytes": 1008220,
+      "sha256": "107f1e5fa5d20b50fe4b83bcc2788063ab97b3b7f5a46d5594cf4e2ba14f2b27"
+    },
+    {
+      "path": "Gameplay.png",
+      "bytes": 1643475,
+      "sha256": "4cb9e62763c3c696b6c7a49c143ba9462d3de4839bcb070e2ef3b2d49e8168ce"
+    },
+    {
+      "path": "Walking.mp4",
+      "bytes": 148288,
+      "sha256": "76e92dd861d34e26d39ae32cc4bf593d1e12110cb7f6660e5323ec21155f4b2d"
+    },
+    {
+      "path": "README.md",
+      "bytes": 2427,
+      "sha256": "b738330034c5eb8ad8de0ef665216d27edc41aa49faec4e0cc2ae97eefa7410c"
+    },
+    {
+      "path": "Review.md",
+      "bytes": 2302,
+      "sha256": "eed891becc47fb63bff974ecc5635e109f9cda0b836efbc9b507ef8557d4d3cf"
+    }
+  ],
+  "scope": "Local licensed human acquisition and offline visual/motion study; source outfit and engine handoff remain unfinished."
+}

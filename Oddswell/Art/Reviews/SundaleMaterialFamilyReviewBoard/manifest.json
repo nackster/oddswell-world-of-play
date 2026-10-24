@@ -1,0 +1,673 @@
+{
+  "accepted_palette": [
+    "#315F79",
+    "#4D5051",
+    "#6D7F62",
+    "#A65F47",
+    "#B9A783",
+    "#C46D3B",
+    "#D8C8A9"
+  ],
+  "brands": [],
+  "catalogs": [],
+  "deterministic_builder": "build_sundale_material_family_review.py",
+  "engine": "BLENDER_EEVEE_NEXT",
+  "external_references": [],
+  "families": [
+    {
+      "family_id": "MATERIAL_FAMILY__WARM_LIMESTONE_STUCCO",
+      "name": "warm limestone stucco",
+      "palette_accent": null,
+      "palette_anchor": "#D8C8A9",
+      "procedural_pattern": "NOISE"
+    },
+    {
+      "family_id": "MATERIAL_FAMILY__MUTED_TERRACOTTA_STUCCO",
+      "name": "muted terracotta stucco",
+      "palette_accent": null,
+      "palette_anchor": "#A65F47",
+      "procedural_pattern": "NOISE"
+    },
+    {
+      "family_id": "MATERIAL_FAMILY__TEXTURED_CONCRETE",
+      "name": "textured concrete",
+      "palette_accent": "#4D5051",
+      "palette_anchor": "#D8C8A9",
+      "procedural_pattern": "NOISE"
+    },
+    {
+      "family_id": "MATERIAL_FAMILY__SAND_CONCRETE",
+      "name": "sand concrete",
+      "palette_accent": null,
+      "palette_anchor": "#B9A783",
+      "procedural_pattern": "NOISE"
+    },
+    {
+      "family_id": "MATERIAL_FAMILY__BRICK_PAVERS",
+      "name": "brick pavers",
+      "palette_accent": "#C46D3B",
+      "palette_anchor": "#A65F47",
+      "procedural_pattern": "BRICK"
+    },
+    {
+      "family_id": "MATERIAL_FAMILY__CHARCOAL_ASPHALT_SERVICE_SURFACE",
+      "name": "charcoal asphalt/service surface",
+      "palette_accent": null,
+      "palette_anchor": "#4D5051",
+      "procedural_pattern": "NOISE"
+    },
+    {
+      "family_id": "MATERIAL_FAMILY__PAINTED_METAL",
+      "name": "painted metal",
+      "palette_accent": null,
+      "palette_anchor": "#C46D3B",
+      "procedural_pattern": "WAVE"
+    },
+    {
+      "family_id": "MATERIAL_FAMILY__STOREFRONT_GLASS",
+      "name": "storefront glass",
+      "palette_accent": null,
+      "palette_anchor": "#315F79",
+      "procedural_pattern": "NOISE"
+    },
+    {
+      "family_id": "MATERIAL_FAMILY__COURT_SURFACE_LINES",
+      "name": "court surface/lines",
+      "palette_accent": "#D8C8A9",
+      "palette_anchor": "#315F79",
+      "procedural_pattern": "WAVE"
+    },
+    {
+      "family_id": "MATERIAL_FAMILY__FOLIAGE_TRUNK",
+      "name": "foliage/trunk",
+      "palette_accent": "#B9A783",
+      "palette_anchor": "#6D7F62",
+      "procedural_pattern": "NOISE"
+    }
+  ],
+  "files": {
+    "blend": {
+      "bytes": 1131810,
+      "file": "SundaleMaterialFamilyReviewBoard.blend",
+      "sha256": "4C64829B2D5645AB6BE0D5C975856F77AB566C7876FFF675359C65F957DF873D"
+    },
+    "provenance": {
+      "bytes": 866,
+      "file": "PROVENANCE.md",
+      "sha256": "365AF8DD9F3A39F910C0344152FAEA98B99B1735418C06106F28C6A4B0F7B7AC"
+    },
+    "script": {
+      "bytes": 38794,
+      "file": "build_sundale_material_family_review.py",
+      "sha256": "28F4433ED68B49D5B5AE8CF686E3A9A64B550D96029FCF344A577F24DF8BA09B"
+    }
+  },
+  "gameplay_changes": [],
+  "image_textures": [],
+  "interiors": [],
+  "lfs": {
+    "blend_required": true,
+    "pattern": "*.blend filter=lfs"
+  },
+  "limitations": [
+    "review-only material-family swatches, not production or final art",
+    "no placement, performance, accessibility, collision, interaction, service, catalog, brand, interior, or gameplay claim",
+    "owner acceptance and a separate production promotion/expansion gate remain required",
+    "no roadmap Phase 2 or beta-readiness authority"
+  ],
+  "phase": "Phase 1L.3h Sundale shared material-family review board",
+  "production_authority_preserved": {
+    "client_changed": false,
+    "config_changed": false,
+    "map_changed": false,
+    "package_changed": false,
+    "phase_1k_waived": false,
+    "prior_review_artifacts_changed": false,
+    "runtime_changed": false,
+    "tests_changed": false
+  },
+  "renders": [
+    {
+      "balanced_side_by_side_validated": false,
+      "built_in_family_label_count": 10,
+      "bytes": 1741891,
+      "camera_location_m": [
+        0.0,
+        0.05,
+        22.0
+      ],
+      "camera_target_m": [
+        0.0,
+        0.05,
+        0.0
+      ],
+      "family_ids": [
+        "MATERIAL_FAMILY__WARM_LIMESTONE_STUCCO",
+        "MATERIAL_FAMILY__MUTED_TERRACOTTA_STUCCO",
+        "MATERIAL_FAMILY__TEXTURED_CONCRETE",
+        "MATERIAL_FAMILY__SAND_CONCRETE",
+        "MATERIAL_FAMILY__BRICK_PAVERS",
+        "MATERIAL_FAMILY__CHARCOAL_ASPHALT_SERVICE_SURFACE",
+        "MATERIAL_FAMILY__PAINTED_METAL",
+        "MATERIAL_FAMILY__STOREFRONT_GLASS",
+        "MATERIAL_FAMILY__COURT_SURFACE_LINES",
+        "MATERIAL_FAMILY__FOLIAGE_TRUNK"
+      ],
+      "file": "renders/Unified_MaterialFamilyBoard.png",
+      "full_framing_validated": true,
+      "height": 1080,
+      "horizontal_unified_layout": "5_columns_x_2_rows",
+      "label_label_overlap_count": 0,
+      "label_plate_count": 10,
+      "label_swatch_overlap_count": 0,
+      "meaningful_pair_occupancy_validated": false,
+      "orthographic_scale": 24.8,
+      "pair_id": null,
+      "pair_presentation_positions_m": [],
+      "role": "UNIFIED_BOARD",
+      "sha256": "F97B9E98E358CE09354E250E740455FEFE41692B1DE84F484C239264A7A79348",
+      "short_label_mapping": {
+        "MATERIAL_FAMILY__BRICK_PAVERS": "BRICK\nPAVERS",
+        "MATERIAL_FAMILY__CHARCOAL_ASPHALT_SERVICE_SURFACE": "ASPHALT /\nSERVICE",
+        "MATERIAL_FAMILY__COURT_SURFACE_LINES": "COURT SURFACE /\nLINES",
+        "MATERIAL_FAMILY__FOLIAGE_TRUNK": "FOLIAGE /\nTRUNK",
+        "MATERIAL_FAMILY__MUTED_TERRACOTTA_STUCCO": "TERRACOTTA\nSTUCCO",
+        "MATERIAL_FAMILY__PAINTED_METAL": "PAINTED\nMETAL",
+        "MATERIAL_FAMILY__SAND_CONCRETE": "SAND\nCONCRETE",
+        "MATERIAL_FAMILY__STOREFRONT_GLASS": "STOREFRONT\nGLASS",
+        "MATERIAL_FAMILY__TEXTURED_CONCRETE": "TEXTURED\nCONCRETE",
+        "MATERIAL_FAMILY__WARM_LIMESTONE_STUCCO": "LIMESTONE\nSTUCCO"
+      },
+      "width": 1920
+    },
+    {
+      "balanced_side_by_side_validated": true,
+      "built_in_family_label_count": 10,
+      "bytes": 878144,
+      "camera_location_m": [
+        0.0,
+        0.05,
+        12.0
+      ],
+      "camera_target_m": [
+        0.0,
+        0.05,
+        0.0
+      ],
+      "family_ids": [
+        "MATERIAL_FAMILY__WARM_LIMESTONE_STUCCO",
+        "MATERIAL_FAMILY__MUTED_TERRACOTTA_STUCCO"
+      ],
+      "file": "renders/Pair_01_Stucco.png",
+      "full_framing_validated": true,
+      "height": 720,
+      "horizontal_unified_layout": "5_columns_x_2_rows",
+      "label_label_overlap_count": 0,
+      "label_plate_count": 10,
+      "label_swatch_overlap_count": 0,
+      "meaningful_pair_occupancy_validated": true,
+      "orthographic_scale": 9.0,
+      "pair_id": "PAIR_01_STUCCO",
+      "pair_presentation_positions_m": [
+        {
+          "family_id": "MATERIAL_FAMILY__WARM_LIMESTONE_STUCCO",
+          "label_center": [
+            -2.0,
+            -1.05,
+            0.255
+          ],
+          "swatch_center": [
+            -2.0,
+            0.5,
+            0.1
+          ]
+        },
+        {
+          "family_id": "MATERIAL_FAMILY__MUTED_TERRACOTTA_STUCCO",
+          "label_center": [
+            2.0,
+            -1.05,
+            0.255
+          ],
+          "swatch_center": [
+            2.0,
+            0.5,
+            0.1
+          ]
+        }
+      ],
+      "role": "PAIRED_CLOSEUP",
+      "sha256": "9DCEE004C1F0251222936F70A3147D97E5047DA173F739FA39AD3BC071FEE96E",
+      "short_label_mapping": {
+        "MATERIAL_FAMILY__BRICK_PAVERS": "BRICK\nPAVERS",
+        "MATERIAL_FAMILY__CHARCOAL_ASPHALT_SERVICE_SURFACE": "ASPHALT /\nSERVICE",
+        "MATERIAL_FAMILY__COURT_SURFACE_LINES": "COURT SURFACE /\nLINES",
+        "MATERIAL_FAMILY__FOLIAGE_TRUNK": "FOLIAGE /\nTRUNK",
+        "MATERIAL_FAMILY__MUTED_TERRACOTTA_STUCCO": "TERRACOTTA\nSTUCCO",
+        "MATERIAL_FAMILY__PAINTED_METAL": "PAINTED\nMETAL",
+        "MATERIAL_FAMILY__SAND_CONCRETE": "SAND\nCONCRETE",
+        "MATERIAL_FAMILY__STOREFRONT_GLASS": "STOREFRONT\nGLASS",
+        "MATERIAL_FAMILY__TEXTURED_CONCRETE": "TEXTURED\nCONCRETE",
+        "MATERIAL_FAMILY__WARM_LIMESTONE_STUCCO": "LIMESTONE\nSTUCCO"
+      },
+      "width": 1280
+    },
+    {
+      "balanced_side_by_side_validated": true,
+      "built_in_family_label_count": 10,
+      "bytes": 896341,
+      "camera_location_m": [
+        0.0,
+        0.05,
+        12.0
+      ],
+      "camera_target_m": [
+        0.0,
+        0.05,
+        0.0
+      ],
+      "family_ids": [
+        "MATERIAL_FAMILY__TEXTURED_CONCRETE",
+        "MATERIAL_FAMILY__SAND_CONCRETE"
+      ],
+      "file": "renders/Pair_02_Concrete.png",
+      "full_framing_validated": true,
+      "height": 720,
+      "horizontal_unified_layout": "5_columns_x_2_rows",
+      "label_label_overlap_count": 0,
+      "label_plate_count": 10,
+      "label_swatch_overlap_count": 0,
+      "meaningful_pair_occupancy_validated": true,
+      "orthographic_scale": 9.0,
+      "pair_id": "PAIR_02_CONCRETE",
+      "pair_presentation_positions_m": [
+        {
+          "family_id": "MATERIAL_FAMILY__TEXTURED_CONCRETE",
+          "label_center": [
+            -2.0,
+            -1.05,
+            0.255
+          ],
+          "swatch_center": [
+            -2.0,
+            0.5,
+            0.1
+          ]
+        },
+        {
+          "family_id": "MATERIAL_FAMILY__SAND_CONCRETE",
+          "label_center": [
+            2.0,
+            -1.05,
+            0.255
+          ],
+          "swatch_center": [
+            2.0,
+            0.5,
+            0.1
+          ]
+        }
+      ],
+      "role": "PAIRED_CLOSEUP",
+      "sha256": "37B91A1D7C7C076EBF987740E65E70894D2CCB8DF6A677635914D5A62413E601",
+      "short_label_mapping": {
+        "MATERIAL_FAMILY__BRICK_PAVERS": "BRICK\nPAVERS",
+        "MATERIAL_FAMILY__CHARCOAL_ASPHALT_SERVICE_SURFACE": "ASPHALT /\nSERVICE",
+        "MATERIAL_FAMILY__COURT_SURFACE_LINES": "COURT SURFACE /\nLINES",
+        "MATERIAL_FAMILY__FOLIAGE_TRUNK": "FOLIAGE /\nTRUNK",
+        "MATERIAL_FAMILY__MUTED_TERRACOTTA_STUCCO": "TERRACOTTA\nSTUCCO",
+        "MATERIAL_FAMILY__PAINTED_METAL": "PAINTED\nMETAL",
+        "MATERIAL_FAMILY__SAND_CONCRETE": "SAND\nCONCRETE",
+        "MATERIAL_FAMILY__STOREFRONT_GLASS": "STOREFRONT\nGLASS",
+        "MATERIAL_FAMILY__TEXTURED_CONCRETE": "TEXTURED\nCONCRETE",
+        "MATERIAL_FAMILY__WARM_LIMESTONE_STUCCO": "LIMESTONE\nSTUCCO"
+      },
+      "width": 1280
+    },
+    {
+      "balanced_side_by_side_validated": true,
+      "built_in_family_label_count": 10,
+      "bytes": 926669,
+      "camera_location_m": [
+        0.0,
+        0.05,
+        12.0
+      ],
+      "camera_target_m": [
+        0.0,
+        0.05,
+        0.0
+      ],
+      "family_ids": [
+        "MATERIAL_FAMILY__BRICK_PAVERS",
+        "MATERIAL_FAMILY__CHARCOAL_ASPHALT_SERVICE_SURFACE"
+      ],
+      "file": "renders/Pair_03_Ground.png",
+      "full_framing_validated": true,
+      "height": 720,
+      "horizontal_unified_layout": "5_columns_x_2_rows",
+      "label_label_overlap_count": 0,
+      "label_plate_count": 10,
+      "label_swatch_overlap_count": 0,
+      "meaningful_pair_occupancy_validated": true,
+      "orthographic_scale": 9.0,
+      "pair_id": "PAIR_03_GROUND",
+      "pair_presentation_positions_m": [
+        {
+          "family_id": "MATERIAL_FAMILY__BRICK_PAVERS",
+          "label_center": [
+            -2.0,
+            -1.05,
+            0.255
+          ],
+          "swatch_center": [
+            -2.0,
+            0.5,
+            0.1
+          ]
+        },
+        {
+          "family_id": "MATERIAL_FAMILY__CHARCOAL_ASPHALT_SERVICE_SURFACE",
+          "label_center": [
+            2.0,
+            -1.05,
+            0.255
+          ],
+          "swatch_center": [
+            2.0,
+            0.5,
+            0.1
+          ]
+        }
+      ],
+      "role": "PAIRED_CLOSEUP",
+      "sha256": "D9B0A0643820FD836AA6CF32E92FEB90472132AF05C5D4E12DE4B8453D3F964E",
+      "short_label_mapping": {
+        "MATERIAL_FAMILY__BRICK_PAVERS": "BRICK\nPAVERS",
+        "MATERIAL_FAMILY__CHARCOAL_ASPHALT_SERVICE_SURFACE": "ASPHALT /\nSERVICE",
+        "MATERIAL_FAMILY__COURT_SURFACE_LINES": "COURT SURFACE /\nLINES",
+        "MATERIAL_FAMILY__FOLIAGE_TRUNK": "FOLIAGE /\nTRUNK",
+        "MATERIAL_FAMILY__MUTED_TERRACOTTA_STUCCO": "TERRACOTTA\nSTUCCO",
+        "MATERIAL_FAMILY__PAINTED_METAL": "PAINTED\nMETAL",
+        "MATERIAL_FAMILY__SAND_CONCRETE": "SAND\nCONCRETE",
+        "MATERIAL_FAMILY__STOREFRONT_GLASS": "STOREFRONT\nGLASS",
+        "MATERIAL_FAMILY__TEXTURED_CONCRETE": "TEXTURED\nCONCRETE",
+        "MATERIAL_FAMILY__WARM_LIMESTONE_STUCCO": "LIMESTONE\nSTUCCO"
+      },
+      "width": 1280
+    },
+    {
+      "balanced_side_by_side_validated": true,
+      "built_in_family_label_count": 10,
+      "bytes": 948943,
+      "camera_location_m": [
+        0.0,
+        0.05,
+        12.0
+      ],
+      "camera_target_m": [
+        0.0,
+        0.05,
+        0.0
+      ],
+      "family_ids": [
+        "MATERIAL_FAMILY__PAINTED_METAL",
+        "MATERIAL_FAMILY__STOREFRONT_GLASS"
+      ],
+      "file": "renders/Pair_04_Facade.png",
+      "full_framing_validated": true,
+      "height": 720,
+      "horizontal_unified_layout": "5_columns_x_2_rows",
+      "label_label_overlap_count": 0,
+      "label_plate_count": 10,
+      "label_swatch_overlap_count": 0,
+      "meaningful_pair_occupancy_validated": true,
+      "orthographic_scale": 9.0,
+      "pair_id": "PAIR_04_FACADE",
+      "pair_presentation_positions_m": [
+        {
+          "family_id": "MATERIAL_FAMILY__PAINTED_METAL",
+          "label_center": [
+            -2.0,
+            -1.05,
+            0.255
+          ],
+          "swatch_center": [
+            -2.0,
+            0.5,
+            0.1
+          ]
+        },
+        {
+          "family_id": "MATERIAL_FAMILY__STOREFRONT_GLASS",
+          "label_center": [
+            2.0,
+            -1.05,
+            0.255
+          ],
+          "swatch_center": [
+            2.0,
+            0.5,
+            0.1
+          ]
+        }
+      ],
+      "role": "PAIRED_CLOSEUP",
+      "sha256": "1CC9318BD14184ADE3BC76FECAB9430E8DEE297BA5F9679C8956E24B27285C60",
+      "short_label_mapping": {
+        "MATERIAL_FAMILY__BRICK_PAVERS": "BRICK\nPAVERS",
+        "MATERIAL_FAMILY__CHARCOAL_ASPHALT_SERVICE_SURFACE": "ASPHALT /\nSERVICE",
+        "MATERIAL_FAMILY__COURT_SURFACE_LINES": "COURT SURFACE /\nLINES",
+        "MATERIAL_FAMILY__FOLIAGE_TRUNK": "FOLIAGE /\nTRUNK",
+        "MATERIAL_FAMILY__MUTED_TERRACOTTA_STUCCO": "TERRACOTTA\nSTUCCO",
+        "MATERIAL_FAMILY__PAINTED_METAL": "PAINTED\nMETAL",
+        "MATERIAL_FAMILY__SAND_CONCRETE": "SAND\nCONCRETE",
+        "MATERIAL_FAMILY__STOREFRONT_GLASS": "STOREFRONT\nGLASS",
+        "MATERIAL_FAMILY__TEXTURED_CONCRETE": "TEXTURED\nCONCRETE",
+        "MATERIAL_FAMILY__WARM_LIMESTONE_STUCCO": "LIMESTONE\nSTUCCO"
+      },
+      "width": 1280
+    },
+    {
+      "balanced_side_by_side_validated": true,
+      "built_in_family_label_count": 10,
+      "bytes": 900388,
+      "camera_location_m": [
+        0.0,
+        0.05,
+        12.0
+      ],
+      "camera_target_m": [
+        0.0,
+        0.05,
+        0.0
+      ],
+      "family_ids": [
+        "MATERIAL_FAMILY__COURT_SURFACE_LINES",
+        "MATERIAL_FAMILY__FOLIAGE_TRUNK"
+      ],
+      "file": "renders/Pair_05_CourtLandscape.png",
+      "full_framing_validated": true,
+      "height": 720,
+      "horizontal_unified_layout": "5_columns_x_2_rows",
+      "label_label_overlap_count": 0,
+      "label_plate_count": 10,
+      "label_swatch_overlap_count": 0,
+      "meaningful_pair_occupancy_validated": true,
+      "orthographic_scale": 9.0,
+      "pair_id": "PAIR_05_COURT_LANDSCAPE",
+      "pair_presentation_positions_m": [
+        {
+          "family_id": "MATERIAL_FAMILY__COURT_SURFACE_LINES",
+          "label_center": [
+            -2.0,
+            -1.05,
+            0.255
+          ],
+          "swatch_center": [
+            -2.0,
+            0.5,
+            0.1
+          ]
+        },
+        {
+          "family_id": "MATERIAL_FAMILY__FOLIAGE_TRUNK",
+          "label_center": [
+            2.0,
+            -1.05,
+            0.255
+          ],
+          "swatch_center": [
+            2.0,
+            0.5,
+            0.1
+          ]
+        }
+      ],
+      "role": "PAIRED_CLOSEUP",
+      "sha256": "68596595FD9478992CDBF992278C55C542B26B0284642389C4650A3DB0EF5552",
+      "short_label_mapping": {
+        "MATERIAL_FAMILY__BRICK_PAVERS": "BRICK\nPAVERS",
+        "MATERIAL_FAMILY__CHARCOAL_ASPHALT_SERVICE_SURFACE": "ASPHALT /\nSERVICE",
+        "MATERIAL_FAMILY__COURT_SURFACE_LINES": "COURT SURFACE /\nLINES",
+        "MATERIAL_FAMILY__FOLIAGE_TRUNK": "FOLIAGE /\nTRUNK",
+        "MATERIAL_FAMILY__MUTED_TERRACOTTA_STUCCO": "TERRACOTTA\nSTUCCO",
+        "MATERIAL_FAMILY__PAINTED_METAL": "PAINTED\nMETAL",
+        "MATERIAL_FAMILY__SAND_CONCRETE": "SAND\nCONCRETE",
+        "MATERIAL_FAMILY__STOREFRONT_GLASS": "STOREFRONT\nGLASS",
+        "MATERIAL_FAMILY__TEXTURED_CONCRETE": "TEXTURED\nCONCRETE",
+        "MATERIAL_FAMILY__WARM_LIMESTONE_STUCCO": "LIMESTONE\nSTUCCO"
+      },
+      "width": 1280
+    }
+  ],
+  "review_contract": {
+    "blender_native_procedural_nodes_only": true,
+    "bounds_m": {
+      "x": [
+        -11.41,
+        11.41
+      ],
+      "y": [
+        -3.81,
+        3.81
+      ],
+      "z": [
+        -0.21,
+        0.31
+      ]
+    },
+    "built_in_family_label_count": 10,
+    "family_count": 10,
+    "family_ids": [
+      "MATERIAL_FAMILY__WARM_LIMESTONE_STUCCO",
+      "MATERIAL_FAMILY__MUTED_TERRACOTTA_STUCCO",
+      "MATERIAL_FAMILY__TEXTURED_CONCRETE",
+      "MATERIAL_FAMILY__SAND_CONCRETE",
+      "MATERIAL_FAMILY__BRICK_PAVERS",
+      "MATERIAL_FAMILY__CHARCOAL_ASPHALT_SERVICE_SURFACE",
+      "MATERIAL_FAMILY__PAINTED_METAL",
+      "MATERIAL_FAMILY__STOREFRONT_GLASS",
+      "MATERIAL_FAMILY__COURT_SURFACE_LINES",
+      "MATERIAL_FAMILY__FOLIAGE_TRUNK"
+    ],
+    "family_names": [
+      "warm limestone stucco",
+      "muted terracotta stucco",
+      "textured concrete",
+      "sand concrete",
+      "brick pavers",
+      "charcoal asphalt/service surface",
+      "painted metal",
+      "storefront glass",
+      "court surface/lines",
+      "foliage/trunk"
+    ],
+    "full_framing_validated": true,
+    "horizontal_unified_layout": "5_columns_x_2_rows",
+    "image_textures": 0,
+    "label_label_overlap_count": 0,
+    "label_plate_count": 10,
+    "label_swatch_overlap_count": 0,
+    "native_geometry_only": true,
+    "node_allowlist": [
+      "ShaderNodeBsdfPrincipled",
+      "ShaderNodeBump",
+      "ShaderNodeOutputMaterial",
+      "ShaderNodeTexBrick",
+      "ShaderNodeTexNoise",
+      "ShaderNodeTexWave",
+      "ShaderNodeValToRGB"
+    ],
+    "one_swatch_per_family": true,
+    "pair_contract": [
+      {
+        "family_ids": [
+          "MATERIAL_FAMILY__WARM_LIMESTONE_STUCCO",
+          "MATERIAL_FAMILY__MUTED_TERRACOTTA_STUCCO"
+        ],
+        "pair_id": "PAIR_01_STUCCO"
+      },
+      {
+        "family_ids": [
+          "MATERIAL_FAMILY__TEXTURED_CONCRETE",
+          "MATERIAL_FAMILY__SAND_CONCRETE"
+        ],
+        "pair_id": "PAIR_02_CONCRETE"
+      },
+      {
+        "family_ids": [
+          "MATERIAL_FAMILY__BRICK_PAVERS",
+          "MATERIAL_FAMILY__CHARCOAL_ASPHALT_SERVICE_SURFACE"
+        ],
+        "pair_id": "PAIR_03_GROUND"
+      },
+      {
+        "family_ids": [
+          "MATERIAL_FAMILY__PAINTED_METAL",
+          "MATERIAL_FAMILY__STOREFRONT_GLASS"
+        ],
+        "pair_id": "PAIR_04_FACADE"
+      },
+      {
+        "family_ids": [
+          "MATERIAL_FAMILY__COURT_SURFACE_LINES",
+          "MATERIAL_FAMILY__FOLIAGE_TRUNK"
+        ],
+        "pair_id": "PAIR_05_COURT_LANDSCAPE"
+      }
+    ],
+    "short_label_mapping": {
+      "MATERIAL_FAMILY__BRICK_PAVERS": "BRICK\nPAVERS",
+      "MATERIAL_FAMILY__CHARCOAL_ASPHALT_SERVICE_SURFACE": "ASPHALT /\nSERVICE",
+      "MATERIAL_FAMILY__COURT_SURFACE_LINES": "COURT SURFACE /\nLINES",
+      "MATERIAL_FAMILY__FOLIAGE_TRUNK": "FOLIAGE /\nTRUNK",
+      "MATERIAL_FAMILY__MUTED_TERRACOTTA_STUCCO": "TERRACOTTA\nSTUCCO",
+      "MATERIAL_FAMILY__PAINTED_METAL": "PAINTED\nMETAL",
+      "MATERIAL_FAMILY__SAND_CONCRETE": "SAND\nCONCRETE",
+      "MATERIAL_FAMILY__STOREFRONT_GLASS": "STOREFRONT\nGLASS",
+      "MATERIAL_FAMILY__TEXTURED_CONCRETE": "TEXTURED\nCONCRETE",
+      "MATERIAL_FAMILY__WARM_LIMESTONE_STUCCO": "LIMESTONE\nSTUCCO"
+    },
+    "swatch_count": 10,
+    "swatch_envelope_m": [
+      2.0,
+      2.0,
+      0.2
+    ],
+    "triangle_ceiling_per_sample": 256,
+    "triangle_counts": {
+      "MATERIAL_FAMILY__BRICK_PAVERS": 12,
+      "MATERIAL_FAMILY__CHARCOAL_ASPHALT_SERVICE_SURFACE": 12,
+      "MATERIAL_FAMILY__COURT_SURFACE_LINES": 12,
+      "MATERIAL_FAMILY__FOLIAGE_TRUNK": 12,
+      "MATERIAL_FAMILY__MUTED_TERRACOTTA_STUCCO": 12,
+      "MATERIAL_FAMILY__PAINTED_METAL": 12,
+      "MATERIAL_FAMILY__SAND_CONCRETE": 12,
+      "MATERIAL_FAMILY__STOREFRONT_GLASS": 12,
+      "MATERIAL_FAMILY__TEXTURED_CONCRETE": 12,
+      "MATERIAL_FAMILY__WARM_LIMESTONE_STUCCO": 12
+    }
+  },
+  "status": "noncanonical_owner_review_board"
+}

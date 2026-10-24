@@ -1,0 +1,9 @@
+# Posterior hip and sewn cotton patch checkpoint
+
+`SeatFlow.blend` continues `ChestContourCandidate/ChestContour.blend`. Graded posterior seat controls transfer a fraction of leg influence into the pelvis while preserving total native influence. A local bend-radius modifier rounds the tight rear-seat curvature after authored folds. Rear patches use coherent patterns anchored to their moving mouths, raised 20 mm with nominal 125 Ã— 95 mm dimensions. The patch grid bends to the actual visible shorts shell rather than stretching with every underlying fold.
+
+Rebuild offline with Blender 4.5.5 by running `build.py`, `rear-softening.py`, then `pocket-clearance.py`, one Blender process at a time. `audit.py` performs cold source/candidate custody and the complete 49-frame garment checks. `focused-screen.py` reuses its candidate screen to collect diagnostic failures. `measure-walk.py` compares actual rendered pocket-atlas endpoint dimensions. `render.py` produces matched rear/front/full/gameplay views; `render-walk.py -- --preview` produces 24 frames for the 12 fps preview. Scripts resolve the repository through `.git` and require their preserved source and audit helpers.
+
+Original mesh controls, old keys/UVs/attributes, licensed packed maps and native walking rig remain editable. Declared changes are seat bone-weight blending, one posterior cloth group/modifier and rear-patch pattern/fitting modifiers with denser subdivision. The final fit projects onto the visible garment along the native rear-to-front axis, with smoothed angle-based clearance before pocket thickness. This is authored cloth fitting for the reviewed walk, not a physical simulation or general engine-ready collision solution.
+
+The full human/landscape goal remains active. Separate starter-outfit acceptance, stopped engine handoff and later first-hour/Phase 1L/beta gates retain their status.

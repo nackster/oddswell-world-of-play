@@ -1,0 +1,13 @@
+# Short-crop and fitted-collar human candidate
+
+This separate editable Blender scene starts from the exact [continuous OddsWell signal candidate](../README.md), SHA-256 `5E1875679FD06888374E420E05C038B5BD647ED00EA316AC5B36BEB140E81585`. Run `build_short_crop_collar_candidate.py` in Blender 4.5 to reproduce `OddsWell_Short_Crop_Collar_Candidate.blend`, SHA-256 `B0210791690C82BFF6A67BE271F4BBFDEC2616FCE199C4237F75A1067938AD22`. The prior scene, anatomy source and licensing remain unchanged.
+
+The retained 72,000 tapered scalp fibers are 2.7 times longer, producing a roughly 3–7 mm short crop rather than a bald-looking surface. Warmer fiber shades and a softly faded stubble field on the anatomical head keep the scalp from showing as a smooth, single skin color. No hair-cap mesh replaces the source head. A new editable slate fabric facing joins the jacket's 88-vertex neck opening to the standing collar's 384-vertex lower ring. Its sampled radial width is 4–25 mm; the fitted edges lie within 1.2 mm of the coat and collar surfaces. This removes the black neckline void visible in the earlier close views.
+
+The 64-sample native Cycles reviews are [head rear](Short_Crop_Collar_Head_Rear.png), [head front](Short_Crop_Collar_Head_Front.png), [full rear](Short_Crop_Collar_Full_Rear.png), and [1600 × 900 gameplay](Short_Crop_Collar_Gameplay.png). A cold reopen passes the existing street-slice scene check: 31 packed texture maps, ten cameras, connected jacket and shorts, three shorts openings, the original 72,000 scalp strands, 2.48 mm sampled shorts-to-thigh clearance, 4.55 mm free-jacket-to-support clearance and the planted right sole at 51 mm. The builder also checks the new facing's ring topology and radial fit. No runtime integration is claimed.
+
+This is a human-silhouette improvement, not final realism acceptance. The standing pose still has rigid-looking hands and smooth, broad sleeves; the back lacks convincing compression and fabric folds, the shorts need stronger weight and contact, and the face needs more natural expression in close frontal review. The next pass should build a joint-aware walking arm/hand pose and garment drape that preserve the signal stripe and fitted neckline, then assess close, full-body and gameplay renders against the original concept.
+
+The [arm gesture review](ArmGestureReview.md) records a later, smaller elbow-bend study. It passed the static checks but was rejected visually because the cuff and hand remained unnatural.
+
+The next retained [seat and upper-thigh drape candidate](SeatDrapeCandidate/README.md) adds modest connected-cloth volume and folds to the shorts while preserving both back pocket seams.

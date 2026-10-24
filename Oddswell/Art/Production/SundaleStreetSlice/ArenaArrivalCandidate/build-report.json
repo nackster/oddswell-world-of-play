@@ -1,0 +1,801 @@
+{
+  "candidate_sha256": "4be22d54515ef82276331c3286147e5f77dad9ddc2491d4e29d39eaf720cd524",
+  "source_sha256": "e2559843759bcf76db05c0e97caf790e1f012d5ccfe9cb01db2f5344811a8f94",
+  "changed_visibility": [
+    {
+      "name": "Arena | curtain wall panel.048",
+      "old_hide_render": false
+    },
+    {
+      "name": "Arena | curtain wall panel.049",
+      "old_hide_render": false
+    },
+    {
+      "name": "Arena | curtain wall panel.050",
+      "old_hide_render": false
+    },
+    {
+      "name": "Arena | curtain wall panel.051",
+      "old_hide_render": false
+    },
+    {
+      "name": "Arena | curtain wall panel.052",
+      "old_hide_render": false
+    },
+    {
+      "name": "Arena | curtain wall panel.053",
+      "old_hide_render": false
+    },
+    {
+      "name": "Arena | curtain wall panel.054",
+      "old_hide_render": false
+    },
+    {
+      "name": "Arena | curtain wall panel.055",
+      "old_hide_render": false
+    },
+    {
+      "name": "Arena | curtain wall panel.056",
+      "old_hide_render": false
+    },
+    {
+      "name": "Arena | curtain wall panel.057",
+      "old_hide_render": false
+    },
+    {
+      "name": "Arena | curtain wall panel.058",
+      "old_hide_render": false
+    },
+    {
+      "name": "Arena | curtain wall panel.059",
+      "old_hide_render": false
+    },
+    {
+      "name": "Arena | curtain wall panel.060",
+      "old_hide_render": false
+    },
+    {
+      "name": "Arena | curtain wall panel.061",
+      "old_hide_render": false
+    },
+    {
+      "name": "Arena | curtain wall panel.062",
+      "old_hide_render": false
+    },
+    {
+      "name": "Arena | curtain wall panel.063",
+      "old_hide_render": false
+    },
+    {
+      "name": "Arena | curtain wall panel.064",
+      "old_hide_render": false
+    },
+    {
+      "name": "Arena | curtain wall panel.065",
+      "old_hide_render": false
+    },
+    {
+      "name": "Arena | curtain wall panel.066",
+      "old_hide_render": false
+    },
+    {
+      "name": "Arena | curtain wall panel.067",
+      "old_hide_render": false
+    },
+    {
+      "name": "Arena | curtain wall panel.068",
+      "old_hide_render": false
+    },
+    {
+      "name": "Arena | curtain wall panel.069",
+      "old_hide_render": false
+    },
+    {
+      "name": "Arena | curtain wall mullion.051",
+      "old_hide_render": false
+    },
+    {
+      "name": "Arena | curtain wall panel.070",
+      "old_hide_render": false
+    },
+    {
+      "name": "Arena | curtain wall mullion.052",
+      "old_hide_render": false
+    },
+    {
+      "name": "Arena | curtain wall panel.071",
+      "old_hide_render": false
+    },
+    {
+      "name": "Arena | curtain wall mullion.053",
+      "old_hide_render": false
+    },
+    {
+      "name": "Arena | curtain wall panel.072",
+      "old_hide_render": false
+    },
+    {
+      "name": "Arena | curtain wall panel.073",
+      "old_hide_render": false
+    },
+    {
+      "name": "Arena | curtain wall mullion.054",
+      "old_hide_render": false
+    },
+    {
+      "name": "Arena | curtain wall panel.074",
+      "old_hide_render": false
+    },
+    {
+      "name": "Arena | curtain wall mullion.055",
+      "old_hide_render": false
+    },
+    {
+      "name": "Arena | curtain wall panel.075",
+      "old_hide_render": false
+    },
+    {
+      "name": "Arena | curtain wall mullion.056",
+      "old_hide_render": false
+    },
+    {
+      "name": "Arena | curtain wall panel.076",
+      "old_hide_render": false
+    },
+    {
+      "name": "Arena | curtain wall panel.077",
+      "old_hide_render": false
+    },
+    {
+      "name": "Arena | curtain wall panel.078",
+      "old_hide_render": false
+    },
+    {
+      "name": "Arena | curtain wall panel.079",
+      "old_hide_render": false
+    },
+    {
+      "name": "Arena | curtain wall panel.080",
+      "old_hide_render": false
+    },
+    {
+      "name": "Arena | curtain wall panel.081",
+      "old_hide_render": false
+    },
+    {
+      "name": "Arena | curtain wall panel.082",
+      "old_hide_render": false
+    },
+    {
+      "name": "Arena | curtain wall panel.083",
+      "old_hide_render": false
+    },
+    {
+      "name": "Arena | curtain wall panel.084",
+      "old_hide_render": false
+    },
+    {
+      "name": "Arena | curtain wall panel.085",
+      "old_hide_render": false
+    },
+    {
+      "name": "Arena | curtain wall panel.086",
+      "old_hide_render": false
+    },
+    {
+      "name": "Arena | curtain wall panel.087",
+      "old_hide_render": false
+    },
+    {
+      "name": "Arena | curtain wall panel.088",
+      "old_hide_render": false
+    },
+    {
+      "name": "Arena | curtain wall panel.089",
+      "old_hide_render": false
+    },
+    {
+      "name": "Arena | curtain wall panel.090",
+      "old_hide_render": false
+    },
+    {
+      "name": "Arena | curtain wall panel.091",
+      "old_hide_render": false
+    },
+    {
+      "name": "Arena | curtain wall panel.092",
+      "old_hide_render": false
+    },
+    {
+      "name": "Arena | curtain wall panel.093",
+      "old_hide_render": false
+    },
+    {
+      "name": "Arena | curtain wall panel.094",
+      "old_hide_render": false
+    },
+    {
+      "name": "Arena | curtain wall panel.095",
+      "old_hide_render": false
+    },
+    {
+      "name": "Arena | limestone angled column.018",
+      "old_hide_render": false
+    },
+    {
+      "name": "Arena | horizontal ring",
+      "old_hide_render": false
+    },
+    {
+      "name": "Arena | signal course",
+      "old_hide_render": false
+    },
+    {
+      "name": "Arena | interior concourse edge",
+      "old_hide_render": false
+    },
+    {
+      "name": "Arena | interior concourse edge.001",
+      "old_hide_render": false
+    },
+    {
+      "name": "Arena | interior concourse edge.002",
+      "old_hide_render": false
+    }
+  ],
+  "added_objects": [
+    "Arrival | brushed door pull",
+    "Arrival | brushed door pull.001",
+    "Arrival | brushed door pull.002",
+    "Arrival | brushed door pull.003",
+    "Arrival | brushed door pull.004",
+    "Arrival | brushed door pull.005",
+    "Arrival | canopy graphite soffit",
+    "Arrival | central passage ceiling",
+    "Arrival | central passage floor",
+    "Arrival | central passage side wall",
+    "Arrival | central passage side wall.001",
+    "Arrival | curved concourse back wall",
+    "Arrival | curved concourse floor 0",
+    "Arrival | curved concourse floor 1",
+    "Arrival | curved concourse floor 2",
+    "Arrival | distant passage wall",
+    "Arrival | entrance canopy",
+    "Arrival | entry threshold",
+    "Arrival | front concourse handrail",
+    "Arrival | front concourse handrail.001",
+    "Arrival | front glazed bay",
+    "Arrival | front glazed bay.001",
+    "Arrival | front glazed bay.002",
+    "Arrival | front glazed bay.003",
+    "Arrival | front glazed bay.004",
+    "Arrival | front glazed bay.005",
+    "Arrival | front glazed bay.006",
+    "Arrival | front glazed bay.007",
+    "Arrival | front glazed bay.008",
+    "Arrival | front glazed bay.009",
+    "Arrival | front glazed bay.010",
+    "Arrival | front glazed bay.011",
+    "Arrival | front glazed bay.012",
+    "Arrival | front glazed bay.013",
+    "Arrival | front glazed bay.014",
+    "Arrival | front glazed bay.015",
+    "Arrival | front glazed bay.016",
+    "Arrival | front glazed bay.017",
+    "Arrival | front glazed bay.018",
+    "Arrival | front glazed bay.019",
+    "Arrival | front glazed bay.020",
+    "Arrival | front glazed bay.021",
+    "Arrival | front glazed bay.022",
+    "Arrival | front glazed bay.023",
+    "Arrival | front glazed bay.024",
+    "Arrival | front glazed bay.025",
+    "Arrival | front glazed bay.026",
+    "Arrival | front glazed bay.027",
+    "Arrival | front glazed bay.028",
+    "Arrival | front glazed bay.029",
+    "Arrival | front glazed bay.030",
+    "Arrival | front glazed bay.031",
+    "Arrival | front glazed bay.032",
+    "Arrival | front glazed bay.033",
+    "Arrival | front glazed bay.034",
+    "Arrival | front glazed bay.035",
+    "Arrival | front glazed bay.036",
+    "Arrival | front glazed bay.037",
+    "Arrival | front glazed bay.038",
+    "Arrival | front glazed bay.039",
+    "Arrival | front glazed bay.040",
+    "Arrival | front glazed bay.041",
+    "Arrival | front glazed bay.042",
+    "Arrival | front glazed bay.043",
+    "Arrival | front glazed bay.044",
+    "Arrival | front glazed bay.045",
+    "Arrival | front glazed bay.046",
+    "Arrival | front glazed bay.047",
+    "Arrival | front rail baluster",
+    "Arrival | front rail baluster.001",
+    "Arrival | front rail baluster.002",
+    "Arrival | front rail baluster.003",
+    "Arrival | front rail baluster.004",
+    "Arrival | front rail baluster.005",
+    "Arrival | front rail baluster.006",
+    "Arrival | front rail baluster.007",
+    "Arrival | front rail baluster.008",
+    "Arrival | front rail baluster.009",
+    "Arrival | front rail baluster.010",
+    "Arrival | front rail baluster.011",
+    "Arrival | front rail baluster.012",
+    "Arrival | front rail baluster.013",
+    "Arrival | front rail baluster.014",
+    "Arrival | front rail baluster.015",
+    "Arrival | front rail baluster.016",
+    "Arrival | front rail baluster.017",
+    "Arrival | front rail baluster.018",
+    "Arrival | front rail baluster.019",
+    "Arrival | front rail baluster.020",
+    "Arrival | front rail baluster.021",
+    "Arrival | front rail baluster.022",
+    "Arrival | front rail baluster.023",
+    "Arrival | front rail baluster.024",
+    "Arrival | front rail baluster.025",
+    "Arrival | front rail baluster.026",
+    "Arrival | front rail baluster.027",
+    "Arrival | front rail baluster.028",
+    "Arrival | front rail baluster.029",
+    "Arrival | front rail baluster.030",
+    "Arrival | front rail baluster.031",
+    "Arrival | front rail baluster.032",
+    "Arrival | front rail baluster.033",
+    "Arrival | front rail baluster.034",
+    "Arrival | front rail baluster.035",
+    "Arrival | front rail baluster.036",
+    "Arrival | front rail baluster.037",
+    "Arrival | front rail baluster.038",
+    "Arrival | front rail baluster.039",
+    "Arrival | front rail baluster.040",
+    "Arrival | front rail baluster.041",
+    "Arrival | front rail baluster.042",
+    "Arrival | front rail baluster.043",
+    "Arrival | front rail baluster.044",
+    "Arrival | front rail baluster.045",
+    "Arrival | front rail baluster.046",
+    "Arrival | front rail baluster.047",
+    "Arrival | front rail baluster.048",
+    "Arrival | front rail baluster.049",
+    "Arrival | front rail baluster.050",
+    "Arrival | front rail baluster.051",
+    "Arrival | front rail baluster.052",
+    "Arrival | front rail baluster.053",
+    "Arrival | front rail baluster.054",
+    "Arrival | front rail baluster.055",
+    "Arrival | front rail baluster.056",
+    "Arrival | front rail baluster.057",
+    "Arrival | front rail baluster.058",
+    "Arrival | front rail baluster.059",
+    "Arrival | front rail baluster.060",
+    "Arrival | front rail baluster.061",
+    "Arrival | front rail baluster.062",
+    "Arrival | front rail baluster.063",
+    "Arrival | front rail baluster.064",
+    "Arrival | front rail baluster.065",
+    "Arrival | graphite door rail",
+    "Arrival | graphite door rail.001",
+    "Arrival | graphite door rail.002",
+    "Arrival | graphite door rail.003",
+    "Arrival | graphite door rail.004",
+    "Arrival | graphite door rail.005",
+    "Arrival | graphite door rail.006",
+    "Arrival | graphite door rail.007",
+    "Arrival | graphite door rail.008",
+    "Arrival | graphite door rail.009",
+    "Arrival | graphite door rail.010",
+    "Arrival | graphite door rail.011",
+    "Arrival | graphite door stile",
+    "Arrival | graphite door stile.001",
+    "Arrival | graphite door stile.002",
+    "Arrival | graphite door stile.003",
+    "Arrival | graphite door stile.004",
+    "Arrival | graphite door stile.005",
+    "Arrival | graphite door stile.006",
+    "Arrival | graphite door stile.007",
+    "Arrival | graphite door stile.008",
+    "Arrival | graphite door stile.009",
+    "Arrival | graphite door stile.010",
+    "Arrival | graphite door stile.011",
+    "Arrival | inner concourse handrail",
+    "Arrival | inner concourse handrail.001",
+    "Arrival | inner rail baluster",
+    "Arrival | inner rail baluster.001",
+    "Arrival | inner rail baluster.002",
+    "Arrival | inner rail baluster.003",
+    "Arrival | inner rail baluster.004",
+    "Arrival | inner rail baluster.005",
+    "Arrival | inner rail baluster.006",
+    "Arrival | inner rail baluster.007",
+    "Arrival | inner rail baluster.008",
+    "Arrival | inner rail baluster.009",
+    "Arrival | inner rail baluster.010",
+    "Arrival | inner rail baluster.011",
+    "Arrival | inner rail baluster.012",
+    "Arrival | inner rail baluster.013",
+    "Arrival | inner rail baluster.014",
+    "Arrival | inner rail baluster.015",
+    "Arrival | inner rail baluster.016",
+    "Arrival | inner rail baluster.017",
+    "Arrival | inner rail baluster.018",
+    "Arrival | inner rail baluster.019",
+    "Arrival | inner rail baluster.020",
+    "Arrival | inner rail baluster.021",
+    "Arrival | inner rail baluster.022",
+    "Arrival | inner rail baluster.023",
+    "Arrival | inner rail baluster.024",
+    "Arrival | inner rail baluster.025",
+    "Arrival | inner rail baluster.026",
+    "Arrival | inner rail baluster.027",
+    "Arrival | inner rail baluster.028",
+    "Arrival | inner rail baluster.029",
+    "Arrival | inner rail baluster.030",
+    "Arrival | inner rail baluster.031",
+    "Arrival | inner rail baluster.032",
+    "Arrival | inner rail baluster.033",
+    "Arrival | inner rail baluster.034",
+    "Arrival | inner rail baluster.035",
+    "Arrival | inner rail baluster.036",
+    "Arrival | inner rail baluster.037",
+    "Arrival | inner rail baluster.038",
+    "Arrival | inner rail baluster.039",
+    "Arrival | inner rail baluster.040",
+    "Arrival | inner rail baluster.041",
+    "Arrival | inner rail baluster.042",
+    "Arrival | inner rail baluster.043",
+    "Arrival | inner rail baluster.044",
+    "Arrival | inner rail baluster.045",
+    "Arrival | inner rail baluster.046",
+    "Arrival | inner rail baluster.047",
+    "Arrival | inner rail baluster.048",
+    "Arrival | inner rail baluster.049",
+    "Arrival | inner rail baluster.050",
+    "Arrival | inner rail baluster.051",
+    "Arrival | inner rail baluster.052",
+    "Arrival | inner rail baluster.053",
+    "Arrival | inner rail baluster.054",
+    "Arrival | inner rail baluster.055",
+    "Arrival | inner rail baluster.056",
+    "Arrival | inner rail baluster.057",
+    "Arrival | inner rail baluster.058",
+    "Arrival | inner rail baluster.059",
+    "Arrival | inner rail baluster.060",
+    "Arrival | inner rail baluster.061",
+    "Arrival | inner rail baluster.062",
+    "Arrival | inner rail baluster.063",
+    "Arrival | inner rail baluster.064",
+    "Arrival | inner rail baluster.065",
+    "Arrival | inset door transom",
+    "Arrival | inset door transom.001",
+    "Arrival | inset door transom.002",
+    "Arrival | inset glass door",
+    "Arrival | inset glass door.001",
+    "Arrival | inset glass door.002",
+    "Arrival | inset glass door.003",
+    "Arrival | inset glass door.004",
+    "Arrival | inset glass door.005",
+    "Arrival | interior stone pier",
+    "Arrival | interior stone pier.001",
+    "Arrival | interior stone pier.002",
+    "Arrival | interior stone pier.003",
+    "Arrival | open limestone base",
+    "Arrival | open teal course",
+    "Arrival | physical arena lettering",
+    "Arrival | physical arena lettering.001",
+    "Arrival | physical LED diffuser",
+    "Arrival | physical LED diffuser.001",
+    "Arrival | physical LED diffuser.002",
+    "Arrival | physical LED diffuser.003",
+    "Arrival | physical LED diffuser.004",
+    "Arrival | physical LED diffuser.005",
+    "Arrival | physical LED diffuser.006",
+    "Arrival | physical LED diffuser.007",
+    "Arrival | physical LED diffuser.008",
+    "Arrival | physical LED diffuser.009",
+    "Arrival | physical LED diffuser.010",
+    "Arrival | physical LED diffuser.011",
+    "Arrival | physical LED diffuser.012",
+    "Arrival | physical LED diffuser.013",
+    "Arrival | physical LED diffuser.014",
+    "Arrival | recessed light trim",
+    "Arrival | recessed light trim.001",
+    "Arrival | recessed light trim.002",
+    "Arrival | recessed light trim.003",
+    "Arrival | recessed light trim.004",
+    "Arrival | recessed light trim.005",
+    "Arrival | recessed light trim.006",
+    "Arrival | recessed light trim.007",
+    "Arrival | recessed light trim.008",
+    "Arrival | recessed light trim.009",
+    "Arrival | recessed light trim.010",
+    "Arrival | recessed light trim.011",
+    "Arrival | recessed light trim.012",
+    "Arrival | recessed light trim.013",
+    "Arrival | recessed light trim.014",
+    "Arrival | upper center stone support",
+    "Arrival | upper mullion above canopy",
+    "Arrival | upper mullion above canopy.001",
+    "Arrival | upper mullion above canopy.002",
+    "Arrival | upper mullion above canopy.003",
+    "Arrival | upper mullion above canopy.004",
+    "Arrival | upper mullion above canopy.005",
+    "Arrival | warm concourse downlight",
+    "Arrival | warm concourse downlight.001",
+    "Arrival | warm concourse downlight.002",
+    "Arrival | warm concourse downlight.003",
+    "Arrival | warm concourse downlight.004",
+    "Arrival | warm concourse downlight.005",
+    "Arrival | warm concourse downlight.006",
+    "Arrival | warm concourse downlight.007",
+    "Arrival | warm concourse downlight.008",
+    "Arrival | warm concourse downlight.009",
+    "Arrival | warm concourse downlight.010",
+    "Arrival | warm concourse downlight.011",
+    "Arrival | warm concourse downlight.012",
+    "Arrival | warm concourse downlight.013",
+    "Arrival | warm concourse downlight.014"
+  ],
+  "front_glazed_bays": [
+    {
+      "source": "Arena | curtain wall panel.048",
+      "new": "Arrival | front glazed bay",
+      "entry_cut": false
+    },
+    {
+      "source": "Arena | curtain wall panel.049",
+      "new": "Arrival | front glazed bay.001",
+      "entry_cut": false
+    },
+    {
+      "source": "Arena | curtain wall panel.050",
+      "new": "Arrival | front glazed bay.002",
+      "entry_cut": false
+    },
+    {
+      "source": "Arena | curtain wall panel.051",
+      "new": "Arrival | front glazed bay.003",
+      "entry_cut": false
+    },
+    {
+      "source": "Arena | curtain wall panel.052",
+      "new": "Arrival | front glazed bay.004",
+      "entry_cut": false
+    },
+    {
+      "source": "Arena | curtain wall panel.053",
+      "new": "Arrival | front glazed bay.005",
+      "entry_cut": false
+    },
+    {
+      "source": "Arena | curtain wall panel.054",
+      "new": "Arrival | front glazed bay.006",
+      "entry_cut": false
+    },
+    {
+      "source": "Arena | curtain wall panel.055",
+      "new": "Arrival | front glazed bay.007",
+      "entry_cut": false
+    },
+    {
+      "source": "Arena | curtain wall panel.056",
+      "new": "Arrival | front glazed bay.008",
+      "entry_cut": false
+    },
+    {
+      "source": "Arena | curtain wall panel.057",
+      "new": "Arrival | front glazed bay.009",
+      "entry_cut": false
+    },
+    {
+      "source": "Arena | curtain wall panel.058",
+      "new": "Arrival | front glazed bay.010",
+      "entry_cut": false
+    },
+    {
+      "source": "Arena | curtain wall panel.059",
+      "new": "Arrival | front glazed bay.011",
+      "entry_cut": false
+    },
+    {
+      "source": "Arena | curtain wall panel.060",
+      "new": "Arrival | front glazed bay.012",
+      "entry_cut": false
+    },
+    {
+      "source": "Arena | curtain wall panel.061",
+      "new": "Arrival | front glazed bay.013",
+      "entry_cut": false
+    },
+    {
+      "source": "Arena | curtain wall panel.062",
+      "new": "Arrival | front glazed bay.014",
+      "entry_cut": false
+    },
+    {
+      "source": "Arena | curtain wall panel.063",
+      "new": "Arrival | front glazed bay.015",
+      "entry_cut": false
+    },
+    {
+      "source": "Arena | curtain wall panel.064",
+      "new": "Arrival | front glazed bay.016",
+      "entry_cut": false
+    },
+    {
+      "source": "Arena | curtain wall panel.065",
+      "new": "Arrival | front glazed bay.017",
+      "entry_cut": false
+    },
+    {
+      "source": "Arena | curtain wall panel.066",
+      "new": "Arrival | front glazed bay.018",
+      "entry_cut": false
+    },
+    {
+      "source": "Arena | curtain wall panel.067",
+      "new": "Arrival | front glazed bay.019",
+      "entry_cut": false
+    },
+    {
+      "source": "Arena | curtain wall panel.068",
+      "new": "Arrival | front glazed bay.020",
+      "entry_cut": true
+    },
+    {
+      "source": "Arena | curtain wall panel.069",
+      "new": "Arrival | front glazed bay.021",
+      "entry_cut": true
+    },
+    {
+      "source": "Arena | curtain wall panel.070",
+      "new": "Arrival | front glazed bay.022",
+      "entry_cut": true
+    },
+    {
+      "source": "Arena | curtain wall panel.071",
+      "new": "Arrival | front glazed bay.023",
+      "entry_cut": true
+    },
+    {
+      "source": "Arena | curtain wall panel.072",
+      "new": "Arrival | front glazed bay.024",
+      "entry_cut": true
+    },
+    {
+      "source": "Arena | curtain wall panel.073",
+      "new": "Arrival | front glazed bay.025",
+      "entry_cut": true
+    },
+    {
+      "source": "Arena | curtain wall panel.074",
+      "new": "Arrival | front glazed bay.026",
+      "entry_cut": true
+    },
+    {
+      "source": "Arena | curtain wall panel.075",
+      "new": "Arrival | front glazed bay.027",
+      "entry_cut": true
+    },
+    {
+      "source": "Arena | curtain wall panel.076",
+      "new": "Arrival | front glazed bay.028",
+      "entry_cut": false
+    },
+    {
+      "source": "Arena | curtain wall panel.077",
+      "new": "Arrival | front glazed bay.029",
+      "entry_cut": false
+    },
+    {
+      "source": "Arena | curtain wall panel.078",
+      "new": "Arrival | front glazed bay.030",
+      "entry_cut": false
+    },
+    {
+      "source": "Arena | curtain wall panel.079",
+      "new": "Arrival | front glazed bay.031",
+      "entry_cut": false
+    },
+    {
+      "source": "Arena | curtain wall panel.080",
+      "new": "Arrival | front glazed bay.032",
+      "entry_cut": false
+    },
+    {
+      "source": "Arena | curtain wall panel.081",
+      "new": "Arrival | front glazed bay.033",
+      "entry_cut": false
+    },
+    {
+      "source": "Arena | curtain wall panel.082",
+      "new": "Arrival | front glazed bay.034",
+      "entry_cut": false
+    },
+    {
+      "source": "Arena | curtain wall panel.083",
+      "new": "Arrival | front glazed bay.035",
+      "entry_cut": false
+    },
+    {
+      "source": "Arena | curtain wall panel.084",
+      "new": "Arrival | front glazed bay.036",
+      "entry_cut": false
+    },
+    {
+      "source": "Arena | curtain wall panel.085",
+      "new": "Arrival | front glazed bay.037",
+      "entry_cut": false
+    },
+    {
+      "source": "Arena | curtain wall panel.086",
+      "new": "Arrival | front glazed bay.038",
+      "entry_cut": false
+    },
+    {
+      "source": "Arena | curtain wall panel.087",
+      "new": "Arrival | front glazed bay.039",
+      "entry_cut": false
+    },
+    {
+      "source": "Arena | curtain wall panel.088",
+      "new": "Arrival | front glazed bay.040",
+      "entry_cut": false
+    },
+    {
+      "source": "Arena | curtain wall panel.089",
+      "new": "Arrival | front glazed bay.041",
+      "entry_cut": false
+    },
+    {
+      "source": "Arena | curtain wall panel.090",
+      "new": "Arrival | front glazed bay.042",
+      "entry_cut": false
+    },
+    {
+      "source": "Arena | curtain wall panel.091",
+      "new": "Arrival | front glazed bay.043",
+      "entry_cut": false
+    },
+    {
+      "source": "Arena | curtain wall panel.092",
+      "new": "Arrival | front glazed bay.044",
+      "entry_cut": false
+    },
+    {
+      "source": "Arena | curtain wall panel.093",
+      "new": "Arrival | front glazed bay.045",
+      "entry_cut": false
+    },
+    {
+      "source": "Arena | curtain wall panel.094",
+      "new": "Arrival | front glazed bay.046",
+      "entry_cut": false
+    },
+    {
+      "source": "Arena | curtain wall panel.095",
+      "new": "Arrival | front glazed bay.047",
+      "entry_cut": false
+    }
+  ],
+  "entry_door_leaf_count": 6,
+  "entry_floor_z": 1.647,
+  "back_wall_passage_segments": [
+    27,
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    34,
+    35,
+    36
+  ],
+  "new_bitmap_assets": 0,
+  "scope": "Native front arena glazing, concourse depths/floors/rails/back wall with central passage, inset doors and signed canopy. Original replaced arena elements retained hidden. Original human, walk, planting, retail, court, roof silhouette and approach remain unchanged. Offline visual study, no runtime or physical entry acceptance."
+}
