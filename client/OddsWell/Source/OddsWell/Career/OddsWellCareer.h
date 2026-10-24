@@ -76,6 +76,19 @@ public:
 
 	UPROPERTY(SaveGame)
 	FString MorningReport;
+
+	UPROPERTY(SaveGame)
+	int32 TutorialFlags = 0;
+};
+
+// First-day guide steps, in order.
+enum class EOddsWellTutorialStep : int32
+{
+	Shift = 1 << 0,
+	Bet = 1 << 1,
+	Watch = 1 << 2,
+	Sleep = 1 << 3,
+	All = Shift | Bet | Watch | Sleep,
 };
 
 struct FOddsWellCareerReplayFrame
@@ -156,6 +169,8 @@ public:
 	bool SleepUntilTomorrow(FString& OutError);
 	const FString& GetMorningReport() const { return MorningReport; }
 	void DismissMorningReport();
+	int32 GetTutorialFlags() const { return TutorialFlags; }
+	bool IsTutorialComplete() const { return (TutorialFlags & static_cast<int32>(EOddsWellTutorialStep::All)) == static_cast<int32>(EOddsWellTutorialStep::All); }
 
 	// Watching.
 	bool BuildReplay(int32 GameId, FOddsWellCareerReplay& OutReplay, FString& OutError) const;
@@ -164,11 +179,15 @@ public:
 
 	// Starts a brand-new career (used by tests and a future "new game" menu).
 	bool StartNewCareer(uint64 CareerSeed, FString& OutError);
+	bool HasCareer() const { return bReady; }
+	bool EnsureCareerStarted(FString& OutError);
+	static uint64 DefaultNewCareerSeed();
 
 private:
 	bool Save(FString& OutError);
 	bool LoadOrCreate(FString& OutError);
 	void SettleWagers(int32 OnlyGameId);
+	void MarkTutorial(EOddsWellTutorialStep Step) { TutorialFlags |= static_cast<int32>(Step); }
 
 	OddsWellLeague::FLeagueState League;
 	FOddsWellOddsBucksLedger Ledger;
@@ -179,5 +198,6 @@ private:
 	TSet<int32> RevealedGames;
 	int32 NextWagerId = 1;
 	int32 GameToWatch = 0;
+	int32 TutorialFlags = 0;
 	bool bReady = false;
 };

@@ -7,6 +7,7 @@
 #include "CharacterAppearanceSave.h"
 #include "Career/OddsWellCareer.h"
 #include "Career/OddsWellCareerReplayActor.h"
+#include "Career/OddsWellSettings.h"
 #include "CharacterPresetCatalog.h"
 #include "CanonicalActiveGameExecutionCommitment.h"
 #include "CanonicalMatchWinnerOffer.h"
@@ -136,6 +137,26 @@ const FVector StadiumEntranceThreshold(7000.0, 18000.0, 0.0);
 const FVector SportsbookInteractionLocation(1000.0, 18000.0, 0.0);
 const TCHAR* StadiumEnterPrompt = TEXT("Press E to enter the public viewing graybox");
 const TCHAR* StadiumExitPrompt = TEXT("Press E to exit the public viewing graybox");
+const TCHAR* CareerArenaEnterPrompt = TEXT("Press E to enter the arena");
+const TCHAR* CareerArenaExitPrompt = TEXT("Press E to leave the arena");
+FString CareerFramePrompt;
+uint64 CareerFramePromptFrame = 0;
+
+// Per-frame interaction prompts: the career HUD draws them (engine debug text is absent from Shipping builds);
+// the legacy QA lanes keep their original debug-message presentation.
+void ShowOddsWellFramePrompt(const int32 Key, const FColor& Color, const FString& Text)
+{
+	if (IsOddsWellCareerMode())
+	{
+		CareerFramePrompt = Text;
+		CareerFramePromptFrame = GFrameCounter;
+		return;
+	}
+	if (GEngine)
+	{
+		GEngine->AddOnScreenDebugMessage(Key, 0.0f, Color, Text);
+	}
+}
 const TCHAR* TicketBoothOpenPrompt = TEXT("Press E to open betting odds");
 constexpr int32 TicketBoothMarketPageCount = 4;
 constexpr float TicketBoothCompactCanvasWidth = 900.0f;
@@ -2027,6 +2048,25 @@ FTransform GetOddsWellStadiumReplayTransform()
 	return FTransform(FRotator::ZeroRotator, StadiumReplayOrigin, FVector(StadiumReplayScale));
 }
 
+FString GetOddsWellFramePrompt()
+{
+	return CareerFramePromptFrame + 1 >= GFrameCounter ? CareerFramePrompt : FString();
+}
+
+FVector GetOddsWellObjectiveLocation(const EOddsWellObjectivePlace Place)
+{
+	switch (Place)
+	{
+	case EOddsWellObjectivePlace::Job: return JobInteractionLocation;
+	case EOddsWellObjectivePlace::TicketBooth: return SportsbookInteractionLocation;
+	case EOddsWellObjectivePlace::Arena: return StadiumEntranceThreshold;
+	case EOddsWellObjectivePlace::Studio: return SafeSpawnLocation;
+	case EOddsWellObjectivePlace::ClothingStore: return ClothingStoreInteractionLocation;
+	case EOddsWellObjectivePlace::FurnitureStore: return FurnitureStoreInteractionLocation;
+	default: return ApartmentManagementInteractionLocation;
+	}
+}
+
 FVector GetOddsWellTicketBoothLocation()
 {
 	return SportsbookInteractionLocation;
@@ -3277,6 +3317,13 @@ void AOddsWellPlaceholderCharacter::ClientConfirmCanonicalFortyWager_Implementat
 void AOddsWellPlaceholderCharacter::Tick(const float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
+	if (bCareerPauseOpen)
+	{
+		// The pause menu owns input: no interactions, movement or world prompts until it closes.
+		UpdateCharacterAnimation(DeltaSeconds);
+		PollCareer();
+		return;
+	}
 	UpdateCharacterAnimation(DeltaSeconds);
 	PollKeyboardMovement();
 	PollJobInteraction();
@@ -5139,9 +5186,8 @@ void AOddsWellPlaceholderCharacter::PollClothingStoreInteraction()
 	}
 	if (GEngine)
 	{
-		GEngine->AddOnScreenDebugMessage(
+		ShowOddsWellFramePrompt(
 			912017,
-			0.0f,
 			FColor::Cyan,
 			SharedCityAppearance.bSignalJacketEquipped
 				? TEXT("Sundale Signal Jacket equipped")
@@ -5345,9 +5391,8 @@ void AOddsWellPlaceholderCharacter::PollFurnitureStoreInteraction()
 	}
 	if (GEngine)
 	{
-		GEngine->AddOnScreenDebugMessage(
+		ShowOddsWellFramePrompt(
 			912023,
-			0.0f,
 			FColor::Cyan,
 			bModularChairOwned
 				? TEXT("Sundale Modular Chair owned - visit your Studio")
@@ -5484,9 +5529,8 @@ void AOddsWellPlaceholderCharacter::PollApartmentManagementInteraction()
 	}
 	if (GEngine)
 	{
-		GEngine->AddOnScreenDebugMessage(
+		ShowOddsWellFramePrompt(
 			912025,
-			0.0f,
 			FColor::Cyan,
 			bOwnsOneBedroom
 				? TEXT("One-bedroom owned - enter at your apartment door")
@@ -6049,7 +6093,10 @@ void AOddsWellPlaceholderCharacter::PollStudioInteraction()
 		bModularChairOwned);
 	if (GEngine && bInStudio && bOwnsStudio)
 	{
-		GEngine->AddOnScreenDebugMessage(912012, 0.0f, FColor::Cyan, BuildOddsWellHousingProgressionText(true, bOwnsOneBedroom));
+		if (!IsOddsWellCareerMode())
+		{
+			GEngine->AddOnScreenDebugMessage(912012, 0.0f, FColor::Cyan, BuildOddsWellHousingProgressionText(true, bOwnsOneBedroom));
+		}
 		if (!bHousingGoalsLogged)
 		{
 			bHousingGoalsLogged = true;
@@ -6116,11 +6163,12 @@ void AOddsWellPlaceholderCharacter::PollStadiumInteraction()
 		&& FVector::Dist2D(GetActorLocation(), StadiumEntranceThreshold) <= StadiumEntryRadius;
 	if (GEngine && (bInStadium || bAtStadiumEntrance))
 	{
-		GEngine->AddOnScreenDebugMessage(
+		ShowOddsWellFramePrompt(
 			912015,
-			0.0f,
 			FColor::Yellow,
-			bInStadium ? StadiumExitPrompt : StadiumEnterPrompt);
+			IsOddsWellCareerMode()
+				? (bInStadium ? CareerArenaExitPrompt : CareerArenaEnterPrompt)
+				: (bInStadium ? StadiumExitPrompt : StadiumEnterPrompt));
 	}
 	if (bStadiumQa)
 	{
@@ -8310,9 +8358,24 @@ void AOddsWellPlaceholderCharacter::MoveRight(const float Value)
 	}
 }
 
-void AOddsWellPlaceholderCharacter::LookYaw(const float Value) { AddControllerYawInput(Value); }
-void AOddsWellPlaceholderCharacter::LookPitchMouse(const float Value) { AddControllerPitchInput(-Value); }
-void AOddsWellPlaceholderCharacter::LookPitchController(const float Value) { AddControllerPitchInput(Value); }
+namespace
+{
+	float LookSensitivity()
+	{
+		const UOddsWellGameUserSettings* Settings = IsOddsWellCareerMode() ? UOddsWellGameUserSettings::Get() : nullptr;
+		return Settings ? Settings->MouseSensitivity : 1.0f;
+	}
+
+	float LookPitchSign()
+	{
+		const UOddsWellGameUserSettings* Settings = IsOddsWellCareerMode() ? UOddsWellGameUserSettings::Get() : nullptr;
+		return Settings && Settings->bInvertLookY ? -1.0f : 1.0f;
+	}
+}
+
+void AOddsWellPlaceholderCharacter::LookYaw(const float Value) { AddControllerYawInput(Value * LookSensitivity()); }
+void AOddsWellPlaceholderCharacter::LookPitchMouse(const float Value) { AddControllerPitchInput(-Value * LookSensitivity() * LookPitchSign()); }
+void AOddsWellPlaceholderCharacter::LookPitchController(const float Value) { AddControllerPitchInput(Value * LookSensitivity() * LookPitchSign()); }
 void AOddsWellPlaceholderCharacter::StartRun() { GetCharacterMovement()->MaxWalkSpeed = RunSpeed; }
 void AOddsWellPlaceholderCharacter::StopRun() { GetCharacterMovement()->MaxWalkSpeed = WalkSpeed; }
 void AOddsWellPlaceholderCharacter::StartJump()
@@ -8385,6 +8448,7 @@ bool AOddsWellPlaceholderCharacter::ApplyResolvedAppearance(
 		return false;
 	}
 	PrimitiveSkinMaterial->SetVectorParameterValue(TEXT("Color"), FLinearColor::FromSRGBColor(Appearance.Preset->SkinTone));
+	ApplyMetaHumanAppearance(Appearance.Preset->Id);
 	SyncOutfitComponents();
 	UE_LOG(
 		LogOddsWellLocomotion,
@@ -8538,8 +8602,8 @@ void AOddsWellPlaceholderCharacter::SyncOutfitComponents()
 	{
 		StarterOutfitTop->SetMaterialByName(SignalJacketAccentSlot, SignalJacketAccentMaterial);
 	}
-	StarterOutfitTop->SetVisibility(!StarterOutfitState.GetEquipped(EOddsWellStarterEquipmentSlot::Top).IsNone());
-	StarterOutfitBottom->SetVisibility(!StarterOutfitState.GetEquipped(EOddsWellStarterEquipmentSlot::Bottom).IsNone());
+	StarterOutfitTop->SetVisibility(!bMetaHumanActive && !StarterOutfitState.GetEquipped(EOddsWellStarterEquipmentSlot::Top).IsNone());
+	StarterOutfitBottom->SetVisibility(!bMetaHumanActive && !StarterOutfitState.GetEquipped(EOddsWellStarterEquipmentSlot::Bottom).IsNone());
 
 }
 
@@ -9680,6 +9744,11 @@ void AOddsWellLocomotionGameMode::BeginPlay()
 	}
 	if (IsOddsWellCareerMode())
 	{
+		if (UOddsWellCareerSubsystem* Career = UOddsWellCareerSubsystem::Get(this))
+		{
+			FString StartError;
+			Career->EnsureCareerStarted(StartError);
+		}
 		SyncCareerLedger();
 		UE_LOG(LogOddsWellLocomotion, Display, TEXT("ODDSWELL_CAREER_CITY|ledger_ready=%s|balance=%lld|canonical_fixture=false"), bOddsBucksReady ? TEXT("true") : TEXT("false"), OddsBucksLedger.GetBalance());
 		return;

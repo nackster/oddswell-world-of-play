@@ -64,6 +64,11 @@ void UOddsWellCareerSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 		UE_LOG(LogOddsWellCareer, Error, TEXT("ODDSWELL_CAREER|result=FAIL|reason=%s"), *LoadError);
 		return;
 	}
+	if (!bReady)
+	{
+		UE_LOG(LogOddsWellCareer, Display, TEXT("ODDSWELL_CAREER|result=NO_SAVE|slot=%s"), *SlotName());
+		return;
+	}
 	UE_LOG(LogOddsWellCareer, Display, TEXT("ODDSWELL_CAREER|result=READY|season=%d|day=%d|balance=%lld|wagers=%d|slot=%s"),
 		League.SeasonNumber, League.Day, Ledger.GetBalance(), Wagers.Num(), *SlotName());
 }
@@ -97,6 +102,7 @@ bool UOddsWellCareerSubsystem::LoadOrCreate(FString& OutError)
 		LastShiftKey = Saved->LastShiftKey;
 		NextWagerId = FMath::Max(1, Saved->NextWagerId);
 		MorningReport = Saved->MorningReport;
+		TutorialFlags = Saved->TutorialFlags;
 		bReady = true;
 		if (!League.bDayPrepared)
 		{
@@ -105,9 +111,24 @@ bool UOddsWellCareerSubsystem::LoadOrCreate(FString& OutError)
 		}
 		return true;
 	}
+	// Without a save, the career starts when the player chooses New career (tests may force it with -NewCareer).
+	if (FParse::Param(FCommandLine::Get(), TEXT("NewCareer")))
+	{
+		return StartNewCareer(DefaultNewCareerSeed(), OutError);
+	}
+	return true;
+}
+
+uint64 UOddsWellCareerSubsystem::DefaultNewCareerSeed()
+{
 	uint64 Seed = static_cast<uint64>(FDateTime::UtcNow().GetTicks() % 1000000007);
 	FParse::Value(FCommandLine::Get(), TEXT("CareerSeed="), Seed);
-	return StartNewCareer(Seed, OutError);
+	return Seed;
+}
+
+bool UOddsWellCareerSubsystem::EnsureCareerStarted(FString& OutError)
+{
+	return bReady || (IsOddsWellCareerMode() && StartNewCareer(DefaultNewCareerSeed(), OutError));
 }
 
 bool UOddsWellCareerSubsystem::StartNewCareer(const uint64 CareerSeed, FString& OutError)
@@ -119,6 +140,7 @@ bool UOddsWellCareerSubsystem::StartNewCareer(const uint64 CareerSeed, FString& 
 	LastShiftKey.Reset();
 	NextWagerId = 1;
 	GameToWatch = 0;
+	TutorialFlags = 0;
 	MorningReport = FString::Printf(
 		TEXT("Welcome to Sundale.\nSeason 1 of the league starts today: 8 teams, 28 games each, then the playoffs.\nWork a shift at the Job marker, check today's odds at the ticket booth, and watch games at the arena.\nSleep in your Studio to start the next day."));
 	bReady = true;
@@ -139,6 +161,7 @@ bool UOddsWellCareerSubsystem::Save(FString& OutError)
 	Saved->LastShiftKey = LastShiftKey;
 	Saved->NextWagerId = NextWagerId;
 	Saved->MorningReport = MorningReport;
+	Saved->TutorialFlags = TutorialFlags;
 	if (!UGameplayStatics::SaveGameToSlot(Saved, SlotName(), 0))
 	{
 		OutError = TEXT("The career could not be saved.");
@@ -275,6 +298,7 @@ bool UOddsWellCareerSubsystem::WorkShift(bool& bOutCredited, int64& OutBalance, 
 	const FString PreviousShift = LastShiftKey;
 	Ledger = MoveTemp(Candidate);
 	LastShiftKey = ShiftKey(League);
+	MarkTutorial(EOddsWellTutorialStep::Shift);
 	if (!Save(OutError))
 	{
 		Ledger = Previous;
@@ -363,6 +387,7 @@ bool UOddsWellCareerSubsystem::PlaceWager(const int32 GameId, const int32 Select
 	Ledger = MoveTemp(Candidate);
 	Wagers.Add(Wager);
 	++NextWagerId;
+	MarkTutorial(EOddsWellTutorialStep::Bet);
 	if (!Save(OutError))
 	{
 		Ledger = Previous;
@@ -478,6 +503,7 @@ bool UOddsWellCareerSubsystem::SleepUntilTomorrow(FString& OutError)
 	Report += FString::Printf(TEXT("\nBalance: %lld Odds Bucks. Today is %s."), Ledger.GetBalance(), *GetPhaseText());
 	MorningReport = Report;
 	GameToWatch = 0;
+	MarkTutorial(EOddsWellTutorialStep::Sleep);
 	UE_LOG(LogOddsWellCareer, Display, TEXT("ODDSWELL_CAREER_SLEEP|season=%d|day=%d|phase=%d|balance=%lld"), League.SeasonNumber, League.Day, static_cast<int32>(League.Phase), Ledger.GetBalance());
 	return Save(OutError);
 }
@@ -491,6 +517,7 @@ void UOddsWellCareerSubsystem::RevealGame(const int32 GameId)
 	}
 	RevealedGames.Add(GameId);
 	SettleWagers(GameId);
+	MarkTutorial(EOddsWellTutorialStep::Watch);
 	FString Error;
 	Save(Error);
 }

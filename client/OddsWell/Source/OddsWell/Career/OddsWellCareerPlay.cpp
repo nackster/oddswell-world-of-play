@@ -10,6 +10,7 @@
 #include "HAL/PlatformMisc.h"
 #include "InputCoreTypes.h"
 #include "Kismet/GameplayStatics.h"
+#include "Kismet/KismetSystemLibrary.h"
 #include "Misc/CommandLine.h"
 #include "Misc/Parse.h"
 #include "StudioHomeSave.h"
@@ -22,8 +23,9 @@ namespace
 		EKeys::Hyphen, EKeys::Equals, EKeys::Z,
 		EKeys::Gamepad_FaceButton_Bottom, EKeys::Gamepad_FaceButton_Right, EKeys::Gamepad_FaceButton_Left,
 		EKeys::Gamepad_DPad_Up, EKeys::Gamepad_DPad_Down, EKeys::Gamepad_DPad_Left, EKeys::Gamepad_DPad_Right,
-		EKeys::Gamepad_LeftShoulder, EKeys::Gamepad_RightShoulder,
+		EKeys::Gamepad_LeftShoulder, EKeys::Gamepad_RightShoulder, EKeys::Gamepad_Special_Right,
 	};
+	const TCHAR* PauseRows[] = {TEXT("Resume"), TEXT("Settings"), TEXT("Quit to title"), TEXT("Quit game")};
 	constexpr double CareerNoticeSeconds = 5.0;
 	const FLinearColor Teal(0.20f, 0.75f, 0.68f, 1.0f);
 	const FLinearColor Amber(0.95f, 0.66f, 0.20f, 1.0f);
@@ -94,7 +96,17 @@ void AOddsWellPlaceholderCharacter::PollCareer()
 	}
 	CareerPrompt.Reset();
 	UOddsWellCareerSubsystem* Career = UOddsWellCareerSubsystem::Get(this);
-	if (Career && Career->IsReady())
+	const bool bMenuKey = CareerKeyPressed(*OwnerController, EKeys::Escape) || CareerKeyPressed(*OwnerController, EKeys::Gamepad_Special_Right);
+	const bool bPanelOpen = (Career && !Career->GetMorningReport().IsEmpty()) || bCareerBoardOpen || bCareerStandingsOpen || CareerReplay.IsValid() || bCareerTipoffArmed;
+	if (bCareerPauseOpen)
+	{
+		PollCareerPause(*OwnerController);
+	}
+	else if (bMenuKey && !bPanelOpen)
+	{
+		SetCareerPauseOpen(true);
+	}
+	else if (Career && Career->IsReady())
 	{
 		if (!Career->GetMorningReport().IsEmpty())
 		{
@@ -131,6 +143,73 @@ void AOddsWellPlaceholderCharacter::PollCareer()
 		{
 			CareerHeldKeys.Remove(Key.GetFName());
 		}
+	}
+}
+
+void AOddsWellPlaceholderCharacter::SetCareerPauseOpen(const bool bOpen)
+{
+	if (bCareerPauseOpen == bOpen)
+	{
+		return;
+	}
+	bCareerPauseOpen = bOpen;
+	bCareerPauseSettings = false;
+	CareerPauseRow = 0;
+	if (APlayerController* OwnerController = Cast<APlayerController>(GetController()))
+	{
+		OwnerController->SetIgnoreMoveInput(bOpen);
+		OwnerController->SetIgnoreLookInput(bOpen);
+	}
+	if (AOddsWellCareerReplayActor* Replay = CareerReplay.Get())
+	{
+		Replay->CustomTimeDilation = bOpen ? 0.0f : 1.0f;
+	}
+}
+
+void AOddsWellPlaceholderCharacter::PollCareerPause(APlayerController& OwnerController)
+{
+	const bool bUp = CareerKeyPressed(OwnerController, EKeys::Up) || CareerKeyPressed(OwnerController, EKeys::Gamepad_DPad_Up);
+	const bool bDown = CareerKeyPressed(OwnerController, EKeys::Down) || CareerKeyPressed(OwnerController, EKeys::Gamepad_DPad_Down);
+	const bool bConfirm = CareerKeyPressed(OwnerController, EKeys::Enter) || CareerKeyPressed(OwnerController, EKeys::Gamepad_FaceButton_Bottom);
+	const bool bBack = CareerKeyPressed(OwnerController, EKeys::Escape) || CareerKeyPressed(OwnerController, EKeys::Gamepad_FaceButton_Right) || CareerKeyPressed(OwnerController, EKeys::Gamepad_Special_Right);
+	if (bCareerPauseSettings)
+	{
+		if (bUp) { CareerSettingsMenu.MoveSelection(-1); }
+		if (bDown) { CareerSettingsMenu.MoveSelection(1); }
+		if (CareerKeyPressed(OwnerController, EKeys::Left) || CareerKeyPressed(OwnerController, EKeys::Gamepad_DPad_Left)) { CareerSettingsMenu.ChangeValue(-1); }
+		if (CareerKeyPressed(OwnerController, EKeys::Right) || CareerKeyPressed(OwnerController, EKeys::Gamepad_DPad_Right)) { CareerSettingsMenu.ChangeValue(1); }
+		if (bConfirm) { CareerSettingsMenu.Apply(); }
+		if (bBack) { bCareerPauseSettings = false; }
+		return;
+	}
+	const int32 RowCount = UE_ARRAY_COUNT(PauseRows);
+	if (bUp) { CareerPauseRow = (CareerPauseRow - 1 + RowCount) % RowCount; }
+	if (bDown) { CareerPauseRow = (CareerPauseRow + 1) % RowCount; }
+	if (bBack)
+	{
+		SetCareerPauseOpen(false);
+		return;
+	}
+	if (!bConfirm)
+	{
+		return;
+	}
+	switch (CareerPauseRow)
+	{
+	case 0:
+		SetCareerPauseOpen(false);
+		break;
+	case 1:
+		CareerSettingsMenu.Open();
+		bCareerPauseSettings = true;
+		break;
+	case 2:
+		SetCareerPauseOpen(false);
+		UGameplayStatics::OpenLevel(this, FName(TEXT("/Game/Maps/Bootstrap")), true);
+		break;
+	default:
+		UKismetSystemLibrary::QuitGame(this, &OwnerController, EQuitPreference::Quit, false);
+		break;
 	}
 }
 
@@ -412,6 +491,7 @@ void AOddsWellPlaceholderCharacter::RunCareerSmoke(const float DeltaSeconds)
 	case 0: // City arrival with the welcome report.
 		if (GCareerSmokeTimer > 4.0f)
 		{
+			UE_LOG(LogTemp, Display, TEXT("ODDSWELL_CAREER_SMOKE|step=arrival|metahuman=%s"), bMetaHumanActive ? TEXT("true") : TEXT("false"));
 			CareerSmokeShot(TEXT("01_Welcome"));
 			Next(0);
 		}
@@ -663,6 +743,89 @@ void AOddsWellSportsbookHUD::DrawCareerOverlay(const AOddsWellPlaceholderCharact
 				Career->HaveTodaysGamesTippedOff() ? TEXT("final scores in") : TEXT("betting open")),
 		TEXT("L: standings"),
 	}, 24.0f, Character.GetCareerReplay() ? 140.0f : 24.0f, 470.0f * Scale, Teal, Scale * 0.85f);
+
+	if (Character.IsCareerPauseOpen())
+	{
+		DrawRect(FLinearColor(0.0f, 0.0f, 0.0f, 0.55f), 0.0f, 0.0f, CanvasWidth, CanvasHeight);
+		const float Width = FMath::Min(640.0f, CanvasWidth - 48.0f);
+		const float X = (CanvasWidth - Width) * 0.5f;
+		if (Character.IsCareerPauseSettingsOpen())
+		{
+			const FOddsWellSettingsMenu& Menu = Character.GetCareerSettingsMenu();
+			TArray<FString> Lines = {TEXT("SETTINGS"), TEXT("")};
+			for (const FOddsWellSettingsRow& Row : Menu.BuildRows())
+			{
+				Lines.Add(FString::Printf(TEXT("%-22s <  %s  >"), *Row.Label, *Row.Value));
+			}
+			Lines.Add(TEXT(""));
+			Lines.Add(Menu.HasPendingChanges() ? TEXT("Enter: apply changes   Esc: back") : TEXT("Left/Right: change   Enter: apply   Esc: back"));
+			DrawCareerPanel(Lines, X, CanvasHeight * 0.2f, Width, Teal, Scale, Menu.GetSelectedRow() + 2);
+		}
+		else
+		{
+			TArray<FString> Lines = {TEXT("PAUSED"), TEXT("")};
+			for (const TCHAR* Row : PauseRows)
+			{
+				Lines.Add(Row);
+			}
+			Lines.Add(TEXT(""));
+			Lines.Add(TEXT("Your career saves automatically."));
+			DrawCareerPanel(Lines, X, CanvasHeight * 0.26f, Width, Teal, Scale * 1.1f, Character.GetCareerPauseRow() + 2);
+		}
+		return;
+	}
+
+	// First-day guide: a checklist plus a marker toward the next place to go.
+	const UOddsWellGameUserSettings* Settings = UOddsWellGameUserSettings::Get();
+	if (!Career->IsTutorialComplete() && Career->GetMorningReport().IsEmpty() && !Character.GetCareerReplay())
+	{
+		struct FGuideStep { EOddsWellTutorialStep Step; const TCHAR* Text; EOddsWellObjectivePlace Place; const TCHAR* PlaceName; };
+		const FGuideStep Steps[] = {
+			{EOddsWellTutorialStep::Shift, TEXT("Work a shift at the Job marker"), EOddsWellObjectivePlace::Job, TEXT("Job")},
+			{EOddsWellTutorialStep::Bet, TEXT("Place a bet at the ticket booth"), EOddsWellObjectivePlace::TicketBooth, TEXT("Ticket booth")},
+			{EOddsWellTutorialStep::Watch, TEXT("Watch a game at the arena"), EOddsWellObjectivePlace::Arena, TEXT("Arena")},
+			{EOddsWellTutorialStep::Sleep, TEXT("Sleep in your Studio"), EOddsWellObjectivePlace::Studio, TEXT("Studio")},
+		};
+		TArray<FString> Lines = {TEXT("GETTING STARTED")};
+		const FGuideStep* Next = nullptr;
+		int32 NextLine = INDEX_NONE;
+		for (const FGuideStep& Step : Steps)
+		{
+			const bool bDone = (Career->GetTutorialFlags() & static_cast<int32>(Step.Step)) != 0;
+			if (!bDone && !Next)
+			{
+				Next = &Step;
+				NextLine = Lines.Num();
+			}
+			Lines.Add(FString::Printf(TEXT("%s  %s"), bDone ? TEXT("[x]") : TEXT("[  ]"), Step.Text));
+		}
+		const float GuideY = (Character.GetCareerReplay() ? 140.0f : 24.0f) + 175.0f * Scale;
+		DrawCareerPanel(Lines, 24.0f, GuideY, 470.0f * Scale, Amber, Scale * 0.85f, NextLine);
+
+		const APawn* Pawn = GetOwningPawn();
+		if (Next && Pawn && IsSundale(GetWorld()))
+		{
+			const FVector Target = GetOddsWellObjectiveLocation(Next->Place) + FVector(0.0, 0.0, 250.0);
+			const float Meters = FVector::Dist2D(Pawn->GetActorLocation(), Target) / 100.0f;
+			const FVector Screen = Project(Target);
+			const FString Label = FString::Printf(TEXT("%s  %.0f m"), Next->PlaceName, Meters);
+			if (Screen.Z > 0.0f && Screen.X > 0.0f && Screen.X < CanvasWidth && Screen.Y > 0.0f && Screen.Y < CanvasHeight)
+			{
+				DrawRect(Amber, Screen.X - 7.0f, Screen.Y - 7.0f, 14.0f, 14.0f);
+				DrawText(Label, FLinearColor::White, Screen.X + 14.0f, Screen.Y - 10.0f, nullptr, Scale);
+			}
+			else if (PlayerOwner)
+			{
+				// Off screen: say which way to turn.
+				const FRotator View = PlayerOwner->GetControlRotation();
+				const FVector ToTarget = (Target - Pawn->GetActorLocation()).GetSafeNormal2D();
+				const float Angle = FMath::FindDeltaAngleDegrees(View.Yaw, ToTarget.Rotation().Yaw);
+				const TCHAR* Direction = FMath::Abs(Angle) > 135.0f ? TEXT("behind you") : Angle > 0.0f ? TEXT("to your right") : TEXT("to your left");
+				DrawCareerPanel({FString::Printf(TEXT("%s - %s"), *Label, Direction)}, (CanvasWidth - 420.0f) * 0.5f, 24.0f, 420.0f, Amber, Scale);
+			}
+		}
+	}
+	(void)Settings;
 
 	const float CenterWidth = FMath::Min(900.0f, CanvasWidth - 48.0f);
 	const float CenterX = (CanvasWidth - CenterWidth) * 0.5f;

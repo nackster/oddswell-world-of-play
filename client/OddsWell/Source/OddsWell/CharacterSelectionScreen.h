@@ -3,9 +3,11 @@
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
 #include "GameFramework/HUD.h"
+#include "Career/OddsWellSettings.h"
 #include "CharacterSelectionScreen.generated.h"
 
 struct FOddsWellCharacterPreset;
+class AOddsWellCharacterPreview;
 
 class FOddsWellCharacterSelectionState
 {
@@ -44,9 +46,24 @@ private:
 	void MoveUp();
 	void MoveDown();
 	void ConfirmSelection();
+	void Back();
+	void ActivateTitleItem();
+	void DrawTitle();
+	void DrawSettings();
+	void DrawConfirmNewCareer();
+	TArray<FString> TitleItems() const;
+	void UpdatePreview();
+	void DrawCareerChooser();
 	void DrawCard(const FOddsWellCharacterPreset& Preset, int32 Index, float X, float Y, float Width, float Height);
 
+	enum class EScreen : uint8 { Title, ConfirmNewCareer, Settings, Chooser };
 	FOddsWellCharacterSelectionState State;
+	UPROPERTY(Transient)
+	TObjectPtr<AOddsWellCharacterPreview> Preview;
+	FOddsWellSettingsMenu SettingsMenu;
+	EScreen Screen = EScreen::Chooser;
+	int32 TitleIndex = 0;
+	bool bStartNewCareerOnConfirm = false;
 	FString HandoffError;
 	double AutoExitAt = 0.0;
 };

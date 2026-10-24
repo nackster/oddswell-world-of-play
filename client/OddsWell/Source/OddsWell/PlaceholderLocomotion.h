@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "CharacterPresetCatalog.h"
+#include "Career/OddsWellSettings.h"
 #include "GameFramework/Character.h"
 #include "GameFramework/GameModeBase.h"
 #include "GameFramework/HUD.h"
@@ -21,10 +22,15 @@ class USkeletalMesh;
 class UAnimSequence;
 class UTextRenderComponent;
 class AOddsWellCareerReplayActor;
+class UGroomComponent;
 
 // Shared Sundale/arena locations used by the career layer.
 ODDSWELL_API FTransform GetOddsWellStadiumReplayTransform();
 ODDSWELL_API FVector GetOddsWellTicketBoothLocation();
+ODDSWELL_API FString GetOddsWellFramePrompt();
+
+enum class EOddsWellObjectivePlace : uint8 { Job, TicketBooth, Arena, Studio, ClothingStore, FurnitureStore, ApartmentKiosk };
+ODDSWELL_API FVector GetOddsWellObjectiveLocation(EOddsWellObjectivePlace Place);
 ODDSWELL_API bool IsNearOddsWellTicketBooth(const FVector& Location, float ExtraRadius = 0.0f);
 
 USTRUCT()
@@ -117,6 +123,10 @@ public:
 	const FString& GetCareerPrompt() const { return CareerPrompt; }
 	FString GetCareerNotice() const;
 	const AOddsWellCareerReplayActor* GetCareerReplay() const { return CareerReplay.Get(); }
+	bool IsCareerPauseOpen() const { return bCareerPauseOpen; }
+	bool IsCareerPauseSettingsOpen() const { return bCareerPauseSettings; }
+	int32 GetCareerPauseRow() const { return CareerPauseRow; }
+	const FOddsWellSettingsMenu& GetCareerSettingsMenu() const { return CareerSettingsMenu; }
 
 protected:
 	virtual void BeginPlay() override;
@@ -157,6 +167,8 @@ private:
 	bool CareerKeyPressed(const APlayerController& OwnerController, const FKey& Key);
 	void ShowCareerNotice(const FString& Message);
 	void CloseCareerReplay();
+	void SetCareerPauseOpen(bool bOpen);
+	void PollCareerPause(APlayerController& OwnerController);
 	bool StartCareerReplay(int32 GameId, FString& OutError);
 	void RunCareerSmoke(float DeltaSeconds);
 	void PreviousLeaguePage();
@@ -211,6 +223,7 @@ private:
 	void SubmitLocalSharedCityAppearance();
 	void SetAuthoritativeSharedCityAppearance(FName PresetId, FName TopItemId, FName BottomItemId, bool bOwnerSubmitted, const FString& Source);
 	void SyncOutfitComponents();
+	bool ApplyMetaHumanAppearance(FName PresetId);
 	void SyncSharedCityNameplate();
 	void RunOutfitQa(float DeltaSeconds);
 	void ReportOutfitError(const FString& Error) const;
@@ -302,6 +315,20 @@ private:
 
 	UPROPERTY(Transient)
 	TObjectPtr<UMaterialInstanceDynamic> PrimitiveSkinMaterial;
+
+	UPROPERTY(Transient)
+	TObjectPtr<USkeletalMeshComponent> MetaHumanBody;
+
+	UPROPERTY(Transient)
+	TObjectPtr<USkeletalMeshComponent> MetaHumanFace;
+
+	UPROPERTY(Transient)
+	TObjectPtr<USkeletalMeshComponent> MetaHumanOutfit;
+
+	UPROPERTY(Transient)
+	TArray<TObjectPtr<UGroomComponent>> MetaHumanGrooms;
+
+	bool bMetaHumanActive = false;
 
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<USpringArmComponent> CameraBoom;
@@ -419,6 +446,10 @@ private:
 	bool bCareerTipoffArmed = false;
 	bool bCareerStandingsOpen = false;
 	TWeakObjectPtr<AOddsWellCareerReplayActor> CareerReplay;
+	FOddsWellSettingsMenu CareerSettingsMenu;
+	int32 CareerPauseRow = 0;
+	bool bCareerPauseOpen = false;
+	bool bCareerPauseSettings = false;
 	TUniquePtr<FOddsWellMatchWinnerOfferPreview> SportsbookOfferPreview;
 	TUniquePtr<FOddsWellCanonicalPendingMatchWinnerReceipt> SportsbookCanonicalReceipt;
 	TUniquePtr<FOddsWellCanonicalSettledLossReceipt> SportsbookSettledLossReceipt;
