@@ -11,6 +11,8 @@
 #include "TimerManager.h"
 #include "PlaceholderLocomotion.generated.h"
 
+struct FOddsWellCatalogItem;
+
 struct FOddsWellResolvedCharacterAppearance;
 
 class UCameraComponent;
@@ -115,11 +117,18 @@ public:
 	bool IsCareerBoardOpen() const { return bCareerBoardOpen; }
 	int32 GetCareerBoardRow() const { return CareerBoardRow; }
 	int32 GetCareerBoardSelection() const { return CareerBoardSelection; }
+	int32 GetCareerBoardMarket() const { return CareerBoardMarket; }
 	int64 GetCareerBoardStake() const { return CareerBoardStake; }
 	bool IsCareerStadiumMenuOpen() const { return bCareerStadiumMenuOpen; }
 	int32 GetCareerStadiumRow() const { return CareerStadiumRow; }
 	bool IsCareerTipoffArmed() const { return bCareerTipoffArmed; }
 	bool IsCareerStandingsOpen() const { return bCareerStandingsOpen; }
+	bool IsCareerAchievementsOpen() const { return bCareerAchievementsOpen; }
+	// The store whose catalog is open (EOddsWellObjectivePlace), or INDEX_NONE.
+	int32 GetCareerShopPlace() const { return CareerShopPlace; }
+	int32 GetCareerShopRow() const { return CareerShopRow; }
+	TArray<const FOddsWellCatalogItem*> GetCareerShopItems() const;
+	FString GetCareerToast() const;
 	const FString& GetCareerPrompt() const { return CareerPrompt; }
 	FString GetCareerNotice() const;
 	const AOddsWellCareerReplayActor* GetCareerReplay() const { return CareerReplay.Get(); }
@@ -164,6 +173,7 @@ private:
 	void PollCareerBoard(APlayerController& OwnerController);
 	void PollCareerStadium(APlayerController& OwnerController);
 	void PollCareerStudio(APlayerController& OwnerController);
+	void PollCareerShop(APlayerController& OwnerController);
 	bool CareerKeyPressed(const APlayerController& OwnerController, const FKey& Key);
 	void ShowCareerNotice(const FString& Message);
 	void CloseCareerReplay();
@@ -313,6 +323,13 @@ private:
 	UPROPERTY(Transient)
 	TObjectPtr<UMaterialInstanceDynamic> SignalJacketAccentMaterial;
 
+	// Career clothing colours on the MetaHuman garment.
+	UPROPERTY(Transient)
+	TObjectPtr<UMaterialInstanceDynamic> MetaHumanTopMaterial;
+
+	UPROPERTY(Transient)
+	TObjectPtr<UMaterialInstanceDynamic> MetaHumanBottomMaterial;
+
 	UPROPERTY(Transient)
 	TObjectPtr<UMaterialInstanceDynamic> PrimitiveSkinMaterial;
 
@@ -439,12 +456,18 @@ private:
 	double CareerNoticeExpiresAt = 0.0;
 	int32 CareerBoardRow = 0;
 	int32 CareerBoardSelection = INDEX_NONE;
+	int32 CareerBoardMarket = 0;
 	int64 CareerBoardStake = 20;
 	int32 CareerStadiumRow = 0;
 	bool bCareerBoardOpen = false;
 	bool bCareerStadiumMenuOpen = false;
 	bool bCareerTipoffArmed = false;
 	bool bCareerStandingsOpen = false;
+	bool bCareerAchievementsOpen = false;
+	int32 CareerShopPlace = INDEX_NONE;
+	int32 CareerShopRow = 0;
+	FString CareerToast;
+	double CareerToastExpiresAt = 0.0;
 	TWeakObjectPtr<AOddsWellCareerReplayActor> CareerReplay;
 	FOddsWellSettingsMenu CareerSettingsMenu;
 	int32 CareerPauseRow = 0;
@@ -566,7 +589,8 @@ private:
 	void DrawTicketBoothMenu(const AOddsWellPlaceholderCharacter& Character, const FOddsWellMatchWinnerOfferPreview& Offer);
 	void DrawMarketCard(const FString& Title, const FString& Subtitle, float X, float Y, float Width, float Height, bool bAvailable);
 	void DrawCareerOverlay(const AOddsWellPlaceholderCharacter& Character);
-	void DrawCareerPanel(const TArray<FString>& Lines, float X, float Y, float Width, const FLinearColor& Accent, float Scale = 1.0f, int32 HighlightLine = INDEX_NONE);
+	// Draws a text panel and returns its bottom edge.
+	float DrawCareerPanel(const TArray<FString>& Lines, float X, float Y, float Width, const FLinearColor& Accent, float Scale = 1.0f, int32 HighlightLine = INDEX_NONE);
 };
 
 UCLASS()

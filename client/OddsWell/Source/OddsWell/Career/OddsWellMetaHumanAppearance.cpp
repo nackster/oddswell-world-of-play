@@ -1,6 +1,7 @@
 // Assembles the player's MetaHuman (DEC-038) on the existing character: the body runs the standard
-// locomotion animation, the face and outfit follow the body, and the grooms (hair, brows, beard)
-// attach to the face. Movement, capsule, camera and saves are unchanged; the placeholder body and
+// locomotion animation, the outfit follows the body, the face runs MetaHuman's face animation (which
+// copies the body's pose, as in Epic's generated blueprint), and the grooms (hair, brows, beard) bind
+// to the face. Movement, capsule, camera and saves are unchanged; the placeholder body and
 // its clothing are hidden while a MetaHuman is shown.
 #include "Career/OddsWellMetaHuman.h"
 
@@ -21,6 +22,7 @@ namespace
 	}
 
 	const TCHAR* LocomotionAnimClassPath = TEXT("/Game/Characters/Mannequins/Anims/Unarmed/ABP_Unarmed.ABP_Unarmed_C");
+	const TCHAR* FaceAnimClassPath = TEXT("/Game/OddsWell/Characters/MetaHumans/Common/Face/ABP_Face.ABP_Face_C");
 }
 
 const TCHAR* GetOddsWellMetaHumanForPreset(const FName PresetId)
@@ -58,7 +60,8 @@ bool AssembleOddsWellMetaHuman(
 	USkeletalMesh* FaceMesh = LoadObject<USkeletalMesh>(nullptr, *MetaHumanBuiltPath(Name, FString::Printf(TEXT("Face/SKM_MHC_%s_FaceMesh"), Name)));
 	USkeletalMesh* OutfitMesh = LoadObject<USkeletalMesh>(nullptr, *MetaHumanBuiltPath(Name, FString::Printf(TEXT("Clothing/MHC_%s_Outfits"), Name)));
 	UClass* LocomotionClass = LoadClass<UAnimInstance>(nullptr, LocomotionAnimClassPath);
-	if (!BodyMesh || !FaceMesh || !LocomotionClass)
+	UClass* FaceClass = LoadClass<UAnimInstance>(nullptr, FaceAnimClassPath);
+	if (!BodyMesh || !FaceMesh || !LocomotionClass || !FaceClass)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("ODDSWELL_METAHUMAN|result=UNAVAILABLE|preset=%s|metahuman=%s|body=%s|face=%s|locomotion=%s"),
 			*PresetId.ToString(), Name, BodyMesh ? TEXT("true") : TEXT("false"), FaceMesh ? TEXT("true") : TEXT("false"), LocomotionClass ? TEXT("true") : TEXT("false"));
@@ -85,7 +88,13 @@ bool AssembleOddsWellMetaHuman(
 	InOutBody->SetSkeletalMesh(BodyMesh);
 	InOutBody->SetAnimInstanceClass(LocomotionClass);
 	InOutFace->SetSkeletalMesh(FaceMesh);
-	InOutFace->SetLeaderPoseComponent(InOutBody, true);
+	InOutFace->SetAnimInstanceClass(FaceClass);
+	// Hair binds to the face's skinned output, which MetaHumans take from the GPU skin cache.
+	for (USkeletalMeshComponent* Mesh : {InOutBody.Get(), InOutFace.Get()})
+	{
+		Mesh->SkinCacheUsage.Init(ESkinCacheUsage::Enabled, Mesh->GetNumLODs());
+		Mesh->MarkRenderStateDirty();
+	}
 	InOutOutfit->SetSkeletalMesh(OutfitMesh);
 	InOutOutfit->SetLeaderPoseComponent(InOutBody, true);
 	InOutOutfit->SetVisibility(OutfitMesh != nullptr);
@@ -111,6 +120,7 @@ bool AssembleOddsWellMetaHuman(
 		UGroomComponent* Groom = NewObject<UGroomComponent>(&Owner);
 		Groom->SetupAttachment(InOutFace);
 		Groom->SetGroomAsset(Binding->GetGroom(), Binding);
+		Groom->PrecachePSOs();
 		Groom->RegisterComponent();
 		InOutGrooms.Add(Groom);
 	}
@@ -129,5 +139,6 @@ bool AOddsWellPlaceholderCharacter::ApplyMetaHumanAppearance(const FName PresetI
 	// The MetaHuman replaces the placeholder body and its clothing.
 	GetMesh()->SetVisibility(false, true);
 	bMetaHumanActive = true;
+	SyncOutfitComponents();
 	return true;
 }

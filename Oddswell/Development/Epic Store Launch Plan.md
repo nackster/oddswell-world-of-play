@@ -72,9 +72,13 @@ My recommendation is listed first in each.
 
 **D6 — Wager markets at launch.** *Recommended: Match Winner, Winning Margin, Overtime and Player Points.*
 
+- **Working assumption since 2026-10-24 (M3):** adopted as recommended. See [[Design/Decisions/DEC-039 Career Markets Economy and Content]].
+
 - Rebounds and fouls come after launch.
 
 **D7 — Content for $9.99.** *Recommended target: 3–6 hours to "complete".*
+
+- **Working assumption since 2026-10-24 (M3):** adopted. There are 4 jobs, 20 clothing items, 16 furniture items, 6 homes and 22 achievements, and the season goal is to own the Penthouse. See [[Design/Decisions/DEC-039 Career Markets Economy and Content]].
 
 - About 4 jobs, about 20 clothing items, about 15 furniture items and all 6 apartment tiers.
 - A season goal: for example, own the Penthouse, or finish a season with a target bankroll.
@@ -106,7 +110,7 @@ Each milestone ends with a build you play.
 
 *Done when:* you can play several in-game days, bet on different games, and see wins and losses settle correctly after restarting.
 
-**M2 — Complete loop with real characters.**
+**M2 — Complete loop with real characters.** **Delivered 2026-10-24** with one known gap: MetaHuman hair does not render yet. See [[Development/Reports/M2 Complete Loop/README]].
 
 - The chosen character system (D5) in the game with walk, run and jump, plus the starter outfit and Signal Jacket swap.
 - Main menu, pause, settings, save and load.
@@ -114,7 +118,7 @@ Each milestone ends with a build you play.
 
 *Done when:* someone who has never seen the game finishes the first-hour loop without help.
 
-**M3 — Content.**
+**M3 — Content.** **Delivered 2026-10-24.** EOS achievement mirroring moves to M6. See [[Development/Reports/M3 Content/README]].
 
 - Jobs, clothing and furniture catalogs, apartment tier interiors, the extra wager markets and the season goal.
 - Achievements through Epic Online Services, which is free.

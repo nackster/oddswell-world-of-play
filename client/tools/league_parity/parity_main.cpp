@@ -263,6 +263,10 @@ int main(int Argc, char** Argv)
 	int Overtimes = 0;
 	int Upsets = 0;
 	int Favorites = 0;
+	// Market calibration: expected vs actual count of outcome 0 (and the margin favourite) per market.
+	double MarketExpected[5] = {};
+	int MarketActual[5] = {};
+	int MarketGames = 0;
 	while (Live.CompletedSeasons == 0 && Days < 60)
 	{
 		PrepareDay(League, Live);
@@ -283,12 +287,43 @@ int main(int Argc, char** Argv)
 			((Game.HomeScore > Game.AwayScore) == bHomeFavored ? Favorites : Upsets) += 1;
 			FGameResult Replay;
 			Expect(ReplayGame(League, Live, Id, Replay, Error), "replay game " + std::to_string(Id), Error);
+			Expect(Game.bMarketsPublished && Game.Props[0].RosterSlot >= 0 && Game.Props[1].RosterSlot >= 0, "markets published game " + std::to_string(Id));
+			int64_t MarginTotal = 0;
+			int MarginWinners = 0;
+			for (int Bucket = 0; Bucket < MarginBucketCount; ++Bucket)
+			{
+				bool bWon = false;
+				MarginTotal += FairProbabilityE8(Game, EMarket::Margin, Bucket);
+				Expect(DidOutcomeWin(Game, EMarket::Margin, Bucket, bWon), "margin settles");
+				MarginWinners += bWon ? 1 : 0;
+			}
+			Expect(MarginTotal == ProbabilityScale && MarginWinners == 1, "margin book game " + std::to_string(Id));
+			for (int Market = 0; Market < 5; ++Market)
+			{
+				const EMarket Kind = static_cast<EMarket>(Market);
+				bool bZeroWon = false;
+				bool bOneWon = false;
+				Expect(DidOutcomeWin(Game, Kind, 0, bZeroWon) && DidOutcomeWin(Game, Kind, 1, bOneWon), "market settles");
+				Expect(Kind == EMarket::Margin || bZeroWon != bOneWon, "two-way market has one winner");
+				MarketExpected[Market] += static_cast<double>(FairProbabilityE8(Game, Kind, 0)) / ProbabilityScale;
+				Expect(OutcomeProbabilityE8(Game, Kind, 0) > FairProbabilityE8(Game, Kind, 0), "quoted price carries the margin");
+				MarketActual[Market] += bZeroWon ? 1 : 0;
+			}
+			const int HomeOffset = static_cast<int>(League.Teams[static_cast<size_t>(Game.Home)].Roster.size());
+			Expect(Game.Props[0].ActualPoints == Replay.PointsFor(Game.Props[0].RosterSlot)
+				&& Game.Props[1].ActualPoints == Replay.PointsFor(HomeOffset + Game.Props[1].RosterSlot), "prop points match replay");
+			++MarketGames;
 		}
 		AdvanceDay(League, Live);
 		++Days;
 	}
 	Expect(Live.CompletedSeasons == 1 && Live.SeasonNumber == 2, "season completes with playoffs");
 	std::printf("8-team season: %d days, %d overtime games, favorites won %d of %d\n", Days, Overtimes, Favorites, Favorites + Upsets);
+	static const char* MarketNames[5] = {"home win", "home by 1-5", "overtime", "home star over", "away star over"};
+	for (int Market = 0; Market < 5; ++Market)
+	{
+		std::printf("market %-15s expected %6.1f actual %3d of %d\n", MarketNames[Market], MarketExpected[Market], MarketActual[Market], MarketGames);
+	}
 
 	std::printf("baseline games: %d, season games: %d\n", Baselines, SeasonGames);
 	std::printf(Failures ? "PARITY_FAIL %d\n" : "PARITY_PASS\n", Failures);

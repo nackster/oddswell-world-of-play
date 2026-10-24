@@ -12,8 +12,14 @@ DEFINE_LOG_CATEGORY_STATIC(LogOddsWellCareer, Log, All);
 namespace
 {
 	const FName ShiftReason(TEXT("career_shift"));
-	const FName StakeReason(TEXT("match_winner_stake"));
-	const FName PayoutReason(TEXT("match_winner_payout"));
+	const FName StakeReason(TEXT("career_wager_stake"));
+	const FName PurchaseReason(TEXT("career_purchase"));
+
+	FString PurchaseCommand(const FName ItemId)
+	{
+		return FString::Printf(TEXT("career:buy:%s"), *ItemId.ToString());
+	}
+	const FName PayoutReason(TEXT("career_wager_payout"));
 
 	FString ToFString(const std::string& Text)
 	{
@@ -36,6 +42,17 @@ namespace
 	{
 		return FString::Printf(TEXT("s%d:d%d"), State.SeasonNumber, State.Day);
 	}
+}
+
+TConstArrayView<FOddsWellJob> GetOddsWellJobs()
+{
+	static const FOddsWellJob Jobs[] = {
+		{TEXT("Corner store clerk"), 100, 0},
+		{TEXT("Arena usher"), 130, 6},
+		{TEXT("Stats desk assistant"), 170, 14},
+		{TEXT("Team scout"), 220, 26},
+	};
+	return Jobs;
 }
 
 bool IsOddsWellCareerMode()
@@ -103,13 +120,36 @@ bool UOddsWellCareerSubsystem::LoadOrCreate(FString& OutError)
 		NextWagerId = FMath::Max(1, Saved->NextWagerId);
 		MorningReport = Saved->MorningReport;
 		TutorialFlags = Saved->TutorialFlags;
+		ShiftsWorked = Saved->ShiftsWorked;
+		GamesWatched = Saved->GamesWatched;
+		EquippedTop = Saved->EquippedTop;
+		EquippedBottom = Saved->EquippedBottom;
+		Achievements = Saved->Achievements;
+		if (ShiftsWorked == 0)
+		{
+			// Saves from before the job ladder: count the shifts already paid.
+			for (const FOddsWellOddsBucksEntry& Entry : Ledger.GetEntries())
+			{
+				ShiftsWorked += Entry.Reason == ShiftReason ? 1 : 0;
+			}
+		}
 		bReady = true;
 		if (!League.bDayPrepared)
 		{
 			OddsWellLeague::PrepareDay(GetConfig(), League);
 			return Save(OutError);
 		}
-		return true;
+		// A save from before the extra markets: price today's open games now.
+		bool bPriced = false;
+		for (OddsWellLeague::FScheduledGame& Game : League.Games)
+		{
+			if (Game.Day == League.Day && !Game.bPlayed && Game.bOddsPublished && !Game.bMarketsPublished)
+			{
+				OddsWellLeague::PriceGameMarkets(GetConfig(), League, Game);
+				bPriced = true;
+			}
+		}
+		return !bPriced || Save(OutError);
 	}
 	// Without a save, the career starts when the player chooses New career (tests may force it with -NewCareer).
 	if (FParse::Param(FCommandLine::Get(), TEXT("NewCareer")))
@@ -141,6 +181,13 @@ bool UOddsWellCareerSubsystem::StartNewCareer(const uint64 CareerSeed, FString& 
 	NextWagerId = 1;
 	GameToWatch = 0;
 	TutorialFlags = 0;
+	ShiftsWorked = 0;
+	GamesWatched = 0;
+	EquippedTop = NAME_None;
+	EquippedBottom = NAME_None;
+	Achievements.Reset();
+	PendingToasts.Reset();
+	LastShiftMessage.Reset();
 	MorningReport = FString::Printf(
 		TEXT("Welcome to Sundale.\nSeason 1 of the league starts today: 8 teams, 28 games each, then the playoffs.\nWork a shift at the Job marker, check today's odds at the ticket booth, and watch games at the arena.\nSleep in your Studio to start the next day."));
 	bReady = true;
@@ -162,6 +209,11 @@ bool UOddsWellCareerSubsystem::Save(FString& OutError)
 	Saved->NextWagerId = NextWagerId;
 	Saved->MorningReport = MorningReport;
 	Saved->TutorialFlags = TutorialFlags;
+	Saved->ShiftsWorked = ShiftsWorked;
+	Saved->GamesWatched = GamesWatched;
+	Saved->EquippedTop = EquippedTop;
+	Saved->EquippedBottom = EquippedBottom;
+	Saved->Achievements = Achievements;
 	if (!UGameplayStatics::SaveGameToSlot(Saved, SlotName(), 0))
 	{
 		OutError = TEXT("The career could not be saved.");
@@ -274,6 +326,26 @@ bool UOddsWellCareerSubsystem::HasWorkedToday() const
 	return LastShiftKey == ShiftKey(League);
 }
 
+int32 UOddsWellCareerSubsystem::GetJobLevel() const
+{
+	const TConstArrayView<FOddsWellJob> Jobs = GetOddsWellJobs();
+	int32 Level = 0;
+	while (Level + 1 < Jobs.Num() && ShiftsWorked >= Jobs[Level + 1].ShiftsRequired)
+	{
+		++Level;
+	}
+	return Level;
+}
+
+FString UOddsWellCareerSubsystem::GetShiftPrompt() const
+{
+	if (HasWorkedToday())
+	{
+		return TEXT("You already worked today. Sleep in your Studio to start a new day.");
+	}
+	return FString::Printf(TEXT("Press E to work your shift as %s (+%lld Odds Bucks)"), GetJob().Title, GetJob().Pay);
+}
+
 bool UOddsWellCareerSubsystem::WorkShift(bool& bOutCredited, int64& OutBalance, FString& OutError)
 {
 	bOutCredited = false;
@@ -285,42 +357,122 @@ bool UOddsWellCareerSubsystem::WorkShift(bool& bOutCredited, int64& OutBalance, 
 	}
 	if (HasWorkedToday())
 	{
+		LastShiftMessage = FString::Printf(TEXT("You already worked today - sleep in your Studio to start a new day | Balance: %lld"), OutBalance);
 		return true;
 	}
+	const FOddsWellJob& Job = GetJob();
 	FOddsWellOddsBucksLedger Candidate = Ledger;
 	const FString CommandId = FString::Printf(TEXT("career:shift:%s"), *ShiftKey(League));
-	if (Candidate.Append(CommandId, GetOddsWellFirstJobPayout(), ShiftReason) != EOddsWellOddsBucksAppendResult::Applied)
+	if (Candidate.Append(CommandId, Job.Pay, ShiftReason) != EOddsWellOddsBucksAppendResult::Applied)
 	{
 		OutError = TEXT("The shift payout was rejected.");
 		return false;
 	}
 	const FOddsWellOddsBucksLedger Previous = Ledger;
 	const FString PreviousShift = LastShiftKey;
+	const int32 PreviousLevel = GetJobLevel();
 	Ledger = MoveTemp(Candidate);
 	LastShiftKey = ShiftKey(League);
+	++ShiftsWorked;
 	MarkTutorial(EOddsWellTutorialStep::Shift);
 	if (!Save(OutError))
 	{
 		Ledger = Previous;
 		LastShiftKey = PreviousShift;
+		--ShiftsWorked;
 		return false;
 	}
 	bOutCredited = true;
 	OutBalance = Ledger.GetBalance();
-	UE_LOG(LogOddsWellCareer, Display, TEXT("ODDSWELL_CAREER_SHIFT|season=%d|day=%d|credited=100|balance=%lld"), League.SeasonNumber, League.Day, OutBalance);
+	LastShiftMessage = FString::Printf(TEXT("Shift complete as %s: +%lld Odds Bucks | Balance: %lld"), Job.Title, Job.Pay, OutBalance);
+	if (GetJobLevel() > PreviousLevel)
+	{
+		LastShiftMessage += FString::Printf(TEXT("\nPromoted to %s! Shifts now pay %lld."), GetJob().Title, GetJob().Pay);
+	}
+	UE_LOG(LogOddsWellCareer, Display, TEXT("ODDSWELL_CAREER_SHIFT|season=%d|day=%d|job=%d|credited=%lld|shifts=%d|balance=%lld"),
+		League.SeasonNumber, League.Day, PreviousLevel, Job.Pay, ShiftsWorked, OutBalance);
+	CheckAchievements();
 	return true;
 }
 
-const FOddsWellCareerWager* UOddsWellCareerSubsystem::FindWagerForGame(const int32 GameId) const
+const FOddsWellCareerWager* UOddsWellCareerSubsystem::FindWager(const int32 GameId, const OddsWellLeague::EMarket Market) const
 {
 	for (const FOddsWellCareerWager& Wager : Wagers)
 	{
-		if (Wager.Season == League.SeasonNumber && Wager.GameId == GameId)
+		if (Wager.Season == League.SeasonNumber && Wager.GameId == GameId && Wager.Market == static_cast<int32>(Market))
 		{
 			return &Wager;
 		}
 	}
 	return nullptr;
+}
+
+int32 UOddsWellCareerSubsystem::CountWagersOnGame(const int32 GameId) const
+{
+	int32 Count = 0;
+	for (const FOddsWellCareerWager& Wager : Wagers)
+	{
+		Count += Wager.Season == League.SeasonNumber && Wager.GameId == GameId ? 1 : 0;
+	}
+	return Count;
+}
+
+FString UOddsWellCareerSubsystem::GetMarketName(const OddsWellLeague::FScheduledGame& Game, const OddsWellLeague::EMarket Market) const
+{
+	switch (Market)
+	{
+	case OddsWellLeague::EMarket::MatchWinner: return TEXT("Match winner");
+	case OddsWellLeague::EMarket::Margin: return TEXT("Winning margin");
+	case OddsWellLeague::EMarket::Overtime: return TEXT("Overtime");
+	case OddsWellLeague::EMarket::HomeStarPoints:
+	case OddsWellLeague::EMarket::AwayStarPoints:
+	{
+		const int32 Side = Market == OddsWellLeague::EMarket::HomeStarPoints ? 0 : 1;
+		const int32 Team = Side == 0 ? Game.Home : Game.Away;
+		const OddsWellLeague::FPointsProp& Prop = Game.Props[Side];
+		const OddsWellLeague::FLeagueTeam& Source = GetConfig().Teams[static_cast<size_t>(Team)];
+		const FString Player = Prop.RosterSlot >= 0 && Prop.RosterSlot < static_cast<int32>(Source.Roster.size())
+			? ToFString(Source.Roster[static_cast<size_t>(Prop.RosterSlot)].Ratings.Name) : FString(TEXT("Star"));
+		return FString::Printf(TEXT("%s (%s) points"), *Player, *GetTeamShortName(Team));
+	}
+	default: return FString();
+	}
+}
+
+FString UOddsWellCareerSubsystem::DescribeOutcome(const OddsWellLeague::FScheduledGame& Game, const OddsWellLeague::EMarket Market, const int32 Outcome) const
+{
+	switch (Market)
+	{
+	case OddsWellLeague::EMarket::MatchWinner:
+		return FString::Printf(TEXT("%s to win"), *GetTeamName(Outcome == 0 ? Game.Home : Game.Away));
+	case OddsWellLeague::EMarket::Margin:
+	{
+		static const TCHAR* Bands[3] = {TEXT("1-5"), TEXT("6-10"), TEXT("11+")};
+		return FString::Printf(TEXT("%s by %s"), *GetTeamShortName(Outcome < 3 ? Game.Home : Game.Away), Bands[FMath::Clamp(Outcome, 0, 5) % 3]);
+	}
+	case OddsWellLeague::EMarket::Overtime:
+		return Outcome == 0 ? TEXT("Goes to overtime") : TEXT("No overtime");
+	case OddsWellLeague::EMarket::HomeStarPoints:
+	case OddsWellLeague::EMarket::AwayStarPoints:
+	{
+		const OddsWellLeague::FPointsProp& Prop = Game.Props[Market == OddsWellLeague::EMarket::HomeStarPoints ? 0 : 1];
+		return FString::Printf(TEXT("%s %d.%d"), Outcome == 0 ? TEXT("Over") : TEXT("Under"), Prop.LineTenths / 10, Prop.LineTenths % 10);
+	}
+	default: return FString();
+	}
+}
+
+FString UOddsWellCareerSubsystem::DescribeWager(const FOddsWellCareerWager& Wager) const
+{
+	const OddsWellLeague::FScheduledGame* Game = Wager.Season == League.SeasonNumber ? FindGame(Wager.GameId) : nullptr;
+	if (!Game)
+	{
+		return TEXT("Bet");
+	}
+	const OddsWellLeague::EMarket Market = static_cast<OddsWellLeague::EMarket>(Wager.Market);
+	return Market == OddsWellLeague::EMarket::MatchWinner
+		? DescribeOutcome(*Game, Market, Wager.Selection)
+		: FString::Printf(TEXT("%s: %s"), *GetMarketName(*Game, Market), *DescribeOutcome(*Game, Market, Wager.Selection));
 }
 
 TArray<FOddsWellCareerWager> UOddsWellCareerSubsystem::GetWagersForDay(const int32 Season, const int32 Day) const
@@ -337,12 +489,7 @@ TArray<FOddsWellCareerWager> UOddsWellCareerSubsystem::GetWagersForDay(const int
 	return Result;
 }
 
-int64 UOddsWellCareerSubsystem::SelectionProbabilityE8(const OddsWellLeague::FScheduledGame& Game, const int32 Selection)
-{
-	return Selection == 0 ? Game.HomeWinProbabilityE8 : OddsWellLeague::ProbabilityScale - Game.HomeWinProbabilityE8;
-}
-
-bool UOddsWellCareerSubsystem::PlaceWager(const int32 GameId, const int32 Selection, const int64 Stake, FString& OutError)
+bool UOddsWellCareerSubsystem::PlaceWager(const int32 GameId, const OddsWellLeague::EMarket Market, const int32 Selection, const int64 Stake, FString& OutError)
 {
 	const OddsWellLeague::FScheduledGame* Game = FindGame(GameId);
 	if (!bReady || !Game)
@@ -355,9 +502,14 @@ bool UOddsWellCareerSubsystem::PlaceWager(const int32 GameId, const int32 Select
 		OutError = TEXT("Betting on that game is closed.");
 		return false;
 	}
-	if (Selection != 0 && Selection != 1)
+	if (Market >= OddsWellLeague::EMarket::Count || !OddsWellLeague::IsOutcomeAvailable(*Game, Market))
 	{
-		OutError = TEXT("Pick a team first.");
+		OutError = TEXT("That market is not open on this game.");
+		return false;
+	}
+	if (Selection < 0 || Selection >= OddsWellLeague::MarketOutcomeCount(Market))
+	{
+		OutError = TEXT("Pick an outcome first.");
 		return false;
 	}
 	if (!OddsWellLeague::IsValidStake(Stake))
@@ -365,18 +517,19 @@ bool UOddsWellCareerSubsystem::PlaceWager(const int32 GameId, const int32 Select
 		OutError = TEXT("Stakes are 10 to 100 Odds Bucks in steps of 10.");
 		return false;
 	}
-	if (FindWagerForGame(GameId))
+	if (FindWager(GameId, Market))
 	{
-		OutError = TEXT("You already have a bet on this game.");
+		OutError = TEXT("You already have a bet in this market.");
 		return false;
 	}
 	FOddsWellCareerWager Wager;
 	Wager.Id = NextWagerId;
 	Wager.Season = League.SeasonNumber;
 	Wager.GameId = GameId;
+	Wager.Market = static_cast<int32>(Market);
 	Wager.Selection = Selection;
 	Wager.Stake = Stake;
-	Wager.WinProbabilityE8 = SelectionProbabilityE8(*Game, Selection);
+	Wager.WinProbabilityE8 = OddsWellLeague::OutcomeProbabilityE8(*Game, Market, Selection);
 	FOddsWellOddsBucksLedger Candidate = Ledger;
 	if (Candidate.Append(FString::Printf(TEXT("career:wager:%d:stake"), Wager.Id), -Stake, StakeReason) != EOddsWellOddsBucksAppendResult::Applied)
 	{
@@ -395,8 +548,9 @@ bool UOddsWellCareerSubsystem::PlaceWager(const int32 GameId, const int32 Select
 		--NextWagerId;
 		return false;
 	}
-	UE_LOG(LogOddsWellCareer, Display, TEXT("ODDSWELL_CAREER_WAGER|id=%d|season=%d|game=%d|selection=%d|stake=%lld|probability_e8=%lld|balance=%lld"),
-		Wager.Id, Wager.Season, GameId, Selection, Stake, Wager.WinProbabilityE8, Ledger.GetBalance());
+	UE_LOG(LogOddsWellCareer, Display, TEXT("ODDSWELL_CAREER_WAGER|id=%d|season=%d|game=%d|market=%d|selection=%d|stake=%lld|probability_e8=%lld|balance=%lld"),
+		Wager.Id, Wager.Season, GameId, Wager.Market, Selection, Stake, Wager.WinProbabilityE8, Ledger.GetBalance());
+	CheckAchievements();
 	return true;
 }
 
@@ -413,9 +567,12 @@ void UOddsWellCareerSubsystem::SettleWagers(const int32 OnlyGameId)
 		{
 			continue;
 		}
-		const bool bHomeWon = Game->HomeScore > Game->AwayScore;
-		const bool bWon = (Wager.Selection == 0) == bHomeWon;
-		const FString Team = GetTeamName(Wager.Selection == 0 ? Game->Home : Game->Away);
+		bool bWon = false;
+		if (!OddsWellLeague::DidOutcomeWin(*Game, static_cast<OddsWellLeague::EMarket>(Wager.Market), Wager.Selection, bWon))
+		{
+			continue;
+		}
+		const FString Team = DescribeWager(Wager);
 		if (bWon)
 		{
 			const int64 Gross = OddsWellLeague::GrossReturn(Wager.Stake, Wager.WinProbabilityE8);
@@ -427,12 +584,12 @@ void UOddsWellCareerSubsystem::SettleWagers(const int32 OnlyGameId)
 			}
 			Wager.Status = EOddsWellCareerWagerStatus::Won;
 			Wager.Payout = Gross;
-			UE_LOG(LogOddsWellCareer, Display, TEXT("ODDSWELL_CAREER_SETTLEMENT|wager=%d|team=%s|result=won|payout=%lld|balance=%lld"), Wager.Id, *Team, Gross, Ledger.GetBalance());
+			UE_LOG(LogOddsWellCareer, Display, TEXT("ODDSWELL_CAREER_SETTLEMENT|wager=%d|bet=%s|result=won|payout=%lld|balance=%lld"), Wager.Id, *Team, Gross, Ledger.GetBalance());
 		}
 		else
 		{
 			Wager.Status = EOddsWellCareerWagerStatus::Lost;
-			UE_LOG(LogOddsWellCareer, Display, TEXT("ODDSWELL_CAREER_SETTLEMENT|wager=%d|team=%s|result=lost|balance=%lld"), Wager.Id, *Team, Ledger.GetBalance());
+			UE_LOG(LogOddsWellCareer, Display, TEXT("ODDSWELL_CAREER_SETTLEMENT|wager=%d|bet=%s|result=lost|balance=%lld"), Wager.Id, *Team, Ledger.GetBalance());
 		}
 	}
 }
@@ -482,8 +639,7 @@ bool UOddsWellCareerSubsystem::SleepUntilTomorrow(FString& OutError)
 		Report += TEXT("\nYour bets:\n");
 		for (const FOddsWellCareerWager& Wager : DayWagers)
 		{
-			const OddsWellLeague::FScheduledGame* Game = FindGame(Wager.GameId);
-			const FString Team = Game ? GetTeamName(Wager.Selection == 0 ? Game->Home : Game->Away) : FString();
+			const FString Team = DescribeWager(Wager);
 			Report += Wager.Status == EOddsWellCareerWagerStatus::Won
 				? FString::Printf(TEXT("WON  %s: +%lld (staked %lld)\n"), *Team, Wager.Payout, Wager.Stake)
 				: FString::Printf(TEXT("LOST %s: staked %lld\n"), *Team, Wager.Stake);
@@ -505,7 +661,12 @@ bool UOddsWellCareerSubsystem::SleepUntilTomorrow(FString& OutError)
 	GameToWatch = 0;
 	MarkTutorial(EOddsWellTutorialStep::Sleep);
 	UE_LOG(LogOddsWellCareer, Display, TEXT("ODDSWELL_CAREER_SLEEP|season=%d|day=%d|phase=%d|balance=%lld"), League.SeasonNumber, League.Day, static_cast<int32>(League.Phase), Ledger.GetBalance());
-	return Save(OutError);
+	if (!Save(OutError))
+	{
+		return false;
+	}
+	CheckAchievements();
+	return true;
 }
 
 void UOddsWellCareerSubsystem::RevealGame(const int32 GameId)
@@ -516,10 +677,12 @@ void UOddsWellCareerSubsystem::RevealGame(const int32 GameId)
 		return;
 	}
 	RevealedGames.Add(GameId);
+	++GamesWatched;
 	SettleWagers(GameId);
 	MarkTutorial(EOddsWellTutorialStep::Watch);
 	FString Error;
 	Save(Error);
+	CheckAchievements();
 }
 
 bool UOddsWellCareerSubsystem::IsGameRevealed(const int32 GameId) const
@@ -534,6 +697,221 @@ FString UOddsWellCareerSubsystem::DescribeGameForPlayer(const OddsWellLeague::FS
 		return FString::Printf(TEXT("%s at %s - final (watch to see the score)"), *GetTeamName(Game.Away), *GetTeamName(Game.Home));
 	}
 	return DescribeGame(Game);
+}
+
+bool UOddsWellCareerSubsystem::OwnsItem(const FName ItemId) const
+{
+	const FOddsWellCatalogItem* Item = FindOddsWellCatalogItem(ItemId);
+	if (!Item)
+	{
+		return false;
+	}
+	if (Item->Price == 0 || Ledger.HasCommand(PurchaseCommand(ItemId)))
+	{
+		return true;
+	}
+	// Items bought at the original stores before the career catalog.
+	return (ItemId == GetOddsWellSignalJacketId() && OwnsOddsWellSignalJacket(Ledger))
+		|| (ItemId == TEXT("furniture_modular_chair") && OwnsOddsWellModularChair(Ledger))
+		|| (ItemId == TEXT("home_one_bedroom") && OwnsOddsWellOneBedroomUpgrade(Ledger));
+}
+
+int32 UOddsWellCareerSubsystem::GetHomeTier() const
+{
+	int32 Tier = 0;
+	for (const FOddsWellCatalogItem* Item : GetOddsWellCatalogItems(EOddsWellCatalogKind::Apartment))
+	{
+		Tier = OwnsItem(Item->Id) ? FMath::Max(Tier, Item->Tier) : Tier;
+	}
+	return Tier;
+}
+
+int32 UOddsWellCareerSubsystem::CountOwned(const EOddsWellCatalogKind Kind) const
+{
+	int32 Count = 0;
+	for (const FOddsWellCatalogItem* Item : GetOddsWellCatalogItems(Kind))
+	{
+		Count += OwnsItem(Item->Id) ? 1 : 0;
+	}
+	return Count;
+}
+
+TArray<FName> UOddsWellCareerSubsystem::GetOwnedFurniture() const
+{
+	TArray<FName> Owned;
+	for (const FOddsWellCatalogItem* Item : GetOddsWellCatalogItems(EOddsWellCatalogKind::Furniture))
+	{
+		if (OwnsItem(Item->Id))
+		{
+			Owned.Add(Item->Id);
+		}
+	}
+	return Owned;
+}
+
+FString UOddsWellCareerSubsystem::GetPurchaseBlocker(const FOddsWellCatalogItem& Item) const
+{
+	if (OwnsItem(Item.Id))
+	{
+		return TEXT("Owned");
+	}
+	if (Item.Kind == EOddsWellCatalogKind::Apartment && !OwnsItem(GetOddsWellApartmentTier(Item.Tier - 1).Id))
+	{
+		return FString::Printf(TEXT("Needs the %s first"), *GetOddsWellApartmentTier(Item.Tier - 1).Name);
+	}
+	if (Item.Kind == EOddsWellCatalogKind::Furniture && GetHomeTier() < Item.Tier)
+	{
+		return FString::Printf(TEXT("Fits a %s or bigger"), *GetOddsWellApartmentTier(Item.Tier).Name);
+	}
+	if (Ledger.GetBalance() < Item.Price)
+	{
+		return FString::Printf(TEXT("Needs %lld more Odds Bucks"), Item.Price - Ledger.GetBalance());
+	}
+	return FString();
+}
+
+bool UOddsWellCareerSubsystem::BuyItem(const FName ItemId, FString& OutError)
+{
+	const FOddsWellCatalogItem* Item = FindOddsWellCatalogItem(ItemId);
+	if (!bReady || !Item)
+	{
+		OutError = TEXT("That item is not for sale.");
+		return false;
+	}
+	const FString Blocker = GetPurchaseBlocker(*Item);
+	if (!Blocker.IsEmpty())
+	{
+		OutError = Blocker == TEXT("Owned") ? FString::Printf(TEXT("You already own the %s."), *Item->Name) : Blocker + TEXT(".");
+		return false;
+	}
+	FOddsWellOddsBucksLedger Candidate = Ledger;
+	if (Candidate.Append(PurchaseCommand(ItemId), -Item->Price, PurchaseReason) != EOddsWellOddsBucksAppendResult::Applied)
+	{
+		OutError = FString::Printf(TEXT("You need %lld Odds Bucks for the %s."), Item->Price, *Item->Name);
+		return false;
+	}
+	const FOddsWellOddsBucksLedger Previous = Ledger;
+	Ledger = MoveTemp(Candidate);
+	const FName PreviousTop = EquippedTop;
+	const FName PreviousBottom = EquippedBottom;
+	// New clothes go straight on.
+	EquippedTop = Item->Kind == EOddsWellCatalogKind::Top ? ItemId : EquippedTop;
+	EquippedBottom = Item->Kind == EOddsWellCatalogKind::Bottom ? ItemId : EquippedBottom;
+	if (!Save(OutError))
+	{
+		Ledger = Previous;
+		EquippedTop = PreviousTop;
+		EquippedBottom = PreviousBottom;
+		return false;
+	}
+	UE_LOG(LogOddsWellCareer, Display, TEXT("ODDSWELL_CAREER_PURCHASE|item=%s|price=%lld|balance=%lld|home_tier=%d"), *ItemId.ToString(), Item->Price, Ledger.GetBalance(), GetHomeTier());
+	CheckAchievements();
+	return true;
+}
+
+FName UOddsWellCareerSubsystem::GetEquipped(const EOddsWellCatalogKind Kind) const
+{
+	const FName Equipped = Kind == EOddsWellCatalogKind::Top ? EquippedTop : EquippedBottom;
+	return !Equipped.IsNone() && OwnsItem(Equipped) ? Equipped
+		: Kind == EOddsWellCatalogKind::Top ? GetOddsWellStarterTopId() : GetOddsWellStarterBottomId();
+}
+
+bool UOddsWellCareerSubsystem::EquipItem(const FName ItemId, FString& OutError)
+{
+	const FOddsWellCatalogItem* Item = FindOddsWellCatalogItem(ItemId);
+	if (!Item || (Item->Kind != EOddsWellCatalogKind::Top && Item->Kind != EOddsWellCatalogKind::Bottom) || !OwnsItem(ItemId))
+	{
+		OutError = TEXT("You can only wear clothes you own.");
+		return false;
+	}
+	(Item->Kind == EOddsWellCatalogKind::Top ? EquippedTop : EquippedBottom) = ItemId;
+	return Save(OutError);
+}
+
+FString UOddsWellCareerSubsystem::PopAchievementToast()
+{
+	return PendingToasts.Num() ? PendingToasts.Pop(EAllowShrinking::No) : FString();
+}
+
+void UOddsWellCareerSubsystem::CheckAchievements()
+{
+	if (!bReady)
+	{
+		return;
+	}
+	int32 Won = 0;
+	int32 Streak = 0;
+	int32 BestStreak = 0;
+	int32 Markets = 0;
+	bool bLongShot = false;
+	int64 BiggestPayout = 0;
+	for (const FOddsWellCareerWager& Wager : Wagers)
+	{
+		Markets |= 1 << FMath::Clamp(Wager.Market, 0, 30);
+		if (Wager.Status == EOddsWellCareerWagerStatus::Pending)
+		{
+			continue;
+		}
+		const bool bWon = Wager.Status == EOddsWellCareerWagerStatus::Won;
+		Won += bWon ? 1 : 0;
+		Streak = bWon ? Streak + 1 : 0;
+		BestStreak = FMath::Max(BestStreak, Streak);
+		bLongShot |= bWon && Wager.WinProbabilityE8 <= OddsWellLeague::ProbabilityScale / 5;
+		BiggestPayout = FMath::Max(BiggestPayout, Wager.Payout);
+	}
+	const int32 Level = GetJobLevel();
+	const int32 Tier = GetHomeTier();
+	const int32 Clothes = CountOwned(EOddsWellCatalogKind::Top) + CountOwned(EOddsWellCatalogKind::Bottom);
+	bool bBoughtClothes = false;
+	for (const EOddsWellCatalogKind Kind : {EOddsWellCatalogKind::Top, EOddsWellCatalogKind::Bottom})
+	{
+		for (const FOddsWellCatalogItem* Item : GetOddsWellCatalogItems(Kind))
+		{
+			bBoughtClothes |= Item->Price > 0 && OwnsItem(Item->Id);
+		}
+	}
+	const int32 Furniture = CountOwned(EOddsWellCatalogKind::Furniture);
+	const TMap<FName, bool> Earned = {
+		{TEXT("first_shift"), ShiftsWorked >= 1},
+		{TEXT("first_bet"), Wagers.Num() >= 1},
+		{TEXT("first_win"), Won >= 1},
+		{TEXT("watched_game"), GamesWatched >= 1},
+		{TEXT("first_night"), (TutorialFlags & static_cast<int32>(EOddsWellTutorialStep::Sleep)) != 0},
+		{TEXT("promoted"), Level >= 1},
+		{TEXT("team_scout"), Level >= GetOddsWellJobs().Num() - 1},
+		{TEXT("shifts_40"), ShiftsWorked >= 40},
+		{TEXT("all_markets"), Markets == (1 << static_cast<int32>(OddsWellLeague::EMarket::Count)) - 1},
+		{TEXT("long_shot"), bLongShot},
+		{TEXT("big_ticket"), BiggestPayout >= 500},
+		{TEXT("hot_hand"), BestStreak >= 5},
+		{TEXT("bets_100"), Wagers.Num() >= 100},
+		{TEXT("fresh_fit"), bBoughtClothes},
+		{TEXT("wardrobe"), Clothes >= 10},
+		{TEXT("make_it_home"), Furniture >= 1},
+		{TEXT("interior_designer"), Furniture >= 10},
+		{TEXT("one_bedroom"), Tier >= 1},
+		{TEXT("four_bedroom"), Tier >= 4},
+		{TEXT("penthouse"), Tier >= GetOddsWellApartmentTierCount() - 1},
+		{TEXT("full_season"), League.CompletedSeasons >= 1},
+		{TEXT("bankroll"), Ledger.GetBalance() >= 3000},
+	};
+	bool bChanged = false;
+	for (const FOddsWellAchievement& Achievement : GetOddsWellAchievements())
+	{
+		const bool* bEarned = Earned.Find(Achievement.Id);
+		if (bEarned && *bEarned && !Achievements.Contains(Achievement.Id))
+		{
+			Achievements.Add(Achievement.Id);
+			PendingToasts.Insert(FString::Printf(TEXT("Achievement unlocked: %s - %s"), *Achievement.Name, *Achievement.Description), 0);
+			bChanged = true;
+			UE_LOG(LogOddsWellCareer, Display, TEXT("ODDSWELL_ACHIEVEMENT|id=%s|unlocked=%d|total=%d"), *Achievement.Id.ToString(), Achievements.Num(), GetOddsWellAchievements().Num());
+		}
+	}
+	if (bChanged)
+	{
+		FString Error;
+		Save(Error);
+	}
 }
 
 void UOddsWellCareerSubsystem::DismissMorningReport()

@@ -18,6 +18,7 @@ class ODDSWELL_API AOddsWellCharacterPreview final : public AActor
 
 public:
 	AOddsWellCharacterPreview();
+	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaSeconds) override;
 	bool ShowPreset(FName PresetId);
 	UCameraComponent* GetCamera() const { return Camera; }
@@ -28,6 +29,9 @@ private:
 
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UStaticMeshComponent> Stand;
+
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<UStaticMeshComponent> Backdrop;
 
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UCameraComponent> Camera;
@@ -51,4 +55,7 @@ private:
 	TArray<TObjectPtr<UGroomComponent>> Grooms;
 
 	FName ShownPreset;
+	float ShownSeconds = 0.0f;
+
+	bool bGroomsLogged = false;
 };

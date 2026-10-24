@@ -24,6 +24,20 @@ namespace
 		EKeys::Gamepad_FaceButton_Bottom, EKeys::Gamepad_FaceButton_Right, EKeys::Gamepad_FaceButton_Left,
 		EKeys::Gamepad_DPad_Up, EKeys::Gamepad_DPad_Down, EKeys::Gamepad_DPad_Left, EKeys::Gamepad_DPad_Right,
 		EKeys::Gamepad_LeftShoulder, EKeys::Gamepad_RightShoulder, EKeys::Gamepad_Special_Right,
+		EKeys::Tab, EKeys::Q, EKeys::K, EKeys::Gamepad_FaceButton_Top,
+	};
+	constexpr double CareerToastSeconds = 4.0;
+	constexpr float CareerShopRadius = 350.0f;
+
+	struct FCareerShop
+	{
+		EOddsWellObjectivePlace Place;
+		const TCHAR* Name;
+	};
+	const FCareerShop CareerShops[] = {
+		{EOddsWellObjectivePlace::ClothingStore, TEXT("the clothing store")},
+		{EOddsWellObjectivePlace::FurnitureStore, TEXT("the furniture store")},
+		{EOddsWellObjectivePlace::ApartmentKiosk, TEXT("apartment listings")},
 	};
 	const TCHAR* PauseRows[] = {TEXT("Resume"), TEXT("Settings"), TEXT("Quit to title"), TEXT("Quit game")};
 	constexpr double CareerNoticeSeconds = 5.0;
@@ -97,7 +111,13 @@ void AOddsWellPlaceholderCharacter::PollCareer()
 	CareerPrompt.Reset();
 	UOddsWellCareerSubsystem* Career = UOddsWellCareerSubsystem::Get(this);
 	const bool bMenuKey = CareerKeyPressed(*OwnerController, EKeys::Escape) || CareerKeyPressed(*OwnerController, EKeys::Gamepad_Special_Right);
-	const bool bPanelOpen = (Career && !Career->GetMorningReport().IsEmpty()) || bCareerBoardOpen || bCareerStandingsOpen || CareerReplay.IsValid() || bCareerTipoffArmed;
+	const bool bPanelOpen = (Career && !Career->GetMorningReport().IsEmpty()) || bCareerBoardOpen || bCareerStandingsOpen || CareerReplay.IsValid() || bCareerTipoffArmed
+		|| CareerShopPlace != INDEX_NONE || bCareerAchievementsOpen;
+	if (Career && FPlatformTime::Seconds() >= CareerToastExpiresAt)
+	{
+		CareerToast = Career->PopAchievementToast();
+		CareerToastExpiresAt = CareerToast.IsEmpty() ? 0.0 : FPlatformTime::Seconds() + CareerToastSeconds;
+	}
 	if (bCareerPauseOpen)
 	{
 		PollCareerPause(*OwnerController);
@@ -116,9 +136,20 @@ void AOddsWellPlaceholderCharacter::PollCareer()
 				Career->DismissMorningReport();
 			}
 		}
+		else if (bCareerAchievementsOpen)
+		{
+			if (CareerKeyPressed(*OwnerController, EKeys::K) || CareerKeyPressed(*OwnerController, EKeys::Escape) || CareerKeyPressed(*OwnerController, EKeys::Gamepad_FaceButton_Right))
+			{
+				bCareerAchievementsOpen = false;
+			}
+		}
 		else if (IsSundale(GetWorld()))
 		{
-			PollCareerBoard(*OwnerController);
+			PollCareerShop(*OwnerController);
+			if (CareerShopPlace == INDEX_NONE)
+			{
+				PollCareerBoard(*OwnerController);
+			}
 		}
 		else if (GetWorld()->GetAuthGameMode<AOddsWellStadiumGameMode>())
 		{
@@ -131,6 +162,10 @@ void AOddsWellPlaceholderCharacter::PollCareer()
 		if (bCareerStandingsOpen && CareerKeyPressed(*OwnerController, EKeys::Escape))
 		{
 			bCareerStandingsOpen = false;
+		}
+		if (!bPanelOpen && CareerKeyPressed(*OwnerController, EKeys::K))
+		{
+			bCareerAchievementsOpen = true;
 		}
 	}
 	for (const FKey& Key : CareerKeys)
@@ -226,8 +261,9 @@ void AOddsWellPlaceholderCharacter::PollCareerBoard(APlayerController& OwnerCont
 				bCareerBoardOpen = true;
 				bCareerStandingsOpen = false;
 				CareerBoardRow = 0;
+				CareerBoardMarket = 0;
 				const TArray<int32> Games = Career->GetTodaysGameIds();
-				const FOddsWellCareerWager* Wager = Games.Num() ? Career->FindWagerForGame(Games[0]) : nullptr;
+				const FOddsWellCareerWager* Wager = Games.Num() ? Career->FindWager(Games[0], OddsWellLeague::EMarket::MatchWinner) : nullptr;
 				CareerBoardSelection = Wager ? Wager->Selection : INDEX_NONE;
 			}
 		}
@@ -247,6 +283,7 @@ void AOddsWellPlaceholderCharacter::PollCareerBoard(APlayerController& OwnerCont
 		return;
 	}
 	const int32 PreviousRow = CareerBoardRow;
+	const int32 PreviousMarket = CareerBoardMarket;
 	if (CareerKeyPressed(OwnerController, EKeys::Up) || CareerKeyPressed(OwnerController, EKeys::Gamepad_DPad_Up))
 	{
 		CareerBoardRow = (CareerBoardRow - 1 + Games.Num()) % Games.Num();
@@ -257,8 +294,30 @@ void AOddsWellPlaceholderCharacter::PollCareerBoard(APlayerController& OwnerCont
 	}
 	CareerBoardRow = FMath::Clamp(CareerBoardRow, 0, Games.Num() - 1);
 	const int32 GameId = Games[CareerBoardRow];
-	const FOddsWellCareerWager* Existing = Career->FindWagerForGame(GameId);
-	if (CareerBoardRow != PreviousRow)
+	const OddsWellLeague::FScheduledGame* Game = Career->FindGame(GameId);
+	if (!Game)
+	{
+		return;
+	}
+	// Tab (or Y) moves through the markets this game offers.
+	const int32 MarketCount = static_cast<int32>(OddsWellLeague::EMarket::Count);
+	const int32 MarketStep = CareerKeyPressed(OwnerController, EKeys::Tab) || CareerKeyPressed(OwnerController, EKeys::Gamepad_FaceButton_Top) ? 1
+		: CareerKeyPressed(OwnerController, EKeys::Q) ? MarketCount - 1 : 0;
+	CareerBoardMarket = FMath::Clamp(CareerBoardMarket, 0, MarketCount - 1);
+	for (int32 Attempt = 0; Attempt < MarketCount; ++Attempt)
+	{
+		if (Attempt || MarketStep)
+		{
+			CareerBoardMarket = (CareerBoardMarket + FMath::Max(1, MarketStep)) % MarketCount;
+		}
+		if (OddsWellLeague::IsOutcomeAvailable(*Game, static_cast<OddsWellLeague::EMarket>(CareerBoardMarket)) || Game->bPlayed)
+		{
+			break;
+		}
+	}
+	const OddsWellLeague::EMarket Market = static_cast<OddsWellLeague::EMarket>(CareerBoardMarket);
+	const FOddsWellCareerWager* Existing = Career->FindWager(GameId, Market);
+	if (CareerBoardRow != PreviousRow || CareerBoardMarket != PreviousMarket)
 	{
 		CareerBoardSelection = Existing ? Existing->Selection : INDEX_NONE;
 	}
@@ -266,13 +325,14 @@ void AOddsWellPlaceholderCharacter::PollCareerBoard(APlayerController& OwnerCont
 	{
 		return;
 	}
+	const int32 Outcomes = OddsWellLeague::MarketOutcomeCount(Market);
 	if (CareerKeyPressed(OwnerController, EKeys::Left) || CareerKeyPressed(OwnerController, EKeys::Gamepad_DPad_Left))
 	{
-		CareerBoardSelection = 1;
+		CareerBoardSelection = CareerBoardSelection == INDEX_NONE ? Outcomes - 1 : (CareerBoardSelection - 1 + Outcomes) % Outcomes;
 	}
 	if (CareerKeyPressed(OwnerController, EKeys::Right) || CareerKeyPressed(OwnerController, EKeys::Gamepad_DPad_Right))
 	{
-		CareerBoardSelection = 0;
+		CareerBoardSelection = CareerBoardSelection == INDEX_NONE ? 0 : (CareerBoardSelection + 1) % Outcomes;
 	}
 	if (CareerKeyPressed(OwnerController, EKeys::Hyphen) || CareerKeyPressed(OwnerController, EKeys::Gamepad_LeftShoulder))
 	{
@@ -286,26 +346,149 @@ void AOddsWellPlaceholderCharacter::PollCareerBoard(APlayerController& OwnerCont
 	{
 		if (CareerBoardSelection == INDEX_NONE)
 		{
-			ShowCareerNotice(TEXT("Pick a team first: Left for the away team, Right for the home team."));
+			ShowCareerNotice(TEXT("Pick an outcome first with Left and Right."));
 			return;
 		}
 		FString Error;
-		if (!Career->PlaceWager(GameId, CareerBoardSelection, CareerBoardStake, Error))
+		if (!Career->PlaceWager(GameId, Market, CareerBoardSelection, CareerBoardStake, Error))
 		{
 			ShowCareerNotice(Error);
 			return;
 		}
-		const OddsWellLeague::FScheduledGame* Game = Career->FindGame(GameId);
-		const FOddsWellCareerWager* Placed = Career->FindWagerForGame(GameId);
-		if (Game && Placed)
+		if (const FOddsWellCareerWager* Placed = Career->FindWager(GameId, Market))
 		{
-			ShowCareerNotice(FString::Printf(TEXT("Bet placed: %lld on %s at %s. Pays %lld if they win. Balance: %lld"),
+			ShowCareerNotice(FString::Printf(TEXT("Bet placed: %lld on %s at %s. Pays %lld if it wins. Balance: %lld"),
 				Placed->Stake,
-				*Career->GetTeamName(Placed->Selection == 0 ? Game->Home : Game->Away),
+				*Career->DescribeWager(*Placed),
 				*OddsText(Placed->WinProbabilityE8),
 				OddsWellLeague::GrossReturn(Placed->Stake, Placed->WinProbabilityE8),
 				Career->GetBalance()));
 		}
+	}
+}
+
+FString AOddsWellPlaceholderCharacter::GetCareerToast() const
+{
+	return FPlatformTime::Seconds() < CareerToastExpiresAt ? CareerToast : FString();
+}
+
+TArray<const FOddsWellCatalogItem*> AOddsWellPlaceholderCharacter::GetCareerShopItems() const
+{
+	TArray<const FOddsWellCatalogItem*> Items;
+	switch (static_cast<EOddsWellObjectivePlace>(CareerShopPlace))
+	{
+	case EOddsWellObjectivePlace::ClothingStore:
+		Items = GetOddsWellCatalogItems(EOddsWellCatalogKind::Top);
+		Items.Append(GetOddsWellCatalogItems(EOddsWellCatalogKind::Bottom));
+		break;
+	case EOddsWellObjectivePlace::FurnitureStore:
+		Items = GetOddsWellCatalogItems(EOddsWellCatalogKind::Furniture);
+		break;
+	case EOddsWellObjectivePlace::ApartmentKiosk:
+		for (const FOddsWellCatalogItem* Item : GetOddsWellCatalogItems(EOddsWellCatalogKind::Apartment))
+		{
+			if (Item->Tier > 0)
+			{
+				Items.Add(Item);
+			}
+		}
+		break;
+	default:
+		break;
+	}
+	return Items;
+}
+
+void AOddsWellPlaceholderCharacter::PollCareerShop(APlayerController& OwnerController)
+{
+	UOddsWellCareerSubsystem* Career = UOddsWellCareerSubsystem::Get(this);
+	if (CareerShopPlace == INDEX_NONE)
+	{
+		if (bCareerBoardOpen)
+		{
+			return;
+		}
+		for (const FCareerShop& Shop : CareerShops)
+		{
+			if (FVector::Dist2D(GetActorLocation(), GetOddsWellObjectiveLocation(Shop.Place)) <= CareerShopRadius)
+			{
+				CareerPrompt = FString::Printf(TEXT("Press E to browse %s"), Shop.Name);
+				if (CareerKeyPressed(OwnerController, EKeys::E))
+				{
+					CareerShopPlace = static_cast<int32>(Shop.Place);
+					CareerShopRow = 0;
+					bCareerStandingsOpen = false;
+				}
+				return;
+			}
+		}
+		return;
+	}
+	if (FVector::Dist2D(GetActorLocation(), GetOddsWellObjectiveLocation(static_cast<EOddsWellObjectivePlace>(CareerShopPlace))) > CareerShopRadius + 100.0f
+		|| CareerKeyPressed(OwnerController, EKeys::Escape)
+		|| CareerKeyPressed(OwnerController, EKeys::E)
+		|| CareerKeyPressed(OwnerController, EKeys::Gamepad_FaceButton_Right))
+	{
+		CareerShopPlace = INDEX_NONE;
+		return;
+	}
+	const TArray<const FOddsWellCatalogItem*> Items = GetCareerShopItems();
+	if (Items.IsEmpty())
+	{
+		return;
+	}
+	if (CareerKeyPressed(OwnerController, EKeys::Up) || CareerKeyPressed(OwnerController, EKeys::Gamepad_DPad_Up))
+	{
+		CareerShopRow = (CareerShopRow - 1 + Items.Num()) % Items.Num();
+	}
+	if (CareerKeyPressed(OwnerController, EKeys::Down) || CareerKeyPressed(OwnerController, EKeys::Gamepad_DPad_Down))
+	{
+		CareerShopRow = (CareerShopRow + 1) % Items.Num();
+	}
+	CareerShopRow = FMath::Clamp(CareerShopRow, 0, Items.Num() - 1);
+	if (!CareerKeyPressed(OwnerController, EKeys::Enter) && !CareerKeyPressed(OwnerController, EKeys::Gamepad_FaceButton_Bottom))
+	{
+		return;
+	}
+	const FOddsWellCatalogItem& Item = *Items[CareerShopRow];
+	FString Error;
+	const bool bClothing = Item.Kind == EOddsWellCatalogKind::Top || Item.Kind == EOddsWellCatalogKind::Bottom;
+	if (Career->OwnsItem(Item.Id))
+	{
+		if (!bClothing)
+		{
+			ShowCareerNotice(FString::Printf(TEXT("You already own the %s."), *Item.Name));
+		}
+		else if (Career->EquipItem(Item.Id, Error))
+		{
+			SyncOutfitComponents();
+			ShowCareerNotice(FString::Printf(TEXT("Now wearing: %s"), *Item.Name));
+		}
+		else
+		{
+			ShowCareerNotice(Error);
+		}
+		return;
+	}
+	if (!Career->BuyItem(Item.Id, Error))
+	{
+		ShowCareerNotice(Error);
+		return;
+	}
+	if (bClothing)
+	{
+		SyncOutfitComponents();
+		ShowCareerNotice(FString::Printf(TEXT("Bought and wearing: %s. Balance: %lld"), *Item.Name, Career->GetBalance()));
+	}
+	else if (Item.Kind == EOddsWellCatalogKind::Apartment)
+	{
+		ShowCareerNotice(Career->IsSeasonGoalComplete()
+			? FString::Printf(TEXT("You own the Penthouse - the top of Sundale! Season goal complete. Balance: %lld"), Career->GetBalance())
+			: FString::Printf(TEXT("You moved into a %s. Your home is ready next time you go in. Balance: %lld"), *Item.Name, Career->GetBalance()));
+	}
+	else
+	{
+		ShowCareerNotice(FString::Printf(TEXT("Bought the %s - it will be in your home. Balance: %lld"), *Item.Name, Career->GetBalance()));
 	}
 }
 
@@ -445,6 +628,125 @@ void AOddsWellPlaceholderCharacter::RunCareerSmoke(const float DeltaSeconds)
 		CareerSmokeFail(TEXT("career_not_ready"));
 		return;
 	}
+	static const bool bProgressSoak = FParse::Param(FCommandLine::Get(), TEXT("CareerProgressSoak"));
+	if (bProgressSoak && GCareerSmokeStage < 3)
+	{
+		// First show the clothing store's catalog.
+		GCareerSmokeTimer += DeltaSeconds;
+		if (GCareerSmokeStage == 0 && GCareerSmokeTimer > 2.0f)
+		{
+			Career->DismissMorningReport();
+			SetActorLocation(GetOddsWellObjectiveLocation(EOddsWellObjectivePlace::ClothingStore) + FVector(-300.0, 0.0, 220.0), false, nullptr, ETeleportType::TeleportPhysics);
+			if (APlayerController* ShotController = Cast<APlayerController>(GetController()))
+			{
+				ShotController->SetControlRotation(FRotator::ZeroRotator);
+			}
+			CareerShopPlace = static_cast<int32>(EOddsWellObjectivePlace::ClothingStore);
+			CareerShopRow = 1;
+			GCareerSmokeStage = 1;
+			GCareerSmokeTimer = 0.0f;
+		}
+		else if (GCareerSmokeStage == 1 && GCareerSmokeTimer > 2.0f)
+		{
+			CareerSmokeShot(TEXT("09_ClothingStore"));
+			GCareerSmokeStage = 2;
+			GCareerSmokeTimer = 0.0f;
+		}
+		else if (GCareerSmokeStage == 2 && GCareerSmokeTimer > 1.0f)
+		{
+			CareerShopPlace = INDEX_NONE;
+			GCareerSmokeStage = 3;
+		}
+		return;
+	}
+	if (bProgressSoak && GCareerSmokeStage < 200)
+	{
+		// A casual player's career: a shift and two bets a day, buying the next home (or a small treat)
+		// when affordable. Logs the day each home is reached, then shows the final home.
+		FRandomStream Choices(20261024);
+		FString SoakError;
+		TArray<int32> TierDays = {1};
+		int32 Day = 1;
+		for (; Day <= 120 && !Career->IsSeasonGoalComplete(); ++Day)
+		{
+			bool bCredited = false;
+			int64 Balance = 0;
+			Career->WorkShift(bCredited, Balance, SoakError);
+			const TArray<int32> Games = Career->GetTodaysGameIds();
+			if (Games.Num() && Career->GetBalance() >= 200)
+			{
+				const OddsWellLeague::FScheduledGame* Game = Career->FindGame(Games[Choices.RandHelper(Games.Num())]);
+				const int32 Favourite = OddsWellLeague::OutcomeProbabilityE8(*Game, OddsWellLeague::EMarket::MatchWinner, 0) >= OddsWellLeague::ProbabilityScale / 2 ? 0 : 1;
+				Career->PlaceWager(Game->Id, OddsWellLeague::EMarket::MatchWinner, Favourite, 30, SoakError);
+				const OddsWellLeague::EMarket Market = static_cast<OddsWellLeague::EMarket>(1 + Choices.RandHelper(4));
+				Career->PlaceWager(Game->Id, Market, Choices.RandHelper(OddsWellLeague::MarketOutcomeCount(Market)), 20, SoakError);
+			}
+			const FOddsWellCatalogItem& NextHome = GetOddsWellApartmentTier(Career->GetHomeTier() + 1);
+			if (Career->GetBalance() >= NextHome.Price + 150 && Career->BuyItem(NextHome.Id, SoakError))
+			{
+				TierDays.Add(Day);
+			}
+			else if (Day % 3 == 0)
+			{
+				// Furniture first (it shows in the final home), then clothes.
+				TArray<const FOddsWellCatalogItem*> Treats = GetOddsWellCatalogItems(EOddsWellCatalogKind::Furniture);
+				Treats.Append(GetOddsWellCatalogItems(EOddsWellCatalogKind::Top));
+				Treats.Append(GetOddsWellCatalogItems(EOddsWellCatalogKind::Bottom));
+				for (const FOddsWellCatalogItem* Item : Treats)
+				{
+					if (Item->Price > 0 && Career->GetPurchaseBlocker(*Item).IsEmpty()
+						&& Career->GetBalance() - Item->Price >= 300 && Career->BuyItem(Item->Id, SoakError))
+					{
+						break;
+					}
+				}
+			}
+			if (!Career->SleepUntilTomorrow(SoakError))
+			{
+				CareerSmokeFail(FString::Printf(TEXT("progress_sleep_failed:%s"), *SoakError));
+				return;
+			}
+			Career->DismissMorningReport();
+		}
+		TArray<FString> Days;
+		for (const int32 TierDay : TierDays)
+		{
+			Days.Add(FString::FromInt(TierDay));
+		}
+		const bool bPass = Career->IsSeasonGoalComplete() && Career->HasAchievement(TEXT("penthouse"));
+		UE_LOG(LogTemp, Display, TEXT("ODDSWELL_CAREER_PROGRESS|result=%s|days=%d|tier_days=%s|job=%s|shifts=%d|bets=%d|furniture=%d|clothes=%d|achievements=%d/%d|balance=%lld"),
+			bPass ? TEXT("PASS") : TEXT("FAIL"), Day - 1, *FString::Join(Days, TEXT(",")), Career->GetJob().Title, Career->GetShiftsWorked(),
+			Career->GetWagerCount(), Career->CountOwned(EOddsWellCatalogKind::Furniture),
+			Career->CountOwned(EOddsWellCatalogKind::Top) + Career->CountOwned(EOddsWellCatalogKind::Bottom),
+			Career->GetAchievementCount(), GetOddsWellAchievements().Num(), Career->GetBalance());
+		GCareerSmokeStage = 200;
+		GCareerSmokeTimer = 0.0f;
+		SaveOwnedOddsWellStudio(FVector(0.0, 0.0, 220.0), UseOddsWellStudioHomeQaSlot(), SoakError);
+		UGameplayStatics::OpenLevel(this, FName(TEXT("/Game/Maps/Bootstrap")), true, TEXT("game=/Script/OddsWell.OddsWellStudioGameMode"));
+		return;
+	}
+	if (bProgressSoak)
+	{
+		GCareerSmokeTimer += DeltaSeconds;
+		if (GCareerSmokeStage == 200 && GetWorld()->GetAuthGameMode<AOddsWellStudioGameMode>() && GCareerSmokeTimer > 3.0f)
+		{
+			CareerSmokeShot(TEXT("10_FinalHome"));
+			GCareerSmokeStage = 201;
+			GCareerSmokeTimer = 0.0f;
+		}
+		else if (GCareerSmokeStage == 201 && GCareerSmokeTimer > 2.0f)
+		{
+			bCareerAchievementsOpen = true;
+			CareerSmokeShot(TEXT("11_Achievements"));
+			GCareerSmokeStage = 202;
+			GCareerSmokeTimer = 0.0f;
+		}
+		else if (GCareerSmokeStage == 202 && GCareerSmokeTimer > 2.0f)
+		{
+			FPlatformMisc::RequestExit(false);
+		}
+		return;
+	}
 	static const bool bSeasonSoak = FParse::Param(FCommandLine::Get(), TEXT("CareerSeasonSoak"));
 	if (bSeasonSoak && GCareerSmokeStage != 100)
 	{
@@ -541,18 +843,20 @@ void AOddsWellPlaceholderCharacter::RunCareerSmoke(const float DeltaSeconds)
 				break;
 			}
 			const TArray<int32> Games = Career->GetTodaysGameIds();
-			if (Games.Num() != 4 || !Career->PlaceWager(Games[0], 0, 40, Error))
+			if (Games.Num() != 4 || !Career->PlaceWager(Games[0], OddsWellLeague::EMarket::MatchWinner, 0, 30, Error)
+				|| !Career->PlaceWager(Games[0], OddsWellLeague::EMarket::HomeStarPoints, 0, 10, Error))
 			{
 				CareerSmokeFail(FString::Printf(TEXT("wager_failed:%s"), *Error));
 				return;
 			}
 			FString Duplicate;
-			if (Career->PlaceWager(Games[0], 1, 10, Duplicate))
+			if (Career->PlaceWager(Games[0], OddsWellLeague::EMarket::MatchWinner, 1, 10, Duplicate))
 			{
 				CareerSmokeFail(TEXT("duplicate_wager_accepted"));
 				return;
 			}
-			UE_LOG(LogTemp, Display, TEXT("ODDSWELL_CAREER_SMOKE|step=wager|game=%d|stake=40|balance=%lld|duplicate_rejected=true"), Games[0], Career->GetBalance());
+			CareerBoardMarket = static_cast<int32>(OddsWellLeague::EMarket::HomeStarPoints);
+			UE_LOG(LogTemp, Display, TEXT("ODDSWELL_CAREER_SMOKE|step=wager|game=%d|stake=40|markets=2|balance=%lld|duplicate_rejected=true"), Games[0], Career->GetBalance());
 			Next(0);
 		}
 		break;
@@ -581,7 +885,7 @@ void AOddsWellPlaceholderCharacter::RunCareerSmoke(const float DeltaSeconds)
 				return;
 			}
 			FString Late;
-			if (Career->PlaceWager(Career->GetTodaysGameIds()[1], 0, 10, Late))
+			if (Career->PlaceWager(Career->GetTodaysGameIds()[1], OddsWellLeague::EMarket::MatchWinner, 0, 10, Late))
 			{
 				CareerSmokeFail(TEXT("wager_after_tipoff_accepted"));
 				return;
@@ -629,19 +933,25 @@ void AOddsWellPlaceholderCharacter::RunCareerSmoke(const float DeltaSeconds)
 				break;
 			}
 			const int32 DayBefore = Career->GetDay();
-			const FOddsWellCareerWager Wager = *Career->FindWagerForGame(Career->GetTodaysGameIds()[0]);
 			if (!Career->SleepUntilTomorrow(Error))
 			{
 				CareerSmokeFail(FString::Printf(TEXT("sleep_failed:%s"), *Error));
 				return;
 			}
 			const TArray<FOddsWellCareerWager> DayWagers = Career->GetWagersForDay(Career->GetSeason(), DayBefore);
-			const FOddsWellCareerWager* Settled = DayWagers.FindByPredicate([&Wager](const FOddsWellCareerWager& Candidate) { return Candidate.Id == Wager.Id; });
-			const int64 Expected = GCareerSmokeStartBalance + 100 - 40 + (Settled && Settled->Status == EOddsWellCareerWagerStatus::Won ? Settled->Payout : 0);
-			const bool bPass = Settled && Settled->Status != EOddsWellCareerWagerStatus::Pending && Career->GetDay() == DayBefore + 1 && Career->GetBalance() == Expected && !Career->HasWorkedToday();
-			UE_LOG(LogTemp, Display, TEXT("ODDSWELL_CAREER_SMOKE|step=sleep|day=%d|wager=%s|payout=%lld|balance=%lld|expected=%lld|result=%s"),
-				Career->GetDay(), Settled ? (Settled->Status == EOddsWellCareerWagerStatus::Won ? TEXT("won") : TEXT("lost")) : TEXT("missing"),
-				Settled ? Settled->Payout : 0, Career->GetBalance(), Expected, bPass ? TEXT("PASS") : TEXT("FAIL"));
+			int64 Payouts = 0;
+			int32 Won = 0;
+			bool bAllSettled = DayWagers.Num() == 2;
+			for (const FOddsWellCareerWager& Settled : DayWagers)
+			{
+				bAllSettled &= Settled.Status != EOddsWellCareerWagerStatus::Pending;
+				Payouts += Settled.Status == EOddsWellCareerWagerStatus::Won ? Settled.Payout : 0;
+				Won += Settled.Status == EOddsWellCareerWagerStatus::Won ? 1 : 0;
+			}
+			const int64 Expected = GCareerSmokeStartBalance + 100 - 40 + Payouts;
+			const bool bPass = bAllSettled && Career->GetDay() == DayBefore + 1 && Career->GetBalance() == Expected && !Career->HasWorkedToday();
+			UE_LOG(LogTemp, Display, TEXT("ODDSWELL_CAREER_SMOKE|step=sleep|day=%d|wagers=%d|won=%d|payout=%lld|balance=%lld|expected=%lld|result=%s"),
+				Career->GetDay(), DayWagers.Num(), Won, Payouts, Career->GetBalance(), Expected, bPass ? TEXT("PASS") : TEXT("FAIL"));
 			if (!bPass)
 			{
 				CareerSmokeFail(TEXT("settlement_mismatch"));
@@ -688,7 +998,7 @@ void AOddsWellPlaceholderCharacter::PollCareerStudio(APlayerController& OwnerCon
 
 // ---- HUD ------------------------------------------------------------------------------------
 
-void AOddsWellSportsbookHUD::DrawCareerPanel(const TArray<FString>& Lines, const float X, const float Y, const float Width, const FLinearColor& Accent, const float Scale, const int32 HighlightLine)
+float AOddsWellSportsbookHUD::DrawCareerPanel(const TArray<FString>& Lines, const float X, const float Y, const float Width, const FLinearColor& Accent, const float Scale, const int32 HighlightLine)
 {
 	const float LineHeight = 26.0f * Scale;
 	const float Padding = 16.0f * Scale;
@@ -704,6 +1014,7 @@ void AOddsWellSportsbookHUD::DrawCareerPanel(const TArray<FString>& Lines, const
 		}
 		DrawText(Lines[Index], FLinearColor::White, X + 20.0f, LineY, nullptr, Scale);
 	}
+	return Y + Height;
 }
 
 void AOddsWellSportsbookHUD::DrawCareerOverlay(const AOddsWellPlaceholderCharacter& Character)
@@ -734,14 +1045,19 @@ void AOddsWellSportsbookHUD::DrawCareerOverlay(const AOddsWellPlaceholderCharact
 
 	// Day status.
 	const TArray<int32> Today = Career->GetTodaysGameIds();
-	DrawCareerPanel({
+	const float StatusBottom = DrawCareerPanel({
 		FString::Printf(TEXT("SEASON %d   %s"), Career->GetSeason(), *Career->GetPhaseText()),
 		FString::Printf(TEXT("Balance: %lld Odds Bucks"), Career->GetBalance()),
-		Career->HasWorkedToday() ? FString(TEXT("Shift: done for today")) : FString(TEXT("Shift: available at the Job marker (+100)")),
+		FString::Printf(TEXT("Job: %s - %s"), Career->GetJob().Title,
+			Career->HasWorkedToday() ? TEXT("done for today") : *FString::Printf(TEXT("shift available (+%lld)"), Career->GetJob().Pay)),
 		Today.IsEmpty() ? FString(TEXT("No games today"))
 			: FString::Printf(TEXT("Today: %d game%s - %s"), Today.Num(), Today.Num() == 1 ? TEXT("") : TEXT("s"),
 				Career->HaveTodaysGamesTippedOff() ? TEXT("final scores in") : TEXT("betting open")),
-		TEXT("L: standings"),
+		FString::Printf(TEXT("Home: %s"), *GetOddsWellApartmentTier(Career->GetHomeTier()).Name),
+		Career->IsSeasonGoalComplete() ? FString(TEXT("Goal complete: you own the Penthouse"))
+			: FString::Printf(TEXT("Goal: own the Penthouse - next home %s (%lld)"),
+				*GetOddsWellApartmentTier(Career->GetHomeTier() + 1).Name, GetOddsWellApartmentTier(Career->GetHomeTier() + 1).Price),
+		FString::Printf(TEXT("L: standings   K: achievements (%d/%d)"), Career->GetAchievementCount(), GetOddsWellAchievements().Num()),
 	}, 24.0f, Character.GetCareerReplay() ? 140.0f : 24.0f, 470.0f * Scale, Teal, Scale * 0.85f);
 
 	if (Character.IsCareerPauseOpen())
@@ -799,7 +1115,7 @@ void AOddsWellSportsbookHUD::DrawCareerOverlay(const AOddsWellPlaceholderCharact
 			}
 			Lines.Add(FString::Printf(TEXT("%s  %s"), bDone ? TEXT("[x]") : TEXT("[  ]"), Step.Text));
 		}
-		const float GuideY = (Character.GetCareerReplay() ? 140.0f : 24.0f) + 175.0f * Scale;
+		const float GuideY = StatusBottom + 12.0f;
 		DrawCareerPanel(Lines, 24.0f, GuideY, 470.0f * Scale, Amber, Scale * 0.85f, NextLine);
 
 		const APawn* Pawn = GetOwningPawn();
@@ -827,8 +1143,9 @@ void AOddsWellSportsbookHUD::DrawCareerOverlay(const AOddsWellPlaceholderCharact
 	}
 	(void)Settings;
 
-	const float CenterWidth = FMath::Min(900.0f, CanvasWidth - 48.0f);
-	const float CenterX = (CanvasWidth - CenterWidth) * 0.5f;
+	// Centre panels sit to the right of the status column when the screen allows it.
+	const float CenterX = FMath::Max((CanvasWidth - 900.0f) * 0.5f, FMath::Min(24.0f + 470.0f * Scale + 20.0f, CanvasWidth * 0.3f));
+	const float CenterWidth = FMath::Min(900.0f, CanvasWidth - CenterX - 24.0f);
 
 	if (!Career->GetMorningReport().IsEmpty())
 	{
@@ -873,7 +1190,7 @@ void AOddsWellSportsbookHUD::DrawCareerOverlay(const AOddsWellPlaceholderCharact
 
 	if (Character.IsCareerBoardOpen())
 	{
-		TArray<FString> Lines = {TEXT("TODAY'S BOARD - MATCH WINNER"), TEXT("")};
+		TArray<FString> Lines = {TEXT("TODAY'S BOARD"), TEXT("")};
 		int32 Highlight = INDEX_NONE;
 		for (int32 Row = 0; Row < Today.Num(); ++Row)
 		{
@@ -894,12 +1211,12 @@ void AOddsWellSportsbookHUD::DrawCareerOverlay(const AOddsWellPlaceholderCharact
 			else
 			{
 				Line = FString::Printf(TEXT("%s  %s     at     %s  %s"),
-					*Career->GetTeamName(Game->Away), *OddsText(UOddsWellCareerSubsystem::SelectionProbabilityE8(*Game, 1)),
-					*Career->GetTeamName(Game->Home), *OddsText(UOddsWellCareerSubsystem::SelectionProbabilityE8(*Game, 0)));
+					*Career->GetTeamName(Game->Away), *OddsText(OddsWellLeague::OutcomeProbabilityE8(*Game, OddsWellLeague::EMarket::MatchWinner, 1)),
+					*Career->GetTeamName(Game->Home), *OddsText(OddsWellLeague::OutcomeProbabilityE8(*Game, OddsWellLeague::EMarket::MatchWinner, 0)));
 			}
-			if (const FOddsWellCareerWager* Wager = Career->FindWagerForGame(Game->Id))
+			if (const int32 Bets = Career->CountWagersOnGame(Game->Id))
 			{
-				Line += FString::Printf(TEXT("    [your bet: %lld on %s]"), Wager->Stake, *Career->GetTeamShortName(Wager->Selection == 0 ? Game->Home : Game->Away));
+				Line += FString::Printf(TEXT("    [%d bet%s]"), Bets, Bets == 1 ? TEXT("") : TEXT("s"));
 			}
 			Lines.Add(Line);
 		}
@@ -912,24 +1229,40 @@ void AOddsWellSportsbookHUD::DrawCareerOverlay(const AOddsWellPlaceholderCharact
 		{
 			const OddsWellLeague::FScheduledGame* Game = Career->FindGame(Today[Character.GetCareerBoardRow()]);
 			const int32 Selection = Character.GetCareerBoardSelection();
-			if (Game && Career->FindWagerForGame(Game->Id))
+			const OddsWellLeague::EMarket Market = static_cast<OddsWellLeague::EMarket>(Character.GetCareerBoardMarket());
+			if (Game && OddsWellLeague::IsOutcomeAvailable(*Game, Market))
 			{
-				Lines.Add(TEXT("You already have a bet on this game."));
+				const FOddsWellCareerWager* Existing = Career->FindWager(Game->Id, Market);
+				Lines.Add(FString::Printf(TEXT("MARKET %d OF %d: %s"), Character.GetCareerBoardMarket() + 1,
+					static_cast<int32>(OddsWellLeague::EMarket::Count), *Career->GetMarketName(*Game, Market).ToUpper()));
+				for (int32 Outcome = 0; Outcome < OddsWellLeague::MarketOutcomeCount(Market); ++Outcome)
+				{
+					const bool bPicked = Existing ? Existing->Selection == Outcome : Selection == Outcome;
+					Lines.Add(FString::Printf(TEXT("%s %-28s %s%s"), bPicked ? TEXT(">") : TEXT(" "),
+						*Career->DescribeOutcome(*Game, Market, Outcome),
+						*OddsText(Existing && bPicked ? Existing->WinProbabilityE8 : OddsWellLeague::OutcomeProbabilityE8(*Game, Market, Outcome)),
+						Existing && bPicked ? *FString::Printf(TEXT("    [your bet: %lld]"), Existing->Stake) : TEXT("")));
+				}
+				Lines.Add(TEXT(""));
+				if (Existing)
+				{
+					Lines.Add(TEXT("You already have a bet in this market. Tab: another market."));
+				}
+				else if (Selection != INDEX_NONE)
+				{
+					const int64 Probability = OddsWellLeague::OutcomeProbabilityE8(*Game, Market, Selection);
+					Lines.Add(FString::Printf(TEXT("Pick: %s   Stake: %lld   Pays: %lld if it wins"),
+						*Career->DescribeOutcome(*Game, Market, Selection), Character.GetCareerBoardStake(),
+						OddsWellLeague::GrossReturn(Character.GetCareerBoardStake(), Probability)));
+				}
+				else
+				{
+					Lines.Add(FString::Printf(TEXT("Pick an outcome.   Stake: %lld"), Character.GetCareerBoardStake()));
+				}
 			}
-			else if (Game && Selection != INDEX_NONE)
-			{
-				const int64 Probability = UOddsWellCareerSubsystem::SelectionProbabilityE8(*Game, Selection);
-				Lines.Add(FString::Printf(TEXT("Pick: %s   Stake: %lld   Pays: %lld if they win"),
-					*Career->GetTeamName(Selection == 0 ? Game->Home : Game->Away), Character.GetCareerBoardStake(),
-					OddsWellLeague::GrossReturn(Character.GetCareerBoardStake(), Probability)));
-			}
-			else
-			{
-				Lines.Add(FString::Printf(TEXT("Pick a team.   Stake: %lld"), Character.GetCareerBoardStake()));
-			}
-			Lines.Add(TEXT("Up/Down: game   Left: away team   Right: home team   - / =: stake   Enter: place bet"));
+			Lines.Add(TEXT("Up/Down: game   Tab: market   Left/Right: outcome   - / =: stake   Enter: place bet"));
 		}
-		Lines.Add(TEXT("Odds are fixed from public information before tipoff. E or Esc: close"));
+		Lines.Add(TEXT("Odds are set before tipoff and include a small house margin. E or Esc: close"));
 		DrawCareerPanel(Lines, CenterX, FMath::Max(180.0f, CanvasHeight * 0.22f), CenterWidth, Amber, Scale * 0.95f, Highlight);
 	}
 
@@ -964,6 +1297,58 @@ void AOddsWellSportsbookHUD::DrawCareerOverlay(const AOddsWellPlaceholderCharact
 				: TEXT("Up/Down: game   Enter: watch live (starts tonight's games)   E: leave the arena"));
 		}
 		DrawCareerPanel(Lines, CenterX, FMath::Max(300.0f, CanvasHeight * 0.36f), CenterWidth, Teal, Scale, Highlight);
+	}
+
+	if (Character.GetCareerShopPlace() != INDEX_NONE)
+	{
+		const EOddsWellObjectivePlace Place = static_cast<EOddsWellObjectivePlace>(Character.GetCareerShopPlace());
+		TArray<FString> Lines = {Place == EOddsWellObjectivePlace::ClothingStore ? TEXT("CLOTHING STORE")
+			: Place == EOddsWellObjectivePlace::FurnitureStore ? TEXT("FURNITURE STORE") : TEXT("APARTMENT LISTINGS"), TEXT("")};
+		int32 Highlight = INDEX_NONE;
+		const TArray<const FOddsWellCatalogItem*> Items = Character.GetCareerShopItems();
+		EOddsWellCatalogKind Section = Items.Num() ? Items[0]->Kind : EOddsWellCatalogKind::Top;
+		for (int32 Row = 0; Row < Items.Num(); ++Row)
+		{
+			const FOddsWellCatalogItem& Item = *Items[Row];
+			if (Item.Kind != Section)
+			{
+				Section = Item.Kind;
+				Lines.Add(TEXT(""));
+			}
+			const bool bOwned = Career->OwnsItem(Item.Id);
+			const bool bWorn = (Item.Kind == EOddsWellCatalogKind::Top || Item.Kind == EOddsWellCatalogKind::Bottom) && Career->GetEquipped(Item.Kind) == Item.Id;
+			const FString Blocker = Career->GetPurchaseBlocker(Item);
+			const FString Status = bWorn ? TEXT("wearing") : bOwned ? TEXT("owned")
+				: Blocker.IsEmpty() ? FString::Printf(TEXT("%lld"), Item.Price) : FString::Printf(TEXT("%lld - %s"), Item.Price, *(Blocker.Left(1).ToLower() + Blocker.Mid(1)));
+			if (Row == Character.GetCareerShopRow())
+			{
+				Highlight = Lines.Num();
+			}
+			Lines.Add(FString::Printf(TEXT("%-26s %s"), *Item.Name, *Status));
+		}
+		Lines.Add(TEXT(""));
+		Lines.Add(FString::Printf(TEXT("Balance: %lld Odds Bucks"), Career->GetBalance()));
+		Lines.Add(Place == EOddsWellObjectivePlace::ClothingStore ? TEXT("Up/Down: item   Enter: buy or wear   E or Esc: close") : TEXT("Up/Down: item   Enter: buy   E or Esc: close"));
+		DrawCareerPanel(Lines, CenterX, FMath::Max(120.0f, CanvasHeight * 0.12f), CenterWidth, Amber, Scale * 0.85f, Highlight);
+	}
+
+	if (Character.IsCareerAchievementsOpen())
+	{
+		TArray<FString> Lines = {FString::Printf(TEXT("ACHIEVEMENTS - %d OF %d"), Career->GetAchievementCount(), GetOddsWellAchievements().Num()), TEXT("")};
+		for (const FOddsWellAchievement& Achievement : GetOddsWellAchievements())
+		{
+			Lines.Add(FString::Printf(TEXT("%s %-20s %s"), Career->HasAchievement(Achievement.Id) ? TEXT("[x]") : TEXT("[ ]"), *Achievement.Name, *Achievement.Description));
+		}
+		Lines.Add(TEXT(""));
+		Lines.Add(TEXT("K or Esc: close"));
+		DrawCareerPanel(Lines, CenterX, FMath::Max(90.0f, CanvasHeight * 0.08f), CenterWidth, Teal, Scale * 0.8f);
+	}
+
+	const FString Toast = Character.GetCareerToast();
+	if (!Toast.IsEmpty())
+	{
+		const float Width = FMath::Min(760.0f, CanvasWidth - 48.0f);
+		DrawCareerPanel({Toast}, CanvasWidth - Width - 24.0f, 24.0f, Width, Amber, Scale * 0.9f);
 	}
 
 	const FString Prompt = Character.GetCareerPrompt();

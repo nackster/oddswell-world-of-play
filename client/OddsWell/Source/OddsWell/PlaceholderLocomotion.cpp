@@ -7,6 +7,7 @@
 #include "CharacterAppearanceSave.h"
 #include "Career/OddsWellCareer.h"
 #include "Career/OddsWellCareerReplayActor.h"
+#include "Career/OddsWellHome.h"
 #include "Career/OddsWellSettings.h"
 #include "CharacterPresetCatalog.h"
 #include "CanonicalActiveGameExecutionCommitment.h"
@@ -5089,6 +5090,11 @@ void AOddsWellPlaceholderCharacter::PollJobInteraction()
 		FVector::Dist2D(GetActorLocation(), JobInteractionLocation) <= JobInteractionRadius;
 	JobInteractionPromptMessage = BuildJobInteractionPrompt(
 		CanShowJobInteractionPrompt(IsLocallyControlled(), GetNetMode(), bAtApprovedJob));
+	const UOddsWellCareerSubsystem* JobCareer = IsOddsWellCareerMode() ? UOddsWellCareerSubsystem::Get(this) : nullptr;
+	if (JobCareer && JobCareer->HasCareer() && !JobInteractionPromptMessage.IsEmpty())
+	{
+		JobInteractionPromptMessage = JobCareer->GetShiftPrompt();
+	}
 	if (!bAtApprovedJob)
 	{
 		return;
@@ -5144,13 +5150,16 @@ void AOddsWellPlaceholderCharacter::ServerCompletePlaceholderJob_Implementation(
 
 void AOddsWellPlaceholderCharacter::ClientConfirmPlaceholderJob_Implementation(const bool bCompleted, const bool bCredited, const bool bPayoutReady, const int64 Balance, const int64 RetryAfterSeconds)
 {
+	const UOddsWellCareerSubsystem* JobCareer = IsOddsWellCareerMode() ? UOddsWellCareerSubsystem::Get(this) : nullptr;
 	ShowTransientFeedbackPanel(
-		BuildJobFeedbackMessage(
-			bCompleted,
-			bCredited,
-			bPayoutReady,
-			Balance,
-			RetryAfterSeconds),
+		JobCareer && bCompleted && bPayoutReady && !JobCareer->GetLastShiftMessage().IsEmpty()
+			? JobCareer->GetLastShiftMessage()
+			: BuildJobFeedbackMessage(
+				bCompleted,
+				bCredited,
+				bPayoutReady,
+				Balance,
+				RetryAfterSeconds),
 		bCompleted);
 	UE_LOG(LogOddsWellLocomotion, Display, TEXT("ODDSWELL_JOB_FEEDBACK|completed=%s|credited=%s|payout_ready=%s|balance=%lld|retry_after_seconds=%lld|client_visible=true"), bCompleted ? TEXT("true") : TEXT("false"), bCredited ? TEXT("true") : TEXT("false"), bPayoutReady ? TEXT("true") : TEXT("false"), Balance, RetryAfterSeconds);
 	if (FParse::Param(FCommandLine::Get(), TEXT("JobFeedbackPresentationQa")))
@@ -5168,7 +5177,8 @@ void AOddsWellPlaceholderCharacter::ClientConfirmPlaceholderJob_Implementation(c
 
 void AOddsWellPlaceholderCharacter::PollClothingStoreInteraction()
 {
-	if (!IsLocallyControlled()
+	if (IsOddsWellCareerMode()
+		|| !IsLocallyControlled()
 		|| !GetWorld()->GetMapName().Contains(TEXT("SundaleGraybox")))
 	{
 		return;
@@ -5374,7 +5384,8 @@ void AOddsWellPlaceholderCharacter::ClientConfirmSignalJacketEquip_Implementatio
 
 void AOddsWellPlaceholderCharacter::PollFurnitureStoreInteraction()
 {
-	if (!IsLocallyControlled()
+	if (IsOddsWellCareerMode()
+		|| !IsLocallyControlled()
 		|| !GetWorld()->GetMapName().Contains(TEXT("SundaleGraybox")))
 	{
 		return;
@@ -5512,7 +5523,8 @@ void AOddsWellPlaceholderCharacter::ClientConfirmModularChairPurchase_Implementa
 
 void AOddsWellPlaceholderCharacter::PollApartmentManagementInteraction()
 {
-	if (!IsLocallyControlled()
+	if (IsOddsWellCareerMode()
+		|| !IsLocallyControlled()
 		|| !GetWorld()->GetMapName().Contains(TEXT("SundaleGraybox")))
 	{
 		return;
@@ -6091,6 +6103,12 @@ void AOddsWellPlaceholderCharacter::PollStudioInteraction()
 		bInStudio,
 		bOwnsOneBedroom,
 		bModularChairOwned);
+	const UOddsWellCareerSubsystem* HomeCareer = IsOddsWellCareerMode() ? UOddsWellCareerSubsystem::Get(this) : nullptr;
+	if (HomeCareer && HomeCareer->HasCareer() && !StudioInteractionPromptMessage.IsEmpty())
+	{
+		StudioInteractionPromptMessage = FString::Printf(TEXT("Press E to %s your %s"), bInStudio ? TEXT("leave") : TEXT("enter"),
+			*GetOddsWellApartmentTier(HomeCareer->GetHomeTier()).Name);
+	}
 	if (GEngine && bInStudio && bOwnsStudio)
 	{
 		if (!IsOddsWellCareerMode())
@@ -8582,6 +8600,24 @@ void AOddsWellPlaceholderCharacter::SetAuthoritativeSharedCityAppearance(
 
 bool AOddsWellPlaceholderCharacter::HasSignalJacketVisual() const
 {
+	if (bMetaHumanActive)
+	{
+		// On a MetaHuman the jacket recolours the shirt slots of its garment.
+		bool bAnyShirt = false;
+		const TArray<FName> Slots = MetaHumanOutfit ? MetaHumanOutfit->GetMaterialSlotNames() : TArray<FName>();
+		for (int32 Index = 0; Index < Slots.Num(); ++Index)
+		{
+			if (Slots[Index].ToString().Contains(TEXT("Shirt")))
+			{
+				bAnyShirt = true;
+				if (MetaHumanOutfit->GetMaterial(Index) != SignalJacketMaterial)
+				{
+					return false;
+				}
+			}
+		}
+		return bAnyShirt && MetaHumanOutfit->IsVisible();
+	}
 	return StarterOutfitTop->IsVisible()
 		&& StarterOutfitTop->GetSkeletalMeshAsset() == SignalJacketMesh
 		&& StarterOutfitTop->GetMaterialByName(SignalJacketAccentSlot) == SignalJacketAccentMaterial;
@@ -8604,6 +8640,44 @@ void AOddsWellPlaceholderCharacter::SyncOutfitComponents()
 	}
 	StarterOutfitTop->SetVisibility(!bMetaHumanActive && !StarterOutfitState.GetEquipped(EOddsWellStarterEquipmentSlot::Top).IsNone());
 	StarterOutfitBottom->SetVisibility(!bMetaHumanActive && !StarterOutfitState.GetEquipped(EOddsWellStarterEquipmentSlot::Bottom).IsNone());
+	if (bMetaHumanActive && MetaHumanOutfit)
+	{
+		const UOddsWellCareerSubsystem* Career = IsOddsWellCareerMode() ? UOddsWellCareerSubsystem::Get(this) : nullptr;
+		const bool bCareerClothes = Career && Career->HasCareer();
+		const FOddsWellCatalogItem* Top = bCareerClothes ? FindOddsWellCatalogItem(Career->GetEquipped(EOddsWellCatalogKind::Top)) : nullptr;
+		const FOddsWellCatalogItem* Bottom = bCareerClothes ? FindOddsWellCatalogItem(Career->GetEquipped(EOddsWellCatalogKind::Bottom)) : nullptr;
+		auto Colored = [this](TObjectPtr<UMaterialInstanceDynamic>& Instance, const FOddsWellCatalogItem* Item) -> UMaterialInterface*
+		{
+			// The starter clothes keep the garment's own textured materials.
+			if (!Item || Item->Price == 0 || !StarterOutfitMaterial)
+			{
+				return nullptr;
+			}
+			if (!Instance)
+			{
+				Instance = UMaterialInstanceDynamic::Create(StarterOutfitMaterial->Parent, this);
+			}
+			Instance->SetVectorParameterValue(TEXT("Color"), Item->Color);
+			return Instance;
+		};
+		const bool bJacket = bCareerClothes ? Top && Top->Id == GetOddsWellSignalJacketId() : bJacketEquipped;
+		UMaterialInterface* TopMaterial = bJacket ? SignalJacketMaterial.Get() : Colored(MetaHumanTopMaterial, Top);
+		UMaterialInterface* BottomMaterial = Colored(MetaHumanBottomMaterial, Bottom);
+		const TArray<FName> Slots = MetaHumanOutfit->GetMaterialSlotNames();
+		for (int32 Index = 0; Index < Slots.Num(); ++Index)
+		{
+			// No override restores the garment's own material.
+			const FString Slot = Slots[Index].ToString();
+			if (Slot.Contains(TEXT("Shirt")))
+			{
+				MetaHumanOutfit->SetMaterial(Index, TopMaterial);
+			}
+			else if (Slot.Contains(TEXT("Short")))
+			{
+				MetaHumanOutfit->SetMaterial(Index, BottomMaterial);
+			}
+		}
+	}
 
 }
 
@@ -13315,6 +13389,15 @@ AOddsWellStudioGameMode::AOddsWellStudioGameMode()
 void AOddsWellStudioGameMode::BeginPlay()
 {
 	Super::BeginPlay();
+	const UOddsWellCareerSubsystem* Career = IsOddsWellCareerMode() ? UOddsWellCareerSubsystem::Get(this) : nullptr;
+	if (Career && Career->HasCareer())
+	{
+		int32 FurniturePlaced = 0;
+		const int32 Boxes = BuildOddsWellCareerHome(*GetWorld(), Career->GetHomeTier(), Career->GetOwnedFurniture(), FurniturePlaced);
+		UE_LOG(LogOddsWellLocomotion, Display, TEXT("ODDSWELL_CAREER_HOME|result=%s|tier=%d|name=%s|boxes=%d|furniture=%d"),
+			Boxes > 0 ? TEXT("PASS") : TEXT("FAIL"), Career->GetHomeTier(), *GetOddsWellApartmentTier(Career->GetHomeTier()).Name, Boxes, FurniturePlaced);
+		return;
+	}
 	FOddsWellStudioHomeState Home;
 	FString HomeError;
 	const bool bOwnsStudio =

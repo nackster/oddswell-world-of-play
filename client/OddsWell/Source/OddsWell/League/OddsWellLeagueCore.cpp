@@ -1349,6 +1349,194 @@ namespace
 	}
 }
 
+int MarketOutcomeCount(const EMarket Market)
+{
+	return Market == EMarket::Margin ? MarginBucketCount : 2;
+}
+
+int MarginBucket(const int HomeScore, const int AwayScore)
+{
+	const int Difference = HomeScore - AwayScore;
+	const int Size = Difference < 0 ? -Difference : Difference;
+	const int Band = Size <= 5 ? 0 : Size <= 10 ? 1 : 2;
+	return Difference > 0 ? Band : 3 + Band;
+}
+
+bool IsOutcomeAvailable(const FScheduledGame& Game, const EMarket Market)
+{
+	switch (Market)
+	{
+	case EMarket::MatchWinner: return Game.bOddsPublished;
+	case EMarket::HomeStarPoints: return Game.bMarketsPublished && Game.Props[0].RosterSlot >= 0;
+	case EMarket::AwayStarPoints: return Game.bMarketsPublished && Game.Props[1].RosterSlot >= 0;
+	default: return Game.bMarketsPublished;
+	}
+}
+
+int64_t FairProbabilityE8(const FScheduledGame& Game, const EMarket Market, const int Outcome)
+{
+	switch (Market)
+	{
+	case EMarket::MatchWinner:
+	{
+		// Games from before the extra markets keep their published Elo price.
+		const int64_t Home = Game.bMarketsPublished ? Game.MatchWinnerHomeE8 : Game.HomeWinProbabilityE8;
+		return Outcome == 0 ? Home : ProbabilityScale - Home;
+	}
+	case EMarket::Margin: return Outcome >= 0 && Outcome < MarginBucketCount ? Game.MarginE8[Outcome] : 0;
+	case EMarket::Overtime: return Outcome == 0 ? Game.OvertimeE8 : ProbabilityScale - Game.OvertimeE8;
+	case EMarket::HomeStarPoints: return Outcome == 0 ? Game.Props[0].OverE8 : ProbabilityScale - Game.Props[0].OverE8;
+	case EMarket::AwayStarPoints: return Outcome == 0 ? Game.Props[1].OverE8 : ProbabilityScale - Game.Props[1].OverE8;
+	default: return 0;
+	}
+}
+
+int64_t OutcomeProbabilityE8(const FScheduledGame& Game, const EMarket Market, const int Outcome)
+{
+	const int64_t Fair = FairProbabilityE8(Game, Market, Outcome);
+	if (Fair <= 0 || !Game.bMarketsPublished)
+	{
+		return Fair;
+	}
+	// Every winning bet still returns more than its stake.
+	return std::min<int64_t>(ProbabilityScale * 97 / 100, Fair + Fair * HouseMarginPercent / 100);
+}
+
+bool DidOutcomeWin(const FScheduledGame& Game, const EMarket Market, const int Outcome, bool& bOutWon)
+{
+	if (!Game.bPlayed)
+	{
+		return false;
+	}
+	switch (Market)
+	{
+	case EMarket::MatchWinner: bOutWon = (Game.HomeScore > Game.AwayScore) == (Outcome == 0); return true;
+	case EMarket::Margin: bOutWon = MarginBucket(Game.HomeScore, Game.AwayScore) == Outcome; return true;
+	case EMarket::Overtime: bOutWon = (Game.Overtime > 0) == (Outcome == 0); return true;
+	case EMarket::HomeStarPoints:
+	case EMarket::AwayStarPoints:
+	{
+		const FPointsProp& Prop = Game.Props[Market == EMarket::HomeStarPoints ? 0 : 1];
+		if (Prop.ActualPoints < 0)
+		{
+			return false;
+		}
+		bOutWon = (Prop.ActualPoints * 10 > Prop.LineTenths) == (Outcome == 0);
+		return true;
+	}
+	default: return false;
+	}
+}
+
+namespace
+{
+	// Long shots are priced at no less than 5%, so a single bet pays at most 20 times its stake.
+	constexpr int64_t MinimumOutcomeE8 = 5000000;
+
+	int64_t ShareE8(const int Count, const int Total, const int Outcomes)
+	{
+		// Add-one smoothing keeps every outcome possible; the price never reads the real game.
+		return static_cast<int64_t>((static_cast<double>(Count) + 1.0) / (static_cast<double>(Total) + Outcomes) * static_cast<double>(ProbabilityScale) + 0.5);
+	}
+}
+
+void PriceGameMarkets(const FLeagueConfig& Config, const FLeagueState& State, FScheduledGame& Game)
+{
+	const FTeam Home = TeamForGame(Config, Game.Home);
+	const FTeam Away = TeamForGame(Config, Game.Away);
+	FGameInputs Inputs;
+	BuildGameInputs(Config, State, Game.Home, Game.Away, Inputs);
+	const int HomeCount = static_cast<int>(Home.Players.size());
+	const int RosterCount = HomeCount + static_cast<int>(Away.Players.size());
+	int MarginCounts[MarginBucketCount] = {};
+	int HomeWins = 0;
+	int OvertimeCount = 0;
+	int Simulated = 0;
+	std::vector<std::vector<int>> Points(static_cast<size_t>(RosterCount));
+	for (int Index = 0; Index < MarketPricingSimulations; ++Index)
+	{
+		FGameResult Result;
+		std::string Error;
+		const uint64_t PricingSeed = (Game.Seed ^ 0x5EED0DD5A1B2C3D4ull) + static_cast<uint64_t>(Index) * 104729ull;
+		if (!SimulateGame(PricingSeed, Home, Away, Inputs, Result, Error))
+		{
+			continue;
+		}
+		++Simulated;
+		MarginCounts[MarginBucket(Result.HomeScore, Result.AwayScore)] += 1;
+		HomeWins += Result.HomeScore > Result.AwayScore ? 1 : 0;
+		OvertimeCount += Result.Overtime > 0 ? 1 : 0;
+		std::vector<int> Scored(static_cast<size_t>(RosterCount), 0);
+		for (const FEvent& Event : Result.Events)
+		{
+			if (Event.Type == EEventType::ShotMade && Event.Player >= 0 && Event.Player < RosterCount)
+			{
+				Scored[static_cast<size_t>(Event.Player)] += Event.Points;
+			}
+		}
+		for (int Player = 0; Player < RosterCount; ++Player)
+		{
+			Points[static_cast<size_t>(Player)].push_back(Scored[static_cast<size_t>(Player)]);
+		}
+	}
+	if (Simulated == 0)
+	{
+		return;
+	}
+	int64_t Total = 0;
+	int Largest = 0;
+	for (int Bucket = 0; Bucket < MarginBucketCount; ++Bucket)
+	{
+		Game.MarginE8[Bucket] = std::max<int64_t>(MinimumOutcomeE8, ShareE8(MarginCounts[Bucket], Simulated, MarginBucketCount));
+		Total += Game.MarginE8[Bucket];
+		Largest = Game.MarginE8[Bucket] > Game.MarginE8[Largest] ? Bucket : Largest;
+	}
+	Game.MarginE8[Largest] += ProbabilityScale - Total;
+	Game.MatchWinnerHomeE8 = std::max<int64_t>(MinimumOutcomeE8, std::min<int64_t>(ProbabilityScale - MinimumOutcomeE8, ShareE8(HomeWins, Simulated, 2)));
+	Game.OvertimeE8 = std::max<int64_t>(MinimumOutcomeE8, std::min<int64_t>(ProbabilityScale - MinimumOutcomeE8, ShareE8(OvertimeCount, Simulated, 2)));
+	for (int Side = 0; Side < 2; ++Side)
+	{
+		FPointsProp& Prop = Game.Props[Side];
+		Prop = FPointsProp();
+		const int First = Side == 0 ? 0 : HomeCount;
+		const int Last = Side == 0 ? HomeCount : RosterCount;
+		double BestMean = -1.0;
+		for (int Player = First; Player < Last; ++Player)
+		{
+			if (Inputs.Availability[static_cast<size_t>(Player)] != 0)
+			{
+				continue;
+			}
+			const std::vector<int>& Samples = Points[static_cast<size_t>(Player)];
+			double Sum = 0.0;
+			for (const int Value : Samples)
+			{
+				Sum += Value;
+			}
+			const double Mean = Sum / static_cast<double>(Samples.size());
+			if (Mean > BestMean)
+			{
+				BestMean = Mean;
+				Prop.RosterSlot = Player - First;
+			}
+		}
+		if (Prop.RosterSlot < 0)
+		{
+			continue;
+		}
+		std::vector<int> Samples = Points[static_cast<size_t>(First + Prop.RosterSlot)];
+		std::sort(Samples.begin(), Samples.end());
+		Prop.LineTenths = Samples[Samples.size() / 2] * 10 + 5;
+		int Over = 0;
+		for (const int Value : Samples)
+		{
+			Over += Value * 10 > Prop.LineTenths ? 1 : 0;
+		}
+		Prop.OverE8 = std::max<int64_t>(MinimumOutcomeE8, std::min<int64_t>(ProbabilityScale - MinimumOutcomeE8, ShareE8(Over, Simulated, 2)));
+	}
+	Game.bMarketsPublished = true;
+}
+
 void NewLeague(const FLeagueConfig& Config, uint64_t CareerSeed, FLeagueState& OutState)
 {
 	OutState = FLeagueState();
@@ -1417,6 +1605,7 @@ void PrepareDay(const FLeagueConfig& Config, FLeagueState& State)
 		Game.PublicEloProbability = Probabilities.first;
 		Game.HomeWinProbabilityE8 = ProbabilityToE8(Probabilities.second);
 		Game.bOddsPublished = true;
+		PriceGameMarkets(Config, State, Game);
 	}
 	State.bDayPrepared = true;
 }
@@ -1445,6 +1634,14 @@ bool PlayDay(const FLeagueConfig& Config, FLeagueState& State, std::vector<FGame
 			return false;
 		}
 		ApplyGameAftermath(Config, State, Game, Result);
+		const int HomeRoster = static_cast<int>(Config.Teams[static_cast<size_t>(Game.Home)].Roster.size());
+		for (int Side = 0; Side < 2; ++Side)
+		{
+			if (Game.Props[Side].RosterSlot >= 0)
+			{
+				Game.Props[Side].ActualPoints = Result.PointsFor((Side == 0 ? 0 : HomeRoster) + Game.Props[Side].RosterSlot);
+			}
+		}
 		Game.bPlayed = true;
 		Game.HomeScore = Result.HomeScore;
 		Game.AwayScore = Result.AwayScore;
@@ -1619,6 +1816,7 @@ namespace
 	}
 
 	std::string FormatIntValue(int Value) { return std::to_string(Value); }
+	std::string FormatInt64Value(int64_t Value) { return std::to_string(Value); }
 	std::string FormatDoubleValue(double Value) { return Exact(Value); }
 
 	bool ParseInt64(const std::string& Text, int64_t& Out)
@@ -1729,7 +1927,17 @@ std::string SerializeLeague(const FLeagueState& State)
 			<< Game.HomeScore << "," << Game.AwayScore << "," << Game.Overtime << "," << (Game.bOddsPublished ? 1 : 0) << ","
 			<< Game.HomeWinProbabilityE8 << "," << Exact(Game.PublicEloProbability) << ","
 			<< JoinValues<double>(Game.PregameFatigue, FormatDoubleValue) << "," << JoinValues<int>(Game.PregameAvailability, FormatIntValue) << ","
-			<< JoinValues<double>(Game.PregameReadiness, FormatDoubleValue) << "\n";
+			<< JoinValues<double>(Game.PregameReadiness, FormatDoubleValue) << ","
+			<< (Game.bMarketsPublished ? 1 : 0) << ","
+			<< JoinValues<int64_t>(std::vector<int64_t>(Game.MarginE8, Game.MarginE8 + MarginBucketCount), FormatInt64Value) << ","
+			<< Game.OvertimeE8 << ",";
+		for (int Side = 0; Side < 2; ++Side)
+		{
+			const FPointsProp& Prop = Game.Props[Side];
+			Out << (Side ? "/" : "") << Prop.RosterSlot << ":" << Prop.LineTenths << ":" << Prop.OverE8 << ":" << Prop.ActualPoints;
+		}
+		Out << "," << Game.MatchWinnerHomeE8;
+		Out << "\n";
 	}
 	return Out.str();
 }
@@ -1815,13 +2023,33 @@ bool DeserializeLeague(const FLeagueConfig& Config, const std::string& Text, FLe
 			int Stage = 0;
 			int Played = 0;
 			int Published = 0;
-			bOk = Fields.size() == 18
+			bOk = (Fields.size() == 18 || Fields.size() == 23)
 				&& ParseInt(Fields[0], Game.Id) && ParseInt(Fields[1], Game.Day) && ParseInt(Fields[2], Game.Home) && ParseInt(Fields[3], Game.Away)
 				&& ParseUInt64(Fields[4], Game.Seed) && ParseInt(Fields[5], Stage) && ParseInt(Fields[6], Game.Series) && ParseInt(Fields[7], Game.SeriesGame)
 				&& ParseInt(Fields[8], Played) && ParseInt(Fields[9], Game.HomeScore) && ParseInt(Fields[10], Game.AwayScore) && ParseInt(Fields[11], Game.Overtime)
 				&& ParseInt(Fields[12], Published) && ParseInt64(Fields[13], Game.HomeWinProbabilityE8) && ParseDouble(Fields[14], Game.PublicEloProbability)
 				&& ParseList<double>(Fields[15], Game.PregameFatigue, ParseDouble) && ParseList<int>(Fields[16], Game.PregameAvailability, ParseInt)
 				&& ParseList<double>(Fields[17], Game.PregameReadiness, ParseDouble) && Stage >= 0 && Stage <= 2;
+			if (bOk && Fields.size() == 23)
+			{
+				int Markets = 0;
+				std::vector<int64_t> Margins;
+				const std::vector<std::string> Props = Split(Fields[21], '/');
+				bOk = ParseInt(Fields[18], Markets) && ParseList<int64_t>(Fields[19], Margins, ParseInt64) && Margins.size() == MarginBucketCount
+					&& ParseInt64(Fields[20], Game.OvertimeE8) && Props.size() == 2 && ParseInt64(Fields[22], Game.MatchWinnerHomeE8);
+				Game.bMarketsPublished = Markets != 0;
+				for (int Bucket = 0; bOk && Bucket < MarginBucketCount; ++Bucket)
+				{
+					Game.MarginE8[Bucket] = Margins[static_cast<size_t>(Bucket)];
+				}
+				for (int Side = 0; bOk && Side < 2; ++Side)
+				{
+					const std::vector<std::string> Parts = Split(Props[static_cast<size_t>(Side)], ':');
+					FPointsProp& Prop = Game.Props[Side];
+					bOk = Parts.size() == 4 && ParseInt(Parts[0], Prop.RosterSlot) && ParseInt(Parts[1], Prop.LineTenths)
+						&& ParseInt64(Parts[2], Prop.OverE8) && ParseInt(Parts[3], Prop.ActualPoints);
+				}
+			}
 			Game.Stage = static_cast<EGameStage>(Stage);
 			Game.bPlayed = Played != 0;
 			Game.bOddsPublished = Published != 0;

@@ -52,7 +52,19 @@ bool FOddsWellSkeletalVisualTest::RunTest(const FString& Parameters)
 		TestTrue(TEXT("Resolved appearance reaches skeletal materials"), Character->ApplyResolvedAppearance(Appearance, TEXT("isolated_test")));
 		TestTrue(TEXT("Skin matches exact preset color"), Character->PrimitiveSkinMaterial->K2_GetVectorParameterValue(TEXT("Color")).Equals(FLinearColor::FromSRGBColor(Preset.SkinTone)));
 		TestTrue(TEXT("Preset uses an approved skin tone"), TArrayView<const FColor>(Tones).Contains(Preset.SkinTone));
-		TestTrue(TEXT("Starter outfit is visible"), Character->StarterOutfitTop->IsVisible() && Character->StarterOutfitBottom->IsVisible());
+		if (Character->bMetaHumanActive)
+		{
+			// Career play shows the preset's MetaHuman (DEC-038) instead of the placeholder body and outfit.
+			TestTrue(TEXT("MetaHuman body is visible"), Character->MetaHumanBody && Character->MetaHumanBody->IsVisible() && Character->MetaHumanBody->GetAnimInstance());
+			TestTrue(TEXT("MetaHuman face animates on the body and the outfit follows it"), Character->MetaHumanFace->GetAnimInstance()
+				&& Character->MetaHumanFace->GetAttachParent() == Character->MetaHumanBody
+				&& Character->MetaHumanOutfit->LeaderPoseComponent.Get() == Character->MetaHumanBody);
+			TestTrue(TEXT("Placeholder body and outfit are hidden"), !Body->IsVisible() && !Character->StarterOutfitTop->IsVisible() && !Character->StarterOutfitBottom->IsVisible());
+		}
+		else
+		{
+			TestTrue(TEXT("Starter outfit is visible"), Character->StarterOutfitTop->IsVisible() && Character->StarterOutfitBottom->IsVisible());
+		}
 		TestTrue(TEXT("Top follows body pose"), Character->StarterOutfitTop->LeaderPoseComponent.Get() == Body);
 		TestTrue(TEXT("Bottom follows body pose"), Character->StarterOutfitBottom->LeaderPoseComponent.Get() == Body);
 	}
@@ -66,7 +78,9 @@ bool FOddsWellSkeletalVisualTest::RunTest(const FString& Parameters)
 	FString Error;
 	Character->StarterOutfitState.Unequip(EOddsWellStarterEquipmentSlot::Top, Error);
 	Character->SyncOutfitComponents();
-	TestTrue(TEXT("Removing top preserves body and bottom"), !Character->StarterOutfitTop->IsVisible() && Body->IsVisible() && Character->StarterOutfitBottom->IsVisible());
+	TestTrue(TEXT("Removing top preserves body and bottom"), Character->bMetaHumanActive
+		? Character->MetaHumanBody->IsVisible() && !Character->StarterOutfitTop->IsVisible()
+		: !Character->StarterOutfitTop->IsVisible() && Body->IsVisible() && Character->StarterOutfitBottom->IsVisible());
 	UCharacterMovementComponent* Movement = Character->GetCharacterMovement();
 	Movement->SetMovementMode(MOVE_Walking);
 	Movement->Velocity = FVector::ZeroVector;

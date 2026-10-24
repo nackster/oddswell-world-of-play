@@ -179,6 +179,22 @@ namespace OddsWellLeague
 
 	enum class EGameStage : uint8_t { Regular, Semifinal, Final };
 
+	// Bet markets. Every market is priced from a Monte Carlo of the matchup using the same pregame inputs as
+	// the real game but different seeds (never the real game's seed), then quoted with a small house margin.
+	// The public Elo probability stays on the game as a published reference number.
+	enum class EMarket : uint8_t { MatchWinner = 0, Margin = 1, Overtime = 2, HomeStarPoints = 3, AwayStarPoints = 4, Count = 5 };
+	constexpr int MarginBucketCount = 6; // home by 1-5, 6-10, 11+, then away by 1-5, 6-10, 11+
+	constexpr int MarketPricingSimulations = 240;
+	constexpr int64_t HouseMarginPercent = 4;
+
+	struct FPointsProp
+	{
+		int RosterSlot = -1;   // within its team
+		int LineTenths = 0;    // e.g. 225 means 22.5 points
+		int64_t OverE8 = 0;
+		int ActualPoints = -1; // filled once played
+	};
+
 	struct FScheduledGame
 	{
 		int Id = 0;
@@ -201,6 +217,12 @@ namespace OddsWellLeague
 		std::vector<double> PregameFatigue;
 		std::vector<int> PregameAvailability;
 		std::vector<double> PregameReadiness;
+		// Additional markets, published with the Match Winner odds.
+		bool bMarketsPublished = false;
+		int64_t MatchWinnerHomeE8 = 0; // fair simulated home-win probability
+		int64_t MarginE8[MarginBucketCount] = {};
+		int64_t OvertimeE8 = 0;
+		FPointsProp Props[2]; // home star, away star
 	};
 
 	struct FStanding
@@ -283,6 +305,18 @@ namespace OddsWellLeague
 	int64_t DecimalOddsE4(int64_t WinProbabilityE8);
 	bool IsValidStake(int64_t Stake);
 	int64_t GrossReturn(int64_t Stake, int64_t WinProbabilityE8);
+
+	// Markets: outcome counts, prices and settlement.
+	int MarketOutcomeCount(EMarket Market);
+	int MarginBucket(int HomeScore, int AwayScore);
+	// The fair simulated probability of an outcome.
+	int64_t FairProbabilityE8(const FScheduledGame& Game, EMarket Market, int Outcome);
+	// The quoted probability (fair plus the house margin) that sets the payout.
+	int64_t OutcomeProbabilityE8(const FScheduledGame& Game, EMarket Market, int Outcome);
+	bool IsOutcomeAvailable(const FScheduledGame& Game, EMarket Market);
+	// Returns false while the game is unplayed.
+	bool DidOutcomeWin(const FScheduledGame& Game, EMarket Market, int Outcome, bool& bOutWon);
+	void PriceGameMarkets(const FLeagueConfig& Config, const FLeagueState& State, FScheduledGame& Game);
 
 	// ---- Persistence ----------------------------------------------------------------------
 
